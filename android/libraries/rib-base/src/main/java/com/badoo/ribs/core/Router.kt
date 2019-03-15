@@ -2,6 +2,7 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.ViewGroup
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
@@ -97,11 +98,14 @@ abstract class Router<C : Parcelable, V : RibView>(
         backStackManager.accept(NewRoot(configuration))
     }
 
-    fun popBackStack(): Boolean =
-        if (backStackManager.state.canPop) {
+    fun popBackStack(): Boolean {
+        return if (backStackManager.state.canPop) {
+            Log.d("Back stack before pop", backStackManager.state.toString())
             backStackManager.accept(Pop())
+            Log.d("Back stack after pop", backStackManager.state.toString())
             true
         } else {
             false
         }
+    }
 }

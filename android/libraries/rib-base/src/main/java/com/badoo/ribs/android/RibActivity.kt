@@ -2,12 +2,23 @@ package com.badoo.ribs.android
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.KeyEvent
 import android.view.ViewGroup
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
+import com.badoo.ribs.core.Node
+import com.badoo.ribs.dialog.Dialog
+import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.dialog.toAlertDialog
+import java.util.WeakHashMap
 
-abstract class RibActivity : AppCompatActivity(), IntentCreator {
+abstract class RibActivity : AppCompatActivity(),
+    IntentCreator,
+    DialogLauncher {
+
+    private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> =
+        WeakHashMap()
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
@@ -75,6 +86,7 @@ abstract class RibActivity : AppCompatActivity(), IntentCreator {
 
     override fun onDestroy() {
         super.onDestroy()
+        dialogs.values.forEach { it.hide() }
         rootNode.onDetach()
         rootNode.detachFromView(findViewById(android.R.id.content))
     }
@@ -96,4 +108,24 @@ abstract class RibActivity : AppCompatActivity(), IntentCreator {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
         permissionRequester.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+    override fun show(dialog: Dialog<*>) {
+        dialogs[dialog] = dialog.toAlertDialog(this).also {
+            it.setOnKeyListener { _, keyCode, event: KeyEvent ->
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                    // Default behavior in Android is to close the dialog before invoking
+                    // onBackPressed(), so we need to give a change to Routers to pop the back stack,
+                    // which means if the Dialog was based on a configuration, that configuration
+                    // gets popped, and that as a result will clear the dialog.
+                    // Only revert to system default behavior if Router did not handle the event.
+                    return@setOnKeyListener rootNode.handleBackPress()
+                }
+                return@setOnKeyListener false
+            }
+            it.show()
+        }
+    }
+
+    override fun hide(dialog: Dialog<*>) {
+        dialogs[dialog]?.hide()
+    }
 }

@@ -2,6 +2,7 @@ package com.badoo.ribs.example.rib.switcher.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
@@ -31,6 +32,7 @@ internal object SwitcherModule {
         SwitcherRouter(
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
+            dialogExampleBuilder = DialogExampleBuilder(component),
             menuBuilder = MenuBuilder(component)
         )
 

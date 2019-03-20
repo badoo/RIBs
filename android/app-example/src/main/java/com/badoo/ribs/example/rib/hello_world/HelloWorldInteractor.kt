@@ -9,18 +9,13 @@ import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
-import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.example.app.OtherActivity
-import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.AskOpinion
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.hello_world.analytics.HelloWorldAnalytics
-import com.badoo.ribs.example.rib.hello_world.dialog.SimpleDialog
-import com.badoo.ribs.example.rib.hello_world.dialog.SomeRibDialog
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
 import com.badoo.ribs.example.rib.hello_world.mapper.InputToWish
 import com.badoo.ribs.example.rib.hello_world.mapper.NewsToOutput
 import com.badoo.ribs.example.rib.hello_world.mapper.ViewEventToAnalyticsEvent
-import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -30,9 +25,7 @@ class HelloWorldInteractor(
     private val input: ObservableSource<HelloWorld.Input>,
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
-    private val activityStarter: ActivityStarter,
-    private val simpleDialog: SimpleDialog,
-    private val someRibDialog: SomeRibDialog
+    private val activityStarter: ActivityStarter
 ) : Interactor<HelloWorldRouter.Configuration, HelloWorldView>(
     router = router,
     disposables = feature
@@ -57,8 +50,6 @@ class HelloWorldInteractor(
         viewLifecycle.createDestroy {
             bind(view to HelloWorldAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
-            bind(simpleDialog to dialogEventConsumer)
-            bind(someRibDialog to dialogEventConsumer)
             bind(activityStarter.events(this@HelloWorldInteractor) to activityResultConsumer)
             bind(dummyViewInput to view)
         }
@@ -66,39 +57,8 @@ class HelloWorldInteractor(
 
     private val viewEventConsumer : Consumer<HelloWorldView.Event> = Consumer {
         when (it) {
-            HelloWorldView.Event.ButtonClicked -> router.push(AskOpinion)
+            HelloWorldView.Event.ButtonClicked -> launchOtherActivityForResult()
         }
-    }
-
-    private val dialogEventConsumer : Consumer<Dialog.Event> = Consumer {
-        when (it) {
-            Dialog.Event.Positive -> {
-                // As dialogs are Router configuration based, the configuration needs to change
-                // Options here:
-                // 1. go back to previous configuration by popping, or
-                // 2. replace current one with a different one
-                // Pushing new is not recommended, since going back will show the dialog again in that case.
-                router.popBackStack()
-                launchOtherActivityForResult()
-            }
-            Dialog.Event.Negative -> {
-                dummyViewInput.accept(ViewModel("Dialog - Negative clicked"))
-                router.popBackStack()
-            }
-            Dialog.Event.Neutral -> {
-                dummyViewInput.accept(ViewModel("Dialog - Neutral clicked"))
-                router.popBackStack()
-            }
-            Dialog.Event.Cancelled ->{
-                dummyViewInput.accept(ViewModel("Dialog - Cancelled"))
-                router.popBackStack()
-            }
-        }
-    }
-
-    internal val loremIpsumOutputConsumer : Consumer<LoremIpsum.Output> = Consumer {
-        router.popBackStack()
-        dummyViewInput.accept(ViewModel("Lorem ipsum button clicked"))
     }
 
     private fun launchOtherActivityForResult() {

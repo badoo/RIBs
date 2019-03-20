@@ -19,11 +19,13 @@ import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attac
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
     private val fooBarBuilder: FooBarBuilder,
     private val helloWorldBuilder: HelloWorldBuilder,
+    private val dialogExampleBuilder: DialogExampleBuilder,
     private val menuBuilder: MenuBuilder
     ): Router<Configuration, SwitcherView>(
     initialConfiguration = Hello
@@ -37,6 +39,7 @@ class SwitcherRouter(
     sealed class Configuration : Parcelable {
         @Parcelize object Hello : Configuration()
         @Parcelize object Foo : Configuration()
+        @Parcelize object DialogsExample : Configuration()
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<SwitcherView> =
@@ -48,6 +51,10 @@ class SwitcherRouter(
             is Foo -> composite(
                 attach { fooBarBuilder.build() },
                 execute { menuUpdater.accept(SelectMenuItem(MenuItem.FooBar)) }
+            )
+            is Configuration.DialogsExample -> composite(
+                attach { dialogExampleBuilder.build() },
+                execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
             )
         }
 

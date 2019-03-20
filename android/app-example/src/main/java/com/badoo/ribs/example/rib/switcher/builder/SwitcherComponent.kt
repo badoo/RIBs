@@ -6,6 +6,7 @@ import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherView
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.example.rib.dialog_example.DialogExample
 
 
 @SwitcherScope
@@ -19,6 +20,7 @@ import com.badoo.ribs.core.Node
 internal interface SwitcherComponent :
     HelloWorld.Dependency,
     FooBar.Dependency,
+    DialogExample.Dependency,
     Menu.Dependency {
 
     @dagger.Component.Builder

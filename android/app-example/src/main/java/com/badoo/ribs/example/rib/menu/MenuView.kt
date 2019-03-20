@@ -41,11 +41,13 @@ class MenuViewImpl @JvmOverloads constructor(
 
     private lateinit var helloWorld: TextView
     private lateinit var fooBar: TextView
+    private lateinit var dialogs: TextView
 
     override fun onFinishInflate() {
         super.onFinishInflate()
         helloWorld = menuItem(R.id.menu_hello, MenuItem.HelloWorld)
         fooBar = menuItem(R.id.menu_foo, MenuItem.FooBar)
+        dialogs = menuItem(R.id.menu_dialogs, MenuItem.Dialogs)
     }
 
     fun menuItem(id: Int, menuItem: MenuItem) : TextView =
@@ -54,7 +56,7 @@ class MenuViewImpl @JvmOverloads constructor(
         }
 
     override fun accept(vm: ViewModel) {
-        listOf(helloWorld, fooBar).forEach {
+        listOf(helloWorld, fooBar, dialogs).forEach {
             it.setTextColor(ContextCompat.getColor(context, R.color.material_grey_600))
         }
 
@@ -62,6 +64,7 @@ class MenuViewImpl @JvmOverloads constructor(
             when (it) {
                 MenuItem.HelloWorld -> helloWorld
                 MenuItem.FooBar -> fooBar
+                MenuItem.Dialogs -> dialogs
             }.apply {
                 setTextColor(ContextCompat.getColor(context, R.color.material_blue_grey_950))
             }

@@ -21,6 +21,9 @@ class SwitcherInteractor(
                 Menu.MenuItem.HelloWorld -> {
                     router.push(SwitcherRouter.Configuration.Hello)
                 }
+                Menu.MenuItem.Dialogs -> {
+                    router.push(SwitcherRouter.Configuration.DialogsExample)
+                }
             }
         }
     }

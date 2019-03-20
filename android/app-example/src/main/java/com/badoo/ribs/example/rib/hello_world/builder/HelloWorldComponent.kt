@@ -14,8 +14,7 @@ import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
         HelloWorld.Customisation::class
     ]
 )
-internal interface HelloWorldComponent :
-    LoremIpsum.Dependency {
+internal interface HelloWorldComponent {
 
     @dagger.Component.Builder
     interface Builder {

@@ -30,7 +30,7 @@ class HelloWorldRouter(
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<HelloWorldView> =
         when (configuration) {
             Configuration.Default -> noop()
-//            Configuration.AskOpinion -> dialog(dialogLauncher, simpleDialog)
-            Configuration.AskOpinion -> dialog(dialogLauncher, someRibDialog)
+            Configuration.AskOpinion -> dialog(dialogLauncher, simpleDialog)
+//            Configuration.AskOpinion -> dialog(dialogLauncher, someRibDialog)
     }
 }

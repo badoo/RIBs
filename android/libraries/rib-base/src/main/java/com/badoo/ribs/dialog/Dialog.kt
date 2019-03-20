@@ -1,20 +1,22 @@
 package com.badoo.ribs.dialog
 
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 
-abstract class Dialog<Event : Any> private constructor(
-    factory: Dialog<Event>.() -> Unit,
-    private val events: PublishRelay<Event>
-) : ObservableSource<Event> by events {
+abstract class Dialog<T : Any> private constructor(
+    factory: Dialog<T>.() -> Unit,
+    private val events: PublishRelay<T>
+) : ObservableSource<T> by events {
     var title: String? = null
     var message: String? = null
-    internal var buttons: ButtonsConfig<Event>? = null
+    var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
+    internal var buttons: ButtonsConfig<T>? = null
     private var ribFactory: (() -> Node<*>)? = null
     internal var rib: Node<*>? = null
 
-    constructor(factory: Dialog<Event>.() -> Unit) : this(
+    constructor(factory: Dialog<T>.() -> Unit) : this(
         factory,
         PublishRelay.create()
     )
@@ -31,47 +33,41 @@ abstract class Dialog<Event : Any> private constructor(
         this.ribFactory = ribFactory
     }
 
-    fun buttons(factory: ButtonsConfig<Event>.() -> Unit) {
+    fun buttons(factory: ButtonsConfig<T>.() -> Unit) {
         this.buttons = ButtonsConfig(factory)
     }
 
-    class ButtonsConfig<Event : Any>(
-        factory: ButtonsConfig<Event>.() -> Unit
+    class ButtonsConfig<T : Any>(
+        factory: ButtonsConfig<T>.() -> Unit
     ) {
-        internal var positive: ButtonConfig<Event>? = null
-        internal var negative: ButtonConfig<Event>? = null
-        internal var neutral: ButtonConfig<Event>? = null
+        internal var positive: ButtonConfig<T>? = null
+        internal var negative: ButtonConfig<T>? = null
+        internal var neutral: ButtonConfig<T>? = null
 
         init {
             factory()
         }
 
-        fun positive(title: String, onClickEvent: Event) {
+        fun positive(title: String, onClickEvent: T) {
             positive = ButtonConfig(title, onClickEvent)
         }
 
-        fun negative(title: String, onClickEvent: Event) {
+        fun negative(title: String, onClickEvent: T) {
             negative = ButtonConfig(title, onClickEvent)
         }
 
-        fun neutral(title: String, onClickEvent: Event) {
+        fun neutral(title: String, onClickEvent: T) {
             neutral = ButtonConfig(title, onClickEvent)
         }
 
-        data class ButtonConfig<Event : Any>(
+        data class ButtonConfig<T : Any>(
             var title: String? = null,
-            var onClickEvent: Event? = null
+            var onClickEvent: T? = null
         )
     }
 
-    fun publish(event: Event) {
+    fun publish(event: T) {
         events.accept(event)
-    }
-
-    sealed class Event {
-        object Positive : Event()
-        object Negative : Event()
-        object Neutral : Event()
     }
 
     fun createRibs(): List<Node<*>> =
@@ -82,4 +78,19 @@ abstract class Dialog<Event : Any> private constructor(
                 }
             )
         } ?: emptyList()
+
+    sealed class Event {
+        object Positive : Event()
+        object Negative : Event()
+        object Neutral : Event()
+        object Cancelled : Event()
+    }
+
+    sealed class CancellationPolicy<T : Any> {
+        class NonCancellable<T : Any> : CancellationPolicy<T>()
+        data class Cancellable<T : Any>(
+            val event: T,
+            val cancelOnTouchOutside: Boolean
+        ) : CancellationPolicy<T>()
+    }
 }

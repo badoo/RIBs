@@ -110,17 +110,6 @@ abstract class RibActivity : AppCompatActivity(),
 
     override fun show(dialog: Dialog<*>) {
         dialogs[dialog] = dialog.toAlertDialog(this).also {
-            it.setOnKeyListener { _, keyCode, event: KeyEvent ->
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                    // Default behavior in Android is to close the dialog before invoking
-                    // onBackPressed(), so we need to give a change to Routers to pop the back stack,
-                    // which means if the Dialog was based on a configuration, that configuration
-                    // gets popped, and that as a result will clear the dialog.
-                    // Only revert to system default behavior if Router did not handle the event.
-                    return@setOnKeyListener rootNode.handleBackPress()
-                }
-                return@setOnKeyListener false
-            }
             it.show()
         }
     }

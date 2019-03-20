@@ -89,6 +89,10 @@ class HelloWorldInteractor(
                 dummyViewInput.accept(ViewModel("Dialog - Neutral clicked"))
                 router.popBackStack()
             }
+            Dialog.Event.Cancelled ->{
+                dummyViewInput.accept(ViewModel("Dialog - Cancelled"))
+                router.popBackStack()
+            }
         }
     }
 

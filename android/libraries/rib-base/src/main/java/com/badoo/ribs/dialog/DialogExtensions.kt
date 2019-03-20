@@ -3,23 +3,36 @@ package com.badoo.ribs.dialog
 import android.content.Context
 import android.support.v7.app.AlertDialog
 import android.widget.FrameLayout
+import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
+import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 
 fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context) : AlertDialog =
     AlertDialog.Builder(context)
         .apply {
+            setCancelable(this@toAlertDialog)
             setRib(this@toAlertDialog, context)
             setTexts(this@toAlertDialog)
             setButtons(this@toAlertDialog)
         }
         .create()
         .apply {
+            setCanceledOnTouchOutside(this@toAlertDialog)
             setButtonClickListeners(this@toAlertDialog)
         }
 
-private fun AlertDialog.Builder.setRib(
-    dialog: Dialog<*>,
-    context: Context
-) {
+private fun <Event : Any> AlertDialog.Builder.setCancelable(dialog: Dialog<Event>) {
+    when (val policy = dialog.cancellationPolicy) {
+        is NonCancellable -> {
+            setCancelable(false)
+        }
+        is Cancellable -> {
+            setCancelable(true)
+            setOnCancelListener { dialog.publish(policy.event) }
+        }
+    }
+}
+
+private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
     dialog.rib?.let {
         setView(object : FrameLayout(context) {
             override fun onAttachedToWindow() {
@@ -74,3 +87,13 @@ private fun <Event : Any> AlertDialog.setButtonClickListeners(dialog: Dialog<Eve
         }
     }
 }
+
+private fun <Event : Any> AlertDialog.setCanceledOnTouchOutside(dialog: Dialog<Event>) {
+    setCanceledOnTouchOutside(
+        when (val policy = dialog.cancellationPolicy) {
+            is NonCancellable -> false
+            is Cancellable -> policy.cancelOnTouchOutside
+        }
+    )
+}
+

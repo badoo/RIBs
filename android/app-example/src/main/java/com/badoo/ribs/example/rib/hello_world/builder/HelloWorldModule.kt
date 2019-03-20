@@ -13,6 +13,7 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 import com.badoo.ribs.example.rib.hello_world.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.hello_world.dialog.SomeRibDialog
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
+import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder
 import dagger.Provides
 import io.reactivex.ObservableSource
@@ -60,7 +61,7 @@ internal object HelloWorldModule {
     @HelloWorldScope
     @Provides
     @JvmStatic
-    @SuppressWarnings("LongParameterList")
+    @SuppressWarnings("LongParameterList", "LongMethod")
     internal fun interactor(
         router: HelloWorldRouter,
         input: ObservableSource<Input>,
@@ -93,4 +94,12 @@ internal object HelloWorldModule {
         router = router,
         interactor = interactor
     )
+
+    @HelloWorldScope
+    @Provides
+    @JvmStatic
+    internal fun loremIpsumOutputConsumer(
+        interactor: HelloWorldInteractor
+    ) : Consumer<LoremIpsum.Output> =
+        interactor.loremIpsumOutputConsumer
 }

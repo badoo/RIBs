@@ -6,4 +6,5 @@
     <string name="activity_other_incoming_title">Incoming data</string>
     <string name="check_permissions">Check permissions</string>
     <string name="request_permissions">Request permissions</string>
+    <string name="random_button">Random button in a RIB</string>
 </resources>

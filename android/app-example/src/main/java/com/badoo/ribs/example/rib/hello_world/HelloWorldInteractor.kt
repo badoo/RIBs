@@ -11,7 +11,7 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.example.app.OtherActivity
-import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.*
+import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.AskOpinion
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.hello_world.analytics.HelloWorldAnalytics
 import com.badoo.ribs.example.rib.hello_world.dialog.SimpleDialog
@@ -20,6 +20,7 @@ import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
 import com.badoo.ribs.example.rib.hello_world.mapper.InputToWish
 import com.badoo.ribs.example.rib.hello_world.mapper.NewsToOutput
 import com.badoo.ribs.example.rib.hello_world.mapper.ViewEventToAnalyticsEvent
+import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -89,6 +90,11 @@ class HelloWorldInteractor(
                 router.popBackStack()
             }
         }
+    }
+
+    internal val loremIpsumOutputConsumer : Consumer<LoremIpsum.Output> = Consumer {
+        router.popBackStack()
+        dummyViewInput.accept(ViewModel("Lorem ipsum button clicked"))
     }
 
     private fun launchOtherActivityForResult() {

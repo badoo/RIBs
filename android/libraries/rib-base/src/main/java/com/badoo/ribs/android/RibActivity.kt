@@ -22,7 +22,7 @@ abstract class RibActivity : AppCompatActivity(),
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
-    protected val activityStarter: ActivityStarterImpl by lazy {
+    val activityStarter: ActivityStarterImpl by lazy {
         ActivityStarterImpl(
             activity = this,
             intentCreator = this,
@@ -30,7 +30,7 @@ abstract class RibActivity : AppCompatActivity(),
         )
     }
 
-    protected  val permissionRequester: PermissionRequesterImpl by lazy {
+    val permissionRequester: PermissionRequesterImpl by lazy {
         PermissionRequesterImpl(
             activity = this,
             requestCodeRegistry = requestCodeRegistry

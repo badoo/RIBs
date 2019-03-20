@@ -15,6 +15,7 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.*
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.hello_world.analytics.HelloWorldAnalytics
 import com.badoo.ribs.example.rib.hello_world.dialog.SimpleDialog
+import com.badoo.ribs.example.rib.hello_world.dialog.SomeRibDialog
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
 import com.badoo.ribs.example.rib.hello_world.mapper.InputToWish
 import com.badoo.ribs.example.rib.hello_world.mapper.NewsToOutput
@@ -29,7 +30,8 @@ class HelloWorldInteractor(
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter,
-    private val dialog: SimpleDialog
+    private val simpleDialog: SimpleDialog,
+    private val someRibDialog: SomeRibDialog
 ) : Interactor<HelloWorldRouter.Configuration, HelloWorldView>(
     router = router,
     disposables = feature
@@ -42,7 +44,8 @@ class HelloWorldInteractor(
         ViewModel("My id: " + id.replace("${HelloWorldInteractor::class.java.name}.", ""))
     )
 
-    override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
+    override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?
+    ) {
         ribLifecycle.createDestroy {
             bind(feature.news to output using NewsToOutput)
             bind(input to feature using InputToWish)
@@ -53,7 +56,8 @@ class HelloWorldInteractor(
         viewLifecycle.createDestroy {
             bind(view to HelloWorldAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
-            bind(dialog to dialogEventConsumer)
+            bind(simpleDialog to dialogEventConsumer)
+            bind(someRibDialog to dialogEventConsumer)
             bind(activityStarter.events(this@HelloWorldInteractor) to activityResultConsumer)
             bind(dummyViewInput to view)
         }

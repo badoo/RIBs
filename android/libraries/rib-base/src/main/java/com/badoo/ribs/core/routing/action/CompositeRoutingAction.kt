@@ -9,9 +9,9 @@ class CompositeRoutingAction< V : RibView>(
 
     constructor(routingActions: List<RoutingAction<V>>) : this(*routingActions.toTypedArray())
 
-    override fun ribFactories(): List<() -> Node<*>> =
+    override fun createRibs(): List<Node<*>> =
         routingActions.flatMap {
-            it.ribFactories()
+            it.createRibs()
         }
 
     override fun execute() {

@@ -10,8 +10,8 @@ import io.reactivex.functions.Consumer
 interface LoremIpsum : Rib {
 
     interface Dependency : Rib.Dependency {
-        fun loremIpsumInput(): ObservableSource<Input>
-        fun loremIpsumOutput(): Consumer<Output>
+//        fun loremIpsumInput(): ObservableSource<Input>
+//        fun loremIpsumOutput(): Consumer<Output>
     }
 
     sealed class Input

@@ -1,17 +1,21 @@
 package com.badoo.ribs.dialog
 
+import com.badoo.ribs.core.Node
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 
 abstract class Dialog<Event : Any> private constructor(
     factory: Dialog<Event>.() -> Unit,
-    protected val events: PublishRelay<Event>
+    private val events: PublishRelay<Event>
 ) : ObservableSource<Event> by events {
     var title: String? = null
     var message: String? = null
-    var buttons: ButtonsConfig<Event>? = null
+    internal var buttons: ButtonsConfig<Event>? = null
+    private var ribFactory: (() -> Node<*>)? = null
+    internal var rib: Node<*>? = null
 
-    constructor(factory: Dialog<Event>.() -> Unit) : this(factory,
+    constructor(factory: Dialog<Event>.() -> Unit) : this(
+        factory,
         PublishRelay.create()
     )
 
@@ -21,6 +25,10 @@ abstract class Dialog<Event : Any> private constructor(
 
     fun title(title: String) {
         this.title = title
+    }
+
+    fun ribFactory(ribFactory: () -> Node<*>) {
+        this.ribFactory = ribFactory
     }
 
     fun buttons(factory: ButtonsConfig<Event>.() -> Unit) {
@@ -65,4 +73,13 @@ abstract class Dialog<Event : Any> private constructor(
         object Negative : Event()
         object Neutral : Event()
     }
+
+    fun createRibs(): List<Node<*>> =
+        ribFactory?.let { factory ->
+            listOf(
+                factory.invoke().also {
+                    rib = it
+                }
+            )
+        } ?: emptyList()
 }

@@ -86,7 +86,7 @@ abstract class RibActivity : AppCompatActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        dialogs.values.forEach { it.hide() }
+        dialogs.values.forEach { it.dismiss() }
         rootNode.onDetach()
         rootNode.detachFromView(findViewById(android.R.id.content))
     }
@@ -126,6 +126,6 @@ abstract class RibActivity : AppCompatActivity(),
     }
 
     override fun hide(dialog: Dialog<*>) {
-        dialogs[dialog]?.hide()
+        dialogs[dialog]?.dismiss()
     }
 }

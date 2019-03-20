@@ -9,7 +9,9 @@ import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrateg
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
@@ -65,8 +67,8 @@ class BackStackRibConnectorTest {
         backStackElement1 = BackStackElement(configuration = Configuration.C1)
         backStackElement2 = BackStackElement(configuration = Configuration.C2)
 
-        routingAction1 = mock { on { ribFactories() } doReturn ribsFactories1 }
-        routingAction2 = mock { on { ribFactories() } doReturn ribsFactories2 }
+        routingAction1 = mock { on { createRibs() } doAnswer { ribsFactories1.map { it.invoke() } }}
+        routingAction2 = mock { on { createRibs() } doAnswer { ribsFactories2.map { it.invoke() } }}
 
         resolver = mock {
             on { invoke(Configuration.C1) } doReturn routingAction1
@@ -89,7 +91,10 @@ class BackStackRibConnectorTest {
         backStackElement1.ribs = ribs1
         backStackRibConnector.leave(backStackElement1, DESTROY)
         ribs1.forEach {
-            verify(connector).detachChild(it)
+            inOrder(connector) {
+                verify(connector).detachChildView(it)
+                verify(connector).detachChildNode(it)
+            }
         }
         verifyNoMoreInteractions(connector)
     }
@@ -158,7 +163,7 @@ class BackStackRibConnectorTest {
     fun `When going to BackStackElement, RIBs that are created are attached`() {
         backStackRibConnector.goTo(backStackElement1)
         ribs1.forEach {
-            verify(connector).attachChild(it)
+            verify(connector).attachChildNode(it)
         }
     }
 
@@ -356,11 +361,17 @@ class BackStackRibConnectorTest {
         backStackRibConnector.shrinkToBundles(backStack)
 
         ribs1.forEach {
-            verify(connector).detachChild(it)
+            inOrder(connector) {
+                verify(connector).detachChildView(it)
+                verify(connector).detachChildNode(it)
+            }
         }
 
         ribs2.forEach {
-            verify(connector, never()).detachChild(it)
+            inOrder(connector) {
+                verify(connector, never()).detachChildView(it)
+                verify(connector, never()).detachChildNode(it)
+            }
         }
     }
 

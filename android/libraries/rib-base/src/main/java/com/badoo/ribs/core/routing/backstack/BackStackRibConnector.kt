@@ -31,7 +31,10 @@ internal class BackStackRibConnector<C : Parcelable>(
     }
 
     private fun BackStackElement<C>.destroyRibs() {
-        ribs?.forEach { connector.detachChild(it) }
+        ribs?.forEach {
+            connector.detachChildView(it)
+            connector.detachChildNode(it)
+        }
         ribs = null
     }
 
@@ -48,40 +51,47 @@ internal class BackStackRibConnector<C : Parcelable>(
                 routingAction = resolver.invoke(configuration)
             }
 
-            routingAction!!.execute()
-
             if (ribs == null) {
                 ribs = routingAction!!
-                    .ribFactories()
-                    .map { it.invoke() }
-                    .also { attachNodes(it) }
+                    .createRibs()
+                    .also {
+                        attachNodes(it, routingAction!!.allowAttachView)
+                    }
             } else {
                 ribs!!
                     .forEach {
                         connector.attachChildView(it)
                     }
             }
+
+            routingAction!!.execute()
         }
 
         return backStackElement
     }
 
-    private fun BackStackElement<C>.attachNodes(it: List<Node<*>>) {
+    private fun BackStackElement<C>.attachNodes(it: List<Node<*>>, attachView: Boolean) {
         it.forEachIndexed { index, node ->
-            // attachChildView is implied part of attachChild:
-            connector.attachChild(
-                node,
-                bundles.elementAtOrNull(index)?.also {
-                    it.classLoader = BackStackManager.State::class.java.classLoader
-                }
-            )
+            connector.attachChildNode(node, bundleAt(index))
+
+            if (attachView) {
+                connector.attachChildView(node)
+            }
         }
     }
+
+    private fun BackStackElement<C>.bundleAt(index: Int): Bundle? =
+        bundles.elementAtOrNull(index)?.also {
+            it.classLoader = BackStackManager.State::class.java.classLoader
+        }
 
     fun shrinkToBundles(backStack: List<BackStackElement<C>>): List<BackStackElement<C>> =
         saveInstanceState(backStack).apply {
             dropLast(1).forEach {
-                it.ribs?.forEach { connector.detachChild(it) }
+                it.ribs?.forEach {
+                    connector.detachChildView(it)
+                    connector.detachChildNode(it)
+                }
                 it.ribs = null
             }
         }

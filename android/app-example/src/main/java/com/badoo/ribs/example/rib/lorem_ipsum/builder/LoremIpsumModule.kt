@@ -37,14 +37,14 @@ internal object LoremIpsumModule {
     @JvmStatic
     internal fun interactor(
         router: LoremIpsumRouter,
-        input: ObservableSource<Input>,
-        output: Consumer<Output>,
+//        input: ObservableSource<Input>,
+//        output: Consumer<Output>,
         feature: LoremIpsumFeature
     ): LoremIpsumInteractor =
         LoremIpsumInteractor(
             router = router,
-            input = input,
-            output = output,
+//            input = input,
+//            output = output,
             feature = feature
         )
 

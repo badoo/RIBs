@@ -7,8 +7,8 @@ class AttachRibRoutingAction< V : RibView>(
     private val builder: () -> Node<*>
 ) : RoutingAction<V> {
 
-    override fun ribFactories(): List<() -> Node<*>> =
-        listOf(builder)
+    override fun createRibs(): List<Node<*>> =
+        listOf(builder.invoke())
 
     companion object {
         fun < V : RibView> attach(builder: () -> Node<*>): RoutingAction<V> =

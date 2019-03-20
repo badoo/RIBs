@@ -147,7 +147,7 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be attached.
      */
     @MainThread
-    protected fun attachChildNode(childNode: Node<*>, bundle: Bundle?) {
+    internal fun attachChildNode(childNode: Node<*>, bundle: Bundle?) {
         children.add(childNode)
         ribRefWatcher.logBreadcrumb(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
@@ -164,7 +164,7 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be detached.
      */
     @MainThread
-    protected fun detachChildNode(childNode: Node<*>) {
+    internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
 
         val interactor = childNode.interactor

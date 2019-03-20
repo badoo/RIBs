@@ -51,10 +51,10 @@ abstract class Router<C : Parcelable, V : RibView>(
                 BackStackRibConnector(
                     this::resolveConfiguration,
                     NodeConnector.from(
-                        node::attachChild,
+                        node::attachChildNode,
                         node::attachChildView,
                         node::detachChildView,
-                        node::detachChild
+                        node::detachChildNode
                     )
                 ),
             initialConfiguration = initialConfiguration,

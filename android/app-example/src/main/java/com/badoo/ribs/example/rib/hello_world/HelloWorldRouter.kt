@@ -3,19 +3,19 @@ package com.badoo.ribs.example.rib.hello_world
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
-import com.badoo.ribs.core.routing.action.InvokeOnCleanup.Companion.cleanup
-import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
+import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.dialog
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.example.rib.hello_world.dialog.SimpleDialog
+import com.badoo.ribs.example.rib.hello_world.dialog.SomeRibDialog
 import kotlinx.android.parcel.Parcelize
 
 class HelloWorldRouter(
-    private val dialog: SimpleDialog,
-    private val dialogLauncher: DialogLauncher
+    private val dialogLauncher: DialogLauncher,
+    private val simpleDialog: SimpleDialog,
+    private val someRibDialog: SomeRibDialog
 ): Router<Configuration, HelloWorldView>(
     initialConfiguration = Configuration.Default
 ) {
@@ -30,9 +30,7 @@ class HelloWorldRouter(
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<HelloWorldView> =
         when (configuration) {
             Configuration.Default -> noop()
-            Configuration.AskOpinion -> composite(
-                execute { dialogLauncher.show(dialog) },
-                cleanup { dialogLauncher.hide(dialog) }
-            )
-        }
+            Configuration.AskOpinion -> dialog(dialogLauncher, simpleDialog)
+//            Configuration.AskOpinion -> dialog(dialogLauncher, someRibDialog)
+    }
 }

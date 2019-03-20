@@ -18,8 +18,8 @@ import io.reactivex.functions.Consumer
 
 class LoremIpsumInteractor(
     router: Router<Configuration, LoremIpsumView>,
-    private val input: ObservableSource<LoremIpsum.Input>,
-    private val output: Consumer<LoremIpsum.Output>,
+//    private val input: ObservableSource<LoremIpsum.Input>,
+//    private val output: Consumer<LoremIpsum.Output>,
     private val feature: LoremIpsumFeature
 ) : Interactor<Configuration, LoremIpsumView>(
     router = router,
@@ -28,8 +28,8 @@ class LoremIpsumInteractor(
 
     override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
         ribLifecycle.createDestroy {
-            bind(feature.news to output using NewsToOutput)
-            bind(input to feature using InputToWish)
+//            bind(feature.news to output using NewsToOutput)
+//            bind(input to feature using InputToWish)
         }
     }
 

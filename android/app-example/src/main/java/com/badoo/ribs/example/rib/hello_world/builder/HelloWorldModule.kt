@@ -11,14 +11,15 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldInteractor
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 import com.badoo.ribs.example.rib.hello_world.dialog.SimpleDialog
+import com.badoo.ribs.example.rib.hello_world.dialog.SomeRibDialog
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
+import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder
 import dagger.Provides
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 @dagger.Module
 internal object HelloWorldModule {
-
 
     @HelloWorldScope
     @Provides
@@ -29,13 +30,25 @@ internal object HelloWorldModule {
     @HelloWorldScope
     @Provides
     @JvmStatic
+    internal fun ribDialog(
+        component: HelloWorldComponent
+    ): SomeRibDialog =
+        SomeRibDialog(
+            loremIpsumBuilder = LoremIpsumBuilder(component)
+        )
+
+    @HelloWorldScope
+    @Provides
+    @JvmStatic
     internal fun router(
-        dialog: SimpleDialog,
-        dialogLauncher: DialogLauncher
+        dialogLauncher: DialogLauncher,
+        simpleDialog: SimpleDialog,
+        someRibDialog: SomeRibDialog
     ): HelloWorldRouter =
         HelloWorldRouter(
-            dialog = dialog,
-            dialogLauncher = dialogLauncher
+            dialogLauncher = dialogLauncher,
+            simpleDialog = simpleDialog,
+            someRibDialog = someRibDialog
         )
 
     @HelloWorldScope
@@ -54,7 +67,8 @@ internal object HelloWorldModule {
         output: Consumer<Output>,
         feature: HelloWorldFeature,
         activityStarter: ActivityStarter,
-        dialog: SimpleDialog
+        simpleDialog: SimpleDialog,
+        someRibDialog: SomeRibDialog
     ): HelloWorldInteractor =
         HelloWorldInteractor(
             router = router,
@@ -62,7 +76,8 @@ internal object HelloWorldModule {
             output = output,
             feature = feature,
             activityStarter = activityStarter,
-            dialog = dialog
+            simpleDialog = simpleDialog,
+            someRibDialog = someRibDialog
         )
 
     @HelloWorldScope

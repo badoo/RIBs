@@ -5,7 +5,10 @@ import com.badoo.ribs.core.Node
 
 interface RoutingAction<V : RibView> {
 
-    fun ribFactories() : List<() -> Node<*>> =
+    val allowAttachView: Boolean
+        get() = true
+
+    fun createRibs() : List<Node<*>> =
         emptyList()
 
     fun execute() {

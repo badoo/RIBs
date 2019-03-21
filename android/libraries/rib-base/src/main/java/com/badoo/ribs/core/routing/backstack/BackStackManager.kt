@@ -15,10 +15,11 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ReinitRouting
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.TearDown
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.TearDownRouting
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
 import io.reactivex.Completable
@@ -77,7 +78,8 @@ internal class BackStackManager<C : Parcelable>(
         class Pop<C : Parcelable> : Wish<C>()
         class SaveInstanceState<C : Parcelable> : Wish<C>()
         class ShrinkToBundles<C : Parcelable> : Wish<C>()
-        class TearDown<C : Parcelable> : Wish<C>()
+        class TearDownRouting<C : Parcelable> : Wish<C>()
+        class ReinitRouting<C : Parcelable> : Wish<C>()
     }
 
     sealed class Action<C : Parcelable> {
@@ -161,9 +163,13 @@ internal class BackStackManager<C : Parcelable>(
                                 connector.shrinkToBundles(state.backStack)
                             }.map { Effect.UpdateBackStack(it) }
 
-                        is TearDown -> Completable.fromCallable {
-                                connector.tearDown(state.backStack)
+                        is TearDownRouting -> Completable.fromCallable {
+                                connector.tearDownRouting(state.backStack)
                             }.toObservable()
+
+                        is ReinitRouting -> Completable.fromCallable {
+                            connector.reinitRouting(state.backStack)
+                        }.toObservable()
                     }
                 }
             }

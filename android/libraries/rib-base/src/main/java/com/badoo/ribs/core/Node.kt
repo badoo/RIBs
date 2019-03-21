@@ -70,9 +70,12 @@ open class Node<V : RibView>(
             interactor.onViewCreated(it)
         }
 
+        // FIXME this does not check if the child was attached originally to current view or not, as per routingAction!!.allowAttachView in connector
         children.forEach {
             attachChildView(it)
         }
+
+        router.onAttachView()
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? =
@@ -112,6 +115,9 @@ open class Node<V : RibView>(
     }
 
     fun detachFromView(parentViewGroup: ViewGroup) {
+        router.onDetachView()
+
+        // FIXME this does not check if the child was attached to current view or not, as per routingAction!!.allowAttachView in connector
         children.forEach {
             detachChildView(it)
         }

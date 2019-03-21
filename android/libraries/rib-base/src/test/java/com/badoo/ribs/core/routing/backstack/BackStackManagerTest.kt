@@ -285,8 +285,14 @@ class BackStackManagerTest {
     }
 
     @Test
-    fun `Wish_TearDown calls to connector`() {
-        backStackManager.accept(TearDown())
-        verify(backStackRibConnector).tearDown(backStackManager.state.backStack)
+    fun `Wish_TearDownRouting calls to connector`() {
+        backStackManager.accept(TearDownRouting())
+        verify(backStackRibConnector).tearDownRouting(backStackManager.state.backStack)
+    }
+
+    @Test
+    fun `Wish_ReinitRouting calls to connector`() {
+        backStackManager.accept(ReinitRouting())
+        verify(backStackRibConnector).reinitRouting(backStackManager.state.backStack)
     }
 }

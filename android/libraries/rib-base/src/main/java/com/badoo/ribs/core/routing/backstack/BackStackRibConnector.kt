@@ -41,7 +41,9 @@ internal class BackStackRibConnector<C : Parcelable>(
     private fun BackStackElement<C>.saveAndDetachView(): Unit? {
         return ribs?.forEach {
             it.saveViewState()
-            connector.detachChildView(it)
+            if (routingAction!!.allowAttachView) {
+                connector.detachChildView(it)
+            }
         }
     }
 
@@ -58,10 +60,12 @@ internal class BackStackRibConnector<C : Parcelable>(
                         attachNodes(it, routingAction!!.allowAttachView)
                     }
             } else {
-                ribs!!
-                    .forEach {
-                        connector.attachChildView(it)
-                    }
+                if (routingAction!!.allowAttachView) {
+                    ribs!!
+                        .forEach {
+                            connector.attachChildView(it)
+                        }
+                }
             }
 
             routingAction!!.execute()
@@ -108,7 +112,11 @@ internal class BackStackRibConnector<C : Parcelable>(
         return backStack
     }
 
-    fun tearDown(backStack: List<BackStackElement<C>>) {
+    fun tearDownRouting(backStack: List<BackStackElement<C>>) {
         backStack.lastOrNull()?.routingAction?.cleanup()
+    }
+
+    fun reinitRouting(backStack: List<BackStackElement<C>>) {
+        backStack.lastOrNull()?.routingAction?.execute()
     }
 }

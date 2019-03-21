@@ -380,7 +380,7 @@ class BackStackRibConnectorTest {
         backStackElement1.routingAction = routingAction1
         backStackElement2.routingAction = routingAction2
         val backStack = listOf(backStackElement1, backStackElement2)
-        backStackRibConnector.tearDown(backStack)
+        backStackRibConnector.tearDownRouting(backStack)
 
         verify(routingAction2).cleanup()
     }

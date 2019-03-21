@@ -2,6 +2,8 @@ package com.badoo.ribs.example.rib.switcher.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.example.rib.blocker.Blocker
+import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
@@ -13,7 +15,6 @@ import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherInteractor
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter
 import com.badoo.ribs.example.rib.switcher.SwitcherView
-import com.badoo.ribs.example.rib.switcher.feature.SwitcherFeature
 import dagger.Provides
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -33,14 +34,9 @@ internal object SwitcherModule {
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),
+            blockerBuilder = BlockerBuilder(component),
             menuBuilder = MenuBuilder(component)
         )
-
-    @SwitcherScope
-    @Provides
-    @JvmStatic
-    internal fun feature(): SwitcherFeature =
-        SwitcherFeature()
 
     @SwitcherScope
     @Provides
@@ -101,4 +97,12 @@ internal object SwitcherModule {
         interactor: SwitcherInteractor
     ): Consumer<Menu.Output> =
         interactor.MenuListener()
+
+    @SwitcherScope
+    @Provides
+    @JvmStatic
+    internal fun loremIpsumOutputConsumer(
+        interactor: SwitcherInteractor
+    ): Consumer<Blocker.Output> =
+        interactor.loremIpsumOutputConsumer
 }

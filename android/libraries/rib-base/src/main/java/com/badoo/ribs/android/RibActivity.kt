@@ -44,8 +44,8 @@ abstract class RibActivity : AppCompatActivity(),
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
         rootNode = createRib().apply {
-                onAttach(savedInstanceState)
-                attachToView(rootViewGroup)
+            onAttach(savedInstanceState)
+            attachToView(rootViewGroup)
         }
     }
 

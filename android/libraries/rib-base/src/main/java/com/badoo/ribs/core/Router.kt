@@ -12,10 +12,11 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ReinitRouting
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.TearDown
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.TearDownRouting
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector
 import com.badoo.ribs.core.view.RibView
 
@@ -81,8 +82,15 @@ abstract class Router<C : Parcelable, V : RibView>(
         backStackManager.accept(ShrinkToBundles())
     }
 
+    fun onDetachView() {
+        backStackManager.accept(TearDownRouting())
+    }
+
+    fun onAttachView() {
+        backStackManager.accept(ReinitRouting())
+    }
+
     fun onDetach() {
-        backStackManager.accept(TearDown())
         binder.clear()
     }
 

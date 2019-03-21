@@ -54,24 +54,31 @@ internal class BackStackRibConnector<C : Parcelable>(
             }
 
             if (ribs == null) {
-                ribs = routingAction!!
-                    .createRibs()
-                    .also {
-                        attachNodes(it, routingAction!!.allowAttachView)
-                    }
+                createAndAttachRibs()
             } else {
-                if (routingAction!!.allowAttachView) {
-                    ribs!!
-                        .forEach {
-                            connector.attachChildView(it)
-                        }
-                }
+                reAttachRibViews()
             }
 
             routingAction!!.execute()
         }
 
         return backStackElement
+    }
+
+    private fun BackStackElement<C>.createAndAttachRibs() {
+        ribs = routingAction!!.createRibs()
+            .also {
+                attachNodes(it, routingAction!!.allowAttachView)
+            }
+    }
+
+    private fun BackStackElement<C>.reAttachRibViews() {
+        if (routingAction!!.allowAttachView) {
+            ribs!!
+                .forEach {
+                    connector.attachChildView(it)
+                }
+        }
     }
 
     private fun BackStackElement<C>.attachNodes(it: List<Node<*>>, attachView: Boolean) {

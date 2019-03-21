@@ -17,6 +17,7 @@ class SwitcherInteractor(
     router = router,
     disposables = null
 ) {
+    @SuppressWarnings("MagicNumber", "OptionalUnit")
     private val blockerTicker = interval(10, TimeUnit.SECONDS)
         .map { Unit }
         .observeOn(AndroidSchedulers.mainThread())

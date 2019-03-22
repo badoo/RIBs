@@ -45,17 +45,19 @@ abstract class Router<C : Parcelable, V : RibView>(
     protected open val permanentParts: List<() -> Node<*>> = emptyList()
 
     private fun initConfigurationManager() {
+        backStackRibConnector = BackStackRibConnector(
+            permanentParts.map { it.invoke() },
+            this::resolveConfiguration,
+            NodeConnector.from(
+                node::attachChildNode,
+                node::attachChildView,
+                node::detachChildView,
+                node::detachChildNode
+            )
+        )
+
         backStackManager = BackStackManager(
-            backStackRibConnector =
-                BackStackRibConnector(
-                    this::resolveConfiguration,
-                    NodeConnector.from(
-                        node::attachChild,
-                        node::attachChildView,
-                        node::detachChildView,
-                        node::detachChild
-                    )
-                ),
+            backStackRibConnector = backStackRibConnector,
             initialConfiguration = initialConfiguration,
             timeCapsule = timeCapsule
         )

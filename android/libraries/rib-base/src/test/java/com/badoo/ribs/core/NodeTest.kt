@@ -5,9 +5,7 @@ import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node.Companion.KEY_INTERACTOR
-import com.badoo.ribs.core.Node.Companion.KEY_RIB_ID
 import com.badoo.ribs.core.Node.Companion.KEY_ROUTER
-import com.badoo.ribs.core.Node.Companion.KEY_TAG
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestPublicRibInterface
@@ -17,14 +15,12 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

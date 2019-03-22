@@ -18,7 +18,6 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.TearDown
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
 import io.reactivex.Completable
@@ -75,9 +74,9 @@ internal class BackStackManager<C : Parcelable>(
         data class Push<C : Parcelable>(val configuration: C) : Wish<C>()
         data class NewRoot<C : Parcelable>(val configuration: C) : Wish<C>()
         class Pop<C : Parcelable> : Wish<C>()
+
         class SaveInstanceState<C : Parcelable> : Wish<C>()
         class ShrinkToBundles<C : Parcelable> : Wish<C>()
-        class TearDown<C : Parcelable> : Wish<C>()
     }
 
     sealed class Action<C : Parcelable> {
@@ -151,19 +150,13 @@ internal class BackStackManager<C : Parcelable>(
                             else -> empty()
                         }
 
-                        is SaveInstanceState ->
-                            fromCallable {
-                                connector.saveInstanceState(state.backStack)
-                            }.map { Effect.UpdateBackStack(it) }
+                        is SaveInstanceState -> fromCallable {
+                            connector.saveInstanceState(state.backStack)
+                        }.map { Effect.UpdateBackStack(it) }
 
-                        is ShrinkToBundles ->
-                            fromCallable {
-                                connector.shrinkToBundles(state.backStack)
-                            }.map { Effect.UpdateBackStack(it) }
-
-                        is TearDown -> Completable.fromCallable {
-                                connector.tearDown(state.backStack)
-                            }.toObservable()
+                        is ShrinkToBundles -> fromCallable {
+                            connector.shrinkToBundles(state.backStack)
+                        }.map { Effect.UpdateBackStack(it) }
                     }
                 }
             }

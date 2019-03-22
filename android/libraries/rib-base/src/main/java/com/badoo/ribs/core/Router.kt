@@ -14,7 +14,6 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.TearDown
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector
 import com.badoo.ribs.core.view.RibView
 
@@ -24,6 +23,7 @@ abstract class Router<C : Parcelable, V : RibView>(
     private val binder = Binder()
     private lateinit var timeCapsule: AndroidTimeCapsule
     private lateinit var backStackManager: BackStackManager<C>
+    private lateinit var backStackRibConnector: BackStackRibConnector<C>
     protected val configuration: C?
         get() = backStackManager.state.current.configuration
 
@@ -32,17 +32,11 @@ abstract class Router<C : Parcelable, V : RibView>(
 
     fun onAttach(savedInstanceState: Bundle?) {
         timeCapsule = AndroidTimeCapsule(savedInstanceState)
-        attachPermanentParts()
         initConfigurationManager()
     }
 
-    private fun attachPermanentParts() {
-        permanentParts.forEach {
-            node.attachChild(it()) // fixme save and restore these as well
-        }
-    }
-
-    protected open val permanentParts: List<() -> Node<*>> = emptyList()
+    protected open val permanentParts: List<() -> Node<*>> =
+        emptyList()
 
     private fun initConfigurationManager() {
         backStackRibConnector = BackStackRibConnector(
@@ -82,8 +76,15 @@ abstract class Router<C : Parcelable, V : RibView>(
         backStackManager.accept(ShrinkToBundles())
     }
 
+    fun onAttachView() {
+        backStackRibConnector.attachToView(backStackManager.state.backStack)
+    }
+
+    fun onDetachView() {
+        backStackRibConnector.detachFromView(backStackManager.state.backStack)
+    }
+
     fun onDetach() {
-        backStackManager.accept(TearDown())
         binder.clear()
     }
 

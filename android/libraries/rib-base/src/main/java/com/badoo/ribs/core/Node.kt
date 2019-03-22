@@ -70,9 +70,7 @@ open class Node<V : RibView>(
             interactor.onViewCreated(it)
         }
 
-        children.forEach {
-            attachChildView(it)
-        }
+        router.onAttachView()
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? =
@@ -112,9 +110,7 @@ open class Node<V : RibView>(
     }
 
     fun detachFromView(parentViewGroup: ViewGroup) {
-        children.forEach {
-            detachChildView(it)
-        }
+        router.onDetachView()
 
         view?.let {
             parentViewGroup.removeView(it.androidView)

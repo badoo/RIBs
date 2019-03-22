@@ -76,11 +76,6 @@ open class Node<V : RibView>(
     private fun createView(parentViewGroup: ViewGroup): V? =
         viewFactory?.invoke(parentViewGroup)
 
-    internal fun attachChild(child: Node<*>, bundle: Bundle? = null) {
-        attachChildNode(child, bundle)
-        attachChildView(child)
-    }
-
     internal fun attachChildView(child: Node<*>) {
         if (isViewAttached) {
             child.attachToView(
@@ -88,11 +83,6 @@ open class Node<V : RibView>(
                 router.getParentViewForChild(child.identifier, view) ?: parentViewGroup!!
             )
         }
-    }
-
-    internal fun detachChild(child: Node<*>) {
-        detachChildNode(child)
-        detachChildView(child)
     }
 
     internal fun saveViewState() {

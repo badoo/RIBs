@@ -225,7 +225,7 @@ class NodeTest {
     @Test
     fun `Back press handling is forwarded to all children attached to the view if none can handle it`() {
         node.attachToView(parentViewGroup) // this attaches child1, child2, child3
-        node.detachChild(child2) // this means child2 should not even be asked
+        node.detachChildView(child2) // this means child2 should not even be asked
         child1.handleBackPress = false
         child2.handleBackPress = false
         child3.handleBackPress = false
@@ -386,27 +386,16 @@ class NodeTest {
     @Test
     fun `attachChild() does not imply attachToView when Android view system is not available`() {
         val child = mock<Node<*>>()
-        node.attachChild(child, null)
+        node.attachChildNode(child, null)
         verify(child, never()).attachToView(parentViewGroup)
     }
 
     @Test
-    fun `attachChild() implies attachToView() when Android view system is available`() {
+    fun `attachChildView() implies attachToView() when Android view system is available`() {
         val child = mock<Node<*>>()
         node.attachToView(parentViewGroup)
-        node.attachChild(child, null)
+        node.attachChildView(child)
         verify(child).attachToView(parentViewGroup)
-    }
-
-    @Test
-    fun `attachChild() calls logical attach and view attach in correct order`() {
-        val child = mock<Node<*>>()
-        node.attachToView(parentViewGroup)
-        node.attachChild(child, null)
-        inOrder(child) {
-            verify(child).onAttach(null)
-            verify(child).attachToView(parentViewGroup)
-        }
     }
 
     @Test

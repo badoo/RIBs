@@ -324,7 +324,7 @@ class NodeTest {
     @Test
     fun `onDetachFromView() resets isViewAttached flag to false`() {
         node.attachToView(parentViewGroup)
-        node.detachFromView(parentViewGroup)
+        node.detachFromView()
         assertEquals(false, node.isViewAttached)
     }
 

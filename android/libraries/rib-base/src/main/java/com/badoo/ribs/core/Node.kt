@@ -103,17 +103,15 @@ open class Node<V : RibView>(
 
     internal fun detachChildView(child: Node<*>) {
         parentViewGroup?.let {
-            child.detachFromView(
-                parentViewGroup = router.getParentViewForChild(child.identifier, view) ?: it
-            )
+            child.detachFromView()
         }
     }
 
-    fun detachFromView(parentViewGroup: ViewGroup) {
+    fun detachFromView() {
         router.onDetachView()
 
         view?.let {
-            parentViewGroup.removeView(it.androidView)
+            parentViewGroup!!.removeView(it.androidView)
             interactor.onViewDestroyed()
         }
 

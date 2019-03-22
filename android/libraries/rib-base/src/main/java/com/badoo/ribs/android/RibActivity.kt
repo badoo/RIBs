@@ -76,7 +76,7 @@ abstract class RibActivity : AppCompatActivity(), IntentCreator {
     override fun onDestroy() {
         super.onDestroy()
         rootNode.onDetach()
-        rootNode.detachFromView(findViewById(android.R.id.content))
+        rootNode.detachFromView()
     }
 
     override fun onBackPressed() {

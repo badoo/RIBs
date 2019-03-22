@@ -78,6 +78,14 @@ class NodeTest {
         node.children.addAll(allChildren)
     }
 
+
+    private fun attachToViewAlongWithChildren() {
+        node.attachToView(parentViewGroup)
+        node.attachChildView(child1)
+        node.attachChildView(child2)
+        node.attachChildView(child3)
+    }
+
     @Test
     fun `Router's node is set after init`() {
         verify(router).node = node
@@ -224,7 +232,7 @@ class NodeTest {
 
     @Test
     fun `Back press handling is forwarded to all children attached to the view if none can handle it`() {
-        node.attachToView(parentViewGroup) // this attaches child1, child2, child3
+        attachToViewAlongWithChildren()
         node.detachChildView(child2) // this means child2 should not even be asked
         child1.handleBackPress = false
         child2.handleBackPress = false
@@ -239,7 +247,7 @@ class NodeTest {
 
     @Test
     fun `Back press handling is forwarded to children only until first one handles it`() {
-        node.attachToView(parentViewGroup) // this attaches child1, child2, child3
+        attachToViewAlongWithChildren()
         child1.handleBackPress = false
         child2.handleBackPress = true
         child3.handleBackPress = false
@@ -253,7 +261,7 @@ class NodeTest {
 
     @Test
     fun `Back press handling is forwarded to Interactor if no children handled it`() {
-        node.attachToView(parentViewGroup) // this attaches child1, child2, child3
+        attachToViewAlongWithChildren()
         child1.handleBackPress = false
         child2.handleBackPress = false
         child3.handleBackPress = false
@@ -265,7 +273,7 @@ class NodeTest {
 
     @Test
     fun `Back press handling is not forwarded to Interactor if any children handled it`() {
-        node.attachToView(parentViewGroup) // this attaches child1, child2, child3
+        attachToViewAlongWithChildren()
         child1.handleBackPress = false
         child2.handleBackPress = true
         child3.handleBackPress = false
@@ -277,7 +285,7 @@ class NodeTest {
 
     @Test
     fun `Router back stack popping is invoked if none of the children nor the Interactor handled back press`() {
-        node.attachToView(parentViewGroup) // this attaches child1, child2, child3
+        attachToViewAlongWithChildren()
         child1.handleBackPress = false
         child2.handleBackPress = false
         child3.handleBackPress = false
@@ -290,7 +298,7 @@ class NodeTest {
 
     @Test
     fun `Router back stack popping is not invoked if any of the children handled back press`() {
-        node.attachToView(parentViewGroup) // this attaches child1, child2, child3
+        attachToViewAlongWithChildren()
         child1.handleBackPress = false
         child2.handleBackPress = true
         child3.handleBackPress = false
@@ -329,12 +337,9 @@ class NodeTest {
     }
 
     @Test
-    fun `attachToView() calls all children to add themselves to the view `() {
-        val mocks = createAndAttachChildMocks(3)
+    fun `attachToView() forwards call to Router`() {
         node.attachToView(parentViewGroup)
-        mocks.forEach {
-            verify(it).attachToView(any())
-        }
+        verify(router).onAttachView()
     }
 
     private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib> = mutableListOf()): List<Node<*>> {
@@ -353,11 +358,12 @@ class NodeTest {
     }
 
     @Test
-    fun `attachToView() results in children added to parentViewGroup given Router does not define something else `() {
+    fun `attachChildView() results in children added to parentViewGroup given Router does not define something else `() {
         whenever(router.getParentViewForChild(any(), anyOrNull())).thenReturn(null)
         val mocks = createAndAttachChildMocks(3)
         node.attachToView(parentViewGroup)
         mocks.forEach {
+            node.attachChildView(it)
             verify(it).attachToView(parentViewGroup)
         }
     }
@@ -374,7 +380,9 @@ class NodeTest {
         whenever(router.getParentViewForChild(n3, view)).thenReturn(someViewGroup3)
 
         node.attachToView(parentViewGroup)
+
         mocks.forEach {
+            node.attachChildView(it)
             verify(it, never()).attachToView(parentViewGroup)
         }
 

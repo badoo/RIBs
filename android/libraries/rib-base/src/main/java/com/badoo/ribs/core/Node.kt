@@ -37,8 +37,6 @@ open class Node<V : RibView>(
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     companion object {
-        internal const val KEY_TAG = "rib.tag"
-        internal const val KEY_RIB_ID = "rib.id"
         internal const val KEY_ROUTER = "node.router"
         internal const val KEY_INTERACTOR = "node.interactor"
         internal const val KEY_VIEW_STATE = "view.state"

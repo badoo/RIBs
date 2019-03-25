@@ -37,8 +37,6 @@ open class Node<V : RibView>(
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     companion object {
-        internal const val KEY_TAG = "rib.tag"
-        internal const val KEY_RIB_ID = "rib.id"
         internal const val KEY_ROUTER = "node.router"
         internal const val KEY_INTERACTOR = "node.interactor"
         internal const val KEY_VIEW_STATE = "view.state"
@@ -70,18 +68,11 @@ open class Node<V : RibView>(
             interactor.onViewCreated(it)
         }
 
-        children.forEach {
-            attachChildView(it)
-        }
+        router.onAttachView()
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? =
         viewFactory?.invoke(parentViewGroup)
-
-    internal fun attachChild(child: Node<*>, bundle: Bundle? = null) {
-        attachChildNode(child, bundle)
-        attachChildView(child)
-    }
 
     internal fun attachChildView(child: Node<*>) {
         if (isViewAttached) {
@@ -92,11 +83,6 @@ open class Node<V : RibView>(
         }
     }
 
-    internal fun detachChild(child: Node<*>) {
-        detachChildNode(child)
-        detachChildView(child)
-    }
-
     internal fun saveViewState() {
         view?.let {
             it.androidView.saveHierarchyState(savedViewState)
@@ -105,19 +91,15 @@ open class Node<V : RibView>(
 
     internal fun detachChildView(child: Node<*>) {
         parentViewGroup?.let {
-            child.detachFromView(
-                parentViewGroup = router.getParentViewForChild(child.identifier, view) ?: it
-            )
+            child.detachFromView()
         }
     }
 
-    fun detachFromView(parentViewGroup: ViewGroup) {
-        children.forEach {
-            detachChildView(it)
-        }
+    fun detachFromView() {
+        router.onDetachView()
 
         view?.let {
-            parentViewGroup.removeView(it.androidView)
+            parentViewGroup!!.removeView(it.androidView)
             interactor.onViewDestroyed()
         }
 
@@ -147,7 +129,7 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be attached.
      */
     @MainThread
-    protected fun attachChildNode(childNode: Node<*>, bundle: Bundle?) {
+    internal fun attachChildNode(childNode: Node<*>, bundle: Bundle?) {
         children.add(childNode)
         ribRefWatcher.logBreadcrumb(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
@@ -164,7 +146,7 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be detached.
      */
     @MainThread
-    protected fun detachChildNode(childNode: Node<*>) {
+    internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
 
         val interactor = childNode.interactor

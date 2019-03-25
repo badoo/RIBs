@@ -10,6 +10,7 @@ import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrateg
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
@@ -74,7 +75,8 @@ class BackStackRibConnectorTest {
         }
 
         connector = mock()
-        backStackRibConnector = BackStackRibConnector(resolver, connector)
+        val permanentParts = emptyList<Node<*>>() // FIXME test this too
+        backStackRibConnector = BackStackRibConnector(permanentParts, resolver, connector)
     }
 
     @Test
@@ -89,7 +91,10 @@ class BackStackRibConnectorTest {
         backStackElement1.ribs = ribs1
         backStackRibConnector.leave(backStackElement1, DESTROY)
         ribs1.forEach {
-            verify(connector).detachChild(it)
+            inOrder(connector) {
+                verify(connector).detachChildView(it)
+                verify(connector).detachChildNode(it)
+            }
         }
         verifyNoMoreInteractions(connector)
     }
@@ -158,7 +163,7 @@ class BackStackRibConnectorTest {
     fun `When going to BackStackElement, RIBs that are created are attached`() {
         backStackRibConnector.goTo(backStackElement1)
         ribs1.forEach {
-            verify(connector).attachChild(it)
+            verify(connector).attachChildNode(it)
         }
     }
 
@@ -356,11 +361,17 @@ class BackStackRibConnectorTest {
         backStackRibConnector.shrinkToBundles(backStack)
 
         ribs1.forEach {
-            verify(connector).detachChild(it)
+            inOrder(connector) {
+                verify(connector).detachChildView(it)
+                verify(connector).detachChildNode(it)
+            }
         }
 
         ribs2.forEach {
-            verify(connector, never()).detachChild(it)
+            inOrder(connector) {
+                verify(connector, never()).detachChildView(it)
+                verify(connector, never()).detachChildNode(it)
+            }
         }
     }
 
@@ -369,7 +380,7 @@ class BackStackRibConnectorTest {
         backStackElement1.routingAction = routingAction1
         backStackElement2.routingAction = routingAction2
         val backStack = listOf(backStackElement1, backStackElement2)
-        backStackRibConnector.tearDown(backStack)
+        backStackRibConnector.detachFromView(backStack)
 
         verify(routingAction2).cleanup()
     }

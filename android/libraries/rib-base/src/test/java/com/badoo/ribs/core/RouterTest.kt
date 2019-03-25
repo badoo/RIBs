@@ -66,7 +66,7 @@ class RouterTest {
     @Test
     fun `Permanent parts are attached on attach`() {
         router.onAttach(null)
-        verify(node).attachChild(childNode1, null)
-        verify(node).attachChild(childNode2, null)
+        verify(node).attachChildNode(childNode1, null)
+        verify(node).attachChildNode(childNode2, null)
     }
 }

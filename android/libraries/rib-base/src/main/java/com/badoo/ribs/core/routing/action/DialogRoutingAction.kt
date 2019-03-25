@@ -11,7 +11,7 @@ class DialogRoutingAction<V : RibView, Event : Any>(
     private val dialog: Dialog<Event>
 ) : RoutingAction<V> {
 
-    override fun createRibs(): List<NodeDescriptor> =
+    override fun buildNodes(): List<NodeDescriptor> =
         dialog.createRibs().map {
             NodeDescriptor(it, Node.ViewAttachMode.EXTERNAL)
         }

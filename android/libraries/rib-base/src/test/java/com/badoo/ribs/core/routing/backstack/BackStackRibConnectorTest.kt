@@ -67,8 +67,8 @@ class BackStackRibConnectorTest {
         backStackElement1 = BackStackElement(configuration = Configuration.C1)
         backStackElement2 = BackStackElement(configuration = Configuration.C2)
 
-        routingAction1 = mock { on { createRibs() } doAnswer { ribsFactories1.map { it.invoke() } }}
-        routingAction2 = mock { on { createRibs() } doAnswer { ribsFactories2.map { it.invoke() } }}
+        routingAction1 = mock { on { buildNodes() } doAnswer { ribsFactories1.map { it.invoke() } }}
+        routingAction2 = mock { on { buildNodes() } doAnswer { ribsFactories2.map { it.invoke() } }}
 
         resolver = mock {
             on { invoke(Configuration.C1) } doReturn routingAction1

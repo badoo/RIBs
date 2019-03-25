@@ -76,7 +76,7 @@ internal class BackStackRibConnector<C : Parcelable>(
     }
 
     private fun BackStackElement<C>.createRibs() {
-        ribs = routingAction!!.createRibs()
+        ribs = routingAction!!.buildNodes()
 
     }
 

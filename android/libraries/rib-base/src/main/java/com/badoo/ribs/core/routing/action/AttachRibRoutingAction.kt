@@ -8,7 +8,7 @@ class AttachRibRoutingAction< V : RibView>(
     private val builder: () -> Node<*>
 ) : RoutingAction<V> {
 
-    override fun createRibs(): List<NodeDescriptor> =
+    override fun buildNodes(): List<NodeDescriptor> =
         listOf(
             NodeDescriptor(
                 node = builder.invoke(),

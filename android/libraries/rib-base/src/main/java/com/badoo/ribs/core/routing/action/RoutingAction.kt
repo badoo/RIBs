@@ -5,7 +5,7 @@ import com.badoo.ribs.core.view.RibView
 
 interface RoutingAction<V : RibView> {
 
-    fun createRibs() : List<NodeDescriptor> =
+    fun buildNodes() : List<NodeDescriptor> =
         emptyList()
 
     fun execute() {

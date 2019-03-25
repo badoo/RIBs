@@ -12,6 +12,7 @@ android:
 jdk: oraclejdk8
 
 before_script:
+  - android list target
   - echo no | android create avd --force -n test_28 -t android-28 --abi x86 -c 100M
   - echo no | android create avd --force -n test_23 -t android-23 --abi x86 -c 100M
   - echo no | android create avd --force -n test_21 -t android-21 --abi x86 -c 100M

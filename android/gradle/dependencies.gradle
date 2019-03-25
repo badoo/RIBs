@@ -82,6 +82,13 @@ def test = [
     compileTesting: "com.google.testing.compile:compile-testing:0.11",
 ]
 
+def androidTest = [
+    espresso: "com.android.support.test.espresso:espresso-core:3.0.2",
+    espressoIntents: "com.android.support.test.espresso:espresso-intents:3.0.2",
+    runner: "com.android.support.test:runner:1.0.2",
+    rules: "com.android.support.test:rules:1.0.2"
+]
+
 def external = [
     kotlinStdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
     dagger: "com.google.dagger:dagger:${versions.dagger}",
@@ -110,6 +117,7 @@ ext.deps = [
     "external": external,
     "support": support,
     "test": test,
+    "androidTest": androidTest,
     "versions": versions,
     "uber": uber,
 ]

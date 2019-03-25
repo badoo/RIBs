@@ -89,7 +89,7 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `When leaving BackStackElement with DESTROY, all of its nodes are detached`() {
-        backStackElement1.ribs = ribs1
+        backStackElement1.builtNodes = ribs1
         backStackRibConnector.leave(backStackElement1, DESTROY)
         ribs1.forEach {
             inOrder(connector) {
@@ -102,9 +102,9 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `When leaving BackStackElement with DESTROY, all RIB references are cleared`() {
-        backStackElement1.ribs = ribs1
+        backStackElement1.builtNodes = ribs1
         backStackRibConnector.leave(backStackElement1, DESTROY)
-        assertEquals(null, backStackElement1.ribs)
+        assertEquals(null, backStackElement1.builtNodes)
     }
 
     @Test
@@ -116,7 +116,7 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `When leaving BackStackElement with DETACH_VIEW, saveViewState() is called on all children`() {
-        backStackElement1.ribs = ribs1
+        backStackElement1.builtNodes = ribs1
         backStackRibConnector.leave(backStackElement1, DETACH_VIEW)
         ribs1.forEach {
             verify(it.node).saveViewState()
@@ -125,7 +125,7 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `When leaving BackStackElement with DETACH_VIEW, all children are detached from view`() {
-        backStackElement1.ribs = ribs1
+        backStackElement1.builtNodes = ribs1
         backStackRibConnector.leave(backStackElement1, DETACH_VIEW)
         ribs1.forEach {
             verify(connector).detachChildView(it.node)
@@ -135,9 +135,9 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `When leaving BackStackElement with DETACH_VIEW, RIB references are kept`() {
-        backStackElement1.ribs = ribs1
+        backStackElement1.builtNodes = ribs1
         backStackRibConnector.leave(backStackElement1, DETACH_VIEW)
-        assertEquals(ribs1, backStackElement1.ribs)
+        assertEquals(ribs1, backStackElement1.builtNodes)
     }
 
     @Test
@@ -170,7 +170,7 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `When going to BackStackElement, if it already has some RIBs alive then they are attached to the view`() {
-        backStackElement1.ribs = ribs1
+        backStackElement1.builtNodes = ribs1
         backStackRibConnector.goTo(backStackElement1)
         ribs1.forEach {
             verify(connector).attachChildView(it.node)
@@ -180,8 +180,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `saveInstanceState() returns modified back stack`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         val returnedBackStack = backStackRibConnector.saveInstanceState(backStack)
         assertEquals(backStack, returnedBackStack)
@@ -189,8 +189,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `saveInstanceState() returns back stack that contains bundles`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         val returnedBackStack = backStackRibConnector.saveInstanceState(backStack)
 
@@ -201,8 +201,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `saveInstanceState() calls saveInstanceState() on all RIBs in back stack`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         backStackRibConnector.saveInstanceState(backStack)
 
@@ -215,8 +215,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `saveInstanceState() saves bundles of RIBs in the back stack`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         backStackRibConnector.saveInstanceState(backStack)
         val expectedBundles1 = mutableListOf<Bundle>()
@@ -241,11 +241,11 @@ class BackStackRibConnectorTest {
     @Test
     fun `saveInstanceState() does not do any cleanup`() {
         backStackElement1.apply {
-            ribs = ribs1
+            builtNodes = ribs1
             routingAction = routingAction1
         }
         backStackElement2.apply {
-            ribs = ribs2
+            builtNodes = ribs2
             routingAction = routingAction2
         }
         val backStack = listOf(backStackElement1, backStackElement2)
@@ -256,20 +256,20 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `saveInstanceState() does not clear rib references`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         val returnedBackStack = backStackRibConnector.saveInstanceState(backStack)
 
         returnedBackStack.forEach {
-            assertNotNull(it.ribs)
+            assertNotNull(it.builtNodes)
         }
     }
 
     @Test
     fun `shrinkToBundles() returns modified back stack`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         val returnedBackStack = backStackRibConnector.shrinkToBundles(backStack)
         assertEquals(backStack, returnedBackStack)
@@ -277,8 +277,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `shrinkToBundles() returns back stack that contains bundles`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         val returnedBackStack = backStackRibConnector.shrinkToBundles(backStack)
 
@@ -289,8 +289,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `shrinkToBundles() calls saveInstanceState() on all RIBs in back stack`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         backStackRibConnector.shrinkToBundles(backStack)
 
@@ -303,8 +303,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `shrinkToBundles() saves bundles of RIBs in the back stack`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         backStackRibConnector.shrinkToBundles(backStack)
         val expectedBundles1 = mutableListOf<Bundle>()
@@ -328,23 +328,23 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `shrinkToBundles() returns clears RIB references in all but the last back stack element`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         val returnedBackStack = backStackRibConnector.shrinkToBundles(backStack)
 
-        assertNull(returnedBackStack[0].ribs)
-        assertNotNull(returnedBackStack[1].ribs)
+        assertNull(returnedBackStack[0].builtNodes)
+        assertNotNull(returnedBackStack[1].builtNodes)
     }
 
     @Test
     fun `shrinkToBundles() does not call cleanup() on last routing action`() {
         backStackElement1.apply {
-            ribs = ribs1
+            builtNodes = ribs1
             routingAction = routingAction1
         }
         backStackElement2.apply {
-            ribs = ribs2
+            builtNodes = ribs2
             routingAction = routingAction2
         }
         val backStack = listOf(backStackElement1, backStackElement2)
@@ -356,8 +356,8 @@ class BackStackRibConnectorTest {
 
     @Test
     fun `shrinkToBundles() detaches RIBs in all but the last back stack element`() {
-        backStackElement1.ribs = ribs1
-        backStackElement2.ribs = ribs2
+        backStackElement1.builtNodes = ribs1
+        backStackElement2.builtNodes = ribs2
         val backStack = listOf(backStackElement1, backStackElement2)
         backStackRibConnector.shrinkToBundles(backStack)
 

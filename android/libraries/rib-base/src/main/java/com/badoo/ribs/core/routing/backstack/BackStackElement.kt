@@ -12,5 +12,5 @@ internal class BackStackElement<C : Parcelable>(
     var bundles: List<Bundle> = emptyList()
 ): Parcelable {
     @IgnoredOnParcel var routingAction: RoutingAction<*>? = null
-    @IgnoredOnParcel var ribs: List<NodeDescriptor>? = null
+    @IgnoredOnParcel var builtNodes: List<NodeDescriptor>? = null
 }

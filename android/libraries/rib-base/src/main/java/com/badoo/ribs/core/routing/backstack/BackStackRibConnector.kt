@@ -140,8 +140,4 @@ internal class BackStackRibConnector<C : Parcelable>(
             goTo(it)
         }
     }
-
-    fun reinitRouting(backStack: List<BackStackElement<C>>) {
-        backStack.lastOrNull()?.routingAction?.execute()
-    }
 }

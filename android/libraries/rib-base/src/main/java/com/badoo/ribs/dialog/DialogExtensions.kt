@@ -42,7 +42,7 @@ private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
 
             override fun onDetachedFromWindow() {
                 super.onDetachedFromWindow()
-                it.detachFromView(this)
+                it.detachFromView()
             }
         })
     }

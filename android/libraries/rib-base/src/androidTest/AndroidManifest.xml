@@ -7,11 +7,7 @@
                 android:theme="@style/Theme.AppCompat"
         />
         <activity
-                android:name="com.badoo.ribs.test.util.FirstActivity"
-                android:theme="@style/Theme.AppCompat"
-        />
-        <activity
-                android:name="com.badoo.ribs.test.util.SecondActivity"
+                android:name="com.badoo.ribs.test.util.OtherActivity"
                 android:theme="@style/Theme.AppCompat"
         />
     </application>

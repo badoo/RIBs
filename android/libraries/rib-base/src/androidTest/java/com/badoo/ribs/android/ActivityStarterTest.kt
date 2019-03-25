@@ -12,7 +12,7 @@ import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import android.support.test.espresso.intent.rule.IntentsTestRule
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
-import com.badoo.ribs.test.util.FirstActivity
+import com.badoo.ribs.test.util.OtherActivity
 import com.badoo.ribs.test.util.TestActivity
 import com.badoo.ribs.test.util.TestIdentifiable
 import com.badoo.ribs.test.util.subscribeOnTestObserver
@@ -30,21 +30,21 @@ class ActivityStarterTest {
     @Test
     fun startActivity_startsTargetActivity() {
         activityRule.activity.activityStarter.startActivity {
-            create(FirstActivity::class.java)
+            create(OtherActivity::class.java)
         }
 
-        intended(hasComponent(ComponentName(getTargetContext(), FirstActivity::class.java)))
+        intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
     }
 
     @Test
     fun startActivity_intentDataIsDeliveredToTargetActivity() {
         activityRule.activity.activityStarter.startActivity {
-            create(FirstActivity::class.java)
+            create(OtherActivity::class.java)
                 .putExtra("some_param", "some_value")
         }
 
         intended(allOf(
-            hasComponent(ComponentName(getTargetContext(), FirstActivity::class.java)),
+            hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)),
             hasExtra("some_param", "some_value")
         ))
     }
@@ -54,19 +54,19 @@ class ActivityStarterTest {
         activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(FirstActivity::class.java)
+            create(OtherActivity::class.java)
         }
 
-        intended(hasComponent(ComponentName(getTargetContext(), FirstActivity::class.java)))
+        intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
     }
 
     @Test
     fun startActivityForResult_startActivityThatReturnsOkResult_returnsOkResultCode() {
-        givenResultForActivity<FirstActivity>(resultCode = RESULT_OK)
+        givenResultForActivity<OtherActivity>(resultCode = RESULT_OK)
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(FirstActivity::class.java)
+            create(OtherActivity::class.java)
         }
 
         observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
@@ -74,11 +74,11 @@ class ActivityStarterTest {
 
     @Test
     fun startActivityForResult_startActivityThatReturnsCancelledResult_returnsCancelledResultCode() {
-        givenResultForActivity<FirstActivity>(resultCode = RESULT_CANCELED)
+        givenResultForActivity<OtherActivity>(resultCode = RESULT_CANCELED)
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(FirstActivity::class.java)
+            create(OtherActivity::class.java)
         }
 
         observer.assertEvent(ActivityResultEvent(1, RESULT_CANCELED, null))
@@ -87,11 +87,11 @@ class ActivityStarterTest {
     @Test
     fun startActivityForResult_startActivityThatReturnsIntentData_returnsIntentData() {
         val data = Intent().apply { putExtra("some_param", "some_value") }
-        givenResultForActivity<FirstActivity>(resultCode = RESULT_OK, data = data)
+        givenResultForActivity<OtherActivity>(resultCode = RESULT_OK, data = data)
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(FirstActivity::class.java)
+            create(OtherActivity::class.java)
         }
 
         observer.assertEvent(ActivityResultEvent(1, RESULT_OK, data))
@@ -100,12 +100,12 @@ class ActivityStarterTest {
     @Test
     fun startActivityForResult_startActivityWhenWeHaveMultipleIdentifiers_returnsResultEventOnlyForOne() {
         val otherIdentifiable = TestIdentifiable("other")
-        givenResultForActivity<FirstActivity>(resultCode = RESULT_OK)
+        givenResultForActivity<OtherActivity>(resultCode = RESULT_OK)
         val otherIdentifiableObserver = activityRule.activity.activityStarter.events(otherIdentifiable).subscribeOnTestObserver()
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(otherIdentifiable, requestCode = 1) {
-            create(FirstActivity::class.java)
+            create(OtherActivity::class.java)
         }
 
         otherIdentifiableObserver.assertEvent(ActivityResultEvent(1, RESULT_OK, null))

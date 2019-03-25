@@ -21,7 +21,7 @@ before_script:
   - emulator -avd test_28 -no-audio -no-window &
   - emulator -avd test_23 -no-audio -no-window &
   - emulator -avd test_21 -no-audio -no-window &
-  - build/wait-for-all-emulators.sh
+  - ci/wait-for-all-emulators.sh
 
 script:
   - cd android

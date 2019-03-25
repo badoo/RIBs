@@ -41,10 +41,10 @@ class BackStackRibConnectorTest {
     private lateinit var node1_3: Node<*>
     private lateinit var node2_1: Node<*>
     private lateinit var node2_2: Node<*>
-    private lateinit var ribs1: List<Node<*>>
-    private lateinit var ribs2: List<Node<*>>
-    private lateinit var ribsFactories1: List<() -> Node<*>>
-    private lateinit var ribsFactories2: List<() -> Node<*>>
+    private lateinit var ribs1: List<NodeDescriptor>
+    private lateinit var ribs2: List<NodeDescriptor>
+    private lateinit var ribsFactories1: List<() -> NodeDescriptor>
+    private lateinit var ribsFactories2: List<() -> NodeDescriptor>
     private lateinit var backStackElement1: BackStackElement<Configuration>
     private lateinit var backStackElement2: BackStackElement<Configuration>
 
@@ -55,13 +55,13 @@ class BackStackRibConnectorTest {
         node1_3 = mock()
         node2_1 = mock()
         node2_2 = mock()
-        ribs1 = listOf(node1_1, node1_2, node1_3)
-        ribs2 = listOf(node2_1, node2_2)
-        ribsFactories1 = ribs1.map { node ->
-            mock<() -> Node<*>> { on { invoke() } doReturn node }
+        ribs1 = listOf(node1_1, node1_2, node1_3).map { NodeDescriptor(it, Node.ViewAttachMode.PARENT) }
+        ribs2 = listOf(node2_1, node2_2).map { NodeDescriptor(it, Node.ViewAttachMode.PARENT) }
+        ribsFactories1 = ribs1.map { nodeDescriptor ->
+            mock<() -> NodeDescriptor> { on { invoke() } doReturn nodeDescriptor }
         }
-        ribsFactories2 = ribs2.map { node ->
-            mock<() -> Node<*>> { on { invoke() } doReturn node }
+        ribsFactories2 = ribs2.map { nodeDescriptor ->
+            mock<() -> NodeDescriptor> { on { invoke() } doReturn nodeDescriptor }
         }
 
         backStackElement1 = BackStackElement(configuration = Configuration.C1)
@@ -93,8 +93,8 @@ class BackStackRibConnectorTest {
         backStackRibConnector.leave(backStackElement1, DESTROY)
         ribs1.forEach {
             inOrder(connector) {
-                verify(connector).detachChildView(it)
-                verify(connector).detachChildNode(it)
+                verify(connector).detachChildView(it.node)
+                verify(connector).detachChildNode(it.node)
             }
         }
         verifyNoMoreInteractions(connector)
@@ -119,7 +119,7 @@ class BackStackRibConnectorTest {
         backStackElement1.ribs = ribs1
         backStackRibConnector.leave(backStackElement1, DETACH_VIEW)
         ribs1.forEach {
-            verify(it).saveViewState()
+            verify(it.node).saveViewState()
         }
     }
 
@@ -128,7 +128,7 @@ class BackStackRibConnectorTest {
         backStackElement1.ribs = ribs1
         backStackRibConnector.leave(backStackElement1, DETACH_VIEW)
         ribs1.forEach {
-            verify(connector).detachChildView(it)
+            verify(connector).detachChildView(it.node)
         }
         verifyNoMoreInteractions(connector)
     }
@@ -164,7 +164,7 @@ class BackStackRibConnectorTest {
     fun `When going to BackStackElement, RIBs that are created are attached`() {
         backStackRibConnector.goTo(backStackElement1)
         ribs1.forEach {
-            verify(connector).attachChildNode(it)
+            verify(connector).attachChildNode(it.node)
         }
     }
 
@@ -173,7 +173,7 @@ class BackStackRibConnectorTest {
         backStackElement1.ribs = ribs1
         backStackRibConnector.goTo(backStackElement1)
         ribs1.forEach {
-            verify(connector).attachChildView(it)
+            verify(connector).attachChildView(it.node)
         }
         verifyNoMoreInteractions(connector)
     }
@@ -208,7 +208,7 @@ class BackStackRibConnectorTest {
 
         listOf(ribs1, ribs2).forEach {
             it.forEach {
-                verify(it).onSaveInstanceState(any())
+                verify(it.node).onSaveInstanceState(any())
             }
         }
     }
@@ -229,7 +229,7 @@ class BackStackRibConnectorTest {
             val (ribList, bundleList) = it
             ribList.forEach {
                 val captor = argumentCaptor<Bundle>()
-                verify(it).onSaveInstanceState(captor.capture())
+                verify(it.node).onSaveInstanceState(captor.capture())
                 bundleList.add(captor.firstValue)
             }
         }
@@ -296,7 +296,7 @@ class BackStackRibConnectorTest {
 
         listOf(ribs1, ribs2).forEach {
             it.forEach {
-                verify(it).onSaveInstanceState(any())
+                verify(it.node).onSaveInstanceState(any())
             }
         }
     }
@@ -317,7 +317,7 @@ class BackStackRibConnectorTest {
             val (ribList, bundleList) = it
             ribList.forEach {
                 val captor = argumentCaptor<Bundle>()
-                verify(it).onSaveInstanceState(captor.capture())
+                verify(it.node).onSaveInstanceState(captor.capture())
                 bundleList.add(captor.firstValue)
             }
         }
@@ -363,16 +363,14 @@ class BackStackRibConnectorTest {
 
         ribs1.forEach {
             inOrder(connector) {
-                verify(connector).detachChildView(it)
-                verify(connector).detachChildNode(it)
+                verify(connector).detachChildView(it.node)
+                verify(connector).detachChildNode(it.node)
             }
         }
 
         ribs2.forEach {
-            inOrder(connector) {
-                verify(connector, never()).detachChildView(it)
-                verify(connector, never()).detachChildNode(it)
-            }
+            verify(connector, never()).detachChildView(it.node)
+            verify(connector, never()).detachChildNode(it.node)
         }
     }
 

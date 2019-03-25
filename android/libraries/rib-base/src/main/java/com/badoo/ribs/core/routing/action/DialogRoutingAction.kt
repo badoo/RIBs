@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.action
 
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.backstack.NodeDescriptor
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
@@ -10,11 +11,10 @@ class DialogRoutingAction<V : RibView, Event : Any>(
     private val dialog: Dialog<Event>
 ) : RoutingAction<V> {
 
-    override val allowAttachView: Boolean
-        get() = false
-
-    override fun createRibs(): List<Node<*>> =
-        dialog.createRibs()
+    override fun createRibs(): List<NodeDescriptor> =
+        dialog.createRibs().map {
+            NodeDescriptor(it, Node.ViewAttachMode.EXTERNAL)
+        }
 
     override fun execute() {
         dialogLauncher.show(dialog)

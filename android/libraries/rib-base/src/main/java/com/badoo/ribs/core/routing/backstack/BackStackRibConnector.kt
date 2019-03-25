@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.backstack
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Node.ViewAttachMode.PARENT
 import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
@@ -38,17 +39,19 @@ internal class BackStackRibConnector<C : Parcelable>(
 
     private fun BackStackElement<C>.destroyRibs() {
         ribs?.forEach {
-            connector.detachChildView(it)
-            connector.detachChildNode(it)
+            connector.detachChildView(it.node)
+            connector.detachChildNode(it.node)
         }
         ribs = null
     }
 
     private fun BackStackElement<C>.saveAndDetachView(): Unit? {
         return ribs?.forEach {
-            it.saveViewState()
-            if (routingAction!!.allowAttachView) {
-                connector.detachChildView(it)
+            val (node, viewAttachMode) = it
+            node.saveViewState()
+
+            if (viewAttachMode == PARENT) {
+                connector.detachChildView(node)
             }
         }
     }
@@ -60,7 +63,8 @@ internal class BackStackRibConnector<C : Parcelable>(
             }
 
             if (ribs == null) {
-                createAndAttachRibs()
+                createRibs()
+                attachRibs()
             } else {
                 reAttachRibViews()
             }
@@ -71,30 +75,29 @@ internal class BackStackRibConnector<C : Parcelable>(
         return backStackElement
     }
 
-    private fun BackStackElement<C>.createAndAttachRibs() {
+    private fun BackStackElement<C>.createRibs() {
         ribs = routingAction!!.createRibs()
-            .also {
-                attachNodes(it, routingAction!!.allowAttachView)
+
+    }
+
+    private fun BackStackElement<C>.attachRibs() {
+        ribs!!.forEachIndexed { index, nodeDescriptor ->
+            connector.attachChildNode(nodeDescriptor.node, bundleAt(index))
+
+            if (nodeDescriptor.viewAttachMode == PARENT) {
+                connector.attachChildView(nodeDescriptor.node)
             }
+        }
     }
 
     private fun BackStackElement<C>.reAttachRibViews() {
-        if (routingAction!!.allowAttachView) {
-            ribs!!
-                .forEach {
-                    connector.attachChildView(it)
+        ribs!!
+            .forEach {
+                val (node, viewAttachMode) = it
+                if (viewAttachMode == PARENT) {
+                    connector.attachChildView(node)
                 }
-        }
-    }
-
-    private fun BackStackElement<C>.attachNodes(it: List<Node<*>>, attachView: Boolean) {
-        it.forEachIndexed { index, node ->
-            connector.attachChildNode(node, bundleAt(index))
-
-            if (attachView) {
-                connector.attachChildView(node)
             }
-        }
     }
 
     private fun BackStackElement<C>.bundleAt(index: Int): Bundle? =
@@ -106,8 +109,8 @@ internal class BackStackRibConnector<C : Parcelable>(
         saveInstanceState(backStack).apply {
             dropLast(1).forEach {
                 it.ribs?.forEach {
-                    connector.detachChildView(it)
-                    connector.detachChildNode(it)
+                    connector.detachChildView(it.node)
+                    connector.detachChildNode(it.node)
                 }
                 it.ribs = null
             }
@@ -115,9 +118,9 @@ internal class BackStackRibConnector<C : Parcelable>(
 
     fun saveInstanceState(backStack: List<BackStackElement<C>>): List<BackStackElement<C>> {
         backStack.forEach {
-            it.bundles = it.ribs?.map { childNode ->
+            it.bundles = it.ribs?.map { nodeDescriptor ->
                 Bundle().also {
-                    childNode.onSaveInstanceState(it)
+                    nodeDescriptor.node.onSaveInstanceState(it)
                 }
             } ?: emptyList()
         }

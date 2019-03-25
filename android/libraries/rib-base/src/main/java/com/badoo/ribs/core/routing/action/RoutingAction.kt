@@ -1,14 +1,11 @@
 package com.badoo.ribs.core.routing.action
 
+import com.badoo.ribs.core.routing.backstack.NodeDescriptor
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.Node
 
 interface RoutingAction<V : RibView> {
 
-    val allowAttachView: Boolean
-        get() = true
-
-    fun createRibs() : List<Node<*>> =
+    fun createRibs() : List<NodeDescriptor> =
         emptyList()
 
     fun execute() {

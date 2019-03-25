@@ -9,7 +9,7 @@ import io.reactivex.functions.Consumer
 interface Blocker : Rib {
 
     interface Dependency : Rib.Dependency {
-        fun BlockerOutput(): Consumer<Output>
+        fun blockerOutput(): Consumer<Output>
     }
 
     sealed class Output {

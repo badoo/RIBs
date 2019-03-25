@@ -45,13 +45,17 @@ class DialogExampleInteractor(
     }
 
     private val dialogEventConsumer : Consumer<Dialog.Event> = Consumer {
+        /**
+         * As dialogs are Router configuration based, the configuration needs to change
+         *
+         * Options here:
+         * 1. go back to previous configuration by popping, or
+         * 2. replace current one with a different one
+         *
+         * Pushing new is not recommended, since going back will show the dialog again in that case.
+         */
         when (it) {
             Dialog.Event.Positive -> {
-                // As dialogs are Router configuration based, the configuration needs to change
-                // Options here:
-                // 1. go back to previous configuration by popping, or
-                // 2. replace current one with a different one
-                // Pushing new is not recommended, since going back will show the dialog again in that case.
                 dummyViewInput.accept(ViewModel("Dialog - Positive clicked"))
                 router.popBackStack()
             }

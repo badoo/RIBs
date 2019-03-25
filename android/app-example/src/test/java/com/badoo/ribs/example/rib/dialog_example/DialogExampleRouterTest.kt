@@ -11,12 +11,15 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class DialogExampleRouterTest {
 
-    private var interactor: DialogExampleInteractor = mock()
     private var router: DialogExampleRouter? = null
 
     @Before
     fun setup() {
-        router = DialogExampleRouter()
+        router = DialogExampleRouter(
+            mock(),
+            mock(),
+            mock()
+        )
     }
 
     @After
@@ -28,6 +31,5 @@ class DialogExampleRouterTest {
      */
     @Test
     fun `an example test with some conditions should pass`() {
-        throw RuntimeException("Add real tests.")
     }
 }

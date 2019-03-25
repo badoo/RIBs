@@ -8,7 +8,7 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.BaseFeature
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.Execute
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.ReattachRibsOfLastEntry
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.ActivateLastEntry
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Effect
 import com.badoo.ribs.core.routing.backstack.BackStackManager.State
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish
@@ -65,7 +65,7 @@ internal class BackStackManager<C : Parcelable>(
     ) : Bootstrapper<Action<C>> {
         override fun invoke(): Observable<Action<C>> = when {
             state.backStack.isEmpty() -> just(Execute(NewRoot(initialConfiguration)))
-            else -> just(ReattachRibsOfLastEntry())
+            else -> just(ActivateLastEntry())
         }
     }
 
@@ -81,7 +81,7 @@ internal class BackStackManager<C : Parcelable>(
 
     sealed class Action<C : Parcelable> {
         data class Execute<C : Parcelable>(val wish: Wish<C>) : Action<C>()
-        class ReattachRibsOfLastEntry<C : Parcelable> : Action<C>()
+        class ActivateLastEntry<C : Parcelable> : Action<C>()
     }
 
     sealed class Effect<C : Parcelable> {
@@ -98,7 +98,7 @@ internal class BackStackManager<C : Parcelable>(
 
         override fun invoke(state: State<C>, action: Action<C>): Observable<out Effect<C>> =
             when (action) {
-                is ReattachRibsOfLastEntry -> Completable.fromAction {
+                is ActivateLastEntry -> Completable.fromAction {
                     connector.goTo(state.current)
                 }.toObservable()
 

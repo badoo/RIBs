@@ -12,7 +12,7 @@ class DialogRoutingAction<V : RibView, Event : Any>(
 ) : RoutingAction<V> {
 
     override fun buildNodes(): List<NodeDescriptor> =
-        dialog.createRibs().map {
+        dialog.buildNodes().map {
             NodeDescriptor(it, Node.ViewAttachMode.EXTERNAL)
         }
 
@@ -25,7 +25,7 @@ class DialogRoutingAction<V : RibView, Event : Any>(
     }
 
     companion object {
-        fun <V : RibView> dialog(
+        fun <V : RibView> showDialog(
             dialogLauncher: DialogLauncher,
             dialog: Dialog<*>
         ): RoutingAction<V> =

@@ -70,7 +70,7 @@ abstract class Dialog<T : Any> private constructor(
         events.accept(event)
     }
 
-    fun createRibs(): List<Node<*>> =
+    fun buildNodes(): List<Node<*>> =
         ribFactory?.let { factory ->
             listOf(
                 factory.invoke().also {

@@ -2,16 +2,22 @@ package com.badoo.ribs.core.routing.backstack
 
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.helper.TestRouter
-import com.badoo.ribs.core.helper.TestRouter.*
-import com.badoo.ribs.core.routing.backstack.BackStackManager.*
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.*
-import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.*
+import com.badoo.ribs.core.helper.TestRouter.Configuration
+import com.badoo.ribs.core.routing.backstack.BackStackManager.State
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
+import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
+import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
 import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -282,17 +288,5 @@ class BackStackManagerTest {
         val backStackBeforeShrink = backStackManager.state.backStack
         backStackManager.accept(ShrinkToBundles())
         verify(backStackRibConnector).shrinkToBundles(backStackBeforeShrink)
-    }
-
-    @Test
-    fun `Wish_TearDownRouting calls to connector`() {
-        backStackManager.accept(TearDownRouting())
-        verify(backStackRibConnector).tearDownRouting(backStackManager.state.backStack)
-    }
-
-    @Test
-    fun `Wish_ReinitRouting calls to connector`() {
-        backStackManager.accept(ReinitRouting())
-        verify(backStackRibConnector).reinitRouting(backStackManager.state.backStack)
     }
 }

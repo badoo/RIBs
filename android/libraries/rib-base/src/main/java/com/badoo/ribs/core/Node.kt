@@ -37,8 +37,6 @@ open class Node<V : RibView>(
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     companion object {
-        internal const val KEY_TAG = "rib.tag"
-        internal const val KEY_RIB_ID = "rib.id"
         internal const val KEY_ROUTER = "node.router"
         internal const val KEY_INTERACTOR = "node.interactor"
         internal const val KEY_VIEW_STATE = "view.state"
@@ -70,21 +68,11 @@ open class Node<V : RibView>(
             interactor.onViewCreated(it)
         }
 
-        // FIXME this does not check if the child was attached originally to current view or not, as per routingAction!!.allowAttachView in connector
-        children.forEach {
-            attachChildView(it)
-        }
-
         router.onAttachView()
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? =
         viewFactory?.invoke(parentViewGroup)
-
-    internal fun attachChild(child: Node<*>, bundle: Bundle? = null) {
-        attachChildNode(child, bundle)
-        attachChildView(child)
-    }
 
     internal fun attachChildView(child: Node<*>) {
         if (isViewAttached) {
@@ -95,11 +83,6 @@ open class Node<V : RibView>(
         }
     }
 
-    internal fun detachChild(child: Node<*>) {
-        detachChildNode(child)
-        detachChildView(child)
-    }
-
     internal fun saveViewState() {
         view?.let {
             it.androidView.saveHierarchyState(savedViewState)
@@ -108,22 +91,15 @@ open class Node<V : RibView>(
 
     internal fun detachChildView(child: Node<*>) {
         parentViewGroup?.let {
-            child.detachFromView(
-                parentViewGroup = router.getParentViewForChild(child.identifier, view) ?: it
-            )
+            child.detachFromView()
         }
     }
 
-    fun detachFromView(parentViewGroup: ViewGroup) {
+    fun detachFromView() {
         router.onDetachView()
 
-        // FIXME this does not check if the child was attached to current view or not, as per routingAction!!.allowAttachView in connector
-        children.forEach {
-            detachChildView(it)
-        }
-
         view?.let {
-            parentViewGroup.removeView(it.androidView)
+            parentViewGroup!!.removeView(it.androidView)
             interactor.onViewDestroyed()
         }
 

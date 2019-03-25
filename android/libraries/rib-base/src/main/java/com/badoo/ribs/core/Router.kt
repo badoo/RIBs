@@ -12,11 +12,9 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ReinitRouting
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.TearDownRouting
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector
 import com.badoo.ribs.core.view.RibView
 
@@ -26,6 +24,7 @@ abstract class Router<C : Parcelable, V : RibView>(
     private val binder = Binder()
     private lateinit var timeCapsule: AndroidTimeCapsule
     private lateinit var backStackManager: BackStackManager<C>
+    private lateinit var backStackRibConnector: BackStackRibConnector<C>
     protected val configuration: C?
         get() = backStackManager.state.current.configuration
 
@@ -34,30 +33,26 @@ abstract class Router<C : Parcelable, V : RibView>(
 
     fun onAttach(savedInstanceState: Bundle?) {
         timeCapsule = AndroidTimeCapsule(savedInstanceState)
-        attachPermanentParts()
         initConfigurationManager()
     }
 
-    private fun attachPermanentParts() {
-        permanentParts.forEach {
-            node.attachChild(it()) // fixme save and restore these as well
-        }
-    }
-
-    protected open val permanentParts: List<() -> Node<*>> = emptyList()
+    protected open val permanentParts: List<() -> Node<*>> =
+        emptyList()
 
     private fun initConfigurationManager() {
+        backStackRibConnector = BackStackRibConnector(
+            permanentParts.map { it.invoke() },
+            this::resolveConfiguration,
+            NodeConnector.from(
+                node::attachChildNode,
+                node::attachChildView,
+                node::detachChildView,
+                node::detachChildNode
+            )
+        )
+
         backStackManager = BackStackManager(
-            backStackRibConnector =
-                BackStackRibConnector(
-                    this::resolveConfiguration,
-                    NodeConnector.from(
-                        node::attachChildNode,
-                        node::attachChildView,
-                        node::detachChildView,
-                        node::detachChildNode
-                    )
-                ),
+            backStackRibConnector = backStackRibConnector,
             initialConfiguration = initialConfiguration,
             timeCapsule = timeCapsule
         )
@@ -82,12 +77,12 @@ abstract class Router<C : Parcelable, V : RibView>(
         backStackManager.accept(ShrinkToBundles())
     }
 
-    fun onDetachView() {
-        backStackManager.accept(TearDownRouting())
+    fun onAttachView() {
+        backStackRibConnector.attachToView(backStackManager.state.backStack)
     }
 
-    fun onAttachView() {
-        backStackManager.accept(ReinitRouting())
+    fun onDetachView() {
+        backStackRibConnector.detachFromView(backStackManager.state.backStack)
     }
 
     fun onDetach() {

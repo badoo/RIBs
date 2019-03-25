@@ -9,12 +9,18 @@ import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrateg
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
 
 internal class BackStackRibConnector<C : Parcelable>(
+    private val permanentParts: List<Node<*>>,
     private val resolver: (C) -> RoutingAction<*>,
     private val connector: NodeConnector
 ) {
-
     enum class DetachStrategy {
         DESTROY, DETACH_VIEW
+    }
+
+    init {
+        permanentParts.forEach {
+            connector.attachChildNode(it)
+        }
     }
 
     fun leave(backStackElement: BackStackElement<C>, detachStrategy: DetachStrategy): BackStackElement<C> {
@@ -119,8 +125,20 @@ internal class BackStackRibConnector<C : Parcelable>(
         return backStack
     }
 
-    fun tearDownRouting(backStack: List<BackStackElement<C>>) {
-        backStack.lastOrNull()?.routingAction?.cleanup()
+    fun detachFromView(backStack: List<BackStackElement<C>>) {
+        permanentParts.forEach { connector.detachChildView(it) }
+
+        backStack.lastOrNull()?.let {
+            leave(it, DETACH_VIEW)
+        }
+    }
+
+    fun attachToView(backStack: List<BackStackElement<C>>) {
+        permanentParts.forEach { connector.attachChildView(it) }
+
+        backStack.lastOrNull()?.let {
+            goTo(it)
+        }
     }
 
     fun reinitRouting(backStack: List<BackStackElement<C>>) {

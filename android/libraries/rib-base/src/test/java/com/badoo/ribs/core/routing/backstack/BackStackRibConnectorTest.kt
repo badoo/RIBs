@@ -76,7 +76,8 @@ class BackStackRibConnectorTest {
         }
 
         connector = mock()
-        backStackRibConnector = BackStackRibConnector(resolver, connector)
+        val permanentParts = emptyList<Node<*>>() // FIXME test this too
+        backStackRibConnector = BackStackRibConnector(permanentParts, resolver, connector)
     }
 
     @Test
@@ -380,7 +381,7 @@ class BackStackRibConnectorTest {
         backStackElement1.routingAction = routingAction1
         backStackElement2.routingAction = routingAction2
         val backStack = listOf(backStackElement1, backStackElement2)
-        backStackRibConnector.tearDownRouting(backStack)
+        backStackRibConnector.detachFromView(backStack)
 
         verify(routingAction2).cleanup()
     }

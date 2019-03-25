@@ -5,14 +5,15 @@ android:
     - platform-tools                    # Platform tools
     - build-tools-28.0.3                # Build tools version
     - android-28                        # Target SDK version
-    - sys-img-armeabi-v7a-android-18    # Emulator
+    - sys-img-x86-android-28            # Emulators
+    - sys-img-x86-android-23
+    - sys-img-x86-android-21
 
 jdk: oraclejdk8
 
 script:
   - cd android
-  - ./gradlew build --console=plain
-  - ./gradlew detekt --console=plain
+  - ./gradlew build detekt connectedCheck --console=plain
 
 env:
   # IDEA_PLUGIN_PUBLICATION_TOKEN environment variable

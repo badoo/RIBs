@@ -5,10 +5,13 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.dialog.Dialog
+import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.ViewModel
+import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
@@ -18,6 +21,7 @@ import io.reactivex.functions.Consumer
 class DialogExampleInteractor(
     router: Router<Configuration, DialogExampleView>,
     private val simpleDialog: SimpleDialog,
+    private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
 ) : Interactor<Configuration, DialogExampleView>(
     router = router,
@@ -33,6 +37,7 @@ class DialogExampleInteractor(
             bind(dummyViewInput to view)
             bind(view to viewEventConsumer)
             bind(simpleDialog to dialogEventConsumer)
+            bind(lazyDialog to dialogEventConsumer)
             bind(ribDialog to dialogEventConsumer)
         }
     }
@@ -40,7 +45,26 @@ class DialogExampleInteractor(
     private val viewEventConsumer: Consumer<DialogExampleView.Event> = Consumer {
         when (it) {
             ShowSimpleDialogClicked -> router.push(Configuration.SimpleDialog)
+            ShowLazyDialog -> {
+                initLazyDialog()
+                router.push(Configuration.LazyDialog)
+            }
+
             ShowRibDialogClicked -> router.push(Configuration.RibDialog)
+        }
+    }
+
+    private fun initLazyDialog() {
+        with(lazyDialog) {
+            title = "Lazy dialog title"
+            message = "Lazy dialog message"
+            buttons {
+                neutral("Lazy neutral button", Dialog.Event.Neutral)
+            }
+            cancellationPolicy = Cancellable(
+                event = Dialog.Event.Cancelled,
+                cancelOnTouchOutside = true
+            )
         }
     }
 

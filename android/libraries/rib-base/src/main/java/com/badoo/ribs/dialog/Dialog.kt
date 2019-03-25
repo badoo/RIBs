@@ -25,10 +25,6 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun title(title: String) {
-        this.title = title
-    }
-
     fun ribFactory(ribFactory: () -> Node<*>) {
         this.ribFactory = ribFactory
     }

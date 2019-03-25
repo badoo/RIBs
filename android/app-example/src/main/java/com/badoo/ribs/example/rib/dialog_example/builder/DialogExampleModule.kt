@@ -7,6 +7,7 @@ import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleInteractor
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
+import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
@@ -26,6 +27,12 @@ internal object DialogExampleModule {
     @DialogExampleScope
     @Provides
     @JvmStatic
+    internal fun lazyDialog(): LazyDialog =
+        LazyDialog()
+
+    @DialogExampleScope
+    @Provides
+    @JvmStatic
     internal fun ribDialog(
         component: DialogExampleComponent
     ): RibDialog =
@@ -40,11 +47,13 @@ internal object DialogExampleModule {
         // pass component to child rib builders, or remove if there are none
         dialogLauncher: DialogLauncher,
         simpleDialog: SimpleDialog,
+        lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleRouter =
         DialogExampleRouter(
             dialogLauncher = dialogLauncher,
             simpleDialog = simpleDialog,
+            lazyDialog = lazyDialog,
             ribDialog = ribDialog
         )
 
@@ -54,11 +63,13 @@ internal object DialogExampleModule {
     internal fun interactor(
         router: DialogExampleRouter,
         simpleDialog: SimpleDialog,
+        lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleInteractor =
         DialogExampleInteractor(
             router = router,
             simpleDialog = simpleDialog,
+            lazyDialog = lazyDialog,
             ribDialog = ribDialog
         )
 

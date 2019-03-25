@@ -21,6 +21,7 @@ interface DialogExampleView : RibView,
 
     sealed class Event {
         object ShowSimpleDialogClicked : Event()
+        object ShowLazyDialog : Event()
         object ShowRibDialogClicked : Event()
     }
 
@@ -43,11 +44,13 @@ class DialogExampleViewImpl private constructor(
     override val androidView = this
     private val showSimpleDialog: Button by lazy { findViewById<Button>(R.id.show_simple_dialog) }
     private val showRibDialog: Button by lazy { findViewById<Button>(R.id.show_rib_dialog) }
+    private val showLazyDialog: Button by lazy { findViewById<Button>(R.id.show_lazy_dialog) }
     private val text: TextView by lazy { findViewById<TextView>(R.id.dialogs_example_debug) }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
         showSimpleDialog.setOnClickListener { events.accept(ShowSimpleDialogClicked) }
+        showLazyDialog.setOnClickListener { events.accept(Event.ShowLazyDialog) }
         showRibDialog.setOnClickListener { events.accept(ShowRibDialogClicked) }
     }
 

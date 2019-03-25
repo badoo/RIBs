@@ -15,6 +15,7 @@ class DialogExampleInteractorTest {
         interactor = DialogExampleInteractor(
             router = router,
             simpleDialog = mock(),
+            lazyDialog = mock(),
             ribDialog = mock()
         )
     }

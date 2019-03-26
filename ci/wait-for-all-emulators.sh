@@ -24,6 +24,8 @@ until [[ ${current_device_count} =~ $DEVICE_COUNT ]]; do
     fi
 done
 
+DEVICES=`adb devices | grep -v devices | grep device | cut -f 1`
+
 for device in $DEVICES; do
     echo "$device $@ ..."
 

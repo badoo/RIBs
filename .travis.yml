@@ -5,7 +5,7 @@ android:
     - platform-tools                    # Platform tools
     - build-tools-28.0.3                # Build tools version
     - android-28                        # Target SDK versions
-    - android-23
+    - android-24
     - android-21
     - sys-img-armeabi-v7a-android-24            # Emulators
     - sys-img-armeabi-v7a-android-21
@@ -16,7 +16,7 @@ before_script:
   - android list target
   - echo no | android create avd --force -n test_24 -t android-24 --abi armeabi-v7a -c 100M
   - echo no | android create avd --force -n test_21 -t android-21 --abi armeabi-v7a -c 100M
-  - emulator -avd test_23 -no-audio -no-window &
+  - emulator -avd test_24 -no-audio -no-window &
   - emulator -avd test_21 -no-audio -no-window &
   - ci/wait-for-all-emulators.sh
 

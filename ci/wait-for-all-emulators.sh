@@ -2,7 +2,7 @@
 
 set +e
 
-DEVICE_COUNT=2
+DEVICE_COUNT=1
 
 connected_fail_counter=0
 connected_timeout_in_sec=120

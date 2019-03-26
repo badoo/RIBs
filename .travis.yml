@@ -7,9 +7,9 @@ android:
     - android-28                        # Target SDK versions
     - android-23
     - android-21
-    - sys-img-armeabi-v7a-android-28            # Emulators
-    - sys-img-armeabi-v7a-android-23
-    - sys-img-armeabi-v7a-android-21
+    - sys-img-armeabi-v7a-addon-google_apis-google-28            # Emulators
+    - sys-img-armeabi-v7a-addon-google_apis-google-23
+    - sys-img-armeabi-v7a-addon-google_apis-google-21
 
 jdk: oraclejdk8
 

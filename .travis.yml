@@ -16,7 +16,11 @@ before_script:
   - echo no | android create avd --force -n test_24 -t android-24 --abi armeabi-v7a -c 100M
   - emulator -avd test_24 -no-skin -no-window &
   - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+  # Unlock the emulator
+  - adb shell input keyevent 82 # menu
+  # Close process system is not responding dialog
+  - adb shell input keyevent 61 # tab
+  - adb shell input keyevent 66 # enter
 
 script:
   - cd android

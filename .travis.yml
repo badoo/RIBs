@@ -18,6 +18,7 @@ before_script:
   - android-wait-for-emulator
   # Unlock the emulator
   - adb shell input keyevent 82 # menu
+  - sleep 10
   # Close process system is not responding dialog
   - adb shell input keyevent 61 # tab
   - adb shell input keyevent 66 # enter

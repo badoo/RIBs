@@ -7,14 +7,18 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager.State
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
@@ -122,6 +126,31 @@ class BackStackManagerTest {
     @Test
     fun `Wish_Push attaches new element`() {
         backStackManager.accept(Push(Configuration.C4))
+        verify(backStackRibConnector).goTo(backStackManager.state.current)
+    }
+
+    @Test
+    fun `Wish_PushOverlay once results in the back stack size growing by one`() {
+        backStackManager.accept(PushOverlay(Configuration.C4))
+        assertEquals(2, backStackManager.state.backStack.size)
+    }
+
+    @Test
+    fun `Wish_PushOverlay once adds the expected new element to the end of the back stack`() {
+        backStackManager.accept(PushOverlay(Configuration.C4))
+        assertEquals(Configuration.C4, backStackManager.state.current.configuration)
+    }
+
+    @Test
+    fun `Wish_PushOverlay does not detach previous element`() {
+        val lastElementBeforePush = backStackManager.state.current
+        backStackManager.accept(PushOverlay(Configuration.C4))
+        verify(backStackRibConnector, never()).leave(eq(lastElementBeforePush), any())
+    }
+
+    @Test
+    fun `Wish_PushOverlay attaches new element`() {
+        backStackManager.accept(PushOverlay(Configuration.C4))
         verify(backStackRibConnector).goTo(backStackManager.state.current)
     }
 

@@ -46,7 +46,7 @@ class SwitcherRouter(
         @Parcelize object Hello : Configuration()
         @Parcelize object Foo : Configuration()
         @Parcelize object DialogsExample : Configuration()
-        @Parcelize object OverlayDialog : Configuration()
+        @Parcelize object OverlayDialog : Configuration(), Overlay
         @Parcelize object Blocker : Configuration()
     }
 

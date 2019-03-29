@@ -45,7 +45,7 @@ class SwitcherInteractor(
 
     private val viewEventConsumer: Consumer<SwitcherView.Event> = Consumer {
         when (it) {
-            Event.ShowOverlayDialogClicked -> router.pushOverlay(Configuration.OverlayDialog)
+            Event.ShowOverlayDialogClicked -> router.push(Configuration.OverlayDialog)
             Event.ShowBlockerClicked -> router.push(Configuration.Blocker)
         }
     }

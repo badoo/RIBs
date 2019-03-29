@@ -94,11 +94,11 @@ abstract class Router<C : Parcelable, V : RibView>(
     }
 
     fun push(configuration: C) {
-        backStackManager.accept(Push(configuration))
-    }
-
-    fun pushOverlay(configuration: C) {
-        backStackManager.accept(PushOverlay(configuration))
+        if (configuration is Overlay) {
+            backStackManager.accept(PushOverlay(configuration))
+        } else {
+            backStackManager.accept(Push(configuration))
+        }
     }
 
     fun newRoot(configuration: C) {
@@ -113,4 +113,10 @@ abstract class Router<C : Parcelable, V : RibView>(
             false
         }
     }
+
+    /**
+     * Marker interface for Configurations that should be added as overlays
+     * i.e. not detaching previous Configurations
+     */
+    interface Overlay
 }

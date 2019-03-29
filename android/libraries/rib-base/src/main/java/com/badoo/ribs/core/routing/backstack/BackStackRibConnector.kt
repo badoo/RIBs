@@ -64,10 +64,9 @@ internal class BackStackRibConnector<C : Parcelable>(
             if (builtNodes == null) {
                 buildNodes()
                 attachBuiltNodes()
-            } else {
-                reAttachViews()
             }
 
+            reAttachViewsIfNeeded()
             routingAction!!.execute()
         }
 
@@ -81,17 +80,13 @@ internal class BackStackRibConnector<C : Parcelable>(
     private fun BackStackElement<C>.attachBuiltNodes() {
         builtNodes!!.forEachIndexed { index, nodeDescriptor ->
             connector.attachChildNode(nodeDescriptor.node, bundleAt(index))
-
-            if (nodeDescriptor.viewAttachMode == PARENT) {
-                connector.attachChildView(nodeDescriptor.node)
-            }
         }
     }
 
-    private fun BackStackElement<C>.reAttachViews() {
+    private fun BackStackElement<C>.reAttachViewsIfNeeded() {
         builtNodes!!
             .forEach {
-                if (it.viewAttachMode == PARENT) {
+                if (it.viewAttachMode == PARENT && !it.node.isViewAttached) {
                     connector.attachChildView(it.node)
                 }
             }

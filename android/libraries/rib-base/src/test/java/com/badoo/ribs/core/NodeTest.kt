@@ -12,14 +12,7 @@ import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.view.ViewFactory
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -42,7 +35,7 @@ class NodeTest {
     private lateinit var someViewGroup3: ViewGroup
     private lateinit var viewFactory: ViewFactory<TestView>
     private lateinit var router: Router<TestRouter.Configuration, TestView>
-    private lateinit var interactor: Interactor<TestRouter.Configuration, TestView>
+    private lateinit var interactor: Interactor<TestView>
     private lateinit var child1: TestNode
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode

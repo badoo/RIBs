@@ -3,7 +3,6 @@ package com.badoo.ribs.core
 import android.os.Bundle
 import com.badoo.ribs.core.Interactor.Companion.KEY_TAG
 import com.badoo.ribs.core.helper.TestInteractor
-import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -18,12 +17,11 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class InteractorTest {
 
-    private lateinit var interactor: Interactor<TestRouter.Configuration, TestView>
+    private lateinit var interactor: Interactor<TestView>
 
     @Before
     fun setUp() {
         interactor = TestInteractor(
-            router = mock(),
             disposables = null
         )
     }

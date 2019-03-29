@@ -8,14 +8,12 @@ import org.junit.Test
 
 class FooBarInteractorTest {
 
-    private val router: FooBarRouter = mock()
     private val permissionRequester: PermissionRequester = mock()
     private lateinit var interactor: FooBarInteractor
 
     @Before
     fun setup() {
         interactor = FooBarInteractor(
-            router = router,
             permissionRequester = permissionRequester
         )
     }

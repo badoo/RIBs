@@ -46,7 +46,7 @@ class SwitcherRouter(
         @Parcelize object Hello : Configuration()
         @Parcelize object Foo : Configuration()
         @Parcelize object DialogsExample : Configuration()
-        @Parcelize object OpenDialogOverlay : Configuration()
+        @Parcelize object OverlayDialog : Configuration()
         @Parcelize object Blocker : Configuration()
     }
 
@@ -64,7 +64,7 @@ class SwitcherRouter(
                 attach { dialogExampleBuilder.build() },
                 execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
             )
-            is Configuration.OpenDialogOverlay -> showDialog(dialogLauncher, dialogToTestOverlay)
+            is Configuration.OverlayDialog -> showDialog(dialogLauncher, dialogToTestOverlay)
             is Configuration.Blocker -> attach { blockerBuilder.build() }
         }
 

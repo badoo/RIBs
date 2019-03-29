@@ -2,7 +2,6 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.ViewGroup
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
@@ -12,6 +11,7 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
@@ -97,15 +97,17 @@ abstract class Router<C : Parcelable, V : RibView>(
         backStackManager.accept(Push(configuration))
     }
 
+    fun pushOverlay(configuration: C) {
+        backStackManager.accept(PushOverlay(configuration))
+    }
+
     fun newRoot(configuration: C) {
         backStackManager.accept(NewRoot(configuration))
     }
 
     fun popBackStack(): Boolean {
         return if (backStackManager.state.canPop) {
-            Log.d("Back stack before pop", backStackManager.state.toString())
             backStackManager.accept(Pop())
-            Log.d("Back stack after pop", backStackManager.state.toString())
             true
         } else {
             false

@@ -2,8 +2,6 @@ package com.badoo.ribs.example.rib.switcher.dialog
 
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
-import com.badoo.ribs.dialog.Dialog.Event.Negative
-import com.badoo.ribs.dialog.Dialog.Event.Neutral
 import com.badoo.ribs.dialog.Dialog.Event.Positive
 
 

@@ -206,6 +206,7 @@ internal class BackStackManager<C : Parcelable>(
     }
 
     class ReducerImpl<C : Parcelable> : Reducer<State<C>, Effect<C>> {
+        @SuppressWarnings("LongMethod")
         override fun invoke(state: State<C>, effect: Effect<C>): State<C> = when (effect) {
             is Effect.Replace -> state.copy(
                 backStack = state.backStack.dropLast(1) + effect.newEntry

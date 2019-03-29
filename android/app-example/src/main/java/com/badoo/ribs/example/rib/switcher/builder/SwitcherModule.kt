@@ -2,6 +2,7 @@ package com.badoo.ribs.example.rib.switcher.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
@@ -15,6 +16,7 @@ import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherInteractor
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter
 import com.badoo.ribs.example.rib.switcher.SwitcherView
+import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import dagger.Provides
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -26,26 +28,38 @@ internal object SwitcherModule {
     @SwitcherScope
     @Provides
     @JvmStatic
+    internal fun dialogToTestOverlay(): DialogToTestOverlay =
+        DialogToTestOverlay()
+
+    @SwitcherScope
+    @Provides
+    @JvmStatic
     internal fun router(
         // pass component to child rib builders, or remove if there are none
-        component: SwitcherComponent
+        component: SwitcherComponent,
+        dialogLauncher: DialogLauncher,
+        dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherRouter =
         SwitcherRouter(
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),
             blockerBuilder = BlockerBuilder(component),
-            menuBuilder = MenuBuilder(component)
+            menuBuilder = MenuBuilder(component),
+            dialogLauncher = dialogLauncher,
+            dialogToTestOverlay = dialogToTestOverlay
         )
 
     @SwitcherScope
     @Provides
     @JvmStatic
     internal fun interactor(
-        router: SwitcherRouter
+        router: SwitcherRouter,
+        dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherInteractor =
         SwitcherInteractor(
-            router = router
+            router = router,
+            dialogToTestOverlay = dialogToTestOverlay
         )
 
     @SwitcherScope

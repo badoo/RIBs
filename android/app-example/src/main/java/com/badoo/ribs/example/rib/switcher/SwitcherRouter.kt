@@ -7,8 +7,10 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
+import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
@@ -19,6 +21,7 @@ import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration
+import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.jakewharton.rxrelay2.PublishRelay
 import kotlinx.android.parcel.Parcelize
 
@@ -27,7 +30,9 @@ class SwitcherRouter(
     private val helloWorldBuilder: HelloWorldBuilder,
     private val dialogExampleBuilder: DialogExampleBuilder,
     private val blockerBuilder: BlockerBuilder,
-    private val menuBuilder: MenuBuilder
+    private val menuBuilder: MenuBuilder,
+    private val dialogLauncher: DialogLauncher,
+    private val dialogToTestOverlay: DialogToTestOverlay
     ): Router<Configuration, SwitcherView>(
     initialConfiguration = Configuration.DialogsExample
 ) {
@@ -41,6 +46,7 @@ class SwitcherRouter(
         @Parcelize object Hello : Configuration()
         @Parcelize object Foo : Configuration()
         @Parcelize object DialogsExample : Configuration()
+        @Parcelize object OpenDialogOverlay : Configuration()
         @Parcelize object Blocker : Configuration()
     }
 
@@ -58,6 +64,7 @@ class SwitcherRouter(
                 attach { dialogExampleBuilder.build() },
                 execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
             )
+            is Configuration.OpenDialogOverlay -> showDialog(dialogLauncher, dialogToTestOverlay)
             is Configuration.Blocker -> attach { blockerBuilder.build() }
         }
 

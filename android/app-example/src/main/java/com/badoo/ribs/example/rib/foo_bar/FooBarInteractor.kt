@@ -9,7 +9,6 @@ import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.Cancelled
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event.RequestPermissionsButtonClicked
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.ViewModel
@@ -19,10 +18,8 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    router: Router<FooBarRouter.Configuration, FooBarView>,
     private val permissionRequester: PermissionRequester
-) : Interactor<FooBarRouter.Configuration, FooBarView>(
-    router = router,
+) : Interactor<FooBarView>(
     disposables = null
 ) {
 

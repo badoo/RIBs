@@ -8,7 +8,6 @@ import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.hello_world.analytics.HelloWorldAnalytics
@@ -21,13 +20,11 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
-    router: Router<HelloWorldRouter.Configuration, HelloWorldView>,
     private val input: ObservableSource<HelloWorld.Input>,
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : Interactor<HelloWorldRouter.Configuration, HelloWorldView>(
-    router = router,
+) : Interactor<HelloWorldView>(
     disposables = feature
 ) {
     companion object {

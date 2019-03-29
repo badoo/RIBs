@@ -6,9 +6,8 @@ import com.badoo.ribs.example.rib.menu.Menu
 import io.reactivex.functions.Consumer
 
 class SwitcherInteractor(
-    router: Router<SwitcherRouter.Configuration, SwitcherView>
-) : Interactor<SwitcherRouter.Configuration, SwitcherView>(
-    router = router,
+    private val router: Router<SwitcherRouter.Configuration, SwitcherView>
+) : Interactor<SwitcherView>(
     disposables = null
 ) {
 

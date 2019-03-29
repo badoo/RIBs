@@ -19,7 +19,6 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.os.Bundle
-import android.os.Parcelable
 import android.support.annotation.CallSuper
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -31,7 +30,7 @@ import com.uber.rib.core.lifecycle.InteractorEvent.INACTIVE
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
-import java.util.UUID
+import java.util.*
 
 /**
  * The base implementation for all [Interactor]s.
@@ -39,8 +38,7 @@ import java.util.UUID
  * @param <C> the type of Configuration this Interactor can expect to push to its [Router].
  * @param <V> the type of [RibView].
  **/
-abstract class Interactor<C : Parcelable, V : RibView>(
-    protected val router: Router<C, V>,
+abstract class Interactor<V : RibView>(
     private val disposables: Disposable?
 ) : LifecycleScopeProvider<InteractorEvent>, LifecycleOwner, Identifiable {
 

@@ -32,8 +32,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ViewFactory<V>?,
-    private val router: Router<*, V>,
-    private val interactor: Interactor<*, V>,
+    private val router: Router<*, V>?,
+    private val interactor: Interactor<V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     companion object {
@@ -43,7 +43,7 @@ open class Node<V : RibView>(
     }
 
     init {
-        router.node = this
+        router?.node = this
     }
 
     val tag: String = this::class.java.name
@@ -68,7 +68,7 @@ open class Node<V : RibView>(
             interactor.onViewCreated(it)
         }
 
-        router.onAttachView()
+        router?.onAttachView()
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? =
@@ -78,7 +78,7 @@ open class Node<V : RibView>(
         if (isViewAttached) {
             child.attachToView(
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                router.getParentViewForChild(child.identifier, view) ?: parentViewGroup!!
+                router?.getParentViewForChild(child.identifier, view) ?: parentViewGroup!!
             )
         }
     }
@@ -96,7 +96,7 @@ open class Node<V : RibView>(
     }
 
     fun detachFromView() {
-        router.onDetachView()
+        router?.onDetachView()
 
         view?.let {
             parentViewGroup!!.removeView(it.androidView)
@@ -120,7 +120,7 @@ open class Node<V : RibView>(
                 .filter { it.isViewAttached }
                 .any { it.handleBackPress() }
             || interactor.handleBackPress()
-            || router.popBackStack()
+            || router?.popBackStack() == true
     }
 
     /**
@@ -164,13 +164,13 @@ open class Node<V : RibView>(
 
         savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
 
-        router.onAttach(savedInstanceState?.getBundle(KEY_ROUTER))
+        router?.onAttach(savedInstanceState?.getBundle(KEY_ROUTER))
         interactor.onAttach(savedInstanceState?.getBundle(KEY_INTERACTOR))
     }
 
     open fun onDetach() {
         interactor.onDetach()
-        router.onDetach()
+        router?.onDetach()
 
         for (child in children) {
             detachChildNode(child)
@@ -185,12 +185,12 @@ open class Node<V : RibView>(
     }
 
     fun onLowMemory() {
-        router.onLowMemory()
+        router?.onLowMemory()
     }
 
     private fun saveRouterState(outState: Bundle) {
         Bundle().let {
-            router.onSaveInstanceState(it)
+            router?.onSaveInstanceState(it)
             outState.putBundle(KEY_ROUTER, it)
         }
     }

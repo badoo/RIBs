@@ -1,10 +1,10 @@
 package com.badoo.ribs.example.rib.menu.builder
 
+import com.badoo.ribs.base.leaf.LeafNode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuInteractor
-import com.badoo.ribs.example.rib.menu.MenuRouter
 import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.menu.feature.MenuFeature
 import dagger.Provides
@@ -17,12 +17,6 @@ internal object MenuModule {
     @MenuScope
     @Provides
     @JvmStatic
-    internal fun router(): MenuRouter =
-        MenuRouter()
-
-    @MenuScope
-    @Provides
-    @JvmStatic
     fun feature(): MenuFeature =
         MenuFeature()
 
@@ -30,13 +24,11 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     fun interactor(
-        router: MenuRouter,
         input: ObservableSource<Menu.Input>,
         output: Consumer<Menu.Output>,
         feature: MenuFeature
     ): MenuInteractor =
         MenuInteractor(
-            router = router,
             input = input,
             output = output,
             feature = feature
@@ -47,12 +39,10 @@ internal object MenuModule {
     @JvmStatic
     internal fun node(
         viewFactory: ViewFactory<MenuView>,
-        router: MenuRouter,
         interactor: MenuInteractor
-    ) : Node<MenuView> = Node(
+    ) : Node<MenuView> = LeafNode(
         identifier = object : Menu {},
         viewFactory = viewFactory,
-        router = router,
         interactor = interactor
     )
 }

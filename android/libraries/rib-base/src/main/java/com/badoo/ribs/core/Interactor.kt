@@ -30,7 +30,7 @@ import com.uber.rib.core.lifecycle.InteractorEvent.INACTIVE
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
-import java.util.*
+import java.util.UUID
 
 /**
  * The base implementation for all [Interactor]s.

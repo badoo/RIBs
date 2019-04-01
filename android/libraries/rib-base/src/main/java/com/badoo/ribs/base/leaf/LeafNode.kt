@@ -9,12 +9,12 @@ import com.uber.rib.util.RibRefWatcher
 class LeafNode<V: RibView>(
     identifier: Rib,
     viewFactory: ViewFactory<V>?,
-    interactor: SingleConfigurationInteractor<V>,
+    interactor: LeafInteractor<V>,
     ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ): Node<V>(
     identifier = identifier,
     viewFactory = viewFactory,
-    router = SingleConfigurationRouter.typedInstance(),
+    router = interactor.router,
     interactor = interactor,
     ribRefWatcher = ribRefWatcher
 )

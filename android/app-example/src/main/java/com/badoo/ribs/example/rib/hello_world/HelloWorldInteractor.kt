@@ -7,7 +7,7 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
-import com.badoo.ribs.base.leaf.SingleConfigurationInteractor
+import com.badoo.ribs.base.leaf.LeafInteractor
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.hello_world.analytics.HelloWorldAnalytics
@@ -24,7 +24,7 @@ class HelloWorldInteractor(
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : SingleConfigurationInteractor<HelloWorldView>(
+) : LeafInteractor<HelloWorldView>(
     disposables = feature
 ) {
     companion object {

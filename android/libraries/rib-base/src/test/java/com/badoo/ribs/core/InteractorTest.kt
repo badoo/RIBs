@@ -1,7 +1,7 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
-import com.badoo.ribs.base.leaf.SingleConfigurationInteractor
+import com.badoo.ribs.base.leaf.LeafInteractor
 import com.badoo.ribs.core.Interactor.Companion.KEY_TAG
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestView
@@ -18,7 +18,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class InteractorTest {
 
-    private lateinit var interactor: SingleConfigurationInteractor<TestView>
+    private lateinit var interactor: LeafInteractor<TestView>
 
     @Before
     fun setUp() {

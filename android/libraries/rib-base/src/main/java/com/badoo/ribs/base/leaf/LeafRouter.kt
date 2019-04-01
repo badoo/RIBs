@@ -2,16 +2,16 @@ package com.badoo.ribs.base.leaf
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.badoo.ribs.base.leaf.SingleConfigurationRouter.Configuration
+import com.badoo.ribs.base.leaf.LeafRouter.Configuration
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.core.view.RibView
 
-object SingleConfigurationRouter: Router<Configuration, Nothing>(
+class LeafRouter<V: RibView>: Router<Configuration, V>(
     initialConfiguration = Configuration()
 ) {
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction<V> =
         noop()
 
     class Configuration : Parcelable {
@@ -23,7 +23,4 @@ object SingleConfigurationRouter: Router<Configuration, Nothing>(
             override fun newArray(size: Int): Array<Configuration?> = arrayOfNulls(size)
         }
     }
-
-    internal fun <V: RibView> typedInstance(): Router<Configuration, V> =
-        SingleConfigurationRouter as Router<Configuration, V>
 }

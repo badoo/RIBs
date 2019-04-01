@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
-import com.badoo.ribs.base.leaf.SingleConfigurationInteractor
+import com.badoo.ribs.base.leaf.LeafInteractor
 import com.badoo.ribs.core.Node.Companion.KEY_INTERACTOR
 import com.badoo.ribs.core.Node.Companion.KEY_ROUTER
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
@@ -36,7 +36,7 @@ class NodeTest {
     private lateinit var someViewGroup3: ViewGroup
     private lateinit var viewFactory: ViewFactory<TestView>
     private lateinit var router: Router<TestRouter.Configuration, TestView>
-    private lateinit var interactor: SingleConfigurationInteractor<TestView>
+    private lateinit var interactor: LeafInteractor<TestView>
     private lateinit var child1: TestNode
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode

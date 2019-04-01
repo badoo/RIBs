@@ -6,15 +6,15 @@ android:
     - build-tools-28.0.3                # Build tools version
     - android-28                        # Target SDK versions
     - android-24
-    - android-19
-    - sys-img-armeabi-v7a-android-19            # Emulators
+    - android-21
+    - sys-img-armeabi-v7a-android-21            # Emulators
 
 jdk: oraclejdk8
 
 before_script:
   - android list target
-  - echo no | android create avd --force -n test_19 -t android-19 --abi armeabi-v7a -c 100M
-  - emulator -avd test_19 -no-skin -no-window &
+  - echo no | android create avd --force -n test_21 -t android-21 --abi armeabi-v7a -c 100M
+  - emulator -avd test_21 -no-skin -no-window &
   - android-wait-for-emulator
   # Unlock the emulator
   - adb shell input keyevent 82 # menu

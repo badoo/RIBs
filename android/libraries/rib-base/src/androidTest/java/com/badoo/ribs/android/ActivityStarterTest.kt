@@ -30,7 +30,7 @@ class ActivityStarterTest {
     @Test
     fun startActivity_startsTargetActivity() {
         activityRule.activity.activityStarter.startActivity {
-            create(OtherActivity::class.java)
+            Intent(this, OtherActivity::class.java)
         }
 
         intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
@@ -39,7 +39,7 @@ class ActivityStarterTest {
     @Test
     fun startActivity_intentDataIsDeliveredToTargetActivity() {
         activityRule.activity.activityStarter.startActivity {
-            create(OtherActivity::class.java)
+            Intent(this, OtherActivity::class.java)
                 .putExtra("some_param", "some_value")
         }
 
@@ -54,7 +54,7 @@ class ActivityStarterTest {
         activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(OtherActivity::class.java)
+            Intent(this, OtherActivity::class.java)
         }
 
         intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
@@ -66,7 +66,7 @@ class ActivityStarterTest {
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(OtherActivity::class.java)
+            Intent(this, OtherActivity::class.java)
         }
 
         observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
@@ -78,7 +78,7 @@ class ActivityStarterTest {
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(OtherActivity::class.java)
+            Intent(this, OtherActivity::class.java)
         }
 
         observer.assertEvent(ActivityResultEvent(1, RESULT_CANCELED, null))
@@ -91,7 +91,7 @@ class ActivityStarterTest {
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = 1) {
-            create(OtherActivity::class.java)
+            Intent(this, OtherActivity::class.java)
         }
 
         observer.assertEvent(ActivityResultEvent(1, RESULT_OK, data))
@@ -105,7 +105,7 @@ class ActivityStarterTest {
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
 
         activityRule.activity.activityStarter.startActivityForResult(otherIdentifiable, requestCode = 1) {
-            create(OtherActivity::class.java)
+            Intent(this, OtherActivity::class.java)
         }
 
         otherIdentifiableObserver.assertEvent(ActivityResultEvent(1, RESULT_OK, null))

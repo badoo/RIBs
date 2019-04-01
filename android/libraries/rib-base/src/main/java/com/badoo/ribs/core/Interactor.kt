@@ -40,7 +40,7 @@ import java.util.UUID
  * @param <V> the type of [RibView].
  **/
 abstract class Interactor<C: Parcelable, V : RibView>(
-    internal val router: Router<C, V>,
+    protected val router: Router<C, V>,
     private val disposables: Disposable?
 ) : LifecycleScopeProvider<InteractorEvent>, LifecycleOwner, Identifiable {
 

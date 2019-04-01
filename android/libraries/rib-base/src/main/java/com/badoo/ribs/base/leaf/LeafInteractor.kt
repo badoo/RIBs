@@ -10,4 +10,12 @@ abstract class LeafInteractor<V: RibView>(
 ): Interactor<Configuration, V>(
     disposables = disposables,
     router = LeafRouter()
-)
+) {
+    /**
+     * Provides the router to the node
+     *
+     * Normally it is done via dependency injection, but here we create it directly,
+     * so router should be exposed to set the instance to the node
+     */
+    internal fun provideRouter() = router
+}

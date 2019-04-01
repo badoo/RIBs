@@ -14,7 +14,7 @@ class LeafNode<V: RibView>(
 ): Node<V>(
     identifier = identifier,
     viewFactory = viewFactory,
-    router = interactor.router,
+    router = interactor.provideRouter(),
     interactor = interactor,
     ribRefWatcher = ribRefWatcher
 )

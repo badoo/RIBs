@@ -7,7 +7,7 @@ android:
     - android-28                        # Target SDK versions
     - android-24
     - android-21
-    - sys-img-armeabi-v7a-android-24            # Emulators
+    - sys-img-armeabi-v7a-android-19            # Emulators
 
 jdk: oraclejdk8
 
@@ -18,10 +18,6 @@ before_script:
   - android-wait-for-emulator
   # Unlock the emulator
   - adb shell input keyevent 82 # menu
-  - sleep 10
-  # Close process system is not responding dialog
-  - adb shell input keyevent 61 # tab
-  - adb shell input keyevent 66 # enter
 
 script:
   - cd android

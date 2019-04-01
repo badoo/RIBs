@@ -15,6 +15,7 @@
  */
 package com.badoo.ribs.android
 
+import android.content.Context
 import android.content.Intent
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
@@ -28,9 +29,9 @@ import com.badoo.ribs.core.Identifiable
 interface ActivityStarter :
     RequestCodeBasedEventStream<ActivityResultEvent> {
 
-    fun startActivity(createIntent: IntentCreator.() -> Intent)
+    fun startActivity(createIntent: Context.() -> Intent)
 
-    fun startActivityForResult(client: Identifiable, requestCode: Int, createIntent: IntentCreator.() -> Intent)
+    fun startActivityForResult(client: Identifiable, requestCode: Int, createIntent: Context.() -> Intent)
 
     data class ActivityResultEvent(
         override val requestCode: Int,

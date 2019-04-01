@@ -4,17 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
+import com.badoo.ribs.core.Node
 
-abstract class RibActivity : AppCompatActivity(), IntentCreator {
+abstract class RibActivity : AppCompatActivity() {
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
     protected val activityStarter: ActivityStarterImpl by lazy {
         ActivityStarterImpl(
             activity = this,
-            intentCreator = this,
             requestCodeRegistry = requestCodeRegistry
         )
     }
@@ -84,10 +83,6 @@ abstract class RibActivity : AppCompatActivity(), IntentCreator {
             super.onBackPressed()
         }
     }
-
-    override fun create(cls: Class<*>?): Intent =
-        cls?.let { Intent(this, it) } ?: Intent()
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         activityStarter.onActivityResult(requestCode, resultCode, data)

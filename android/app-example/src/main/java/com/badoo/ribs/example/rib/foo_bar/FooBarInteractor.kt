@@ -8,7 +8,7 @@ import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.Cancelled
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.base.leaf.SingleConfigurationInteractor
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event.RequestPermissionsButtonClicked
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.ViewModel
@@ -19,7 +19,7 @@ import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
     private val permissionRequester: PermissionRequester
-) : Interactor<FooBarView>(
+) : SingleConfigurationInteractor<FooBarView>(
     disposables = null
 ) {
 

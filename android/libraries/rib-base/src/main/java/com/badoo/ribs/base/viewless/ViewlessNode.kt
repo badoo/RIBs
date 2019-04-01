@@ -6,7 +6,7 @@ import com.uber.rib.util.RibRefWatcher
 
 open class ViewlessNode(
     identifier: Rib,
-    router: ViewlessRouter<*>?,
-    interactor: ViewlessInteractor,
+    router: ViewlessRouter<*>,
+    interactor: ViewlessInteractor<*>,
     ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ): Node<Nothing>(identifier, null, router, interactor, ribRefWatcher)

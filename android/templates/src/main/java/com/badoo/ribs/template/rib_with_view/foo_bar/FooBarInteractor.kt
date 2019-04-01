@@ -17,12 +17,13 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    private val router: Router<Configuration, FooBarView>,
+    router: Router<Configuration, FooBarView>,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature
-) : Interactor<FooBarView>(
-    disposables = feature
+) : Interactor<Configuration, FooBarView>(
+    disposables = feature,
+    router = router
 ) {
 
     override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {

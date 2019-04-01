@@ -19,6 +19,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.annotation.CallSuper
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -38,8 +39,9 @@ import java.util.UUID
  * @param <C> the type of Configuration this Interactor can expect to push to its [Router].
  * @param <V> the type of [RibView].
  **/
-abstract class Interactor<V : RibView>(
-    private val disposables: Disposable?
+abstract class Interactor<C: Parcelable, V : RibView>(
+    private val disposables: Disposable?,
+    val router: Router<C, V>
 ) : LifecycleScopeProvider<InteractorEvent>, LifecycleOwner, Identifiable {
 
     private val ribLifecycleRegistry = LifecycleRegistry(this)

@@ -32,8 +32,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ViewFactory<V>?,
-    private val router: Router<*, V>?,
-    private val interactor: Interactor<V>,
+    private val router: Router<*, V>,
+    private val interactor: Interactor<*, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     companion object {

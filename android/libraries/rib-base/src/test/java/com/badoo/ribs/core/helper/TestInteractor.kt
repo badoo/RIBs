@@ -1,10 +1,10 @@
 package com.badoo.ribs.core.helper
 
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.base.leaf.SingleConfigurationInteractor
 import io.reactivex.disposables.Disposable
 
 class TestInteractor(
     disposables: Disposable?
-) : Interactor<TestView>(
+) : SingleConfigurationInteractor<TestView>(
     disposables = disposables
 )

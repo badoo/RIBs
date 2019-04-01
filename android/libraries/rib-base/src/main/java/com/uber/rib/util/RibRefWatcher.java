@@ -32,9 +32,9 @@ public class RibRefWatcher {
   @Nullable private ReferenceWatcher referenceWatcher;
 
   /**
-   * Get an typedInstance of the {@link RibRefWatcher}.
+   * Get an instance of the {@link RibRefWatcher}.
    *
-   * @return the {@link RibRefWatcher} typedInstance.
+   * @return the {@link RibRefWatcher} instance.
    */
   public static RibRefWatcher getInstance() {
     if (instance == null) {

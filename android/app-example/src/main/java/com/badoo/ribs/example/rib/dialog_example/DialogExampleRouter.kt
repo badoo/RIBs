@@ -22,9 +22,9 @@ class DialogExampleRouter(
 ) {
     sealed class Configuration : Parcelable {
         @Parcelize object Default : Configuration()
-        @Parcelize object SimpleDialog : Configuration()
-        @Parcelize object LazyDialog : Configuration()
-        @Parcelize object RibDialog : Configuration()
+        @Parcelize object SimpleDialog : Configuration(), Overlay
+        @Parcelize object LazyDialog : Configuration(), Overlay
+        @Parcelize object RibDialog : Configuration(), Overlay
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<DialogExampleView> =

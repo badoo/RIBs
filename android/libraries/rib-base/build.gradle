@@ -47,6 +47,13 @@ dependencies {
     testImplementation deps.test.assertj
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
+
+    androidTestImplementation deps.test.junit
+    androidTestImplementation deps.test.assertj
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.espressoIntents
+    androidTestImplementation deps.androidTest.runner
+    androidTestImplementation deps.androidTest.rules
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -1,0 +1,58 @@
+package com.badoo.ribs.test.util
+
+import android.content.Intent
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import com.badoo.ribs.android.ActivityStarter
+import com.badoo.ribs.android.ActivityStarterImpl
+import com.badoo.ribs.android.IntentCreator
+import com.badoo.ribs.android.PermissionRequester
+import com.badoo.ribs.android.PermissionRequesterImpl
+import com.badoo.ribs.android.requestcode.RequestCodeRegistry
+
+class TestActivity : AppCompatActivity(), IntentCreator {
+
+    private lateinit var requestCodeRegistry: RequestCodeRegistry
+
+    val activityStarter: ActivityStarter
+        get() = _activityStarter
+
+    val permissionRequester: PermissionRequester
+        get() = _permissionRequester
+
+    private val _activityStarter: ActivityStarterImpl by lazy {
+        ActivityStarterImpl(
+            activity = this,
+            intentCreator = this,
+            requestCodeRegistry = requestCodeRegistry
+        )
+    }
+
+    private val _permissionRequester: PermissionRequesterImpl by lazy {
+        PermissionRequesterImpl(
+            activity = this,
+            requestCodeRegistry = requestCodeRegistry
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        requestCodeRegistry.onSaveInstanceState(outState)
+    }
+
+    override fun create(cls: Class<*>?): Intent =
+        cls?.let { Intent(this, it) } ?: Intent()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        _activityStarter.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
+        _permissionRequester.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+}

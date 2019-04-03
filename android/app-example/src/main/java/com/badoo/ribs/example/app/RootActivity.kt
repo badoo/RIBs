@@ -7,6 +7,7 @@ import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.directory.Directory
+import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
@@ -33,6 +34,7 @@ class RootActivity : RibActivity() {
                 override fun permissionRequester(): PermissionRequester = permissionRequester
                 override fun switcherInput(): ObservableSource<Switcher.Input> = Observable.empty()
                 override fun switcherOutput(): Consumer<Switcher.Output> = Consumer { }
+                override fun dialogLauncher(): DialogLauncher = this@RootActivity
             })
 
         return rootBuilder.build()

@@ -27,6 +27,7 @@ interface Menu : Rib {
     sealed class MenuItem : Parcelable {
         @Parcelize object HelloWorld : MenuItem()
         @Parcelize object FooBar : MenuItem()
+        @Parcelize object Dialogs : MenuItem()
     }
 
     class Customisation(

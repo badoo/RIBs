@@ -1,11 +1,11 @@
 package com.badoo.ribs.core.routing.action
 
+import com.badoo.ribs.core.routing.backstack.NodeDescriptor
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.Node
 
 interface RoutingAction<V : RibView> {
 
-    fun ribFactories() : List<() -> Node<*>> =
+    fun buildNodes() : List<NodeDescriptor> =
         emptyList()
 
     fun execute() {

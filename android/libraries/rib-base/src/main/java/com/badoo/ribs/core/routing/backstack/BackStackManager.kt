@@ -8,13 +8,14 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.BaseFeature
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.Execute
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.ReattachRibsOfLastEntry
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.ActivateLastEntry
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Effect
 import com.badoo.ribs.core.routing.backstack.BackStackManager.State
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
@@ -65,13 +66,14 @@ internal class BackStackManager<C : Parcelable>(
     ) : Bootstrapper<Action<C>> {
         override fun invoke(): Observable<Action<C>> = when {
             state.backStack.isEmpty() -> just(Execute(NewRoot(initialConfiguration)))
-            else -> just(ReattachRibsOfLastEntry())
+            else -> just(ActivateLastEntry())
         }
     }
 
     sealed class Wish<C : Parcelable> {
         data class Replace<C : Parcelable>(val configuration: C) : Wish<C>()
         data class Push<C : Parcelable>(val configuration: C) : Wish<C>()
+        data class PushOverlay<C : Parcelable>(val configuration: C) : Wish<C>()
         data class NewRoot<C : Parcelable>(val configuration: C) : Wish<C>()
         class Pop<C : Parcelable> : Wish<C>()
 
@@ -81,12 +83,13 @@ internal class BackStackManager<C : Parcelable>(
 
     sealed class Action<C : Parcelable> {
         data class Execute<C : Parcelable>(val wish: Wish<C>) : Action<C>()
-        class ReattachRibsOfLastEntry<C : Parcelable> : Action<C>()
+        class ActivateLastEntry<C : Parcelable> : Action<C>()
     }
 
     sealed class Effect<C : Parcelable> {
         data class Replace<C : Parcelable>(val newEntry: BackStackElement<C>) : Effect<C>()
         data class Push<C : Parcelable>(val updatedOldEntry: BackStackElement<C>, val newEntry: BackStackElement<C>) : Effect<C>()
+        data class PushOverlay<C : Parcelable>(val newEntry: BackStackElement<C>) : Effect<C>()
         data class NewRoot<C : Parcelable>(val newEntry: BackStackElement<C>) : Effect<C>()
         data class Pop<C : Parcelable>(val revivedEntry: BackStackElement<C>) : Effect<C>()
         data class UpdateBackStack<C : Parcelable>(val updatedBackStack: List<BackStackElement<C>>) : Effect<C>()
@@ -98,7 +101,7 @@ internal class BackStackManager<C : Parcelable>(
 
         override fun invoke(state: State<C>, action: Action<C>): Observable<out Effect<C>> =
             when (action) {
-                is ReattachRibsOfLastEntry -> Completable.fromAction {
+                is ActivateLastEntry -> Completable.fromAction {
                     connector.goTo(state.current)
                 }.toObservable()
 
@@ -134,6 +137,17 @@ internal class BackStackManager<C : Parcelable>(
                             else -> empty()
                         }
 
+                        is PushOverlay -> when {
+                            wish.configuration != state.current.configuration ->
+                                fromCallable {
+                                    goToNew(wish.configuration)
+                                }.map { newEntry ->
+                                    Effect.PushOverlay(newEntry)
+                                }
+
+                            else -> empty()
+                        }
+
                         is NewRoot ->
                             fromCallable {
                                 state.backStack.forEach { connector.leave(it, DESTROY) }
@@ -161,14 +175,23 @@ internal class BackStackManager<C : Parcelable>(
                 }
             }
 
-        private fun switchToNew(backStack: List<BackStackElement<C>>, newConfiguration: C, detachStrategy: BackStackRibConnector.DetachStrategy): Pair<BackStackElement<C>?, BackStackElement<C>> {
+        private fun switchToNew(
+            backStack: List<BackStackElement<C>>,
+            newConfiguration: C,
+            detachStrategy: BackStackRibConnector.DetachStrategy
+        ): Pair<BackStackElement<C>?, BackStackElement<C>> {
             val oldEntry = backStack.lastOrNull()
+            oldEntry?.let { connector.leave(it, detachStrategy = detachStrategy) }
+
+            return oldEntry to goToNew(newConfiguration)
+        }
+
+        private fun goToNew(newConfiguration: C): BackStackElement<C> {
             val newEntry = BackStackElement(newConfiguration)
 
-            oldEntry?.let { connector.leave(it, detachStrategy = detachStrategy) }
             connector.goTo(newEntry)
 
-            return oldEntry to newEntry
+            return newEntry
         }
 
         private fun switchToPrevious(backStack: List<BackStackElement<C>>, detachStrategy: BackStackRibConnector.DetachStrategy): BackStackElement<C> {
@@ -183,12 +206,16 @@ internal class BackStackManager<C : Parcelable>(
     }
 
     class ReducerImpl<C : Parcelable> : Reducer<State<C>, Effect<C>> {
+        @SuppressWarnings("LongMethod")
         override fun invoke(state: State<C>, effect: Effect<C>): State<C> = when (effect) {
             is Effect.Replace -> state.copy(
                 backStack = state.backStack.dropLast(1) + effect.newEntry
             )
             is Effect.Push -> state.copy(
                 backStack = state.backStack.dropLast(1) + effect.updatedOldEntry + effect.newEntry
+            )
+            is Effect.PushOverlay -> state.copy(
+                backStack = state.backStack + effect.newEntry
             )
             is Effect.NewRoot -> state.copy(
                 backStack = listOf(effect.newEntry)

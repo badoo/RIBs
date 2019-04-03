@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
@@ -18,5 +19,7 @@ class HelloWorldRouter: Router<Configuration, HelloWorldView>(
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<HelloWorldView> =
-        RoutingAction.noop()
+        when (configuration) {
+            Configuration.Default -> noop()
+    }
 }

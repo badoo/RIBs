@@ -56,6 +56,12 @@ class HelloWorldInteractor(
     }
 
     private val viewEventConsumer : Consumer<HelloWorldView.Event> = Consumer {
+        when (it) {
+            HelloWorldView.Event.ButtonClicked -> launchOtherActivityForResult()
+        }
+    }
+
+    private fun launchOtherActivityForResult() {
         activityStarter.startActivityForResult(this, REQUEST_CODE_OTHER_ACTIVITY) {
             Intent(this, OtherActivity::class.java)
                 .putExtra(OtherActivity.KEY_INCOMING, "Data sent by HelloWorld - 123123")

@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.hello_world.builder
 
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView
-import com.badoo.ribs.core.Node
 
 
 @HelloWorldScope

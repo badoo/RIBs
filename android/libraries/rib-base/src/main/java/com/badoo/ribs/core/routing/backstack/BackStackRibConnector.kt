@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.backstack
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Node.ViewAttachMode.PARENT
 import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
@@ -28,26 +29,29 @@ internal class BackStackRibConnector<C : Parcelable>(
             routingAction?.cleanup()
 
             when (detachStrategy) {
-                DESTROY -> destroyRibs()
-                DETACH_VIEW -> saveAndDetachView()
+                DESTROY -> destroyChildren()
+                DETACH_VIEW -> saveAndDetachChildViews()
             }
         }
 
         return backStackElement
     }
 
-    private fun BackStackElement<C>.destroyRibs() {
-        ribs?.forEach {
-            connector.detachChildView(it)
-            connector.detachChildNode(it)
+    private fun BackStackElement<C>.destroyChildren() {
+        builtNodes?.forEach {
+            connector.detachChildView(it.node)
+            connector.detachChildNode(it.node)
         }
-        ribs = null
+        builtNodes = null
     }
 
-    private fun BackStackElement<C>.saveAndDetachView(): Unit? {
-        return ribs?.forEach {
-            it.saveViewState()
-            connector.detachChildView(it)
+    private fun BackStackElement<C>.saveAndDetachChildViews() {
+        builtNodes?.forEach {
+            it.node.saveViewState()
+
+            if (it.viewAttachMode == PARENT) {
+                connector.detachChildView(it.node)
+            }
         }
     }
 
@@ -57,29 +61,35 @@ internal class BackStackRibConnector<C : Parcelable>(
                 routingAction = resolver.invoke(configuration)
             }
 
-            if (ribs == null) {
-                ribs = routingAction!!
-                    .ribFactories()
-                    .map { it.invoke() }
-                    .also { attachNodes(it) }
-            } else {
-                ribs!!
-                    .forEach {
-                        connector.attachChildView(it)
-                    }
+            if (builtNodes == null) {
+                buildNodes()
+                attachBuiltNodes()
             }
 
+            reAttachViewsIfNeeded()
             routingAction!!.execute()
         }
 
         return backStackElement
     }
 
-    private fun BackStackElement<C>.attachNodes(it: List<Node<*>>) {
-        it.forEachIndexed { index, node ->
-            connector.attachChildNode(node, bundleAt(index))
-            connector.attachChildView(node)
+    private fun BackStackElement<C>.buildNodes() {
+        builtNodes = routingAction!!.buildNodes()
+    }
+
+    private fun BackStackElement<C>.attachBuiltNodes() {
+        builtNodes!!.forEachIndexed { index, nodeDescriptor ->
+            connector.attachChildNode(nodeDescriptor.node, bundleAt(index))
         }
+    }
+
+    private fun BackStackElement<C>.reAttachViewsIfNeeded() {
+        builtNodes!!
+            .forEach {
+                if (it.viewAttachMode == PARENT && !it.node.isViewAttached) {
+                    connector.attachChildView(it.node)
+                }
+            }
     }
 
     private fun BackStackElement<C>.bundleAt(index: Int): Bundle? =
@@ -90,19 +100,19 @@ internal class BackStackRibConnector<C : Parcelable>(
     fun shrinkToBundles(backStack: List<BackStackElement<C>>): List<BackStackElement<C>> =
         saveInstanceState(backStack).apply {
             dropLast(1).forEach {
-                it.ribs?.forEach {
-                    connector.detachChildView(it)
-                    connector.detachChildNode(it)
+                it.builtNodes?.forEach {
+                    connector.detachChildView(it.node)
+                    connector.detachChildNode(it.node)
                 }
-                it.ribs = null
+                it.builtNodes = null
             }
         }
 
     fun saveInstanceState(backStack: List<BackStackElement<C>>): List<BackStackElement<C>> {
         backStack.forEach {
-            it.bundles = it.ribs?.map { childNode ->
+            it.bundles = it.builtNodes?.map { nodeDescriptor ->
                 Bundle().also {
-                    childNode.onSaveInstanceState(it)
+                    nodeDescriptor.node.onSaveInstanceState(it)
                 }
             } ?: emptyList()
         }

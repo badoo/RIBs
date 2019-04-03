@@ -2,23 +2,31 @@ package com.badoo.ribs.android
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.dialog.Dialog
+import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.dialog.toAlertDialog
+import java.util.WeakHashMap
 
-abstract class RibActivity : AppCompatActivity() {
+abstract class RibActivity : AppCompatActivity(), DialogLauncher {
+
+    private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> =
+        WeakHashMap()
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
-    protected val activityStarter: ActivityStarterImpl by lazy {
+    val activityStarter: ActivityStarterImpl by lazy {
         ActivityStarterImpl(
             activity = this,
             requestCodeRegistry = requestCodeRegistry
         )
     }
 
-    protected  val permissionRequester: PermissionRequesterImpl by lazy {
+    val permissionRequester: PermissionRequesterImpl by lazy {
         PermissionRequesterImpl(
             activity = this,
             requestCodeRegistry = requestCodeRegistry
@@ -32,8 +40,8 @@ abstract class RibActivity : AppCompatActivity() {
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
         rootNode = createRib().apply {
-                onAttach(savedInstanceState)
-                attachToView(rootViewGroup)
+            onAttach(savedInstanceState)
+            attachToView(rootViewGroup)
         }
     }
 
@@ -74,6 +82,7 @@ abstract class RibActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        dialogs.values.forEach { it.dismiss() }
         rootNode.onDetach()
         rootNode.detachFromView()
     }
@@ -91,4 +100,13 @@ abstract class RibActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
         permissionRequester.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+    override fun show(dialog: Dialog<*>) {
+        dialogs[dialog] = dialog.toAlertDialog(this).also {
+            it.show()
+        }
+    }
+
+    override fun hide(dialog: Dialog<*>) {
+        dialogs[dialog]?.dismiss()
+    }
 }

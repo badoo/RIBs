@@ -17,7 +17,7 @@ class TestRibBuilder(dependency: TestRib.Dependency) : Builder<TestRib.Dependenc
                     TestRibViewImpl(viewGroup.context)
             },
             router = router,
-            interactor = TestRibInteractor(router)
+            interactor = TestRibInteractor(router, dependency.viewLifecycleObserver())
         )
     }
 }

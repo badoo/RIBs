@@ -1,7 +1,5 @@
 package com.badoo.ribs.example.rib.hello_world
 
-import android.content.Context
-import android.content.Intent
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed

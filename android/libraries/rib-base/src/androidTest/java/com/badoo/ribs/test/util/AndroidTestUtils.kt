@@ -1,6 +1,7 @@
 package com.badoo.ribs.test.util
 
 import android.app.Activity
+import android.support.test.rule.ActivityTestRule
 import java.util.concurrent.TimeoutException
 
 fun Activity.waitForDestroy(timeoutMillis: Long = 1000L) {
@@ -12,4 +13,10 @@ fun Activity.waitForDestroy(timeoutMillis: Long = 1000L) {
 
         Thread.sleep(1)
     }
+}
+
+fun <T: Activity> ActivityTestRule<T>.waitForActivityFinish() {
+    val activity = this.activity
+    finishActivity()
+    activity.waitForDestroy()
 }

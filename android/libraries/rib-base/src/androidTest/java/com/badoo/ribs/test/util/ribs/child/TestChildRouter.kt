@@ -1,13 +1,13 @@
-package com.badoo.ribs.test.util.ribs
+package com.badoo.ribs.test.util.ribs.child
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.test.util.ribs.TestRibRouter.Configuration
+import com.badoo.ribs.test.util.ribs.child.TestChildRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
-class TestRibRouter: Router<Configuration, TestRibView>(
+class TestChildRouter: Router<Configuration, TestChildView>(
     initialConfiguration = Configuration.Default
 ) {
     override val permanentParts: List<() -> Node<*>> =
@@ -17,6 +17,6 @@ class TestRibRouter: Router<Configuration, TestRibView>(
         @Parcelize object Default : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<TestRibView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction<TestChildView> =
         RoutingAction.noop()
 }

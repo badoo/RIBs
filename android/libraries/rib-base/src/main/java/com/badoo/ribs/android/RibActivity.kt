@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.ViewGroup
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
+import com.badoo.ribs.core.Node
 
 abstract class RibActivity : AppCompatActivity(), IntentCreator {
 
@@ -33,8 +33,8 @@ abstract class RibActivity : AppCompatActivity(), IntentCreator {
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
         rootNode = createRib().apply {
-                onAttach(savedInstanceState)
-                attachToView(rootViewGroup)
+            onAttach(savedInstanceState)
+            attachToView(rootViewGroup)
         }
     }
 

@@ -2,40 +2,58 @@ package com.badoo.ribs.android.lifecycle
 
 import android.arch.lifecycle.Lifecycle
 import com.badoo.common.ribs.RibsRule
-import com.badoo.ribs.test.util.LifecycleObserver
-import com.badoo.ribs.test.util.ribs.TestRib
-import com.badoo.ribs.test.util.ribs.builder.TestRibBuilder
-import com.badoo.ribs.test.util.waitForDestroy
+import com.badoo.ribs.test.util.ribs.root.TestRoot
+import com.badoo.ribs.test.util.waitForActivityFinish
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
 
 class RootNodeLifecycleTest {
-
-    private val viewLifecycleObserver = LifecycleObserver()
-    private val nodeLifecycleObserver = LifecycleObserver()
-    private val node = TestRibBuilder(
-        object : TestRib.Dependency {
-            override fun viewLifecycleObserver() = viewLifecycleObserver
-            override fun nodeLifecycleObserver() = nodeLifecycleObserver
-        }
-    ).build()
+    private val provider = TestRoot.Provider()
+    private val node = provider()
 
     @get:Rule
     val ribsRule = RibsRule { node }
-    @Test
-    fun whenActivityResumedAndDestroyed_lifecycleEventsAreDispatched() {
-        val activity = ribsRule.activity
 
-        viewLifecycleObserver.assertValues(
+    @Test
+    fun whenActivityResumed_nodeIsAttached() {
+        assertThat(node.isAttached).isTrue()
+    }
+
+    @Test
+    fun whenActivityResumed_viewIsAttached() {
+        assertThat(node.isViewAttached).isTrue()
+    }
+
+    @Test
+    fun whenActivityResumed_lifecycleEventsAreDispatched() {
+        provider.viewLifecycleObserver.assertValues(
             Lifecycle.Event.ON_CREATE,
             Lifecycle.Event.ON_START,
             Lifecycle.Event.ON_RESUME
         )
+    }
 
+    @Test
+    fun whenActivityDestroyed_nodeIsDetached() {
+        ribsRule.waitForActivityFinish()
+
+        assertThat(node.isAttached).isFalse()
+    }
+
+    @Test
+    fun whenActivityDestroyed_viewIsDetached() {
+        ribsRule.waitForActivityFinish()
+
+        assertThat(node.isViewAttached).isFalse()
+    }
+
+    @Test
+    fun whenActivityDestroyed_lifecycleEventsAreDispatched() {
+        val viewLifecycleObserver = provider.viewLifecycleObserver
         viewLifecycleObserver.clear()
-        ribsRule.finishActivity()
 
-        activity.waitForDestroy()
+        ribsRule.waitForActivityFinish()
 
         viewLifecycleObserver.assertValues(
             Lifecycle.Event.ON_PAUSE,
@@ -44,9 +62,7 @@ class RootNodeLifecycleTest {
         )
     }
 
-    // Node attach - detach + view
-
-    // RibActivity
+    // Activity node attach - detach + view
 
     // Inside a node - attach + view
 
@@ -56,6 +72,7 @@ class RootNodeLifecycleTest {
 
     // After saved instance
 
+    // view
     // permanent parts
     // backstack
     // last step backstack

@@ -49,6 +49,7 @@ dependencies {
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
     implementation deps.external.rxrelay2
+    implementation deps.external.rxandroid2
 
     testImplementation deps.external.roboelectricBase
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'

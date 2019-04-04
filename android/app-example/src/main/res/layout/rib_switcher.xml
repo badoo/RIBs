@@ -12,10 +12,37 @@
         android:layout_height="match_parent">
 
         <FrameLayout
+            android:id="@+id/controls_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/content_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="#eee">
+
+            <Button
+                android:id="@+id/show_overlay_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="Overlay dialog" />
+
+            <Button
+                android:id="@+id/show_blocker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Blocker" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/content_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/controls_container"
             app:layout_constraintBottom_toTopOf="@id/menu_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -30,5 +57,10 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/blocker_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </com.badoo.ribs.example.rib.switcher.SwitcherViewImpl>

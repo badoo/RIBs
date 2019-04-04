@@ -11,6 +11,7 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
@@ -93,18 +94,29 @@ abstract class Router<C : Parcelable, V : RibView>(
     }
 
     fun push(configuration: C) {
-        backStackManager.accept(Push(configuration))
+        if (configuration is Overlay) {
+            backStackManager.accept(PushOverlay(configuration))
+        } else {
+            backStackManager.accept(Push(configuration))
+        }
     }
 
     fun newRoot(configuration: C) {
         backStackManager.accept(NewRoot(configuration))
     }
 
-    fun popBackStack(): Boolean =
-        if (backStackManager.state.canPop) {
+    fun popBackStack(): Boolean {
+        return if (backStackManager.state.canPop) {
             backStackManager.accept(Pop())
             true
         } else {
             false
         }
+    }
+
+    /**
+     * Marker interface for Configurations that should be added as overlays
+     * i.e. not detaching previous Configurations
+     */
+    interface Overlay
 }

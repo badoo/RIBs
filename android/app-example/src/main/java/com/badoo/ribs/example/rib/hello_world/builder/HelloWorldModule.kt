@@ -21,8 +21,6 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun router(
-        // pass component to child rib builders, or remove if there are none
-        component: HelloWorldComponent
     ): HelloWorldRouter =
         HelloWorldRouter()
 
@@ -35,7 +33,7 @@ internal object HelloWorldModule {
     @HelloWorldScope
     @Provides
     @JvmStatic
-    @SuppressWarnings("LongParameterList")
+    @SuppressWarnings("LongParameterList", "LongMethod")
     internal fun interactor(
         router: HelloWorldRouter,
         input: ObservableSource<Input>,

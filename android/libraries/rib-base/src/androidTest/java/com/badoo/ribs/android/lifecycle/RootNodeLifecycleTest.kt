@@ -10,10 +10,10 @@ import org.junit.Test
 
 class RootNodeLifecycleTest {
     private val provider = TestRoot.Provider()
-    private val node = provider()
+    val node get() = provider.rootNode!!
 
     @get:Rule
-    val ribsRule = RibsRule { node }
+    val ribsRule = RibsRule { provider() }
 
     @Test
     fun whenActivityResumed_nodeIsAttached() {

@@ -19,16 +19,31 @@ interface TestRoot : Rib {
     class Provider(
         val viewLifecycleObserver: LifecycleObserver = LifecycleObserver(),
         val nodeLifecycleObserver: LifecycleObserver = LifecycleObserver(),
-        val childNode1: TestNode<*> = TestChildBuilder().build(),
-        val childNode2: TestNode<*> = TestChildBuilder().build()
+        private val childNode1Builder: () -> TestNode<*> = { TestChildBuilder().build() },
+        private val childNode2Builder: () -> TestNode<*> = { TestChildBuilder().build() }
     ) {
-        val router = TestRootRouter(
-            builder1 = { childNode1 },
-            builder2 = { childNode2 }
-        )
+        var childNode1: TestNode<*>? = null
+            private set
+        var childNode2: TestNode<*>? = null
+            private set
+        var rootNode: TestNode<*>? = null
+            private set
 
-        operator fun invoke(): TestNode<TestRootView> =
-            TestRootBuilder(
+        operator fun invoke(): TestNode<TestRootView> {
+            val router = TestRootRouter(
+                builder1 = {
+                    val node = childNode1Builder()
+                    childNode1 = node
+                    node
+                },
+                builder2 = {
+                    val node = childNode2Builder()
+                    childNode2 = node
+                    node
+                }
+            )
+
+            val node = TestRootBuilder(
                 object : TestRoot.Dependency {
                     override fun viewLifecycleObserver() = viewLifecycleObserver
                     override fun nodeLifecycleObserver() = nodeLifecycleObserver
@@ -36,5 +51,8 @@ interface TestRoot : Rib {
 
                 }
             ).build() as TestNode<TestRootView>
+            rootNode = node
+            return node
+        }
     }
 }

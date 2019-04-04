@@ -12,7 +12,7 @@ import com.badoo.ribs.core.view.ViewFactory
 class TestNode<V: RibView>(
     identifier: Rib,
     viewFactory: ViewFactory<V>,
-    router: Router<*, V>,
+    private val router: Router<*, V>,
     interactor: Interactor<*, V>
 ): Node<V>(
     identifier = identifier,
@@ -36,6 +36,8 @@ class TestNode<V: RibView>(
     override fun detachFromView() {
         super.detachFromView()
     }
+
+    fun getRouter() = router
 
     override fun onDetach() {
         super.onDetach()

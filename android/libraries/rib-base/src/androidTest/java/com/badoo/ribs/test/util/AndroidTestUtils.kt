@@ -34,7 +34,7 @@ fun <T: Activity> ActivityTestRule<T>.waitForActivityRestart() {
     waitFor { activityResumed }
 }
 
-fun waitFor(timeoutMillis: Long = 1000L, condition: () -> Boolean) {
+fun waitFor(timeoutMillis: Long = 10000L, condition: () -> Boolean) {
     val start = System.currentTimeMillis()
     while (!condition()) {
         if (System.currentTimeMillis() > start + timeoutMillis) {

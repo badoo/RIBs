@@ -61,21 +61,4 @@ class RootNodeLifecycleTest {
             Lifecycle.Event.ON_DESTROY
         )
     }
-
-    // Activity node attach - detach + view
-
-    // Inside a node - attach + view
-
-    // Inside a node - detach + view
-
-    // Inside a node popBack - detach + view
-
-    // After saved instance
-
-    // view
-    // permanent parts
-    // backstack
-    // last step backstack
-    // overlay + last content
-    // non-view-parented children
 }

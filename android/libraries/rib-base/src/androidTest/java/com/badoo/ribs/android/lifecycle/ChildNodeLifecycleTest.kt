@@ -2,13 +2,12 @@ package com.badoo.ribs.android.lifecycle
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.annotation.UiThreadTest
-import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
-import android.support.test.runner.lifecycle.Stage
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
-import com.badoo.ribs.test.util.waitFor
+import com.badoo.ribs.test.util.waitForActivityRestart
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,8 +23,10 @@ class ChildNodeLifecycleTest {
 
     @Test
     fun whenRootIsCreated_noChildrenAreAttached() {
-        assertThat(rootProvider.childNode1?.isAttached).isNull()
-        assertThat(rootProvider.childNode2?.isAttached).isNull()
+        assertSoftly {
+            assertThat(rootProvider.childNode1?.isAttached).isNull()
+            assertThat(rootProvider.childNode2?.isAttached).isNull()
+        }
     }
 
     @UiThreadTest
@@ -38,23 +39,17 @@ class ChildNodeLifecycleTest {
 
     @UiThreadTest
     @Test
-    fun whenConfigurationIsPushed_child2IsAttached() {
-        router.push(TestRootRouter.Configuration.Node2)
-
-        assertThat(rootProvider.childNode2?.isAttached).isTrue()
-    }
-
-    @UiThreadTest
-    @Test
     fun whenTwoConfigurationsArePushed_child1HasOnlyViewDetached() {
         router.push(TestRootRouter.Configuration.Node1)
         router.push(TestRootRouter.Configuration.Node2)
 
-        assertThat(rootProvider.childNode1?.isAttached).isTrue()
-        assertThat(rootProvider.childNode1?.isViewAttached).isFalse()
+        assertSoftly {
+            assertThat(rootProvider.childNode1?.isAttached).isTrue()
+            assertThat(rootProvider.childNode1?.isViewAttached).isFalse()
 
-        assertThat(rootProvider.childNode2?.isAttached).isTrue()
-        assertThat(rootProvider.childNode2?.isViewAttached).isTrue()
+            assertThat(rootProvider.childNode2?.isAttached).isTrue()
+            assertThat(rootProvider.childNode2?.isViewAttached).isTrue()
+        }
     }
 
     @UiThreadTest
@@ -64,8 +59,10 @@ class ChildNodeLifecycleTest {
         router.push(TestRootRouter.Configuration.Node2)
         router.popBackStack()
 
-        assertThat(rootProvider.childNode1?.isAttached).isTrue()
-        assertThat(rootProvider.childNode1?.isViewAttached).isTrue()
+        assertSoftly {
+            assertThat(rootProvider.childNode1?.isAttached).isTrue()
+            assertThat(rootProvider.childNode1?.isViewAttached).isTrue()
+        }
     }
 
     @UiThreadTest
@@ -75,8 +72,10 @@ class ChildNodeLifecycleTest {
         router.push(TestRootRouter.Configuration.Node2)
         router.popBackStack()
 
-        assertThat(rootProvider.childNode2?.isAttached).isFalse()
-        assertThat(rootProvider.childNode2?.isViewAttached).isFalse()
+        assertSoftly {
+            assertThat(rootProvider.childNode2?.isAttached).isFalse()
+            assertThat(rootProvider.childNode2?.isViewAttached).isFalse()
+        }
     }
 
     @Test
@@ -88,20 +87,11 @@ class ChildNodeLifecycleTest {
             router.push(TestRootRouter.Configuration.Node2)
         }
 
-        inst.runOnMainSync {
-            ribsRule.activity.recreate()
+        ribsRule.waitForActivityRestart()
+
+        assertSoftly {
+            assertThat(rootProvider.childNode1?.isAttached).isFalse()
+            assertThat(rootProvider.childNode2?.isAttached).isTrue()
         }
-
-        var activityResumed = false
-        ActivityLifecycleMonitorRegistry.getInstance()
-            .addLifecycleCallback { _, stage ->
-                if (stage == Stage.RESUMED) {
-                    activityResumed = true
-                }
-            }
-        waitFor { activityResumed }
-
-        assertThat(rootProvider.childNode1?.isAttached).isFalse()
-        assertThat(rootProvider.childNode2?.isAttached).isTrue()
     }
 }

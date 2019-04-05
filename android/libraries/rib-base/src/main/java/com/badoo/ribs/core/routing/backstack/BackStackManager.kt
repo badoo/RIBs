@@ -232,6 +232,6 @@ internal class BackStackManager<C : Parcelable>(
 
     override fun dispose() {
         super.dispose()
-        state.backStack.forEach { it.reset() }
+        state.backStack.forEach { it.clear() }
     }
 }

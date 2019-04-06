@@ -1,7 +1,6 @@
 package com.badoo.ribs.test.util.ribs
 
 import android.os.Bundle
-import android.view.ViewGroup
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -27,14 +26,6 @@ class TestNode<V: RibView>(
     override fun onAttach(savedInstanceState: Bundle?) {
         super.onAttach(savedInstanceState)
         isAttached = true
-    }
-
-    override fun attachToView(parentViewGroup: ViewGroup) {
-        super.attachToView(parentViewGroup)
-    }
-
-    override fun detachFromView() {
-        super.detachFromView()
     }
 
     fun getRouter() = router

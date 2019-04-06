@@ -7,7 +7,6 @@ import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import com.badoo.ribs.test.util.waitForActivityRestart
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,10 +22,8 @@ class ChildNodeLifecycleTest {
 
     @Test
     fun whenRootIsCreated_noChildrenAreAttached() {
-        assertSoftly {
-            assertThat(rootProvider.childNode1?.isAttached).isNull()
-            assertThat(rootProvider.childNode2?.isAttached).isNull()
-        }
+        assertThat(rootProvider.childNode1?.isAttached).isNull()
+        assertThat(rootProvider.childNode2?.isAttached).isNull()
     }
 
     @UiThreadTest
@@ -43,13 +40,10 @@ class ChildNodeLifecycleTest {
         router.push(TestRootRouter.Configuration.Node1)
         router.push(TestRootRouter.Configuration.Node2)
 
-        assertSoftly {
-            assertThat(rootProvider.childNode1?.isAttached).isTrue()
-            assertThat(rootProvider.childNode1?.isViewAttached).isFalse()
-
-            assertThat(rootProvider.childNode2?.isAttached).isTrue()
-            assertThat(rootProvider.childNode2?.isViewAttached).isTrue()
-        }
+        assertThat(rootProvider.childNode1?.isAttached).isTrue()
+        assertThat(rootProvider.childNode1?.isViewAttached).isFalse()
+        assertThat(rootProvider.childNode2?.isAttached).isTrue()
+        assertThat(rootProvider.childNode2?.isViewAttached).isTrue()
     }
 
     @UiThreadTest
@@ -59,10 +53,8 @@ class ChildNodeLifecycleTest {
         router.push(TestRootRouter.Configuration.Node2)
         router.popBackStack()
 
-        assertSoftly {
-            assertThat(rootProvider.childNode1?.isAttached).isTrue()
-            assertThat(rootProvider.childNode1?.isViewAttached).isTrue()
-        }
+        assertThat(rootProvider.childNode1?.isAttached).isTrue()
+        assertThat(rootProvider.childNode1?.isViewAttached).isTrue()
     }
 
     @UiThreadTest
@@ -72,10 +64,9 @@ class ChildNodeLifecycleTest {
         router.push(TestRootRouter.Configuration.Node2)
         router.popBackStack()
 
-        assertSoftly {
-            assertThat(rootProvider.childNode2?.isAttached).isFalse()
-            assertThat(rootProvider.childNode2?.isViewAttached).isFalse()
-        }
+        assertThat(rootProvider.childNode2?.isAttached).isFalse()
+        assertThat(rootProvider.childNode2?.isViewAttached).isFalse()
+
     }
 
     @Test
@@ -89,9 +80,8 @@ class ChildNodeLifecycleTest {
 
         ribsRule.waitForActivityRestart()
 
-        assertSoftly {
-            assertThat(rootProvider.childNode1?.isAttached).isFalse()
-            assertThat(rootProvider.childNode2?.isAttached).isTrue()
-        }
+        assertThat(rootProvider.childNode1?.isAttached).isFalse()
+        assertThat(rootProvider.childNode2?.isAttached).isTrue()
+
     }
 }

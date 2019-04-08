@@ -12,9 +12,7 @@ import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.dialog.toAlertDialog
 import java.util.WeakHashMap
 
-abstract class RibActivity : AppCompatActivity(),
-    IntentCreator,
-    DialogLauncher {
+abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> =
         WeakHashMap()
@@ -24,7 +22,6 @@ abstract class RibActivity : AppCompatActivity(),
     val activityStarter: ActivityStarterImpl by lazy {
         ActivityStarterImpl(
             activity = this,
-            intentCreator = this,
             requestCodeRegistry = requestCodeRegistry
         )
     }
@@ -95,10 +92,6 @@ abstract class RibActivity : AppCompatActivity(),
             super.onBackPressed()
         }
     }
-
-    override fun create(cls: Class<*>?): Intent =
-        cls?.let { Intent(this, it) } ?: Intent()
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         activityStarter.onActivityResult(requestCode, resultCode, data)

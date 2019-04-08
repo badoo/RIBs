@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarterImpl
-import com.badoo.ribs.android.IntentCreator
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.PermissionRequesterImpl
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
-class TestActivity : AppCompatActivity(), IntentCreator {
+class TestActivity : AppCompatActivity() {
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
@@ -23,7 +22,6 @@ class TestActivity : AppCompatActivity(), IntentCreator {
     private val _activityStarter: ActivityStarterImpl by lazy {
         ActivityStarterImpl(
             activity = this,
-            intentCreator = this,
             requestCodeRegistry = requestCodeRegistry
         )
     }
@@ -44,9 +42,6 @@ class TestActivity : AppCompatActivity(), IntentCreator {
         super.onSaveInstanceState(outState)
         requestCodeRegistry.onSaveInstanceState(outState)
     }
-
-    override fun create(cls: Class<*>?): Intent =
-        cls?.let { Intent(this, it) } ?: Intent()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         _activityStarter.onActivityResult(requestCode, resultCode, data)

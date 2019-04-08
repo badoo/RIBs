@@ -2,6 +2,7 @@ package com.badoo.ribs.example.rib.hello_world
 
 import android.app.Activity
 import android.arch.lifecycle.Lifecycle
+import android.content.Intent
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.binder.using
@@ -62,9 +63,8 @@ class HelloWorldInteractor(
 
     private fun launchOtherActivityForResult() {
         activityStarter.startActivityForResult(this, REQUEST_CODE_OTHER_ACTIVITY) {
-            create(OtherActivity::class.java).apply {
-                putExtra(OtherActivity.KEY_INCOMING, "Data sent by HelloWorld - 123123")
-            }
+            Intent(this, OtherActivity::class.java)
+                .putExtra(OtherActivity.KEY_INCOMING, "Data sent by HelloWorld - 123123")
         }
     }
 

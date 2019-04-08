@@ -54,6 +54,8 @@ dependencies {
     androidTestImplementation deps.androidTest.espressoIntents
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.rules
+    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation project(':libraries:rib-base-test-activity')
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

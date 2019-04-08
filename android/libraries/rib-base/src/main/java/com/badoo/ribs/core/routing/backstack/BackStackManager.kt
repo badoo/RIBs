@@ -7,8 +7,8 @@ import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.BaseFeature
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.Execute
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.ActivateLastEntry
+import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.Execute
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Effect
 import com.badoo.ribs.core.routing.backstack.BackStackManager.State
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish
@@ -228,5 +228,10 @@ internal class BackStackManager<C : Parcelable>(
                 backStack = effect.updatedBackStack
             )
         }
+    }
+
+    override fun dispose() {
+        super.dispose()
+        state.backStack.forEach { it.clear() }
     }
 }

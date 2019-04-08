@@ -50,6 +50,10 @@ class BackStackManagerTest {
         }
         backStackRibConnector = mock()
         setupBackStackManager(timeCapsuleEmpty)
+
+        backStackManager.state.backStack.forEach {
+            it.builtNodes = listOf()
+        }
     }
 
     private fun setupBackStackManager(timeCapsule: TimeCapsule<BackStackManager.State<Configuration>>) {
@@ -317,5 +321,14 @@ class BackStackManagerTest {
         val backStackBeforeShrink = backStackManager.state.backStack
         backStackManager.accept(ShrinkToBundles())
         verify(backStackRibConnector).shrinkToBundles(backStackBeforeShrink)
+    }
+
+    @Test
+    fun `backstackManager removes nodes on dispose`() {
+        backStackManager.dispose()
+
+        backStackManager.state.backStack.forEach {
+            assertEquals(null, it.builtNodes)
+        }
     }
 }

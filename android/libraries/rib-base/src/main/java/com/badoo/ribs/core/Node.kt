@@ -64,17 +64,20 @@ open class Node<V : RibView>(
 
     val tag: String = this::class.java.name
     internal val children = CopyOnWriteArrayList<Node<*>>()
+
     internal open var view: V? = null
     protected var parentViewGroup: ViewGroup? = null
+
     private var savedInstanceState: Bundle? = null
     internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
+
     internal var isViewAttached: Boolean = false
         private set
 
     fun getChildren(): List<Node<*>> =
         children.toList()
 
-    fun attachToView(parentViewGroup: ViewGroup) {
+    open fun attachToView(parentViewGroup: ViewGroup) {
         this.parentViewGroup = parentViewGroup
         isViewAttached = true
         view = createView(parentViewGroup)
@@ -111,7 +114,7 @@ open class Node<V : RibView>(
         }
     }
 
-    fun detachFromView() {
+    open fun detachFromView() {
         router.onDetachView()
 
         view?.let {

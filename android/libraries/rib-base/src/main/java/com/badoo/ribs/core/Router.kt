@@ -87,6 +87,7 @@ abstract class Router<C : Parcelable, V : RibView>(
 
     fun onDetach() {
         binder.clear()
+        backStackManager.dispose()
     }
 
     fun replace(configuration: C) {

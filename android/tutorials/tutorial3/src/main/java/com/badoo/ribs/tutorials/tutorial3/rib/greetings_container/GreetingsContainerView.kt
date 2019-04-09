@@ -3,10 +3,12 @@ package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import com.jakewharton.rxrelay2.PublishRelay
+import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.tutorials.tutorial3.R
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerView.Event
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerView.ViewModel
+import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -19,6 +21,8 @@ interface GreetingsContainerView : RibView,
     data class ViewModel(
         val i: Int = 0
     )
+
+    val childContainer: ViewGroup
 }
 
 class GreetingsContainerViewImpl private constructor(
@@ -33,6 +37,7 @@ class GreetingsContainerViewImpl private constructor(
     ) : this(context, attrs, defStyle, PublishRelay.create<Event>())
 
     override val androidView = this
+    override val childContainer: ViewGroup by lazy { findViewById<ViewGroup>(R.id.greetings_container_child) }
 
     override fun onFinishInflate() {
         super.onFinishInflate()

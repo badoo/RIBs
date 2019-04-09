@@ -6,6 +6,8 @@ import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsConta
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerInteractor
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerRouter
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerView
+import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorld
+import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.builder.HelloWorldBuilder
 import dagger.Provides
 import io.reactivex.functions.Consumer
 
@@ -19,7 +21,9 @@ internal object GreetingsContainerModule {
         // pass component to child rib builders, or remove if there are none
         component: GreetingsContainerComponent
     ): GreetingsContainerRouter =
-        GreetingsContainerRouter()
+        GreetingsContainerRouter(
+            helloWorldBuilder = HelloWorldBuilder(component)
+        )
 
     @GreetingsContainerScope
     @Provides
@@ -46,4 +50,12 @@ internal object GreetingsContainerModule {
         router = router,
         interactor = interactor
     )
+
+    @GreetingsContainerScope
+    @Provides
+    @JvmStatic
+    internal fun helloWorldOutputConsumer(
+        interactor: GreetingsContainerInteractor
+    ) : Consumer<HelloWorld.Output> =
+        interactor.helloWorldOutputConsumer
 }

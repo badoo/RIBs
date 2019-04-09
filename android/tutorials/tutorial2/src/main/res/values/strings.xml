@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Badoo RIBs Tutorial #2</string>
+    <string name="hello_world_text">Let\'s have a drink in the Foo Bar!</string>
+    <string name="hello_world_button_text">Say hello!</string>
+</resources>

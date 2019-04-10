@@ -31,7 +31,7 @@ class MenuTest {
     private val menuOutput = PublishRelay.create<Menu.Output>()
 
     @Test
-    fun initialState_noElementsAreSelected() {
+    fun initialState_noSelectedElements() {
         menu.assertNothingSelected()
     }
 

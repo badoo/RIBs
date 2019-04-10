@@ -1,17 +1,11 @@
 package com.badoo.ribs.example.rib.menu
 
-import android.support.annotation.IdRes
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.example.matcher.withTextColor
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
-import com.badoo.ribs.example.R
+import com.badoo.ribs.example.rib.menu.element.MenuElement
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -25,7 +19,7 @@ class MenuTest {
     @get:Rule
     val ribsRule = RibsRule(this::buildRib)
 
-    private val menu = MenuView()
+    private val menu = MenuElement()
 
     private val menuInput = PublishRelay.create<Menu.Input>()
     private val menuOutput = PublishRelay.create<Menu.Output>()
@@ -69,31 +63,6 @@ class MenuTest {
 
     private fun acceptInput(input: Menu.Input) = runOnUiThread {
         menuInput.accept(input)
-    }
-
-    class MenuView {
-        val helloItem = MenuItem(R.id.menu_hello)
-        val fooItem = MenuItem(R.id.menu_foo)
-        val dialogsItem = MenuItem(R.id.menu_dialogs)
-
-        private val all = listOf(helloItem, fooItem, dialogsItem)
-
-        fun assertNothingSelected() = all.forEach { it.assertIsNotSelected() }
-    }
-
-    class MenuItem(@IdRes id: Int) {
-        private val matcher = withId(id)
-
-        fun click() {
-            onView(matcher).perform(ViewActions.click())
-        }
-
-        fun assertIsSelected() {
-            onView(matcher).check(matches(withTextColor(R.color.material_blue_grey_950)))
-        }
-        fun assertIsNotSelected() {
-            onView(matcher).check(matches(withTextColor(R.color.material_grey_600)))
-        }
     }
 
     private fun buildRib(ribTestActivity: RibTestActivity) =

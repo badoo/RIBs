@@ -48,13 +48,13 @@ class SwitcherRouterTest {
         dialogToTestOverlay
     )
 
-    private val currentNode = TestNode(router)
+    private val rootNode = TestNode(router)
 
     @Test
     fun `attach - attaches menu and dialog example node`() {
         router.onAttach(null)
 
-        assertThat(currentNode.getChildren()).containsExactlyInAnyOrder(menuNode, dialogExampleNode)
+        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, dialogExampleNode)
     }
 
     @Test
@@ -72,7 +72,7 @@ class SwitcherRouterTest {
 
         router.replace(SwitcherRouter.Configuration.Hello)
 
-        assertThat(currentNode.getChildren()).containsExactlyInAnyOrder(menuNode, helloWorldNode)
+        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, helloWorldNode)
     }
 
     @Test
@@ -91,7 +91,7 @@ class SwitcherRouterTest {
 
         router.replace(SwitcherRouter.Configuration.Foo)
 
-        assertThat(currentNode.getChildren()).containsExactlyInAnyOrder(menuNode, fooBarNode)
+        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, fooBarNode)
     }
 
     @Test
@@ -119,7 +119,7 @@ class SwitcherRouterTest {
 
         router.replace(SwitcherRouter.Configuration.Blocker)
 
-        assertThat(currentNode.getChildren()).containsExactlyInAnyOrder(menuNode, blockerNode)
+        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, blockerNode)
     }
 
     private inline fun <reified B : Builder<*>> createBuilder(noinline buildCall: B.() -> Node<*>) =

@@ -71,7 +71,6 @@ class MenuTest {
             override fun menuOutput(): Consumer<Menu.Output> = menuOutput
         }).build()
 
-
     private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
         subscribe(this)
     }

@@ -26,6 +26,6 @@ class TextColorMatcher constructor(private val integerMatcher: Matcher<Int>) : B
 }
 
 fun withTextColor(@ColorRes textColor: Int): Matcher<View> {
-    val color = InstrumentationRegistry.getTargetContext().getColor(textColor)
+    val color = InstrumentationRegistry.getTargetContext().resources.getColor(textColor)
     return TextColorMatcher(Is(color))
 }

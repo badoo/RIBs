@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.menu.element.MenuElement
 import com.badoo.ribs.example.R
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
 import io.reactivex.ObservableSource
 import io.reactivex.observers.TestObserver
 import org.junit.Before
@@ -37,7 +39,7 @@ class MenuViewTest {
 
     @Test
     fun viewModelWithSelectedItem_selectsItem() {
-        menuView.accept(MenuView.ViewModel(selected = Menu.MenuItem.HelloWorld))
+        menuView.accept(MenuView.ViewModel(selected = HelloWorld))
 
         menu.helloItem.assertIsSelected()
     }
@@ -57,13 +59,13 @@ class MenuViewTest {
 
         menu.fooItem.click()
 
-        observer.assertValue(MenuView.Event.Select(Menu.MenuItem.FooBar))
+        observer.assertValue(MenuView.Event.Select(FooBar))
     }
 
     @Test
     fun bindViewModelTwoTimes_displaysOnlyLastSelection() {
-        menuView.accept(MenuView.ViewModel(selected = Menu.MenuItem.HelloWorld))
-        menuView.accept(MenuView.ViewModel(selected = Menu.MenuItem.FooBar))
+        menuView.accept(MenuView.ViewModel(selected = HelloWorld))
+        menuView.accept(MenuView.ViewModel(selected = FooBar))
 
         menu.helloItem.assertIsNotSelected()
         menu.fooItem.assertIsSelected()

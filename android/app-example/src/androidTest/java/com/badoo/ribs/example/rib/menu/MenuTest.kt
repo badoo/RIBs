@@ -4,6 +4,9 @@ import android.support.test.internal.runner.junit4.statement.UiThreadStatement.r
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.menu.element.MenuElement
 import com.jakewharton.rxrelay2.PublishRelay
@@ -31,7 +34,7 @@ class MenuTest {
 
     @Test
     fun selectItemInput_selectsItem() {
-        acceptInput(Menu.Input.SelectMenuItem(Menu.MenuItem.HelloWorld))
+        acceptInput(SelectMenuItem(HelloWorld))
 
         menu.helloItem.assertIsSelected()
     }
@@ -49,13 +52,13 @@ class MenuTest {
 
         menu.fooItem.click()
 
-        observer.assertValue(Menu.Output.MenuItemSelected(Menu.MenuItem.FooBar))
+        observer.assertValue(Menu.Output.MenuItemSelected(FooBar))
     }
 
     @Test
     fun selectItemInputTwoTimes_displaysOnlyLastSelection() {
-        acceptInput(Menu.Input.SelectMenuItem(Menu.MenuItem.HelloWorld))
-        acceptInput(Menu.Input.SelectMenuItem(Menu.MenuItem.FooBar))
+        acceptInput(SelectMenuItem(HelloWorld))
+        acceptInput(SelectMenuItem(FooBar))
 
         menu.helloItem.assertIsNotSelected()
         menu.fooItem.assertIsSelected()

@@ -11,11 +11,10 @@ import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
+import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import io.reactivex.Observable
-import io.reactivex.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -127,8 +126,4 @@ class SwitcherRouterTest {
         mock<B> {
             on(buildCall) doReturn mock(name = "Node mock for ${B::class.java.simpleName}")
         }
-
-    private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
-        subscribe(this)
-    }
 }

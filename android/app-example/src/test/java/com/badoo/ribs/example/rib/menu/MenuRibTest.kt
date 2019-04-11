@@ -1,22 +1,19 @@
 package com.badoo.ribs.example.rib.menu
 
 import android.view.ViewGroup
-import com.badoo.ribs.android.ActivityStarter
-import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.directory.Directory
 import com.badoo.ribs.core.directory.ViewCustomisationDirectory
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
+import com.badoo.ribs.example.rib.util.TestDefaultDependencies
+import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
-import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
-import io.reactivex.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -77,7 +74,7 @@ class MenuRibTest {
     private fun acceptInput(input: Menu.Input) = menuInput.accept(input)
 
     private fun buildRib() =
-        MenuBuilder(object : Menu.Dependency, Rib.Dependency {
+        MenuBuilder(object : Menu.Dependency, Rib.Dependency by TestDefaultDependencies() {
             override fun ribCustomisation(): Directory = ViewCustomisationDirectory().apply {
                 put(Menu.Customisation::class, mock {
                     on { viewFactory } doReturn object : ViewFactory<MenuView> {
@@ -86,15 +83,7 @@ class MenuRibTest {
                 })
             }
 
-            override fun activityStarter(): ActivityStarter = mock()
-            override fun permissionRequester(): PermissionRequester = mock()
-            override fun dialogLauncher(): DialogLauncher = mock()
-
             override fun menuInput(): ObservableSource<Menu.Input> = menuInput
             override fun menuOutput(): Consumer<Menu.Output> = menuOutput
         }).build()
-
-    private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
-        subscribe(this)
-    }
 }

@@ -10,10 +10,8 @@ class FooBarBuilder(dependency: FooBar.Dependency) :
 
     fun build(): Node<FooBarView> {
         val customisation = dependency.ribCustomisation().get(FooBar.Customisation::class) ?: FooBar.Customisation()
-        val component = DaggerFooBarComponent.builder()
-            .dependency(dependency)
-            .customisation(customisation)
-            .build()
+        val component = DaggerFooBarComponent.factory()
+            .create(dependency, customisation)
 
         return component.node()
     }

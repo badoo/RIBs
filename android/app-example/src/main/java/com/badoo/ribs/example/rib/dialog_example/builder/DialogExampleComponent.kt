@@ -15,14 +15,12 @@ import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 )
 internal interface DialogExampleComponent : LoremIpsum.Dependency {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: DialogExample.Dependency): Builder
-
-        fun customisation(component: DialogExample.Customisation): Builder
-
-        fun build(): DialogExampleComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: DialogExample.Dependency,
+            customisation: DialogExample.Customisation
+        ): DialogExampleComponent
     }
 
     fun node(): Node<DialogExampleView>

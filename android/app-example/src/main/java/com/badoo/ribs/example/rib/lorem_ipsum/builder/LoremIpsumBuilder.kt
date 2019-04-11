@@ -10,10 +10,8 @@ class LoremIpsumBuilder(dependency: LoremIpsum.Dependency) :
 
     fun build(): Node<LoremIpsumView> {
         val customisation = dependency.ribCustomisation().get(LoremIpsum.Customisation::class) ?: LoremIpsum.Customisation()
-        val component = DaggerLoremIpsumComponent.builder()
-            .dependency(dependency)
-            .customisation(customisation)
-            .build()
+        val component = DaggerLoremIpsumComponent.factory()
+            .create(dependency, customisation)
 
         return component.node()
     }

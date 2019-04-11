@@ -14,14 +14,12 @@ import com.badoo.ribs.example.rib.blocker.BlockerView
 )
 internal interface BlockerComponent {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: Blocker.Dependency): Builder
-
-        fun customisation(component: Blocker.Customisation): Builder
-
-        fun build(): BlockerComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: Blocker.Dependency,
+            customisation: Blocker.Customisation
+        ): BlockerComponent
     }
 
     fun node(): Node<BlockerView>

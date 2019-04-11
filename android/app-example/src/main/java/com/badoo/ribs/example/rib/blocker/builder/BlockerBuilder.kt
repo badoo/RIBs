@@ -10,11 +10,8 @@ class BlockerBuilder(dependency: Blocker.Dependency) :
 
     fun build(): Node<BlockerView> {
         val customisation = dependency.ribCustomisation().get(Blocker.Customisation::class) ?: Blocker.Customisation()
-        val component = DaggerBlockerComponent.builder()
-            .dependency(dependency)
-            .customisation(customisation)
-            .build()
-
-        return component.node()
+        return DaggerBlockerComponent.factory()
+            .create(dependency, customisation)
+            .node()
     }
 }

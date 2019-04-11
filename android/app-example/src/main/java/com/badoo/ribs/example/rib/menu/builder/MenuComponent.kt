@@ -14,14 +14,12 @@ import com.badoo.ribs.core.Node
 )
 interface MenuComponent {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: Menu.Dependency): Builder
-
-        fun customisation(customisation: Menu.Customisation): Builder
-
-        fun build(): MenuComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: Menu.Dependency,
+            customisation: Menu.Customisation
+        ): MenuComponent
     }
 
     fun node(): Node<MenuView>

@@ -25,14 +25,12 @@ internal interface SwitcherComponent :
     Blocker.Dependency,
     Menu.Dependency {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: Switcher.Dependency): Builder
-
-        fun customisation(component: Switcher.Customisation): Builder
-
-        fun build(): SwitcherComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: Switcher.Dependency,
+            customisation: Switcher.Customisation
+        ): SwitcherComponent
     }
 
     fun node(): Node<SwitcherView>

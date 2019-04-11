@@ -15,14 +15,12 @@ import com.badoo.ribs.core.Node
 )
 internal interface FooBarComponent {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: FooBar.Dependency): Builder
-
-        fun customisation(component: FooBar.Customisation): Builder
-
-        fun build(): FooBarComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: FooBar.Dependency,
+            customisation: FooBar.Customisation
+        ): FooBarComponent
     }
 
     fun node(): Node<FooBarView>

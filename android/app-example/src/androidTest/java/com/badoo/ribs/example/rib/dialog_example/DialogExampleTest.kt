@@ -19,8 +19,6 @@ class DialogExampleTest {
     private fun buildRib(ribTestActivity: RibTestActivity) =
         DialogExampleBuilder(object : DialogExample.Dependency {
             override fun ribCustomisation(): Directory = AppRibCustomisations
-            override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
-            override fun permissionRequester(): PermissionRequester = ribTestActivity.permissionRequester
             override fun dialogLauncher(): DialogLauncher = ribTestActivity
         }).build()
 

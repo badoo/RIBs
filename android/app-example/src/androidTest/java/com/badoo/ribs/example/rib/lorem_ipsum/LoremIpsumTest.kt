@@ -25,9 +25,6 @@ class LoremIpsumTest {
     private fun buildRib(ribTestActivity: RibTestActivity) =
         LoremIpsumBuilder(object : LoremIpsum.Dependency {
             override fun ribCustomisation(): Directory = AppRibCustomisations
-            override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
-            override fun permissionRequester(): PermissionRequester = ribTestActivity.permissionRequester
-            override fun dialogLauncher(): DialogLauncher = ribTestActivity
             override fun loremIpsumOutput(): Consumer<LoremIpsum.Output> = Consumer {}
         }).build()
 

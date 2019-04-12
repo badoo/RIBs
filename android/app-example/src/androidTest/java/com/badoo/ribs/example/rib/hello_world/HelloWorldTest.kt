@@ -30,8 +30,6 @@ class HelloWorldTest {
             override fun helloWorldOutput(): Consumer<HelloWorld.Output> = Consumer {}
             override fun ribCustomisation(): Directory = AppRibCustomisations
             override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
-            override fun permissionRequester(): PermissionRequester = ribTestActivity.permissionRequester
-            override fun dialogLauncher(): DialogLauncher = ribTestActivity
         }).build()
 
     @Test

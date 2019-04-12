@@ -11,9 +11,6 @@ import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 /** The sample app's single activity */
 class RootActivity : RibActivity() {
@@ -27,13 +24,10 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(): Node<*> {
-        val rootBuilder =
-            SwitcherBuilder(object : Switcher.Dependency {
+        val rootBuilder = SwitcherBuilder(object : Switcher.Dependency {
                 override fun ribCustomisation(): Directory = AppRibCustomisations
                 override fun activityStarter(): ActivityStarter = activityStarter
                 override fun permissionRequester(): PermissionRequester = permissionRequester
-                override fun switcherInput(): ObservableSource<Switcher.Input> = Observable.empty()
-                override fun switcherOutput(): Consumer<Switcher.Output> = Consumer { }
                 override fun dialogLauncher(): DialogLauncher = this@RootActivity
             })
 

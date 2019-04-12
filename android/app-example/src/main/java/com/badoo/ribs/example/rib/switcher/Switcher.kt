@@ -8,8 +8,6 @@ import com.badoo.ribs.core.directory.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.example.R
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 interface Switcher : Rib {
 
@@ -17,14 +15,7 @@ interface Switcher : Rib {
         CanProvideActivityStarter,
         CanProvidePermissionRequester,
         CanProvideDialogLauncher,
-        CanProvideRibCustomisation {
-        fun switcherInput(): ObservableSource<Input>
-        fun switcherOutput(): Consumer<Output>
-    }
-
-    sealed class Input
-
-    sealed class Output
+        CanProvideRibCustomisation
 
     class Customisation(
         val viewFactory: ViewFactory<SwitcherView> = inflateOnDemand(

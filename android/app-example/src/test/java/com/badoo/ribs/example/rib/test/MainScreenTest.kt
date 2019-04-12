@@ -36,6 +36,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
+/**
+ * Integration test of multiple RIBs that doesn't include real UI
+ * It is similar to single RIB integration test without real view implementation but includes RIB subtree.
+ * It may be helpful if you want to test behaviour of multiple RIBs in composition.
+ */
 @RunWith(RobolectricTestRunner::class)
 class MainScreenTest {
 

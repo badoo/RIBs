@@ -17,6 +17,11 @@ import io.reactivex.observers.TestObserver
 import org.junit.Rule
 import org.junit.Test
 
+/**
+ * UI integration test that checks all RIB components in isolation
+ * It interacts with the RIB using real UI (button clicks/swipes) and RIB input,
+ * it can make assertions based on UI state and produced output
+ */
 class MenuTest {
 
     @get:Rule

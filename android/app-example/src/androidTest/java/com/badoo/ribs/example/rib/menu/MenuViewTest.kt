@@ -14,6 +14,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+/**
+ * UI test that checks only view part of menu RIB
+ * It may be useful in case of complex view or if it is expensive
+ * to cover all required cases for UI part with higher level
+ * tests like UI integration test for the whole RIB
+ * In this test we construct and apply a view model to the view and then
+ * we make assertions on real UI elements using Espresso
+ */
 class MenuViewTest {
 
     @get:Rule

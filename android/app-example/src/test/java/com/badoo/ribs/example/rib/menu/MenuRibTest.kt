@@ -19,6 +19,13 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
+/**
+ * Integration test that checks composition of all RIB components except view
+ * It is similar to UI integration test but instead of using real UI
+ * we use test implementation: we do interactions using UI events and
+ * assertions based on view model emissions
+ * It runs a lot faster than UI test as it doesn't require real device or emulator
+ */
 class MenuRibTest {
 
     private val menuView = TestMenuView()

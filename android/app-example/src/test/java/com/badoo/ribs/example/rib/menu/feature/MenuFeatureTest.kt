@@ -4,6 +4,11 @@ import com.badoo.ribs.example.rib.menu.Menu
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
+/**
+ * Unit tests for a feature that should check core business logic of a RIB
+ * These tests are the fastest by execution time and they show
+ * the most specific failure reason if test fails
+ */
 class MenuFeatureTest {
 
     @Test

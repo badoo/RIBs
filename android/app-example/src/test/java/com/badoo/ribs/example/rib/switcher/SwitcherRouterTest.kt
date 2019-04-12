@@ -25,6 +25,10 @@ import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
+/**
+ * Unit tests that check only router
+ * It may be helpful in case of complex routing logic
+ */
 class SwitcherRouterTest {
 
     private val fooBarBuilder = createBuilder<FooBarBuilder> { build() }

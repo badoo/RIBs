@@ -1,6 +1,8 @@
 package com.badoo.ribs.example.rib.hello_world
 
+import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.directory.CanProvideRibCustomisation
 import com.badoo.ribs.core.directory.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -9,7 +11,7 @@ import io.reactivex.functions.Consumer
 
 interface HelloWorld : Rib {
 
-    interface Dependency : Rib.Dependency {
+    interface Dependency : CanProvideActivityStarter, CanProvideRibCustomisation {
         fun helloWorldInput(): ObservableSource<Input>
         fun helloWorldOutput(): Consumer<Output>
     }

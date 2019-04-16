@@ -2,6 +2,7 @@ package com.badoo.ribs.example.rib.menu
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.directory.CanProvideRibCustomisation
 import com.badoo.ribs.core.directory.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -11,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 
 interface Menu : Rib {
 
-    interface Dependency : Rib.Dependency {
+    interface Dependency : CanProvideRibCustomisation {
         fun menuInput(): ObservableSource<Input>
         fun menuOutput(): Consumer<Output>
     }

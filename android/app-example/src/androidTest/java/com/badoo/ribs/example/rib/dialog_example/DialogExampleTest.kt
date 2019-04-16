@@ -2,8 +2,6 @@ package com.badoo.ribs.example.rib.dialog_example
 
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.android.ActivityStarter
-import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.core.directory.Directory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.app.AppRibCustomisations

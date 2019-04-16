@@ -10,10 +10,8 @@ class MenuBuilder(dependency: Menu.Dependency) :
 
     fun build(): Node<MenuView> {
         val customisation = dependency.ribCustomisation().get(Menu.Customisation::class) ?: Menu.Customisation()
-        val component = DaggerMenuComponent.builder()
-            .dependency(dependency)
-            .customisation(customisation)
-            .build()
+        val component = DaggerMenuComponent.factory()
+            .create(dependency, customisation)
 
         return component.node()
     }

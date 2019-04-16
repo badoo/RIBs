@@ -15,14 +15,12 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 )
 internal interface HelloWorldComponent {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: HelloWorld.Dependency): Builder
-
-        fun customisation(component: HelloWorld.Customisation): Builder
-
-        fun build(): HelloWorldComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: HelloWorld.Dependency,
+            customisation: HelloWorld.Customisation
+        ): HelloWorldComponent
     }
 
     fun node(): Node<HelloWorldView>

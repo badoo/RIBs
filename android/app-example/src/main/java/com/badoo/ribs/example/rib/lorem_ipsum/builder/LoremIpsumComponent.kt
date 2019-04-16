@@ -14,14 +14,12 @@ import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumView
 )
 internal interface LoremIpsumComponent {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: LoremIpsum.Dependency): Builder
-
-        fun customisation(component: LoremIpsum.Customisation): Builder
-
-        fun build(): LoremIpsumComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: LoremIpsum.Dependency,
+            customisation: LoremIpsum.Customisation
+        ): LoremIpsumComponent
     }
 
     fun node(): Node<LoremIpsumView>

@@ -10,10 +10,8 @@ class HelloWorldBuilder(dependency: HelloWorld.Dependency) :
 
     fun build(): Node<HelloWorldView> {
         val customisation = dependency.ribCustomisation().get(HelloWorld.Customisation::class) ?: HelloWorld.Customisation()
-        val component = DaggerHelloWorldComponent.builder()
-            .dependency(dependency)
-            .customisation(customisation)
-            .build()
+        val component = DaggerHelloWorldComponent.factory()
+            .create(dependency, customisation)
 
         return component.node()
     }

@@ -13,6 +13,7 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.ViewEventToWish
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration
+import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.StateToViewModel
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -35,8 +36,9 @@ class FooBarInteractor(
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
         viewLifecycle.createDestroy {
-            bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
+            bind(feature to view using StateToViewModel)
             bind(view to feature using ViewEventToWish)
+            bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
         }
     }
 }

@@ -10,11 +10,9 @@ class SwitcherBuilder(dependency: Switcher.Dependency) :
 
     fun build(): Node<SwitcherView> {
         val customisation = dependency.ribCustomisation().get(Switcher.Customisation::class) ?: Switcher.Customisation()
-        val component = DaggerSwitcherComponent.builder()
-            .dependency(dependency)
-            .customisation(customisation)
-            .build()
-
+        val component =  DaggerSwitcherComponent.factory()
+            .create(dependency, customisation)
+        
         return component.node()
     }
 }

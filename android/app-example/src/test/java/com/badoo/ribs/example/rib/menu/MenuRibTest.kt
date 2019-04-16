@@ -5,6 +5,11 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.directory.Directory
 import com.badoo.ribs.core.directory.ViewCustomisationDirectory
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
+import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
+import com.badoo.ribs.example.rib.menu.MenuView.Event.Select
+import com.badoo.ribs.example.rib.menu.Menu.Output.MenuItemSelected
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.util.StaticViewFactory
 import com.badoo.ribs.example.rib.util.TestDefaultDependencies
 import com.badoo.ribs.example.rib.util.TestView
@@ -47,28 +52,28 @@ class MenuRibTest {
     fun selectItemInput_selectsItem() {
         val viewModelObserver = menuView.viewModel.subscribeOnTestObserver()
 
-        menuInput.accept(Menu.Input.SelectMenuItem(Menu.MenuItem.HelloWorld))
+        menuInput.accept(SelectMenuItem(HelloWorld))
 
-        viewModelObserver.assertValue(MenuView.ViewModel(selected = Menu.MenuItem.HelloWorld))
+        viewModelObserver.assertValue(MenuView.ViewModel(selected = HelloWorld))
     }
 
     @Test
     fun itemClickUiEvent_producesSelectOutput() {
         val outputObserver = menuOutput.subscribeOnTestObserver()
 
-        menuView.uiEvents.accept(MenuView.Event.Select(Menu.MenuItem.FooBar))
+        menuView.uiEvents.accept(Select(FooBar))
 
-        outputObserver.assertValue(Menu.Output.MenuItemSelected(Menu.MenuItem.FooBar))
+        outputObserver.assertValue(MenuItemSelected(FooBar))
     }
 
     @Test
     fun selectItemInputTwoTimes_viewModelContainsOnlyLastSelection() {
         val viewModelObserver = menuView.viewModel.subscribeOnTestObserver()
 
-        menuInput.accept((Menu.Input.SelectMenuItem(Menu.MenuItem.HelloWorld)))
-        menuInput.accept(Menu.Input.SelectMenuItem(Menu.MenuItem.FooBar))
+        menuInput.accept((SelectMenuItem(HelloWorld)))
+        menuInput.accept(SelectMenuItem(FooBar))
 
-        assertThat(viewModelObserver.values()).last().isEqualTo(MenuView.ViewModel(Menu.MenuItem.FooBar))
+        assertThat(viewModelObserver.values()).last().isEqualTo(MenuView.ViewModel(FooBar))
     }
 
     private fun buildRib() =

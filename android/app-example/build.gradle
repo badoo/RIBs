@@ -43,7 +43,6 @@ dependencies {
     implementation deps.support.percent
 
     implementation project(":libraries:rib-android")
-//    implementation project(":libraries:rib-workflow")
 
     implementation deps.external.dagger
     implementation deps.external.mviCore
@@ -52,8 +51,9 @@ dependencies {
     implementation deps.external.rxandroid2
 
     testImplementation deps.external.roboelectricBase
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockitoKotlin
+    testImplementation deps.test.assertj
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

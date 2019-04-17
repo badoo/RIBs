@@ -4,10 +4,12 @@ import android.app.Activity.RESULT_OK
 import android.app.Instrumentation
 import android.content.Intent
 import android.view.ViewGroup
+import com.badoo.ribs.android.CanProvideActivityStarter
+import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.directory.Directory
 import com.badoo.ribs.core.directory.ViewCustomisationDirectory
+import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
@@ -27,9 +29,6 @@ import com.badoo.ribs.example.rib.util.component
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -91,7 +90,10 @@ class MainScreenTest {
     }
 
     private fun buildRootRib() =
-        SwitcherBuilder(object : Switcher.Dependency, Rib.Dependency by dependencies {
+        SwitcherBuilder(object : Switcher.Dependency,
+            CanProvideActivityStarter by dependencies,
+            CanProvidePermissionRequester by dependencies,
+            CanProvideDialogLauncher by dependencies {
 
             override fun ribCustomisation(): Directory = ViewCustomisationDirectory().apply {
                 put(Menu.Customisation::class, mock {
@@ -110,10 +112,6 @@ class MainScreenTest {
                     on { viewFactory } doReturn StaticViewFactory<HelloWorldView>(helloWorldView)
                 })
             }
-
-            override fun switcherInput(): ObservableSource<Switcher.Input> = Observable.empty()
-            override fun switcherOutput(): Consumer<Switcher.Output> = Consumer { }
-
         }).build()
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView

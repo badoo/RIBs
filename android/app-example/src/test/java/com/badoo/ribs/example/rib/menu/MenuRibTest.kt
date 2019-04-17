@@ -1,17 +1,16 @@
 package com.badoo.ribs.example.rib.menu
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.directory.CanProvideRibCustomisation
 import com.badoo.ribs.core.directory.Directory
 import com.badoo.ribs.core.directory.ViewCustomisationDirectory
-import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
-import com.badoo.ribs.example.rib.menu.MenuView.Event.Select
-import com.badoo.ribs.example.rib.menu.Menu.Output.MenuItemSelected
-import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
+import com.badoo.ribs.example.rib.menu.Menu.Output.MenuItemSelected
+import com.badoo.ribs.example.rib.menu.MenuView.Event.Select
+import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.util.StaticViewFactory
-import com.badoo.ribs.example.rib.util.TestDefaultDependencies
 import com.badoo.ribs.example.rib.util.TestView
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.jakewharton.rxrelay2.PublishRelay
@@ -77,7 +76,7 @@ class MenuRibTest {
     }
 
     private fun buildRib() =
-        MenuBuilder(object : Menu.Dependency, Rib.Dependency by TestDefaultDependencies() {
+        MenuBuilder(object : Menu.Dependency, CanProvideRibCustomisation {
             override fun ribCustomisation(): Directory = ViewCustomisationDirectory().apply {
                 put(Menu.Customisation::class, mock {
                     on { viewFactory } doReturn StaticViewFactory<MenuView>(menuView)

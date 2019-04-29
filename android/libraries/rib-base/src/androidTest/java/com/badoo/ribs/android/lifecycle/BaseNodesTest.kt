@@ -7,7 +7,7 @@ import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.NoOpDialogLauncher
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Java6Assertions.assertThat
 
 abstract class BaseNodesTest(
     initialConfiguration: TestRootRouter.Configuration = TestRootRouter.Configuration.NoOp,

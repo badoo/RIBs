@@ -1,10 +1,14 @@
 package com.badoo.ribs.test.util.ribs.root
 
 import android.arch.lifecycle.Lifecycle
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
+import com.badoo.ribs.test.util.NoOpDialogLauncher
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.builder.TestChildBuilder
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import io.reactivex.observers.TestObserver
 
@@ -17,11 +21,14 @@ interface TestRoot : Rib {
     }
 
     class Provider(
-        val viewLifecycleObserver: LifecycleObserver = LifecycleObserver(),
-        val nodeLifecycleObserver: LifecycleObserver = LifecycleObserver(),
-        private val childNode1Builder: () -> TestNode<*> = { TestChildBuilder().build() },
-        private val childNode2Builder: () -> TestNode<*> = { TestChildBuilder().build() }
+        private val initialConfiguration: Configuration = Configuration.NoOp,
+        private val permanentParts: List<() -> Node<*>> = emptyList(),
+        private val dialogLauncher: DialogLauncher = NoOpDialogLauncher()
     ) {
+
+        val viewLifecycleObserver: LifecycleObserver = LifecycleObserver()
+        val nodeLifecycleObserver: LifecycleObserver = LifecycleObserver()
+
         var childNode1: TestNode<*>? = null
             private set
         var childNode2: TestNode<*>? = null
@@ -29,22 +36,29 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
+        val childNode1Builder: () -> TestNode<*> = {
+            val node = TestChildBuilder().build()
+            childNode1 = node
+            node
+        }
+
+        val childNode2Builder: () -> TestNode<*> = {
+            val node = TestChildBuilder().build()
+            childNode2 = node
+            node
+        }
+
         operator fun invoke(): TestNode<TestRootView> {
             val router = TestRootRouter(
-                builder1 = {
-                    val node = childNode1Builder()
-                    childNode1 = node
-                    node
-                },
-                builder2 = {
-                    val node = childNode2Builder()
-                    childNode2 = node
-                    node
-                }
+                builder1 = childNode1Builder,
+                builder2 = childNode2Builder,
+                initialConfiguration = initialConfiguration,
+                permanentParts = permanentParts,
+                dialogLauncher = dialogLauncher
             )
 
             val node = TestRootBuilder(
-                object : TestRoot.Dependency {
+                object : Dependency {
                     override fun viewLifecycleObserver() = viewLifecycleObserver
                     override fun nodeLifecycleObserver() = nodeLifecycleObserver
                     override fun router() = router

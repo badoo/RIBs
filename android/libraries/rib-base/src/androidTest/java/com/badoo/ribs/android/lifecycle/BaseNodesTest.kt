@@ -8,7 +8,6 @@ import com.badoo.ribs.test.util.NoOpDialogLauncher
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.SoftAssertions.assertSoftly
 
 abstract class BaseNodesTest(
     initialConfiguration: TestRootRouter.Configuration = TestRootRouter.Configuration.NoOp,
@@ -50,11 +49,9 @@ abstract class BaseNodesTest(
     }
 
     protected fun makeAssertions(expected: Then) {
-        assertSoftly {
-            assertThat(rootProvider.childNode1?.isAttached).describedAs("is child node 1 attached").isEqualTo(expected.node1?.attached)
-            assertThat(rootProvider.childNode1?.isViewAttached).describedAs("is child node 1 view attached").isEqualTo(expected.node1?.viewAttached)
-            assertThat(rootProvider.childNode2?.isAttached).describedAs("is child node 2 attached").isEqualTo(expected.node2?.attached)
-            assertThat(rootProvider.childNode2?.isViewAttached).describedAs("is child node 2 view attached").isEqualTo(expected.node2?.viewAttached)
-        }
+        assertThat(rootProvider.childNode1?.isAttached).describedAs("is child node 1 attached").isEqualTo(expected.node1?.attached)
+        assertThat(rootProvider.childNode1?.isViewAttached).describedAs("is child node 1 view attached").isEqualTo(expected.node1?.viewAttached)
+        assertThat(rootProvider.childNode2?.isAttached).describedAs("is child node 2 attached").isEqualTo(expected.node2?.attached)
+        assertThat(rootProvider.childNode2?.isViewAttached).describedAs("is child node 2 view attached").isEqualTo(expected.node2?.viewAttached)
     }
 }

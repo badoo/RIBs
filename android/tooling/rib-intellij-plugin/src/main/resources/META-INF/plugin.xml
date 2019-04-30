@@ -23,6 +23,7 @@
     <idea-version since-build="163"/>
 
     <depends optional="false">org.jetbrains.android</depends>
+    <depends>org.jetbrains.kotlin</depends>
 
     <actions>
         <group description="RIB architecture templates" id="RibActionGroup" text="RIB">
@@ -37,5 +38,9 @@
             </action>
         </group>
     </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <iconProvider implementation="com.badoo.ribs.plugin.icons.RIBFileIconProvider" order="first"/>
+    </extensions>
 
 </idea-plugin>

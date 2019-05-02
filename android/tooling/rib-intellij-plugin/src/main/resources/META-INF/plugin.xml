@@ -40,7 +40,7 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <iconProvider implementation="com.badoo.ribs.plugin.icons.RIBFileIconProvider" order="first"/>
+        <iconProvider implementation="com.badoo.ribs.plugin.icons.RIBIconProvider" order="first"/>
     </extensions>
 
 </idea-plugin>

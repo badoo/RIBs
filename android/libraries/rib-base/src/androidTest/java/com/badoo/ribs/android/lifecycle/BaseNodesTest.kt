@@ -31,7 +31,7 @@ abstract class BaseNodesTest(
         override fun toString() = "attached = $attached, view attached = $viewAttached"
     }
 
-    class Then(
+    class ExpectedState(
         val node1: NodeState?,
         val node2: NodeState?
     ) {
@@ -48,7 +48,7 @@ abstract class BaseNodesTest(
         NODE_2 -> ({ rootProvider.childNode2Builder() })
     }
 
-    protected fun makeAssertions(expected: Then) {
+    protected fun makeAssertions(expected: ExpectedState) {
         assertThat(rootProvider.childNode1?.isAttached).describedAs("is child node 1 attached").isEqualTo(expected.node1?.attached)
         assertThat(rootProvider.childNode1?.isViewAttached).describedAs("is child node 1 view attached").isEqualTo(expected.node1?.viewAttached)
         assertThat(rootProvider.childNode2?.isAttached).describedAs("is child node 2 attached").isEqualTo(expected.node2?.attached)

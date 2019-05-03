@@ -19,7 +19,7 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
-class RestartActivityNodesStateTest(private val test: Pair<When, Then>) : BaseNodesTest() {
+class RestartActivityNodesStateTest(private val test: Pair<When, ExpectedState>) : BaseNodesTest() {
 
     companion object {
         @JvmStatic
@@ -27,55 +27,55 @@ class RestartActivityNodesStateTest(private val test: Pair<When, Then>) : BaseNo
         @Parameters(name = "{0}")
         fun data() = listOf(
             When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2AsOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2AsDialog)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
 
             When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
 
 
             When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2AsOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2AsDialog)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
 
             When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
 
 
             When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2AsOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2AsDialog)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
 
             When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
 
 
             When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2AsOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2AsDialog)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
 
             When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to Then(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false))
+                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false))
         )
     }
 

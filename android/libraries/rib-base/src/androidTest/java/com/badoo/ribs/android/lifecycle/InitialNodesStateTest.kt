@@ -14,7 +14,7 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
-class InitialNodesStateTest(private val test: Pair<When, Then>) : BaseNodesTest(
+class InitialNodesStateTest(private val test: Pair<When, ExpectedState>) : BaseNodesTest(
     initialConfiguration = test.first.initialConfiguration,
     permanentParts = test.first.permanentParts
 ) {
@@ -26,19 +26,19 @@ class InitialNodesStateTest(private val test: Pair<When, Then>) : BaseNodesTest(
         fun data() = listOf(
 
             When(initialConfiguration = NoOp, permanentParts = emptyList())
-                to Then(node1 = null, node2 = null),
+                to ExpectedState(node1 = null, node2 = null),
 
             When(initialConfiguration = AttachNode1, permanentParts = emptyList())
-                to Then(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
+                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
 
             When(initialConfiguration = NoOp, permanentParts = listOf(NODE_1))
-                to Then(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
+                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
 
             When(initialConfiguration = AttachNode1, permanentParts = listOf(NODE_2))
-                to Then(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
+                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
 
             When(initialConfiguration = AttachNode1And2, permanentParts = emptyList())
-                to Then(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true))
+                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true))
         )
     }
 

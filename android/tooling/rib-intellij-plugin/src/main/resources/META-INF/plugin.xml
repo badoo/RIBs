@@ -37,6 +37,14 @@
                 <add-to-group anchor="last" group-id="NewGroup"/>
             </action>
         </group>
+        <group description="RIB architecture context menu" id="RibContextActionGroup" text="Rename RIB">
+            <action
+                class="com.badoo.ribs.plugin.action.RibRenameAction"
+                id="RenameRib"
+                text="Rename RIB...">
+                <add-to-group group-id="RefactoringMenu" relative-to-action="RenameElement" anchor="after"/>
+            </action>
+        </group>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">

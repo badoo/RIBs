@@ -1,6 +1,5 @@
 package com.badoo.ribs.plugin.generator
 
-import com.badoo.ribs.plugin.action.SourceSetDirectoriesProvider
 import com.badoo.ribs.plugin.template.file.TemplateFile
 import com.badoo.ribs.plugin.util.applyReplacements
 import com.intellij.ide.util.DirectoryUtil

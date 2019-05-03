@@ -1,12 +1,8 @@
-package com.badoo.ribs.plugin.action
+package com.badoo.ribs.plugin.generator
 
 import com.android.builder.model.AndroidProject
 import com.android.tools.idea.gradle.project.model.AndroidModuleModel
-import com.badoo.ribs.plugin.generator.SourceSet
-import com.badoo.ribs.plugin.generator.SourceSet.ANDROID_TEST
-import com.badoo.ribs.plugin.generator.SourceSet.MAIN
-import com.badoo.ribs.plugin.generator.SourceSet.RESOURCES
-import com.badoo.ribs.plugin.generator.SourceSet.TEST
+import com.badoo.ribs.plugin.generator.SourceSet.*
 import com.badoo.ribs.plugin.util.toPsiDirectory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem

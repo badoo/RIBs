@@ -39,6 +39,8 @@ fun <T : Activity> ActivityTestRule<T>.restartActivitySync() {
     resumedLatch.await(DEFAULT_CONDITION_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS)
 }
 
+fun runOnMainSync(block: () -> Unit) = InstrumentationRegistry.getInstrumentation().runOnMainSync(block)
+
 fun waitFor(timeoutMillis: Long = DEFAULT_CONDITION_TIMEOUT_MILLISECONDS, condition: () -> Boolean) {
     val start = System.currentTimeMillis()
     while (!condition()) {

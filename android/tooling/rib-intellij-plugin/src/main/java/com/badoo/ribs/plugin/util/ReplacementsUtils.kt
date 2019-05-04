@@ -16,8 +16,8 @@ private fun getPossibleModifications(capitalizedCamelCase: String): List<String>
     capitalizedCamelCase.toPackageName()
 )
 
-private fun String.toSnakeCase() = toLowerCaseWithSeparator('_')
-private fun String.toPackageName() = toLowerCaseWithSeparator('.')
+fun String.toSnakeCase() = toLowerCaseWithSeparator('_')
+fun String.toPackageName() = toLowerCaseWithSeparator('.')
 
 private fun String.toLowerCaseWithSeparator(separator: Char): String {
     val text = StringBuilder()

@@ -9,6 +9,7 @@ import com.badoo.ribs.plugin.generator.SourceSet.TEST
 import com.badoo.ribs.plugin.util.toPsiDirectory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiDirectory
 import com.intellij.refactoring.PackageWrapper
 import com.intellij.refactoring.util.RefactoringUtil
@@ -45,7 +46,7 @@ class SourceSetDirectoriesProvider(
         return if (createIfNotFound) {
             RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, virtualFile)
         } else {
-            virtualFile?.toPsiDirectory(project)!!
+            targetPackage.directories.first { VfsUtil.isAncestor(virtualFile!!, it.virtualFile, false) }
         }
     }
 }

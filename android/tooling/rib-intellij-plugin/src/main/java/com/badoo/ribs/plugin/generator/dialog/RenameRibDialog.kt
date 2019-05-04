@@ -6,6 +6,7 @@ import com.badoo.ribs.plugin.generator.SourceSetDirectoriesProvider
 import com.badoo.ribs.plugin.util.addStringReplacement
 import com.badoo.ribs.plugin.util.applyReplacements
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.refactoring.rename.RenameDialog
@@ -18,12 +19,12 @@ import javax.swing.JPanel
 
 class RenameRibDialog(
     project: Project,
-    psiElement: PsiElement,
+    private val directory: PsiDirectory,
     private val sourceSetDirectoriesProvider: SourceSetDirectoriesProvider,
     private val ribName: String
 ): RenameDialog(
     project,
-    psiElement,
+    directory,
     null,
     null
 ) {
@@ -38,8 +39,8 @@ class RenameRibDialog(
 
         val renameProcessor = RenameProcessor(
             project,
-            psiElement,
-            ribName.applyReplacements(replacements),
+            directory,
+            directory.name.applyReplacements(replacements),
             false,
             false
         )
@@ -62,7 +63,7 @@ class RenameRibDialog(
         }
 
         val directory = sourceSetDirectoriesProvider.getDirectory(sourceSet, createIfNotFound = false)
-        directory.registerForRename(newName)
+        directory.registerForRename(directory.name)
 
         directory.acceptChildren(object : KtTreeVisitorVoid() {
             override fun visitFile(file: PsiFile) {

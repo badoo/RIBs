@@ -4,7 +4,6 @@ import com.badoo.ribs.plugin.template.Token
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Test
-import java.lang.IllegalArgumentException
 
 class TemplateReplacementsGeneratorTest {
 

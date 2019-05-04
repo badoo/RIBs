@@ -2,7 +2,6 @@ package com.badoo.ribs.plugin.generator
 
 import com.badoo.ribs.plugin.template.Token
 import com.badoo.ribs.plugin.util.addTokenReplacements
-import java.lang.IllegalArgumentException
 
 fun createReplacements(templatePackage: String,
                        targetPackage: String,

@@ -2,7 +2,7 @@ package com.badoo.ribs.plugin.action
 
 import com.badoo.ribs.plugin.generator.SourceSetDirectoriesProvider
 import com.badoo.ribs.plugin.generator.dialog.RenameRibDialog
-import com.badoo.ribs.plugin.icons.RIBIconProvider
+import com.badoo.ribs.plugin.util.getRibName
 import com.intellij.facet.FacetManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -20,8 +20,7 @@ class RibRenameAction : AnAction() {
         val module = ModuleUtilCore.findModuleForPsiElement(element)!!
         val facet = FacetManager.getInstance(module).getFacetByType(AndroidFacet.ID)!!
         val packageWrapper = PackageWrapper(element.getPackage())
-        val ribName = element.getUserData(RIBIconProvider.RIB_NAME_KEY)!!
-
+        val ribName = element.getRibName()!!
 
         val sourceSetDirectoryProvider = SourceSetDirectoriesProvider(
             project,
@@ -42,6 +41,6 @@ class RibRenameAction : AnAction() {
         super.update(e)
         val element = e.getData(CommonDataKeys.PSI_ELEMENT)
 
-        e.presentation.isEnabledAndVisible = element?.getUserData(RIBIconProvider.IS_RIB_KEY) == true
+        e.presentation.isEnabledAndVisible = element is PsiDirectory && element.getRibName() != null
     }
 }

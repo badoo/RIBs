@@ -49,6 +49,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <iconProvider implementation="com.badoo.ribs.plugin.icons.RIBIconProvider" order="first"/>
+        <fileBasedIndex implementation="com.badoo.ribs.plugin.index.RIBIndexer" />
     </extensions>
 
 </idea-plugin>

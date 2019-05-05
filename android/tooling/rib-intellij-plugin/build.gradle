@@ -59,7 +59,7 @@ ext.pluginXml = new XmlSlurper().parse(file("src/main/resources/META-INF/plugin.
 version = pluginXml.version
 
 intellij {
-    plugins = ['android', 'kotlin']
+    plugins = ['android', deps.build.kotlinIdeaPlugin]
     version = deps.versions.intellij
     updateSinceUntilBuild false
     sandboxDirectory "${project.gradle.gradleHomeDir}/caches/intellij"

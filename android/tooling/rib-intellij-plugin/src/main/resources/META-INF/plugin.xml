@@ -23,7 +23,7 @@
     <idea-version since-build="163"/>
 
     <depends optional="false">org.jetbrains.android</depends>
-    <depends>org.jetbrains.kotlin</depends>
+    <depends optional="false">org.jetbrains.kotlin</depends>
 
     <actions>
         <group description="RIB architecture templates" id="RibActionGroup" text="RIB">

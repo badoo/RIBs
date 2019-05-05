@@ -10,8 +10,8 @@ import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
 import org.jetbrains.kotlin.idea.KotlinFileType
-import org.jetbrains.kotlin.idea.core.util.readString
-import org.jetbrains.kotlin.idea.core.util.writeString
+import org.jetbrains.kotlin.idea.core.util.readNullable
+import org.jetbrains.kotlin.idea.core.util.writeNullable
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtVisitorVoid
 import org.jetbrains.kotlin.psi.psiUtil.getSuperNames
@@ -22,15 +22,15 @@ class RIBIndexer : FileBasedIndexExtension<String, String?>() {
     override fun getValueExternalizer(): DataExternalizer<String?> =
         object : DataExternalizer<String?> {
             override fun save(out: DataOutput, value: String?) {
-                out.writeBoolean(value != null)
-                value?.let { out.writeString(value) }
+                out.writeNullable(value) {
+                    writeUTF(value)
+                }
             }
 
             override fun read(input: DataInput): String? {
-                if (!input.readBoolean()) {
-                    return null
+                return input.readNullable {
+                    readUTF()
                 }
-                return input.readString()
             }
 
         }

@@ -32,14 +32,7 @@ class RIBIndexer : FileBasedIndexExtension<String, String?>() {
                     readUTF()
                 }
             }
-
         }
-
-    override fun getName(): ID<String, String?> = INDEX_ID
-
-    override fun getVersion(): Int = 0
-
-    override fun dependsOnFileContent(): Boolean = true
 
     override fun getIndexer(): DataIndexer<String, String?, FileContent> =
         DataIndexer { content ->
@@ -68,6 +61,15 @@ class RIBIndexer : FileBasedIndexExtension<String, String?>() {
                 }
             }
         }
+
+    override fun getName(): ID<String, String?> = INDEX_ID
+
+    /**
+     * Don't forget to increment if you changing something here, otherwise the values will not be updated
+     */
+    override fun getVersion(): Int = 0
+
+    override fun dependsOnFileContent(): Boolean = true
 
     override fun getInputFilter(): FileBasedIndex.InputFilter =
         DefaultFileTypeSpecificInputFilter(KotlinFileType.INSTANCE)

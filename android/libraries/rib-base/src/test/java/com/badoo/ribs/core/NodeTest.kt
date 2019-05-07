@@ -359,7 +359,7 @@ class NodeTest {
 
     @Test
     fun `attachChildView() results in children added to parentViewGroup given Router does not define something else `() {
-        whenever(router.getParentViewForChild(any(), anyOrNull())).thenReturn(null)
+        whenever(view.getParentViewForChild(any())).thenReturn(null)
         val mocks = createAndAttachChildMocks(3)
         node.attachToView(parentViewGroup)
         mocks.forEach {
@@ -375,9 +375,9 @@ class NodeTest {
         val n3 = object : RandomOtherNode3 {}
         val mocks = createAndAttachChildMocks(3, mutableListOf(n1, n2, n3))
 
-        whenever(router.getParentViewForChild(n1, view)).thenReturn(someViewGroup1)
-        whenever(router.getParentViewForChild(n2, view)).thenReturn(someViewGroup2)
-        whenever(router.getParentViewForChild(n3, view)).thenReturn(someViewGroup3)
+        whenever(view.getParentViewForChild(n1)).thenReturn(someViewGroup1)
+        whenever(view.getParentViewForChild(n2)).thenReturn(someViewGroup2)
+        whenever(view.getParentViewForChild(n3)).thenReturn(someViewGroup3)
 
         node.attachToView(parentViewGroup)
 

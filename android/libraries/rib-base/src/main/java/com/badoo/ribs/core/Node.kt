@@ -97,7 +97,7 @@ open class Node<V : RibView>(
         if (isViewAttached) {
             child.attachToView(
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                router.getParentViewForChild(child.identifier, view) ?: parentViewGroup!!
+                view?.getParentViewForChild(child.identifier) ?: parentViewGroup!!
             )
         }
     }

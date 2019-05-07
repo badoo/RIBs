@@ -2,7 +2,6 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.ViewGroup
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.routing.NodeConnector
@@ -59,14 +58,6 @@ abstract class Router<C : Parcelable, V : RibView>(
     }
 
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
-
-    /**
-     * @param view is null only in the case when the supplied ViewFactory in the Node is null,
-     *              and as such, it should be referenced by view!! when overriding this method
-     *              to catch any problems instead of silently returning null
-     */
-    open fun getParentViewForChild(child: Rib, view: V?): ViewGroup? =
-        view?.androidView
 
     fun onSaveInstanceState(outState: Bundle) {
         backStackManager.accept(SaveInstanceState())

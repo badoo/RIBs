@@ -25,20 +25,22 @@ class SourceSetDirectoriesProvider(
     private val androidModel = (AndroidModuleModel.get(androidFacet) as AndroidModuleModel)
     private val directoriesCache: MutableMap<SourceSet, PsiDirectory> = hashMapOf()
 
-    fun getDirectory(sourceSet: SourceSet, createIfNotFound: Boolean = true): PsiDirectory =
-        directoriesCache[sourceSet] ?: findDirectory(sourceSet, createIfNotFound).also {
+    fun getDirectory(sourceSet: SourceSet, createIfNotFound: Boolean = true): PsiDirectory? =
+        directoriesCache[sourceSet] ?: findDirectory(sourceSet, createIfNotFound)?.also {
             directoriesCache[sourceSet] = it
         }
 
-    private fun findDirectory(sourceSet: SourceSet, createIfNotFound: Boolean): PsiDirectory = when (sourceSet) {
+    private fun findDirectory(sourceSet: SourceSet, createIfNotFound: Boolean): PsiDirectory? = when (sourceSet) {
         MAIN -> mainSourceDirectory
         TEST -> getAndroidArtifactDirectory(AndroidProject.ARTIFACT_UNIT_TEST, createIfNotFound)
         ANDROID_TEST -> getAndroidArtifactDirectory(AndroidProject.ARTIFACT_ANDROID_TEST, createIfNotFound)
-        RESOURCES -> androidFacet.allResourceDirectories.firstOrNull()?.toPsiDirectory(project)
+        RESOURCES -> androidFacet.allResourceDirectories
+            .firstOrNull { !androidModel.isGenerated(it) }
+            ?.toPsiDirectory(project)
             ?: throw IllegalStateException("Resources directory not found")
     }
 
-    private fun getAndroidArtifactDirectory(artifact: String, createIfNotFound: Boolean): PsiDirectory {
+    private fun getAndroidArtifactDirectory(artifact: String, createIfNotFound: Boolean): PsiDirectory? {
         val file = androidModel.getTestSourceProviders(artifact).firstOrNull()?.javaDirectories?.firstOrNull()
             ?: throw IllegalStateException("Source set directory for $artifact not found")
         file.mkdirs()
@@ -46,7 +48,7 @@ class SourceSetDirectoriesProvider(
         return if (createIfNotFound) {
             RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, virtualFile)
         } else {
-            targetPackage.directories.first { VfsUtil.isAncestor(virtualFile!!, it.virtualFile, false) }
+            targetPackage.directories.firstOrNull { VfsUtil.isAncestor(virtualFile!!, it.virtualFile, false) }
         }
     }
 }

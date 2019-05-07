@@ -42,6 +42,7 @@
                 class="com.badoo.ribs.plugin.action.RibRenameAction"
                 id="RenameRib"
                 text="Rename RIB...">
+                <keyboard-shortcut first-keystroke="shift" second-keystroke="F6" keymap="$default" />
                 <add-to-group group-id="RefactoringMenu" relative-to-action="RenameElement" anchor="after"/>
             </action>
         </group>

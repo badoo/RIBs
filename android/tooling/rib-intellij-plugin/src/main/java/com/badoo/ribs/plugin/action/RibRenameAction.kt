@@ -1,7 +1,7 @@
 package com.badoo.ribs.plugin.action
 
 import com.badoo.ribs.plugin.generator.SourceSetDirectoriesProvider
-import com.badoo.ribs.plugin.generator.dialog.RenameRibDialog
+import com.badoo.ribs.plugin.rename.RenameRibDialog
 import com.badoo.ribs.plugin.util.getRibName
 import com.intellij.facet.FacetManager
 import com.intellij.openapi.actionSystem.AnAction
@@ -33,6 +33,7 @@ class RibRenameAction : AnAction() {
             project,
             element,
             sourceSetDirectoryProvider,
+            packageWrapper,
             ribName
         ).show()
     }

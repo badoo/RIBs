@@ -1,4 +1,4 @@
-package com.badoo.ribs.plugin.generator.dialog
+package com.badoo.ribs.plugin.rename
 
 import com.badoo.ribs.plugin.generator.Replacements
 import com.badoo.ribs.plugin.generator.SourceSet
@@ -6,9 +6,12 @@ import com.badoo.ribs.plugin.generator.SourceSetDirectoriesProvider
 import com.badoo.ribs.plugin.util.addStringReplacement
 import com.badoo.ribs.plugin.util.applyReplacements
 import com.intellij.openapi.project.Project
+import com.intellij.psi.JavaRecursiveElementVisitor
+import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.refactoring.PackageWrapper
 import com.intellij.refactoring.rename.RenameDialog
 import com.intellij.refactoring.rename.RenameProcessor
 import com.intellij.ui.EditorTextField
@@ -21,6 +24,7 @@ class RenameRibDialog(
     project: Project,
     private val directory: PsiDirectory,
     private val sourceSetDirectoriesProvider: SourceSetDirectoriesProvider,
+    private val packageWrapper: PackageWrapper,
     private val ribName: String
 ): RenameDialog(
     project,
@@ -48,11 +52,22 @@ class RenameRibDialog(
         SourceSet.values().forEach {
             renameProcessor.addSourceSet(it, replacements)
         }
+        packageWrapper.directories.subtract(renameProcessor.elements)
+            .forEach{
+                renameProcessor.checkForReplacements(it as PsiDirectory, replacements)
+            }
 
         return renameProcessor
     }
 
     private fun RenameProcessor.addSourceSet(sourceSet: SourceSet, replacements: Replacements) {
+        sourceSetDirectoriesProvider.getDirectory(sourceSet, createIfNotFound = false)
+            ?.let {
+                checkForReplacements(it, replacements)
+            }
+    }
+
+    private fun RenameProcessor.checkForReplacements(directory: PsiDirectory, replacements: Replacements) {
         fun PsiElement.registerForRename(name: String) {
             if (replacements.fromArray.any { name.contains(it) }) {
                 addElement(
@@ -62,9 +77,7 @@ class RenameRibDialog(
             }
         }
 
-        val directory = sourceSetDirectoriesProvider.getDirectory(sourceSet, createIfNotFound = false)
         directory.registerForRename(directory.name)
-
         directory.acceptChildren(object : KtTreeVisitorVoid() {
             override fun visitFile(file: PsiFile) {
                 super.visitFile(file)
@@ -78,6 +91,14 @@ class RenameRibDialog(
 
                 val name = classOrObject.name ?: return
                 classOrObject.registerForRename(name)
+            }
+        })
+        directory.acceptChildren(object : JavaRecursiveElementVisitor() {
+            override fun visitClass(aClass: PsiClass) {
+                super.visitClass(aClass)
+
+                val name = aClass.name ?: return
+                aClass.registerForRename(name)
             }
         })
     }

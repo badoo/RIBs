@@ -17,7 +17,7 @@ class TemplateWriter(private val templateFiles: Map<SourceSet, List<TemplateFile
                    replacements: Replacements) {
 
         templateFiles.forEach { sourceSet, files ->
-            val targetDirectory = sourceSetDirectories.getDirectory(sourceSet)
+            val targetDirectory = sourceSetDirectories.getDirectory(sourceSet)!!
             writeFiles(targetDirectory, project, files, replacements)
         }
     }

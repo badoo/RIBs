@@ -3,7 +3,7 @@ package com.badoo.ribs.android.lifecycle
 import android.arch.lifecycle.Lifecycle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.test.util.ribs.root.TestRoot
-import com.badoo.ribs.test.util.waitForActivityFinish
+import com.badoo.ribs.test.util.finishActivitySync
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -36,14 +36,14 @@ class RootNodeLifecycleTest {
 
     @Test
     fun whenActivityDestroyed_nodeIsDetached() {
-        ribsRule.waitForActivityFinish()
+        ribsRule.finishActivitySync()
 
         assertThat(node.isAttached).isFalse()
     }
 
     @Test
     fun whenActivityDestroyed_viewIsDetached() {
-        ribsRule.waitForActivityFinish()
+        ribsRule.finishActivitySync()
 
         assertThat(node.isViewAttached).isFalse()
     }
@@ -53,7 +53,7 @@ class RootNodeLifecycleTest {
         val viewLifecycleObserver = provider.viewLifecycleObserver
         viewLifecycleObserver.clear()
 
-        ribsRule.waitForActivityFinish()
+        ribsRule.finishActivitySync()
 
         viewLifecycleObserver.assertValues(
             Lifecycle.Event.ON_PAUSE,

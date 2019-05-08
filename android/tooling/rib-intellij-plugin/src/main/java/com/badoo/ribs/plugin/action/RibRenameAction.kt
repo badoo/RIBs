@@ -14,6 +14,8 @@ import org.jetbrains.android.facet.AndroidFacet
 import org.jetbrains.kotlin.idea.core.getPackage
 
 class RibRenameAction : AnAction() {
+
+    @Suppress("LongMethod")
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project!!
         val element = e.getData(CommonDataKeys.PSI_ELEMENT) as PsiDirectory

@@ -36,6 +36,7 @@ class RenameRibDialog(
         (nameSuggestionsField.focusableComponent as EditorTextField).text = ribName
     }
 
+    @Suppress("LongMethod")
     override fun createRenameProcessor(newName: String): RenameProcessor {
         val replacements = Replacements().apply {
             addStringReplacement(ribName, newName)

@@ -8,6 +8,7 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.menu.MenuRouter.Configuration
 import com.badoo.ribs.example.rib.menu.feature.MenuFeature
+import com.badoo.ribs.example.rib.menu.mapper.InputToState
 import com.badoo.ribs.example.rib.menu.mapper.StateToViewModel
 import com.badoo.ribs.example.rib.menu.mapper.ViewEventToOutput
 import io.reactivex.ObservableSource
@@ -25,7 +26,7 @@ class MenuInteractor(
 
     override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
         ribLifecycle.createDestroy {
-            bind(input to feature)
+            bind(input to feature using InputToState)
         }
     }
 

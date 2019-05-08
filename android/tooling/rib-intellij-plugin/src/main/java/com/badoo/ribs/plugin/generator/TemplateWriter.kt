@@ -1,6 +1,5 @@
 package com.badoo.ribs.plugin.generator
 
-import com.badoo.ribs.plugin.action.SourceSetDirectoriesProvider
 import com.badoo.ribs.plugin.template.file.TemplateFile
 import com.badoo.ribs.plugin.util.applyReplacements
 import com.intellij.ide.util.DirectoryUtil
@@ -18,7 +17,7 @@ class TemplateWriter(private val templateFiles: Map<SourceSet, List<TemplateFile
                    replacements: Replacements) {
 
         templateFiles.forEach { sourceSet, files ->
-            val targetDirectory = sourceSetDirectories.getDirectory(sourceSet)
+            val targetDirectory = sourceSetDirectories.getDirectory(sourceSet)!!
             writeFiles(targetDirectory, project, files, replacements)
         }
     }

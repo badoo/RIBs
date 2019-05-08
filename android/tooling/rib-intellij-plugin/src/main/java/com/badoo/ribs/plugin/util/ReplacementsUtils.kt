@@ -4,8 +4,12 @@ import com.badoo.ribs.plugin.generator.Replacements
 import com.badoo.ribs.plugin.template.Token
 
 fun Replacements.addTokenReplacements(token: Token, tokenValue: String) {
-    getPossibleModifications(token.sourceValue)
-        .zip(getPossibleModifications(tokenValue))
+    addStringReplacement(token.sourceValue, tokenValue)
+}
+
+fun Replacements.addStringReplacement(oldValue: String, newValue: String) {
+    getPossibleModifications(oldValue)
+        .zip(getPossibleModifications(newValue))
         .forEach { (from, to) -> add(from, to) }
 }
 

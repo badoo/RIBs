@@ -2,7 +2,6 @@ package com.badoo.ribs.plugin.template
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.lang.IllegalStateException
 
 class MetaInformationProvider(
     private val resourceProvider: ResourceProvider

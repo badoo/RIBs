@@ -1,4 +1,4 @@
-package com.badoo.ribs.plugin.action.dialog
+package com.badoo.ribs.plugin.generator.dialog
 
 import com.badoo.ribs.plugin.template.Template
 import com.badoo.ribs.plugin.template.Token
@@ -14,7 +14,12 @@ import com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW
 import com.intellij.uiDesigner.core.GridLayoutManager
 import com.intellij.uiDesigner.core.Spacer
 import java.awt.Dimension
-import javax.swing.*
+import javax.swing.JComboBox
+import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JOptionPane
+import javax.swing.JPanel
+import javax.swing.JTextField
 import javax.swing.SwingUtilities.invokeLater
 
 

@@ -2,7 +2,6 @@ package com.badoo.ribs.plugin.template
 
 import com.badoo.ribs.plugin.generator.SourceSet
 import com.badoo.ribs.plugin.template.file.ResourceTemplateFile
-import java.lang.IllegalStateException
 import java.nio.file.Paths
 
 class TemplateFilesProvider(

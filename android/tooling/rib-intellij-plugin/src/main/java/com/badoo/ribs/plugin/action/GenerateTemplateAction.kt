@@ -1,8 +1,9 @@
 package com.badoo.ribs.plugin.action
 
-import com.badoo.ribs.plugin.action.dialog.GenerateRibDialog
+import com.badoo.ribs.plugin.generator.SourceSetDirectoriesProvider
 import com.badoo.ribs.plugin.generator.TemplateWriter
 import com.badoo.ribs.plugin.generator.createReplacements
+import com.badoo.ribs.plugin.generator.dialog.GenerateRibDialog
 import com.badoo.ribs.plugin.template.JavaResourceProvider
 import com.badoo.ribs.plugin.template.MetaInformationProvider
 import com.badoo.ribs.plugin.template.TemplateFilesProvider

@@ -122,9 +122,5 @@ class MainScreenTest {
 
     class TestHelloWorldView : TestView<HelloWorldView.ViewModel, HelloWorldView.Event>(), HelloWorldView
 
-    class TestSwitcherView : TestView<SwitcherView.ViewModel, SwitcherView.Event>(), SwitcherView {
-        override val menuContainer: ViewGroup = mock()
-        override val blockerContainer: ViewGroup = mock()
-        override val contentContainer: ViewGroup = mock()
-    }
+    class TestSwitcherView : TestView<SwitcherView.ViewModel, SwitcherView.Event>(), SwitcherView
 }

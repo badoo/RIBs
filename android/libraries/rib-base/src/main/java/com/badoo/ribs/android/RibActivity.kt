@@ -100,8 +100,8 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
         permissionRequester.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-    override fun show(dialog: Dialog<*>) {
-        dialogs[dialog] = dialog.toAlertDialog(this).also {
+    override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
+        dialogs[dialog] = dialog.toAlertDialog(this, onClose).also {
             it.show()
         }
     }

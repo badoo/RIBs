@@ -64,7 +64,7 @@ class SwitcherRouter(
                 attach { dialogExampleBuilder.build() },
                 execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
             )
-            is Configuration.OverlayDialog -> showDialog(dialogLauncher, dialogToTestOverlay)
+            is Configuration.OverlayDialog -> showDialog(this, dialogLauncher, dialogToTestOverlay)
             is Configuration.Blocker -> attach { blockerBuilder.build() }
         }
 

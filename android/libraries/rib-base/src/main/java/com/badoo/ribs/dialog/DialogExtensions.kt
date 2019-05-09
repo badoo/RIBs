@@ -6,28 +6,32 @@ import android.widget.FrameLayout
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 
-fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context) : AlertDialog =
+fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> Unit) : AlertDialog =
     AlertDialog.Builder(context)
         .apply {
-            setCancelable(this@toAlertDialog)
+            setCancelable(this@toAlertDialog, onClose)
             setRib(this@toAlertDialog, context)
             setTexts(this@toAlertDialog)
             setButtons(this@toAlertDialog)
         }
         .create()
         .apply {
+            this.
             setCanceledOnTouchOutside(this@toAlertDialog)
-            setButtonClickListeners(this@toAlertDialog)
+            setButtonClickListeners(this@toAlertDialog, onClose)
         }
 
-private fun <Event : Any> AlertDialog.Builder.setCancelable(dialog: Dialog<Event>) {
+private fun <Event : Any> AlertDialog.Builder.setCancelable(dialog: Dialog<Event>, onClose: () -> Unit) {
     when (val policy = dialog.cancellationPolicy) {
         is NonCancellable -> {
             setCancelable(false)
         }
         is Cancellable -> {
             setCancelable(true)
-            setOnCancelListener { dialog.publish(policy.event) }
+            setOnCancelListener {
+                dialog.publish(policy.event)
+                onClose()
+            }
         }
     }
 }
@@ -70,19 +74,29 @@ private fun AlertDialog.Builder.setButtons(dialog: Dialog<*>) {
     }
 }
 
-private fun <Event : Any> AlertDialog.setButtonClickListeners(dialog: Dialog<Event>) {
+private fun <Event : Any> AlertDialog.setButtonClickListeners(dialog: Dialog<Event>, onClose: () -> Unit) {
     // Workaround so that pressing button will not close dialog automatically. Let business
     // logic decide what to do instead.
     setOnShowListener {
         (it as AlertDialog).apply {
-            getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                dialog.buttons?.positive?.onClickEvent?.let { dialog.publish(it) }
-            }
-            getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
-                dialog.buttons?.negative?.onClickEvent?.let { dialog.publish(it) }
-            }
-            getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                dialog.buttons?.neutral?.onClickEvent?.let { dialog.publish(it) }
+            configureButtonClick(AlertDialog.BUTTON_POSITIVE, dialog, dialog.buttons?.positive, onClose)
+            configureButtonClick(AlertDialog.BUTTON_NEGATIVE, dialog, dialog.buttons?.negative, onClose)
+            configureButtonClick(AlertDialog.BUTTON_NEUTRAL, dialog, dialog.buttons?.neutral, onClose)
+        }
+    }
+}
+
+private fun <Event : Any> AlertDialog.configureButtonClick(
+    button: Int,
+    dialog: Dialog<Event>,
+    buttonConfig: Dialog.ButtonsConfig.ButtonConfig<Event>?,
+    onClose: () -> Unit
+) {
+    getButton(button).setOnClickListener {
+        buttonConfig?.run {
+            onClickEvent?.let { dialog.publish(it) }
+            if (closesDialogAutomatically) {
+                onClose()
             }
         }
     }

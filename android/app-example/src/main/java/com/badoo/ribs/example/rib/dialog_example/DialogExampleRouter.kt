@@ -30,8 +30,8 @@ class DialogExampleRouter(
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<DialogExampleView> =
         when (configuration) {
             is Configuration.Default -> noop()
-            is Configuration.SimpleDialog -> showDialog(dialogLauncher, simpleDialog)
-            is Configuration.LazyDialog -> showDialog(dialogLauncher, lazyDialog)
-            is Configuration.RibDialog -> showDialog(dialogLauncher, ribDialog)
+            is Configuration.SimpleDialog -> showDialog(this, dialogLauncher, simpleDialog)
+            is Configuration.LazyDialog -> showDialog(this, dialogLauncher, lazyDialog)
+            is Configuration.RibDialog -> showDialog(this, dialogLauncher, ribDialog)
         }
 }

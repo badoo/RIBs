@@ -44,21 +44,22 @@ abstract class Dialog<T : Any> private constructor(
             factory()
         }
 
-        fun positive(title: String, onClickEvent: T) {
-            positive = ButtonConfig(title, onClickEvent)
+        fun positive(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+            positive = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
-        fun negative(title: String, onClickEvent: T) {
-            negative = ButtonConfig(title, onClickEvent)
+        fun negative(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+            negative = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
-        fun neutral(title: String, onClickEvent: T) {
-            neutral = ButtonConfig(title, onClickEvent)
+        fun neutral(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+            neutral = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
         data class ButtonConfig<T : Any>(
             var title: String? = null,
-            var onClickEvent: T? = null
+            var onClickEvent: T? = null,
+            var closesDialogAutomatically: Boolean = true
         )
     }
 

@@ -81,12 +81,6 @@ class BackStackManagerTest {
     }
 
     @Test
-    fun `After state restoration last rib is reattached`() {
-        setupBackStackManager(timeCapsuleWithContent)
-        verify(backStackRibConnector).goTo(backstackInTimeCapsule.last())
-    }
-
-    @Test
     fun `Back stack state's current() references last item`() {
         setupBackStackManager(timeCapsuleWithContent)
         assertEquals(backstackInTimeCapsule.last(), backStackManager.state.current)

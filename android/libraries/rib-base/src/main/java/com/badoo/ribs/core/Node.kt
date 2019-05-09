@@ -199,6 +199,7 @@ open class Node<V : RibView>(
                 "View was not detached before node detach!",
                 RuntimeException("View was not detached before node detach!")
             )
+            detachFromView()
         }
 
         interactor.onDetach()

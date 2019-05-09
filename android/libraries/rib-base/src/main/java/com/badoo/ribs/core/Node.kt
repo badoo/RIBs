@@ -23,6 +23,7 @@ import android.util.SparseArray
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.uber.rib.util.RIBs
 import com.uber.rib.util.RibRefWatcher
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -193,6 +194,13 @@ open class Node<V : RibView>(
     }
 
     open fun onDetach() {
+        if (isViewAttached) {
+            RIBs.getErrorHandler().handleNonFatalError(
+                "View was not detached before node detach!",
+                RuntimeException("View was not detached before node detach!")
+            )
+        }
+
         interactor.onDetach()
         router.onDetach()
 

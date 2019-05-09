@@ -83,8 +83,8 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
     override fun onDestroy() {
         super.onDestroy()
         dialogs.values.forEach { it.dismiss() }
-        rootNode.onDetach()
         rootNode.detachFromView()
+        rootNode.onDetach()
     }
 
     override fun onBackPressed() {

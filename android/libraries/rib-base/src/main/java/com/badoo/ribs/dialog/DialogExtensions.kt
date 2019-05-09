@@ -16,7 +16,6 @@ fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> U
         }
         .create()
         .apply {
-            this.
             setCanceledOnTouchOutside(this@toAlertDialog)
             setButtonClickListeners(this@toAlertDialog, onClose)
         }

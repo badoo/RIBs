@@ -19,7 +19,9 @@ import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Blocker
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat
@@ -121,7 +123,7 @@ class SwitcherRouterTest {
 
         router.replace(OverlayDialog)
 
-        verify(dialogLauncher).show(dialogToTestOverlay)
+        verify(dialogLauncher).show(eq(dialogToTestOverlay), any())
     }
 
     @Test

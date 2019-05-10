@@ -43,7 +43,7 @@ class SwitcherInteractor(
         }
     }
 
-    private val viewEventConsumer: Consumer<SwitcherView.Event> = Consumer {
+    private val viewEventConsumer: Consumer<Event> = Consumer {
         when (it) {
             Event.ShowOverlayDialogClicked -> router.push(Configuration.OverlayDialog)
             Event.ShowBlockerClicked -> router.push(Configuration.Blocker)
@@ -58,7 +58,7 @@ class SwitcherInteractor(
     private val dialogEventConsumer : Consumer<Dialog.Event> = Consumer {
         when (it) {
             Dialog.Event.Positive -> {
-                router.popBackStack()
+                // do something if you want
             }
         }
     }

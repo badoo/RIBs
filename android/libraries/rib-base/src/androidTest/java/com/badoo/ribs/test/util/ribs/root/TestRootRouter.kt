@@ -61,12 +61,12 @@ class TestRootRouter(
             Configuration.NoOp -> noop()
             Configuration.AttachNode1 -> attach(builder1)
             Configuration.AttachNode2 -> attach(builder2)
-            Configuration.AttachNode1AsDialog -> showDialog(dialogLauncher, TestRibDialog(builder1))
-            Configuration.AttachNode2AsDialog -> showDialog(dialogLauncher, TestRibDialog(builder2))
+            Configuration.AttachNode1AsDialog -> showDialog(this, dialogLauncher, TestRibDialog(builder1))
+            Configuration.AttachNode2AsDialog -> showDialog(this, dialogLauncher, TestRibDialog(builder2))
             Configuration.AttachNode1AsOverlay -> attach(builder1)
             Configuration.AttachNode2AsOverlay -> attach(builder2)
-            Configuration.AttachNode1AsDialogAndOverlay -> showDialog(dialogLauncher, TestRibDialog(builder1))
-            Configuration.AttachNode2AsDialogAndOverlay -> showDialog(dialogLauncher, TestRibDialog(builder2))
+            Configuration.AttachNode1AsDialogAndOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder1))
+            Configuration.AttachNode2AsDialogAndOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder2))
             Configuration.AttachNode1And2 -> CompositeRoutingAction.composite(
                 attach(builder1),
                 attach(builder2)

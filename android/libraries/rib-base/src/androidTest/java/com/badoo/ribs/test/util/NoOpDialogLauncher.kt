@@ -5,7 +5,7 @@ import com.badoo.ribs.dialog.DialogLauncher
 
 class NoOpDialogLauncher : DialogLauncher {
     
-    override fun show(dialog: Dialog<*>) {
+    override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
     }
 
     override fun hide(dialog: Dialog<*>) {

@@ -1,9 +1,9 @@
 package com.badoo.ribs.example.rib.menu
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.customisation.CanProvideRibCustomisation
-import com.badoo.ribs.core.customisation.RibCustomisationDirectory
-import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.customisation.CanProvideRibCustomisation
+import com.badoo.ribs.customisation.RibCustomisationDirectory
+import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld

@@ -4,8 +4,8 @@ import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarView
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.customisation.customisationsBranchFor
-import com.badoo.ribs.core.customisation.getOrDefault
+import com.badoo.ribs.customisation.customisationsBranchFor
+import com.badoo.ribs.customisation.getOrDefault
 
 class FooBarBuilder(
     dependency: FooBar.Dependency

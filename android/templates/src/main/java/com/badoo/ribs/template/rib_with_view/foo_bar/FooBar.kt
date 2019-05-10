@@ -1,9 +1,9 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.customisation.CanProvideRibCustomisation
-import com.badoo.ribs.core.customisation.RibCustomisation
-import com.badoo.ribs.core.customisation.inflateOnDemand
+import com.badoo.ribs.customisation.CanProvideRibCustomisation
+import com.badoo.ribs.customisation.RibCustomisation
+import com.badoo.ribs.customisation.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.template.R
 import io.reactivex.ObservableSource

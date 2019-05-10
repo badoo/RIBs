@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.customisation
+package com.badoo.ribs.customisation
 
 import com.badoo.ribs.core.Rib
 import kotlin.reflect.KClass

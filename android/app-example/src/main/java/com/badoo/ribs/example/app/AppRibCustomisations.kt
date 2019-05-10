@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.app
 
-import com.badoo.ribs.core.customisation.RibCustomisationDirectory
-import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
-import com.badoo.ribs.core.customisation.inflateOnDemand
+import com.badoo.ribs.customisation.RibCustomisationDirectory
+import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.customisation.inflateOnDemand
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.foo_bar.FooBar

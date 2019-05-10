@@ -6,7 +6,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.core.customisation.RibCustomisationDirectory
+import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.app.AppRibCustomisations
 import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder

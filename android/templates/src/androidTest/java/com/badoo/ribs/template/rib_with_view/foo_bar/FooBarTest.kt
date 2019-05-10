@@ -2,7 +2,7 @@ package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.core.customisation.RibCustomisationDirectory
+import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.rib_with_view.foo_bar.builder.FooBarBuilder
 import io.reactivex.Observable.empty
 import io.reactivex.ObservableSource

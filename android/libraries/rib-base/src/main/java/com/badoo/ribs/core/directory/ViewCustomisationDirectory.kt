@@ -1,5 +1,6 @@
 package com.badoo.ribs.core.directory
 
+import com.badoo.ribs.core.Rib
 import kotlin.reflect.KClass
 
 open class ViewCustomisationDirectory(
@@ -12,7 +13,7 @@ open class ViewCustomisationDirectory(
         put(T::class, value)
     }
 
-    override fun <T : Any> put(key: KClass<T>, value: T) {
+    override fun <T : RibCustomisation> put(key: KClass<T>, value: T) {
         map[key] = value
     }
 
@@ -26,17 +27,17 @@ open class ViewCustomisationDirectory(
         put(this)
     }
 
-    override fun <T : Any> get(key: KClass<T>): T? =
+    override fun <T : RibCustomisation> get(key: KClass<T>): T? =
         map[key] as? T
 
-    override fun <T : Any> getRecursively(key: KClass<T>): T? =
+    override fun <T : RibCustomisation> getRecursively(key: KClass<T>): T? =
        get(key) ?: parent?.get(key)
 
-    override fun <T : Any> putSubDirectory(key: KClass<T>, value: Directory) {
+    override fun <T : Rib> putSubDirectory(key: KClass<T>, value: Directory) {
         map[key] = value
     }
 
-    override fun <T : Any> getSubDirectory(key: KClass<T>): Directory?=
+    override fun <T : Rib> getSubDirectory(key: KClass<T>): Directory?=
         map[key] as? Directory
 
 

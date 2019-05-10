@@ -10,5 +10,5 @@ interface CanProvideRibCustomisation {
 fun <T : Rib> CanProvideRibCustomisation.customisationsBranchFor(key: KClass<T>) : Directory =
     ribCustomisation().getSubDirectoryOrSelf(key)
 
-fun <T : Any> CanProvideRibCustomisation.getOrDefault(defaultCustomisation: T) : T =
+fun <T : RibCustomisation> CanProvideRibCustomisation.getOrDefault(defaultCustomisation: T) : T =
     ribCustomisation().getRecursivelyOrDefault(defaultCustomisation)

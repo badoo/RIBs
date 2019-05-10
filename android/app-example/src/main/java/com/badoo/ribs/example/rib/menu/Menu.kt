@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.menu
 import android.os.Parcelable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.directory.CanProvideRibCustomisation
+import com.badoo.ribs.core.directory.RibCustomisation
 import com.badoo.ribs.core.directory.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -35,5 +36,5 @@ interface Menu : Rib {
         val viewFactory: ViewFactory<MenuView> = inflateOnDemand(
             R.layout.rib_menu
         )
-    )
+    ) : RibCustomisation
 }

@@ -16,18 +16,12 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
-import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
-import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
-import io.reactivex.Observable.fromCallable
 import io.reactivex.Observable.just
 import kotlinx.android.parcel.Parcelize
 
 internal class BackStackManager<C : Parcelable>(
-    backStackRibConnector: BackStackRibConnector<C>,
     initialConfiguration: C,
     timeCapsule: TimeCapsule<State<C>>,
     tag: String = "BackStackManager.State"
@@ -38,9 +32,7 @@ internal class BackStackManager<C : Parcelable>(
         timeCapsule[tag] ?: State(),
         initialConfiguration
     ),
-    actor = ActorImpl<C>(
-        connector = backStackRibConnector
-    ),
+    actor = ActorImpl<C>(),
     reducer = ReducerImpl<C>()
 ) {
     init {
@@ -49,9 +41,9 @@ internal class BackStackManager<C : Parcelable>(
 
     @Parcelize
     data class State<C : Parcelable>(
-        val backStack: List<BackStackElement<C>> = emptyList()
+        val backStack: List<C> = emptyList()
     ) : Parcelable {
-        val current: BackStackElement<C>
+        val current: C
             get() = backStack.last()
 
         val canPop: Boolean
@@ -74,9 +66,6 @@ internal class BackStackManager<C : Parcelable>(
         data class PushOverlay<C : Parcelable>(val configuration: C) : Wish<C>()
         data class NewRoot<C : Parcelable>(val configuration: C) : Wish<C>()
         class Pop<C : Parcelable> : Wish<C>()
-
-        class SaveInstanceState<C : Parcelable> : Wish<C>()
-        class ShrinkToBundles<C : Parcelable> : Wish<C>()
     }
 
     sealed class Action<C : Parcelable> {
@@ -84,147 +73,70 @@ internal class BackStackManager<C : Parcelable>(
     }
 
     sealed class Effect<C : Parcelable> {
-        data class Replace<C : Parcelable>(val newEntry: BackStackElement<C>) : Effect<C>()
-        data class Push<C : Parcelable>(val updatedOldEntry: BackStackElement<C>, val newEntry: BackStackElement<C>) : Effect<C>()
-        data class PushOverlay<C : Parcelable>(val newEntry: BackStackElement<C>) : Effect<C>()
-        data class NewRoot<C : Parcelable>(val newEntry: BackStackElement<C>) : Effect<C>()
-        data class Pop<C : Parcelable>(val revivedEntry: BackStackElement<C>) : Effect<C>()
-        data class UpdateBackStack<C : Parcelable>(val updatedBackStack: List<BackStackElement<C>>) : Effect<C>()
+        data class Replace<C : Parcelable>(val configuration: C) : Effect<C>()
+        data class Push<C : Parcelable>(val configuration: C) : Effect<C>()
+        data class PushOverlay<C : Parcelable>(val configuration: C) : Effect<C>()
+        data class NewRoot<C : Parcelable>(val configuration: C) : Effect<C>()
+        class Pop<C : Parcelable> : Effect<C>()
     }
 
-    class ActorImpl<C : Parcelable>(
-        private val connector: BackStackRibConnector<C>
-    ) : Actor<State<C>, Action<C>, Effect<C>> {
-
+    class ActorImpl<C : Parcelable> : Actor<State<C>, Action<C>, Effect<C>> {
         override fun invoke(state: State<C>, action: Action<C>): Observable<out Effect<C>> =
             when (action) {
                 is Execute -> {
                     when (val wish = action.wish) {
                         is Replace -> when {
-                            wish.configuration != state.current.configuration ->
-                                fromCallable {
-                                    switchToNew(
-                                        state.backStack,
-                                        wish.configuration,
-                                        detachStrategy = DESTROY
-                                    )
-                                }.map { (_, newEntry) ->
-                                    Effect.Replace(newEntry)
-                                }
-
+                            wish.configuration != state.current ->
+                                just(Effect.Replace(wish.configuration))
                             else -> empty()
                         }
 
                         is Push -> when {
-                            wish.configuration != state.current.configuration ->
-                                fromCallable {
-                                    switchToNew(
-                                        state.backStack,
-                                        wish.configuration,
-                                        detachStrategy = DETACH_VIEW
-                                    )
-                                }.map { (oldEntry, newEntry) ->
-                                    Effect.Push(oldEntry!!, newEntry)
-                                }
-
+                            wish.configuration != state.current ->
+                                just(Effect.Push(wish.configuration))
                             else -> empty()
                         }
 
                         is PushOverlay -> when {
-                            wish.configuration != state.current.configuration ->
-                                fromCallable {
-                                    goToNew(wish.configuration)
-                                }.map { newEntry ->
-                                    Effect.PushOverlay(newEntry)
-                                }
-
+                            wish.configuration != state.current ->
+                                just(Effect.PushOverlay(wish.configuration))
                             else -> empty()
                         }
 
-                        is NewRoot ->
-                            fromCallable {
-                                state.backStack.forEach { connector.leave(it, DESTROY) }
-                                switchToNew(emptyList(), wish.configuration, DESTROY)
-                            }.map { (_, newEntry) ->
-                                Effect.NewRoot(newEntry)
-                            }
+                        is NewRoot -> when {
+                            state.backStack != listOf(wish.configuration) ->
+                                just(Effect.NewRoot(wish.configuration))
+                            else -> empty()
+                        }
+
 
                         is Pop -> when {
-                            state.canPop ->
-                                fromCallable {
-                                    switchToPrevious(state.backStack, detachStrategy = DESTROY)
-                                }.map { revivedEntry -> Effect.Pop(revivedEntry) }
+                            state.canPop -> just(Effect.Pop())
                             else -> empty()
                         }
-
-                        is SaveInstanceState -> fromCallable {
-                            connector.saveInstanceState(state.backStack)
-                        }.map { Effect.UpdateBackStack(it) }
-
-                        is ShrinkToBundles -> fromCallable {
-                            connector.shrinkToBundles(state.backStack)
-                        }.map { Effect.UpdateBackStack(it) }
                     }
                 }
             }
-
-        private fun switchToNew(
-            backStack: List<BackStackElement<C>>,
-            newConfiguration: C,
-            detachStrategy: BackStackRibConnector.DetachStrategy
-        ): Pair<BackStackElement<C>?, BackStackElement<C>> {
-            val oldEntry = backStack.lastOrNull()
-            oldEntry?.let { connector.leave(it, detachStrategy = detachStrategy) }
-
-            return oldEntry to goToNew(newConfiguration)
-        }
-
-        private fun goToNew(newConfiguration: C): BackStackElement<C> {
-            val newEntry = BackStackElement(newConfiguration)
-
-            connector.goTo(newEntry)
-
-            return newEntry
-        }
-
-        private fun switchToPrevious(backStack: List<BackStackElement<C>>, detachStrategy: BackStackRibConnector.DetachStrategy): BackStackElement<C> {
-            val entryToPop = backStack.last()
-            val entryToRevive = backStack[backStack.lastIndex - 1]
-
-            connector.leave(entryToPop, detachStrategy = detachStrategy)
-            connector.goTo(entryToRevive)
-
-            return entryToRevive
-        }
     }
 
     class ReducerImpl<C : Parcelable> : Reducer<State<C>, Effect<C>> {
         @SuppressWarnings("LongMethod")
         override fun invoke(state: State<C>, effect: Effect<C>): State<C> = when (effect) {
             is Effect.Replace -> state.copy(
-                backStack = state.backStack.dropLast(1) + effect.newEntry
+                backStack = state.backStack.dropLast(1) + effect.configuration
             )
             is Effect.Push -> state.copy(
-                backStack = state.backStack.dropLast(1) + effect.updatedOldEntry + effect.newEntry
+                backStack = state.backStack + effect.configuration
             )
             is Effect.PushOverlay -> state.copy(
-                backStack = state.backStack + effect.newEntry
+                backStack = state.backStack + effect.configuration
             )
             is Effect.NewRoot -> state.copy(
-                backStack = listOf(effect.newEntry)
+                backStack = listOf(effect.configuration)
             )
-            // fixme guarantee that this is safe to do!
             is Effect.Pop -> state.copy(
-                backStack = state.backStack.dropLast(2) + effect.revivedEntry
-            )
-            is Effect.UpdateBackStack -> state.copy(
-                backStack = effect.updatedBackStack
+                backStack = state.backStack.dropLast(1)
             )
         }
-    }
-
-    override fun dispose() {
-        super.dispose()
-        state.backStack.forEach { it.clear() }
     }
 }

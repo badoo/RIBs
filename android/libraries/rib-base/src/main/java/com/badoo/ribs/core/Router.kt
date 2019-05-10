@@ -12,8 +12,6 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.SaveInstanceState
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.ShrinkToBundles
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector
 import com.badoo.ribs.core.view.RibView
 
@@ -25,7 +23,7 @@ abstract class Router<C : Parcelable, V : RibView>(
     private lateinit var backStackManager: BackStackManager<C>
     private lateinit var backStackRibConnector: BackStackRibConnector<C>
     protected val configuration: C?
-        get() = backStackManager.state.current.configuration
+        get() = backStackManager.state.current
 
     lateinit var node: Node<V>
         internal set
@@ -51,7 +49,6 @@ abstract class Router<C : Parcelable, V : RibView>(
         )
 
         backStackManager = BackStackManager(
-            backStackRibConnector = backStackRibConnector,
             initialConfiguration = initialConfiguration,
             timeCapsule = timeCapsule
         )
@@ -60,20 +57,20 @@ abstract class Router<C : Parcelable, V : RibView>(
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
     fun onSaveInstanceState(outState: Bundle) {
-        backStackManager.accept(SaveInstanceState())
+//        backStackManager.accept(SaveInstanceState())
         timeCapsule.saveState(outState)
     }
 
     fun onLowMemory() {
-        backStackManager.accept(ShrinkToBundles())
+//        backStackManager.accept(ShrinkToBundles())
     }
 
     fun onAttachView() {
-        backStackRibConnector.attachToView(backStackManager.state.backStack)
+//        backStackRibConnector.attachToView(backStackManager.state.backStack)
     }
 
     fun onDetachView() {
-        backStackRibConnector.detachFromView(backStackManager.state.backStack)
+//        backStackRibConnector.detachFromView(backStackManager.state.backStack)
     }
 
     fun onDetach() {

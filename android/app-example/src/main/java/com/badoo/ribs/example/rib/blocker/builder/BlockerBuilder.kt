@@ -2,8 +2,8 @@ package com.badoo.ribs.example.rib.blocker.builder
 
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.directory.customisationsBranchFor
-import com.badoo.ribs.core.directory.getOrDefault
+import com.badoo.ribs.core.customisation.customisationsBranchFor
+import com.badoo.ribs.core.customisation.getOrDefault
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.BlockerView
 

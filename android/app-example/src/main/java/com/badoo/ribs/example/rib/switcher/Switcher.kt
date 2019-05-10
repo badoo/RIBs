@@ -3,9 +3,9 @@ package com.badoo.ribs.example.rib.switcher
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.directory.CanProvideRibCustomisation
-import com.badoo.ribs.core.directory.RibCustomisation
-import com.badoo.ribs.core.directory.inflateOnDemand
+import com.badoo.ribs.core.customisation.CanProvideRibCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisation
+import com.badoo.ribs.core.customisation.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.example.R

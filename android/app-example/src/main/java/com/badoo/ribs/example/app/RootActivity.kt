@@ -6,7 +6,7 @@ import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.directory.RibCustomisationDirectory
+import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.switcher.Switcher

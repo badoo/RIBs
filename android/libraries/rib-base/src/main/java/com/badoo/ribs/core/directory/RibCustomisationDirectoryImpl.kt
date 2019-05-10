@@ -3,9 +3,9 @@ package com.badoo.ribs.core.directory
 import com.badoo.ribs.core.Rib
 import kotlin.reflect.KClass
 
-open class ViewCustomisationDirectory(
-    override val parent: Directory? = null
-) : MutableDirectory {
+open class RibCustomisationDirectoryImpl(
+    override val parent: RibCustomisationDirectory? = null
+) : MutableRibCustomisationDirectory {
 
     private val map: MutableMap<Any, Any> = hashMapOf()
 
@@ -33,18 +33,18 @@ open class ViewCustomisationDirectory(
     override fun <T : RibCustomisation> getRecursively(key: KClass<T>): T? =
        get(key) ?: parent?.get(key)
 
-    override fun <T : Rib> putSubDirectory(key: KClass<T>, value: Directory) {
+    override fun <T : Rib> putSubDirectory(key: KClass<T>, value: RibCustomisationDirectory) {
         map[key] = value
     }
 
-    override fun <T : Rib> getSubDirectory(key: KClass<T>): Directory?=
-        map[key] as? Directory
+    override fun <T : Rib> getSubDirectory(key: KClass<T>): RibCustomisationDirectory?=
+        map[key] as? RibCustomisationDirectory
 
 
-    operator fun KClass<*>.invoke(block: ViewCustomisationDirectory.() -> Unit) {
+    operator fun KClass<*>.invoke(block: RibCustomisationDirectoryImpl.() -> Unit) {
         if (map.containsKey(this)) {
             // TODO warning for accidental override?
         }
-        map[this] = ViewCustomisationDirectory(this@ViewCustomisationDirectory).apply(block)
+        map[this] = RibCustomisationDirectoryImpl(this@RibCustomisationDirectoryImpl).apply(block)
     }
 }

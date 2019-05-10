@@ -3,13 +3,13 @@ package com.badoo.ribs.core.directory
 import com.badoo.ribs.core.Rib
 import kotlin.reflect.KClass
 
-interface Directory {
+interface RibCustomisationDirectory {
 
-    val parent: Directory?
+    val parent: RibCustomisationDirectory?
 
-    fun <T : Rib> getSubDirectory(key: KClass<T>) : Directory?
+    fun <T : Rib> getSubDirectory(key: KClass<T>) : RibCustomisationDirectory?
 
-    fun <T : Rib> getSubDirectoryOrSelf(key: KClass<T>) : Directory =
+    fun <T : Rib> getSubDirectoryOrSelf(key: KClass<T>) : RibCustomisationDirectory =
         getSubDirectory(key) ?: this
 
     fun <T : RibCustomisation> get(key: KClass<T>) : T?

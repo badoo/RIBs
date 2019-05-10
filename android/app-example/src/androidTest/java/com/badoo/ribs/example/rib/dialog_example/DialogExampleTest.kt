@@ -2,7 +2,7 @@ package com.badoo.ribs.example.rib.dialog_example
 
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.core.directory.Directory
+import com.badoo.ribs.core.directory.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.app.AppRibCustomisations
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
@@ -16,7 +16,7 @@ class DialogExampleTest {
 
     private fun buildRib(ribTestActivity: RibTestActivity) =
         DialogExampleBuilder(object : DialogExample.Dependency {
-            override fun ribCustomisation(): Directory = AppRibCustomisations
+            override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
             override fun dialogLauncher(): DialogLauncher = ribTestActivity
         }).build()
 

@@ -1,18 +1,23 @@
 package com.badoo.ribs.example.rib.hello_world.builder
 
-import com.badoo.ribs.example.rib.hello_world.HelloWorld
-import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.directory.customisationsBranchFor
+import com.badoo.ribs.core.directory.getOrDefault
+import com.badoo.ribs.example.rib.hello_world.HelloWorld
+import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 
-class HelloWorldBuilder(dependency: HelloWorld.Dependency) :
-    Builder<HelloWorld.Dependency>(dependency) {
+class HelloWorldBuilder(
+    dependency: HelloWorld.Dependency
+) : Builder<HelloWorld.Dependency>() {
 
-    fun build(): Node<HelloWorldView> {
-        val customisation = dependency.ribCustomisation().get(HelloWorld.Customisation::class) ?: HelloWorld.Customisation()
-        val component = DaggerHelloWorldComponent.factory()
-            .create(dependency, customisation)
-
-        return component.node()
+    override val dependency : HelloWorld.Dependency = object : HelloWorld.Dependency by dependency {
+        override fun ribCustomisation() = dependency.customisationsBranchFor(HelloWorld::class)
     }
+
+    fun build(): Node<HelloWorldView> =
+        DaggerHelloWorldComponent
+            .factory()
+            .create(dependency, dependency.getOrDefault(HelloWorld.Customisation()))
+            .node()
 }

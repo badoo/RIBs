@@ -2,17 +2,22 @@ package com.badoo.ribs.example.rib.dialog_example.builder
 
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.directory.customisationsBranchFor
+import com.badoo.ribs.core.directory.getOrDefault
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 
-class DialogExampleBuilder(dependency: DialogExample.Dependency) :
-    Builder<DialogExample.Dependency>(dependency) {
+class DialogExampleBuilder(
+    dependency: DialogExample.Dependency
+) : Builder<DialogExample.Dependency>() {
 
-    fun build(): Node<DialogExampleView> {
-        val customisation = dependency.ribCustomisation().get(DialogExample.Customisation::class) ?: DialogExample.Customisation()
-        val component = DaggerDialogExampleComponent.factory()
-            .create(dependency, customisation)
-
-        return component.node()
+    override val dependency : DialogExample.Dependency = object : DialogExample.Dependency by dependency {
+        override fun ribCustomisation() = dependency.customisationsBranchFor(DialogExample::class)
     }
+
+    fun build(): Node<DialogExampleView> =
+        DaggerDialogExampleComponent
+            .factory()
+            .create(dependency, dependency.getOrDefault(DialogExample.Customisation()))
+            .node()
 }

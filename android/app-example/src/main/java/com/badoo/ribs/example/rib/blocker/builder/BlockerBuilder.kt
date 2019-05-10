@@ -2,16 +2,22 @@ package com.badoo.ribs.example.rib.blocker.builder
 
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.directory.customisationsBranchFor
+import com.badoo.ribs.core.directory.getOrDefault
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.BlockerView
 
-class BlockerBuilder(dependency: Blocker.Dependency) :
-    Builder<Blocker.Dependency>(dependency) {
+class BlockerBuilder(
+    dependency: Blocker.Dependency
+) : Builder<Blocker.Dependency>() {
 
-    fun build(): Node<BlockerView> {
-        val customisation = dependency.ribCustomisation().get(Blocker.Customisation::class) ?: Blocker.Customisation()
-        return DaggerBlockerComponent.factory()
-            .create(dependency, customisation)
-            .node()
+    override val dependency : Blocker.Dependency = object : Blocker.Dependency by dependency {
+        override fun ribCustomisation() = dependency.customisationsBranchFor(Blocker::class)
     }
+
+    fun build(): Node<BlockerView> =
+        DaggerBlockerComponent
+            .factory()
+            .create(dependency, dependency.getOrDefault(Blocker.Customisation()))
+            .node()
 }

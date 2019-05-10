@@ -1,18 +1,23 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
-import com.badoo.ribs.example.rib.switcher.Switcher
-import com.badoo.ribs.example.rib.switcher.SwitcherView
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.directory.customisationsBranchFor
+import com.badoo.ribs.core.directory.getOrDefault
+import com.badoo.ribs.example.rib.switcher.Switcher
+import com.badoo.ribs.example.rib.switcher.SwitcherView
 
-class SwitcherBuilder(dependency: Switcher.Dependency) :
-    Builder<Switcher.Dependency>(dependency) {
-
-    fun build(): Node<SwitcherView> {
-        val customisation = dependency.ribCustomisation().get(Switcher.Customisation::class) ?: Switcher.Customisation()
-        val component =  DaggerSwitcherComponent.factory()
-            .create(dependency, customisation)
-        
-        return component.node()
+class SwitcherBuilder(
+    dependency: Switcher.Dependency
+) : Builder<Switcher.Dependency>()
+{
+    override val dependency : Switcher.Dependency = object : Switcher.Dependency by dependency {
+        override fun ribCustomisation() = dependency.customisationsBranchFor(Switcher::class)
     }
+
+    fun build(): Node<SwitcherView> =
+        DaggerSwitcherComponent
+            .factory()
+            .create(dependency, dependency.getOrDefault(Switcher.Customisation()))
+            .node()
 }

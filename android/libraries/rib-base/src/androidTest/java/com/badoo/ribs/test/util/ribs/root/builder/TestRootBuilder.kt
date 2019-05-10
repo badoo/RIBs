@@ -10,7 +10,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootInteractor
 import com.badoo.ribs.test.util.ribs.root.TestRootView
 import com.badoo.ribs.test.util.ribs.root.TestRootViewImpl
 
-class TestRootBuilder(dependency: TestRoot.Dependency) : Builder<TestRoot.Dependency>(dependency) {
+class TestRootBuilder(override val dependency: TestRoot.Dependency) : Builder<TestRoot.Dependency>() {
 
     fun build(): Node<TestRootView> {
         return TestNode(

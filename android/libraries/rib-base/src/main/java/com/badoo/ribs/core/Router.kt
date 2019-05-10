@@ -3,7 +3,6 @@ package com.badoo.ribs.core
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.BackStackManager
@@ -18,7 +17,6 @@ import com.badoo.ribs.core.view.RibView
 abstract class Router<C : Parcelable, V : RibView>(
     private val initialConfiguration: C
 ) {
-    private val binder = Binder()
     private lateinit var timeCapsule: AndroidTimeCapsule
     private lateinit var backStackManager: BackStackManager<C>
     private lateinit var backStackRibConnector: BackStackRibConnector<C>
@@ -37,7 +35,13 @@ abstract class Router<C : Parcelable, V : RibView>(
         emptyList()
 
     private fun initConfigurationManager() {
+        backStackManager = BackStackManager(
+            initialConfiguration = initialConfiguration,
+            timeCapsule = timeCapsule
+        )
+
         backStackRibConnector = BackStackRibConnector(
+            backStackManager,
             permanentParts.map { it.invoke() },
             this::resolveConfiguration,
             NodeConnector.from(
@@ -47,35 +51,31 @@ abstract class Router<C : Parcelable, V : RibView>(
                 node::detachChildNode
             )
         )
-
-        backStackManager = BackStackManager(
-            initialConfiguration = initialConfiguration,
-            timeCapsule = timeCapsule
-        )
     }
 
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
     fun onSaveInstanceState(outState: Bundle) {
+        // FIXME
 //        backStackManager.accept(SaveInstanceState())
         timeCapsule.saveState(outState)
     }
 
     fun onLowMemory() {
+        // FIXME
 //        backStackManager.accept(ShrinkToBundles())
     }
 
     fun onAttachView() {
-//        backStackRibConnector.attachToView(backStackManager.state.backStack)
+        backStackRibConnector.attachToView()
     }
 
     fun onDetachView() {
-//        backStackRibConnector.detachFromView(backStackManager.state.backStack)
+        backStackRibConnector.detachFromView()
     }
 
     fun onDetach() {
-        binder.clear()
-        backStackManager.dispose()
+        backStackRibConnector.dispose()
     }
 
     fun replace(configuration: C) {

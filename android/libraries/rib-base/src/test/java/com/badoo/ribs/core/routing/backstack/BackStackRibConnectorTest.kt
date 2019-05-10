@@ -31,6 +31,7 @@ class BackStackRibConnectorTest {
     }
 
     private lateinit var backStackRibConnector: BackStackRibConnector<Configuration>
+    private lateinit var backStackRibManager: BackStackManager<Configuration>
     private lateinit var resolver: (Configuration) -> RoutingAction<*>
     private lateinit var connector: NodeConnector
 
@@ -75,9 +76,11 @@ class BackStackRibConnectorTest {
             on { invoke(Configuration.C2) } doReturn routingAction2
         }
 
+        // FIXME test reacting to news of manager:
+        backStackRibManager = mock()
         connector = mock()
         val permanentParts = emptyList<Node<*>>() // FIXME test this too
-        backStackRibConnector = BackStackRibConnector(permanentParts, resolver, connector)
+        backStackRibConnector = BackStackRibConnector(backStackRibManager, permanentParts, resolver, connector)
     }
 
     @Test
@@ -379,7 +382,7 @@ class BackStackRibConnectorTest {
         backStackElement1.routingAction = routingAction1
         backStackElement2.routingAction = routingAction2
         val backStack = listOf(backStackElement1, backStackElement2)
-        backStackRibConnector.detachFromView(backStack)
+        backStackRibConnector.detachFromView()
 
         verify(routingAction2).cleanup()
     }

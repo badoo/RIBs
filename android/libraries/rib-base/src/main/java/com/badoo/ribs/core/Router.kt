@@ -10,7 +10,7 @@ import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
-import com.badoo.ribs.core.routing.backstack.BackStackRibConnector
+import com.badoo.ribs.core.routing.backstack.ChildNodeConnector
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, V : RibView>(
@@ -18,7 +18,7 @@ abstract class Router<C : Parcelable, V : RibView>(
 ) {
     private lateinit var timeCapsule: AndroidTimeCapsule
     private lateinit var backStackManager: BackStackManager<C>
-    private lateinit var backStackRibConnector: BackStackRibConnector<C>
+    private lateinit var childNodeConnector: ChildNodeConnector<C>
     protected val configuration: C?
         get() = backStackManager.state.current
 
@@ -39,7 +39,7 @@ abstract class Router<C : Parcelable, V : RibView>(
             timeCapsule = timeCapsule
         )
 
-        backStackRibConnector = BackStackRibConnector(
+        childNodeConnector = ChildNodeConnector(
             backStackManager,
             permanentParts.map { it.invoke() },
             this::resolveConfiguration,
@@ -61,15 +61,15 @@ abstract class Router<C : Parcelable, V : RibView>(
     }
 
     fun onAttachView() {
-        backStackRibConnector.attachToView()
+        childNodeConnector.attachToView()
     }
 
     fun onDetachView() {
-        backStackRibConnector.detachFromView()
+        childNodeConnector.detachFromView()
     }
 
     fun onDetach() {
-        backStackRibConnector.dispose()
+        childNodeConnector.dispose()
     }
 
     fun replace(configuration: C) {

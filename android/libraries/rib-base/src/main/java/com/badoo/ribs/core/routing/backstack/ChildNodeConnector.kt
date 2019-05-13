@@ -9,7 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 
-internal class BackStackRibConnector<C : Parcelable> private constructor(
+internal class ChildNodeConnector<C : Parcelable> private constructor(
     private val binder: Binder,
     private val backStackManager: BackStackManager<C>,
     private val permanentParts: List<Node<*>>,

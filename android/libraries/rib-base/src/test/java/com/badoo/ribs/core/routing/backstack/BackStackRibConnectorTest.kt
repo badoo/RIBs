@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
-import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doAnswer
@@ -29,7 +27,7 @@ class BackStackRibConnectorTest {
         @Parcelize object C2 : Configuration()
     }
 
-    private lateinit var backStackRibConnector: BackStackRibConnector<Configuration>
+    private lateinit var backStackRibConnector: ChildNodeConnector<Configuration>
     private lateinit var backStackRibManager: BackStackManager<Configuration>
     private lateinit var resolver: (Configuration) -> RoutingAction<*>
     private lateinit var parentNode: Node<*>
@@ -45,8 +43,8 @@ class BackStackRibConnectorTest {
     private lateinit var ribs2: List<Node.Descriptor>
     private lateinit var ribsFactories1: List<() -> Node.Descriptor>
     private lateinit var ribsFactories2: List<() -> Node.Descriptor>
-    private lateinit var backStackElement1: BackStackElement<Configuration>
-    private lateinit var backStackElement2: BackStackElement<Configuration>
+    private lateinit var backStackElement1: ConnectorConfiguration<Configuration>
+    private lateinit var backStackElement2: ConnectorConfiguration<Configuration>
 
     @Before
     fun setUp() {
@@ -64,8 +62,8 @@ class BackStackRibConnectorTest {
             mock<() -> Node.Descriptor> { on { invoke() } doReturn nodeDescriptor }
         }
 
-        backStackElement1 = BackStackElement(configuration = Configuration.C1)
-        backStackElement2 = BackStackElement(configuration = Configuration.C2)
+        backStackElement1 = ConnectorConfiguration(configuration = Configuration.C1)
+        backStackElement2 = ConnectorConfiguration(configuration = Configuration.C2)
 
         routingAction1 = mock { on { buildNodes() } doAnswer { ribsFactories1.map { it.invoke() } }}
         routingAction2 = mock { on { buildNodes() } doAnswer { ribsFactories2.map { it.invoke() } }}
@@ -79,7 +77,7 @@ class BackStackRibConnectorTest {
         backStackRibManager = mock()
         parentNode = mock()
         val permanentParts = emptyList<Node<*>>() // FIXME test this too
-        backStackRibConnector = BackStackRibConnector(backStackRibManager, permanentParts, resolver, parentNode)
+        backStackRibConnector = ChildNodeConnector(backStackRibManager, permanentParts, resolver, parentNode)
     }
 
     @Test

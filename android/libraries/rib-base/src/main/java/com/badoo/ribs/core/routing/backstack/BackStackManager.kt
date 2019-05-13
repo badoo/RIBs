@@ -3,15 +3,12 @@ package com.badoo.ribs.core.routing.backstack
 import android.os.Parcelable
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Bootstrapper
-import com.badoo.mvicore.element.NewsPublisher
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.BaseFeature
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.Execute
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Effect
-import com.badoo.ribs.core.routing.backstack.BackStackManager.News
-import com.badoo.ribs.core.routing.backstack.BackStackManager.News.ConfigurationChange
 import com.badoo.ribs.core.routing.backstack.BackStackManager.State
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
@@ -28,7 +25,7 @@ internal class BackStackManager<C : Parcelable>(
     initialConfiguration: C,
     timeCapsule: TimeCapsule<State<C>>,
     tag: String = "BackStackManager.State"
-): BaseFeature<Wish<C>, Action<C>, Effect<C>, State<C>, News<C>>(
+): BaseFeature<Wish<C>, Action<C>, Effect<C>, State<C>, Nothing>(
     initialState = timeCapsule[tag] ?: State(),
     wishToAction = { Execute(it) },
     bootstrapper = BooststrapperImpl(
@@ -36,8 +33,7 @@ internal class BackStackManager<C : Parcelable>(
         initialConfiguration
     ),
     actor = ActorImpl<C>(),
-    reducer = ReducerImpl<C>(),
-    newsPublisher = NewsPublisherImpl<C>()
+    reducer = ReducerImpl<C>()
 ) {
     init {
         timeCapsule.register(tag) { state }
@@ -105,14 +101,6 @@ internal class BackStackManager<C : Parcelable>(
         ) : Effect<C>()
     }
 
-    sealed class News<C : Parcelable> {
-        data class ConfigurationChange<C : Parcelable>(
-            val toKill: List<Int>,
-            val toDetachView: List<Int>,
-            val toAttachView: List<Pair<Int, C>>
-        ) : News<C>()
-    }
-
     class ActorImpl<C : Parcelable> : Actor<State<C>, Action<C>, Effect<C>> {
         override fun invoke(state: State<C>, action: Action<C>): Observable<out Effect<C>> =
             when (action) {
@@ -172,41 +160,5 @@ internal class BackStackManager<C : Parcelable>(
                 backStack = state.backStack.dropLast(1)
             )
         }
-    }
-    class NewsPublisherImpl<C : Parcelable> : NewsPublisher<Action<C>, Effect<C>, State<C>, News<C>> {
-        override fun invoke(action: Action<C>, effect: Effect<C>, state: State<C>): News<C>? =
-            with(effect.oldState.backStack) {
-                when (effect) {
-                    is Effect.Replace -> ConfigurationChange(
-                        toKill = listOf(lastIndex),
-                        toDetachView = emptyList(),
-                        toAttachView = listOf(lastIndex to effect.configuration)
-                    )
-
-                    is Effect.Push -> ConfigurationChange(
-                        toKill = emptyList(),
-                        toDetachView = listOf(lastIndex),
-                        toAttachView = listOf(lastIndex + 1 to effect.configuration)
-                    )
-
-                    is Effect.PushOverlay -> ConfigurationChange(
-                        toKill = emptyList(),
-                        toDetachView = emptyList(),
-                        toAttachView = listOf(lastIndex + 1 to effect.configuration)
-                    )
-
-                    is Effect.NewRoot -> ConfigurationChange(
-                        toKill = indices.toList(),
-                        toDetachView = emptyList(),
-                        toAttachView = listOf(0 to effect.configuration)
-                    )
-
-                    is Effect.Pop -> ConfigurationChange(
-                        toKill = listOf(lastIndex),
-                        toDetachView = emptyList(),
-                        toAttachView = listOf(lastIndex - 1 to elementAt(lastIndex - 1))
-                    )
-                }
-            }
     }
 }

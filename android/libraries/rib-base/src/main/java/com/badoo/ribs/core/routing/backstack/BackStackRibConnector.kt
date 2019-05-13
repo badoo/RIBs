@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.backstack
 import android.os.Parcelable
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.ConnectorCommand.*
 import io.reactivex.Observable
@@ -15,7 +14,7 @@ internal class BackStackRibConnector<C : Parcelable> private constructor(
     private val backStackManager: BackStackManager<C>,
     private val permanentParts: List<Node<*>>,
     private val resolver: (C) -> RoutingAction<*>,
-    private val connector: NodeConnector
+    private val parentNode: Node<*>
 ) : Disposable by binder {
 
     enum class DetachStrategy {
@@ -26,13 +25,13 @@ internal class BackStackRibConnector<C : Parcelable> private constructor(
         backStackManager: BackStackManager<C>,
         permanentParts: List<Node<*>>,
         resolver: (C) -> RoutingAction<*>,
-        connector: NodeConnector
+        parentNode: Node<*>
     ) : this(
         binder = Binder(),
         backStackManager = backStackManager,
         permanentParts = permanentParts,
         resolver = resolver,
-        connector = connector
+        parentNode = parentNode
     )
 
     // FIXME persist this to Bundle?
@@ -41,7 +40,7 @@ internal class BackStackRibConnector<C : Parcelable> private constructor(
     private val backStackStateChangeToCommands = ConnectorCommandCreator<C>()
     private val executor = ConnectorCommandExecutor(
         resolver,
-        connector
+        parentNode
     )
 
     private val onConnectorCommand: Consumer<List<ConnectorCommand<C>>> = Consumer { commands ->
@@ -58,7 +57,7 @@ internal class BackStackRibConnector<C : Parcelable> private constructor(
 
     init {
         permanentParts.forEach {
-            connector.attachChildNode(it)
+            parentNode.attachChildNode(it, null)
         }
 
         val stateChange = Observable.wrap(backStackManager)
@@ -74,8 +73,8 @@ internal class BackStackRibConnector<C : Parcelable> private constructor(
 //        saveInstanceState(backStack).apply {
 //            dropLast(1).forEach {
 //                it.builtNodes?.forEach {
-//                    connector.detachChildView(it.node)
-//                    connector.detachChildNode(it.node)
+//                    parentNode.detachChildView(it.node)
+//                    parentNode.detachChildNode(it.node)
 //                }
 //                it.builtNodes = null
 //            }
@@ -95,14 +94,14 @@ internal class BackStackRibConnector<C : Parcelable> private constructor(
 //    }
 
     fun detachFromView() {
-        permanentParts.forEach { connector.detachChildView(it) }
+        permanentParts.forEach { parentNode.detachChildView(it) }
 
         // FIXME +contents below overlays in last position
         executor.makeConfigurationPassive(backStackManager.state.backStack.lastIndex)
     }
 
     fun attachToView() {
-        permanentParts.forEach { connector.attachChildView(it) }
+        permanentParts.forEach { parentNode.attachChildView(it) }
 
         // FIXME +contents below overlays in last position
         executor.makeConfigurationActive(backStackManager.state.backStack.lastIndex)

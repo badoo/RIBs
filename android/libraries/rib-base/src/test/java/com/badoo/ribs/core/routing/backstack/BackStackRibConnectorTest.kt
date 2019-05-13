@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.backstack
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DESTROY
 import com.badoo.ribs.core.routing.backstack.BackStackRibConnector.DetachStrategy.DETACH_VIEW
@@ -33,7 +32,7 @@ class BackStackRibConnectorTest {
     private lateinit var backStackRibConnector: BackStackRibConnector<Configuration>
     private lateinit var backStackRibManager: BackStackManager<Configuration>
     private lateinit var resolver: (Configuration) -> RoutingAction<*>
-    private lateinit var connector: NodeConnector
+    private lateinit var parentNode: Node<*>
 
     private lateinit var routingAction1: RoutingAction<*>
     private lateinit var routingAction2: RoutingAction<*>
@@ -78,9 +77,9 @@ class BackStackRibConnectorTest {
 
         // FIXME test reacting to news of manager:
         backStackRibManager = mock()
-        connector = mock()
+        parentNode = mock()
         val permanentParts = emptyList<Node<*>>() // FIXME test this too
-        backStackRibConnector = BackStackRibConnector(backStackRibManager, permanentParts, resolver, connector)
+        backStackRibConnector = BackStackRibConnector(backStackRibManager, permanentParts, resolver, parentNode)
     }
 
     @Test
@@ -95,12 +94,12 @@ class BackStackRibConnectorTest {
         backStackElement1.builtNodes = ribs1
         backStackRibConnector.leave(backStackElement1, DESTROY)
         ribs1.forEach {
-            inOrder(connector) {
-                verify(connector).detachChildView(it.node)
-                verify(connector).detachChildNode(it.node)
+            inOrder(parentNode) {
+                verify(parentNode).detachChildView(it.node)
+                verify(parentNode).detachChildNode(it.node)
             }
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
 
     @Test
@@ -131,9 +130,9 @@ class BackStackRibConnectorTest {
         backStackElement1.builtNodes = ribs1
         backStackRibConnector.leave(backStackElement1, DETACH_VIEW)
         ribs1.forEach {
-            verify(connector).detachChildView(it.node)
+            verify(parentNode).detachChildView(it.node)
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
 
     @Test
@@ -167,7 +166,7 @@ class BackStackRibConnectorTest {
     fun `When going to BackStackElement, RIBs that are created are attached`() {
         backStackRibConnector.goTo(backStackElement1)
         ribs1.forEach {
-            verify(connector).attachChildNode(it.node)
+            verify(parentNode).attachChildNode(it.node)
         }
     }
 
@@ -176,9 +175,9 @@ class BackStackRibConnectorTest {
         backStackElement1.builtNodes = ribs1
         backStackRibConnector.goTo(backStackElement1)
         ribs1.forEach {
-            verify(connector).attachChildView(it.node)
+            verify(parentNode).attachChildView(it.node)
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
 
     @Test
@@ -365,15 +364,15 @@ class BackStackRibConnectorTest {
         backStackRibConnector.shrinkToBundles(backStack)
 
         ribs1.forEach {
-            inOrder(connector) {
-                verify(connector).detachChildView(it.node)
-                verify(connector).detachChildNode(it.node)
+            inOrder(parentNode) {
+                verify(parentNode).detachChildView(it.node)
+                verify(parentNode).detachChildNode(it.node)
             }
         }
 
         ribs2.forEach {
-            verify(connector, never()).detachChildView(it.node)
-            verify(connector, never()).detachChildNode(it.node)
+            verify(parentNode, never()).detachChildView(it.node)
+            verify(parentNode, never()).detachChildNode(it.node)
         }
     }
 

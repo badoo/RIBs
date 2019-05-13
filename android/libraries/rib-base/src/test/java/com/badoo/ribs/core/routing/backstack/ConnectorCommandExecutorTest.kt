@@ -2,7 +2,6 @@ package com.badoo.ribs.core.routing.backstack
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.BackStackManager.State
 import com.jakewharton.rxrelay2.PublishRelay
@@ -28,7 +27,7 @@ class ConnectorCommandExecutorTest {
 
     private lateinit var executor: ConnectorCommandExecutor<Configuration>
     private lateinit var resolver: (Configuration) -> RoutingAction<*>
-    private lateinit var connector: NodeConnector
+    private lateinit var parentNode: Node<*>
 
     private lateinit var routingActionViewParentedNodes: RoutingAction<*>
     private lateinit var routingActionExternalNodes: RoutingAction<*>
@@ -68,8 +67,8 @@ class ConnectorCommandExecutorTest {
         }
 
         backStackStateSubject = PublishRelay.create<State<Configuration>>()
-        connector = mock()
-        executor = ConnectorCommandExecutor(resolver, connector)
+        parentNode = mock()
+        executor = ConnectorCommandExecutor(resolver, parentNode)
     }
 
     // region addConfiguration
@@ -86,7 +85,7 @@ class ConnectorCommandExecutorTest {
         executor.addConfiguration(0, Configuration.C1)
         executor.makeConfigurationActive(0)
         nodesViewParented.forEach {
-            verify(connector).attachChildNode(it.node)
+            verify(parentNode).attachChildNode(it.node, null)
         }
     }
 
@@ -114,25 +113,25 @@ class ConnectorCommandExecutorTest {
     @Test
     fun `When calling makeConfigurationActive(), attachChildView() is called on associated Nodes that are view-parented`() {
         executor.addConfiguration(0, Configuration.C1) // This configuration resolves to view-parented Nodes
-        clearInvocations(connector)
+        clearInvocations(parentNode)
 
         executor.makeConfigurationActive(0)
         nodesViewParented.forEach {
-            verify(connector).attachChildView(it.node)
+            verify(parentNode).attachChildView(it.node)
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
 
     @Test
     fun `When calling makeConfigurationActive(), attachChildView() is NOT called on associated Nodes that are NOT view-parented`() {
         executor.addConfiguration(0, Configuration.C2) // This configuration resolves to external Nodes
-        clearInvocations(connector)
+        clearInvocations(parentNode)
 
         executor.makeConfigurationActive(0)
         nodesViewParented.forEach {
-            verify(connector, never()).attachChildView(it.node)
+            verify(parentNode, never()).attachChildView(it.node)
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
     // endregion
 
@@ -156,25 +155,25 @@ class ConnectorCommandExecutorTest {
     @Test
     fun `When calling makeConfigurationPassive(), detachChildView() is called on associated Nodes that are view-parented`() {
         executor.addConfiguration(0, Configuration.C1) // This configuration resolves to view-parented Nodes
-        clearInvocations(connector)
+        clearInvocations(parentNode)
 
         executor.makeConfigurationPassive(0)
         nodesViewParented.forEach {
-            verify(connector).detachChildView(it.node)
+            verify(parentNode).detachChildView(it.node)
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
 
     @Test
     fun `When calling makeConfigurationPassive(), detachChildView() is NOT called on associated Nodes that are NOT view-parented`() {
         executor.addConfiguration(0, Configuration.C2) // This configuration resolves to external Nodes
-        clearInvocations(connector)
+        clearInvocations(parentNode)
 
         executor.makeConfigurationActive(0)
         nodesViewParented.forEach {
-            verify(connector, never()).detachChildView(it.node)
+            verify(parentNode, never()).detachChildView(it.node)
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
     // endregion
 
@@ -191,17 +190,17 @@ class ConnectorCommandExecutorTest {
     fun `When calling removeConfiguration(), all of its Nodes are detached regardless of view-parenting mode`() {
         executor.addConfiguration(0, Configuration.C1)
         executor.addConfiguration(1, Configuration.C2)
-        clearInvocations(connector)
+        clearInvocations(parentNode)
 
         executor.removeConfiguration(1)
         executor.removeConfiguration(0)
         (nodesViewParented + nodesExternal).forEach {
-            inOrder(connector) {
-                verify(connector).detachChildView(it.node)
-                verify(connector).detachChildNode(it.node)
+            inOrder(parentNode) {
+                verify(parentNode).detachChildView(it.node)
+                verify(parentNode).detachChildNode(it.node)
             }
         }
-        verifyNoMoreInteractions(connector)
+        verifyNoMoreInteractions(parentNode)
     }
 
     @Test

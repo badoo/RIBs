@@ -5,25 +5,22 @@ import android.os.Parcelable
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Node.ViewAttachMode.PARENT
-import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
-import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 
 internal class ConnectorCommandExecutor<C : Parcelable> private constructor(
     private val binder: Binder,
     private val resolver: (C) -> RoutingAction<*>,
-    private val connector: NodeConnector
+    private val parentNode: Node<*>
 ) : Disposable by binder {
 
     constructor(
         resolver: (C) -> RoutingAction<*>,
-        connector: NodeConnector
+        parentNode: Node<*>
     ) : this(
         binder = Binder(),
         resolver = resolver,
-        connector = connector
+        parentNode = parentNode
     )
 
     // FIXME persist this to Bundle?
@@ -53,7 +50,7 @@ internal class ConnectorCommandExecutor<C : Parcelable> private constructor(
 
     private fun BackStackElement<C>.attachBuiltNodes() {
         builtNodes!!.forEachIndexed { index, nodeDescriptor ->
-            connector.attachChildNode(nodeDescriptor.node, bundleAt(index))
+            parentNode.attachChildNode(nodeDescriptor.node, bundleAt(index))
         }
     }
 
@@ -74,7 +71,7 @@ internal class ConnectorCommandExecutor<C : Parcelable> private constructor(
         builtNodes!!
             .forEach {
                 if (it.viewAttachMode == PARENT && !it.node.isViewAttached) {
-                    connector.attachChildView(it.node)
+                    parentNode.attachChildView(it.node)
                 }
             }
     }
@@ -91,7 +88,7 @@ internal class ConnectorCommandExecutor<C : Parcelable> private constructor(
             it.node.saveViewState()
 
             if (it.viewAttachMode == PARENT) {
-                connector.detachChildView(it.node)
+                parentNode.detachChildView(it.node)
             }
         }
     }
@@ -105,8 +102,8 @@ internal class ConnectorCommandExecutor<C : Parcelable> private constructor(
 
     private fun BackStackElement<C>.destroyChildren() {
         builtNodes?.forEach {
-            connector.detachChildView(it.node)
-            connector.detachChildNode(it.node)
+            parentNode.detachChildView(it.node)
+            parentNode.detachChildNode(it.node)
         }
         builtNodes = null
     }
@@ -116,8 +113,8 @@ internal class ConnectorCommandExecutor<C : Parcelable> private constructor(
 //        saveInstanceState(backStack).apply {
 //            dropLast(1).forEach {
 //                it.builtNodes?.forEach {
-//                    connector.detachChildView(it.node)
-//                    connector.detachChildNode(it.node)
+//                    parentNode.detachChildView(it.node)
+//                    parentNode.detachChildNode(it.node)
 //                }
 //                it.builtNodes = null
 //            }
@@ -137,14 +134,14 @@ internal class ConnectorCommandExecutor<C : Parcelable> private constructor(
 //    }
 
 //    fun detachFromView() {
-//        permanentParts.forEach { connector.detachChildView(it) }
+//        permanentParts.forEach { parentNode.detachChildView(it) }
 //
 //        // FIXME +contents below overlays in last position
 //        makeConfigurationPassive(backStackManager.state.backStack.lastIndex)
 //    }
 //
 //    fun attachToView() {
-//        permanentParts.forEach { connector.attachChildView(it) }
+//        permanentParts.forEach { parentNode.attachChildView(it) }
 //
 //        // FIXME +contents below overlays in last position
 //        makeConfigurationActive(backStackManager.state.backStack.lastIndex)

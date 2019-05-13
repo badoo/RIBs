@@ -3,7 +3,6 @@ package com.badoo.ribs.core
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.ribs.core.routing.NodeConnector
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.BackStackManager
 import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
@@ -44,12 +43,7 @@ abstract class Router<C : Parcelable, V : RibView>(
             backStackManager,
             permanentParts.map { it.invoke() },
             this::resolveConfiguration,
-            NodeConnector.from(
-                node::attachChildNode,
-                node::attachChildView,
-                node::detachChildView,
-                node::detachChildNode
-            )
+            node
         )
     }
 

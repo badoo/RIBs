@@ -52,6 +52,11 @@ open class Node<V : RibView>(
         EXTERNAL
     }
 
+    data class Descriptor(
+        val node: Node<*>,
+        val viewAttachMode: ViewAttachMode
+    )
+
     companion object {
         internal const val KEY_ROUTER = "node.router"
         internal const val KEY_INTERACTOR = "node.interactor"

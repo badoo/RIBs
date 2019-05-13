@@ -2,6 +2,7 @@ package com.badoo.ribs.core.routing.backstack
 
 import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
@@ -12,7 +13,7 @@ internal class BackStackElement<C : Parcelable>(
     var bundles: List<Bundle> = emptyList()
 ): Parcelable {
     @IgnoredOnParcel var routingAction: RoutingAction<*>? = null
-    @IgnoredOnParcel var builtNodes: List<NodeDescriptor>? = null
+    @IgnoredOnParcel var builtNodes: List<Node.Descriptor>? = null
 
     fun clear() {
         routingAction = null

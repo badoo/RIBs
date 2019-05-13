@@ -37,10 +37,10 @@ class ConnectorCommandExecutorTest {
     private lateinit var node1_3: Node<*>
     private lateinit var node2_1: Node<*>
     private lateinit var node2_2: Node<*>
-    private lateinit var nodesViewParented: List<NodeDescriptor>
-    private lateinit var nodesExternal: List<NodeDescriptor>
-    private lateinit var nodeFactoriesViewParented: List<() -> NodeDescriptor>
-    private lateinit var nodeFactoriesExternal: List<() -> NodeDescriptor>
+    private lateinit var nodesViewParented: List<Node.Descriptor>
+    private lateinit var nodesExternal: List<Node.Descriptor>
+    private lateinit var nodeFactoriesViewParented: List<() -> Node.Descriptor>
+    private lateinit var nodeFactoriesExternal: List<() -> Node.Descriptor>
     private lateinit var backStackStateSubject: PublishRelay<State<Configuration>>
 
     @Before
@@ -50,13 +50,13 @@ class ConnectorCommandExecutorTest {
         node1_3 = mock()
         node2_1 = mock()
         node2_2 = mock()
-        nodesViewParented = listOf(node1_1, node1_2, node1_3).map { NodeDescriptor(it, Node.ViewAttachMode.PARENT) }
-        nodesExternal = listOf(node2_1, node2_2).map { NodeDescriptor(it, Node.ViewAttachMode.EXTERNAL) }
+        nodesViewParented = listOf(node1_1, node1_2, node1_3).map { Node.Descriptor(it, Node.ViewAttachMode.PARENT) }
+        nodesExternal = listOf(node2_1, node2_2).map { Node.Descriptor(it, Node.ViewAttachMode.EXTERNAL) }
         nodeFactoriesViewParented = nodesViewParented.map { nodeDescriptor ->
-            mock<() -> NodeDescriptor> { on { invoke() } doReturn nodeDescriptor }
+            mock<() -> Node.Descriptor> { on { invoke() } doReturn nodeDescriptor }
         }
         nodeFactoriesExternal = nodesExternal.map { nodeDescriptor ->
-            mock<() -> NodeDescriptor> { on { invoke() } doReturn nodeDescriptor }
+            mock<() -> Node.Descriptor> { on { invoke() } doReturn nodeDescriptor }
         }
 
         routingActionViewParentedNodes = mock { on { buildNodes() } doAnswer { nodeFactoriesViewParented.map { it.invoke() } }}

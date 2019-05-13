@@ -42,10 +42,10 @@ class BackStackRibConnectorTest {
     private lateinit var node1_3: Node<*>
     private lateinit var node2_1: Node<*>
     private lateinit var node2_2: Node<*>
-    private lateinit var ribs1: List<NodeDescriptor>
-    private lateinit var ribs2: List<NodeDescriptor>
-    private lateinit var ribsFactories1: List<() -> NodeDescriptor>
-    private lateinit var ribsFactories2: List<() -> NodeDescriptor>
+    private lateinit var ribs1: List<Node.Descriptor>
+    private lateinit var ribs2: List<Node.Descriptor>
+    private lateinit var ribsFactories1: List<() -> Node.Descriptor>
+    private lateinit var ribsFactories2: List<() -> Node.Descriptor>
     private lateinit var backStackElement1: BackStackElement<Configuration>
     private lateinit var backStackElement2: BackStackElement<Configuration>
 
@@ -56,13 +56,13 @@ class BackStackRibConnectorTest {
         node1_3 = mock()
         node2_1 = mock()
         node2_2 = mock()
-        ribs1 = listOf(node1_1, node1_2, node1_3).map { NodeDescriptor(it, Node.ViewAttachMode.PARENT) }
-        ribs2 = listOf(node2_1, node2_2).map { NodeDescriptor(it, Node.ViewAttachMode.PARENT) }
+        ribs1 = listOf(node1_1, node1_2, node1_3).map { Node.Descriptor(it, Node.ViewAttachMode.PARENT) }
+        ribs2 = listOf(node2_1, node2_2).map { Node.Descriptor(it, Node.ViewAttachMode.PARENT) }
         ribsFactories1 = ribs1.map { nodeDescriptor ->
-            mock<() -> NodeDescriptor> { on { invoke() } doReturn nodeDescriptor }
+            mock<() -> Node.Descriptor> { on { invoke() } doReturn nodeDescriptor }
         }
         ribsFactories2 = ribs2.map { nodeDescriptor ->
-            mock<() -> NodeDescriptor> { on { invoke() } doReturn nodeDescriptor }
+            mock<() -> Node.Descriptor> { on { invoke() } doReturn nodeDescriptor }
         }
 
         backStackElement1 = BackStackElement(configuration = Configuration.C1)

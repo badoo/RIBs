@@ -19,11 +19,11 @@ class TestRouter(
 ) {
 
     sealed class Configuration : Parcelable {
-        @Parcelize object C1 : Configuration()
-        @Parcelize object C2 : Configuration()
-        @Parcelize object C3 : Configuration()
-        @Parcelize object C4 : Configuration()
-        @Parcelize object C5 : Configuration()
+        @Parcelize object C1 : Configuration() { override fun toString(): String = "C1" }
+        @Parcelize object C2 : Configuration() { override fun toString(): String = "C2" }
+        @Parcelize object C3 : Configuration() { override fun toString(): String = "C3" }
+        @Parcelize object C4 : Configuration() { override fun toString(): String = "C4" }
+        @Parcelize object C5 : Configuration() { override fun toString(): String = "C5" }
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<TestView> =

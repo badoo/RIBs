@@ -42,12 +42,12 @@ internal class ConfigurationFeature<C : Parcelable>(
 
     @Parcelize
     data class SavedState<C : Parcelable>(
-        val pool: Map<Int, Unresolved<C>>
+        val pool: Map<ConfigurationKey, Unresolved<C>>
     ) : Parcelable
 
     data class State<C : Parcelable>(
         val activationLevel: ActivationState,
-        val pool: Map<Int, ConfigurationContext<C>> = mapOf()
+        val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf()
     ) {
         fun toSavedState() = SavedState(
             pool.map {
@@ -86,7 +86,7 @@ internal class ConfigurationFeature<C : Parcelable>(
 
                 is ConfigurationCommand.Individual -> {
                     val defaultElement = if (wish is Add<C>) Unresolved(wish.configuration) else null
-                    val resolved = state.resolve(wish.index, defaultElement)
+                    val resolved = state.resolve(wish.key, defaultElement)
 
                     Observable
                         .fromCallable { resolved.applyCommand(wish) }
@@ -120,8 +120,8 @@ internal class ConfigurationFeature<C : Parcelable>(
             }
         }
 
-        private fun State<C>.resolve(index: Int, defaultElement: Unresolved<C>?): Resolved<C> =
-            when (val item = pool[index] ?: defaultElement ?: error("Key $index was not found in pool")) {
+        private fun State<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> =
+            when (val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")) {
                 is Resolved -> item
                 is Unresolved -> {
                     val routingAction = resolver.invoke(item.configuration)
@@ -202,27 +202,27 @@ internal class ConfigurationFeature<C : Parcelable>(
                 }
 
                 is Effect.Individual -> {
-                    val index = effect.command.index
+                    val key = effect.command.key
                     val element = effect.resolvedConfigurationContext
 
                     when (effect.command) {
                         is Add -> state.copy(
                             pool = state.pool
-                                .plus(index to element)
+                                .plus(key to element)
                         )
                         is Activate -> state.copy(
                             pool = state.pool
-                                .minus(index)
-                                .plus(index to element.setActivationState(state.activationLevel))
+                                .minus(key)
+                                .plus(key to element.setActivationState(state.activationLevel))
                         )
                         is Deactivate -> state.copy(
                             pool = state.pool
-                                .minus(index)
-                                .plus(index to element.setActivationState(INACTIVE))
+                                .minus(key)
+                                .plus(key to element.setActivationState(INACTIVE))
                         )
                         is Remove -> state.copy(
                             pool = state.pool
-                                .minus(index)
+                                .minus(key)
                         )
                     }
                 }

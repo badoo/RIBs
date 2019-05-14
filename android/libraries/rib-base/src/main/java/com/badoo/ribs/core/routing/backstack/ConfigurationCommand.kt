@@ -10,11 +10,11 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
     }
 
     sealed class Individual<C : Parcelable> : ConfigurationCommand<C>() {
-        abstract val index: Int
+        abstract val key: ConfigurationKey
 
-        data class Add<C : Parcelable>(override val index: Int, val configuration: C) : Individual<C>()
-        data class Activate<C : Parcelable>(override val index: Int) : Individual<C>()
-        data class Deactivate<C : Parcelable>(override val index: Int) : Individual<C>()
-        data class Remove<C : Parcelable>(override val index: Int) : Individual<C>()
+        data class Add<C : Parcelable>(override val key: ConfigurationKey, val configuration: C) : Individual<C>()
+        data class Activate<C : Parcelable>(override val key: ConfigurationKey) : Individual<C>()
+        data class Deactivate<C : Parcelable>(override val key: ConfigurationKey) : Individual<C>()
+        data class Remove<C : Parcelable>(override val key: ConfigurationKey) : Individual<C>()
     }
 }

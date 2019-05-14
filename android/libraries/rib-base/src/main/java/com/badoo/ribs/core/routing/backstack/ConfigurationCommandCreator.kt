@@ -6,6 +6,7 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Act
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Deactivate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Remove
+import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Content
 import java.lang.Math.min
 
 internal class ConfigurationCommandCreator<C : Parcelable> :
@@ -42,26 +43,26 @@ internal class ConfigurationCommandCreator<C : Parcelable> :
 
     private fun List<C>.makePassiveIfNeeded(): List<ConfigurationCommand<C>> =
         when {
-            lastIndex > -1 -> listOf(Deactivate(lastIndex))
+            lastIndex > -1 -> listOf(Deactivate(Content(lastIndex)))
             else -> emptyList()
         }
 
     private fun List<C>.removeUntil(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
         val offset = targetIdxExclusive + 1
         return subList(offset, size)
-            .mapIndexed { index, _ -> Remove<C>(offset + index) }
+            .mapIndexed { index, _ -> Remove<C>(Content(offset + index)) }
             .asReversed()
     }
 
     private fun List<C>.addFrom(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
         val offset = targetIdxExclusive + 1
         return subList(offset, size)
-            .mapIndexed { index, configuration -> Add(offset + index, configuration) }
+            .mapIndexed { index, configuration -> Add(Content(offset + index), configuration) }
     }
 
     private fun List<C>.makeActiveIfNeeded(): List<ConfigurationCommand<C>> =
         when {
-            lastIndex > -1 -> listOf(Activate(lastIndex))
+            lastIndex > -1 -> listOf(Activate(Content(lastIndex)))
             else -> emptyList()
         }
 }

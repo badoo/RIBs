@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
@@ -17,10 +19,9 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     @Parcelize
     data class Unresolved<C : Parcelable>(
         val configuration: C,
-        val bundles: List<Bundle> = emptyList()
-    ) : ConfigurationContext<C>(), Parcelable {
-        @IgnoredOnParcel override val activationState: ActivationState = INACTIVE
-    }
+        val bundles: List<Bundle> = emptyList(),
+        override val activationState: ActivationState = INACTIVE
+    ) : ConfigurationContext<C>(), Parcelable
 
     data class Resolved<C : Parcelable>(
         val configuration: C,
@@ -31,6 +32,6 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     ) : ConfigurationContext<C>() {
 
         fun shrink() = 
-            Unresolved(configuration, bundles)
+            Unresolved(configuration, bundles, activationState)
     }
 }

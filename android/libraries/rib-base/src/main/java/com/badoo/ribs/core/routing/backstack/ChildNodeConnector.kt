@@ -1,13 +1,14 @@
 package com.badoo.ribs.core.routing.backstack
 
-import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 
+// TODO merge into ConfigurationFeature and delete
 internal class ChildNodeConnector<C : Parcelable> private constructor(
     private val binder: Binder,
     private val backStackManager: BackStackManager<C>,
@@ -29,11 +30,11 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
         parentNode = parentNode
     )
 
-    // FIXME persist this to Bundle?
-//    private val nodes: MutableList<BackStackElement<C>> = mutableListOf()
-
     private val backStackStateChangeToCommands = ConfigurationCommandCreator<C>()
-    private val configurationHandler = ConfigurationHandler(
+//    private val configurationHandler = ConfigurationHandler(
+    private val configurationHandler = ConfigurationFeature(
+        // FIXME timecapsule
+        AndroidTimeCapsule(null),
         resolver,
         parentNode
     )
@@ -47,6 +48,7 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
             .startWith(BackStackManager.State())
             .buffer(2, 1)
             .map { backStackStateChangeToCommands.invoke(it[0], it[1]) }
+            .flatMapIterable { items -> items }
 
         binder.bind(commands to configurationHandler)
     }
@@ -65,20 +67,20 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
 //    }
 
     fun saveInstanceState() {
-        configurationHandler.pool.forEach {
-            val key = it.key
-            val entry = it.value
-
-            if (entry is ConfigurationContext.Resolved<C>) {
-                configurationHandler.pool[key] = entry.copy(
-                    bundles = entry.builtNodes.map { nodeDescriptor ->
-                        Bundle().also {
-                            nodeDescriptor.node.onSaveInstanceState(it)
-                        }
-                    }
-                )
-            }
-        }
+//        configurationHandler.pool.forEach {
+//            val key = it.key
+//            val entry = it.value
+//
+//            if (entry is ConfigurationContext.Resolved<C>) {
+//                configurationHandler.pool[key] = entry.copy(
+//                    bundles = entry.builtNodes.map { nodeDescriptor ->
+//                        Bundle().also {
+//                            nodeDescriptor.node.onSaveInstanceState(it)
+//                        }
+//                    }
+//                )
+//            }
+//        }
     }
 
     fun detachFromView() {
@@ -86,9 +88,7 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
         permanentParts.forEach { parentNode.detachChildView(it) }
 
         configurationHandler.accept(
-            listOf(
-                ConfigurationCommand.Global.Sleep()
-            )
+            ConfigurationCommand.Global.Sleep()
         )
     }
 
@@ -97,9 +97,7 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
         permanentParts.forEach { parentNode.attachChildView(it) }
 
         configurationHandler.accept(
-            listOf(
-                ConfigurationCommand.Global.WakeUp()
-            )
+            ConfigurationCommand.Global.WakeUp()
         )
     }
 }

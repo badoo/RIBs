@@ -8,12 +8,9 @@ import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
-class HelloWorldRouter: Router<Configuration, HelloWorldView>(
+class HelloWorldRouter: Router<Configuration, Nothing, Nothing, Nothing, HelloWorldView>(
     initialConfiguration = Configuration.Default
 ) {
-    override val permanentParts: List<() -> Node<*>> =
-        emptyList()
-
     sealed class Configuration : Parcelable {
         @Parcelize object Default : Configuration()
     }

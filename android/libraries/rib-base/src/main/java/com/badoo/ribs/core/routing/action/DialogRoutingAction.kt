@@ -8,7 +8,7 @@ import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 
 class DialogRoutingAction<V : RibView, Event : Any>(
-    private val router: Router<*, *>,
+    private val router: Router<*, *, *, *, *>,
     private val dialogLauncher: DialogLauncher,
     private val dialog: Dialog<Event>
 ) : RoutingAction<V> {
@@ -30,7 +30,7 @@ class DialogRoutingAction<V : RibView, Event : Any>(
 
     companion object {
         fun <V : RibView> showDialog(
-            router: Router<*, *>,
+            router: Router<*, *, *, *, *>,
             dialogLauncher: DialogLauncher,
             dialog: Dialog<*>
         ): RoutingAction<V> =

@@ -13,7 +13,7 @@ import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.ChildNodeConnector
 import com.badoo.ribs.core.view.RibView
 
-abstract class Router<C : Parcelable, V : RibView>(
+abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     private val initialConfiguration: C
 ) {
     private lateinit var timeCapsule: AndroidTimeCapsule
@@ -30,7 +30,7 @@ abstract class Router<C : Parcelable, V : RibView>(
         initConfigurationManager()
     }
 
-    protected open val permanentParts: List<() -> Node<*>> =
+    protected open val permanentParts: List<Permanent> =
         emptyList()
 
     private fun initConfigurationManager() {
@@ -41,7 +41,7 @@ abstract class Router<C : Parcelable, V : RibView>(
 
         childNodeConnector = ChildNodeConnector(
             backStackFeature,
-            permanentParts.map { it.invoke() },
+            permanentParts,
             this::resolveConfiguration,
             node
         )
@@ -72,19 +72,19 @@ abstract class Router<C : Parcelable, V : RibView>(
         childNodeConnector.dispose()
     }
 
-    fun replace(configuration: C) {
+    fun replace(configuration: Content) {
         backStackFeature.accept(Replace(configuration))
     }
 
-    fun push(configuration: C) {
-        if (configuration is Overlay) {
-            backStackFeature.accept(PushOverlay(configuration))
-        } else {
-            backStackFeature.accept(Push(configuration))
-        }
+    fun push(configuration: Content) {
+        backStackFeature.accept(Push(configuration))
     }
 
-    fun newRoot(configuration: C) {
+    fun pushOverlay(configuration: Overlay) {
+        backStackFeature.accept(PushOverlay(configuration))
+    }
+
+    fun newRoot(configuration: Content) {
         backStackFeature.accept(NewRoot(configuration))
     }
 
@@ -96,10 +96,4 @@ abstract class Router<C : Parcelable, V : RibView>(
             false
         }
     }
-
-    /**
-     * Marker interface for Configurations that should be added as overlays
-     * i.e. not detaching previous Configurations
-     */
-    interface Overlay
 }

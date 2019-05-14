@@ -13,11 +13,11 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MenuInteractor(
-    router: Router<MenuRouter.Configuration, MenuView>,
+    router: Router<MenuRouter.Configuration, Nothing, Nothing, Nothing, MenuView>,
     private val input: ObservableSource<Menu.Input>,
     private val output: Consumer<Menu.Output>,
     private val feature: MenuFeature
-) : Interactor<MenuRouter.Configuration, MenuView>(
+) : Interactor<MenuRouter.Configuration, Nothing, Nothing, MenuView>(
     router = router,
     disposables = feature
 ) {

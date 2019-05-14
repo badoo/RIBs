@@ -7,6 +7,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.*
 import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.RibDialog
@@ -17,21 +18,25 @@ class DialogExampleRouter(
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-): Router<Configuration, DialogExampleView>(
-    initialConfiguration = Configuration.Default
+): Router<Configuration, Nothing, Content, Overlay, DialogExampleView>(
+    initialConfiguration = Content.Default
 ) {
     sealed class Configuration : Parcelable {
-        @Parcelize object Default : Configuration()
-        @Parcelize object SimpleDialog : Configuration(), Overlay
-        @Parcelize object LazyDialog : Configuration(), Overlay
-        @Parcelize object RibDialog : Configuration(), Overlay
+        sealed class Content : Configuration() {
+            @Parcelize object Default : Content()
+        }
+        sealed class Overlay : Configuration() {
+            @Parcelize object SimpleDialog : Overlay()
+            @Parcelize object LazyDialog : Overlay()
+            @Parcelize object RibDialog : Overlay()
+        }
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<DialogExampleView> =
         when (configuration) {
-            is Configuration.Default -> noop()
-            is Configuration.SimpleDialog -> showDialog(this, dialogLauncher, simpleDialog)
-            is Configuration.LazyDialog -> showDialog(this, dialogLauncher, lazyDialog)
-            is Configuration.RibDialog -> showDialog(this, dialogLauncher, ribDialog)
+            is Content.Default -> noop()
+            is Overlay.SimpleDialog -> showDialog(this, dialogLauncher, simpleDialog)
+            is Overlay.LazyDialog -> showDialog(this, dialogLauncher, lazyDialog)
+            is Overlay.RibDialog -> showDialog(this, dialogLauncher, ribDialog)
         }
 }

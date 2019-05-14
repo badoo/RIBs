@@ -19,9 +19,9 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    router: Router<FooBarRouter.Configuration, FooBarView>,
+    router: Router<FooBarRouter.Configuration, Nothing, Nothing, Nothing, FooBarView>,
     private val permissionRequester: PermissionRequester
-) : Interactor<FooBarRouter.Configuration, FooBarView>(
+) : Interactor<FooBarRouter.Configuration, Nothing, Nothing, FooBarView>(
     router = router,
     disposables = null
 ) {

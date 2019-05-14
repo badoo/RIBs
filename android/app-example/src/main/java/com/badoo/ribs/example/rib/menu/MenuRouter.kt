@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import kotlinx.android.parcel.Parcelize
 
-class MenuRouter : Router<MenuRouter.Configuration, MenuView>(
+class MenuRouter : Router<MenuRouter.Configuration, Nothing, Nothing, Nothing, MenuView>(
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {

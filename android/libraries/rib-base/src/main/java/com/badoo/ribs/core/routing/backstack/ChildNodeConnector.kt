@@ -5,6 +5,10 @@ import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Global
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Activate
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Add
+import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Permanent
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 
@@ -12,14 +16,14 @@ import io.reactivex.disposables.Disposable
 internal class ChildNodeConnector<C : Parcelable> private constructor(
     private val binder: Binder,
     private val backStackFeature: BackStackFeature<C>,
-    private val permanentParts: List<Node<*>>,
+    private val permanentParts: List<C>,
     private val resolver: (C) -> RoutingAction<*>,
     private val parentNode: Node<*>
 ) : Disposable by binder {
 
     constructor(
         backStackFeature: BackStackFeature<C>,
-        permanentParts: List<Node<*>>,
+        permanentParts: List<C>,
         resolver: (C) -> RoutingAction<*>,
         parentNode: Node<*>
     ) : this(
@@ -31,7 +35,6 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
     )
 
     private val backStackStateChangeToCommands = ConfigurationCommandCreator<C>()
-//    private val configurationHandler = ConfigurationHandler(
     private val configurationHandler = ConfigurationFeature(
         // FIXME timecapsule
         AndroidTimeCapsule(null),
@@ -40,8 +43,10 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
     )
 
     init {
-        permanentParts.forEach {
-            parentNode.attachChildNode(it, null)
+        permanentParts.forEachIndexed { index, configuration ->
+            val key = Permanent(index)
+            configurationHandler.accept(Add(key, configuration))
+            configurationHandler.accept(Activate(key))
         }
 
         val commands = Observable.wrap(backStackFeature)
@@ -84,20 +89,14 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
     }
 
     fun detachFromView() {
-        // TODO move permanent parts to Key-based item in configurationHandler
-        permanentParts.forEach { parentNode.detachChildView(it) }
-
         configurationHandler.accept(
-            ConfigurationCommand.Global.Sleep()
+            Global.Sleep()
         )
     }
 
     fun attachToView() {
-        // TODO move permanent parts to Key-based item in configurationHandler
-        permanentParts.forEach { parentNode.attachChildView(it) }
-
         configurationHandler.accept(
-            ConfigurationCommand.Global.WakeUp()
+            Global.WakeUp()
         )
     }
 }

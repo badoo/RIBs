@@ -10,9 +10,9 @@ import com.badoo.ribs.example.rib.blocker.mapper.ViewEventToOutput
 import io.reactivex.functions.Consumer
 
 class BlockerInteractor(
-    router: Router<Configuration, BlockerView>,
+    router: Router<Configuration, Nothing, Nothing, Nothing, BlockerView>,
     private val output: Consumer<Blocker.Output>
-) : Interactor<Configuration, BlockerView>(
+) : Interactor<Configuration, Nothing, Nothing, BlockerView>(
     router = router,
     disposables = null
 ) {

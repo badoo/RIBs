@@ -242,5 +242,5 @@ class ConnectorCommandCreatorTest {
     }
 
     private fun state(list: List<Configuration>) =
-        BackStackManager.State(backStack = list)
+        BackStackFeature.State(backStack = list)
 }

@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.backstack
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.BackStackManager.State
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.State
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.*
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Global.*
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved

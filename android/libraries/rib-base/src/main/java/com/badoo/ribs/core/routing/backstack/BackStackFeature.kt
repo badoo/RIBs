@@ -6,25 +6,25 @@ import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.BaseFeature
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Action
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Action.Execute
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Effect
-import com.badoo.ribs.core.routing.backstack.BackStackManager.State
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Action
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Action.Execute
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Effect
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.State
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.NewRoot
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Pop
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.PushOverlay
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Replace
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
 import kotlinx.android.parcel.Parcelize
 
-internal class BackStackManager<C : Parcelable>(
+internal class BackStackFeature<C : Parcelable>(
     initialConfiguration: C,
     timeCapsule: TimeCapsule<State<C>>,
-    tag: String = "BackStackManager.State"
+    tag: String = "BackStackFeature.State"
 ): BaseFeature<Wish<C>, Action<C>, Effect<C>, State<C>, Nothing>(
     initialState = timeCapsule[tag] ?: State(),
     wishToAction = { Execute(it) },

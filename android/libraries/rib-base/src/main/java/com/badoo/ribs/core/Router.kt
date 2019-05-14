@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.BackStackManager
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.BackStackFeature
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.NewRoot
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Pop
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.PushOverlay
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.ChildNodeConnector
 import com.badoo.ribs.core.view.RibView
 
@@ -17,10 +17,10 @@ abstract class Router<C : Parcelable, V : RibView>(
     private val initialConfiguration: C
 ) {
     private lateinit var timeCapsule: AndroidTimeCapsule
-    private lateinit var backStackManager: BackStackManager<C>
+    private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var childNodeConnector: ChildNodeConnector<C>
     protected val configuration: C?
-        get() = backStackManager.state.current
+        get() = backStackFeature.state.current
 
     lateinit var node: Node<V>
         internal set
@@ -34,13 +34,13 @@ abstract class Router<C : Parcelable, V : RibView>(
         emptyList()
 
     private fun initConfigurationManager() {
-        backStackManager = BackStackManager(
+        backStackFeature = BackStackFeature(
             initialConfiguration = initialConfiguration,
             timeCapsule = timeCapsule
         )
 
         childNodeConnector = ChildNodeConnector(
-            backStackManager,
+            backStackFeature,
             permanentParts.map { it.invoke() },
             this::resolveConfiguration,
             node
@@ -51,13 +51,13 @@ abstract class Router<C : Parcelable, V : RibView>(
 
     fun onSaveInstanceState(outState: Bundle) {
         // FIXME
-//        backStackManager.accept(SaveInstanceState())
+//        backStackFeature.accept(SaveInstanceState())
         timeCapsule.saveState(outState)
     }
 
     fun onLowMemory() {
         // FIXME
-//        backStackManager.accept(ShrinkToBundles())
+//        backStackFeature.accept(ShrinkToBundles())
     }
 
     fun onAttachView() {
@@ -73,24 +73,24 @@ abstract class Router<C : Parcelable, V : RibView>(
     }
 
     fun replace(configuration: C) {
-        backStackManager.accept(Replace(configuration))
+        backStackFeature.accept(Replace(configuration))
     }
 
     fun push(configuration: C) {
         if (configuration is Overlay) {
-            backStackManager.accept(PushOverlay(configuration))
+            backStackFeature.accept(PushOverlay(configuration))
         } else {
-            backStackManager.accept(Push(configuration))
+            backStackFeature.accept(Push(configuration))
         }
     }
 
     fun newRoot(configuration: C) {
-        backStackManager.accept(NewRoot(configuration))
+        backStackFeature.accept(NewRoot(configuration))
     }
 
     fun popBackStack(): Boolean {
-        return if (backStackManager.state.canPop) {
-            backStackManager.accept(Pop())
+        return if (backStackFeature.state.canPop) {
+            backStackFeature.accept(Pop())
             true
         } else {
             false

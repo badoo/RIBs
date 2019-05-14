@@ -3,12 +3,12 @@ package com.badoo.ribs.core.routing.backstack
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestRouter.Configuration
-import com.badoo.ribs.core.routing.backstack.BackStackManager.State
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.NewRoot
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Pop
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Push
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.PushOverlay
-import com.badoo.ribs.core.routing.backstack.BackStackManager.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.State
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.NewRoot
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Pop
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Push
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.PushOverlay
+import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Replace
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals
@@ -21,10 +21,10 @@ class BackStackManagerTest {
         private val initialConfiguration = Configuration.C1
     }
 
-    private lateinit var timeCapsuleEmpty: TimeCapsule<BackStackManager.State<TestRouter.Configuration>>
-    private lateinit var timeCapsuleWithContent: TimeCapsule<BackStackManager.State<TestRouter.Configuration>>
+    private lateinit var timeCapsuleEmpty: TimeCapsule<BackStackFeature.State<TestRouter.Configuration>>
+    private lateinit var timeCapsuleWithContent: TimeCapsule<BackStackFeature.State<TestRouter.Configuration>>
     private lateinit var backstackInTimeCapsule: List<Configuration>
-    private lateinit var backStackManager: BackStackManager<TestRouter.Configuration>
+    private lateinit var backStackManager: BackStackFeature<TestRouter.Configuration>
 
     @Before
     fun setUp() {
@@ -40,8 +40,8 @@ class BackStackManagerTest {
         setupBackStackManager(timeCapsuleEmpty)
     }
 
-    private fun setupBackStackManager(timeCapsule: TimeCapsule<BackStackManager.State<Configuration>>) {
-        backStackManager = BackStackManager(
+    private fun setupBackStackManager(timeCapsule: TimeCapsule<BackStackFeature.State<Configuration>>) {
+        backStackManager = BackStackFeature(
             initialConfiguration,
             timeCapsule
         )

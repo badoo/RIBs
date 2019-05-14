@@ -11,20 +11,20 @@ import io.reactivex.disposables.Disposable
 // TODO merge into ConfigurationFeature and delete
 internal class ChildNodeConnector<C : Parcelable> private constructor(
     private val binder: Binder,
-    private val backStackManager: BackStackManager<C>,
+    private val backStackFeature: BackStackFeature<C>,
     private val permanentParts: List<Node<*>>,
     private val resolver: (C) -> RoutingAction<*>,
     private val parentNode: Node<*>
 ) : Disposable by binder {
 
     constructor(
-        backStackManager: BackStackManager<C>,
+        backStackFeature: BackStackFeature<C>,
         permanentParts: List<Node<*>>,
         resolver: (C) -> RoutingAction<*>,
         parentNode: Node<*>
     ) : this(
         binder = Binder(),
-        backStackManager = backStackManager,
+        backStackFeature = backStackFeature,
         permanentParts = permanentParts,
         resolver = resolver,
         parentNode = parentNode
@@ -44,8 +44,8 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
             parentNode.attachChildNode(it, null)
         }
 
-        val commands = Observable.wrap(backStackManager)
-            .startWith(BackStackManager.State())
+        val commands = Observable.wrap(backStackFeature)
+            .startWith(BackStackFeature.State())
             .buffer(2, 1)
             .map { backStackStateChangeToCommands.invoke(it[0], it[1]) }
             .flatMapIterable { items -> items }

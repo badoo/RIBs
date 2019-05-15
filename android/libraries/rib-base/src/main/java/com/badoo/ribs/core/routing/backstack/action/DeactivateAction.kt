@@ -19,8 +19,6 @@ internal object DeactivateAction : SingleConfigurationAction {
 
     private fun Node<*>.detachChildViews(nodes: List<Node.Descriptor>) {
         nodes.forEach {
-            it.node.saveViewState()
-
             if (it.viewAttachMode == Node.ViewAttachMode.PARENT) {
                 detachChildView(it.node)
             }

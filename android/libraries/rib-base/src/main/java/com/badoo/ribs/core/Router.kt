@@ -3,48 +3,55 @@ package com.badoo.ribs.core
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
+import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.backstack.commands
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.NewRoot
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Pop
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Push
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.PushOverlay
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Replace
-import com.badoo.ribs.core.routing.backstack.ChildNodeConnector
+import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     private val initialConfiguration: C
 ) {
+    private val binder = Binder()
     private lateinit var timeCapsule: AndroidTimeCapsule
     private lateinit var backStackFeature: BackStackFeature<C>
-    private lateinit var childNodeConnector: ChildNodeConnector<C>
+    private lateinit var configurationFeature: ConfigurationFeature<C>
     protected val configuration: C?
         get() = backStackFeature.state.current
 
     lateinit var node: Node<V>
         internal set
 
-    fun onAttach(savedInstanceState: Bundle?) {
-        timeCapsule = AndroidTimeCapsule(savedInstanceState)
-        initConfigurationManager()
-    }
-
     protected open val permanentParts: List<Permanent> =
         emptyList()
 
-    private fun initConfigurationManager() {
+    fun onAttach(savedInstanceState: Bundle?) {
+        timeCapsule = AndroidTimeCapsule(savedInstanceState)
+        initFeatures()
+    }
+
+    private fun initFeatures() {
         backStackFeature = BackStackFeature(
             initialConfiguration = initialConfiguration,
             timeCapsule = timeCapsule
         )
 
-        childNodeConnector = ChildNodeConnector(
-            backStackFeature,
-            permanentParts,
-            this::resolveConfiguration,
-            node
+        configurationFeature = ConfigurationFeature(
+            permanentParts = permanentParts,
+            timeCapsule = timeCapsule,
+            resolver = this::resolveConfiguration,
+            parentNode = node
         )
+
+        binder.bind(backStackFeature.commands() to configurationFeature)
     }
 
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
@@ -61,15 +68,15 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     fun onAttachView() {
-        childNodeConnector.attachToView()
+        configurationFeature.accept(WakeUp())
     }
 
     fun onDetachView() {
-        childNodeConnector.detachFromView()
+        configurationFeature.accept(Sleep())
     }
 
     fun onDetach() {
-        childNodeConnector.dispose()
+        binder.dispose()
     }
 
     fun replace(configuration: Content) {

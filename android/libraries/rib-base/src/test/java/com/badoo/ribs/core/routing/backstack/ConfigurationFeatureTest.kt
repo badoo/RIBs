@@ -7,6 +7,7 @@ import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.State
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.*
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.*
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.backstack.ConfigurationKey.*
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.clearInvocations

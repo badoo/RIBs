@@ -2,6 +2,7 @@ package com.badoo.ribs.core.routing.backstack.feature
 
 import android.os.Parcelable
 import com.badoo.mvicore.element.Actor
+import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
@@ -32,11 +33,13 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
         ?: WorkingState())
 
 internal class ConfigurationFeature<C : Parcelable>(
+    permanentParts: List<C>,
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: (C) -> RoutingAction<*>,
     parentNode: Node<*>
 ) : ActorReducerFeature<ConfigurationCommand<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
+    bootstrapper = BootStrapperImpl(permanentParts),
     actor = ActorImpl(resolver, parentNode),
     reducer = ReducerImpl()
 ) {
@@ -53,6 +56,25 @@ internal class ConfigurationFeature<C : Parcelable>(
             val command: SingleConfigurationCommand<C>,
             val resolvedConfigurationContext: Resolved<C>
         ) : Effect<C>()
+    }
+
+    class BootStrapperImpl<C : Parcelable>(
+        private val permanentParts: List<C>
+    ) : Bootstrapper<ConfigurationCommand<C>> {
+
+        override fun invoke(): Observable<ConfigurationCommand<C>> = Observable
+            .fromIterable(
+                permanentParts
+                    .mapIndexed { index, configuration ->
+                        val key = ConfigurationKey.Permanent(index)
+
+                        listOf<ConfigurationCommand<C>>(
+                            Add(key, configuration),
+                            Activate(key)
+                        )
+                    }
+                    .flatten()
+            )
     }
 
     class ActorImpl<C : Parcelable>(

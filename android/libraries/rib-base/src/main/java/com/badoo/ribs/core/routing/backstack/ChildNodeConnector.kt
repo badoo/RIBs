@@ -11,7 +11,6 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigur
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Permanent
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
-import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 
 // TODO merge into ConfigurationFeature and delete
@@ -36,8 +35,7 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
         parentNode = parentNode
     )
 
-    private val backStackStateChangeToCommands = ConfigurationCommandCreator<C>()
-    private val configurationHandler =
+    private val configurationFeature =
         ConfigurationFeature(
             // FIXME timecapsule
             AndroidTimeCapsule(null),
@@ -48,17 +46,11 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
     init {
         permanentParts.forEachIndexed { index, configuration ->
             val key = Permanent(index)
-            configurationHandler.accept(Add(key, configuration))
-            configurationHandler.accept(Activate(key))
+            configurationFeature.accept(Add(key, configuration))
+            configurationFeature.accept(Activate(key))
         }
 
-        val commands = Observable.wrap(backStackFeature)
-            .startWith(BackStackFeature.State())
-            .buffer(2, 1)
-            .map { backStackStateChangeToCommands.invoke(it[0], it[1]) }
-            .flatMapIterable { items -> items }
-
-        binder.bind(commands to configurationHandler)
+        binder.bind(backStackFeature.commands() to configurationFeature)
     }
 
 ////    // FIXME this can be done with local [nodes] field
@@ -75,12 +67,12 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
 //    }
 
     fun saveInstanceState() {
-//        configurationHandler.pool.forEach {
+//        configurationFeature.pool.forEach {
 //            val key = it.key
 //            val entry = it.value
 //
 //            if (entry is ConfigurationContext.Resolved<C>) {
-//                configurationHandler.pool[key] = entry.copy(
+//                configurationFeature.pool[key] = entry.copy(
 //                    bundles = entry.nodes.map { nodeDescriptor ->
 //                        Bundle().also {
 //                            nodeDescriptor.node.onSaveInstanceState(it)
@@ -92,13 +84,13 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
     }
 
     fun detachFromView() {
-        configurationHandler.accept(
+        configurationFeature.accept(
             MultiConfigurationCommand.Sleep()
         )
     }
 
     fun attachToView() {
-        configurationHandler.accept(
+        configurationFeature.accept(
             MultiConfigurationCommand.WakeUp()
         )
     }

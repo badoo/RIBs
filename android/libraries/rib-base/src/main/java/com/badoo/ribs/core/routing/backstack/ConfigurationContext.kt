@@ -50,6 +50,15 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 bundles = emptyList(),
                 activationState = INACTIVE
             ).also {
+                /**
+                 * Resolution involves building the associated Nodes, which need to be guaranteed
+                 * to be added to the parentNode.
+                 * Because of this, we need to make sure that AddAction is executed every time we resolve,
+                 * even when no explicit Add command was asked.
+                 * This is to cover cases e.g. restoring from Bundle: we have a list of Unresolved
+                 * elements that will be resolved on next command (e.g. WakeUp / Activate), by which time
+                 * they will need to have been added.
+                 */
                 AddAction.execute(it, parentNode)
             }
         }

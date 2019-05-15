@@ -2,9 +2,9 @@ package com.badoo.ribs.core.routing.backstack
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.backstack.action.ActivateAction
-import com.badoo.ribs.core.routing.backstack.action.AddAction
 import com.badoo.ribs.core.routing.backstack.action.DeactivateAction
 import com.badoo.ribs.core.routing.backstack.action.MultiConfigurationAction
+import com.badoo.ribs.core.routing.backstack.action.NoOpAction
 import com.badoo.ribs.core.routing.backstack.action.RemoveAction
 import com.badoo.ribs.core.routing.backstack.action.SingleConfigurationAction
 import com.badoo.ribs.core.routing.backstack.action.SleepAction
@@ -30,7 +30,10 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
         abstract val action: SingleConfigurationAction
 
         data class Add<C : Parcelable>(override val key: ConfigurationKey, val configuration: C) : SingleConfigurationCommand<C>() {
-            override val action: SingleConfigurationAction = AddAction
+            /**
+             * No additional action here, as AddAction is executed automatically during ConfigurationContext.Unresolved.resolve(),
+             */
+            override val action: SingleConfigurationAction = NoOpAction
         }
 
         data class Activate<C : Parcelable>(override val key: ConfigurationKey) : SingleConfigurationCommand<C>() {

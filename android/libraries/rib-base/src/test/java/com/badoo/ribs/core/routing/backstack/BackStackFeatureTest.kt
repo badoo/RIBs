@@ -98,19 +98,6 @@ class BackStackFeatureTest {
         assertEquals(expected, backStackManager.state.backStack)
     }
 
-//    @Test
-//    fun `Wish_Push detaches view on previous element`() {
-//        val lastElementBeforePush = backStackManager.state.current
-//        backStackManager.accept(Push(Configuration.C4))
-//        verify(backStackRibConnector).leave(lastElementBeforePush, DETACH_VIEW)
-//    }
-//
-//    @Test
-//    fun `Wish_Push attaches new element`() {
-//        backStackManager.accept(Push(Configuration.C4))
-//        verify(backStackRibConnector).goTo(backStackManager.state.current)
-//    }
-
     @Test
     fun `Wish_PushOverlay once results in the back stack size growing by one`() {
         backStackManager.accept(PushOverlay(Configuration.C4))
@@ -122,19 +109,6 @@ class BackStackFeatureTest {
         backStackManager.accept(PushOverlay(Configuration.C4))
         assertEquals(Configuration.C4, backStackManager.state.current)
     }
-
-//    @Test
-//    fun `Wish_PushOverlay does not detach previous element`() {
-//        val lastElementBeforePush = backStackManager.state.current
-//        backStackManager.accept(PushOverlay(Configuration.C4))
-//        verify(backStackRibConnector, never()).leave(eq(lastElementBeforePush), any())
-//    }
-//
-//    @Test
-//    fun `Wish_PushOverlay attaches new element`() {
-//        backStackManager.accept(PushOverlay(Configuration.C4))
-//        verify(backStackRibConnector).goTo(backStackManager.state.current)
-//    }
 
     @Test
     fun `Wish_Replace does not change back stack size`() {
@@ -167,19 +141,6 @@ class BackStackFeatureTest {
         assertEquals(expected, backStackManager.state.backStack)
     }
 
-//    @Test
-//    fun `Wish_Replace detaches whole node of previous element`() {
-//        val lastElementBeforePush = backStackManager.state.current
-//        backStackManager.accept(Replace(Configuration.C4))
-//        verify(backStackRibConnector).leave(lastElementBeforePush, DESTROY)
-//    }
-//
-//    @Test
-//    fun `Wish_Replace attaches new element`() {
-//        backStackManager.accept(Replace(Configuration.C4))
-//        verify(backStackRibConnector).goTo(backStackManager.state.current)
-//    }
-
     @Test
     fun `Wish_NewRoot results in new back stack with only one element`() {
         backStackManager.accept(Push(Configuration.C2))
@@ -207,26 +168,6 @@ class BackStackFeatureTest {
         )
         assertEquals(expected, backStackManager.state.backStack)
     }
-
-//    @Test
-//    fun `Wish_NewRoot detaches whole node of all previous elements`() {
-//        backStackManager.accept(Push(Configuration.C2))
-//        backStackManager.accept(Push(Configuration.C3))
-//        backStackManager.accept(Push(Configuration.C4))
-//        val backStackBeforeNewRoot = backStackManager.state.backStack
-//        clearInvocations(backStackRibConnector)
-//
-//        backStackManager.accept(NewRoot(Configuration.C5))
-//        backStackBeforeNewRoot.forEach {
-//            verify(backStackRibConnector).leave(it, DESTROY)
-//        }
-//    }
-//
-//    @Test
-//    fun `Wish_NewRoot attaches new element`() {
-//        backStackManager.accept(NewRoot(Configuration.C5))
-//        verify(backStackRibConnector).goTo(backStackManager.state.current)
-//    }
 
     @Test
     fun `Wish_Pop does not change back stack if there's only one entry`() {
@@ -259,54 +200,4 @@ class BackStackFeatureTest {
         )
         assertEquals(expected, backStackManager.state.backStack)
     }
-
-//    @Test
-//    fun `Wish_Pop destroys popped element`() {
-//        backStackManager.accept(Push(Configuration.C2))
-//        backStackManager.accept(Push(Configuration.C3))
-//        backStackManager.accept(Push(Configuration.C4))
-//        val lastElementBeforePop = backStackManager.state.current
-//        backStackManager.accept(Pop())
-//        verify(backStackRibConnector).leave(lastElementBeforePop, DESTROY)
-//    }
-//
-//    @Test
-//    fun `Wish_Pop reattaches view on revived element`() {
-//        backStackManager.accept(Push(Configuration.C2))
-//        backStackManager.accept(Push(Configuration.C3))
-//        backStackManager.accept(Push(Configuration.C4))
-//        backStackManager.accept(Pop())
-//        val lastElementAfterPop = backStackManager.state.current
-//        verify(backStackRibConnector, times(2)).goTo(lastElementAfterPop) // once initially + once when coming back
-//    }
-
-
-//    @Test
-//    fun `Wish_SaveInstanceState calls to connector`() {
-//        backStackManager.accept(Push(Configuration.C2))
-//        backStackManager.accept(Push(Configuration.C3))
-//        backStackManager.accept(Push(Configuration.C4))
-//        val backStackBeforeSaveInstanceState = backStackManager.state.backStack
-//        backStackManager.accept(SaveInstanceState())
-//        verify(backStackRibConnector).saveInstanceState(backStackBeforeSaveInstanceState)
-//    }
-//
-//    @Test
-//    fun `Wish_ShrinkToBundles calls to connector`() {
-//        backStackManager.accept(Push(Configuration.C2))
-//        backStackManager.accept(Push(Configuration.C3))
-//        backStackManager.accept(Push(Configuration.C4))
-//        val backStackBeforeShrink = backStackManager.state.backStack
-//        backStackManager.accept(ShrinkToBundles())
-//        verify(backStackRibConnector).shrinkToBundles(backStackBeforeShrink)
-//    }
-
-//    @Test
-//    fun `backstackManager removes nodes on dispose`() {
-//        backStackManager.dispose()
-//
-//        backStackManager.state.backStack.forEach {
-//            assertEquals(null, it.nodes)
-//        }
-//    }
 }

@@ -25,58 +25,32 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.Effect
-import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.State
 import io.reactivex.Observable
-import kotlinx.android.parcel.Parcelize
+
+private val timeCapsuleKey = ConfigurationFeature::class.java.name
+private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
+    (get<SavedState<C>>(timeCapsuleKey)
+        ?.let { it.toWorkingState() }
+        ?: WorkingState())
 
 internal class ConfigurationFeature<C : Parcelable>(
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: (C) -> RoutingAction<*>,
     parentNode: Node<*>
-) : ActorReducerFeature<ConfigurationCommand<C>, Effect<C>, State<C>, Nothing>(
-    initialState = timeCapsule.get<SavedState<C>>(
-        ConfigurationFeature::class.java.name)?.let { State.from(it) } ?: State(
-        activationLevel = SLEEPING
-    ),
-    actor = ActorImpl(
-        resolver,
-        parentNode
-    ),
+) : ActorReducerFeature<ConfigurationCommand<C>, Effect<C>, WorkingState<C>, Nothing>(
+    initialState = timeCapsule.initialState<C>(),
+    actor = ActorImpl(resolver, parentNode),
     reducer = ReducerImpl()
 ) {
     init {
-        timeCapsule.register(ConfigurationFeature::class.java.name) { state.toSavedState() }
-    }
-
-    @Parcelize
-    data class SavedState<C : Parcelable>(
-        val pool: Map<ConfigurationKey, Unresolved<C>>
-    ) : Parcelable
-
-    data class State<C : Parcelable>(
-        val activationLevel: ActivationState,
-        val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf()
-    ) {
-        fun toSavedState() =
-            SavedState(
-                pool.map {
-                    it.key to when (val entry = it.value) {
-                        is Unresolved -> entry
-                        is Resolved -> entry.shrink()
-                    }.copy(
-                        activationState = SLEEPING
-                    )
-                }.toMap()
-            )
-
-        companion object {
-            fun <C : Parcelable> from(savedState: SavedState<C>): State<C> =
-                State(SLEEPING, savedState.pool)
-        }
+        timeCapsule.register(timeCapsuleKey) { state.toSavedState() }
     }
 
     sealed class Effect<C : Parcelable> {
-        data class Global<C : Parcelable>(val command: MultiConfigurationCommand<C>) : Effect<C>()
+        data class Global<C : Parcelable>(
+            val command: MultiConfigurationCommand<C>
+        ) : Effect<C>()
+
         data class Individual<C : Parcelable>(
             val command: SingleConfigurationCommand<C>,
             val resolvedConfigurationContext: Resolved<C>
@@ -86,8 +60,8 @@ internal class ConfigurationFeature<C : Parcelable>(
     class ActorImpl<C : Parcelable>(
         private val resolver: (C) -> RoutingAction<*>,
         private val parentNode: Node<*>
-    ) : Actor<State<C>, ConfigurationCommand<C>, Effect<C>> {
-        override fun invoke(state: State<C>, command: ConfigurationCommand<C>): Observable<Effect<C>> =
+    ) : Actor<WorkingState<C>, ConfigurationCommand<C>, Effect<C>> {
+        override fun invoke(state: WorkingState<C>, command: ConfigurationCommand<C>): Observable<Effect<C>> =
             when (command) {
                 is MultiConfigurationCommand -> Observable
                         .fromCallable { command.action.execute(state.pool, parentNode) }
@@ -103,15 +77,15 @@ internal class ConfigurationFeature<C : Parcelable>(
                 }
             }
 
-        private fun State<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> =
+        private fun WorkingState<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> =
             when (val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")) {
                 is Resolved -> item
                 is Unresolved -> item.resolve(resolver, parentNode)
             }
     }
 
-    class ReducerImpl<C : Parcelable> : Reducer<State<C>, Effect<C>> {
-        override fun invoke(state: State<C>, effect: Effect<C>): State<C> =
+    class ReducerImpl<C : Parcelable> : Reducer<WorkingState<C>, Effect<C>> {
+        override fun invoke(state: WorkingState<C>, effect: Effect<C>): WorkingState<C> =
             when (effect) {
                 is Effect.Global -> when (effect.command) {
                     is Sleep -> state.copy(

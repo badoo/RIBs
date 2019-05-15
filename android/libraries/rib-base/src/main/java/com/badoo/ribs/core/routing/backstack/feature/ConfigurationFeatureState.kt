@@ -30,7 +30,7 @@ internal data class WorkingState<C : Parcelable>(
                     is ConfigurationContext.Unresolved -> entry
                     is ConfigurationContext.Resolved -> entry.shrink()
                 }.copy(
-                    activationState = SLEEPING
+                    activationState = it.value.activationState.sleep()
                 )
             }.toMap()
         )

@@ -15,7 +15,16 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
     abstract val activationState: ActivationState
 
-    enum class ActivationState { INACTIVE, SLEEPING, ACTIVE }
+    enum class ActivationState {
+        INACTIVE, SLEEPING, ACTIVE;
+
+        fun sleep(): ActivationState =
+            when (this) {
+                INACTIVE -> INACTIVE
+                SLEEPING -> SLEEPING
+                ACTIVE -> SLEEPING
+            }
+    }
 
     @Parcelize
     data class Unresolved<C : Parcelable>(

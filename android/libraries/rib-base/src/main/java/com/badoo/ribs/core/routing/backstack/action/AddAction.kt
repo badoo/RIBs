@@ -4,6 +4,9 @@ import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
 
+/**
+ * Attaches [Node]s to a parentNode without their views
+ */
 internal object AddAction : SingleConfigurationAction {
 
     override fun execute(item: ConfigurationContext.Resolved<*>, parentNode: Node<*>) {

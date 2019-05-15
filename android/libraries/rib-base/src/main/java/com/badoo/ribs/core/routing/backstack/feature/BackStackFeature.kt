@@ -21,6 +21,17 @@ import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * State store responsible for the changes of the logical back stack (described as a list of [C]
+ * elements in [BackStackFeature.State]).
+ *
+ * Does nothing beyond the manipulation of the list of [C] elements.
+ *
+ * @see BackStackFeature.Wish for supported operations
+ * @see BackStackFeature.BooststrapperImpl for operations emitted during initialisation
+ * @see BackStackFeature.ActorImpl for logic deciding whether an operation should be carried out
+ * @see BackStackFeature.ReducerImpl for the implementation of applying state changes
+ */
 internal class BackStackFeature<C : Parcelable>(
     initialConfiguration: C,
     timeCapsule: TimeCapsule<State<C>>,
@@ -50,16 +61,9 @@ internal class BackStackFeature<C : Parcelable>(
             get() = backStack.size > 1
     }
 
-    class BooststrapperImpl<C : Parcelable>(
-        private val state: State<C>,
-        private val initialConfiguration: C
-    ) : Bootstrapper<Action<C>> {
-        override fun invoke(): Observable<Action<C>> = when {
-            state.backStack.isEmpty() -> just(Execute(NewRoot(initialConfiguration)))
-            else -> empty()
-        }
-    }
-
+    /**
+     * The set of back stack operations this [BackStackFeature] supports.
+     */
     sealed class Wish<C : Parcelable> {
         data class Replace<C : Parcelable>(val configuration: C) : Wish<C>()
         data class Push<C : Parcelable>(val configuration: C) : Wish<C>()
@@ -72,6 +76,9 @@ internal class BackStackFeature<C : Parcelable>(
         data class Execute<C : Parcelable>(val wish: Wish<C>) : Action<C>()
     }
 
+    /**
+     * The set of back stack operations affecting the state.
+     */
     sealed class Effect<C : Parcelable> {
         // Consider adding oldState to NewsPublisher
         abstract val oldState: State<C>
@@ -101,6 +108,23 @@ internal class BackStackFeature<C : Parcelable>(
         ) : Effect<C>()
     }
 
+    /**
+     * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
+     */
+    class BooststrapperImpl<C : Parcelable>(
+        private val state: State<C>,
+        private val initialConfiguration: C
+    ) : Bootstrapper<Action<C>> {
+        override fun invoke(): Observable<Action<C>> = when {
+            state.backStack.isEmpty() -> just(Execute(NewRoot(initialConfiguration)))
+            else -> empty()
+        }
+    }
+
+    /**
+     * Checks if the required operations are to be executed based on the current [State].
+     * Emits corresponding [Effect]s if the answer is yes.
+     */
     class ActorImpl<C : Parcelable> : Actor<State<C>, Action<C>, Effect<C>> {
         override fun invoke(state: State<C>, action: Action<C>): Observable<out Effect<C>> =
             when (action) {
@@ -141,6 +165,9 @@ internal class BackStackFeature<C : Parcelable>(
             }
     }
 
+    /**
+     * Creates a new [State] based on the old one + the applied [Effect]
+     */
     class ReducerImpl<C : Parcelable> : Reducer<State<C>, Effect<C>> {
         @SuppressWarnings("LongMethod")
         override fun invoke(state: State<C>, effect: Effect<C>): State<C> = when (effect) {

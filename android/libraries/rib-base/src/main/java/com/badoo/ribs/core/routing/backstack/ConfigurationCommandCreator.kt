@@ -11,6 +11,12 @@ import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
 import io.reactivex.Observable
 import java.lang.Math.min
 
+/**
+ * Takes the state emissions from [BackStackFeature], and translates them to a stream of
+ * [ConfigurationCommand]s.
+ *
+ * @see [ConfigurationCommandCreator.diff]
+ */
 internal fun <C : Parcelable> BackStackFeature<C>.commands(): Observable<ConfigurationCommand<C>> =
     Observable.wrap(this)
         .startWith(BackStackFeatureState())
@@ -20,6 +26,11 @@ internal fun <C : Parcelable> BackStackFeature<C>.commands(): Observable<Configu
 
 internal object ConfigurationCommandCreator {
 
+    /**
+     * Calculates diff between two states of [BackStackFeature] (where each state contains the current list
+     * of [C] configurations representing the back stack), and translates the diff to
+     * a list of [ConfigurationCommand]s that represent getting from the old state to the new one.
+     */
     fun <C : Parcelable> diff(
         oldState: BackStackFeatureState<C>,
         newState: BackStackFeatureState<C>

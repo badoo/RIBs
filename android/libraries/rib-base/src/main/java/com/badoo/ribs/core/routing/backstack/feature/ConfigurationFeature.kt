@@ -17,12 +17,15 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigur
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
+import com.badoo.ribs.core.routing.backstack.action.MultiConfigurationAction
+import com.badoo.ribs.core.routing.backstack.action.SingleConfigurationAction
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.Effect
 import io.reactivex.Observable
 
@@ -32,6 +35,9 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
         ?.let { it.toWorkingState() }
         ?: WorkingState())
 
+/**
+ * State store responsible for executing [ConfigurationCommand]s it takes as inputs.
+ */
 internal class ConfigurationFeature<C : Parcelable>(
     permanentParts: List<C>,
     timeCapsule: TimeCapsule<SavedState<C>>,
@@ -58,6 +64,9 @@ internal class ConfigurationFeature<C : Parcelable>(
         ) : Effect<C>()
     }
 
+    /**
+     * Automatically calls [Add] + [Activate] on all [permanentParts]
+     */
     class BootStrapperImpl<C : Parcelable>(
         private val permanentParts: List<C>
     ) : Bootstrapper<ConfigurationCommand<C>> {
@@ -77,6 +86,11 @@ internal class ConfigurationFeature<C : Parcelable>(
             )
     }
 
+    /**
+     * Executes [MultiConfigurationAction] / [SingleConfigurationAction] associated with the incoming
+     * [ConfigurationCommand]. The actions will take care of [RoutingAction] invocations and [Node]
+     * manipulations.
+     */
     class ActorImpl<C : Parcelable>(
         private val resolver: (C) -> RoutingAction<*>,
         private val parentNode: Node<*>
@@ -88,7 +102,10 @@ internal class ConfigurationFeature<C : Parcelable>(
                         .map { Effect.Global(command) as Effect<C> }
 
                 is SingleConfigurationCommand -> {
-                    val defaultElement = if (command is Add<C>) Unresolved(command.configuration) else null
+                    val defaultElement = when (command) {
+                        is Add<C> -> Unresolved(INACTIVE, command.configuration)
+                        else -> null
+                    }
                     val resolved = state.resolve(command.key, defaultElement)
 
                     Observable
@@ -97,6 +114,15 @@ internal class ConfigurationFeature<C : Parcelable>(
                 }
             }
 
+        /**
+         * Returns a [Resolved] [ConfigurationContext] looked up by [key].
+         *
+         * A [ConfigurationContext] should be already present in the pool either in already [Resolved],
+         * or [Unresolved] form, the latter of which will be resolved on invocation.
+         *
+         * The only exception when it's acceptable not to already have an element under [key] is
+         * when [defaultElement] is not null, used in the case of the [Add] command.
+         */
         private fun WorkingState<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> =
             when (val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")) {
                 is Resolved -> item
@@ -104,6 +130,13 @@ internal class ConfigurationFeature<C : Parcelable>(
             }
     }
 
+    /**
+     * Creates a new [WorkingState] based on the old one, plus the applied [Effect].
+     *
+     * Involves changing [WorkingState.activationLevel] in case of [Effect.Global],
+     * and changing elements of the [WorkingState.pool] in the case of [Unresolved] -> [Resolved]
+     * transitions and individual [Resolved.activationState] changes.
+     */
     class ReducerImpl<C : Parcelable> : Reducer<WorkingState<C>, Effect<C>> {
         override fun invoke(state: WorkingState<C>, effect: Effect<C>): WorkingState<C> =
             when (effect) {
@@ -127,6 +160,12 @@ internal class ConfigurationFeature<C : Parcelable>(
                             pool = state.pool
                                 .plus(key to element)
                         )
+                        /**
+                         * Sets the [ConfigurationContext.activationState] of the element in question
+                         * to the global [WorkingState.activationLevel] value, so that if
+                         * the global state is [SLEEPING], the individual element cannot go
+                         * directly to [ACTIVE] - that will be done on the next [WakeUp] command)
+                         */
                         is Activate -> state.copy(
                             pool = state.pool
                                 .minus(key)

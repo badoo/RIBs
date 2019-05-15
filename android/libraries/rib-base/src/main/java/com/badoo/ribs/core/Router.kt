@@ -9,11 +9,11 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigura
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.backstack.commands
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.NewRoot
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Pop
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Push
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.PushOverlay
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.NewRoot
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Pop
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Push
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.PushOverlay
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Replace
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
 import com.badoo.ribs.core.view.RibView
 

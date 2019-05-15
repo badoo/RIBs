@@ -8,12 +8,12 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Effect
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.State
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.NewRoot
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Pop
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Push
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.PushOverlay
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.NewRoot
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Pop
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Push
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.PushOverlay
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Replace
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
@@ -25,7 +25,7 @@ import kotlinx.android.parcel.Parcelize
  *
  * Does nothing beyond the manipulation of the list of [C] elements.
  *
- * @see BackStackFeature.Wish for supported operations
+ * @see BackStackFeature.Operation for supported operations
  * @see BackStackFeature.BooststrapperImpl for operations emitted during initialisation
  * @see BackStackFeature.ActorImpl for logic deciding whether an operation should be carried out
  * @see BackStackFeature.ReducerImpl for the implementation of applying state changes
@@ -34,7 +34,7 @@ internal class BackStackFeature<C : Parcelable>(
     initialConfiguration: C,
     timeCapsule: TimeCapsule<State<C>>,
     tag: String = BackStackFeature::class.java.name
-): ActorReducerFeature<Wish<C>, Effect<C>, State<C>, Nothing>(
+): ActorReducerFeature<Operation<C>, Effect<C>, State<C>, Nothing>(
     initialState = timeCapsule[tag] ?: State(),
     bootstrapper = BooststrapperImpl(
         timeCapsule[tag] ?: State(),
@@ -61,12 +61,12 @@ internal class BackStackFeature<C : Parcelable>(
     /**
      * The set of back stack operations this [BackStackFeature] supports.
      */
-    sealed class Wish<C : Parcelable> {
-        data class Replace<C : Parcelable>(val configuration: C) : Wish<C>()
-        data class Push<C : Parcelable>(val configuration: C) : Wish<C>()
-        data class PushOverlay<C : Parcelable>(val configuration: C) : Wish<C>()
-        data class NewRoot<C : Parcelable>(val configuration: C) : Wish<C>()
-        class Pop<C : Parcelable> : Wish<C>()
+    sealed class Operation<C : Parcelable> {
+        data class Replace<C : Parcelable>(val configuration: C) : Operation<C>()
+        data class Push<C : Parcelable>(val configuration: C) : Operation<C>()
+        data class PushOverlay<C : Parcelable>(val configuration: C) : Operation<C>()
+        data class NewRoot<C : Parcelable>(val configuration: C) : Operation<C>()
+        class Pop<C : Parcelable> : Operation<C>()
     }
 
     /**
@@ -107,8 +107,8 @@ internal class BackStackFeature<C : Parcelable>(
     class BooststrapperImpl<C : Parcelable>(
         private val state: State<C>,
         private val initialConfiguration: C
-    ) : Bootstrapper<Wish<C>> {
-        override fun invoke(): Observable<Wish<C>> = when {
+    ) : Bootstrapper<Operation<C>> {
+        override fun invoke(): Observable<Operation<C>> = when {
             state.backStack.isEmpty() -> just(NewRoot(initialConfiguration))
             else -> empty()
         }
@@ -118,34 +118,33 @@ internal class BackStackFeature<C : Parcelable>(
      * Checks if the required operations are to be executed based on the current [State].
      * Emits corresponding [Effect]s if the answer is yes.
      */
-    class ActorImpl<C : Parcelable> : Actor<State<C>, Wish<C>, Effect<C>> {
-        override fun invoke(state: State<C>, wish: Wish<C>): Observable<out Effect<C>> =
-            when (wish) {
+    class ActorImpl<C : Parcelable> : Actor<State<C>, Operation<C>, Effect<C>> {
+        override fun invoke(state: State<C>, op: Operation<C>): Observable<out Effect<C>> =
+            when (op) {
                 is Replace -> when {
-                    wish.configuration != state.current -> {
-                        just(Effect.Replace(state, wish.configuration))
+                    op.configuration != state.current -> {
+                        just(Effect.Replace(state, op.configuration))
                     }
                     else -> empty()
                 }
 
                 is Push -> when {
-                    wish.configuration != state.current ->
-                        just(Effect.Push(state, wish.configuration))
+                    op.configuration != state.current ->
+                        just(Effect.Push(state, op.configuration))
                     else -> empty()
                 }
 
                 is PushOverlay -> when {
-                    wish.configuration != state.current ->
-                        just(Effect.PushOverlay(state, wish.configuration))
+                    op.configuration != state.current ->
+                        just(Effect.PushOverlay(state, op.configuration))
                     else -> empty()
                 }
 
                 is NewRoot -> when {
-                    state.backStack != listOf(wish.configuration) ->
-                        just(Effect.NewRoot(state, wish.configuration))
+                    state.backStack != listOf(op.configuration) ->
+                        just(Effect.NewRoot(state, op.configuration))
                     else -> empty()
                 }
-
 
                 is Pop -> when {
                     state.canPop -> just(Effect.Pop(state))

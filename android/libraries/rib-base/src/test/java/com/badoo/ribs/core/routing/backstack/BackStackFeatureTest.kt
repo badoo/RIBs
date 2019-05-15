@@ -5,11 +5,11 @@ import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
 import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.State
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.NewRoot
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Pop
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Push
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.PushOverlay
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.NewRoot
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Pop
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Push
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.PushOverlay
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Replace
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals

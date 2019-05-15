@@ -6,10 +6,10 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Add
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Activate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Deactivate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Remove
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

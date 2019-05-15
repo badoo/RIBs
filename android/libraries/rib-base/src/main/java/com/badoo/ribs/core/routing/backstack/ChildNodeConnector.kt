@@ -5,9 +5,9 @@ import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Global
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Activate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Add
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Permanent
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -90,13 +90,13 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
 
     fun detachFromView() {
         configurationHandler.accept(
-            Global.Sleep()
+            MultiConfigurationCommand.Sleep()
         )
     }
 
     fun attachToView() {
         configurationHandler.accept(
-            Global.WakeUp()
+            MultiConfigurationCommand.WakeUp()
         )
     }
 }

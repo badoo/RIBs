@@ -1,6 +1,5 @@
 package com.badoo.ribs.core.routing.backstack
 
-import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Reducer
@@ -8,12 +7,14 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Global.Sleep
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Global.WakeUp
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Activate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Add
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Deactivate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.Individual.Remove
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
@@ -67,9 +68,9 @@ internal class ConfigurationFeature<C : Parcelable>(
     }
 
     sealed class Effect<C : Parcelable> {
-        data class Global<C : Parcelable>(val command: ConfigurationCommand.Global<C>) : Effect<C>()
+        data class Global<C : Parcelable>(val command: MultiConfigurationCommand<C>) : Effect<C>()
         data class Individual<C : Parcelable>(
-            val command: ConfigurationCommand.Individual<C>,
+            val command: SingleConfigurationCommand<C>,
             val resolvedConfigurationContext: Resolved<C>
         ) : Effect<C>()
     }
@@ -80,11 +81,11 @@ internal class ConfigurationFeature<C : Parcelable>(
     ) : Actor<State<C>, ConfigurationCommand<C>, Effect<C>> {
         override fun invoke(state: State<C>, command: ConfigurationCommand<C>): Observable<Effect<C>> =
             when (command) {
-                is ConfigurationCommand.Global -> Observable
+                is MultiConfigurationCommand -> Observable
                         .fromCallable { command.action.execute(state.pool, parentNode) }
                         .map { Effect.Global(command) as Effect<C> }
 
-                is ConfigurationCommand.Individual -> {
+                is SingleConfigurationCommand -> {
                     val defaultElement = if (command is Add<C>) Unresolved(command.configuration) else null
                     val resolved = state.resolve(command.key, defaultElement)
 

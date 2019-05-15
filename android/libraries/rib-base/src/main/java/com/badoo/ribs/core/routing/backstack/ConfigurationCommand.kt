@@ -12,36 +12,36 @@ import com.badoo.ribs.core.routing.backstack.action.WakeUpAction
 
 internal sealed class ConfigurationCommand<C : Parcelable> {
 
-    sealed class Global<C : Parcelable> : ConfigurationCommand<C>() {
+    sealed class MultiConfigurationCommand<C : Parcelable> : ConfigurationCommand<C>() {
 
         abstract val action: MultiConfigurationAction
 
-        class Sleep<C : Parcelable> : Global<C>() {
+        class Sleep<C : Parcelable> : MultiConfigurationCommand<C>() {
             override val action: MultiConfigurationAction = SleepAction
         }
 
-        class WakeUp<C : Parcelable> : Global<C>() {
+        class WakeUp<C : Parcelable> : MultiConfigurationCommand<C>() {
             override val action: MultiConfigurationAction = WakeUpAction
         }
     }
 
-    sealed class Individual<C : Parcelable> : ConfigurationCommand<C>() {
+    sealed class SingleConfigurationCommand<C : Parcelable> : ConfigurationCommand<C>() {
         abstract val key: ConfigurationKey
         abstract val action: SingleConfigurationAction
 
-        data class Add<C : Parcelable>(override val key: ConfigurationKey, val configuration: C) : Individual<C>() {
+        data class Add<C : Parcelable>(override val key: ConfigurationKey, val configuration: C) : SingleConfigurationCommand<C>() {
             override val action: SingleConfigurationAction = AddAction
         }
 
-        data class Activate<C : Parcelable>(override val key: ConfigurationKey) : Individual<C>() {
+        data class Activate<C : Parcelable>(override val key: ConfigurationKey) : SingleConfigurationCommand<C>() {
             override val action: SingleConfigurationAction = ActivateAction
         }
 
-        data class Deactivate<C : Parcelable>(override val key: ConfigurationKey) : Individual<C>() {
+        data class Deactivate<C : Parcelable>(override val key: ConfigurationKey) : SingleConfigurationCommand<C>() {
             override val action: SingleConfigurationAction = DeactivateAction
         }
 
-        data class Remove<C : Parcelable>(override val key: ConfigurationKey) : Individual<C>() {
+        data class Remove<C : Parcelable>(override val key: ConfigurationKey) : SingleConfigurationCommand<C>() {
             override val action: SingleConfigurationAction = RemoveAction
         }
     }

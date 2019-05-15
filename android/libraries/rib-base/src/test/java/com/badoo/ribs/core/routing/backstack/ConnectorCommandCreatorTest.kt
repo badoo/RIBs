@@ -10,6 +10,7 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigur
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.BackStackFeature
-import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.NewRoot
-import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Pop
-import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Push
-import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.PushOverlay
-import com.badoo.ribs.core.routing.backstack.BackStackFeature.Wish.Replace
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.NewRoot
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Pop
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Push
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.PushOverlay
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Wish.Replace
 import com.badoo.ribs.core.routing.backstack.ChildNodeConnector
 import com.badoo.ribs.core.view.RibView
 

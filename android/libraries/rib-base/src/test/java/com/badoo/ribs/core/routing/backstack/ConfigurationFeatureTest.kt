@@ -3,10 +3,11 @@ package com.badoo.ribs.core.routing.backstack
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.BackStackFeature.State
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.State
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.*
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.*
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doAnswer
@@ -70,7 +71,11 @@ class ConfigurationFeatureTest {
 
         backStackStateSubject = PublishRelay.create<State<Configuration>>()
         parentNode = mock()
-        feature = ConfigurationFeature(mock(), resolver, parentNode)
+        feature = ConfigurationFeature(
+            mock(),
+            resolver,
+            parentNode
+        )
     }
 
     // region Add

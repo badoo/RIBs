@@ -9,6 +9,8 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigura
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Permanent
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
+import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 
@@ -35,12 +37,13 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
     )
 
     private val backStackStateChangeToCommands = ConfigurationCommandCreator<C>()
-    private val configurationHandler = ConfigurationFeature(
-        // FIXME timecapsule
-        AndroidTimeCapsule(null),
-        resolver,
-        parentNode
-    )
+    private val configurationHandler =
+        ConfigurationFeature(
+            // FIXME timecapsule
+            AndroidTimeCapsule(null),
+            resolver,
+            parentNode
+        )
 
     init {
         permanentParts.forEachIndexed { index, configuration ->

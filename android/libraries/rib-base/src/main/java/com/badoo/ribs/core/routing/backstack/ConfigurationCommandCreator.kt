@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.backstack
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.backstack.BackStackFeature.State
+import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.State
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate

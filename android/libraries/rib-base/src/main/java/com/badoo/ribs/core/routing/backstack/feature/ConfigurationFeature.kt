@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.backstack
+package com.badoo.ribs.core.routing.backstack.feature
 
 import android.os.Parcelable
 import com.badoo.mvicore.element.Actor
@@ -7,6 +7,7 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.WakeUp
@@ -15,14 +16,16 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigur
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Unresolved
-import com.badoo.ribs.core.routing.backstack.ConfigurationFeature.Effect
-import com.badoo.ribs.core.routing.backstack.ConfigurationFeature.State
+import com.badoo.ribs.core.routing.backstack.ConfigurationKey
+import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.State
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 
@@ -31,10 +34,14 @@ internal class ConfigurationFeature<C : Parcelable>(
     resolver: (C) -> RoutingAction<*>,
     parentNode: Node<*>
 ) : ActorReducerFeature<ConfigurationCommand<C>, Effect<C>, State<C>, Nothing>(
-    initialState = timeCapsule.get<SavedState<C>>(ConfigurationFeature::class.java.name)?.let { State.from(it) } ?: State(
+    initialState = timeCapsule.get<SavedState<C>>(
+        ConfigurationFeature::class.java.name)?.let { State.from(it) } ?: State(
         activationLevel = SLEEPING
     ),
-    actor = ActorImpl(resolver, parentNode),
+    actor = ActorImpl(
+        resolver,
+        parentNode
+    ),
     reducer = ReducerImpl()
 ) {
     init {
@@ -50,16 +57,17 @@ internal class ConfigurationFeature<C : Parcelable>(
         val activationLevel: ActivationState,
         val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf()
     ) {
-        fun toSavedState() = SavedState(
-            pool.map {
-                it.key to when (val entry = it.value) {
-                    is Unresolved -> entry
-                    is Resolved -> entry.shrink()
-                }.copy(
-                    activationState = SLEEPING
-                )
-            }.toMap()
-        )
+        fun toSavedState() =
+            SavedState(
+                pool.map {
+                    it.key to when (val entry = it.value) {
+                        is Unresolved -> entry
+                        is Resolved -> entry.shrink()
+                    }.copy(
+                        activationState = SLEEPING
+                    )
+                }.toMap()
+            )
 
         companion object {
             fun <C : Parcelable> from(savedState: SavedState<C>): State<C> =

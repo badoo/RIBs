@@ -7,10 +7,11 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.*
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.Content
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
-import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.RibDialog
+import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import kotlinx.android.parcel.Parcelize
 
 class DialogExampleRouter(

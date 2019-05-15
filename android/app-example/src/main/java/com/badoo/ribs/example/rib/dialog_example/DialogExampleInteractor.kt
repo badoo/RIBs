@@ -7,9 +7,10 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.*
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.Content
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog

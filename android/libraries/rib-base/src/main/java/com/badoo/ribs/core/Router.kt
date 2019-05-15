@@ -57,8 +57,6 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
     fun onSaveInstanceState(outState: Bundle) {
-        // FIXME
-//        backStackFeature.accept(SaveInstanceState())
         timeCapsule.saveState(outState)
     }
 
@@ -95,12 +93,11 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         backStackFeature.accept(NewRoot(configuration))
     }
 
-    fun popBackStack(): Boolean {
-        return if (backStackFeature.state.canPop) {
+    fun popBackStack(): Boolean =
+        if (backStackFeature.state.canPop) {
             backStackFeature.accept(Pop())
             true
         } else {
             false
         }
-    }
 }

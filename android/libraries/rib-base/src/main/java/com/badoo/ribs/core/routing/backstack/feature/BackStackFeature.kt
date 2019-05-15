@@ -119,6 +119,7 @@ internal class BackStackFeature<C : Parcelable>(
      * Emits corresponding [Effect]s if the answer is yes.
      */
     class ActorImpl<C : Parcelable> : Actor<State<C>, Operation<C>, Effect<C>> {
+        @SuppressWarnings("LongMethod")
         override fun invoke(state: State<C>, op: Operation<C>): Observable<out Effect<C>> =
             when (op) {
                 is Replace -> when {

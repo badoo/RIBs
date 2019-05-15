@@ -137,51 +137,58 @@ internal class ConfigurationFeature<C : Parcelable>(
      * and changing elements of the [WorkingState.pool] in the case of [Unresolved] -> [Resolved]
      * transitions and individual [Resolved.activationState] changes.
      */
+    @SuppressWarnings("LongMethod")
     class ReducerImpl<C : Parcelable> : Reducer<WorkingState<C>, Effect<C>> {
         override fun invoke(state: WorkingState<C>, effect: Effect<C>): WorkingState<C> =
             when (effect) {
-                is Effect.Global -> when (effect.command) {
-                    is Sleep -> state.copy(
-                        activationLevel = SLEEPING,
-                        pool = state.pool.map { it.key to it.value.sleep() }.toMap()
-                    )
-                    is WakeUp -> state.copy(
-                        activationLevel = ACTIVE,
-                        pool = state.pool.map { it.key to it.value.wakeUp() }.toMap()
-                    )
-                }
-
-                is Effect.Individual -> {
-                    val key = effect.command.key
-                    val element = effect.resolvedConfigurationContext
-
-                    when (effect.command) {
-                        is Add -> state.copy(
-                            pool = state.pool
-                                .plus(key to element)
-                        )
-                        /**
-                         * Sets the [ConfigurationContext.activationState] of the element in question
-                         * to the global [WorkingState.activationLevel] value, so that if
-                         * the global state is [SLEEPING], the individual element cannot go
-                         * directly to [ACTIVE] - that will be done on the next [WakeUp] command)
-                         */
-                        is Activate -> state.copy(
-                            pool = state.pool
-                                .minus(key)
-                                .plus(key to element.withActivationState(state.activationLevel))
-                        )
-                        is Deactivate -> state.copy(
-                            pool = state.pool
-                                .minus(key)
-                                .plus(key to element.withActivationState(INACTIVE))
-                        )
-                        is Remove -> state.copy(
-                            pool = state.pool
-                                .minus(key)
-                        )
-                    }
-                }
+                is Effect.Global -> state.global(effect)
+                is Effect.Individual -> state.individual(effect)
             }
+
+        private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> {
+            return when (effect.command) {
+                is Sleep -> copy(
+                    activationLevel = SLEEPING,
+                    pool = pool.map { it.key to it.value.sleep() }.toMap()
+                )
+                is WakeUp -> copy(
+                    activationLevel = ACTIVE,
+                    pool = pool.map { it.key to it.value.wakeUp() }.toMap()
+                )
+            }
+        }
+
+        @SuppressWarnings("LongMethod")
+        private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
+            val key = effect.command.key
+            val element = effect.resolvedConfigurationContext
+
+            return when (effect.command) {
+                is Add -> copy(
+                    pool = pool
+                        .plus(key to element)
+                )
+                /**
+                 * Sets the [ConfigurationContext.activationState] of the element in question
+                 * to the global [WorkingState.activationLevel] value, so that if
+                 * the global state is [SLEEPING], the individual element cannot go
+                 * directly to [ACTIVE] - that will be done on the next [WakeUp] command)
+                 */
+                is Activate -> copy(
+                    pool = pool
+                        .minus(key)
+                        .plus(key to element.withActivationState(activationLevel))
+                )
+                is Deactivate -> copy(
+                    pool = pool
+                        .minus(key)
+                        .plus(key to element.withActivationState(INACTIVE))
+                )
+                is Remove -> copy(
+                    pool = pool
+                        .minus(key)
+                )
+            }
+        }
     }
 }

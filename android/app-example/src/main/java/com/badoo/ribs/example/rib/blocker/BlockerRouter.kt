@@ -1,7 +1,6 @@
 package com.badoo.ribs.example.rib.blocker
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.example.rib.blocker.BlockerRouter.Configuration

@@ -78,48 +78,23 @@ internal class ConfigurationFeature<C : Parcelable>(
         private val resolver: (C) -> RoutingAction<*>,
         private val parentNode: Node<*>
     ) : Actor<State<C>, ConfigurationCommand<C>, Effect<C>> {
-        override fun invoke(state: State<C>, wish: ConfigurationCommand<C>): Observable<Effect<C>> =
-            when (wish) {
+        override fun invoke(state: State<C>, command: ConfigurationCommand<C>): Observable<Effect<C>> =
+            when (command) {
                 is ConfigurationCommand.Global -> Observable
-                        .fromCallable { state.applyCommand(wish) }
-                        .map { Effect.Global(wish) as Effect<C> }
+                        .fromCallable { command.execute(state.pool, parentNode) }
+                        .map { Effect.Global(command) as Effect<C> }
 
                 is ConfigurationCommand.Individual -> {
-                    val defaultElement = if (wish is Add<C>) Unresolved(wish.configuration) else null
-                    val resolved = state.resolve(wish.key, defaultElement)
+                    val defaultElement = if (command is Add<C>) Unresolved(command.configuration) else null
+                    val resolved = state.resolve(command.key, defaultElement)
 
                     Observable
-                        .fromCallable { resolved.applyCommand(wish) }
-                        .map { Effect.Individual(wish, resolved) as Effect<C> }
+                        .fromCallable { command.execute(resolved, parentNode) }
+                        .map { Effect.Individual(command, resolved) as Effect<C> }
                 }
             }
 
-        private fun State<C>.applyCommand(command: ConfigurationCommand.Global<C>) {
-            when (command) {
-                is Sleep -> invokeOnResolved(ACTIVE) { it.deactivate() }
-                is WakeUp -> invokeOnResolved(SLEEPING) { it.activate() }
-            }
-        }
-
-        private fun State<C>.invokeOnResolved(activationState: ActivationState, block: (Resolved<C>) -> Unit) {
-            pool
-                .filter { it.value is Resolved<*> && it.value.activationState == activationState }
-                .map { it.key to it.value as Resolved<C> }
-                .forEach {
-                    val (key, entry) = it
-                    block.invoke(entry)
-                }
-        }
-
-        private fun Resolved<C>.applyCommand(command: ConfigurationCommand.Individual<C>) {
-            when (command) {
-                is Add -> { /* nop here, resolve() adds automatically (needed after restoration) */ }
-                is Activate -> activate()
-                is Deactivate -> deactivate()
-                is Remove -> destroyChildren()
-            }
-        }
-
+        // TODO consider extracting
         private fun State<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> =
             when (val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")) {
                 is Resolved -> item
@@ -128,10 +103,11 @@ internal class ConfigurationFeature<C : Parcelable>(
                     val resolved = Resolved(
                         configuration = item.configuration,
                         routingAction = routingAction,
-                        builtNodes = routingAction.buildNodes(),
+                        nodes = routingAction.buildNodes(),
                         bundles = emptyList(),
                         activationState = INACTIVE
                     ).also {
+                        // TODO consider extracting to Add
                         it.attachChildNodesToParent()
                     }
 
@@ -140,7 +116,7 @@ internal class ConfigurationFeature<C : Parcelable>(
             }
 
         private fun Resolved<C>.attachChildNodesToParent() {
-            builtNodes.forEachIndexed { index, nodeDescriptor ->
+            nodes.forEachIndexed { index, nodeDescriptor ->
                 parentNode.attachChildNode(nodeDescriptor.node, bundleAt(index))
             }
         }
@@ -149,42 +125,6 @@ internal class ConfigurationFeature<C : Parcelable>(
             bundles.elementAtOrNull(index)?.also {
                 it.classLoader = ConfigurationContext::class.java.classLoader
             }
-
-        private fun Resolved<C>.activate() {
-            reAttachViewsIfNeeded()
-            routingAction.execute()
-        }
-
-        private fun Resolved<C>.reAttachViewsIfNeeded() {
-            builtNodes
-                .forEach {
-                    if (it.viewAttachMode == Node.ViewAttachMode.PARENT && !it.node.isViewAttached) {
-                        parentNode.attachChildView(it.node)
-                    }
-                }
-        }
-
-        private fun Resolved<C>.deactivate() {
-            routingAction.cleanup()
-            saveAndDetachChildViews()
-        }
-
-        private fun Resolved<C>.saveAndDetachChildViews() {
-            builtNodes.forEach {
-                it.node.saveViewState()
-
-                if (it.viewAttachMode == Node.ViewAttachMode.PARENT) {
-                    parentNode.detachChildView(it.node)
-                }
-            }
-        }
-
-        private fun Resolved<C>.destroyChildren() {
-            builtNodes.forEach {
-                parentNode.detachChildView(it.node)
-                parentNode.detachChildNode(it.node)
-            }
-        }
     }
 
     class ReducerImpl<C : Parcelable> : Reducer<State<C>, Effect<C>> {

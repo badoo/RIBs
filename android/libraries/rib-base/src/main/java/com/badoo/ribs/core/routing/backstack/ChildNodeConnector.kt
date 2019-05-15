@@ -62,11 +62,11 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
 //    fun shrinkToBundles() {
 //        saveInstanceState().apply {
 //            dropLast(1).forEach {
-//                it.builtNodes?.forEach {
+//                it.nodes?.forEach {
 //                    parentNode.detachChildView(it.node)
 //                    parentNode.detachChildNode(it.node)
 //                }
-//                it.builtNodes = null
+//                it.nodes = null
 //            }
 //        }
 //    }
@@ -78,7 +78,7 @@ internal class ChildNodeConnector<C : Parcelable> private constructor(
 //
 //            if (entry is ConfigurationContext.Resolved<C>) {
 //                configurationHandler.pool[key] = entry.copy(
-//                    bundles = entry.builtNodes.map { nodeDescriptor ->
+//                    bundles = entry.nodes.map { nodeDescriptor ->
 //                        Bundle().also {
 //                            nodeDescriptor.node.onSaveInstanceState(it)
 //                        }

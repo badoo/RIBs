@@ -305,7 +305,7 @@ class BackStackManagerTest {
 //        backStackManager.dispose()
 //
 //        backStackManager.state.backStack.forEach {
-//            assertEquals(null, it.builtNodes)
+//            assertEquals(null, it.nodes)
 //        }
 //    }
 }

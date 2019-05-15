@@ -171,7 +171,7 @@ class ConfigurationFeatureTest {
         feature.accept(Deactivate(0))
         val configurationContext = feature.state.pool[0]
         assertEquals(true, configurationContext is Resolved)
-        assertEquals(nodesViewParented, (configurationContext as? Resolved)?.builtNodes)
+        assertEquals(nodesViewParented, (configurationContext as? Resolved)?.nodes)
     }
     // endregion
 
@@ -199,7 +199,7 @@ class ConfigurationFeatureTest {
         feature.accept(Remove(0))
 
         feature.state.pool.forEach { (_, value) ->
-            assertEquals(true, (value as? Resolved)?.builtNodes)
+            assertEquals(true, (value as? Resolved)?.nodes)
         }
     }
     // endregion

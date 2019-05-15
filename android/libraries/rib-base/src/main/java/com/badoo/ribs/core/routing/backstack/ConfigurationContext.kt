@@ -27,7 +27,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         val configuration: C,
         var bundles: List<Bundle> = emptyList(),
         val routingAction: RoutingAction<*>,
-        val builtNodes: List<Node.Descriptor>,
+        val nodes: List<Node.Descriptor>,
         override val activationState: ActivationState
     ) : ConfigurationContext<C>() {
 

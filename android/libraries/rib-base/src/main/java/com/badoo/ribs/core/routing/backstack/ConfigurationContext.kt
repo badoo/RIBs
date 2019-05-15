@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.backstack.action.AddAction
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 internal sealed class ConfigurationContext<C : Parcelable> {
@@ -24,7 +21,17 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 SLEEPING -> SLEEPING
                 ACTIVE -> SLEEPING
             }
+
+        fun wakeUp(): ActivationState =
+            when (this) {
+                INACTIVE -> INACTIVE
+                SLEEPING -> ACTIVE
+                ACTIVE -> ACTIVE
+            }
     }
+
+    abstract fun sleep(): ConfigurationContext<C>
+    abstract fun wakeUp(): ConfigurationContext<C>
 
     @Parcelize
     data class Unresolved<C : Parcelable>(
@@ -46,6 +53,14 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 AddAction.execute(it, parentNode)
             }
         }
+
+        override fun sleep(): Unresolved<C> = copy(
+            activationState = activationState.sleep()
+        )
+
+        override fun wakeUp(): Unresolved<C> = copy(
+            activationState = activationState.wakeUp()
+        )
     }
 
     data class Resolved<C : Parcelable>(
@@ -58,5 +73,16 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
         fun shrink() = 
             Unresolved(configuration, bundles, activationState)
+
+        fun withActivationState(activationState: ActivationState) =
+            copy(
+                activationState = activationState
+            )
+
+        override fun sleep(): Resolved<C> =
+            withActivationState(activationState.sleep())
+
+        override fun wakeUp(): Resolved<C> =
+            withActivationState(activationState.wakeUp())
     }
 }

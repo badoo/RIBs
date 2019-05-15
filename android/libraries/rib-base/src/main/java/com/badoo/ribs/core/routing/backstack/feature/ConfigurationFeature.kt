@@ -16,8 +16,6 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigur
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
@@ -110,12 +108,12 @@ internal class ConfigurationFeature<C : Parcelable>(
                         is Activate -> state.copy(
                             pool = state.pool
                                 .minus(key)
-                                .plus(key to element.setActivationState(state.activationLevel))
+                                .plus(key to element.withActivationState(state.activationLevel))
                         )
                         is Deactivate -> state.copy(
                             pool = state.pool
                                 .minus(key)
-                                .plus(key to element.setActivationState(INACTIVE))
+                                .plus(key to element.withActivationState(INACTIVE))
                         )
                         is Remove -> state.copy(
                             pool = state.pool
@@ -123,25 +121,6 @@ internal class ConfigurationFeature<C : Parcelable>(
                         )
                     }
                 }
-            }
-
-        private fun ConfigurationContext<C>.sleep(): ConfigurationContext<C> =
-            transition(ACTIVE, SLEEPING)
-
-        private fun ConfigurationContext<C>.wakeUp(): ConfigurationContext<C> =
-            transition(SLEEPING, ACTIVE)
-
-        private fun ConfigurationContext<C>.transition(from: ActivationState, to: ActivationState): ConfigurationContext<C> =
-            if (activationState != from) {
-                this
-            } else {
-                setActivationState(to)
-            }
-
-        private fun ConfigurationContext<C>.setActivationState(to: ActivationState): ConfigurationContext<C> =
-            when (this) {
-                is Unresolved -> copy(activationState = to)
-                is Resolved -> copy(activationState = to)
             }
     }
 }

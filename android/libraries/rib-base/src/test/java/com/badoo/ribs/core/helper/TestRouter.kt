@@ -1,20 +1,19 @@
 package com.badoo.ribs.core.helper
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
     initialConfiguration: Configuration,
-    override val permanentParts: List<() -> Node<*>>,
+    override val permanentParts: List<Nothing>,
     private val routingActionForC1: RoutingAction<TestView>,
     private val routingActionForC2: RoutingAction<TestView>,
     private val routingActionForC3: RoutingAction<TestView>,
     private val routingActionForC4: RoutingAction<TestView>,
     private val routingActionForC5: RoutingAction<TestView>
-) : Router<TestRouter.Configuration, TestView>(
+) : Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>(
     initialConfiguration = initialConfiguration
 ) {
 

@@ -24,7 +24,7 @@ import kotlinx.android.parcel.Parcelize
 internal class BackStackFeature<C : Parcelable>(
     initialConfiguration: C,
     timeCapsule: TimeCapsule<State<C>>,
-    tag: String = "BackStackFeature.State"
+    tag: String = BackStackFeature::class.java.name
 ): BaseFeature<Wish<C>, Action<C>, Effect<C>, State<C>, Nothing>(
     initialState = timeCapsule[tag] ?: State(),
     wishToAction = { Execute(it) },

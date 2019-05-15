@@ -46,27 +46,10 @@ class RouterTest {
             routingActionForC3 = routingActionForC3,
             routingActionForC4 = routingActionForC4,
             routingActionForC5 = routingActionForC5,
-            permanentParts = listOf(
-                permanentPartBuilder1,
-                permanentPartBuilder2
-            )
+            permanentParts = listOf()
         )
 
         node = mock(defaultAnswer = Answers.RETURNS_MOCKS)
         router.node = node
-    }
-
-    @Test
-    fun `Permanent parts are built on attach`() {
-        router.onAttach(null)
-        verify(permanentPartBuilder1).invoke()
-        verify(permanentPartBuilder2).invoke()
-    }
-
-    @Test
-    fun `Permanent parts are attached on attach`() {
-        router.onAttach(null)
-        verify(node).attachChildNode(childNode1, null)
-        verify(node).attachChildNode(childNode2, null)
     }
 }

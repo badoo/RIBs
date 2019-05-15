@@ -16,7 +16,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class BackStackManagerTest {
+class BackStackFeatureTest {
 
     companion object {
         private val initialConfiguration = Configuration.C1
@@ -36,7 +36,7 @@ class BackStackManagerTest {
 
         timeCapsuleEmpty = mock()
         timeCapsuleWithContent = mock {
-            on { get<State<Configuration>>("BackStackManager.State") } doReturn State(backstackInTimeCapsule)
+            on { get<State<Configuration>>(BackStackFeature::class.java.name) } doReturn State(backstackInTimeCapsule)
         }
         setupBackStackManager(timeCapsuleEmpty)
     }

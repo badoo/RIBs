@@ -7,6 +7,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.backstack.action.AddAction
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
@@ -21,7 +22,22 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         val configuration: C,
         val bundles: List<Bundle> = emptyList(),
         override val activationState: ActivationState = INACTIVE
-    ) : ConfigurationContext<C>(), Parcelable
+    ) : ConfigurationContext<C>(), Parcelable {
+
+        fun resolve(resolver: (C) -> RoutingAction<*>, parentNode: Node<*>): Resolved<C> {
+            val routingAction = resolver.invoke(configuration)
+
+            return Resolved(
+                configuration = configuration,
+                routingAction = routingAction,
+                nodes = routingAction.buildNodes(),
+                bundles = emptyList(),
+                activationState = INACTIVE
+            ).also {
+                AddAction.execute(it, parentNode)
+            }
+        }
+    }
 
     data class Resolved<C : Parcelable>(
         val configuration: C,

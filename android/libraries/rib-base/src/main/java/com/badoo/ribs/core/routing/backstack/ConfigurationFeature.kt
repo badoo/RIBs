@@ -94,36 +94,10 @@ internal class ConfigurationFeature<C : Parcelable>(
                 }
             }
 
-        // TODO consider extracting
         private fun State<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> =
             when (val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")) {
                 is Resolved -> item
-                is Unresolved -> {
-                    val routingAction = resolver.invoke(item.configuration)
-                    val resolved = Resolved(
-                        configuration = item.configuration,
-                        routingAction = routingAction,
-                        nodes = routingAction.buildNodes(),
-                        bundles = emptyList(),
-                        activationState = INACTIVE
-                    ).also {
-                        // TODO consider extracting to Add
-                        it.attachChildNodesToParent()
-                    }
-
-                    resolved
-                }
-            }
-
-        private fun Resolved<C>.attachChildNodesToParent() {
-            nodes.forEachIndexed { index, nodeDescriptor ->
-                parentNode.attachChildNode(nodeDescriptor.node, bundleAt(index))
-            }
-        }
-
-        private fun Resolved<C>.bundleAt(index: Int): Bundle? =
-            bundles.elementAtOrNull(index)?.also {
-                it.classLoader = ConfigurationContext::class.java.classLoader
+                is Unresolved -> item.resolve(resolver, parentNode)
             }
     }
 

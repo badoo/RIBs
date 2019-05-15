@@ -81,7 +81,7 @@ internal class ConfigurationFeature<C : Parcelable>(
         override fun invoke(state: State<C>, command: ConfigurationCommand<C>): Observable<Effect<C>> =
             when (command) {
                 is ConfigurationCommand.Global -> Observable
-                        .fromCallable { command.execute(state.pool, parentNode) }
+                        .fromCallable { command.action.execute(state.pool, parentNode) }
                         .map { Effect.Global(command) as Effect<C> }
 
                 is ConfigurationCommand.Individual -> {
@@ -89,7 +89,7 @@ internal class ConfigurationFeature<C : Parcelable>(
                     val resolved = state.resolve(command.key, defaultElement)
 
                     Observable
-                        .fromCallable { command.execute(resolved, parentNode) }
+                        .fromCallable { command.action.execute(resolved, parentNode) }
                         .map { Effect.Individual(command, resolved) as Effect<C> }
                 }
             }

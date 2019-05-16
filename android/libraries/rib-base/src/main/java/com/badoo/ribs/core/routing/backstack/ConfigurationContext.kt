@@ -91,7 +91,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             return Resolved(
                 activationState = activationState,
                 configuration = configuration,
-                bundles = emptyList(),
+                bundles = bundles,
                 routingAction = routingAction,
                 nodes = routingAction.buildNodes()
             ).also {

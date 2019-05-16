@@ -89,7 +89,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             val routingAction = resolver.invoke(configuration)
 
             return Resolved(
-                activationState = INACTIVE,
+                activationState = activationState,
                 configuration = configuration,
                 bundles = emptyList(),
                 routingAction = routingAction,

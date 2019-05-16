@@ -27,14 +27,14 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
     sealed class MultiConfigurationCommand<C : Parcelable> : ConfigurationCommand<C>() {
 
-        abstract val action: MultiConfigurationAction
+        abstract val action: MultiConfigurationAction<C>
 
         class Sleep<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction = SleepAction
+            override val action: MultiConfigurationAction<C> = SleepAction()
         }
 
         class WakeUp<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction = WakeUpAction
+            override val action: MultiConfigurationAction<C> = WakeUpAction()
         }
     }
 

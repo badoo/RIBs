@@ -5,7 +5,6 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.backstack.action.AddAction
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -62,6 +61,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
     abstract fun sleep(): ConfigurationContext<C>
     abstract fun wakeUp(): ConfigurationContext<C>
+    abstract fun resolve(
+        resolver: (C) -> RoutingAction<*>,
+        parentNode: Node<*>,
+        onResolution: (Resolved<C>) -> Resolved<C>
+    ): Resolved<C>
 
     /**
      * Represents [ConfigurationContext] that is persistable in a [android.os.Bundle],
@@ -75,7 +79,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     ) : ConfigurationContext<C>(), Parcelable {
 
         init {
-            // TOOD add compile-time safety for this
+            // TODO add compile-time safety for this
             if (activationState == ACTIVE) {
                 error("Unresolved elements cannot be ACTIVE")
             }
@@ -85,32 +89,22 @@ internal sealed class ConfigurationContext<C : Parcelable> {
          * Resolves and sets the associated [RoutingAction], builds associated [Node]s, and adds
          * them to the [parentNode]
          */
-        fun resolve(resolver: (C) -> RoutingAction<*>, parentNode: Node<*>): Resolved<C> {
+        override fun resolve(
+            resolver: (C) -> RoutingAction<*>,
+            parentNode: Node<*>,
+            onResolution: (Resolved<C>) -> Resolved<C>
+        ): Resolved<C> {
             val routingAction = resolver.invoke(configuration)
 
-            return Resolved(
-                activationState = activationState,
-                configuration = configuration,
-                bundles = bundles,
-                routingAction = routingAction,
-                nodes = routingAction.buildNodes()
-            ).also {
-                /**
-                 * Resolution involves building the associated [Node]s, which need to be guaranteed
-                 * to be added to the parentNode.
-                 *
-                 * Because of this, we need to make sure that [AddAction] is executed every time
-                 * we resolve, even when no explicit [Add] command was asked.
-                 *
-                 * This is to cover cases e.g. when restoring from Bundle:
-                 * we have a list of [Unresolved] elements that will be resolved on next command
-                 * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
-                 *
-                 * [Add] is only called explicitly with direct back stack manipulation, but not on
-                 * state restoration.
-                 */
-                AddAction.execute(it, parentNode)
-            }
+            return onResolution.invoke(
+                    Resolved(
+                    activationState = activationState,
+                    configuration = configuration,
+                    bundles = bundles,
+                    routingAction = routingAction,
+                    nodes = routingAction.buildNodes()
+                )
+            )
         }
 
         override fun sleep(): Unresolved<C> = copy(
@@ -134,7 +128,14 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         val nodes: List<Node.Descriptor>
     ) : ConfigurationContext<C>() {
 
-        fun shrink() = 
+        override fun resolve(
+            resolver: (C) -> RoutingAction<*>,
+            parentNode: Node<*>,
+            onResolution: (Resolved<C>) -> Resolved<C>
+        ): Resolved<C> =
+            this
+
+        fun shrink() =
             Unresolved(
                 activationState.sleep(),
                 configuration,

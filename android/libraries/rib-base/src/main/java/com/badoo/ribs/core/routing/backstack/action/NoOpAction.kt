@@ -1,11 +1,11 @@
 package com.badoo.ribs.core.routing.backstack.action
 
-import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext
+import android.os.Parcelable
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 
-internal object NoOpAction : SingleConfigurationAction {
+internal object NoOpAction : ResolvedSingleConfigurationAction() {
 
-    override fun execute(item: ConfigurationContext.Resolved<*>, parentNode: Node<*>) {
+    override fun <C : Parcelable> execute(item: Resolved<C>, params: ActionExecutionParams<C>): Resolved<C> =
         // no-op
-    }
+        item
 }

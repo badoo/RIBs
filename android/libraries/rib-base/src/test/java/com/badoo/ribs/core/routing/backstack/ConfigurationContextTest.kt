@@ -49,14 +49,14 @@ class ConfigurationContextTest {
     @Test
     fun `Unresolved resolve() keeps INACTIVE`() {
         val unresolved = Unresolved<Parcelable>(INACTIVE, mock())
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(resolver, mock(), mock())
         assertEquals(INACTIVE, resolved.activationState)
     }
 
     @Test
     fun `Unresolved resolve() keeps SLEEPING`() {
         val unresolved = Unresolved<Parcelable>(SLEEPING, mock())
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(resolver, mock(), mock())
         assertEquals(SLEEPING, resolved.activationState)
     }
 
@@ -64,7 +64,7 @@ class ConfigurationContextTest {
     fun `Unresolved resolve() keeps configuration`() {
         val configuration = mock<Parcelable>()
         val unresolved = Unresolved(mock(), configuration)
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(resolver, mock(), mock())
         assertEquals(configuration, resolved.configuration)
     }
 
@@ -72,21 +72,21 @@ class ConfigurationContextTest {
     fun `Unresolved resolve() keeps bundles`() {
         val bundles = mock<List<Bundle>>()
         val unresolved = Unresolved<Parcelable>(mock(), mock(), bundles)
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(resolver, mock(), mock())
         assertEquals(bundles, resolved.bundles)
     }
 
     @Test
     fun `Unresolved resolve() resolves expected RoutingAction`() {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(resolver, mock(), mock())
         assertEquals(routingAction, resolved.routingAction)
     }
 
     @Test
     fun `Unresolved resolve() builds expected Nodes`() {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(resolver, mock(), mock())
         assertEquals(nodes, resolved.nodes)
     }
 

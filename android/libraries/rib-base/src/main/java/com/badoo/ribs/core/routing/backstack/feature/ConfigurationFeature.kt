@@ -24,6 +24,8 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationStat
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
+import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.backstack.action.AddAction
 import com.badoo.ribs.core.routing.backstack.action.MultiConfigurationAction
 import com.badoo.ribs.core.routing.backstack.action.SingleConfigurationAction
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.Effect
@@ -68,12 +70,13 @@ internal class ConfigurationFeature<C : Parcelable>(
 
     sealed class Effect<C : Parcelable> {
         data class Global<C : Parcelable>(
-            val command: MultiConfigurationCommand<C>
+            val command: MultiConfigurationCommand<C>,
+            val updatedElements: Map<ConfigurationKey, Resolved<C>>
         ) : Effect<C>()
 
         data class Individual<C : Parcelable>(
             val command: SingleConfigurationCommand<C>,
-            val resolvedConfigurationContext: Resolved<C>
+            val updatedElement: Resolved<C>
         ) : Effect<C>()
     }
 
@@ -106,7 +109,9 @@ internal class ConfigurationFeature<C : Parcelable>(
     /**
      * Executes [MultiConfigurationAction] / [SingleConfigurationAction] associated with the incoming
      * [ConfigurationCommand]. The actions will take care of [RoutingAction] invocations and [Node]
-     * manipulations.
+     * manipulations, and are expected to return updated elements.
+     *
+     * Updated elements are then passed on to the [ReducerImpl] in the respective [Effect]s
      */
     class ActorImpl<C : Parcelable>(
         private val resolver: (C) -> RoutingAction<*>,
@@ -114,22 +119,38 @@ internal class ConfigurationFeature<C : Parcelable>(
     ) : Actor<WorkingState<C>, ConfigurationCommand<C>, Effect<C>> {
         override fun invoke(state: WorkingState<C>, command: ConfigurationCommand<C>): Observable<Effect<C>> =
             when (command) {
-                is MultiConfigurationCommand -> Observable
-                        .fromCallable { command.action.execute(state.pool, parentNode) }
-                        .map { Effect.Global(command) as Effect<C> }
+                is MultiConfigurationCommand ->
+                    fromCallable {
+                        command.action.execute(
+                            pool = state.pool,
+                            params = createParams(command, state)
+                        )
+                    }
+                    .map { updated -> Effect.Global(command, updated) }
 
-                is SingleConfigurationCommand -> {
+                is SingleConfigurationCommand ->
+                    fromCallable {
+                        command.action.execute(
+                            key = command.key,
+                            params = createParams(command, state)
+                        )
+                    }
+                    .map { updated -> Effect.Individual(command, updated) }
+            }
+
+        private fun createParams(command: ConfigurationCommand<C>, state: WorkingState<C>): ActionExecutionParams<C> =
+            ActionExecutionParams(
+                resolver = { key ->
                     val defaultElement = when (command) {
                         is Add<C> -> Unresolved(INACTIVE, command.configuration)
                         else -> null
                     }
-                    val resolved = state.resolve(command.key, defaultElement)
 
-                    Observable
-                        .fromCallable { command.action.execute(resolved, parentNode) }
-                        .map { Effect.Individual(command, resolved) as Effect<C> }
-                }
-            }
+                    state.resolve(key, defaultElement)
+                },
+                parentNode = parentNode,
+                globalActivationLevel = state.activationLevel
+            )
 
         /**
          * Returns a [Resolved] [ConfigurationContext] looked up by [key].
@@ -140,19 +161,37 @@ internal class ConfigurationFeature<C : Parcelable>(
          * The only exception when it's acceptable not to already have an element under [key] is
          * when [defaultElement] is not null, used in the case of the [Add] command.
          */
-        private fun WorkingState<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> =
-            when (val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")) {
-                is Resolved -> item
-                is Unresolved -> item.resolve(resolver, parentNode)
+        private fun WorkingState<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> {
+            val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")
+
+            return item.resolve(resolver, parentNode) {
+                /**
+                 * Resolution involves building the associated [Node]s, which need to be guaranteed
+                 * to be added to the parentNode.
+                 *
+                 * Because of this, we need to make sure that [AddAction] is executed every time
+                 * we resolve, even when no explicit [Add] command was asked.
+                 *
+                 * This is to cover cases e.g. when restoring from Bundle:
+                 * we have a list of [Unresolved] elements that will be resolved on next command
+                 * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
+                 *
+                 * [Add] is only called explicitly with direct back stack manipulation, but not on
+                 * state restoration.
+                 */
+                AddAction.execute(
+                    it,
+                    parentNode
+                )
             }
+        }
     }
 
     /**
      * Creates a new [WorkingState] based on the old one, plus the applied [Effect].
      *
      * Involves changing [WorkingState.activationLevel] in case of [Effect.Global],
-     * and changing elements of the [WorkingState.pool] in the case of [Unresolved] -> [Resolved]
-     * transitions and individual [Resolved.activationState] changes.
+     * and replacing elements of the [WorkingState.pool] changed by actions in [ActorImpl].
      */
     @SuppressWarnings("LongMethod")
     class ReducerImpl<C : Parcelable> : Reducer<WorkingState<C>, Effect<C>> {
@@ -162,44 +201,33 @@ internal class ConfigurationFeature<C : Parcelable>(
                 is Effect.Individual -> state.individual(effect)
             }
 
-        private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> {
-            return when (effect.command) {
+        private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =
+            when (effect.command) {
                 is Sleep -> copy(
                     activationLevel = SLEEPING,
-                    pool = pool.map { it.key to it.value.sleep() }.toMap()
+                    pool = pool + effect.updatedElements
                 )
                 is WakeUp -> copy(
                     activationLevel = ACTIVE,
-                    pool = pool.map { it.key to it.value.wakeUp() }.toMap()
+                    pool = pool + effect.updatedElements
                 )
             }
-        }
 
         @SuppressWarnings("LongMethod")
         private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
             val key = effect.command.key
-            val element = effect.resolvedConfigurationContext
+            val updated = effect.updatedElement
 
             return when (effect.command) {
                 is Add -> copy(
                     pool = pool
-                        .plus(key to element)
+                        .plus(key to updated)
                 )
-                /**
-                 * Sets the [ConfigurationContext.activationState] of the element in question
-                 * to the global [WorkingState.activationLevel] value, so that if
-                 * the global state is [SLEEPING], the individual element cannot go
-                 * directly to [ACTIVE] - that will be done on the next [WakeUp] command)
-                 */
-                is Activate -> copy(
-                    pool = pool
-                        .minus(key)
-                        .plus(key to element.withActivationState(activationLevel))
-                )
+                is Activate,
                 is Deactivate -> copy(
                     pool = pool
                         .minus(key)
-                        .plus(key to element.withActivationState(INACTIVE))
+                        .plus(key to updated)
                 )
                 is Remove -> copy(
                     pool = pool

@@ -1,28 +1,36 @@
 package com.badoo.ribs.core.routing.backstack.action
 
-import com.badoo.ribs.core.Node
+import android.os.Parcelable
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
 
 /**
  * Represents an action that affects multiple configurations when executed.
  */
-internal interface MultiConfigurationAction {
-
-    fun execute(pool: Map<ConfigurationKey, ConfigurationContext<*>>, parentNode: Node<*>)
+internal interface MultiConfigurationAction<C : Parcelable> {
 
     /**
-     * Invokes [block] on all [ConfigurationContext.Resolved] elements that are in the provided [activationState]
+     * @param pool   pool of all configurations to act on
+     * @param params execution params holder
+     *
+     * @return sub-pool of the updated elements
      */
-    fun Map<ConfigurationKey, ConfigurationContext<*>>.invokeOn(
-        activationState: ConfigurationContext.ActivationState,
-        block: (ConfigurationContext.Resolved<*>) -> Unit
-    ) {
+    fun execute(pool: Map<ConfigurationKey, ConfigurationContext<C>>, params: ActionExecutionParams<C>): Map<ConfigurationKey, Resolved<C>>
+
+    /**
+     * Invokes [block] on all [ConfigurationContext.Resolved] elements that are in the provided [filterActivationState]
+     */
+    fun Map<ConfigurationKey, ConfigurationContext<C>>.invokeOn(
+        filterActivationState: ConfigurationContext.ActivationState,
+        params: ActionExecutionParams<C>,
+        block: (Resolved<C>) -> Resolved<C>
+    ) : Map<ConfigurationKey, Resolved<C>> =
         this
-            .filter { it.value is ConfigurationContext.Resolved<*> && it.value.activationState == activationState }
-            .map { it.key to it.value as ConfigurationContext.Resolved<*> }
-            .forEach { (_, resolved) ->
-                block.invoke(resolved)
+            .filter { it.value.activationState == filterActivationState }
+            .mapValues {
+                block.invoke(
+                    params.resolver(it.key)
+                )
             }
-    }
 }

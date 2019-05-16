@@ -1,16 +1,28 @@
 package com.badoo.ribs.core.routing.backstack.action
 
 import android.os.Bundle
+import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 
 /**
  * Attaches [Node]s to a parentNode without their views
  */
-internal object AddAction : SingleConfigurationAction {
+internal object AddAction : ResolvedSingleConfigurationAction() {
 
-    override fun execute(item: ConfigurationContext.Resolved<*>, parentNode: Node<*>) {
+    override fun <C : Parcelable> execute(item: Resolved<C>, params: ActionExecutionParams<C>): Resolved<C> {
+        val (_, parentNode, _) = params
+        return execute(item, parentNode)
+    }
+
+    /**
+     * Convenience method so that Add can be called only with only the knowledge of parentNode too
+     */
+    fun <C : Parcelable> execute(item: Resolved<C>, parentNode: Node<*>): Resolved<C> {
         parentNode.attachNodes(item.nodes, item.bundles)
+
+        return item
     }
 
     private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>, bundles: List<Bundle?>) {

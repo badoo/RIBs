@@ -1,19 +1,29 @@
 package com.badoo.ribs.core.routing.backstack.action
 
-import com.badoo.ribs.core.Node
+import android.os.Parcelable
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
 
 /**
  * Calls [ActivateAction] all elements with an [ActivationState] of [SLEEPING].
  */
-internal object WakeUpAction : MultiConfigurationAction {
+internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
 
-    override fun execute(pool: Map<ConfigurationKey, ConfigurationContext<*>>, parentNode: Node<*>) {
-        pool.invokeOn(SLEEPING) {
-            ActivateAction.execute(it, parentNode)
+    /**
+     * Filters the pool for [SLEEPING] elements, executes [ActivateAction] on all of them.
+     *
+     * @return the map of elements updated by [ActivateAction]
+     */
+    override fun execute(
+        pool: Map<ConfigurationKey, ConfigurationContext<C>>,
+        params: ActionExecutionParams<C>
+    ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
+        pool.invokeOn(SLEEPING, params) { foundByFilter ->
+            ActivateAction
+                .execute(foundByFilter, params)
+                .withActivationState(ACTIVE)
         }
-    }
 }

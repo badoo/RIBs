@@ -135,7 +135,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     ) : ConfigurationContext<C>() {
 
         fun shrink() = 
-            Unresolved(activationState, configuration, bundles)
+            Unresolved(
+                activationState.sleep(),
+                configuration,
+                bundles
+            )
 
         fun withActivationState(activationState: ActivationState) =
             copy(

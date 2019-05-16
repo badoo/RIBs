@@ -28,6 +28,9 @@ import com.badoo.ribs.core.routing.backstack.action.MultiConfigurationAction
 import com.badoo.ribs.core.routing.backstack.action.SingleConfigurationAction
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.Effect
 import io.reactivex.Observable
+import io.reactivex.Observable.empty
+import io.reactivex.Observable.fromCallable
+import io.reactivex.Observable.fromIterable
 
 private val timeCapsuleKey = ConfigurationFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
@@ -55,7 +58,7 @@ internal class ConfigurationFeature<C : Parcelable>(
     parentNode: Node<*>
 ) : ActorReducerFeature<ConfigurationCommand<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
-    bootstrapper = BootStrapperImpl(permanentParts),
+    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), permanentParts),
     actor = ActorImpl(resolver, parentNode),
     reducer = ReducerImpl()
 ) {
@@ -78,22 +81,26 @@ internal class ConfigurationFeature<C : Parcelable>(
      * Automatically calls [Add] + [Activate] on all [permanentParts]
      */
     class BootStrapperImpl<C : Parcelable>(
+        private val initialState: WorkingState<C>,
         private val permanentParts: List<C>
     ) : Bootstrapper<ConfigurationCommand<C>> {
 
-        override fun invoke(): Observable<ConfigurationCommand<C>> = Observable
-            .fromIterable(
-                permanentParts
-                    .mapIndexed { index, configuration ->
-                        val key = ConfigurationKey.Permanent(index)
+        override fun invoke(): Observable<ConfigurationCommand<C>> =
+            when {
+                initialState.pool.isEmpty() -> fromIterable(
+                    permanentParts
+                        .mapIndexed { index, configuration ->
+                            val key = ConfigurationKey.Permanent(index)
 
-                        listOf<ConfigurationCommand<C>>(
-                            Add(key, configuration),
-                            Activate(key)
-                        )
-                    }
-                    .flatten()
-            )
+                            listOf<ConfigurationCommand<C>>(
+                                Add(key, configuration),
+                                Activate(key)
+                            )
+                        }
+                        .flatten()
+                    )
+                else -> empty()
+            }
     }
 
     /**

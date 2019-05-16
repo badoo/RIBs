@@ -19,6 +19,10 @@ import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
 import kotlinx.android.parcel.Parcelize
 
+private val timeCapsuleKey = BackStackFeature::class.java.name
+private fun <C : Parcelable> TimeCapsule<State<C>>.initialState(): State<C> =
+    (get(timeCapsuleKey) ?: State())
+
 /**
  * State store responsible for the changes of the logical back stack (described as a list of [C]
  * elements in [BackStackFeature.State]).
@@ -32,19 +36,18 @@ import kotlinx.android.parcel.Parcelize
  */
 internal class BackStackFeature<C : Parcelable>(
     initialConfiguration: C,
-    timeCapsule: TimeCapsule<State<C>>,
-    tag: String = BackStackFeature::class.java.name
+    timeCapsule: TimeCapsule<State<C>>
 ): ActorReducerFeature<Operation<C>, Effect<C>, State<C>, Nothing>(
-    initialState = timeCapsule[tag] ?: State(),
+    initialState = timeCapsule.initialState(),
     bootstrapper = BooststrapperImpl(
-        timeCapsule[tag] ?: State(),
+        timeCapsule.initialState(),
         initialConfiguration
     ),
     actor = ActorImpl<C>(),
     reducer = ReducerImpl<C>()
 ) {
     init {
-        timeCapsule.register(tag) { state }
+        timeCapsule.register(timeCapsuleKey) { state }
     }
 
     @Parcelize

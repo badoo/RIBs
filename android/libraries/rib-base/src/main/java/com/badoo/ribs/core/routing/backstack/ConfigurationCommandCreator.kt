@@ -19,7 +19,6 @@ import java.lang.Math.min
  */
 internal fun <C : Parcelable> BackStackFeature<C>.commands(): Observable<ConfigurationCommand<C>> =
     Observable.wrap(this)
-        .startWith(BackStackFeatureState())
         .buffer(2, 1)
         .map { ConfigurationCommandCreator.diff(it[0], it[1]) }
         .flatMapIterable { items -> items }

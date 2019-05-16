@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.action.AddAction
 import kotlinx.android.parcel.Parcelize
 
@@ -73,6 +73,13 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         val configuration: C,
         val bundles: List<Bundle> = emptyList()
     ) : ConfigurationContext<C>(), Parcelable {
+
+        init {
+            // TOOD add compile-time safety for this
+            if (activationState == ACTIVE) {
+                error("Unresolved elements cannot be ACTIVE")
+            }
+        }
 
         /**
          * Resolves and sets the associated [RoutingAction], builds associated [Node]s, and adds

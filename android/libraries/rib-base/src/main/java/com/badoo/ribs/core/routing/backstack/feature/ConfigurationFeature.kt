@@ -37,6 +37,16 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
 
 /**
  * State store responsible for executing [ConfigurationCommand]s it takes as inputs.
+ *
+ * The [WorkingState] contains a pool of [ConfigurationContext] elements referenced
+ * by [ConfigurationKey] objects. Practically, these keep reference to all configurations
+ * currently associated with the RIB: Permanent parts + configurations coming from the back stack.
+ *
+ * Any given [ConfigurationContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
+ * respective to whether it is active on the screen.
+ * Last elements in the back stack are activated, others are deactivated.
+ * Permanent parts are added and activated on initialisation and never deactivated as long as
+ * the view is available.
  */
 internal class ConfigurationFeature<C : Parcelable>(
     permanentParts: List<C>,

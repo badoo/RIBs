@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
-class LoremIpsumRouter: Router<Configuration, Nothing, Nothing, Nothing, LoremIpsumView>(
+class LoremIpsumRouter: Router<Configuration, Nothing, Configuration, Nothing, LoremIpsumView>(
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {

@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.example.rib.blocker.BlockerRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
-class BlockerRouter: Router<Configuration, Nothing, Nothing, Nothing, BlockerView>(
+class BlockerRouter: Router<Configuration, Nothing, Configuration, Nothing, BlockerView>(
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {

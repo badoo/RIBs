@@ -19,7 +19,7 @@ import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
-    private val initialConfiguration: C
+    private val initialConfiguration: Content
 ) {
     private val binder = Binder()
     private lateinit var timeCapsule: AndroidTimeCapsule

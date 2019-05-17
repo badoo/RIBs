@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.example.rib.foo_bar.FooBarRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
-class FooBarRouter: Router<Configuration, Nothing, Nothing, Nothing, FooBarView>(
+class FooBarRouter: Router<Configuration, Nothing, Configuration, Nothing, FooBarView>(
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {

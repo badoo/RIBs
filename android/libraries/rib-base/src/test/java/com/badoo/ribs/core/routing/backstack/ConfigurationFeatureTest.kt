@@ -361,11 +361,31 @@ class ConfigurationFeatureTest {
     }
 
     @Test
+    fun `On Add TWICE, Node factories are NOT invoked again`() {
+        empty()
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Add(Content(0), ContentViewParented1))
+        helperContentViewParented1.nodeFactories.forEach {
+            verify(it, times(1)).invoke()
+        }
+    }
+
+    @Test
     fun `On Add, Nodes that are created are attached with empty Bundles`() {
         empty()
         feature.accept(Add(Content(0), ContentViewParented1))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode).attachChildNode(it.node, null)
+        }
+    }
+
+    @Test
+    fun `On Add TWICE, Nodes are NOT added again`() {
+        empty()
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Add(Content(0), ContentViewParented1))
+        helperContentViewParented1.nodes.forEach {
+            verify(parentNode, times(1)).attachChildNode(it.node, null)
         }
     }
 

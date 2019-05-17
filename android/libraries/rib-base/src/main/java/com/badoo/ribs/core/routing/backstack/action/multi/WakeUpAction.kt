@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.backstack.action.multi
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
 import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
@@ -26,6 +25,5 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
         pool.invokeOn(SLEEPING, params) { foundByFilter ->
             ActivateAction
                 .execute(foundByFilter, params)
-                .withActivationState(ACTIVE)
         }
 }

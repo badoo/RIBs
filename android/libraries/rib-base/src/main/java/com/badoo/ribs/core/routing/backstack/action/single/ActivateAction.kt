@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
+import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.backstack.feature.WorkingState
@@ -22,6 +23,19 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
      */
     override fun <C : Parcelable> execute(item: Resolved<C>, params: ActionExecutionParams<C>): Resolved<C> {
         val (_, parentNode, globalActivationLevel) = params
+
+        // If there's no view available (i.e. globalActivationLevel == SLEEPING) we must not execute
+        // routing actions or try to attach view. That will be done on next WakeUp. For not, let's
+        // just mark the element to the same value.
+        if (globalActivationLevel != ACTIVE) {
+            return item.withActivationState(globalActivationLevel)
+        }
+
+        // Don't execute activation twice
+        if (item.activationState == ACTIVE) {
+            return item
+        }
+
         parentNode.attachParentedViews(item.nodes)
         item.routingAction.execute()
         return item.withActivationState(globalActivationLevel)

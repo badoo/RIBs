@@ -36,6 +36,7 @@ import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import kotlinx.android.parcel.Parcelize
 import org.junit.Assert.assertEquals
@@ -219,15 +220,17 @@ class ConfigurationFeatureTest {
     }
 
     @Test
-    fun `On init, ALL initial configuration are activated - associated RoutingActions are executed`() {
+    fun `On first WakeUp after init, ALL initial configuration are activated - associated RoutingActions are executed`() {
         empty()
+        feature.accept(WakeUp())
         verify(helperPermanent1.routingAction).execute()
         verify(helperPermanent2.routingAction).execute()
     }
 
     @Test
-    fun `On init, ALL initial configuration are activated - Nodes that are created are attached to the view`() {
+    fun `On first WakeUp after init, ALL initial configuration are activated - Nodes that are created are attached to the view`() {
         empty()
+        feature.accept(WakeUp())
         helperPermanent1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
         helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it.node) }
     }
@@ -381,16 +384,56 @@ class ConfigurationFeatureTest {
 
     // region Activate
     @Test
-    fun `On Activate, associated RoutingAction is executed`() {
+    fun `On Activate BEFORE WakeUp, associated RoutingAction is NOT yet executed`() {
         empty()
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Activate(Content(0)))
+        verify(helperContentViewParented1.routingAction, never()).execute()
+    }
+
+    @Test
+    fun `On Activate BEFORE WakeUp, attachChildView() is NOT yet called on associated Nodes that are view-parented`() {
+        empty()
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Activate(Content(0)))
+        helperContentViewParented1.nodes.forEach {
+            verify(parentNode, never()).attachChildView(it.node)
+        }
+    }
+
+    @Test
+    fun `On Activate BEFORE WakeUp, associated RoutingAction is executed AUTOMATICALLY AFTER next WakeUp`() {
+        empty()
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Activate(Content(0)))
+        feature.accept(WakeUp())
+        verify(helperContentViewParented1.routingAction).execute()
+    }
+
+    @Test
+    fun `On Activate BEFORE WakeUp, attachChildView() is called AUTOMATICALLY AFTER next WakeUp on associated Nodes that are view-parented`() {
+        empty()
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Activate(Content(0)))
+        feature.accept(WakeUp())
+        helperContentViewParented1.nodes.forEach {
+            verify(parentNode).attachChildView(it.node)
+        }
+    }
+
+    @Test
+    fun `On Activate AFTER WakeUp, associated RoutingAction is executed`() {
+        empty()
+        feature.accept(WakeUp())
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
         verify(helperContentViewParented1.routingAction).execute()
     }
 
     @Test
-    fun `On Activate, attachChildView() is called on associated Nodes that are view-parented`() {
+    fun `On Activate AFTER WakeUp, attachChildView() is called on associated Nodes that are view-parented`() {
         empty()
+        feature.accept(WakeUp())
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
         helperContentViewParented1.nodes.forEach {
@@ -399,12 +442,35 @@ class ConfigurationFeatureTest {
     }
 
     @Test
-    fun `On Activate, attachChildView() is NOT called on associated Nodes that are NOT view-parented`() {
+    fun `On Activate AFTER WakeUp, attachChildView() is NOT called on associated Nodes that are NOT view-parented`() {
         empty()
+        feature.accept(WakeUp())
         feature.accept(Add(Content(0), ContentExternal1))
         feature.accept(Activate(Content(0)))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode, never()).attachChildView(it.node)
+        }
+    }
+
+    @Test
+    fun `On Activate on ALREADY ACTIVE configuration, associated RoutingAction is NOT executed again`() {
+        empty()
+        feature.accept(WakeUp())
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Activate(Content(0)))
+        feature.accept(Activate(Content(0)))
+        verify(helperContentViewParented1.routingAction, times(1)).execute()
+    }
+
+    @Test
+    fun `On Activate on ALREADY ACTIVE configuration, attachChildView() is NOT called again`() {
+        empty()
+        feature.accept(WakeUp())
+        feature.accept(Add(Content(0), ContentViewParented1))
+        feature.accept(Activate(Content(0)))
+        feature.accept(Activate(Content(0)))
+        helperContentViewParented1.nodes.forEach {
+            verify(parentNode, times(1)).attachChildView(it.node)
         }
     }
     // endregion

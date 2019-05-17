@@ -151,7 +151,11 @@ internal class ConfigurationFeature<C : Parcelable>(
                     state.resolve(key, defaultElement)
                 },
                 parentNode = parentNode,
-                globalActivationLevel = state.activationLevel
+                globalActivationLevel = when (command) {
+                    is Sleep -> SLEEPING
+                    is WakeUp -> ACTIVE
+                    else -> state.activationLevel
+                }
             )
 
         /**

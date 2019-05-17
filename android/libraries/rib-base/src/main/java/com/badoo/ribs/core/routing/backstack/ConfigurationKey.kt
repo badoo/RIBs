@@ -16,11 +16,17 @@ import kotlinx.android.parcel.Parcelize
 sealed class ConfigurationKey : Parcelable {
 
     @Parcelize
+    data class Permanent(val index: Int) : ConfigurationKey()
+
+    @Parcelize
     data class Content(val index: Int) : ConfigurationKey()
 
     @Parcelize
-    data class Overlay(val index: Int) : ConfigurationKey()
+    data class Overlay(val key: Key) : ConfigurationKey() {
 
-    @Parcelize
-    data class Permanent(val index: Int) : ConfigurationKey()
+        @Parcelize
+        data class Key(val contentKey: Content, val index: Int) : Parcelable
+    }
+
+
 }

@@ -25,9 +25,6 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private lateinit var timeCapsule: AndroidTimeCapsule
     private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var configurationFeature: ConfigurationFeature<C>
-    protected val configuration: C?
-        get() = backStackFeature.state.current
-
     lateinit var node: Node<V>
         internal set
 
@@ -46,7 +43,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
 
         configurationFeature = ConfigurationFeature(
-            initialConfigurations = permanentParts + initialConfiguration,
+            initialConfigurations = permanentParts,
             timeCapsule = timeCapsule,
             resolver = this::resolveConfiguration,
             parentNode = node

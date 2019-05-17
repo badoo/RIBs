@@ -199,7 +199,6 @@ internal class ConfigurationFeature<C : Parcelable>(
      * Involves changing [WorkingState.activationLevel] in case of [Effect.Global],
      * and replacing elements of the [WorkingState.pool] changed by actions in [ActorImpl].
      */
-    @SuppressWarnings("LongMethod")
     class ReducerImpl<C : Parcelable> : Reducer<WorkingState<C>, Effect<C>> {
         override fun invoke(state: WorkingState<C>, effect: Effect<C>): WorkingState<C> =
             when (effect) {
@@ -222,7 +221,6 @@ internal class ConfigurationFeature<C : Parcelable>(
                 )
             }
 
-        @SuppressWarnings("LongMethod")
         private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
             val key = effect.command.key
             val updated = effect.updatedElement

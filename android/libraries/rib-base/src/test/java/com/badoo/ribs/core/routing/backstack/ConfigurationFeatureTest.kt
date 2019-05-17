@@ -578,7 +578,7 @@ class ConfigurationFeatureTest {
         feature.accept(Remove(Content(1)))
         feature.accept(Remove(Content(0)))
         val configurationsLeftInPool = feature.state.pool.map {
-            it.key to it.value.configuration
+            it.value.configuration
         }
         assertEquals(permanentParts, configurationsLeftInPool)
     }

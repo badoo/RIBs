@@ -11,7 +11,7 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigur
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Content
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
+import com.badoo.ribs.core.routing.backstack.feature.BackStackElement
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -19,27 +19,27 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `() » ()`() {
-        val oldState = state(emptyList())
-        val newState = state(emptyList())
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(emptyList())
+        val newStack = backStack(emptyList())
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = emptyList<ConfigurationCommand<Configuration>>()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `(C1) » (C1)`() {
-        val oldState = state(listOf(C1))
-        val newState = state(listOf(C1))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1))
+        val newStack = backStack(listOf(C1))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = emptyList<ConfigurationCommand<Configuration>>()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `() » (C1)`() {
-        val oldState = state(emptyList())
-        val newState = state(listOf(C1))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(emptyList())
+        val newStack = backStack(listOf(C1))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Add(Content(0), C1),
             Activate(Content(0))
@@ -49,9 +49,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1) » ()`() {
-        val oldState = state(listOf(C1))
-        val newState = state(emptyList())
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1))
+        val newStack = backStack(emptyList())
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(0)),
             Remove(Content(0))
@@ -61,9 +61,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1) » (C1, C2)`() {
-        val oldState = state(listOf(C1))
-        val newState = state(listOf(C1, C2))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1))
+        val newStack = backStack(listOf(C1, C2))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(0)),
             Add(Content(1), C2),
@@ -74,9 +74,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2) » ()`() {
-        val oldState = state(listOf(C1, C2))
-        val newState = state(emptyList())
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2))
+        val newStack = backStack(emptyList())
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
             Remove(Content(1)),
@@ -87,9 +87,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2) » (C1)`() {
-        val oldState = state(listOf(C1, C2))
-        val newState = state(listOf(C1))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2))
+        val newStack = backStack(listOf(C1))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
             Remove(Content(1)),
@@ -100,9 +100,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2) » (C2)`() {
-        val oldState = state(listOf(C1, C2))
-        val newState = state(listOf(C2))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2))
+        val newStack = backStack(listOf(C2))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
             Remove(Content(1)),
@@ -115,18 +115,18 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2) » (C1, C2)`() {
-        val oldState = state(listOf(C1, C2))
-        val newState = state(listOf(C1, C2))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2))
+        val newStack = backStack(listOf(C1, C2))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = emptyList<ConfigurationCommand<Configuration>>()
         assertEquals(expected, actual)
     }
 
     @Test
     fun `(C1, C2) » (C1, C3)`() {
-        val oldState = state(listOf(C1, C2))
-        val newState = state(listOf(C1, C3))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2))
+        val newStack = backStack(listOf(C1, C3))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
             Remove(Content(1)),
@@ -138,9 +138,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2) » (C1, C2, C3)`() {
-        val oldState = state(listOf(C1, C2))
-        val newState = state(listOf(C1, C2, C3))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2))
+        val newStack = backStack(listOf(C1, C2, C3))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
             Add(Content(2), C3),
@@ -151,9 +151,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2, C3) » (C1, C2)`() {
-        val oldState = state(listOf(C1, C2, C3))
-        val newState = state(listOf(C1, C2))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2, C3))
+        val newStack = backStack(listOf(C1, C2))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
             Remove(Content(2)),
@@ -164,9 +164,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2, C3) » (C1)`() {
-        val oldState = state(listOf(C1, C2, C3))
-        val newState = state(listOf(C1))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2, C3))
+        val newStack = backStack(listOf(C1))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
             Remove(Content(2)),
@@ -178,9 +178,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2, C3) » ()`() {
-        val oldState = state(listOf(C1, C2, C3))
-        val newState = state(listOf())
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2, C3))
+        val newStack = backStack(listOf())
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
             Remove(Content(2)),
@@ -192,9 +192,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2, C3) » (C5)`() {
-        val oldState = state(listOf(C1, C2, C3))
-        val newState = state(listOf(C5))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2, C3))
+        val newStack = backStack(listOf(C5))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
             Remove(Content(2)),
@@ -208,9 +208,9 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2, C3) » (C1, C2, C4)`() {
-        val oldState = state(listOf(C1, C2, C3))
-        val newState = state(listOf(C1, C2, C4))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2, C3))
+        val newStack = backStack(listOf(C1, C2, C4))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
             Remove(Content(2)),
@@ -222,11 +222,12 @@ class ConnectorCommandCreatorTest {
 
     @Test
     fun `(C1, C2, C3) » (C1, C4, C5)`() {
-        val oldState = state(listOf(C1, C2, C3))
-        val newState = state(listOf(C1, C4, C5))
-        val actual = ConfigurationCommandCreator.diff(oldState, newState)
+        val oldStack = backStack(listOf(C1, C2, C3))
+        val newStack = backStack(listOf(C1, C4, C5))
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Deactivate(Content(1)),
+            Deactivate(Content(2)),
+            Remove(Content(2)),
             Remove(Content(1)),
             Add(Content(1), C4),
             Add(Content(2), C5),
@@ -235,6 +236,6 @@ class ConnectorCommandCreatorTest {
         assertEquals(expected, actual)
     }
 
-    private fun state(list: List<Configuration>) =
-        BackStackFeature.State(backStack = list)
+    private fun backStack(list: List<Configuration>) =
+        list.map { BackStackElement(it) }
 }

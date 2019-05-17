@@ -15,6 +15,7 @@ import kotlinx.android.parcel.Parcelize
  */
 internal sealed class ConfigurationContext<C : Parcelable> {
 
+    abstract val configuration: C
     abstract val activationState: ActivationState
 
     /**
@@ -74,7 +75,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     @Parcelize
     data class Unresolved<C : Parcelable>(
         override val activationState: ActivationState,
-        val configuration: C,
+        override val configuration: C,
         val bundles: List<Bundle> = emptyList()
     ) : ConfigurationContext<C>(), Parcelable {
 
@@ -122,7 +123,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
      */
     data class Resolved<C : Parcelable>(
         override val activationState: ActivationState,
-        val configuration: C,
+        override val configuration: C,
         var bundles: List<Bundle>,
         val routingAction: RoutingAction<*>,
         val nodes: List<Node.Descriptor>

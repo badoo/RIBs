@@ -61,8 +61,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     fun onLowMemory() {
-        // FIXME
-//        backStackFeature.accept(ShrinkToBundles())
+        // TODO add back support for this
     }
 
     fun onAttachView() {

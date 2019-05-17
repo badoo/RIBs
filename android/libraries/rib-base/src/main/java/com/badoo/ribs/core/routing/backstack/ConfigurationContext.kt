@@ -97,7 +97,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             val routingAction = resolver.invoke(configuration)
 
             return onResolution.invoke(
-                    Resolved(
+                Resolved(
                     activationState = activationState,
                     configuration = configuration,
                     bundles = bundles,
@@ -146,6 +146,16 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             copy(
                 activationState = activationState
             )
+
+        fun saveInstanceStace() =
+            copy(
+                bundles = nodes.map { nodeDescriptor ->
+                    Bundle().also {
+                        nodeDescriptor.node.onSaveInstanceState(it)
+                    }
+                }
+            )
+
 
         override fun sleep(): Resolved<C> =
             withActivationState(activationState.sleep())

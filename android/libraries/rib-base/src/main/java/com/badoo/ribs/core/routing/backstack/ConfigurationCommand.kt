@@ -7,6 +7,7 @@ import com.badoo.ribs.core.routing.backstack.action.single.ActivateAction
 import com.badoo.ribs.core.routing.backstack.action.single.AddAction
 import com.badoo.ribs.core.routing.backstack.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.backstack.action.multi.MultiConfigurationAction
+import com.badoo.ribs.core.routing.backstack.action.multi.SaveInstanceStateAction
 import com.badoo.ribs.core.routing.backstack.action.single.NoOpAction
 import com.badoo.ribs.core.routing.backstack.action.single.RemoveAction
 import com.badoo.ribs.core.routing.backstack.action.single.SingleConfigurationAction
@@ -37,6 +38,11 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
         class WakeUp<C : Parcelable> : MultiConfigurationCommand<C>() {
             override val action: MultiConfigurationAction<C> =
                 WakeUpAction()
+        }
+
+        class SaveInstanceState<C : Parcelable> : MultiConfigurationCommand<C>() {
+            override val action: MultiConfigurationAction<C> =
+                SaveInstanceStateAction()
         }
     }
 

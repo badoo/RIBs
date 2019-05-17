@@ -17,7 +17,10 @@ internal interface MultiConfigurationAction<C : Parcelable> {
      *
      * @return sub-pool of the updated elements
      */
-    fun execute(pool: Map<ConfigurationKey, ConfigurationContext<C>>, params: ActionExecutionParams<C>): Map<ConfigurationKey, Resolved<C>>
+    fun execute(
+        pool: Map<ConfigurationKey, ConfigurationContext<C>>,
+        params: ActionExecutionParams<C>
+    ): Map<ConfigurationKey, Resolved<C>>
 
     /**
      * Invokes [block] on all [ConfigurationContext.Resolved] elements that are in the provided [filterActivationState]

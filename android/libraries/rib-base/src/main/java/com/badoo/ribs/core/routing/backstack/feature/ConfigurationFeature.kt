@@ -10,6 +10,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand
@@ -209,6 +210,9 @@ internal class ConfigurationFeature<C : Parcelable>(
                 )
                 is WakeUp -> copy(
                     activationLevel = ACTIVE,
+                    pool = pool + effect.updatedElements
+                )
+                is SaveInstanceState -> copy(
                     pool = pool + effect.updatedElements
                 )
             }

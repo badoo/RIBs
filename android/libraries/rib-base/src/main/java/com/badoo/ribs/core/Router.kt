@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.backstack.commands
@@ -57,6 +58,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
     fun onSaveInstanceState(outState: Bundle) {
+        configurationFeature.accept(SaveInstanceState())
         timeCapsule.saveState(outState)
     }
 

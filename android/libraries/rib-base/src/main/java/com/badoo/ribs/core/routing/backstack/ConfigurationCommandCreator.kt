@@ -41,10 +41,10 @@ internal object ConfigurationCommandCreator {
 
         val indexOfLastCommonElement = findIndexOfLastCommonElement(oldState.backStack, newState.backStack)
         val commands = mutableListOf<ConfigurationCommand<C>>()
-        commands += oldState.backStack.makePassiveIfNeeded()
+        commands += oldState.backStack.deactivateIfNeeded()
         commands += oldState.backStack.removeUntil(indexOfLastCommonElement)
         commands += newState.backStack.addFrom(indexOfLastCommonElement)
-        commands += newState.backStack.makeActiveIfNeeded()
+        commands += newState.backStack.activateIfNeeded()
 
         return commands
     }
@@ -63,7 +63,7 @@ internal object ConfigurationCommandCreator {
         return idx
     }
 
-    private fun <C : Parcelable> List<C>.makePassiveIfNeeded(): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> List<C>.deactivateIfNeeded(): List<ConfigurationCommand<C>> =
         when {
             lastIndex > -1 -> listOf(Deactivate(Content(lastIndex)))
             else -> emptyList()
@@ -82,7 +82,7 @@ internal object ConfigurationCommandCreator {
             .mapIndexed { index, configuration -> Add(Content(offset + index), configuration) }
     }
 
-    private fun <C : Parcelable> List<C>.makeActiveIfNeeded(): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> List<C>.activateIfNeeded(): List<ConfigurationCommand<C>> =
         when {
             lastIndex > -1 -> listOf(Activate(Content(lastIndex)))
             else -> emptyList()

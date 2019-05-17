@@ -1,9 +1,10 @@
-package com.badoo.ribs.core.routing.backstack.action
+package com.badoo.ribs.core.routing.backstack.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
+import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
 
 /**
  * Represents an action that affects a single [ConfigurationContext.Resolved] configuration when executed.

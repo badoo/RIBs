@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.backstack.action
+package com.badoo.ribs.core.routing.backstack.action.multi
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
@@ -6,24 +6,26 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationStat
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
+import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.backstack.action.single.DeactivateAction
 
 /**
- * Calls [ActivateAction] all elements with an [ActivationState] of [SLEEPING].
+ * Calls [DeactivateAction] all elements with an [ActivationState] of [ACTIVE].
  */
-internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
+internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
 
     /**
-     * Filters the pool for [SLEEPING] elements, executes [ActivateAction] on all of them.
+     * Filters the pool for [ACTIVE] elements, executes [DeactivateAction] on all of them.
      *
-     * @return the map of elements updated by [ActivateAction]
+     * @return the map of elements updated by [DeactivateAction]
      */
     override fun execute(
         pool: Map<ConfigurationKey, ConfigurationContext<C>>,
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
-        pool.invokeOn(SLEEPING, params) { foundByFilter ->
-            ActivateAction
+        pool.invokeOn(ACTIVE, params) { foundByFilter ->
+            DeactivateAction
                 .execute(foundByFilter, params)
-                .withActivationState(ACTIVE)
+                .withActivationState(SLEEPING)
         }
 }

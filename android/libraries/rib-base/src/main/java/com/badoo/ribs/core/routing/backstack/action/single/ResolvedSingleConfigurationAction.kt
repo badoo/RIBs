@@ -1,8 +1,9 @@
-package com.badoo.ribs.core.routing.backstack.action
+package com.badoo.ribs.core.routing.backstack.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
+import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
 
 /**
  * A convenience class to automatically call resolution on the key.

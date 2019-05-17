@@ -25,9 +25,9 @@ import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.backstack.ConfigurationKey
 import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.backstack.action.AddAction
-import com.badoo.ribs.core.routing.backstack.action.MultiConfigurationAction
-import com.badoo.ribs.core.routing.backstack.action.SingleConfigurationAction
+import com.badoo.ribs.core.routing.backstack.action.single.AddAction
+import com.badoo.ribs.core.routing.backstack.action.multi.MultiConfigurationAction
+import com.badoo.ribs.core.routing.backstack.action.single.SingleConfigurationAction
 import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature.Effect
 import io.reactivex.Observable
 import io.reactivex.Observable.empty

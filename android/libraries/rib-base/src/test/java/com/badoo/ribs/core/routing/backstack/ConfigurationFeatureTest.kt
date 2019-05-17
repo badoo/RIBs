@@ -176,12 +176,14 @@ class ConfigurationFeatureTest {
         parentNode = mock()
     }
 
+    private val permanentParts = listOf(
+        Permanent1,
+        Permanent2
+    )
+
     private fun createFeature(timeCapsule: TimeCapsule<SavedState<Configuration>>): ConfigurationFeature<Configuration> {
         return ConfigurationFeature(
-            initialConfigurations = listOf(
-                Permanent1,
-                Permanent2
-            ),
+            initialConfigurations = permanentParts,
             timeCapsule = timeCapsule,
             resolver = resolver,
             parentNode = parentNode
@@ -549,17 +551,16 @@ class ConfigurationFeatureTest {
     }
 
     @Test
-    fun `On Remove, all Node references are cleared`() {
+    fun `On Remove all added elements, only permanent parts are left in the pool`() {
         empty()
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Add(Content(1), ContentExternal1))
         feature.accept(Remove(Content(1)))
         feature.accept(Remove(Content(0)))
-
-        feature.state.pool.forEach { (key, value) ->
-            // Only Permanent parts should remain, all Content should be cleared at this point
-            assertEquals(true, key is Permanent)
+        val configurationsLeftInPool = feature.state.pool.map {
+            it.key to it.value.configuration
         }
+        assertEquals(permanentParts, configurationsLeftInPool)
     }
     // endregion
 

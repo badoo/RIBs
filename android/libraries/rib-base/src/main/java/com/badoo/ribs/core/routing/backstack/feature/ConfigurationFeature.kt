@@ -46,7 +46,8 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  *
  * The [WorkingState] contains a pool of [ConfigurationContext] elements referenced
  * by [ConfigurationKey] objects. Practically, these keep reference to all configurations
- * currently associated with the RIB: Permanent parts + configurations coming from the back stack.
+ * currently associated with the RIB: all initial configurations (typically permanent parts
+ * and one content type) + the ones coming from back stack changes.
  *
  * Any given [ConfigurationContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
  * respective to whether it is active on the screen.
@@ -55,13 +56,13 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  * the view is available.
  */
 internal class ConfigurationFeature<C : Parcelable>(
-    permanentParts: List<C>,
+    initialConfigurations: List<C>,
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: (C) -> RoutingAction<*>,
     parentNode: Node<*>
 ) : ActorReducerFeature<ConfigurationCommand<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
-    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), permanentParts),
+    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), initialConfigurations),
     actor = ActorImpl(resolver, parentNode),
     reducer = ReducerImpl()
 ) {
@@ -82,17 +83,17 @@ internal class ConfigurationFeature<C : Parcelable>(
     }
 
     /**
-     * Automatically calls [Add] + [Activate] on all [permanentParts]
+     * Automatically calls [Add] + [Activate] on all [initialConfigurations]
      */
     class BootStrapperImpl<C : Parcelable>(
         private val initialState: WorkingState<C>,
-        private val permanentParts: List<C>
+        private val initialConfigurations: List<C>
     ) : Bootstrapper<ConfigurationCommand<C>> {
 
         override fun invoke(): Observable<ConfigurationCommand<C>> =
             when {
                 initialState.pool.isEmpty() -> fromIterable(
-                    permanentParts
+                    initialConfigurations
                         .mapIndexed { index, configuration ->
                             val key = ConfigurationKey.Permanent(index)
 

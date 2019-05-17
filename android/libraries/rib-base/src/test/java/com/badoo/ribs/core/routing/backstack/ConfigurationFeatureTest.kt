@@ -177,7 +177,7 @@ class ConfigurationFeatureTest {
 
     private fun createFeature(timeCapsule: TimeCapsule<SavedState<Configuration>>): ConfigurationFeature<Configuration> {
         return ConfigurationFeature(
-            permanentParts = listOf(
+            initialConfigurations = listOf(
                 Permanent1,
                 Permanent2
             ),
@@ -198,35 +198,35 @@ class ConfigurationFeatureTest {
     // region Init
 
     @Test
-    fun `On init, Permanent parts are added - associated RoutingActions are resolved on demand`() {
+    fun `On init, ALL initial configuration are added - associated RoutingActions are resolved on demand`() {
         empty()
         verify(resolver).invoke(Permanent1)
         verify(resolver).invoke(Permanent2)
     }
 
     @Test
-    fun `On init, Permanent parts are added - Node factories are invoked`() {
+    fun `On init, ALL initial configuration are added - Node factories are invoked`() {
         empty()
         helperPermanent1.nodeFactories.forEach { verify(it).invoke() }
         helperPermanent2.nodeFactories.forEach { verify(it).invoke() }
     }
 
     @Test
-    fun `On init, Permanent parts are added - Nodes that are created are attached with empty Bundles`() {
+    fun `On init, ALL initial configuration are added - Nodes that are created are attached with empty Bundles`() {
         empty()
         helperPermanent1.nodes.forEach { verify(parentNode).attachChildNode(it.node, null) }
         helperPermanent2.nodes.forEach { verify(parentNode).attachChildNode(it.node, null) }
     }
 
     @Test
-    fun `On init, Permanent parts are activated - associated RoutingActions are executed`() {
+    fun `On init, ALL initial configuration are activated - associated RoutingActions are executed`() {
         empty()
         verify(helperPermanent1.routingAction).execute()
         verify(helperPermanent2.routingAction).execute()
     }
 
     @Test
-    fun `On init, Permanent parts are activated - Nodes that are created are attached to the view`() {
+    fun `On init, ALL initial configuration are activated - Nodes that are created are attached to the view`() {
         empty()
         helperPermanent1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
         helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it.node) }
@@ -512,7 +512,6 @@ class ConfigurationFeatureTest {
     }
 
     @Test
-    // FIXME more configurations to test "every ACTIVE node" part
     fun `On Sleep after WakeUp, saveViewState() is called on every ACTIVE node`() {
         empty()
         feature.accept(WakeUp())
@@ -528,7 +527,6 @@ class ConfigurationFeatureTest {
     }
 
     @Test
-    // FIXME more configurations to test "every ACTIVE node" part
     fun `On Sleep after WakeUp, detachChildView() is called on every ACTIVE node that are view-parented`() {
         empty()
         feature.accept(WakeUp())
@@ -560,7 +558,6 @@ class ConfigurationFeatureTest {
     }
 
     @Test
-    // FIXME more configurations to test "every ACTIVE node" part
     fun `On WakeUp after Sleep, attachChildView() is called on every ACTIVE node that are view-parented`() {
         empty()
         feature.accept(WakeUp())

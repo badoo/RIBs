@@ -46,7 +46,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
 
         configurationFeature = ConfigurationFeature(
-            permanentParts = permanentParts,
+            initialConfigurations = permanentParts + initialConfiguration,
             timeCapsule = timeCapsule,
             resolver = this::resolveConfiguration,
             parentNode = node

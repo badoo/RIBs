@@ -36,54 +36,19 @@ internal object ConfigurationCommandCreator {
     fun <C : Parcelable> diff(
         oldStack: List<BackStackElement<C>>,
         newStack: List<BackStackElement<C>>
-    ): List<ConfigurationCommand<C>> {
-
-        if (newStack == oldStack) {
-            return emptyList()
+    ): List<ConfigurationCommand<C>> =
+        when (newStack) {
+            oldStack -> emptyList()
+            else -> {
+                val commands = mutableListOf<ConfigurationCommand<C>>()
+                val indexOfLastCommonElement = findIndexOfLastCommonElement(oldStack, newStack)
+                commands += oldStack.deactivateIfNeeded(newStack)
+                commands += oldStack.removeUntil(indexOfLastCommonElement)
+                commands += newStack.addFrom(indexOfLastCommonElement)
+                commands += newStack.activateIfNeeded(oldStack)
+                commands += newStack.overlayDiff(oldStack)
+                commands
         }
-
-        val commands = mutableListOf<ConfigurationCommand<C>>()
-
-        // lazy way to check simple case when only an overlay changed in the last element
-        if (newStack.isNotEmpty() &&
-            oldStack.isNotEmpty() &&
-            newStack.dropLast(1) == oldStack.dropLast(1) &&
-            newStack.last().configuration == oldStack.last().configuration) {
-
-            val contentKey = Content(newStack.lastIndex)
-            val lastNew = newStack.last()
-            val lastOld = oldStack.last()
-            commands += lastOld.overlays
-                .mapIndexed { overlayIndex, element ->
-                    if (element == lastNew.overlays.getOrNull(overlayIndex)) emptyList()
-                    else listOf(
-                        Deactivate<C>(Overlay(Key(contentKey, overlayIndex))),
-                        Remove<C>(Overlay(Key(contentKey, overlayIndex)))
-                    )
-                }
-                .asReversed()
-                .flatten()
-
-            commands += lastNew.overlays
-                .mapIndexed { overlayIndex, element ->
-                    if (element == lastOld.overlays.getOrNull(overlayIndex)) emptyList()
-                    else listOf(
-                        Add(Overlay(Key(contentKey, overlayIndex)), element.configuration),
-                        Activate<C>(Overlay(Key(contentKey, overlayIndex)))
-                    )
-                }
-                .flatten()
-
-            return commands
-        }
-
-        val indexOfLastCommonElement = findIndexOfLastCommonElement(oldStack, newStack)
-        commands += oldStack.deactivateIfNeeded()
-        commands += oldStack.removeUntil(indexOfLastCommonElement)
-        commands += newStack.addFrom(indexOfLastCommonElement)
-        commands += newStack.activateIfNeeded()
-
-        return commands
     }
 
     private fun findIndexOfLastCommonElement(
@@ -104,9 +69,9 @@ internal object ConfigurationCommandCreator {
         return idx
     }
 
-    private fun <C : Parcelable> List<BackStackElement<C>>.deactivateIfNeeded(): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> List<BackStackElement<C>>.deactivateIfNeeded(other: List<BackStackElement<C>>): List<ConfigurationCommand<C>> =
         when {
-            isNotEmpty() -> {
+            contentListHasChanged(other) && isNotEmpty() -> {
                 val contentKey = Content(lastIndex)
                 val commands = mutableListOf<ConfigurationCommand<C>>()
                 commands += last().deactivateAllOverlays(contentKey)
@@ -115,6 +80,12 @@ internal object ConfigurationCommandCreator {
             }
             else -> emptyList()
         }
+
+    /**
+     * A comparison between two lists that doesn't care about overlay differences, only the direct elements
+     */
+    private fun <C : Parcelable> List<BackStackElement<C>>.contentListHasChanged(other: List<BackStackElement<C>>) =
+        map { it.configuration } != other.map { it.configuration }
 
     private fun <C : Parcelable> List<BackStackElement<C>>.removeUntil(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
         val offset = targetIdxExclusive + 1
@@ -149,9 +120,9 @@ internal object ConfigurationCommandCreator {
             .flatten()
     }
 
-    private fun <C : Parcelable> List<BackStackElement<C>>.activateIfNeeded(): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> List<BackStackElement<C>>.activateIfNeeded(other: List<BackStackElement<C>>): List<ConfigurationCommand<C>> =
         when {
-            isNotEmpty() -> {
+            isNotEmpty() && contentListHasChanged(other) -> {
                 val commands = mutableListOf<ConfigurationCommand<C>>()
                 val contentKey = Content(lastIndex)
                 commands += Activate(contentKey)
@@ -186,4 +157,43 @@ internal object ConfigurationCommandCreator {
                 Remove<C>(Overlay(Key(contentKey, overlayIndex)))
             }
             .reversed()
+
+    private fun <C : Parcelable> List<BackStackElement<C>>.overlayDiff(other: List<BackStackElement<C>>): List<ConfigurationCommand<C>> {
+        val commands = mutableListOf<ConfigurationCommand<C>>()
+
+        forEachIndexed { index, myElement ->
+            val otherElement = other.getOrNull(index)
+            val contentKey = Content(index)
+            commands += otherElement?.removeNecessaryOverlays(myElement, contentKey) ?: emptyList()
+            commands += myElement.addNecessaryOverlays(otherElement, contentKey)
+        }
+
+        return commands
+    }
+
+    private fun <C : Parcelable> BackStackElement<C>.removeNecessaryOverlays(otherElement: BackStackElement<C>, contentKey: Content): List<ConfigurationCommand<C>> =
+        overlays
+            .mapIndexed { index, myElement ->
+                if (myElement == otherElement.overlayAt(index)) emptyList()
+                else listOf(
+                    Deactivate<C>(Overlay(Key(contentKey, index))),
+                    Remove<C>(Overlay(Key(contentKey, index)))
+                )
+            }
+            .reversed()
+            .flatten()
+
+    private fun <C : Parcelable> BackStackElement<C>.addNecessaryOverlays(otherElement: BackStackElement<C>?, contentKey: Content): List<ConfigurationCommand<C>> =
+        overlays
+            .mapIndexed { index, myElement ->
+                if (myElement == otherElement?.overlayAt(index)) emptyList()
+                else listOf(
+                    Add(Overlay(Key(contentKey, index)), myElement.configuration),
+                    Activate<C>(Overlay(Key(contentKey, index)))
+                )
+            }
+            .flatten()
+
+    private fun <C : Parcelable> BackStackElement<C>.overlayAt(index: Int): BackStackElement<C>? =
+        overlays.getOrNull(index)
 }

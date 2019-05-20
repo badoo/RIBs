@@ -33,13 +33,12 @@ class SwitcherRouter(
     private val dialogLauncher: DialogLauncher,
     private val dialogToTestOverlay: DialogToTestOverlay
     ): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
-    initialConfiguration = Content.DialogsExample
-) {
-    internal val menuUpdater = PublishRelay.create<Menu.Input>()
-
-    override val permanentParts: List<Permanent> = listOf(
+    initialConfiguration = Content.DialogsExample,
+    permanentParts = listOf(
         Permanent.Menu
     )
+) {
+    internal val menuUpdater = PublishRelay.create<Menu.Input>()
 
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {

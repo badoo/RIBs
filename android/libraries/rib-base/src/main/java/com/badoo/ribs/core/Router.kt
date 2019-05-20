@@ -19,7 +19,8 @@ import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
-    private val initialConfiguration: Content
+    private val initialConfiguration: Content,
+    private val permanentParts: List<Permanent> = emptyList()
 ) {
     private val binder = Binder()
     private lateinit var timeCapsule: AndroidTimeCapsule
@@ -27,9 +28,6 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private lateinit var configurationFeature: ConfigurationFeature<C>
     lateinit var node: Node<V>
         internal set
-
-    protected open val permanentParts: List<Permanent> =
-        emptyList()
 
     fun onAttach(savedInstanceState: Bundle?) {
         timeCapsule = AndroidTimeCapsule(savedInstanceState)

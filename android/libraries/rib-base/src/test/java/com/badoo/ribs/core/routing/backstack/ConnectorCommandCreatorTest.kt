@@ -6,11 +6,11 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
-import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Content
+import com.badoo.ribs.core.routing.backstack.ConfigurationKey.*
 import com.badoo.ribs.core.routing.backstack.feature.BackStackElement
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -18,27 +18,27 @@ import org.junit.Test
 class ConnectorCommandCreatorTest {
 
     @Test
-    fun `() » ()`() {
-        val oldStack = backStack(emptyList())
-        val newStack = backStack(emptyList())
+    fun `Content -- () » ()`() {
+        val oldStack = backStack()
+        val newStack = backStack()
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = emptyList<ConfigurationCommand<Configuration>>()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `(C1) » (C1)`() {
-        val oldStack = backStack(listOf(C1))
-        val newStack = backStack(listOf(C1))
+    fun `Content -- (C1) » (C1)`() {
+        val oldStack = backStack(C1)
+        val newStack = backStack(C1)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = emptyList<ConfigurationCommand<Configuration>>()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `() » (C1)`() {
-        val oldStack = backStack(emptyList())
-        val newStack = backStack(listOf(C1))
+    fun `Content -- () » (C1)`() {
+        val oldStack = backStack()
+        val newStack = backStack(C1)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Add(Content(0), C1),
@@ -48,9 +48,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1) » ()`() {
-        val oldStack = backStack(listOf(C1))
-        val newStack = backStack(emptyList())
+    fun `Content -- (C1) » ()`() {
+        val oldStack = backStack(C1)
+        val newStack = backStack()
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(0)),
@@ -60,9 +60,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1) » (C1, C2)`() {
-        val oldStack = backStack(listOf(C1))
-        val newStack = backStack(listOf(C1, C2))
+    fun `Content -- (C1) » (C1, C2)`() {
+        val oldStack = backStack(C1)
+        val newStack = backStack(C1, C2)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(0)),
@@ -73,9 +73,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2) » ()`() {
-        val oldStack = backStack(listOf(C1, C2))
-        val newStack = backStack(emptyList())
+    fun `Content -- (C1, C2) » ()`() {
+        val oldStack = backStack(C1, C2)
+        val newStack = backStack()
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
@@ -86,9 +86,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2) » (C1)`() {
-        val oldStack = backStack(listOf(C1, C2))
-        val newStack = backStack(listOf(C1))
+    fun `Content -- (C1, C2) » (C1)`() {
+        val oldStack = backStack(C1, C2)
+        val newStack = backStack(C1)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
@@ -99,9 +99,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2) » (C2)`() {
-        val oldStack = backStack(listOf(C1, C2))
-        val newStack = backStack(listOf(C2))
+    fun `Content -- (C1, C2) » (C2)`() {
+        val oldStack = backStack(C1, C2)
+        val newStack = backStack(C2)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
@@ -114,18 +114,18 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2) » (C1, C2)`() {
-        val oldStack = backStack(listOf(C1, C2))
-        val newStack = backStack(listOf(C1, C2))
+    fun `Content -- (C1, C2) » (C1, C2)`() {
+        val oldStack = backStack(C1, C2)
+        val newStack = backStack(C1, C2)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = emptyList<ConfigurationCommand<Configuration>>()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `(C1, C2) » (C1, C3)`() {
-        val oldStack = backStack(listOf(C1, C2))
-        val newStack = backStack(listOf(C1, C3))
+    fun `Content -- (C1, C2) » (C1, C3)`() {
+        val oldStack = backStack(C1, C2)
+        val newStack = backStack(C1, C3)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
@@ -137,9 +137,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2) » (C1, C2, C3)`() {
-        val oldStack = backStack(listOf(C1, C2))
-        val newStack = backStack(listOf(C1, C2, C3))
+    fun `Content -- (C1, C2) » (C1, C2, C3)`() {
+        val oldStack = backStack(C1, C2)
+        val newStack = backStack(C1, C2, C3)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1)),
@@ -150,9 +150,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2, C3) » (C1, C2)`() {
-        val oldStack = backStack(listOf(C1, C2, C3))
-        val newStack = backStack(listOf(C1, C2))
+    fun `Content -- (C1, C2, C3) » (C1, C2)`() {
+        val oldStack = backStack(C1, C2, C3)
+        val newStack = backStack(C1, C2)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
@@ -163,9 +163,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2, C3) » (C1)`() {
-        val oldStack = backStack(listOf(C1, C2, C3))
-        val newStack = backStack(listOf(C1))
+    fun `Content -- (C1, C2, C3) » (C1)`() {
+        val oldStack = backStack(C1, C2, C3)
+        val newStack = backStack(C1)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
@@ -177,9 +177,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2, C3) » ()`() {
-        val oldStack = backStack(listOf(C1, C2, C3))
-        val newStack = backStack(listOf())
+    fun `Content -- (C1, C2, C3) » ()`() {
+        val oldStack = backStack(C1, C2, C3)
+        val newStack = backStack()
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
@@ -191,9 +191,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2, C3) » (C5)`() {
-        val oldStack = backStack(listOf(C1, C2, C3))
-        val newStack = backStack(listOf(C5))
+    fun `Content -- (C1, C2, C3) » (C5)`() {
+        val oldStack = backStack(C1, C2, C3)
+        val newStack = backStack(C5)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
@@ -207,9 +207,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2, C3) » (C1, C2, C4)`() {
-        val oldStack = backStack(listOf(C1, C2, C3))
-        val newStack = backStack(listOf(C1, C2, C4))
+    fun `Content -- (C1, C2, C3) » (C1, C2, C4)`() {
+        val oldStack = backStack(C1, C2, C3)
+        val newStack = backStack(C1, C2, C4)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
@@ -221,9 +221,9 @@ class ConnectorCommandCreatorTest {
     }
 
     @Test
-    fun `(C1, C2, C3) » (C1, C4, C5)`() {
-        val oldStack = backStack(listOf(C1, C2, C3))
-        val newStack = backStack(listOf(C1, C4, C5))
+    fun `Content -- (C1, C2, C3) » (C1, C4, C5)`() {
+        val oldStack = backStack(C1, C2, C3)
+        val newStack = backStack(C1, C4, C5)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2)),
@@ -236,6 +236,172 @@ class ConnectorCommandCreatorTest {
         assertEquals(expected, actual)
     }
 
-    private fun backStack(list: List<Configuration>) =
-        list.map { BackStackElement(it) }
+
+    @Test
+    fun `Overlays -- (C1, C2, C3) » (C1, C2, C3 {O1}) -- Add single overlay on last element with no overlays`() {
+        val oldStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf()
+        )
+        val newStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1)
+        )
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
+        val expected = listOf<ConfigurationCommand<Configuration>>(
+            Add(
+                Overlay(Overlay.Key(Content(2), 0)),
+                Configuration.O1
+            ),
+            Activate(Overlay(Overlay.Key(Content(2), 0)))
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Overlays -- (C1, C2, C3) » (C1, C2, C3 {O1, O2}) -- Add a second overlay on last element with a single overlay`() {
+        val oldStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf()
+        )
+        val newStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1, Configuration.O2)
+        )
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
+        val expected = listOf<ConfigurationCommand<Configuration>>(
+            Add(
+                Overlay(Overlay.Key(Content(2), 0)),
+                Configuration.O1
+            ),
+            Activate(Overlay(Overlay.Key(Content(2), 0))),
+            Add(
+                Overlay(Overlay.Key(Content(2), 1)),
+                Configuration.O2
+            ),
+            Activate(Overlay(Overlay.Key(Content(2), 1)))
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Overlays -- (C1, C2, C3 {O1}) » (C1, C2, C3 {O1, O2}) -- Add multiple overlays on last element with no overlays`() {
+        val oldStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1)
+        )
+        val newStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1, Configuration.O2)
+        )
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
+        val expected = listOf<ConfigurationCommand<Configuration>>(
+            Add(
+                Overlay(Overlay.Key(Content(2), 1)),
+                Configuration.O2
+            ),
+            Activate(Overlay(Overlay.Key(Content(2), 1)))
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Overlays -- (C1, C2, C3 {O1, O2}) » (C1, C2, C3 {O1}) -- Remove single overlay on last element with multiple overlays`() {
+        val oldStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1, Configuration.O2)
+        )
+        val newStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1)
+        )
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
+        val expected = listOf<ConfigurationCommand<Configuration>>(
+            Deactivate(Overlay(Overlay.Key(Content(2), 1))),
+            Remove(Overlay(Overlay.Key(Content(2), 1)))
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Overlays -- (C1, C2, C3 {O1, O2}) » (C1, C2, C3) -- Remove all overlays on last element with multiple overlays`() {
+        val oldStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1, Configuration.O2)
+        )
+        val newStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf()
+        )
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
+        val expected = listOf<ConfigurationCommand<Configuration>>(
+            Deactivate(Overlay(Overlay.Key(Content(2), 1))),
+            Remove(Overlay(Overlay.Key(Content(2), 1))),
+            Deactivate(Overlay(Overlay.Key(Content(2), 0))),
+            Remove(Overlay(Overlay.Key(Content(2), 0)))
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Overlays -- (C1, C2, C3 {O1, O2}) » (C1, C2) -- Remove last back stack element with multiple overlays`() {
+        val oldStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(),
+            C3 to listOf(Configuration.O1, Configuration.O2)
+        )
+        val newStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf()
+        )
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
+        val expected = listOf<ConfigurationCommand<Configuration>>(
+            Deactivate(Overlay(Overlay.Key(Content(2), 1))),
+            Deactivate(Overlay(Overlay.Key(Content(2), 0))),
+            Deactivate(Content(2)),
+            Remove(Overlay(Overlay.Key(Content(2), 1))),
+            Remove(Overlay(Overlay.Key(Content(2), 0))),
+            Remove(Content(2)),
+            Activate(Content(1))
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Overlays -- (C1, C2 {O1, O2}, C3) » (C1, C2 {O1, O2}) -- Going back to previous back stack element with multiple overlays`() {
+        val oldStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(Configuration.O1, Configuration.O2),
+            C3 to listOf()
+        )
+        val newStack = backStackWithOverlays(
+            C1 to listOf(),
+            C2 to listOf(Configuration.O1, Configuration.O2)
+        )
+        val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
+        val expected = listOf<ConfigurationCommand<Configuration>>(
+            Deactivate(Content(2)),
+            Remove(Content(2)),
+            Activate(Content(1)),
+            Activate(Overlay(Overlay.Key(Content(1), 0))),
+            Activate(Overlay(Overlay.Key(Content(1), 1)))
+        )
+        assertEquals(expected, actual)
+    }
+
+    private fun backStackWithOverlays(vararg configurations: Pair<Configuration, List<Configuration>>) =
+        configurations.map { BackStackElement(it.first, it.second.map { BackStackElement(it) }) }
+
+    private fun backStack(vararg configurations: Configuration) =
+        configurations.map { BackStackElement(it) }
 }

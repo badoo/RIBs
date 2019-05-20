@@ -50,24 +50,29 @@ internal object ConfigurationCommandCreator {
             newStack.dropLast(1) == oldStack.dropLast(1) &&
             newStack.last().configuration == oldStack.last().configuration) {
 
-            val contentKey = Content(newStack.size)
+            val contentKey = Content(newStack.lastIndex)
             val lastNew = newStack.last()
             val lastOld = oldStack.last()
             commands += lastOld.overlays
-                .filterIndexed { overlayIndex, element -> lastNew.overlays.getOrNull(overlayIndex) != element }
-                .mapIndexed { overlayIndex, _ -> listOf(
+                .mapIndexed { overlayIndex, element ->
+                    if (element == lastNew.overlays.getOrNull(overlayIndex)) emptyList()
+                    else listOf(
                         Deactivate<C>(Overlay(Key(contentKey, overlayIndex))),
                         Remove<C>(Overlay(Key(contentKey, overlayIndex)))
                     )
-                }.flatten()
+                }
+                .asReversed()
+                .flatten()
 
             commands += lastNew.overlays
-                .filterIndexed { overlayIndex, element -> lastOld.overlays.getOrNull(overlayIndex) != element }
-                .mapIndexed { overlayIndex, element -> listOf(
+                .mapIndexed { overlayIndex, element ->
+                    if (element == lastOld.overlays.getOrNull(overlayIndex)) emptyList()
+                    else listOf(
                         Add(Overlay(Key(contentKey, overlayIndex)), element.configuration),
                         Activate<C>(Overlay(Key(contentKey, overlayIndex)))
                     )
-                }.flatten()
+                }
+                .flatten()
 
             return commands
         }
@@ -116,14 +121,19 @@ internal object ConfigurationCommandCreator {
         return subList(offset, size)
             .mapIndexed { contentIndex, backStackElement ->
                 val commands = mutableListOf<ConfigurationCommand<C>>()
-                val contentKey = Content(offset + contentIndex)
+                val realIndex = offset + contentIndex
+                val contentKey = Content(realIndex)
                 commands += Remove(contentKey)
-                commands += backStackElement.removeAllOverlays(contentKey)
-                commands += backStackElement.deactivateAllOverlays(contentKey)
+                commands += backStackElement.removeAllOverlays(contentKey).reversed()
+                if (realIndex != lastIndex) {
+                    commands += backStackElement.deactivateAllOverlays(contentKey).reversed()
+                }
+
                 commands
             }
-            .asReversed()
             .flatten()
+            .reversed()
+
     }
 
     private fun <C : Parcelable> List<BackStackElement<C>>.addFrom(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
@@ -168,12 +178,12 @@ internal object ConfigurationCommandCreator {
             .mapIndexed { overlayIndex, _ ->
                 Deactivate<C>(Overlay(Key(contentKey, overlayIndex)))
             }
-            .asReversed()
+            .reversed()
 
     private fun <C : Parcelable> BackStackElement<C>.removeAllOverlays(contentKey: Content): List<ConfigurationCommand<C>> =
         overlays
             .mapIndexed { overlayIndex, _ ->
                 Remove<C>(Overlay(Key(contentKey, overlayIndex)))
             }
-            .asReversed()
+            .reversed()
 }

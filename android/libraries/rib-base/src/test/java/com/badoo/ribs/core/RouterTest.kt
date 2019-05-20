@@ -25,6 +25,8 @@ class RouterTest {
 
     @Before
     fun setUp() {
+        Thread.currentThread().setUncaughtExceptionHandler { _, _ -> assert(false) }
+
         childNodeC2_1 = mock()
         childNodeC2_2 = mock()
 
@@ -46,6 +48,9 @@ class RouterTest {
             routingActionForC3 = routingActionForC3,
             routingActionForC4 = routingActionForC4,
             routingActionForC5 = routingActionForC5,
+            routingActionForO1 = mock(),
+            routingActionForO2 = mock(),
+            routingActionForO3 = mock(),
             permanentParts = listOf()
         )
 
@@ -59,5 +64,11 @@ class RouterTest {
         router.onSaveInstanceState(mock())
         verify(childNodeC2_1).onSaveInstanceState(any())
         verify(childNodeC2_2).onSaveInstanceState(any())
+    }
+
+    @Test
+    fun `Pushing another configuration after initial is possible`() {
+        router.onAttach(mock())
+        router.push(TestRouter.Configuration.C5)
     }
 }

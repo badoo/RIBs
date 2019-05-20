@@ -21,8 +21,8 @@ interface TestRoot : Rib {
     }
 
     class Provider(
-        private val initialConfiguration: Configuration = Configuration.NoOp,
-        private val permanentParts: List<() -> Node<*>> = emptyList(),
+        private val initialConfiguration: Configuration.Content = Configuration.Content.NoOp,
+        private val permanentParts: List<Configuration.Permanent> = emptyList(),
         private val dialogLauncher: DialogLauncher = NoOpDialogLauncher()
     ) {
 

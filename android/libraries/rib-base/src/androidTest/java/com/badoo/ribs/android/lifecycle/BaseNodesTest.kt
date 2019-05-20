@@ -10,7 +10,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import org.assertj.core.api.Java6Assertions.assertThat
 
 abstract class BaseNodesTest(
-    initialConfiguration: TestRootRouter.Configuration = TestRootRouter.Configuration.NoOp,
+    initialConfiguration: TestRootRouter.Configuration.Content = TestRootRouter.Configuration.Content.NoOp,
     permanentParts: List<TestNode> = emptyList(),
     dialogLauncher: DialogLauncher = NoOpDialogLauncher()
 ) {

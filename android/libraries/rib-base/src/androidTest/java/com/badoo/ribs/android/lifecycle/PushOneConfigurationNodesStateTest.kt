@@ -3,16 +3,16 @@ package com.badoo.ribs.android.lifecycle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.android.lifecycle.BaseNodesTest.TestNode.NODE_1
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1And2
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsDialog
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsDialogAndOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsDialog
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsDialogAndOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.NoOp
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1And2
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1AsDialog
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2AsDialog
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.NoOp
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode1AsDialogAndOverlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode1AsOverlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode2AsDialogAndOverlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode2AsOverlay
 import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Rule
 import org.junit.Test
@@ -126,8 +126,8 @@ class PushOneConfigurationNodesStateTest(private val test: Pair<When, ExpectedSt
     }
 
     class When(
-        val pushConfiguration: Configuration,
-        val initialConfiguration: Configuration = NoOp,
+        val pushConfiguration: Configuration.Content,
+        val initialConfiguration: Configuration.Content = NoOp,
         val permanentParts: List<TestNode> = emptyList()
     ) {
         override fun toString() = "initial configuration is ${initialConfiguration::class.java.simpleName} " +

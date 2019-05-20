@@ -12,10 +12,10 @@ import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Foo
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Hello
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.OverlayDialog
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Blocker
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Foo
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Hello
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Blocker
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay.Dialog
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
@@ -121,7 +121,7 @@ class SwitcherRouterTest {
     fun `overlay dialog configuration - shows overlay dialog`() {
         router.onAttach(null)
 
-        router.replace(OverlayDialog)
+        router.pushOverlay(Dialog)
 
         verify(dialogLauncher).show(eq(dialogToTestOverlay), any())
     }

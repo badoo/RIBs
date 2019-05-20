@@ -86,7 +86,20 @@ class BackStackFeatureTest {
     }
 
     @Test
-    fun `Wish_Push consecutively results in expected backstack content`() {
+    fun `Wish_Push same elements multiple times has no effect after first`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C2))
+        val expected = listOf(
+            initialConfiguration,
+            C2
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_Push multiple different elements results in expected backstack content`() {
         backStackManager.accept(Push(C2))
         backStackManager.accept(Push(C3))
         backStackManager.accept(Push(C4))
@@ -120,7 +133,15 @@ class BackStackFeatureTest {
     }
 
     @Test
-    fun `Wish_PushOverlay multiple times adds all new elements to the overlay list of the last back stack element`() {
+    fun `Wish_PushOverlay multiple times with same elements has no effect after the first`() {
+        backStackManager.accept(PushOverlay(O1))
+        backStackManager.accept(PushOverlay(O1))
+        backStackManager.accept(PushOverlay(O1))
+        assertEquals(listOf(O1), backStackManager.state.backStack.last().overlays)
+    }
+
+    @Test
+    fun `Wish_PushOverlay multiple times with different elements adds all new ones to the overlay list of the last back stack element`() {
         backStackManager.accept(PushOverlay(O1))
         backStackManager.accept(PushOverlay(O2))
         assertEquals(2, backStackManager.state.backStack.last().overlays.size)
@@ -152,6 +173,15 @@ class BackStackFeatureTest {
         backStackManager.accept(Push(C3))
         backStackManager.accept(Replace(C4))
         assertEquals(C4, backStackManager.state.current!!.configuration)
+    }
+
+    @Test
+    fun `Wish_Replace same configuration as current has no effect`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(PushOverlay(O1))
+        val beforeReplace = backStackManager.state
+        backStackManager.accept(Replace(C2))
+        assertEquals(beforeReplace, backStackManager.state)
     }
 
     @Test
@@ -194,6 +224,15 @@ class BackStackFeatureTest {
             C5
         )
         assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_NewRoot same configuration as current has no effect`() {
+        backStackManager.accept(NewRoot(C2))
+        backStackManager.accept(PushOverlay(O1))
+        val beforeReplace = backStackManager.state
+        backStackManager.accept(NewRoot(C2))
+        assertEquals(beforeReplace, backStackManager.state)
     }
 
     @Test

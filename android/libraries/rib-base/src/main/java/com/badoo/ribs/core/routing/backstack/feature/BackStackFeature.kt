@@ -120,14 +120,14 @@ internal class BackStackFeature<C : Parcelable>(
         override fun invoke(state: BackStackFeatureState<C>, op: Operation<C>): Observable<out Effect<C>> =
             when (op) {
                 is Replace -> when {
-                    op.configuration != state.current -> {
+                    op.configuration != state.current?.configuration -> {
                         just(Effect.Replace(state, op.configuration))
                     }
                     else -> empty()
                 }
 
                 is Push -> when {
-                    op.configuration != state.current ->
+                    op.configuration != state.current?.configuration ->
                         just(Effect.Push(state, op.configuration))
                     else -> empty()
                 }
@@ -139,7 +139,7 @@ internal class BackStackFeature<C : Parcelable>(
                 }
 
                 is NewRoot -> when {
-                    state.backStack != listOf(op.configuration) ->
+                    state.backStack.size != 1 || state.backStack.first().configuration != op.configuration ->
                         just(Effect.NewRoot(state, op.configuration))
                     else -> empty()
                 }

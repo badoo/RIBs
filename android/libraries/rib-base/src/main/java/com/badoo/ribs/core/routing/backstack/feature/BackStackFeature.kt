@@ -170,7 +170,7 @@ internal class BackStackFeature<C : Parcelable>(
             is Effect.PushOverlay -> copy(
                 backStack = backStack.replaceLastWith {
                     it.copy(
-                        overlays = it.overlays + BackStackElement(effect.configuration)
+                        overlays = it.overlays + effect.configuration
                     )
                 }
             )

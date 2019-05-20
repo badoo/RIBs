@@ -116,7 +116,7 @@ class BackStackFeatureTest {
     @Test
     fun `Wish_PushOverlay adds the expected configuration to the overlay list of the last back stack element`() {
         backStackManager.accept(PushOverlay(O1))
-        assertEquals(O1, backStackManager.state.backStack.last().overlays.last().configuration)
+        assertEquals(O1, backStackManager.state.backStack.last().overlays.last())
     }
 
     @Test
@@ -134,7 +134,7 @@ class BackStackFeatureTest {
             O1,
             O2
         )
-        assertEquals(expected, backStackManager.state.backStack.last().overlays.map { it.configuration })
+        assertEquals(expected, backStackManager.state.backStack.last().overlays)
     }
 
     @Test
@@ -283,6 +283,6 @@ class BackStackFeatureTest {
             O2
         )
 
-        assertEquals(expectedOverlays, backStackManager.state.backStack.last().overlays.map { it.configuration })
+        assertEquals(expectedOverlays, backStackManager.state.backStack.last().overlays)
     }
 }

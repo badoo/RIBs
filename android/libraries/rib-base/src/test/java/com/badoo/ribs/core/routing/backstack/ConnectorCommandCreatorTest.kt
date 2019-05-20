@@ -399,9 +399,9 @@ class ConnectorCommandCreatorTest {
         assertEquals(expected, actual)
     }
 
-    private fun backStackWithOverlays(vararg configurations: Pair<Configuration, List<Configuration>>) =
-        configurations.map { BackStackElement(it.first, it.second.map { BackStackElement(it) }) }
-
-    private fun backStack(vararg configurations: Configuration) =
+    private fun backStack(vararg configurations: Configuration): List<BackStackElement<Configuration>> =
         configurations.map { BackStackElement(it) }
+
+    private fun backStackWithOverlays(vararg configurations: Pair<Configuration, List<Configuration>>): List<BackStackElement<Configuration>> =
+        configurations.map { BackStackElement(it.first, it.second) }
 }

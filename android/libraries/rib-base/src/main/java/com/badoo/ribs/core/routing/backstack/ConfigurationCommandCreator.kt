@@ -134,8 +134,8 @@ internal object ConfigurationCommandCreator {
 
     private fun <C : Parcelable> BackStackElement<C>.addAllOverlays(content: Content): List<ConfigurationCommand<C>> =
         overlays
-            .mapIndexed { overlayIndex, backStackElement ->
-                Add(Overlay(Key(content, overlayIndex)), backStackElement.configuration)
+            .mapIndexed { overlayIndex, configuration ->
+                Add(Overlay(Key(content, overlayIndex)), configuration)
             }
 
     private fun <C : Parcelable> BackStackElement<C>.activateAllOverlays(contentKey: Content): List<ConfigurationCommand<C>> =
@@ -188,12 +188,12 @@ internal object ConfigurationCommandCreator {
             .mapIndexed { index, myElement ->
                 if (myElement == otherElement?.overlayAt(index)) emptyList()
                 else listOf(
-                    Add(Overlay(Key(contentKey, index)), myElement.configuration),
+                    Add(Overlay(Key(contentKey, index)), myElement),
                     Activate<C>(Overlay(Key(contentKey, index)))
                 )
             }
             .flatten()
 
-    private fun <C : Parcelable> BackStackElement<C>.overlayAt(index: Int): BackStackElement<C>? =
+    private fun <C : Parcelable> BackStackElement<C>.overlayAt(index: Int): C? =
         overlays.getOrNull(index)
 }

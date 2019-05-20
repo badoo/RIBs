@@ -155,8 +155,8 @@ internal class BackStackFeature<C : Parcelable>(
     /**
      * Creates a new [State] based on the old one + the applied [Effect]
      */
+    @SuppressWarnings("LongMethod")
     class ReducerImpl<C : Parcelable> : Reducer<BackStackFeatureState<C>, Effect<C>> {
-        @SuppressWarnings("LongMethod")
         override fun invoke(state: BackStackFeatureState<C>, effect: Effect<C>): BackStackFeatureState<C> =
             state.apply(effect)
 

@@ -227,18 +227,14 @@ internal class ConfigurationFeature<C : Parcelable>(
 
             return when (effect.command) {
                 is Add -> copy(
-                    pool = pool
-                        .plus(key to updated)
+                    pool = pool.plus(key to updated)
                 )
                 is Activate,
                 is Deactivate -> copy(
-                    pool = pool
-                        .minus(key)
-                        .plus(key to updated)
+                    pool = pool.minus(key).plus(key to updated)
                 )
                 is Remove -> copy(
-                    pool = pool
-                        .minus(key)
+                    pool = pool.minus(key)
                 )
             }
         }

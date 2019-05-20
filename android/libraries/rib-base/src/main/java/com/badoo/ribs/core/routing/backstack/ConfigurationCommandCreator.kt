@@ -171,7 +171,10 @@ internal object ConfigurationCommandCreator {
         return commands
     }
 
-    private fun <C : Parcelable> BackStackElement<C>.removeNecessaryOverlays(otherElement: BackStackElement<C>, contentKey: Content): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> BackStackElement<C>.removeNecessaryOverlays(
+        otherElement: BackStackElement<C>,
+        contentKey: Content
+    ): List<ConfigurationCommand<C>> =
         overlays
             .mapIndexed { index, myElement ->
                 if (myElement == otherElement.overlayAt(index)) emptyList()
@@ -183,7 +186,10 @@ internal object ConfigurationCommandCreator {
             .reversed()
             .flatten()
 
-    private fun <C : Parcelable> BackStackElement<C>.addNecessaryOverlays(otherElement: BackStackElement<C>?, contentKey: Content): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> BackStackElement<C>.addNecessaryOverlays(
+        otherElement: BackStackElement<C>?,
+        contentKey: Content
+    ): List<ConfigurationCommand<C>> =
         overlays
             .mapIndexed { index, myElement ->
                 if (myElement == otherElement?.overlayAt(index)) emptyList()

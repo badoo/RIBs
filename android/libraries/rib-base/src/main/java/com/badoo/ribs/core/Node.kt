@@ -33,10 +33,8 @@ open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ViewFactory<V>?,
     private val router: Router<*, *, *, *, V>,
-    private val interactor: Interactor<*, *, *, V>
-
-//    ,
-//    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
+    private val interactor: Interactor<*, *, *, V>,
+    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     enum class ViewAttachMode {
         /**
@@ -141,7 +139,7 @@ open class Node<V : RibView>(
      */
     @CallSuper
     open fun handleBackPress(): Boolean {
-//        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
+        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return children
                 .filter { it.isViewAttached }
                 .any { it.handleBackPress() }
@@ -157,9 +155,9 @@ open class Node<V : RibView>(
     @MainThread
     internal fun attachChildNode(childNode: Node<*>, bundle: Bundle?) {
         children.add(childNode)
-//        ribRefWatcher.logBreadcrumb(
-//            "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
-//        )
+        ribRefWatcher.logBreadcrumb(
+            "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+        )
 
         childNode.onAttach(bundle)
     }
@@ -176,10 +174,10 @@ open class Node<V : RibView>(
         children.remove(childNode)
 
         val interactor = childNode.interactor
-//        ribRefWatcher.watchDeletedObject(interactor)
-//        ribRefWatcher.logBreadcrumb(
-//            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
-//        )
+        ribRefWatcher.watchDeletedObject(interactor)
+        ribRefWatcher.logBreadcrumb(
+            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+        )
 
         childNode.onDetach()
     }

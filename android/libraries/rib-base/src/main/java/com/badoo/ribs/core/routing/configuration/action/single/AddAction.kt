@@ -1,11 +1,11 @@
-package com.badoo.ribs.core.routing.backstack.action.single
+package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 
 /**
  * Attaches [Node]s to a parentNode without their views

@@ -1,16 +1,16 @@
-package com.badoo.ribs.core.routing.backstack
+package com.badoo.ribs.core.routing.configuration
 
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.*
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
-import com.badoo.ribs.core.routing.backstack.feature.BackStackElement
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeatureState
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.NewRoot
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Pop
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Push
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.PushOverlay
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeatureState
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals

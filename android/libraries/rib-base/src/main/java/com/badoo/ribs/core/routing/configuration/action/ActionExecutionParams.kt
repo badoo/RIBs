@@ -1,9 +1,9 @@
-package com.badoo.ribs.core.routing.backstack.action
+package com.badoo.ribs.core.routing.configuration.action
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext
-import com.badoo.ribs.core.routing.backstack.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 
 /**
  * Helper class for action execution.

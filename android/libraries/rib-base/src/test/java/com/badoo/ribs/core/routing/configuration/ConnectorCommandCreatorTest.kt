@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.backstack
+package com.badoo.ribs.core.routing.configuration
 
 import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
@@ -6,12 +6,12 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
-import com.badoo.ribs.core.routing.backstack.ConfigurationKey.*
-import com.badoo.ribs.core.routing.backstack.feature.BackStackElement
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey.*
+import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

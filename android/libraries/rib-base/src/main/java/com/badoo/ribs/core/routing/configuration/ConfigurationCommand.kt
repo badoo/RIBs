@@ -1,18 +1,18 @@
-package com.badoo.ribs.core.routing.backstack
+package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.action.single.ActivateAction
-import com.badoo.ribs.core.routing.backstack.action.single.AddAction
-import com.badoo.ribs.core.routing.backstack.action.single.DeactivateAction
-import com.badoo.ribs.core.routing.backstack.action.multi.MultiConfigurationAction
-import com.badoo.ribs.core.routing.backstack.action.multi.SaveInstanceStateAction
-import com.badoo.ribs.core.routing.backstack.action.single.NoOpAction
-import com.badoo.ribs.core.routing.backstack.action.single.RemoveAction
-import com.badoo.ribs.core.routing.backstack.action.single.SingleConfigurationAction
-import com.badoo.ribs.core.routing.backstack.action.multi.SleepAction
-import com.badoo.ribs.core.routing.backstack.action.multi.WakeUpAction
+import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
+import com.badoo.ribs.core.routing.configuration.action.single.AddAction
+import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
+import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
+import com.badoo.ribs.core.routing.configuration.action.multi.SaveInstanceStateAction
+import com.badoo.ribs.core.routing.configuration.action.single.NoOpAction
+import com.badoo.ribs.core.routing.configuration.action.single.RemoveAction
+import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
+import com.badoo.ribs.core.routing.configuration.action.multi.SleepAction
+import com.badoo.ribs.core.routing.configuration.action.multi.WakeUpAction
 
 /**
  * Represents a command to change one or more [ConfigurationContext] elements.

@@ -1,10 +1,10 @@
-package com.badoo.ribs.core.routing.backstack
+package com.badoo.ribs.core.routing.configuration
 
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import kotlinx.android.parcel.Parcelize
 
 /**

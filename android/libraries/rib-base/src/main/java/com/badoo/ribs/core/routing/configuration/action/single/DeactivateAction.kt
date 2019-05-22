@@ -1,11 +1,11 @@
-package com.badoo.ribs.core.routing.backstack.action.single
+package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 
 /**
  * Detaches views of associated [Node]s to a parentNode, and cleans up the associated [RoutingAction].

@@ -1,8 +1,8 @@
-package com.badoo.ribs.core.routing.backstack.action.single
+package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 
 internal object NoOpAction : ResolvedSingleConfigurationAction() {
 

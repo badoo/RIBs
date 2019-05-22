@@ -1,14 +1,14 @@
-package com.badoo.ribs.core.routing.backstack
+package com.badoo.ribs.core.routing.configuration
 
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Unresolved
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock

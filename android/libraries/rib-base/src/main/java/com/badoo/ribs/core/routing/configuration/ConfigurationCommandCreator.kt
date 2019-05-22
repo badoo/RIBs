@@ -1,15 +1,15 @@
-package com.badoo.ribs.core.routing.backstack
+package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Add
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.SingleConfigurationCommand.Remove
-import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Content
-import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Overlay
-import com.badoo.ribs.core.routing.backstack.ConfigurationKey.Overlay.Key
-import com.badoo.ribs.core.routing.backstack.feature.BackStackElement
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
+import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import io.reactivex.Observable
 import java.lang.Math.min
 

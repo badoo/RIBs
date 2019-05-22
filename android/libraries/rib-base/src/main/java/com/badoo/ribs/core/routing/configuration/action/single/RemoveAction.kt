@@ -1,9 +1,9 @@
-package com.badoo.ribs.core.routing.backstack.action.single
+package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 
 /**
  * Removes [Node]s from their parent, resulting in the end of their lifecycles.

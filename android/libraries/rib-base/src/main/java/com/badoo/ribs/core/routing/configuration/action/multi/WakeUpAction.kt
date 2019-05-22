@@ -1,12 +1,12 @@
-package com.badoo.ribs.core.routing.backstack.action.multi
+package com.badoo.ribs.core.routing.configuration.action.multi
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.backstack.ConfigurationKey
-import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.backstack.action.single.ActivateAction
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 
 /**
  * Calls [ActivateAction] all elements with an [ActivationState] of [SLEEPING].

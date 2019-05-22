@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.backstack.feature
+package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
 import com.badoo.mvicore.element.Actor
@@ -6,13 +6,13 @@ import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Effect
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.NewRoot
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Pop
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Push
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.PushOverlay
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just

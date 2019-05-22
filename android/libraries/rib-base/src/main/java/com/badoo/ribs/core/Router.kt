@@ -5,17 +5,17 @@ import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.backstack.ConfigurationCommand.MultiConfigurationCommand.WakeUp
-import com.badoo.ribs.core.routing.backstack.commands
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.NewRoot
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Pop
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Push
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.PushOverlay
-import com.badoo.ribs.core.routing.backstack.feature.BackStackFeature.Operation.Replace
-import com.badoo.ribs.core.routing.backstack.feature.ConfigurationFeature
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.configuration.commands
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(

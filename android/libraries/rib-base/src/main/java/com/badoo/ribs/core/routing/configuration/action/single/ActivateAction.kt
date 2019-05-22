@@ -1,13 +1,13 @@
-package com.badoo.ribs.core.routing.backstack.action.single
+package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.backstack.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.backstack.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.backstack.feature.WorkingState
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
  * Attaches views of associated [Node]s to a parentNode, and executes the associated [RoutingAction].

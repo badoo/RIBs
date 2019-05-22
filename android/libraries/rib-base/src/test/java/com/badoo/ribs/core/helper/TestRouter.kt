@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
     initialConfiguration: Configuration,
-    override val permanentParts: List<Nothing>,
+    permanentParts: List<Nothing>,
     private val routingActionForC1: RoutingAction<TestView>,
     private val routingActionForC2: RoutingAction<TestView>,
     private val routingActionForC3: RoutingAction<TestView>,
@@ -17,7 +17,8 @@ class TestRouter(
     private val routingActionForO2: RoutingAction<TestView>,
     private val routingActionForO3: RoutingAction<TestView>
 ) : Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>(
-    initialConfiguration = initialConfiguration
+    initialConfiguration = initialConfiguration,
+    permanentParts = permanentParts
 ) {
 
     sealed class Configuration : Parcelable {

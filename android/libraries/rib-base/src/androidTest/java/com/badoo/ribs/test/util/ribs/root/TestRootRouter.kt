@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.core.routing.action.CompositeRoutingAction
+import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
@@ -17,6 +17,9 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
+    private val builderPermanent1: () -> Node<*>,
+    private val builderPermanent2: () -> Node<*>,
+    private val builder3: () -> Node<*>,
     private val builder1: () -> Node<*>,
     private val builder2: () -> Node<*>,
     private val dialogLauncher: DialogLauncher,
@@ -29,58 +32,39 @@ class TestRootRouter(
 
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
-
+            @Parcelize object Permanent1 : Permanent()
+            @Parcelize object Permanent2 : Permanent()
         }
 
         sealed class Content : Configuration() {
-            @Parcelize
-            object NoOp : Content()
-
-            @Parcelize
-            object AttachNode1 : Content()
-
-            @Parcelize
-            object AttachNode2 : Content()
-
-            @Parcelize
-            object AttachNode1And2 : Content()
-
-            @Parcelize
-            object AttachNode1AsDialog : Content()
-
-            @Parcelize
-            object AttachNode2AsDialog : Content()
+            @Parcelize object NoOp : Content()
+            @Parcelize object AttachNode1 : Content()
+            @Parcelize object AttachNode2 : Content()
+            @Parcelize object AttachNode3 : Content()
+            @Parcelize object AttachNode1And2 : Content()
         }
 
         sealed class Overlay : Configuration() {
-            @Parcelize
-            object AttachNode1AsOverlay : Overlay()
-
-            @Parcelize
-            object AttachNode2AsOverlay : Overlay()
-
-            @Parcelize
-            object AttachNode1AsDialogAndOverlay : Overlay()
-
-            @Parcelize
-            object AttachNode2AsDialogAndOverlay : Overlay()
+            @Parcelize object AttachNode1AsOverlay : Overlay()
+            @Parcelize object AttachNode2AsOverlay : Overlay()
+            @Parcelize object AttachNode3AsOverlay : Overlay()
         }
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<TestRootView> =
         when (configuration) {
+            Permanent.Permanent1 -> attach(builderPermanent1)
+            Permanent.Permanent2 -> attach(builderPermanent2)
             Content.NoOp -> noop()
             Content.AttachNode1 -> attach(builder1)
             Content.AttachNode2 -> attach(builder2)
-            Content.AttachNode1AsDialog -> showDialog(this, dialogLauncher, TestRibDialog(builder1))
-            Content.AttachNode2AsDialog -> showDialog(this, dialogLauncher, TestRibDialog(builder2))
-            Content.AttachNode1And2 -> CompositeRoutingAction.composite(
+            Content.AttachNode3 -> attach(builder3)
+            Content.AttachNode1And2 -> composite(
                 attach(builder1),
                 attach(builder2)
             )
-            Overlay.AttachNode1AsOverlay -> attach(builder1)
-            Overlay.AttachNode2AsOverlay -> attach(builder2)
-            Overlay.AttachNode1AsDialogAndOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder1))
-            Overlay.AttachNode2AsDialogAndOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder2))
+            Overlay.AttachNode1AsOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder1))
+            Overlay.AttachNode2AsOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder2))
+            Overlay.AttachNode3AsOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder3))
         }
 }

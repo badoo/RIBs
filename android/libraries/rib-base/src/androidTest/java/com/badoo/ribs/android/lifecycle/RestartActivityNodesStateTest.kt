@@ -1,104 +1,142 @@
 package com.badoo.ribs.android.lifecycle
 
-import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.android.lifecycle.helper.ExpectedState
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.DETACHED
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
 import com.badoo.ribs.test.util.restartActivitySync
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsDialog
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsDialogAndOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsDialog
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsDialogAndOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsOverlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode3
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode2AsOverlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode3AsOverlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent.Permanent1
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent.Permanent2
 import com.badoo.ribs.test.util.runOnMainSync
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
 
-@RunWith(Parameterized::class)
-class RestartActivityNodesStateTest(private val test: Pair<When, ExpectedState>) : BaseNodesTest() {
+class RestartActivityNodesStateTest : BaseNodesTest() {
 
-    companion object {
-        @JvmStatic
-        @Suppress("LongMethod")
-        @Parameters(name = "{0}")
-        fun data() = listOf(
-            When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
+    private fun testPushTwoConfigurationThenRestart(setup: When, expectedState: ExpectedState) {
+        test(setup, expectedState) { router ->
+            runOnMainSync {
+                router.pushIt(setup.pushConfiguration1!!)
+                router.pushIt(setup.pushConfiguration2!!)
+            }
+            ribsRule.restartActivitySync()
+        }
+    }
 
-            When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(pushConfiguration1 = AttachNode1, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(pushConfiguration1 = AttachNode1AsOverlay, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(pushConfiguration1 = AttachNode1AsDialog, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(pushConfiguration1 = AttachNode1AsDialogAndOverlay, pushConfiguration2 = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = false, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false))
+    @Test
+    fun noPermanent_singleInitial_pushContent_pushContent_restart() {
+        testPushTwoConfigurationThenRestart(
+            When(
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2,
+                pushConfiguration2 = AttachNode3
+            ),
+            ExpectedState(
+                node1 = DETACHED,
+                node2 = DETACHED,
+                node3 = ON_SCREEN
+            )
         )
     }
 
-    @get:Rule
-    val ribsRule = RibsRule { rootProvider.invoke() }
-
     @Test
-    fun pushTwoConfigurationsAndRestartActivity() {
-        runOnMainSync {
-            router.push(test.first.pushConfiguration1)
-            router.push(test.first.pushConfiguration2)
-        }
-
-        ribsRule.restartActivitySync()
-
-        makeAssertions(test.second)
+    fun noPermanent_singleInitial_pushContent_pushOverlay_restart() {
+        testPushTwoConfigurationThenRestart(
+            When(
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2,
+                pushConfiguration2 = AttachNode3AsOverlay
+            ),
+            ExpectedState(
+                node1 = DETACHED,
+                node2 = ON_SCREEN,
+                node3 = ON_SCREEN
+            )
+        )
     }
 
-    class When(
-        val pushConfiguration1: Configuration,
-        val pushConfiguration2: Configuration
-    ) {
-        override fun toString() = "push 1 = ${pushConfiguration1::class.java.simpleName} " +
-            "push 2 = ${pushConfiguration2::class.java.simpleName}]"
+    @Test
+    fun noPermanent_singleInitial_pushOverlay_pushOverlay_restart() {
+        testPushTwoConfigurationThenRestart(
+            When(
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2AsOverlay,
+                pushConfiguration2 = AttachNode3AsOverlay
+            ),
+            ExpectedState(
+                node1 = ON_SCREEN,
+                node2 = ON_SCREEN,
+                node3 = ON_SCREEN
+            )
+        )
+    }
+
+    @Test
+    fun multiplePermanent_singleInitial_pushContent_pushContent_restart() {
+        testPushTwoConfigurationThenRestart(
+            When(
+                permanentParts = listOf(
+                    Permanent1,
+                    Permanent2
+                ),
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2,
+                pushConfiguration2 = AttachNode3
+            ),
+            ExpectedState(
+                permanentNode1 = ON_SCREEN,
+                permanentNode2 = ON_SCREEN,
+                node1 = DETACHED,
+                node2 = DETACHED,
+                node3 = ON_SCREEN
+            )
+        )
+    }
+
+    @Test
+    fun multiplePermanent_singleInitial_pushContent_pushOverlay_restart() {
+        testPushTwoConfigurationThenRestart(
+            When(
+                permanentParts = listOf(
+                    Permanent1,
+                    Permanent2
+                ),
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2,
+                pushConfiguration2 = AttachNode3AsOverlay
+            ),
+            ExpectedState(
+                permanentNode1 = ON_SCREEN,
+                permanentNode2 = ON_SCREEN,
+                node1 = DETACHED,
+                node2 = ON_SCREEN,
+                node3 = ON_SCREEN
+            )
+        )
+    }
+
+    @Test
+    fun multiplePermanent_singleInitial_pushOverlay_pushOverlay_restart() {
+        testPushTwoConfigurationThenRestart(
+            When(
+                permanentParts = listOf(
+                    Permanent1,
+                    Permanent2
+                ),
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2AsOverlay,
+                pushConfiguration2 = AttachNode3AsOverlay
+            ),
+            ExpectedState(
+                permanentNode1 = ON_SCREEN,
+                permanentNode2 = ON_SCREEN,
+                node1 = ON_SCREEN,
+                node2 = ON_SCREEN,
+                node3 = ON_SCREEN
+            )
+        )
     }
 }

@@ -1,60 +1,92 @@
 package com.badoo.ribs.android.lifecycle
 
-import com.badoo.common.ribs.RibsRule
-import com.badoo.ribs.android.lifecycle.BaseNodesTest.TestNode.NODE_1
-import com.badoo.ribs.android.lifecycle.BaseNodesTest.TestNode.NODE_2
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1And2
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.NoOp
-import org.junit.Rule
+import com.badoo.ribs.android.lifecycle.helper.ExpectedState
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.DETACHED
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1And2
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.NoOp
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent.Permanent1
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent.Permanent2
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
 
-@RunWith(Parameterized::class)
-class InitialNodesStateTest(private val test: Pair<When, ExpectedState>) : BaseNodesTest(
-    initialConfiguration = test.first.initialConfiguration,
-    permanentParts = test.first.permanentParts
-) {
+class InitialNodesStateTest : BaseNodesTest() {
 
-    companion object {
-        @JvmStatic
-        @Suppress("LongMethod")
-        @Parameters(name = "{0}")
-        fun data() = listOf(
+    private fun whenRootIsCreated(setup: When, expectedState: ExpectedState) {
+        test(setup, expectedState) {
+            // no special operations here, just test initial
+        }
+    }
 
-            When(initialConfiguration = NoOp, permanentParts = emptyList())
-                to ExpectedState(node1 = null, node2 = null),
-
-            When(initialConfiguration = AttachNode1, permanentParts = emptyList())
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
-
-            When(initialConfiguration = NoOp, permanentParts = listOf(NODE_1))
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
-
-            When(initialConfiguration = AttachNode1, permanentParts = listOf(NODE_2))
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1And2, permanentParts = emptyList())
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true))
+    @Test
+    fun noInitial_noPermanent() {
+        whenRootIsCreated(
+            When(initialConfiguration = NoOp, permanentParts = emptyList()),
+            ExpectedState(
+                permanentNode1 = null,
+                permanentNode2 = null,
+                node1 = null,
+                node2 = null,
+                node3 = null
+            )
         )
     }
 
-    @get:Rule
-    val ribsRule = RibsRule { rootProvider.invoke() }
-
     @Test
-    fun whenRootIsCreated() {
-        makeAssertions(test.second)
+    fun singleInitial_noPermanent() {
+        whenRootIsCreated(
+            When(initialConfiguration = AttachNode1, permanentParts = emptyList()),
+            ExpectedState(
+                node1 = ON_SCREEN
+            )
+        )
     }
 
-    class When(
-        val initialConfiguration: Configuration,
-        val permanentParts: List<TestNode>
-    ) {
-        override fun toString() = "initial configuration is ${initialConfiguration::class.java.simpleName} " +
-            "and permanent parts = [${permanentParts.joinToString()}]"
+    @Test
+    fun noInitial_singlePermanent() {
+        whenRootIsCreated(
+            When(initialConfiguration = NoOp, permanentParts = listOf(Permanent1)),
+            ExpectedState(
+                permanentNode1 = ON_SCREEN
+            )
+        )
+    }
+
+    @Test
+    fun singleInitial_singlePermanent() {
+        whenRootIsCreated(
+            When(initialConfiguration = AttachNode1, permanentParts = listOf(Permanent2)),
+            ExpectedState(
+                permanentNode2 = ON_SCREEN,
+                node1 = ON_SCREEN
+            )
+        )
+    }
+
+    @Test
+    fun multipleInitial_noPermanent() {
+        whenRootIsCreated(
+            When(initialConfiguration = AttachNode1And2, permanentParts = emptyList()),
+            ExpectedState(
+                node1 = ON_SCREEN,
+                node2 = ON_SCREEN
+            )
+        )
+    }
+
+    @Test
+    fun multipleInitial_multiplePermanent() {
+        whenRootIsCreated(
+            When(
+                initialConfiguration = AttachNode1And2,
+                permanentParts = listOf(Permanent1, Permanent2)
+            ),
+            ExpectedState(
+                permanentNode1 = ON_SCREEN,
+                permanentNode2 = ON_SCREEN,
+                node1 = ON_SCREEN,
+                node2 = ON_SCREEN
+            )
+        )
     }
 }

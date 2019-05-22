@@ -13,7 +13,7 @@ class RootNodeLifecycleTest {
     val node get() = provider.rootNode!!
 
     @get:Rule
-    val ribsRule = RibsRule { provider() }
+    val ribsRule = RibsRule { provider.create(it.dialogLauncher()) }
 
     @Test
     fun whenActivityResumed_nodeIsAttached() {

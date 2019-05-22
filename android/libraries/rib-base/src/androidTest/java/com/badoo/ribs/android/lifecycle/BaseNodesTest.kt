@@ -1,57 +1,58 @@
 package com.badoo.ribs.android.lifecycle
 
-import com.badoo.ribs.android.lifecycle.BaseNodesTest.TestNode.NODE_1
-import com.badoo.ribs.android.lifecycle.BaseNodesTest.TestNode.NODE_2
-import com.badoo.ribs.core.Node
-import com.badoo.ribs.dialog.DialogLauncher
-import com.badoo.ribs.test.util.NoOpDialogLauncher
+import android.support.test.espresso.Espresso
+import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import org.assertj.core.api.Java6Assertions.assertThat
+import org.junit.Rule
 
-abstract class BaseNodesTest(
-    initialConfiguration: TestRootRouter.Configuration.Content = TestRootRouter.Configuration.Content.NoOp,
-    permanentParts: List<TestNode> = emptyList(),
-    dialogLauncher: DialogLauncher = NoOpDialogLauncher()
-) {
+abstract class BaseNodesTest {
 
-    protected val rootProvider = TestRoot.Provider(
-        initialConfiguration = initialConfiguration,
-        permanentParts = permanentParts.map { it.toNodeBuilder() },
-        dialogLauncher = dialogLauncher
+    @get:Rule
+    val ribsRule = RibsRule()
+
+    data class When(
+        val permanentParts: List<TestRootRouter.Configuration.Permanent> = emptyList(),
+        val initialConfiguration: TestRootRouter.Configuration.Content = TestRootRouter.Configuration.Content.NoOp,
+        val pushConfiguration1: TestRootRouter.Configuration? = null,
+        val pushConfiguration2: TestRootRouter.Configuration? = null
     )
 
-    protected val router: TestRootRouter
-        get() = rootProvider.rootNode?.getRouter() as TestRootRouter
+    protected fun test(setup: When, expectedState: ExpectedState, testBlock: (TestRootRouter) -> Unit) {
+        val rootProvider = TestRoot.Provider(
+            initialConfiguration = setup.initialConfiguration,
+            permanentParts = setup.permanentParts
+        )
 
-    class NodeState(
-        val attached: Boolean,
-        val viewAttached: Boolean
-    ) {
-        override fun toString() = "attached = $attached, view attached = $viewAttached"
+        ribsRule.start { rootProvider.create(it.dialogLauncher()) }
+
+        val router: TestRootRouter = rootProvider.rootNode?.getRouter() as TestRootRouter
+
+        testBlock.invoke(router)
+
+        rootProvider.makeAssertions(expectedState)
     }
 
-    class ExpectedState(
-        val node1: NodeState?,
-        val node2: NodeState?
-    ) {
-        override fun toString() = "*then* node1 should be [$node1] and node2 should be [$node2]"
+    protected fun TestRootRouter.pushIt(configuration: TestRootRouter.Configuration) {
+        when (configuration) {
+            is TestRootRouter.Configuration.Content -> push(configuration)
+            is TestRootRouter.Configuration.Overlay -> pushOverlay(configuration)
+        }
     }
 
-    enum class TestNode {
-        NODE_1,
-        NODE_2
-    }
-
-    private fun TestNode.toNodeBuilder(): () -> Node<*> = when (this) {
-        NODE_1 -> ({ rootProvider.childNode1Builder() })
-        NODE_2 -> ({ rootProvider.childNode2Builder() })
-    }
-
-    protected fun makeAssertions(expected: ExpectedState) {
-        assertThat(rootProvider.childNode1?.isAttached).describedAs("is child node 1 attached").isEqualTo(expected.node1?.attached)
-        assertThat(rootProvider.childNode1?.isViewAttached).describedAs("is child node 1 view attached").isEqualTo(expected.node1?.viewAttached)
-        assertThat(rootProvider.childNode2?.isAttached).describedAs("is child node 2 attached").isEqualTo(expected.node2?.attached)
-        assertThat(rootProvider.childNode2?.isViewAttached).describedAs("is child node 2 view attached").isEqualTo(expected.node2?.viewAttached)
+    private fun TestRoot.Provider.makeAssertions(expected: ExpectedState) {
+        Espresso.onIdle()
+        assertThat(permanentNode1?.isAttached).describedAs("is Permanent 1 Attached").isEqualTo(expected.permanentNode1?.attached)
+        assertThat(permanentNode1?.isViewAttached).describedAs("is Permanent 1 View attached").isEqualTo(expected.permanentNode1?.viewAttached)
+        assertThat(permanentNode2?.isAttached).describedAs("is Permanent 2 Attached").isEqualTo(expected.permanentNode2?.attached)
+        assertThat(permanentNode2?.isViewAttached).describedAs("is Permanent 2 View attached").isEqualTo(expected.permanentNode2?.viewAttached)
+        assertThat(childNode1?.isAttached).describedAs("is Child 1 Attached").isEqualTo(expected.node1?.attached)
+        assertThat(childNode1?.isViewAttached).describedAs("is Child 1 View attached").isEqualTo(expected.node1?.viewAttached)
+        assertThat(childNode2?.isAttached).describedAs("is Child 2 Attached").isEqualTo(expected.node2?.attached)
+        assertThat(childNode2?.isViewAttached).describedAs("is Child 2 View attached").isEqualTo(expected.node2?.viewAttached)
+        assertThat(childNode3?.isAttached).describedAs("is Child 3 Attached").isEqualTo(expected.node3?.attached)
+        assertThat(childNode3?.isViewAttached).describedAs("is Child 3 View attached").isEqualTo(expected.node3?.viewAttached)
     }
 }

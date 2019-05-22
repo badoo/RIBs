@@ -66,6 +66,7 @@ class SwitcherRouterTest {
     @Test
     fun `attach - attaches menu and dialog example node`() {
         router.onAttach(null)
+        router.onAttachView()
 
         assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, dialogExampleNode)
     }
@@ -75,6 +76,7 @@ class SwitcherRouterTest {
         val observer = router.menuUpdater.subscribeOnTestObserver()
 
         router.onAttach(null)
+        router.onAttachView()
 
         observer.assertValue(Menu.Input.SelectMenuItem(Dialogs))
     }
@@ -82,6 +84,7 @@ class SwitcherRouterTest {
     @Test
     fun `hello configuration - attaches hello world and menu nodes`() {
         router.onAttach(null)
+        router.onAttachView()
 
         router.replace(Hello)
 
@@ -91,6 +94,7 @@ class SwitcherRouterTest {
     @Test
     fun `hello configuration - publishes select hello world menu item event`() {
         router.onAttach(null)
+        router.onAttachView()
         val observer = router.menuUpdater.subscribeOnTestObserver()
 
         router.replace(Hello)
@@ -101,6 +105,7 @@ class SwitcherRouterTest {
     @Test
     fun `foo configuration - attaches foo bar and menu nodes`() {
         router.onAttach(null)
+        router.onAttachView()
 
         router.replace(Foo)
 
@@ -110,6 +115,7 @@ class SwitcherRouterTest {
     @Test
     fun `foo configuration - publishes select foo bar menu item event`() {
         router.onAttach(null)
+        router.onAttachView()
         val observer = router.menuUpdater.subscribeOnTestObserver()
 
         router.replace(Foo)
@@ -120,6 +126,7 @@ class SwitcherRouterTest {
     @Test
     fun `overlay dialog configuration - shows overlay dialog`() {
         router.onAttach(null)
+        router.onAttachView()
 
         router.pushOverlay(Dialog)
 
@@ -129,6 +136,7 @@ class SwitcherRouterTest {
     @Test
     fun `blocker configuration - attaches blocker and menu nodes`() {
         router.onAttach(null)
+        router.onAttachView()
 
         router.replace(Blocker)
 

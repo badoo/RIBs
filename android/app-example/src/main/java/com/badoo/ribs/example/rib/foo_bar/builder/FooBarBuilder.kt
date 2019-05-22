@@ -4,15 +4,20 @@ import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarView
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.customisation.customisationsBranchFor
+import com.badoo.ribs.customisation.getOrDefault
 
-class FooBarBuilder(dependency: FooBar.Dependency) :
-    Builder<FooBar.Dependency>(dependency) {
+class FooBarBuilder(
+    dependency: FooBar.Dependency
+) : Builder<FooBar.Dependency>() {
 
-    fun build(): Node<FooBarView> {
-        val customisation = dependency.ribCustomisation().get(FooBar.Customisation::class) ?: FooBar.Customisation()
-        val component = DaggerFooBarComponent.factory()
-            .create(dependency, customisation)
-
-        return component.node()
+    override val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
+        override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
+
+    fun build(): Node<FooBarView> =
+        DaggerFooBarComponent
+            .factory()
+            .create(dependency, dependency.getOrDefault(FooBar.Customisation()))
+            .node()
 }

@@ -6,7 +6,7 @@ import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.directory.Directory
+import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.switcher.Switcher
@@ -25,7 +25,7 @@ class RootActivity : RibActivity() {
 
     override fun createRib(): Node<*> {
         val rootBuilder = SwitcherBuilder(object : Switcher.Dependency {
-                override fun ribCustomisation(): Directory = AppRibCustomisations
+                override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
                 override fun activityStarter(): ActivityStarter = activityStarter
                 override fun permissionRequester(): PermissionRequester = permissionRequester
                 override fun dialogLauncher(): DialogLauncher = this@RootActivity

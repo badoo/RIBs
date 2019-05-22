@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.directory
+package com.badoo.ribs.customisation
 
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater

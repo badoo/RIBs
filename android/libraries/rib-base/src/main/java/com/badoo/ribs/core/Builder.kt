@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.badoo.ribs.core;
+package com.badoo.ribs.core
 
 /**
  * Responsible for building a node. Parent routers should pass in static dependencies via the
@@ -22,18 +22,9 @@ package com.badoo.ribs.core;
  * method that vends a node.
  *
  * @param <D> type of dependency required to build the interactor.
- */
-public abstract class Builder<D> {
-
-  private final D dependency;
-
-  /** @param dependency required to build the node. */
-  public Builder(D dependency) {
-    this.dependency = dependency;
-  }
-
-  /** @return the dependency required to to build the node. */
-  protected D getDependency() {
-    return dependency;
-  }
+</D> */
+abstract class Builder<D> {
+    abstract val dependency: D
 }
+
+

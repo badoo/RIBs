@@ -7,8 +7,8 @@ import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.directory.CanProvideRibCustomisation
-import com.badoo.ribs.core.directory.ViewCustomisationDirectory
+import com.badoo.ribs.customisation.CanProvideRibCustomisation
+import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 
 class RibTestActivity : RibActivity(),
@@ -17,7 +17,7 @@ class RibTestActivity : RibActivity(),
     CanProvideDialogLauncher,
     CanProvideRibCustomisation {
 
-    override fun ribCustomisation() = ViewCustomisationDirectory()
+    override fun ribCustomisation() = RibCustomisationDirectoryImpl()
 
     override fun activityStarter() = activityStarter
 

@@ -2,7 +2,7 @@ package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.core.directory.Directory
+import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.rib_with_view.foo_bar.builder.FooBarBuilder
 import io.reactivex.Observable.empty
 import io.reactivex.ObservableSource
@@ -19,7 +19,7 @@ class FooBarTest {
         FooBarBuilder(object : FooBar.Dependency {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = empty()
             override fun fooBarOutput(): Consumer<FooBar.Output> = Consumer {}
-            override fun ribCustomisation(): Directory = TODO()
+            override fun ribCustomisation(): RibCustomisationDirectory = TODO()
         }).build()
 
     @Test

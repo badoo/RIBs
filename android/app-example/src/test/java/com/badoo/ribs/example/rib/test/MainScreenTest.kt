@@ -3,12 +3,11 @@ package com.badoo.ribs.example.rib.test
 import android.app.Activity.RESULT_OK
 import android.app.Instrumentation
 import android.content.Intent
-import android.view.ViewGroup
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.directory.Directory
-import com.badoo.ribs.core.directory.ViewCustomisationDirectory
+import com.badoo.ribs.customisation.RibCustomisationDirectory
+import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
@@ -95,7 +94,7 @@ class MainScreenTest {
             CanProvidePermissionRequester by dependencies,
             CanProvideDialogLauncher by dependencies {
 
-            override fun ribCustomisation(): Directory = ViewCustomisationDirectory().apply {
+            override fun ribCustomisation(): RibCustomisationDirectory = RibCustomisationDirectoryImpl().apply {
                 put(Menu.Customisation::class, mock {
                     on { viewFactory } doReturn StaticViewFactory<MenuView>(menuView)
                 })

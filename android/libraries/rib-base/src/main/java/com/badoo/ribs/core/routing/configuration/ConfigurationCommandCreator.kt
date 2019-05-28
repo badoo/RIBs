@@ -57,8 +57,9 @@ internal object ConfigurationCommandCreator {
         newStack: List<BackStackElement<*>>
     ): Int {
         var idx = -1
+        val lastCommonIndex = min(oldStack.lastIndex, newStack.lastIndex)
 
-        for (i in 0..min(oldStack.lastIndex, newStack.lastIndex)) {
+        for (i in 0..lastCommonIndex) {
             // Compare only configurations, as if it's only the overlays that are different, they will be handled later
             if (newStack.elementAt(i).configuration != oldStack.elementAt(i).configuration) {
                 return idx

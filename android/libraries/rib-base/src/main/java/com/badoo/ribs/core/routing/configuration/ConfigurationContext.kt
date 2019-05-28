@@ -148,7 +148,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 activationState = activationState
             )
 
-        fun saveInstanceStace() =
+        fun saveInstanceState() =
             copy(
                 bundles = nodes.map { nodeDescriptor ->
                     Bundle().also {

@@ -178,7 +178,7 @@ class ConfigurationContextTest {
     fun `Resolved saveInstanceState() sets correct bundles`() {
         val bundles = mock<List<Bundle>>()
         val resolved = Resolved<Parcelable>(ACTIVE, mock(), bundles, mock(), nodeDescriptors)
-        val afterInvocation = resolved.saveInstanceStace()
+        val afterInvocation = resolved.saveInstanceState()
 
         afterInvocation.bundles.forEachIndexed { i, bundle ->
             verify(nodes[i]).onSaveInstanceState(bundle)

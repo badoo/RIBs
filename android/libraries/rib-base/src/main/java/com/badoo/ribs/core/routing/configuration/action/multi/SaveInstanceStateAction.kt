@@ -13,7 +13,7 @@ internal class SaveInstanceStateAction<C : Parcelable> : MultiConfigurationActio
 
     /**
      * Finds [Resolved] elements in the pool and maps them to the value returned by calling
-     * [Resolved.saveInstanceStace] on them.
+     * [Resolved.saveInstanceState] on them.
      *
      * It's not necessary to handle [ConfigurationContext.Unresolved] elements,
      * as they do not contain any Nodes that could have had a chance to change their states.
@@ -27,7 +27,7 @@ internal class SaveInstanceStateAction<C : Parcelable> : MultiConfigurationActio
         return pool
             .filterValues { it is Resolved<C> }
             .mapValues { (_, value) ->
-                (value as Resolved<C>).saveInstanceStace()
+                (value as Resolved<C>).saveInstanceState()
             }
     }
 }

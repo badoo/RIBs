@@ -142,11 +142,11 @@ class RootActivity : RibActivity() {
 
 Now the project should compile. Build it, and we should see this screen:
 
-[TODO: screenshot here]
+![](https://i.imgur.com/c2fUEHO.png)
 
 And checking the view hierarchy, this is what we should see:
 
-[TODO: screenshot here]
+[![View hierarchy of HelloWorld RIB](https://i.imgur.com/cf2gi9N.png)](https://i.imgur.com/Xkh2XmP.png)
 
 So indeed, that button we see is coming from the RIB we built! Yay!
 
@@ -165,7 +165,7 @@ override fun createRib(): Node<*> =
 
 Build and deploy the app, and pressing the button this is what we should see:
 
-[TODO: screenshot here]
+![](https://i.imgur.com/F5GEBpw.png)
 
 As promised, beyond providing the required dependencies, we did not need to make any additional wiring - the HelloWorld RIB takes care of the setup that makes the button click invoke the lambda that we passed in.
 

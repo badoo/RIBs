@@ -5,16 +5,16 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldRouter.Configuration
+import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldRouter.Configuration.Content
 import kotlinx.android.parcel.Parcelize
 
-class HelloWorldRouter: Router<Configuration, HelloWorldView>(
-    initialConfiguration = Configuration.Default
+class HelloWorldRouter: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>(
+    initialConfiguration = Content.Default
 ) {
-    override val permanentParts: List<() -> Node<*>> =
-        emptyList()
-
     sealed class Configuration : Parcelable {
-        @Parcelize object Default : Configuration()
+        sealed class Content : Configuration() {
+            @Parcelize object Default : Content()
+        }
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<HelloWorldView> =

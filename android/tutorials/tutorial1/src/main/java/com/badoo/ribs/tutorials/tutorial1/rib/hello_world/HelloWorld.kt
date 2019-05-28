@@ -4,12 +4,11 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.directory.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.tutorials.tutorial1.R
-import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 interface HelloWorld : Rib {
 
-    interface Dependency : Rib.Dependency {
+    interface Dependency {
         fun helloWorldOutput(): Consumer<Output>
     }
 

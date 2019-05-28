@@ -5,6 +5,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConf
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommandCreator.diff
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
@@ -19,12 +20,12 @@ import java.lang.Math.min
  *
  * @see [ConfigurationCommandCreator.diff]
  */
-internal fun <C : Parcelable> BackStackFeature<C>.commands(): Observable<ConfigurationCommand<C>> =
+internal fun <C : Parcelable> BackStackFeature<C>.toCommands(): Observable<ConfigurationCommand<C>> =
     Observable.wrap(this)
         .startWith(initialState) // Bootstrapper can overwrite it by the time we receive the first state emission here
         .buffer(2, 1)
-        .map { ConfigurationCommandCreator.diff(it[0].backStack, it[1].backStack) }
-        .flatMapIterable { items -> items }
+        .map { (previous, current) -> diff(previous.backStack, current.backStack) }
+        .flatMapIterable { it }
 
 internal object ConfigurationCommandCreator {
 
@@ -41,17 +42,17 @@ internal object ConfigurationCommandCreator {
             oldStack -> emptyList()
             else -> {
                 val commands = mutableListOf<ConfigurationCommand<C>>()
-                val indexOfLastCommonElement = findIndexOfLastCommonElement(oldStack, newStack)
+                val indexOfLastCommonConfiguration = findIndexOfLastCommonConfiguration(oldStack, newStack)
                 commands += oldStack.deactivateIfNeeded(newStack)
-                commands += oldStack.removeUntil(indexOfLastCommonElement)
-                commands += newStack.addFrom(indexOfLastCommonElement)
+                commands += oldStack.removeUntil(indexOfLastCommonConfiguration)
+                commands += newStack.addFrom(indexOfLastCommonConfiguration)
                 commands += newStack.activateIfNeeded(oldStack)
                 commands += newStack.overlayDiff(oldStack)
                 commands
         }
     }
 
-    private fun findIndexOfLastCommonElement(
+    private fun findIndexOfLastCommonConfiguration(
         oldStack: List<BackStackElement<*>>,
         newStack: List<BackStackElement<*>>
     ): Int {

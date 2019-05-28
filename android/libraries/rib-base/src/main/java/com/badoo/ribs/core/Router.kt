@@ -8,7 +8,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
-import com.badoo.ribs.core.routing.configuration.commands
+import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
@@ -47,7 +47,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             parentNode = node
         )
 
-        binder.bind(backStackFeature.commands() to configurationFeature)
+        binder.bind(backStackFeature.toCommands() to configurationFeature)
     }
 
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>

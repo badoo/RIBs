@@ -9,4 +9,12 @@ data class NodeState(
         val VIEW_DETACHED = NodeState(attached = true, viewAttached = false)
         val DETACHED = NodeState(attached = false, viewAttached = false)
     }
+
+    override fun toString(): String =
+        when {
+            attached && viewAttached -> "ON_SCREEN"
+            attached && !viewAttached -> "VIEW_DETACHED"
+            !attached && !viewAttached -> "DETACHED"
+            else -> "!!! INVALID !!!"
+        }
 }

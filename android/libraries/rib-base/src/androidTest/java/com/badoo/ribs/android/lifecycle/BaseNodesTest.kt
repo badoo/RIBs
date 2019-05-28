@@ -3,6 +3,8 @@ package com.badoo.ribs.android.lifecycle
 import android.support.test.espresso.Espresso
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
+import com.badoo.ribs.android.lifecycle.helper.NodeState
+import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import org.assertj.core.api.Java6Assertions.assertThat
@@ -44,15 +46,16 @@ abstract class BaseNodesTest {
 
     private fun TestRoot.Provider.makeAssertions(expected: ExpectedState) {
         Espresso.onIdle()
-        assertThat(permanentNode1?.isAttached).describedAs("is Permanent 1 Attached").isEqualTo(expected.permanentNode1?.attached)
-        assertThat(permanentNode1?.isViewAttached).describedAs("is Permanent 1 View attached").isEqualTo(expected.permanentNode1?.viewAttached)
-        assertThat(permanentNode2?.isAttached).describedAs("is Permanent 2 Attached").isEqualTo(expected.permanentNode2?.attached)
-        assertThat(permanentNode2?.isViewAttached).describedAs("is Permanent 2 View attached").isEqualTo(expected.permanentNode2?.viewAttached)
-        assertThat(childNode1?.isAttached).describedAs("is Child 1 Attached").isEqualTo(expected.node1?.attached)
-        assertThat(childNode1?.isViewAttached).describedAs("is Child 1 View attached").isEqualTo(expected.node1?.viewAttached)
-        assertThat(childNode2?.isAttached).describedAs("is Child 2 Attached").isEqualTo(expected.node2?.attached)
-        assertThat(childNode2?.isViewAttached).describedAs("is Child 2 View attached").isEqualTo(expected.node2?.viewAttached)
-        assertThat(childNode3?.isAttached).describedAs("is Child 3 Attached").isEqualTo(expected.node3?.attached)
-        assertThat(childNode3?.isViewAttached).describedAs("is Child 3 View attached").isEqualTo(expected.node3?.viewAttached)
+        permanentNode1?.let { assertThat(it.toNodeState()).describedAs("Permanent node 1 state").isEqualTo(expected.permanentNode1) }
+        permanentNode2?.let { assertThat(it.toNodeState()).describedAs("Permanent node 2 state").isEqualTo(expected.permanentNode2) }
+        childNode1?.let { assertThat(it.toNodeState()).describedAs("Child node 1 state").isEqualTo(expected.node1) }
+        childNode2?.let { assertThat(it.toNodeState()).describedAs("Child node 2 state").isEqualTo(expected.node2) }
+        childNode3?.let { assertThat(it.toNodeState()).describedAs("Child node 3 state").isEqualTo(expected.node3) }
     }
+
+    private fun TestNode<*>.toNodeState() =
+        NodeState(
+            attached = isAttached,
+            viewAttached = isViewAttached
+        )
 }

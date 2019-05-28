@@ -28,7 +28,7 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
  * Does nothing beyond the manipulation of the list of [C] elements.
  *
  * @see BackStackFeature.Operation for supported operations
- * @see BackStackFeature.BooststrapperImpl for operations emitted during initialisation
+ * @see BackStackFeature.BootstrapperImpl for operations emitted during initialisation
  * @see BackStackFeature.ActorImpl for logic deciding whether an operation should be carried out
  * @see BackStackFeature.ReducerImpl for the implementation of applying state changes
  */
@@ -37,7 +37,7 @@ internal class BackStackFeature<C : Parcelable>(
     timeCapsule: TimeCapsule<BackStackFeatureState<C>>
 ): ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
     initialState = timeCapsule.initialState(),
-    bootstrapper = BooststrapperImpl(
+    bootstrapper = BootstrapperImpl(
         timeCapsule.initialState(),
         initialConfiguration
     ),
@@ -69,6 +69,11 @@ internal class BackStackFeature<C : Parcelable>(
         // Consider adding oldState to NewsPublisher
         abstract val oldState: BackStackFeatureState<C>
 
+        data class NewRoot<C : Parcelable>(
+            override val oldState: BackStackFeatureState<C>,
+            val configuration: C
+        ) : Effect<C>()
+
         data class Replace<C : Parcelable>(
             override val oldState: BackStackFeatureState<C>,
             val configuration: C
@@ -80,11 +85,6 @@ internal class BackStackFeature<C : Parcelable>(
         ) : Effect<C>()
 
         data class PushOverlay<C : Parcelable>(
-            override val oldState: BackStackFeatureState<C>,
-            val configuration: C
-        ) : Effect<C>()
-
-        data class NewRoot<C : Parcelable>(
             override val oldState: BackStackFeatureState<C>,
             val configuration: C
         ) : Effect<C>()
@@ -101,7 +101,7 @@ internal class BackStackFeature<C : Parcelable>(
     /**
      * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
      */
-    class BooststrapperImpl<C : Parcelable>(
+    class BootstrapperImpl<C : Parcelable>(
         private val state: BackStackFeatureState<C>,
         private val initialConfiguration: C
     ) : Bootstrapper<Operation<C>> {
@@ -161,6 +161,9 @@ internal class BackStackFeature<C : Parcelable>(
             state.apply(effect)
 
         private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C>  = when (effect) {
+            is Effect.NewRoot -> copy(
+                backStack = listOf(BackStackElement(effect.configuration))
+            )
             is Effect.Replace -> copy(
                 backStack = backStack.dropLast(1) + BackStackElement(effect.configuration)
             )
@@ -168,18 +171,17 @@ internal class BackStackFeature<C : Parcelable>(
                 backStack = backStack + BackStackElement(effect.configuration)
             )
             is Effect.PushOverlay -> copy(
-                backStack = backStack.replaceLastWith {
-                    it.copy(
-                        overlays = it.overlays + effect.configuration
+                backStack = backStack.replaceLastWith(
+                    backStack.last().copy(
+                        overlays = backStack.last().overlays + effect.configuration
                     )
-                }
-            )
-            is Effect.NewRoot -> copy(
-                backStack = listOf(BackStackElement(effect.configuration))
+                )
             )
             is Effect.PopOverlay -> copy(
-                backStack = backStack.dropLast(1) + backStack.last().copy(
-                    overlays = backStack.last().overlays.dropLast(1)
+                backStack = backStack.replaceLastWith(
+                    backStack.last().copy(
+                        overlays = backStack.last().overlays.dropLast(1)
+                    )
                 )
             )
             is Effect.PopContent -> copy(
@@ -187,7 +189,7 @@ internal class BackStackFeature<C : Parcelable>(
             )
         }
 
-        private fun List<BackStackElement<C>>.replaceLastWith(replacement: (BackStackElement<C>) -> BackStackElement<C>): List<BackStackElement<C>> =
-            dropLast(1) + replacement.invoke(last())
+        private fun List<BackStackElement<C>>.replaceLastWith(replacement: BackStackElement<C>): List<BackStackElement<C>> =
+            toMutableList().apply { set(lastIndex, replacement) }
     }
 }

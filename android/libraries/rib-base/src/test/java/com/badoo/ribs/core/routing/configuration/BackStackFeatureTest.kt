@@ -13,7 +13,9 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 
@@ -53,7 +55,7 @@ class BackStackFeatureTest {
 
     @Test
     fun `Initial back stack contains only one element`() {
-        assertEquals(1, backStackManager.state.backStack.size)
+        assertThat(backStackManager.state.backStack, hasSize(1))
     }
 
     @Test

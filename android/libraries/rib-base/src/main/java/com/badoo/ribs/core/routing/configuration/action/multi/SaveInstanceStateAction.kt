@@ -25,7 +25,7 @@ internal class SaveInstanceStateAction<C : Parcelable> : MultiConfigurationActio
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, Resolved<C>> {
         return pool
-            .filter { (_, value) -> value is Resolved<C> }
+            .filterValues { it is Resolved<C> }
             .mapValues { (_, value) ->
                 (value as Resolved<C>).saveInstanceStace()
             }

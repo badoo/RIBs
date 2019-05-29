@@ -1,7 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial1.rib.hello_world
 
 import android.arch.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor

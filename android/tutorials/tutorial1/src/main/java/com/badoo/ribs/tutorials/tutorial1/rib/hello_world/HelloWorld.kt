@@ -1,8 +1,8 @@
 package com.badoo.ribs.tutorials.tutorial1.rib.hello_world
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.directory.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflateOnDemand
 import com.badoo.ribs.tutorials.tutorial1.R
 import io.reactivex.functions.Consumer
 

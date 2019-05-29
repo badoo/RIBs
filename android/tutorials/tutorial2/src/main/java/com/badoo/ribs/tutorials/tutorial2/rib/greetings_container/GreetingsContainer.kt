@@ -1,15 +1,14 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.directory.inflateOnDemand
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflateOnDemand
 import com.badoo.ribs.tutorials.tutorial2.R
-import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 interface GreetingsContainer : Rib {
 
-    interface Dependency : Rib.Dependency {
+    interface Dependency {
         fun greetingsContainerOutput(): Consumer<Output>
     }
 

@@ -5,11 +5,12 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorldView
 
-class HelloWorldBuilder(dependency: HelloWorld.Dependency) :
-    Builder<HelloWorld.Dependency>(dependency) {
+class HelloWorldBuilder(
+    override val dependency: HelloWorld.Dependency
+) : Builder<HelloWorld.Dependency>() {
 
     fun build(): Node<HelloWorldView> {
-        val customisation = dependency.ribCustomisation().get(HelloWorld.Customisation::class) ?: HelloWorld.Customisation()
+        val customisation = HelloWorld.Customisation()
         val component = DaggerHelloWorldComponent.builder()
             .dependency(dependency)
             .customisation(customisation)

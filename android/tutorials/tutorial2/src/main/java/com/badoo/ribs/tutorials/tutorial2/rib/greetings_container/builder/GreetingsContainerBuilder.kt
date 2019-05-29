@@ -5,11 +5,12 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerView
 
-class GreetingsContainerBuilder(dependency: GreetingsContainer.Dependency) :
-    Builder<GreetingsContainer.Dependency>(dependency) {
+class GreetingsContainerBuilder(
+    override val dependency: GreetingsContainer.Dependency
+) : Builder<GreetingsContainer.Dependency>() {
 
     fun build(): Node<GreetingsContainerView> {
-        val customisation = dependency.ribCustomisation().get(GreetingsContainer.Customisation::class) ?: GreetingsContainer.Customisation()
+        val customisation = GreetingsContainer.Customisation()
         val component = DaggerGreetingsContainerComponent.builder()
             .dependency(dependency)
             .customisation(customisation)

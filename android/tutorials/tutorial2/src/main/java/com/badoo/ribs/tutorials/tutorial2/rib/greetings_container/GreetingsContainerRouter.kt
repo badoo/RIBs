@@ -4,16 +4,13 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter.Configuration
-import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter.Configuration.Content
 import kotlinx.android.parcel.Parcelize
 
-class GreetingsContainerRouter: Router<Configuration, Nothing, Content, Nothing, GreetingsContainerView>(
-    initialConfiguration = Content.Default
+class GreetingsContainerRouter: Router<Configuration, Nothing, Configuration, Nothing, GreetingsContainerView>(
+    initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {
-        sealed class Content : Configuration() {
-            @Parcelize object Default : Content()
-        }
+        @Parcelize object Default : Configuration()
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<GreetingsContainerView> =

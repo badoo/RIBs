@@ -1,7 +1,7 @@
 package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.core.Identifiable
-import com.badoo.ribs.plugins.RibsPlugins
+ import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
@@ -14,24 +14,17 @@ import org.junit.Test
 
 class RequestCodeBasedEventStreamImplTest {
 
-    private var originalHandler: ((requestCode: Int,
-                                   internalRequestCode: Int,
-                                   internalGroup: Int,
-                                   event: RequestCodeBasedEventStream.RequestCodeBasedEvent) -> Int)? = null
-
     private val disposables = CompositeDisposable()
 
     @Before
     fun setUp() {
-        originalHandler = RibsPlugins.noRequestCodeListenersErrorHandler
-        RibsPlugins.noRequestCodeListenersErrorHandler = mock()
+        RIBs.clearErrorHandler()
+        RIBs.errorHandler = mock()
     }
 
     @After
     fun tearDown() {
-        originalHandler?.let {
-            RibsPlugins.noRequestCodeListenersErrorHandler = it
-        }
+        RIBs.clearErrorHandler()
         disposables.dispose()
     }
 
@@ -43,7 +36,7 @@ class RequestCodeBasedEventStreamImplTest {
 
         stream.testPublish(1, event)
 
-        verify(RibsPlugins.noRequestCodeListenersErrorHandler).invoke(eq(1), eq(internalRequestCode), any(), eq(event))
+        verify(RIBs.errorHandler).handleNoRequestCodeListenersError(eq(1), eq(internalRequestCode), any(), eq(event))
     }
 
     @Test
@@ -56,7 +49,7 @@ class RequestCodeBasedEventStreamImplTest {
 
         stream.testPublish(externalRequestCode, event)
 
-        verify(RibsPlugins.noRequestCodeListenersErrorHandler, never()).invoke(any(), any(), any(), any())
+        verify(RIBs.errorHandler, never()).handleNoRequestCodeListenersError(any(), any(), any(), any())
     }
 
     class TestIdentifiable(override val id: String) : Identifiable

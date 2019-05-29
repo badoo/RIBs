@@ -2,7 +2,7 @@ package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
 import com.badoo.ribs.core.Identifiable
-import com.badoo.ribs.plugins.RibsPlugins
+import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observable
@@ -43,7 +43,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         val internalRequestCode = externalRequestCode.toInternalRequestCode()
 
         ensureSubject(id) {
-            RibsPlugins.noRequestCodeListenersErrorHandler(externalRequestCode, internalRequestCode, id, event)
+            RIBs.errorHandler.handleNoRequestCodeListenersError(externalRequestCode, internalRequestCode, id, event)
         }
 
         events.getValue(id).accept(event)

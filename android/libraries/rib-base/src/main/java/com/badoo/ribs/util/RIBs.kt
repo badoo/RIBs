@@ -101,6 +101,7 @@ object RIBs {
                 "event: $event")
         }
 
+        @Suppress("TooGenericExceptionThrown")
         override fun handleNonFatalError(errorMessage: String, throwable: Throwable?) {
             throw RuntimeException(errorMessage, throwable)
         }

@@ -10,9 +10,9 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import io.reactivex.observers.TestObserver
 
 class TestRootInteractor(
-    router: Router<Configuration, TestRootView>,
+    router: Router<Configuration, Configuration.Permanent, Configuration.Content, Configuration.Overlay, TestRootView>,
     private val viewLifecycleObserver: TestObserver<Lifecycle.Event>
-) : Interactor<Configuration, TestRootView>(
+) : Interactor<Configuration, Configuration.Content, Configuration.Overlay, TestRootView>(
     router = router,
     disposables = null
 ) {

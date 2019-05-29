@@ -8,14 +8,17 @@ import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Permanent
 import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import io.reactivex.functions.Consumer
 
 class SwitcherInteractor(
-    router: Router<SwitcherRouter.Configuration, SwitcherView>,
+    router: Router<Configuration, Permanent, Content, Overlay, SwitcherView>,
     private val dialogToTestOverlay: DialogToTestOverlay
-) : Interactor<SwitcherRouter.Configuration, SwitcherView>(
+) : Interactor<Configuration, Content, Overlay, SwitcherView>(
     router = router,
     disposables = null
 ) {
@@ -31,13 +34,13 @@ class SwitcherInteractor(
         override fun accept(output: Menu.Output) = when (output) {
             is Menu.Output.MenuItemSelected -> when (output.menuItem) {
                 Menu.MenuItem.FooBar -> {
-                    router.push(Configuration.Foo)
+                    router.push(Content.Foo)
                 }
                 Menu.MenuItem.HelloWorld -> {
-                    router.push(Configuration.Hello)
+                    router.push(Content.Hello)
                 }
                 Menu.MenuItem.Dialogs -> {
-                    router.push(Configuration.DialogsExample)
+                    router.push(Content.DialogsExample)
                 }
             }
         }
@@ -45,8 +48,8 @@ class SwitcherInteractor(
 
     private val viewEventConsumer: Consumer<Event> = Consumer {
         when (it) {
-            Event.ShowOverlayDialogClicked -> router.push(Configuration.OverlayDialog)
-            Event.ShowBlockerClicked -> router.push(Configuration.Blocker)
+            Event.ShowOverlayDialogClicked -> router.pushOverlay(Overlay.Dialog)
+            Event.ShowBlockerClicked -> router.push(Content.Blocker)
         }
     }
 

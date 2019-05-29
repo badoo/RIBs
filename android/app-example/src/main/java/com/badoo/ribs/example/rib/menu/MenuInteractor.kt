@@ -6,6 +6,7 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.example.rib.menu.MenuRouter.Configuration
 import com.badoo.ribs.example.rib.menu.feature.MenuFeature
 import com.badoo.ribs.example.rib.menu.mapper.StateToViewModel
 import com.badoo.ribs.example.rib.menu.mapper.ViewEventToOutput
@@ -13,11 +14,11 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MenuInteractor(
-    router: Router<MenuRouter.Configuration, MenuView>,
+    router: Router<Configuration, Nothing, Configuration, Nothing, MenuView>,
     private val input: ObservableSource<Menu.Input>,
     private val output: Consumer<Menu.Output>,
     private val feature: MenuFeature
-) : Interactor<MenuRouter.Configuration, MenuView>(
+) : Interactor<Configuration, Configuration, Nothing, MenuView>(
     router = router,
     disposables = feature
 ) {

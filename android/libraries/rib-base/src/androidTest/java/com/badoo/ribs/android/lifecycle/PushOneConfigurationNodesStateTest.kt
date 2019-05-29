@@ -1,137 +1,82 @@
 package com.badoo.ribs.android.lifecycle
 
-import com.badoo.common.ribs.RibsRule
-import com.badoo.ribs.android.lifecycle.BaseNodesTest.TestNode.NODE_1
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1And2
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsDialog
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsDialogAndOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode1AsOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsDialog
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsDialogAndOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.AttachNode2AsOverlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.NoOp
+import com.badoo.ribs.android.lifecycle.helper.ExpectedState
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode2AsOverlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent.Permanent1
 import com.badoo.ribs.test.util.runOnMainSync
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
 
-@RunWith(Parameterized::class)
-class PushOneConfigurationNodesStateTest(private val test: Pair<When, ExpectedState>) : BaseNodesTest(
-    initialConfiguration = test.first.initialConfiguration,
-    permanentParts = test.first.permanentParts
-) {
+class PushOneConfigurationNodesStateTest : BaseNodesTest() {
 
-    companion object {
-        @JvmStatic
-        @Suppress("LongMethod")
-        @Parameters(name = "{0}")
-        fun data() = listOf(
-            When(pushConfiguration = AttachNode1)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
+    private fun pushOneConfiguration(setup: When, expectedState: ExpectedState) {
+        test(setup, expectedState) {
+            runOnMainSync {
+                it.pushIt(setup.pushConfiguration1!!)
+            }
+        }
+    }
 
-            When(initialConfiguration = AttachNode1, pushConfiguration = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1, pushConfiguration = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(initialConfiguration = AttachNode1, pushConfiguration = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1, pushConfiguration = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(pushConfiguration = AttachNode1AsDialog)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = null),
-
-            When(initialConfiguration = AttachNode1AsDialog, pushConfiguration = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1AsDialog, pushConfiguration = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(initialConfiguration = AttachNode1AsDialog, pushConfiguration = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1AsDialog, pushConfiguration = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(pushConfiguration = AttachNode1AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = null),
-
-            When(initialConfiguration = AttachNode1AsOverlay, pushConfiguration = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1AsOverlay, pushConfiguration = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(initialConfiguration = AttachNode1AsOverlay, pushConfiguration = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1AsOverlay, pushConfiguration = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(pushConfiguration = AttachNode1AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = null),
-
-            When(initialConfiguration = AttachNode1AsDialogAndOverlay, pushConfiguration = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1AsDialogAndOverlay, pushConfiguration = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(initialConfiguration = AttachNode1AsDialogAndOverlay, pushConfiguration = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(initialConfiguration = AttachNode1AsDialogAndOverlay, pushConfiguration = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = false), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(permanentParts = listOf(NODE_1), pushConfiguration = AttachNode2)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(permanentParts = listOf(NODE_1), pushConfiguration = AttachNode2AsOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true)),
-
-            When(permanentParts = listOf(NODE_1), pushConfiguration = AttachNode2AsDialog)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
-
-            When(permanentParts = listOf(NODE_1), pushConfiguration = AttachNode2AsDialogAndOverlay)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = false)),
-
-
-            When(pushConfiguration = AttachNode1And2)
-                to ExpectedState(node1 = NodeState(attached = true, viewAttached = true), node2 = NodeState(attached = true, viewAttached = true))
+    @Test
+    fun noPermanent_singleInitial_pushContent() {
+        pushOneConfiguration(
+            When(
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2
+            ),
+            ExpectedState(
+                node1 = VIEW_DETACHED,
+                node2 = ON_SCREEN
+            )
         )
     }
 
-    @get:Rule
-    val ribsRule = RibsRule { rootProvider.invoke() }
-
     @Test
-    fun pushOneConfiguration() {
-        runOnMainSync {
-            router.push(test.first.pushConfiguration)
-        }
-
-        makeAssertions(test.second)
+    fun noPermanent_singleInitial_pushOverlay() {
+        pushOneConfiguration(
+            When(
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2AsOverlay
+            ),
+            ExpectedState(
+                node1 = ON_SCREEN,
+                node2 = ON_SCREEN
+            )
+        )
     }
 
-    class When(
-        val pushConfiguration: Configuration,
-        val initialConfiguration: Configuration = NoOp,
-        val permanentParts: List<TestNode> = emptyList()
-    ) {
-        override fun toString() = "initial configuration is ${initialConfiguration::class.java.simpleName} " +
-            "push ${pushConfiguration::class.java.simpleName}, " +
-            "and permanent parts = [${permanentParts.joinToString()}]"
+    @Test
+    fun singlePermanent_singleInitial_pushContent() {
+        pushOneConfiguration(
+            When(
+                permanentParts = listOf(Permanent1),
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2
+            ),
+            ExpectedState(
+                permanentNode1 = ON_SCREEN,
+                node1 = VIEW_DETACHED,
+                node2 = ON_SCREEN
+            )
+        )
+    }
+
+    @Test
+    fun singlePermanent_singleInitial_pushOverlay() {
+        pushOneConfiguration(
+            When(
+                permanentParts = listOf(Permanent1),
+                initialConfiguration = AttachNode1,
+                pushConfiguration1 = AttachNode2AsOverlay
+            ),
+            ExpectedState(
+                permanentNode1 = ON_SCREEN,
+                node1 = ON_SCREEN,
+                node2 = ON_SCREEN
+            )
+        )
     }
 }

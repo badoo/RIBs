@@ -1,16 +1,15 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.backstack.NodeDescriptor
+import com.badoo.ribs.core.view.RibView
 
 class AttachRibRoutingAction< V : RibView>(
     private val builder: () -> Node<*>
 ) : RoutingAction<V> {
 
-    override fun buildNodes(): List<NodeDescriptor> =
+    override fun buildNodes(): List<Node.Descriptor> =
         listOf(
-            NodeDescriptor(
+            Node.Descriptor(
                 node = builder.invoke(),
                 viewAttachMode = Node.ViewAttachMode.PARENT
             )

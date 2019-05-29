@@ -18,7 +18,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class InteractorTest {
 
-    private lateinit var interactor: Interactor<TestRouter.Configuration, TestView>
+    private lateinit var interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView>
 
     @Before
     fun setUp() {

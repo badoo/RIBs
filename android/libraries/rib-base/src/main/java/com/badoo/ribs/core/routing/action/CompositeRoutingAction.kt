@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.routing.backstack.NodeDescriptor
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
 class CompositeRoutingAction< V : RibView>(
@@ -9,7 +9,7 @@ class CompositeRoutingAction< V : RibView>(
 
     constructor(routingActions: List<RoutingAction<V>>) : this(*routingActions.toTypedArray())
 
-    override fun buildNodes(): List<NodeDescriptor> =
+    override fun buildNodes(): List<Node.Descriptor> =
         routingActions.flatMap {
             it.buildNodes()
         }

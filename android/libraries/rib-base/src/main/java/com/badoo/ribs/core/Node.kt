@@ -32,8 +32,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ViewFactory<V>?,
-    private val router: Router<*, V>,
-    private val interactor: Interactor<*, V>,
+    private val router: Router<*, *, *, *, V>,
+    private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     enum class ViewAttachMode {
@@ -51,6 +51,11 @@ open class Node<V : RibView>(
          */
         EXTERNAL
     }
+
+    data class Descriptor(
+        val node: Node<*>,
+        val viewAttachMode: ViewAttachMode
+    )
 
     companion object {
         internal const val KEY_ROUTER = "node.router"

@@ -7,8 +7,10 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.Content
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
@@ -19,11 +21,11 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor(
-    router: Router<Configuration, DialogExampleView>,
+    router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-) : Interactor<Configuration, DialogExampleView>(
+) : Interactor<Configuration, Content, Overlay, DialogExampleView>(
     router = router,
     disposables = null
 ) {
@@ -44,13 +46,13 @@ class DialogExampleInteractor(
 
     private val viewEventConsumer: Consumer<DialogExampleView.Event> = Consumer {
         when (it) {
-            ShowSimpleDialogClicked -> router.push(Configuration.SimpleDialog)
+            ShowSimpleDialogClicked -> router.pushOverlay(Overlay.SimpleDialog)
             ShowLazyDialog -> {
                 initLazyDialog()
-                router.push(Configuration.LazyDialog)
+                router.pushOverlay(Overlay.LazyDialog)
             }
 
-            ShowRibDialogClicked -> router.push(Configuration.RibDialog)
+            ShowRibDialogClicked -> router.pushOverlay(Overlay.RibDialog)
         }
     }
 

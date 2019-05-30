@@ -2,11 +2,13 @@
 ## The goal of this tutorial
 Building and attaching an existing RIB to an integration point. Hello world!
 
+
 ## How an app using RIBs is structured
 1. There's one or more integration points in the form of `Activities` / `Fragments` / etc. Ideally the app should be single-Activity, but the library makes no difference about it.
 2. Integration points build a `Node` (can be any `Node`), and attach it to themselves, propagating all lifecycle methods to it. This `Node` will be the root. 
 3. A tree structure of `Node`s represent the application's business logic state.
 4. A tree structure of `View`s represent the application on the view level. This tree is not necessarily the same as the `Node` tree, as `Node`s do not necessarily have their own views, or might be attached to a different place in the view tree (dialogs). We'll see examples about these later.
+
 
 ## How a RIB is structured
 Open up the `tutorial1` module, which has a single RIB in the `com.badoo.ribs.tutorials.tutorial1.rib.hello_world` package.
@@ -44,10 +46,12 @@ interface ExampleRib : Rib {
 }
 ```
 
+
 ### Dependencies
 Here, the `Dependency` interface describes all external dependencies this RIB needs to be built.
 
 RIBs act as a black box that can be plugged in anywhere. This means, that as long as you can provide their dependencies, you can build them, and they are supposed to be auto-wired and ready to go immediately without any further actions.
+
 
 ### Inputs and Outputs
 
@@ -58,6 +62,7 @@ We'll see this in practical examples, but for now, the only things that matter, 
 - if a RIB has `Output`, then it also has a dependency of `Consumer<Output>`
 
 This is important to satisfy the plug-and-play functionality of the RIB. Every RIB implementation guarantees that as long as you can give it a source of its `Inputs` that it can observe, and a consumer of its possible `Outputs` that will handle them, it will do all the required wiring internally, and will "just work" out of the box. 
+
 
 ## Getting our hands dirty
 
@@ -199,6 +204,7 @@ Views (as well as other components in RIBs) are reactive.
 
 This `HelloWorldView` interface states that any implementation of the view is a source of `Events` (here a single one for `ButtonClicked`) and a consumer of `ViewModels` (which we are not using now).
 
+
 ### The View implementation
 
 You can check in the Android view implementation right below the interface how this is done:
@@ -225,6 +231,7 @@ Any click on the button with the id `R.id.hello_world_button` will result in the
 The `View` itself never cares for how a certain UI interaction affects anything related to business logic. It only renders `ViewModels`, and triggers `Events` based on the user interaction.
 
 So where is this event being used?
+
 
 ### Connecting the dots
 

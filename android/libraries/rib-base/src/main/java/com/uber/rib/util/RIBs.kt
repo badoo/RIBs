@@ -27,7 +27,11 @@ object RIBs {
      * @param errorHandler to set.
      */
     fun setErrorHandler(errorHandler: ErrorHandler) {
-        if (RIBs.errorHandler == null) {
+        setErrorHandler(errorHandler, allowMoreThanOnce = false)
+    }
+
+    internal fun setErrorHandler(errorHandler: ErrorHandler, allowMoreThanOnce: Boolean) {
+        if (RIBs.errorHandler == null || allowMoreThanOnce) {
             RIBs.errorHandler = errorHandler
         } else {
             if (RIBs.errorHandler is DefaultErrorHandler) {
@@ -40,12 +44,16 @@ object RIBs {
         }
     }
 
+    internal fun resetErrorHandler() {
+        errorHandler = null
+    }
+
     fun getErrorHandler(): ErrorHandler {
         if (errorHandler == null) {
             errorHandler = DefaultErrorHandler()
         }
 
-        return errorHandler
+        return errorHandler!!
     }
 
     /** Responsible for app-specific riblet errorHandler.  */
@@ -93,6 +101,7 @@ object RIBs {
     /** Default, internal implementation that is used when host app does not set a errorHandler.  */
     private class DefaultErrorHandler : ErrorHandler {
 
+        @SuppressWarnings("TooGenericExceptionThrown")
         override fun handleNonFatalError(errorMessage: String, throwable: Throwable?) {
             throw RuntimeException(errorMessage, throwable)
         }

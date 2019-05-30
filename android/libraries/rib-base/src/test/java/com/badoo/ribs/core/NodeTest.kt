@@ -15,11 +15,13 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.inOrder
+import com.nhaarman.mockitokotlin2.isA
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import com.uber.rib.util.RIBs
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -68,6 +70,11 @@ class NodeTest {
         )
 
         addChildren()
+    }
+
+    @After
+    fun tearDown() {
+        RIBs.resetErrorHandler()
     }
 
     private fun addChildren() {
@@ -131,6 +138,28 @@ class NodeTest {
     fun `onDetach() notifies Interactor`() {
         node.onDetach()
         verify(interactor).onDetach()
+    }
+
+    @Test
+    fun `onDetach() verifies view has been detached`() {
+        val errorHandler = mock<RIBs.ErrorHandler>()
+        RIBs.setErrorHandler(errorHandler, allowMoreThanOnce = true)
+        node.attachToView(mock())
+
+        node.onDetach()
+
+        verify(errorHandler).handleNonFatalError(any(), isA<RuntimeException>())
+    }
+
+    @Test
+    fun `onDetach() detaches view as a fail-safe mechanism`() {
+        val errorHandler = mock<RIBs.ErrorHandler>()
+        RIBs.setErrorHandler(errorHandler, allowMoreThanOnce = true)
+        node.attachToView(mock())
+
+        node.onDetach()
+
+        assertEquals(false, node.isViewAttached)
     }
 
     @Test

@@ -11,4 +11,6 @@ class GreetingsContainerInteractor(
 ) : Interactor<Configuration, Configuration, Nothing, GreetingsContainerView>(
     router = router,
     disposables = null
-)
+) {
+
+}

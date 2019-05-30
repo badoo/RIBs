@@ -8,13 +8,7 @@ import io.reactivex.functions.Consumer
 
 interface HelloWorld : Rib {
 
-    interface Dependency {
-        fun helloWorldOutput(): Consumer<Output>
-    }
-
-    sealed class Output {
-        object HelloThere : Output()
-    }
+    interface Dependency
 
     class Customisation(
         val viewFactory: ViewFactory<HelloWorldView> = inflateOnDemand(

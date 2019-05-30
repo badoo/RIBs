@@ -19,6 +19,9 @@ class TestActivity : AppCompatActivity() {
     val permissionRequester: PermissionRequester
         get() = _permissionRequester
 
+    var ignoreActivityStarts: Boolean = false
+    var lastStartedRequestCode: Int = -1
+
     private val _activityStarter: ActivityStarterImpl by lazy {
         ActivityStarterImpl(
             activity = this,
@@ -41,6 +44,13 @@ class TestActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         requestCodeRegistry.onSaveInstanceState(outState)
+    }
+
+    override fun startActivityForResult(intent: Intent?, requestCode: Int) {
+        if (!ignoreActivityStarts) {
+            super.startActivityForResult(intent, requestCode)
+        }
+        lastStartedRequestCode = requestCode
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

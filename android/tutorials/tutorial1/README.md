@@ -55,7 +55,7 @@ RIBs act as a black box that can be plugged in anywhere. This means, that as lon
 
 ### Inputs and Outputs
 
-RIBs can also have `Inputs` / `Outputs`. These represent the way we can communicate with then, and they are always defined as part of the public API.
+RIBs can also have `Inputs` / `Outputs`. These represent the way we can communicate with them, and they are always defined as part of the public API.
 
 We'll see this in practical examples, but for now, the only things that matter, is that:
 - if a RIB has `Input`, then it also has a dependency of `ObservableSource<Input>`

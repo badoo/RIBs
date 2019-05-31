@@ -10,31 +10,37 @@ Building on top of what we achieved in **tutorial1**, we have our `HelloWorld` R
 So far, we directly attached it to our integration point, `RootActivity`, but now we want to see an example how to add it as a child RIB of another.
 
 
+## Viewless RIBs
+
+In the framework, individual RIBs are not forced to implement a view, they can also be purely business logic driven. In this case, they only add a `Node` to the `Node` tree, but no `View` to the View tree.
+
+Of course, they can do everything else, and can have child RIBs all the same. If these children have their own `Views`, those will be attached directly to the `View` of the closest parent up in the tree that has one. 
+
+
 ## Starting out
 
 Check the `com.badoo.ribs.tutorials.tutorial2.rib` package in the `tutorial2` module, you now see two RIBs: `HelloWorld`, and `GreetingsContainer`, the new one.
-
+  
 If you check `RootActivity`, it builds and attaches `GreetingsContainer` directly, and `HelloWorld` is not used anywhere (yet).
 
 The project should compile without any changes, and if you launch the app, this is what you should see:
 
-If you compile and launch, this is what you should see:
+![Empty greetings container](https://i.imgur.com/4XmUpqF.png) 
 
-![Empty greetings container](https://i.imgur.com/2zs5wiq.png) 
-
-Not too much to see here yet. Our goal is to display the `HelloWorld` RIB in the place of the colorful area.
+Not too much to see here yet. `GreetingsContainer` is a viewless container RIB, so it does not add anything to the screen. We will add functionality to it in later tutorials, right now the only thing we want to do is to attach `HelloWorld` to it as its child.
 
 To do that, first we need to familiarise ourselves with the concept of routing.
 
 
 ## Routing
 
-Parent-child relationships and their dynamic changes are described under the concept of routing.
+Parent - child relationships and their dynamic changes are described under the concept of routing.
 
-In case of Badoo RIBs, routing is done via these three steps:
+In case of Badoo RIBs, routing is done via these steps:
 1. define the set of possible configurations a certain RIB can be in
 2. define what a certain configuration means, by resolving it to a routing action
-3. manipulating the Router to set it into any of the pre-defined configurations, based on business logic
+3. set the initial configuration for the Router
+4. *(dynamically manipulate the Router to set it into any of the pre-defined configurations, based on business logic - in later tutorials)* 
 
 
 ## What is a configuration?
@@ -64,9 +70,7 @@ This is done by implementing the `resolveConfiguration` method in the `Router`:
 abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 ```
 
-> ⚠️ This method is important, so that the action is repeatable by the framework when restoring a configuration - that's why we marked those as `Parcelable` in the first place!
-
-The library offers a `RoutingAction` interface and some implementations of it. 
+The library offers implementations of the `RoutingAction` interface, which should cover all cases you encounter.
 
 For simplicity, we will now only look at one of them: the `AttachRibRoutingAction`, which, as the name implies, tells the `Router` to attach a certain child RIB.
 
@@ -82,7 +86,7 @@ class GreetingsContainerRouter: Router</* ... */>(
         @Parcelize object Default : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<GreetingsContainerView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
         RoutingAction.noop()
 }
 ```
@@ -109,7 +113,7 @@ import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attac
 
 /* ... */
 
-override fun resolveConfiguration(configuration: Configuration): RoutingAction<GreetingsContainerView> =
+override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
     when (configuration) {
         Configuration.HelloWorld -> attach { TODO() }
     }
@@ -132,17 +136,13 @@ To build the `HelloWorld` RIB, we need an instance its Builder: `HelloWorldBuild
 ```kotlin
 class GreetingsContainerRouter(
     private val helloWorldBuilder: HelloWorldBuilder
-): Router</* ... */>(
-    initialConfiguration = Configuration.HelloWorld
-) {
-    /* ... */
-}
+) /* rest is the same */
 ```
 
-We'll care about it in a moment how to pass it here, but let's finish our job here, and replace the `TODO()` block in our `attach` block:
+We'll care about how to pass it here just in a moment, but first let's finish our job here, and replace the `TODO()` block in our `attach` block:
 
 ```kotlin
-override fun resolveConfiguration(configuration: Configuration): RoutingAction<GreetingsContainerView> =
+override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
     when (configuration) {
         Configuration.HelloWorld -> attach { helloWorldBuilder.build() }
     }
@@ -163,7 +163,7 @@ internal fun router(
     // pass component to child rib builders, or remove if there are none
     component: GreetingsContainerComponent
 ): GreetingsContainerRouter =
-        GreetingsContainerRouter()
+    GreetingsContainerRouter()
 ```
 
 Notice how the constructor invocation has a compilation error now, since we don't yet pass in the required dependency. Let's do that, and change the constructor invocation to:
@@ -175,8 +175,6 @@ GreetingsContainerRouter(
 ```
 
 Now it's the `HelloWorldBuilder()` part that's missing something. If we open it up, we get a reminder that in order to construct it, we need to satisfy the `HelloWorld` RIB's dependencies. 
-
-> ⚠️ When constructing child RIBs, you always want the parent RIB to satisfy those dependencies automatically - that is, never just construct them manually (as we did at the integration point)
 
 Notice how the function has an unused parameter we can use:
 
@@ -203,95 +201,36 @@ That's fine and expected! We need to make the connection and say that `HelloWorl
 
 ![](https://i.imgur.com/yyJklDY.png)
 
-If this dialog opens up automatically in Android Studio, cancel it:
+> For simplicity, we removed all actual dependencies from `HelloWorld.Dependency` interface, so that we can attach it as easily as possible.
+>
+> Don't worry, we will add it back in the next tutorial!
 
-![](https://i.imgur.com/VSUCpJe.png)
-
-It reminds us that it's not enough to *say* we provide those dependencies, we should actually do so. If we forgot it, and build the project right now, Dagger will provide a reminder and fail the build:
-
-```
-e: /*...*/GreetingsContainerComponent.java:8: error:
-[Dagger/MissingBinding]
-io.reactivex.functions.Consumer<com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorld.Output> 
-cannot be provided without an @Provides-annotated method.
-```
-
-Bear with me, we're almost there!
-
-
-## Satisfying dependencies for Inputs / Outputs of children 
-
-Communicating with child RIBs, i.e. reacting to their outputs or feeding them inputs belongs to the responsibilities of the `Interactor`. 
-
-Open up `GreetingsContainerInteractor`, and add this Consumer implementation:
-
-```kotlin
-class GreetingsContainerInteractor(
-    router: Router</* ... */>,
-    output: Consumer<GreetingsContainer.Output>
-) : Interactor<Configuration, Configuration, Nothing, GreetingsContainerView>(
-    router = router,
-    disposables = null
-) {
-    internal val helloWorldOutputConsumer: Consumer<HelloWorld.Output> = Consumer {
-        when (it) {
-            HelloThere -> output.accept(GreetingsSaid("Hello there :)"))
-        }
-    }
-}
-```
-
-Notice what we did there: whenever the child RIB triggers `HelloWorld` output (its only possible output this time), we translate it to *our* own output, `GreetingsSaid` with a string inside. If we check `RootActivity` in **tutorial2**, it's similar to the one we implemented in **tutorial1**, and display a Snackbar to display the provided string.
-
-
-> Is this to say you should always forward all outputs to a higher level?
-> 
-> Far from it!
-> 
-> The rule of a thumb is:
-> 1. Can you definitely decide how to react to the Output? Then implement the action right there in the `Interactor`
-> 2. Do you want to add some flexibility, and make it an implementation detail what to do with it? Forward it higher.
-> 
-> The second option is useful in multi-application cases, when he same RIB should behave differently when a certain action is triggered.
- 
-There's one last thing to do, tell Dagger to grab this Consumer, so that it can provide it as a dependency for the child. Open up `GreetingsContainerModule` again, and add this to the bottom: 
-
-```
-@GreetingsContainerScope
-@Provides
-@JvmStatic
-internal fun helloWorldOutputConsumer(
-    interactor: GreetingsContainerInteractor
-) : Consumer<HelloWorld.Output> =
-    interactor.helloWorldOutputConsumer
-```
 
 ## Test run!
 
-The application shoud now compile, and launching it, this is what we should see:
+The application should now compile, and launching it, this is what we should see:
 
-![](https://i.imgur.com/xqLppHn.png)
+![](https://i.imgur.com/iuarP6N.png)
 
-Well, this is awesome! But there's a small problem with it.
+It's not very different from what we've seen in **tutorial1**, but now it's added as a child RIB of `GreetingsContainer`.
 
-## View targeting
+> Note that because we removed the `Consumer<Output>` dependency from `HelloWorld`, the button now doesn't do anything when pressed. We'll fix that soon! 
 
-[TODO] correct imports, as Configuration name and RIB name collides :|
+
+## 🎉 🎉 🎉 Congratulations  🎉 🎉 🎉
+ 
+ You can advance to the next tutorial!
+
 
 ## Summary
-Steps to add child and listen to its output:
+
+Steps to add a child RIB:
 1. Go to Router
     1. Define configuration
     2. Resolve configuration to `attach { childBuilder.build() }` routing action
-    3. Pass the required builder as a constructor dependency 
+    3. Define `childBuilder` as a constructor dependency 
 2. Go to Dagger module
-    1. Add builder to Router constructor
-    2. Add component to Builder constructor
-    3. Let component extend the required Dependency interface
-3. Go to Interactor
-    1. Implement Consumer<Output>, do something with it
-4. Go back to Dagger module
-    1. Add method to grab consumer from `Interactor`
-
-
-This is important, so that the action is repeatable by the framework.
+    1. When constructing the `Router`, create and pass in an instance of the required child `Builder`
+    2. Add `component` as a parameter to `Builder` constructor
+    3. Let our component extend the required `Dependency` interface
+    4. *(Actually satisfy those dependencies - coming up in next tutorial)*

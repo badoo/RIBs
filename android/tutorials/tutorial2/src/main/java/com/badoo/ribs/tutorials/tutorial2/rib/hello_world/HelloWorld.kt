@@ -4,7 +4,6 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflateOnDemand
 import com.badoo.ribs.tutorials.tutorial2.R
-import io.reactivex.functions.Consumer
 
 interface HelloWorld : Rib {
 

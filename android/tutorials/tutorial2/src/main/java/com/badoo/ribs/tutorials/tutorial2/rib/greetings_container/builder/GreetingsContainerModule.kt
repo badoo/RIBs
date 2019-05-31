@@ -4,7 +4,6 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerInteractor
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter
-import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.builder.HelloWorldBuilder
 import dagger.Provides
 import io.reactivex.functions.Consumer
 
@@ -18,9 +17,7 @@ internal object GreetingsContainerModule {
         // pass component to child rib builders, or remove if there are none
         component: GreetingsContainerComponent
     ): GreetingsContainerRouter =
-        GreetingsContainerRouter(
-            helloWorldBuilder = HelloWorldBuilder(component)
-        )
+        GreetingsContainerRouter()
 
     @GreetingsContainerScope
     @Provides

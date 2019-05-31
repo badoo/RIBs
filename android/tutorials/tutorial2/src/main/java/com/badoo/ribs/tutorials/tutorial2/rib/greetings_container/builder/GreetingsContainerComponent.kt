@@ -2,7 +2,6 @@ package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer
-import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorld
 
 @GreetingsContainerScope
 @dagger.Component(
@@ -11,7 +10,7 @@ import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorld
         GreetingsContainer.Dependency::class
     ]
 )
-internal interface GreetingsContainerComponent : HelloWorld.Dependency {
+internal interface GreetingsContainerComponent {
 
     @dagger.Component.Builder
     interface Builder {

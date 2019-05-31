@@ -1,12 +1,9 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerInteractor
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter
-import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerView
-import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.builder.HelloWorldBuilder
 import dagger.Provides
 import io.reactivex.functions.Consumer
@@ -41,12 +38,11 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<GreetingsContainerView>,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
-    ) : Node<GreetingsContainerView> = Node(
+    ) : Node<Nothing> = Node(
         identifier = object : GreetingsContainer {},
-        viewFactory = viewFactory,
+        viewFactory = null,
         router = router,
         interactor = interactor
     )

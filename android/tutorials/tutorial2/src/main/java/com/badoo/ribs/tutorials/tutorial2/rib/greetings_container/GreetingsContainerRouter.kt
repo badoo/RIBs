@@ -10,14 +10,14 @@ import kotlinx.android.parcel.Parcelize
 
 class GreetingsContainerRouter(
     private val helloWorldBuilder: HelloWorldBuilder
-): Router<Configuration, Nothing, Configuration, Nothing, GreetingsContainerView>(
+): Router<Configuration, Nothing, Configuration, Nothing, Nothing>(
     initialConfiguration = Configuration.HelloWorld
 ) {
     sealed class Configuration : Parcelable {
         @Parcelize object HelloWorld : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<GreetingsContainerView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
         when (configuration) {
             Configuration.HelloWorld -> attach { helloWorldBuilder.build() }
         }

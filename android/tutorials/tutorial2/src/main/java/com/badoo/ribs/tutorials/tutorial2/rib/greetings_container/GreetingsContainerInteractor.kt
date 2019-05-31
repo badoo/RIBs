@@ -6,9 +6,9 @@ import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsConta
 import io.reactivex.functions.Consumer
 
 class GreetingsContainerInteractor(
-    router: Router<Configuration, Nothing, Configuration, Nothing, GreetingsContainerView>,
+    router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
-) : Interactor<Configuration, Configuration, Nothing, GreetingsContainerView>(
+) : Interactor<Configuration, Configuration, Nothing, Nothing>(
     router = router,
     disposables = null
 ) {

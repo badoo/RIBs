@@ -1,6 +1,5 @@
 package com.badoo.ribs.example.rib.menu.feature
 
-import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -23,7 +22,7 @@ class MenuFeatureTest {
     fun `select menu item wish - updates state with the selected item`() {
         val feature = MenuFeature()
 
-        feature.accept(SelectMenuItem(HelloWorld))
+        feature.accept(MenuFeature.State(HelloWorld))
 
         assertThat(feature.state.selected).isEqualTo(HelloWorld)
     }

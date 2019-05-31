@@ -13,6 +13,9 @@ Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions:
 - Template generator plugin compiled from live code templates
 - Kotlin
 
+## Tutorials
+[See here](tutorials/README.md)
+
 ## WIP
 This is only a preview version. Tutorials and documentation are coming soon. In the meantime, check out the `app-example` module. Some points of interest might be:
 - MVICore usage pattern in [MenuInteractor](https://github.com/badoo/RIBs/blob/master/android/app-example/src/main/java/com/badoo/ribs/example/rib/menu/MenuInteractor.kt)

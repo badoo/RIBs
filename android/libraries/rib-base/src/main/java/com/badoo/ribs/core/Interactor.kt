@@ -39,8 +39,8 @@ import java.util.UUID
  * @param <C> the type of Configuration this Interactor can expect to push to its [Router].
  * @param <V> the type of [RibView].
  **/
-abstract class Interactor<C : Parcelable, V : RibView>(
-    protected val router: Router<C, V>,
+abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>(
+    protected val router: Router<C, *, Content, Overlay, V>,
     private val disposables: Disposable?
 ) : LifecycleScopeProvider<InteractorEvent>, LifecycleOwner, Identifiable {
 

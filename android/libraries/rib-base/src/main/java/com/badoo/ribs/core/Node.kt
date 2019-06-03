@@ -23,6 +23,7 @@ import android.util.SparseArray
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.uber.rib.util.RIBs
 import com.uber.rib.util.RibRefWatcher
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -32,8 +33,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ViewFactory<V>?,
-    private val router: Router<*, V>,
-    private val interactor: Interactor<*, V>,
+    private val router: Router<*, *, *, *, V>,
+    private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) {
     enum class ViewAttachMode {
@@ -51,6 +52,11 @@ open class Node<V : RibView>(
          */
         EXTERNAL
     }
+
+    data class Descriptor(
+        val node: Node<*>,
+        val viewAttachMode: ViewAttachMode
+    )
 
     companion object {
         internal const val KEY_ROUTER = "node.router"
@@ -188,6 +194,14 @@ open class Node<V : RibView>(
     }
 
     open fun onDetach() {
+        if (isViewAttached) {
+            RIBs.getErrorHandler().handleNonFatalError(
+                "View was not detached before node detach!",
+                RuntimeException("View was not detached before node detach!")
+            )
+            detachFromView()
+        }
+
         interactor.onDetach()
         router.onDetach()
 

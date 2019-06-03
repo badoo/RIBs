@@ -11,8 +11,8 @@ import com.badoo.ribs.core.view.ViewFactory
 class TestNode<V: RibView>(
     identifier: Rib,
     viewFactory: ViewFactory<V>,
-    private val router: Router<*, V>,
-    interactor: Interactor<*, V>
+    private val router: Router<*, *, *, *, V>,
+    interactor: Interactor<*, *, *, V>
 ): Node<V>(
     identifier = identifier,
     viewFactory = viewFactory,

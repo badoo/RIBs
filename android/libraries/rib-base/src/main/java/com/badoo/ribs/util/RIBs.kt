@@ -80,10 +80,12 @@ object RIBs {
          * If no errorHandler is set, the default implementation of this will print a warning
          * to logcat.
          */
-        fun handleNoRequestCodeListenersError(requestCode: Int,
-                                              internalRequestCode: Int,
-                                              internalGroup: Int,
-                                              event: RequestCodeBasedEventStream.RequestCodeBasedEvent)
+        fun handleNoRequestCodeListenersError(
+            requestCode: Int,
+            internalRequestCode: Int,
+            internalGroup: Int,
+            event: RequestCodeBasedEventStream.RequestCodeBasedEvent
+        )
     }
 
     private class DefaultErrorHandler : ErrorHandler {

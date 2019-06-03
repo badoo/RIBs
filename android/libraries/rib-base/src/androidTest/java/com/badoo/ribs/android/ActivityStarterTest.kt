@@ -18,6 +18,7 @@ import com.badoo.ribs.test.util.TestIdentifiable
 import com.badoo.ribs.test.util.restartActivitySync
 import com.badoo.ribs.test.util.subscribeOnTestObserver
 import io.reactivex.observers.TestObserver
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test
@@ -75,7 +76,6 @@ class ActivityStarterTest {
 
     @Test
     fun startActivityForResult_startActivityThatReturnsOkResultAndRestart_returnsOkResultCode() {
-        givenResultForActivity<OtherActivity>(resultCode = RESULT_OK)
         activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
         activityRule.activity.ignoreActivityStarts = true
 
@@ -85,6 +85,30 @@ class ActivityStarterTest {
         val requestCode = activityRule.activity.lastStartedRequestCode
         activityRule.restartActivitySync()
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
+        (activityRule.activity.activityStarter as ActivityResultHandler).onActivityResult(
+            requestCode,
+            RESULT_OK,
+            null
+        )
+
+        observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+    }
+
+    @Test
+    fun startActivityForResult_startActivitiesWithCollisionThatReturnsOkResultAndRestart_returnsOkResultCode() {
+        assertThat(collisionIdentifiable1.id.hashCode()).isEqualTo(collisionIdentifiable2.id.hashCode())
+        activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
+        activityRule.activity.ignoreActivityStarts = true
+
+        activityRule.activity.activityStarter.startActivityForResult(collisionIdentifiable1, requestCode = 1) {
+            Intent(this, OtherActivity::class.java)
+        }
+        activityRule.activity.activityStarter.startActivityForResult(collisionIdentifiable2, requestCode = 1) {
+            Intent(this, OtherActivity::class.java)
+        }
+        val requestCode = activityRule.activity.lastStartedRequestCode
+        activityRule.restartActivitySync()
+        val observer = activityRule.activity.activityStarter.events(collisionIdentifiable2).subscribeOnTestObserver()
         (activityRule.activity.activityStarter as ActivityResultHandler).onActivityResult(
             requestCode,
             RESULT_OK,
@@ -145,5 +169,7 @@ class ActivityStarterTest {
 
     companion object {
         private val identifiable = TestIdentifiable()
+        private val collisionIdentifiable1 = TestIdentifiable(id = "Siblings")
+        private val collisionIdentifiable2 = TestIdentifiable(id = "Teheran")
     }
 }

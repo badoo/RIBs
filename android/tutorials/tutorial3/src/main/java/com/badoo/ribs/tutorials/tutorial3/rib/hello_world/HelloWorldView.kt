@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.widget.Button
+import android.widget.TextView
 import com.jakewharton.rxrelay2.PublishRelay
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.tutorials.tutorial3.R
@@ -37,6 +38,7 @@ class HelloWorldViewImpl private constructor(
     ) : this(context, attrs, defStyle, PublishRelay.create<Event>())
 
     override val androidView = this
+    private val welcome: TextView by lazy { findViewById<TextView>(R.id.hello_world_welcome) }
     private val button: Button by lazy { findViewById<Button>(R.id.hello_world_button) }
 
     override fun onFinishInflate() {

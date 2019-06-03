@@ -20,7 +20,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.uber.rib.util.RIBs
+import com.badoo.ribs.util.RIBs
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -74,7 +74,7 @@ class NodeTest {
 
     @After
     fun tearDown() {
-        RIBs.resetErrorHandler()
+        RIBs.clearErrorHandler()
     }
 
     private fun addChildren() {
@@ -143,7 +143,8 @@ class NodeTest {
     @Test
     fun `onDetach() verifies view has been detached`() {
         val errorHandler = mock<RIBs.ErrorHandler>()
-        RIBs.setErrorHandler(errorHandler, allowMoreThanOnce = true)
+        RIBs.clearErrorHandler()
+        RIBs.errorHandler = errorHandler
         node.attachToView(mock())
 
         node.onDetach()
@@ -154,7 +155,8 @@ class NodeTest {
     @Test
     fun `onDetach() detaches view as a fail-safe mechanism`() {
         val errorHandler = mock<RIBs.ErrorHandler>()
-        RIBs.setErrorHandler(errorHandler, allowMoreThanOnce = true)
+        RIBs.clearErrorHandler()
+        RIBs.errorHandler = errorHandler
         node.attachToView(mock())
 
         node.onDetach()

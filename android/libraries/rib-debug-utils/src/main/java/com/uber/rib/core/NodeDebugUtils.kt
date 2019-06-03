@@ -16,7 +16,7 @@
 package com.uber.rib.core
 
 import com.badoo.ribs.core.Node
-import com.uber.rib.util.RIBs
+import com.badoo.ribs.util.RIBs
 
 /** Debugging utilties when working with Nodes.  */
 object NodeDebugUtils {
@@ -38,8 +38,7 @@ object NodeDebugUtils {
     private fun printNodeSubtree(
         node: Node<*>, prefix: String, isTail: Boolean
     ) {
-        RIBs.getErrorHandler()
-            .handleDebugMessage(prefix + (if (isTail) ARM_RIGHT else INTERSECTION) + node.tag)
+        RIBs.errorHandler.handleDebugMessage(prefix + (if (isTail) ARM_RIGHT else INTERSECTION) + node.tag)
 
         val children = node.getChildren()
 

@@ -12,6 +12,7 @@ import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import android.support.test.espresso.intent.rule.IntentsTestRule
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
+import com.badoo.ribs.core.Identifiable
 import com.badoo.ribs.test.util.OtherActivity
 import com.badoo.ribs.test.util.TestActivity
 import com.badoo.ribs.test.util.TestIdentifiable
@@ -100,12 +101,8 @@ class ActivityStarterTest {
         activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
         activityRule.activity.ignoreActivityStarts = true
 
-        activityRule.activity.activityStarter.startActivityForResult(collisionIdentifiable1, requestCode = 1) {
-            Intent(this, OtherActivity::class.java)
-        }
-        activityRule.activity.activityStarter.startActivityForResult(collisionIdentifiable2, requestCode = 1) {
-            Intent(this, OtherActivity::class.java)
-        }
+        startOtherActivity(collisionIdentifiable1, requestCode = 1)
+        startOtherActivity(collisionIdentifiable2, requestCode = 1)
         val requestCode = activityRule.activity.lastStartedRequestCode
         activityRule.restartActivitySync()
         val observer = activityRule.activity.activityStarter.events(collisionIdentifiable2).subscribeOnTestObserver()
@@ -165,6 +162,12 @@ class ActivityStarterTest {
 
     private inline fun <reified T> givenResultForActivity(resultCode: Int, data: Intent? = null) {
         intending(hasComponent(T::class.java.name)).respondWith(Instrumentation.ActivityResult(resultCode, data))
+    }
+
+    private fun startOtherActivity(identifiable: Identifiable, requestCode: Int) {
+        activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = requestCode) {
+            Intent(this, OtherActivity::class.java)
+        }
     }
 
     companion object {

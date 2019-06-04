@@ -2,7 +2,7 @@
 
 ## The goal of this tutorial
 
-Satisfying a dependency of a RIB directly from its parent
+To see how to provide dependencies to a RIB
 
 
 ## Starting out
@@ -11,9 +11,7 @@ Compiling and launching **tutorial3**, this is what we see:
 
 ![](https://i.imgur.com/Ja45nRm.png)
 
-We will provide text to the second placeholder first manually, then as a dependency.
-
-(We will handle the first placeholder in the next tutorial) 
+We will provide text to the placeholders first manually, then as a dependency.
 
 Have a brief look at the `Lexem` interface found in this tutorial, as we will use it in the example:
 
@@ -27,9 +25,9 @@ interface Lexem {
             text
     }
 
-    data class Resource(@StringRes val resId: Int) : Lexem {
+    class Resource(@StringRes val resId: Int, private vararg val formatArgs: Any) : Lexem {
         override fun resolve(context: Context): String =
-            context.getString(resId)
+            context.getString(resId, *formatArgs)
     }
 }
 ```
@@ -41,7 +39,9 @@ This is a useful approach for cases when you want to set a text from resource, b
 
 ## A welcoming message
 
-Let's start with the `HelloWorldView` interface. Its `ViewModel` contains a dummy integer field only:
+Let's start with the second placeholder first!
+
+Check the `HelloWorldView` interface. Its `ViewModel` contains a dummy integer field only:
 
 ```kotlin
 data class ViewModel(
@@ -120,12 +120,12 @@ Change it so that it looks like:
 interface HelloWorld : Rib {
 
     interface Dependency {
-        fun config(): Configuration
+        fun config(): Config
     }
 
-    // It's a good idea to group all "simple data" dependencies into a Configuration 
+    // It's a good idea to group all "simple data" dependencies into a Config 
     // object, instead of directly adding them to Dependency interface:
-    data class Configuration(
+    data class Config(
         val welcomeMessage: Lexem
     )
     
@@ -136,29 +136,29 @@ interface HelloWorld : Rib {
 Now if we try to build the project, Dagger will fail us, as we do not yet actually provide this dependency:
 
 ```
-[Dagger/MissingBinding] com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorld.Configuration cannot be provided without an @Inject constructor or an @Provides-annotated method.
+[Dagger/MissingBinding] com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorld.Config cannot be provided without an @Inject constructor or an @Provides-annotated method.
 public abstract interface GreetingsContainerComponent extends com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorld.Dependency
 ```
 
 ## Provide dependency directly in the parent
 
-In this case, our dependency is a simple setup configuration, so we could just satisfy it directly in the parent. 
+In this case, our dependency is simple configuration data, so we could just satisfy it directly in the parent. 
 
-Let's head to `GreetingsContainerModule`, the place where we add all `@Provides` configuration on the container level, and add this block to the bottom:
+Let's head to `GreetingsContainerModule`, the place where we add all the `@Provides` DI definitions on the container level, and add this block to the bottom:
 
 ```kotlin
 @GreetingsContainerScope
 @Provides
 @JvmStatic
-internal fun helloWorldConfig(): HelloWorld.Configuration =
-    HelloWorld.Configuration(
+internal fun helloWorldConfig(): HelloWorld.Config =
+    HelloWorld.Config(
         welcomeMessage = Lexem.Resource(
             R.string.hello_world_welcome_text
         )
     )
 ```
 
-Now the app should build, as we provide the dependency - other than that, nothing changed, since we are not using this configuration yet.
+Now the app should build, as we provide the dependency - other than that, nothing changed, since we are not using this config yet.
 
 Let's correct that, and make use of it in the child `Interactor`.
 
@@ -166,7 +166,7 @@ Add the config to the constructor, and use it to construct the initial `ViewMode
 
 ```kotlin
 class HelloWorldInteractor(
-    private val config: HelloWorld.Configuration, // add this
+    private val config: HelloWorld.Config, // add this
     router: // ... remainder omitted
 ) {
 
@@ -189,7 +189,7 @@ And change the actual construction of the Interactor in `HelloWorldModule`:
 @Provides
 @JvmStatic
 internal fun interactor(
-    config: HelloWorld.Configuration, // add this, Dagger will provide it automatically
+    config: HelloWorld.Config, // add this, Dagger will provide it automatically
     router: HelloWorldRouter
 ): HelloWorldInteractor =
     HelloWorldInteractor(
@@ -203,12 +203,7 @@ Try it out, it should now display the text we passed in as a resource:
 ![](https://i.imgur.com/HTSayPD.png)
 
 
-## Tutorial complete
-
-Congratulations! You can advance to the next one.
-
-
-## Summary
+## Section summary
 
 #### Adding new data to display in the view
 1. Add new widget to xml
@@ -228,3 +223,92 @@ Congratulations! You can advance to the next one.
     3. add it as a parameter to `@Provides` function - this will be provided by Dagger
     4. use it in constructing the object, e.g. the `Interactor`
 
+
+## Next task: greet the user
+
+We are still left with a placeholder text to be filled with text.
+
+Let's imagine this application has some kind of `User` object representing the current logged in user, and we want this placeholder to greet the user like: **"Hello User!"**, with their actual name.
+
+(There's a `User` interface included in this module, check it out)
+
+Obviously, the `HelloWorld` RIB cannot fill in the name of the user, and will need an instance of `User` as a dependency.
+ 
+ In the case of the welcome text, we could provide the dependency directly. Problem is, finding an instance of `User` is not the responsibility of `HelloWorld`, but it's also not the responsibility of the parent RIB, the `GreetingsContainer`.
+
+So in this case, we will need to bubble up this dependency until at some level we can grab an instance of the current `User`, and pass it down.
+
+(As we do not have proper logged out / logged in handling yet, we wil just pass in a dummy User object from the Activity level)
+
+## Test your knowledge!
+
+Based on the previous sections, you should be able to:
+1. Add a new field to `HelloWorldViewImpl` that holds a reference to the `TextView` for the other placeholder, found in `rib_hello_world.xml` with the id `@+id/hello_world_title`
+2. Add a new field to `HelloWorldView.ViewModel`, named `titleText`, type `Lexem`
+3. Set the text of the `TextView` by resolving the `Lexem` from `titleText` whenever the `ViewModel` is rendered in `HelloWorldViewImpl`
+4. Set a fixed value for this field from `HelloWorldInteractor` just to test it out.
+
+Now let's make it more dynamic. You should also be able to:
+1. Add an instance of `private val user: User` as a constructor dependency to `HelloWorldInteractor`
+2. Use `user.name()` to construct: `Lexem.Resource(R.string.hello_world_title, user.name())`, and pass it as the value for `titleText` when creating the `ViewModel`
+3. Add the instance of `User` as a dependency for the creation of `HelloWorldInteractor` in the respective `@Provides` function in `HelloWorldModule` 
+4. Add `User` to `HelloWorld.Dependency` interface to say that `HelloWorld` RIB needs this from the outside
+
+If you feel stuck, you can refer to the previous sections for help, or have a peek at [solutions](solutions.md).
+
+Building the project at this point, Dagger should give you:  
+
+`Dagger/MissingBinding] com.badoo.ribs.tutorials.tutorial5.util.User cannot be provided without an @Provides-annotated method.`
+
+
+## Bubbling up dependencies
+
+This will be super easy, if you got this far. The only difference is that if we cannot provide a dependency directly, we also add it to the `Dependency` interface of the parent (and then to its parent and so on until we can actually provide id).
+
+Really, just a one-liner.
+
+Try it:
+
+```kotlin
+interface GreetingsContainer : Rib {
+
+    interface Dependency {
+        // Add this, and you are done on this level - Dagger will provide
+        // it further down to children automatically:
+        fun user(): User 
+        fun greetingsContainerOutput(): Consumer<Output>
+    }
+
+    // ... remainder omitted
+}
+```
+At this point we reached the root level. `RootActivity` creates an anonymous object actually providing dependencies to `GreetingsContainer`, so we have a compilation error there until we actually implement the newly added `user()` method:
+ 
+```kotlin
+/** The tutorial app's single activity */
+class RootActivity : RibActivity() {
+
+    // ... remainder omitted
+    
+    override fun createRib(): Node<*> =
+        GreetingsContainerBuilder(
+            object : GreetingsContainer.Dependency {
+                // add this block:
+                override fun user(): User =
+                    User.DUMMY
+
+                override fun greetingsContainerOutput(): 
+                
+                // ... remainder omitted
+            }
+        ).build()
+}
+```
+
+The application should now build, and this is what you should see when launching:
+
+![](https://i.imgur.com/4i2lQ1o.png)
+
+## Tutorial complete
+
+Congratulations! You can advance to the next one.

@@ -12,8 +12,8 @@ interface Lexem {
             text
     }
 
-    data class Resource(@StringRes val resId: Int) : Lexem {
+    class Resource(@StringRes val resId: Int, private vararg val formatArgs: Any) : Lexem {
         override fun resolve(context: Context): String =
-            context.getString(resId)
+            context.getString(resId, *formatArgs)
     }
 }

@@ -14,8 +14,8 @@ import com.badoo.ribs.tutorials.tutorial4.util.User
 import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
-    private val user: User,
-    private val config: HelloWorld.Config,
+    user: User,
+    config: HelloWorld.Config,
     private val output: Consumer<HelloWorld.Output>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
@@ -25,18 +25,15 @@ class HelloWorldInteractor(
 
     override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
-        view.setInitialViewModel()
+        view.accept(initialViewModel)
         viewLifecycle.startStop {
             bind(view to output using ViewEventToOutput)
         }
     }
 
-    private fun HelloWorldView.setInitialViewModel() {
-        accept(
-            HelloWorldView.ViewModel(
-                titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
-                welcomeText = config.welcomeMessage
-            )
+    private val initialViewModel =
+        HelloWorldView.ViewModel(
+            titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+            welcomeText = config.welcomeMessage
         )
-    }
 }

@@ -84,17 +84,18 @@ override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
 }
 ```
 
-Just to try out what we did, we could do something like this to test out the parts we just wrote in `HelloWorldView`:
+Just to try out what we did, we could do something like this to test out the parts we just implemented in `HelloWorldView`:
 
 ```kotlin
 override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
     super.onViewCreated(view, viewLifecycle)
-    view.accept(
-        HelloWorldView.ViewModel(
-            welcomeText = Lexem.Text("Does this work at all?")
-        )
-    )
+    view.accept(initialViewModel)
 }
+
+private val initialViewModel =
+    HelloWorldView.ViewModel(
+        welcomeText = Lexem.Text("Does this work at all?")
+    )
 ```
 
 Launch the app to verify that it indeed works.
@@ -166,18 +167,19 @@ Add the config to the constructor, and use it to construct the initial `ViewMode
 
 ```kotlin
 class HelloWorldInteractor(
-    private val config: HelloWorld.Config, // add this
+    config: HelloWorld.Config, // add this
     router: // ... remainder omitted
 ) {
 
     override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
-        view.accept(
-            HelloWorldView.ViewModel(
-                welcomeText = config.welcomeMessage // use it
-            )
-        )
+        view.accept(initialViewModel)
     }
+
+    private val initialViewModel =
+        HelloWorldView.ViewModel(
+            welcomeText = config.welcomeMessage // use it
+        )
 }
 
 ```

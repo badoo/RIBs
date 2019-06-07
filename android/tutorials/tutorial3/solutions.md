@@ -50,8 +50,8 @@ class HelloWorldViewImpl private constructor(
 ### HelloWorldInteractor
 ```kotlin
 class HelloWorldInteractor(
-    private val user: User,
-    private val config: HelloWorld.Configuration,
+    user: User,
+    config: HelloWorld.Configuration,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
     router = router,
@@ -60,13 +60,14 @@ class HelloWorldInteractor(
 
     override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
-        view.accept(
-            HelloWorldView.ViewModel(
+        view.accept(initialViewModel)
+    }
+    
+    private val initialViewModel =
+        HelloWorldView.ViewModel(
                 titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
                 welcomeText = config.welcomeMessage
             )
-        )
-    }
 }
 ```
 ### HelloWorldModule

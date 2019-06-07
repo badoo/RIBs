@@ -352,7 +352,7 @@ Congratulations! You can advance to the next one.
 
 - Paired dependencies: 
     - `Inputs` always come with a dependency of `ObservableSource<Input>`.
-    - `Outputs` always come with a dependency of `ObservableSource<Input>`.
+    - `Outputs` always come with a dependency of `Consumer<Output>`.
     - This is to ensure auto-wiring of the RIB, so that as long as you can build it, it works automatically.
 
 - When satisfying `Output` and `Input` dependencies, we **always** want to do that directly in the parent:

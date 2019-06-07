@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.badoo.ribs.tutorials.tutorial3"
+        applicationId "com.badoo.ribs.tutorials.tutorial4"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

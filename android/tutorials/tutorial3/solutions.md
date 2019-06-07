@@ -65,9 +65,9 @@ class HelloWorldInteractor(
     
     private val initialViewModel =
         HelloWorldView.ViewModel(
-                titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
-                welcomeText = config.welcomeMessage
-            )
+            titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+            welcomeText = config.welcomeMessage
+        )
 }
 ```
 ### HelloWorldModule

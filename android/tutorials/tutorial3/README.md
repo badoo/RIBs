@@ -251,7 +251,7 @@ Based on the previous sections, you should be able to:
 4. Set a fixed value for this field from `HelloWorldInteractor` just to test it out.
 
 Now let's make it more dynamic. You should also be able to:
-1. Add an instance of `private val user: User` as a constructor dependency to `HelloWorldInteractor`
+1. Add an instance of `user: User` as a constructor dependency to `HelloWorldInteractor`
 2. Use `user.name()` to construct: `Lexem.Resource(R.string.hello_world_title, user.name())`, and pass it as the value for `titleText` when creating the `ViewModel`
 3. Add the instance of `User` as a dependency for the creation of `HelloWorldInteractor` in the respective `@Provides` function in `HelloWorldModule` 
 4. Add `User` to `HelloWorld.Dependency` interface to say that `HelloWorld` RIB needs this from the outside
@@ -260,7 +260,7 @@ If you feel stuck, you can refer to the previous sections for help, or have a pe
 
 Building the project at this point, Dagger should give you:  
 
-`Dagger/MissingBinding] com.badoo.ribs.tutorials.tutorial5.util.User cannot be provided without an @Provides-annotated method.`
+`Dagger/MissingBinding] com.badoo.ribs.tutorials.tutorial3.util.User cannot be provided without an @Provides-annotated method.`
 
 
 ## Bubbling up dependencies

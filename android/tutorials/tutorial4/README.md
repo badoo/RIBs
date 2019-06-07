@@ -30,13 +30,13 @@ The classes in this tutorial have all the removed pieces put back in:
 
 This means that as far as `HelloWorld` RIB is concerned, when its button is pressed, it will correctly trigger `Output.HelloThere` on its output channel.
 
-Now of course we need to provide the dependency for consuming this `Output` from `GreetinsContainer`, otherwise the project won't build.
+Now of course we need to provide the dependency for consuming this `Output` from `GreetingsContainer`, otherwise the project won't build.
  
 This will be similar to what we did in the previous tutorial - we will satisfy it in the parent, directly. 
 
 More specifically, as `Outputs` and `Inputs` are forms of communication with a RIB, they should be handled as part of the business logic. Which means, we will want to implement it in the parent `Interactor`.
 
-Let's open `GreetingsContainerInteractor` and implement reacting to its child's `Output`. What to do with its `Output` actually? Well, `GreetingsContainer` has its own `Output` that it communicates to the outside world, so right now we will make it trigger just that
+Let's open `GreetingsContainerInteractor` and implement reacting to its child's `Output`. What to do with its `Output` actually? Well, `GreetingsContainer` has its own `Output` that it communicates to the outside world, so right now we will make it trigger just that.
 
 ```kotlin
 // mind the correct imports:
@@ -292,7 +292,7 @@ class GreetingsContainerInteractor(
     disposables = null
 ) {
     // Add this:
-    internal val helloWorldInputSource: Relay<HelloWorld.Input> = BehaviorRelay.create()
+    internal val helloWorldInputSource: Relay<HelloWorld.Input> = PublishRelay.create()
 
     internal val helloWorldOutputConsumer: Consumer<HelloWorld.Output> = Consumer {
         when (it) {

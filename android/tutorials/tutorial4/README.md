@@ -332,7 +332,8 @@ Now we've established a chain:
 
 The app should now compile. Test it!
 
-[TODO]
+![](https://i.imgur.com/ISU6yZU.png)
+
 
 ## Tutorial complete
  

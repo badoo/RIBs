@@ -30,7 +30,7 @@ The classes in this tutorial have all the removed pieces put back in:
 
 This means that as far as `HelloWorld` RIB is concerned, when its button is pressed, it will correctly trigger `Output.HelloThere` on its output channel.
 
-Now of course we need to provide the dependency for consuming this `Output` from `GreetingsContainer`, otherwise the project won't build.
+Now of course we need to provide the dependency for consuming this `Output` from `GreetingsContainer`.
  
 This will be similar to what we did in the previous tutorial - we will satisfy it in the parent, directly. 
 
@@ -60,6 +60,8 @@ class GreetingsContainerInteractor(
  
 Now let's tell Dagger to use this!
 
+Scroll to the bottom of `GreetingsContainerModule` and replace the `TODO()` block you find there to the object we created:
+
 ```kotlin
 @GreetingsContainerScope
 @Provides
@@ -78,7 +80,7 @@ Now we've established a chain:
 
 `HelloWorldView` =(`Event`)⇒ `ViewEventToOutput` =(`HelloWorld.Output`)⇒ `GreetingsContainerInteractor` =(`GreetingsContainer.Output`)⇒ `RootActivity`
 
-The **tutorial4** app should build at this point, and display the Snackbar when the button is pressed.
+The **tutorial4** app should build and run at this point, and display the Snackbar when the button is pressed.
 
 
 ## Inputs

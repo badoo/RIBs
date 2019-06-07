@@ -59,4 +59,12 @@ internal object GreetingsContainerModule {
                 R.string.hello_world_welcome_text
             )
         )
+
+    @GreetingsContainerScope
+    @Provides
+    @JvmStatic
+    internal fun helloWorldOutputConsumer(
+        interactor: GreetingsContainerInteractor
+    ) : Consumer<HelloWorld.Output> =
+        TODO("Pass instance from interactor")
 }

@@ -121,5 +121,6 @@ class MainScreenTest {
 
     class TestHelloWorldView : TestView<HelloWorldView.ViewModel, HelloWorldView.Event>(), HelloWorldView
 
-    class TestSwitcherView : TestView<SwitcherView.ViewModel, SwitcherView.Event>(), SwitcherView
+    class TestSwitcherView : TestView<SwitcherView.ViewModel, SwitcherView.Event>(),
+        SwitcherView
 }

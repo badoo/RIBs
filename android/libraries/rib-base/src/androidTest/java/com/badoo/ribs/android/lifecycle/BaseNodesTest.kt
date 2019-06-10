@@ -22,7 +22,7 @@ abstract class BaseNodesTest {
         val pushConfiguration2: TestRootRouter.Configuration? = null
     )
 
-    protected fun test(setup: When, expectedState: ExpectedState, testBlock: (TestRootRouter) -> Unit) {
+    protected fun test(setup: When, expectedState: ExpectedState, testBlock: (TestRootRouter, TestNode<*>) -> Unit) {
         val rootProvider = TestRoot.Provider(
             initialConfiguration = setup.initialConfiguration,
             permanentParts = setup.permanentParts
@@ -32,7 +32,7 @@ abstract class BaseNodesTest {
 
         val router: TestRootRouter = rootProvider.rootNode?.getRouter() as TestRootRouter
 
-        testBlock.invoke(router)
+        testBlock.invoke(router, rootProvider.rootNode!!)
 
         rootProvider.makeAssertions(expectedState)
     }

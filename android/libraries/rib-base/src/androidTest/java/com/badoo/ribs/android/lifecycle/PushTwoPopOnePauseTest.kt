@@ -4,6 +4,7 @@ import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.DETACHED
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN_PAUSED
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode3
@@ -14,14 +15,15 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Test
 
-class PushTwoPopOneTest : BaseNodesTest() {
+class PushTwoPopOnePauseTest : BaseNodesTest() {
 
     private fun pushTwoConfigurationAndPop(setup: When, expectedState: ExpectedState) {
-        test(setup, expectedState) { router, _ ->
+        test(setup, expectedState) { router, rootNode ->
             runOnMainSync {
                 router.pushIt(setup.pushConfiguration1!!)
                 router.pushIt(setup.pushConfiguration2!!)
                 router.popBackStack()
+                rootNode.onPause()
             }
         }
     }
@@ -36,7 +38,7 @@ class PushTwoPopOneTest : BaseNodesTest() {
             ),
             ExpectedState(
                 node1 = VIEW_DETACHED, // Next content should cause view detach on first
-                node2 = ON_SCREEN,     // This should be restored after pop
+                node2 = ON_SCREEN_PAUSED,     // This should be restored after pop
                 node3 = DETACHED       // This should be popped
             )
         )
@@ -51,9 +53,9 @@ class PushTwoPopOneTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
-                node1 = VIEW_DETACHED, // Next content should cause view detach on first
-                node2 = ON_SCREEN,     // This should be restored after pop
-                node3 = DETACHED       // This should be popped
+                node1 = VIEW_DETACHED,      // Next content should cause view detach on first
+                node2 = ON_SCREEN_PAUSED,   // This should be restored after pop
+                node3 = DETACHED            // This should be popped
             )
         )
     }
@@ -67,9 +69,9 @@ class PushTwoPopOneTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
-                node1 = ON_SCREEN, // This should be restored after pop (next one is overlay)
-                node2 = ON_SCREEN, // This should be restored after pop
-                node3 = DETACHED   // This should be popped
+                node1 = ON_SCREEN_PAUSED, // This should be restored after pop (next one is overlay)
+                node2 = ON_SCREEN_PAUSED, // This should be restored after pop
+                node3 = DETACHED          // This should be popped
             )
         )
     }
@@ -83,9 +85,9 @@ class PushTwoPopOneTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3
             ),
             ExpectedState(
-                node1 = ON_SCREEN, // This should be restored after pop (next one is overlay)
-                node2 = ON_SCREEN, // This should be restored after pop
-                node3 = DETACHED   // This should be popped
+                node1 = ON_SCREEN_PAUSED, // This should be restored after pop (next one is overlay)
+                node2 = ON_SCREEN_PAUSED, // This should be restored after pop
+                node3 = DETACHED          // This should be popped
             )
         )
     }
@@ -100,11 +102,11 @@ class PushTwoPopOneTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3
             ),
             ExpectedState(
-                permanentNode1 = ON_SCREEN, // This should always be on screen
-                permanentNode2 = ON_SCREEN, // This should always be on screen
-                node1 = VIEW_DETACHED,      // Next content should cause view detach on first
-                node2 = ON_SCREEN,          // This should be restored after pop
-                node3 = DETACHED            // This should be popped
+                permanentNode1 = ON_SCREEN_PAUSED, // This should always be on screen
+                permanentNode2 = ON_SCREEN_PAUSED, // This should always be on screen
+                node1 = VIEW_DETACHED,             // Next content should cause view detach on first
+                node2 = ON_SCREEN_PAUSED,          // This should be restored after pop
+                node3 = DETACHED                   // This should be popped
             )
         )
     }
@@ -119,11 +121,11 @@ class PushTwoPopOneTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
-                permanentNode1 = ON_SCREEN, // This should always be on screen
-                permanentNode2 = ON_SCREEN, // This should always be on screen
-                node1 = VIEW_DETACHED,      // Second content should cause view detach on first
-                node2 = ON_SCREEN,          // This should be restored after pop
-                node3 = DETACHED            // This should be popped
+                permanentNode1 = ON_SCREEN_PAUSED, // This should always be on screen
+                permanentNode2 = ON_SCREEN_PAUSED, // This should always be on screen
+                node1 = VIEW_DETACHED,             // Second content should cause view detach on first
+                node2 = ON_SCREEN_PAUSED,          // This should be restored after pop
+                node3 = DETACHED                   // This should be popped
             )
         )
     }
@@ -138,11 +140,11 @@ class PushTwoPopOneTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
-                permanentNode1 = ON_SCREEN, // This should always be on screen
-                permanentNode2 = ON_SCREEN, // This should always be on screen
-                node1 = ON_SCREEN,          // This should be restored after pop (next one is overlay)
-                node2 = ON_SCREEN,          // This should be restored after pop
-                node3 = DETACHED            // This should be popped
+                permanentNode1 = ON_SCREEN_PAUSED, // This should always be on screen
+                permanentNode2 = ON_SCREEN_PAUSED, // This should always be on screen
+                node1 = ON_SCREEN_PAUSED,          // This should be restored after pop (next one is overlay)
+                node2 = ON_SCREEN_PAUSED,          // This should be restored after pop
+                node3 = DETACHED                   // This should be popped
             )
         )
     }
@@ -157,11 +159,11 @@ class PushTwoPopOneTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3
             ),
             ExpectedState(
-                permanentNode1 = ON_SCREEN, // This should always be on screen
-                permanentNode2 = ON_SCREEN, // This should always be on screen
-                node1 = ON_SCREEN,          // This should be restored after pop (next one is overlay)
-                node2 = ON_SCREEN,          // This should be restored after pop
-                node3 = DETACHED            // This should be popped
+                permanentNode1 = ON_SCREEN_PAUSED, // This should always be on screen
+                permanentNode2 = ON_SCREEN_PAUSED, // This should always be on screen
+                node1 = ON_SCREEN_PAUSED,          // This should be restored after pop (next one is overlay)
+                node2 = ON_SCREEN_PAUSED,          // This should be restored after pop
+                node3 = DETACHED                   // This should be popped
             )
         )
     }

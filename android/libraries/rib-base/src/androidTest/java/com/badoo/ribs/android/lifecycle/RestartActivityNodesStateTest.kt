@@ -18,7 +18,7 @@ import org.junit.Test
 class RestartActivityNodesStateTest : BaseNodesTest() {
 
     private fun testPushTwoConfigurationThenRestart(setup: When, expectedState: ExpectedState) {
-        test(setup, expectedState) { router ->
+        test(setup, expectedState) { router, _ ->
             runOnMainSync {
                 router.pushIt(setup.pushConfiguration1!!)
                 router.pushIt(setup.pushConfiguration2!!)

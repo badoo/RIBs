@@ -1,8 +1,8 @@
 package com.badoo.ribs.android.lifecycle
 
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
-import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode2AsOverlay

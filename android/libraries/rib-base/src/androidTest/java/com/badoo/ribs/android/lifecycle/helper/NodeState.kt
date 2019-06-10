@@ -1,7 +1,10 @@
 package com.badoo.ribs.android.lifecycle.helper
 
 import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Lifecycle.State.*
+import android.arch.lifecycle.Lifecycle.State.CREATED
+import android.arch.lifecycle.Lifecycle.State.DESTROYED
+import android.arch.lifecycle.Lifecycle.State.RESUMED
+import android.arch.lifecycle.Lifecycle.State.STARTED
 
 data class NodeState(
     val attached: Boolean,
@@ -42,30 +45,27 @@ data class NodeState(
         )
     }
 
-    override fun toString(): String =
-        when {
-            attached && viewAttached -> {
-                when {
-                    ribLifeCycleState == RESUMED && viewLifeCycleState == RESUMED -> "ON_SCREEN"
-                    ribLifeCycleState == STARTED && viewLifeCycleState == STARTED -> "ON_SCREEN_PAUSED"
-                    ribLifeCycleState == CREATED && viewLifeCycleState == CREATED -> "ON_SCREEN_STOPPED"
-                    else -> "ON_SCREEN [!INVALID!] (rib: $ribLifeCycleState / view: $viewLifeCycleState)"
-                }
-            }
+    override fun toString(): String = when {
+        attached && viewAttached -> onScreenToString()
+        attached && !viewAttached -> viewDetachedToString()
+        !attached && !viewAttached -> detachedToString()
+        else -> "!!! INVALID - ${super.toString()} !!!"
+    }
 
-            attached && !viewAttached -> {
-                when {
-                    ribLifeCycleState == CREATED && viewLifeCycleState == DESTROYED -> "VIEW_DETACHED"
-                    else -> "VIEW_DETACHED [!INVALID!] (rib: $ribLifeCycleState / view: $viewLifeCycleState)"
-                }
-            }
+    private fun onScreenToString(): String = when {
+        ribLifeCycleState == RESUMED && viewLifeCycleState == RESUMED -> "ON_SCREEN"
+        ribLifeCycleState == STARTED && viewLifeCycleState == STARTED -> "ON_SCREEN_PAUSED"
+        ribLifeCycleState == CREATED && viewLifeCycleState == CREATED -> "ON_SCREEN_STOPPED"
+        else -> "ON_SCREEN [!INVALID!] (rib: $ribLifeCycleState / view: $viewLifeCycleState)"
+    }
 
-            !attached && !viewAttached -> {
-                when {
-                    ribLifeCycleState == DESTROYED && viewLifeCycleState == DESTROYED -> "DETACHED"
-                    else -> "DETACHED [!INVALID!] (rib: $ribLifeCycleState / view: $viewLifeCycleState)"
-                }
-            }
-            else -> "!!! INVALID - ${super.toString()} !!!"
-        }
+    private fun viewDetachedToString(): String = when {
+        ribLifeCycleState == CREATED && viewLifeCycleState == DESTROYED -> "VIEW_DETACHED"
+        else -> "VIEW_DETACHED [!INVALID!] (rib: $ribLifeCycleState / view: $viewLifeCycleState)"
+    }
+
+    private fun detachedToString(): String = when {
+        ribLifeCycleState == DESTROYED && viewLifeCycleState == DESTROYED -> "DETACHED"
+        else -> "DETACHED [!INVALID!] (rib: $ribLifeCycleState / view: $viewLifeCycleState)"
+    }
 }

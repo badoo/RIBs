@@ -13,7 +13,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Test
 
-class PushTwoConfigurationsNodesStateTest  : BaseNodesTest() {
+class PushTwoTest  : BaseNodesTest() {
 
     private fun pushTwoConfigurations(setup: When, expectedState: ExpectedState) {
         test(setup, expectedState) { router ->

@@ -22,7 +22,7 @@ class RootNodeLifecycleTest {
 
     @Test
     fun whenActivityResumed_viewIsAttached() {
-        assertThat(node.isViewAttached).isTrue()
+        assertThat(node.isAttachedToView).isTrue()
     }
 
     @Test
@@ -45,7 +45,7 @@ class RootNodeLifecycleTest {
     fun whenActivityDestroyed_viewIsDetached() {
         ribsRule.finishActivitySync()
 
-        assertThat(node.isViewAttached).isFalse()
+        assertThat(node.isAttachedToView).isFalse()
     }
 
     @Test

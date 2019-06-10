@@ -95,8 +95,7 @@ open class Node<V : RibView>(
     private var savedInstanceState: Bundle? = null
     internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
 
-    // TODO rename to isAttachedToView / isOnScreen (as it should not imply we have view)
-    internal var isViewAttached: Boolean = false
+    internal var isAttachedToView: Boolean = false
         private set
 
     fun getChildren(): List<Node<*>> =
@@ -104,7 +103,7 @@ open class Node<V : RibView>(
 
     open fun attachToView(parentViewGroup: ViewGroup) {
         this.parentViewGroup = parentViewGroup
-        isViewAttached = true
+        isAttachedToView = true
         view = createView(parentViewGroup)
         view?.let {
             parentViewGroup.addView(it.androidView)
@@ -122,7 +121,7 @@ open class Node<V : RibView>(
         viewFactory?.invoke(parentViewGroup)
 
     internal fun attachChildView(child: Node<*>) {
-        if (isViewAttached) {
+        if (isAttachedToView) {
             child.attachToView(
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
                 view?.getParentViewForChild(child.identifier) ?: parentViewGroup!!
@@ -153,7 +152,7 @@ open class Node<V : RibView>(
         }
 
         view = null
-        isViewAttached = false
+        isAttachedToView = false
         this.parentViewGroup = null
     }
 
@@ -166,7 +165,7 @@ open class Node<V : RibView>(
     open fun handleBackPress(): Boolean {
         ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return children
-                .filter { it.isViewAttached }
+                .filter { it.isAttachedToView }
                 .any { it.handleBackPress() }
             || interactor.handleBackPress()
             || router.popBackStack()
@@ -221,7 +220,7 @@ open class Node<V : RibView>(
     }
 
     open fun onDetach() {
-        if (isViewAttached) {
+        if (isAttachedToView) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
                 RuntimeException("View was not detached before node detach!")
@@ -331,7 +330,7 @@ open class Node<V : RibView>(
     }
 
     private fun updateToStateIfViewAttached(state: Lifecycle.State) {
-        if (isViewAttached) {
+        if (isAttachedToView) {
             ribLifecycleRegistry.markState(state)
             view?.let { viewLifecycleRegistry.markState(state) }
         }

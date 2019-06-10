@@ -161,7 +161,7 @@ class NodeTest {
 
         node.onDetach()
 
-        assertEquals(false, node.isViewAttached)
+        assertEquals(false, node.isAttachedToView)
     }
 
     @Test
@@ -327,20 +327,20 @@ class NodeTest {
 
     @Test
     fun `isViewAttached flag is initially false`() {
-        assertEquals(false, node.isViewAttached)
+        assertEquals(false, node.isAttachedToView)
     }
 
     @Test
     fun `attachToView() sets isViewAttached flag to true`() {
         node.attachToView(parentViewGroup)
-        assertEquals(true, node.isViewAttached)
+        assertEquals(true, node.isAttachedToView)
     }
 
     @Test
     fun `onDetachFromView() resets isViewAttached flag to false`() {
         node.attachToView(parentViewGroup)
         node.detachFromView()
-        assertEquals(false, node.isViewAttached)
+        assertEquals(false, node.isAttachedToView)
     }
 
     @Test

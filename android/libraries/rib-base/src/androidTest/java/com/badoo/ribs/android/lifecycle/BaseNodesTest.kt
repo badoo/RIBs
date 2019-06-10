@@ -56,7 +56,7 @@ abstract class BaseNodesTest {
     private fun TestNode<*>.toNodeState() =
         NodeState(
             attached = isAttached,
-            viewAttached = isViewAttached,
+            viewAttached = isAttachedToView,
             ribLifeCycleState = ribLifecycleRegistry.currentState,
             viewLifeCycleState = viewLifecycleRegistry.currentState
         )

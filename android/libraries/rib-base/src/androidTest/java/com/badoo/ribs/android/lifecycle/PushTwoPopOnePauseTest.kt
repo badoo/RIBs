@@ -15,18 +15,9 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Test
 
-class PushTwoPopOnePauseTest : BaseNodesTest() {
+abstract class PushTwoPopOnePauseTest : BaseNodesTest() {
 
-    private fun pushTwoConfigurationAndPop(setup: When, expectedState: ExpectedState) {
-        test(setup, expectedState) { router, rootNode ->
-            runOnMainSync {
-                router.pushIt(setup.pushConfiguration1!!)
-                router.pushIt(setup.pushConfiguration2!!)
-                router.popBackStack()
-                rootNode.onPause()
-            }
-        }
-    }
+    protected abstract fun pushTwoConfigurationAndPop(setup: When, expectedState: ExpectedState)
 
     @Test
     fun noPermanent_singleInitial_pushContent_pushContent_pop() {

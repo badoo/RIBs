@@ -11,21 +11,11 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.A
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay.AttachNode3AsOverlay
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent.Permanent1
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent.Permanent2
-import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Test
 
-class PushTwoPopOneStopTest : BaseNodesTest() {
+abstract class PushTwoPopOneStopTest : BaseNodesTest() {
 
-    private fun pushTwoConfigurationAndPop(setup: When, expectedState: ExpectedState) {
-        test(setup, expectedState) { router, rootNode ->
-            runOnMainSync {
-                router.pushIt(setup.pushConfiguration1!!)
-                router.pushIt(setup.pushConfiguration2!!)
-                router.popBackStack()
-                rootNode.onStop()
-            }
-        }
-    }
+    protected abstract fun pushTwoConfigurationAndPop(setup: When, expectedState: ExpectedState)
 
     @Test
     fun noPermanent_singleInitial_pushContent_pushContent_pop() {

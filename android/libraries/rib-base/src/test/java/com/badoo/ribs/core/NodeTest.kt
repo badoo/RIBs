@@ -107,7 +107,7 @@ class NodeTest {
     @Test
     fun `onAttach() notifies Interactor`() {
         node.onAttach(null)
-        verify(interactor).onAttach(null)
+        verify(interactor).onAttach(null, node.ribLifecycleRegistry)
     }
 
     @Test
@@ -125,7 +125,7 @@ class NodeTest {
         val childBundle: Bundle = mock()
         whenever(bundle.getBundle(KEY_INTERACTOR)).thenReturn(childBundle)
         node.onAttach(bundle)
-        verify(interactor).onAttach(childBundle)
+        verify(interactor).onAttach(childBundle, node.ribLifecycleRegistry)
     }
 
     @Test
@@ -199,30 +199,6 @@ class NodeTest {
         node.onSaveInstanceState(bundle)
         verify(interactor).onSaveInstanceState(captor.capture())
         verify(bundle).putBundle(KEY_INTERACTOR, captor.firstValue)
-    }
-
-    @Test
-    fun `onStart() is forwarded to Interactor`() {
-        node.onStart()
-        verify(interactor).onStart()
-    }
-
-    @Test
-    fun `onStop() is forwarded to Interactor`() {
-        node.onStop()
-        verify(interactor).onStop()
-    }
-
-    @Test
-    fun `onPause() is forwarded to Interactor`() {
-        node.onPause()
-        verify(interactor).onPause()
-    }
-
-    @Test
-    fun `onResume()() is forwarded to Interactor`() {
-        node.onResume()
-        verify(interactor).onResume()
     }
 
     @Test
@@ -491,13 +467,13 @@ class NodeTest {
     @Test
     fun `When current Node has a view, attachToView() notifies Interactor of view creation`() {
         node.attachToView(parentViewGroup)
-        verify(interactor).onViewCreated(view)
+        verify(interactor).onViewCreated(node.viewLifecycleRegistry, view)
     }
 
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
         whenever(viewFactory.invoke(parentViewGroup)).thenReturn(null)
         node.attachToView(parentViewGroup)
-        verify(interactor, never()).onViewCreated(anyOrNull())
+        verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
     }
 }

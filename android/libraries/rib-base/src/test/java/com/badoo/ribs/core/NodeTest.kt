@@ -400,9 +400,10 @@ class NodeTest {
 
     @Test
     fun `attachChild() does not imply attachToView when Android view system is not available`() {
-        val child = mock<Node<*>>()
+        val childViewFactory = mock<ViewFactory<TestView>>()
+        val child = TestNode(mock(), childViewFactory)
         node.attachChildNode(child, null)
-        verify(child, never()).attachToView(parentViewGroup)
+        verify(childViewFactory, never()).invoke(parentViewGroup)
     }
 
     @Test

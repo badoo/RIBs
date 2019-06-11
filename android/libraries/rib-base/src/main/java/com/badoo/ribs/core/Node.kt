@@ -183,8 +183,12 @@ open class Node<V : RibView>(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
         )
 
-        childNode.externalLifecycleRegistry.markState(externalLifecycleRegistry.currentState)
+        childNode.inheritExternalLifecycle(externalLifecycleRegistry)
         childNode.onAttach(bundle)
+    }
+
+    private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
+        externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
     }
 
     /**

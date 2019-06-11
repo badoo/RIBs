@@ -15,6 +15,7 @@ import com.intellij.refactoring.PackageWrapper
 import com.intellij.refactoring.rename.RenameDialog
 import com.intellij.refactoring.rename.RenameProcessor
 import com.intellij.ui.EditorTextField
+import org.jetbrains.kotlin.idea.core.getPackage
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import java.awt.GridBagConstraints
@@ -37,15 +38,17 @@ class RenameRibDialog(
     }
 
     @Suppress("LongMethod")
-    override fun createRenameProcessor(newName: String): RenameProcessor {
+    override fun createRenameProcessor(newName: String): RenameProcessor? {
         val replacements = Replacements().apply {
             addStringReplacement(ribName, newName)
         }
 
+        val pkg = directory.getPackage() ?: return null
+
         val renameProcessor = RenameProcessor(
             project,
-            directory,
-            directory.name.applyReplacements(replacements),
+            pkg,
+            pkg.name.orEmpty().applyReplacements(replacements),
             false,
             false
         )

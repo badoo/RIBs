@@ -101,6 +101,18 @@ open class Node<V : RibView>(
     fun getChildren(): List<Node<*>> =
         children.toList()
 
+    @CallSuper
+    open fun onAttach(savedInstanceState: Bundle?) {
+        this.savedInstanceState = savedInstanceState
+
+        savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
+
+        if (externalLifecycleRegistry.currentState == INITIALIZED) externalLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
+        ribLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
+        router.onAttach(savedInstanceState?.getBundle(KEY_ROUTER))
+        interactor.onAttach(savedInstanceState?.getBundle(KEY_INTERACTOR), ribLifecycleRegistry)
+    }
+
     open fun attachToView(parentViewGroup: ViewGroup) {
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
@@ -120,27 +132,6 @@ open class Node<V : RibView>(
     private fun createView(parentViewGroup: ViewGroup): V? =
         viewFactory?.invoke(parentViewGroup)
 
-    internal fun attachChildView(child: Node<*>) {
-        if (isAttachedToView) {
-            child.attachToView(
-                // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                view?.getParentViewForChild(child.identifier) ?: parentViewGroup!!
-            )
-        }
-    }
-
-    internal fun saveViewState() {
-        view?.let {
-            it.androidView.saveHierarchyState(savedViewState)
-        }
-    }
-
-    internal fun detachChildView(child: Node<*>) {
-        parentViewGroup?.let {
-            child.detachFromView()
-        }
-    }
-
     open fun detachFromView() {
         onPauseInternal()
         onStopInternal()
@@ -156,19 +147,23 @@ open class Node<V : RibView>(
         this.parentViewGroup = null
     }
 
-    /**
-     * Dispatch back press to the associated interactor.
-     *
-     * @return TRUE if the interactor handled the back press and no further action is necessary.
-     */
-    @CallSuper
-    open fun handleBackPress(): Boolean {
-        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
-        return children
-                .filter { it.isAttachedToView }
-                .any { it.handleBackPress() }
-            || interactor.handleBackPress()
-            || router.popBackStack()
+    open fun onDetach() {
+        if (isAttachedToView) {
+            RIBs.errorHandler.handleNonFatalError(
+                "View was not detached before node detach!",
+                RuntimeException("View was not detached before node detach!")
+            )
+            detachFromView()
+        }
+
+        viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+        ribLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+        interactor.onDetach()
+        router.onDetach()
+
+        for (child in children) {
+            detachChildNode(child)
+        }
     }
 
     /**
@@ -191,6 +186,21 @@ open class Node<V : RibView>(
         externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
     }
 
+    internal fun attachChildView(child: Node<*>) {
+        if (isAttachedToView) {
+            child.attachToView(
+                // parentViewGroup is guaranteed to be non-null if and only if view is attached
+                view?.getParentViewForChild(child.identifier) ?: parentViewGroup!!
+            )
+        }
+    }
+
+    internal fun detachChildView(child: Node<*>) {
+        parentViewGroup?.let {
+            child.detachFromView()
+        }
+    }
+
     /**
      * Detaches the node from this parent. NOTE: No consumers of
      * this API should ever keep a reference to the detached child, leak canary will enforce
@@ -209,62 +219,6 @@ open class Node<V : RibView>(
         )
 
         childNode.onDetach()
-    }
-
-    @CallSuper
-    open fun onAttach(savedInstanceState: Bundle?) {
-        this.savedInstanceState = savedInstanceState
-
-        savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
-
-        if (externalLifecycleRegistry.currentState == INITIALIZED) externalLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
-        ribLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
-        router.onAttach(savedInstanceState?.getBundle(KEY_ROUTER))
-        interactor.onAttach(savedInstanceState?.getBundle(KEY_INTERACTOR), ribLifecycleRegistry)
-    }
-
-    open fun onDetach() {
-        if (isAttachedToView) {
-            RIBs.errorHandler.handleNonFatalError(
-                "View was not detached before node detach!",
-                RuntimeException("View was not detached before node detach!")
-            )
-            detachFromView()
-        }
-
-        viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
-        ribLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
-        interactor.onDetach()
-        router.onDetach()
-
-        for (child in children) {
-            detachChildNode(child)
-        }
-    }
-
-    open fun onSaveInstanceState(outState: Bundle) {
-        saveRouterState(outState)
-        saveInteractorState(outState)
-        saveViewState()
-        outState.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
-    }
-
-    fun onLowMemory() {
-        router.onLowMemory()
-    }
-
-    private fun saveRouterState(outState: Bundle) {
-        Bundle().let {
-            router.onSaveInstanceState(it)
-            outState.putBundle(KEY_ROUTER, it)
-        }
-    }
-
-    private fun saveInteractorState(outState: Bundle) {
-        Bundle().let {
-            interactor.onSaveInstanceState(it)
-            outState.putBundle(KEY_INTERACTOR, it)
-        }
     }
 
     /**
@@ -338,6 +292,53 @@ open class Node<V : RibView>(
             ribLifecycleRegistry.markState(state)
             view?.let { viewLifecycleRegistry.markState(state) }
         }
+    }
+
+    /**
+     * Dispatch back press to the associated interactor.
+     *
+     * @return TRUE if the interactor handled the back press and no further action is necessary.
+     */
+    @CallSuper
+    open fun handleBackPress(): Boolean {
+        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
+        return children
+            .filter { it.isAttachedToView }
+            .any { it.handleBackPress() }
+            || interactor.handleBackPress()
+            || router.popBackStack()
+    }
+
+
+    internal fun saveViewState() {
+        view?.let {
+            it.androidView.saveHierarchyState(savedViewState)
+        }
+    }
+
+    open fun onSaveInstanceState(outState: Bundle) {
+        saveRouterState(outState)
+        saveInteractorState(outState)
+        saveViewState()
+        outState.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
+    }
+
+    private fun saveRouterState(outState: Bundle) {
+        Bundle().let {
+            router.onSaveInstanceState(it)
+            outState.putBundle(KEY_ROUTER, it)
+        }
+    }
+
+    private fun saveInteractorState(outState: Bundle) {
+        Bundle().let {
+            interactor.onSaveInstanceState(it)
+            outState.putBundle(KEY_INTERACTOR, it)
+        }
+    }
+
+    fun onLowMemory() {
+        router.onLowMemory()
     }
 
     override fun getLifecycle(): Lifecycle =

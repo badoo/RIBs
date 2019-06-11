@@ -10,8 +10,8 @@ class PushTwoPopOnePauseAfterPopTest : PushTwoPopOnePauseTest() {
             runOnMainSync {
                 router.pushIt(setup.pushConfiguration1!!)
                 router.pushIt(setup.pushConfiguration2!!)
-                rootNode.onPause()
                 router.popBackStack()
+                rootNode.onPause()
             }
         }
     }

@@ -26,9 +26,9 @@ abstract class PushTwoPopOnePauseTest : BaseNodesTest() {
                 pushConfiguration2 = AttachNode3
             ),
             ExpectedState(
-                node1 = VIEW_DETACHED, // Next content should cause view detach on first
-                node2 = ON_SCREEN_PAUSED,     // This should be restored after pop
-                node3 = DETACHED       // This should be popped
+                node1 = VIEW_DETACHED,      // Next content should cause view detach on first
+                node2 = ON_SCREEN_PAUSED,   // This should be restored after pop
+                node3 = DETACHED            // This should be popped
             )
         )
     }

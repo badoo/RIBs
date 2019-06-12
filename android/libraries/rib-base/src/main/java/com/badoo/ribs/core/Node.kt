@@ -139,20 +139,22 @@ open class Node<V : RibView>(
         viewFactory?.invoke(parentViewGroup)
 
     open fun detachFromView() {
-        onPauseInternal()
-        onStopInternal()
-        router.onDetachView()
+        if (isAttachedToView) {
+            onPauseInternal()
+            onStopInternal()
+            router.onDetachView()
 
-        if (!isViewless) {
-            view!!.let {
-                parentViewGroup!!.removeView(it.androidView)
-                viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+            if (!isViewless) {
+                view!!.let {
+                    parentViewGroup!!.removeView(it.androidView)
+                    viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+                }
             }
-        }
 
-        view = null
-        isAttachedToView = false
-        this.parentViewGroup = null
+            view = null
+            isAttachedToView = false
+            this.parentViewGroup = null
+        }
     }
 
     open fun onDetach() {

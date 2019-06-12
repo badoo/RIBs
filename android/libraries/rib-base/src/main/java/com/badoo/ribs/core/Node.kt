@@ -89,6 +89,9 @@ open class Node<V : RibView>(
     val tag: String = this::class.java.name
     internal val children = CopyOnWriteArrayList<Node<*>>()
 
+    private val isViewless: Boolean =
+        viewFactory == null
+
     internal open var view: V? = null
     protected var parentViewGroup: ViewGroup? = null
 
@@ -116,12 +119,15 @@ open class Node<V : RibView>(
     open fun attachToView(parentViewGroup: ViewGroup) {
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
-        view = createView(parentViewGroup)
-        view?.let {
-            parentViewGroup.addView(it.androidView)
-            it.androidView.restoreHierarchyState(savedViewState)
-            viewLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
-            interactor.onViewCreated(viewLifecycleRegistry, it)
+
+        if (!isViewless) {
+            view = createView(parentViewGroup)
+            view!!.let {
+                parentViewGroup.addView(it.androidView)
+                it.androidView.restoreHierarchyState(savedViewState)
+                viewLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
+                interactor.onViewCreated(viewLifecycleRegistry, it)
+            }
         }
 
         router.onAttachView()
@@ -137,9 +143,11 @@ open class Node<V : RibView>(
         onStopInternal()
         router.onDetachView()
 
-        view?.let {
-            parentViewGroup!!.removeView(it.androidView)
-            viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+        if (!isViewless) {
+            view!!.let {
+                parentViewGroup!!.removeView(it.androidView)
+                viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+            }
         }
 
         view = null
@@ -188,10 +196,13 @@ open class Node<V : RibView>(
 
     internal fun attachChildView(child: Node<*>) {
         if (isAttachedToView) {
-            child.attachToView(
+            val target = when {
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                view?.getParentViewForChild(child.identifier) ?: parentViewGroup!!
-            )
+                isViewless -> parentViewGroup!!
+                else -> view!!.getParentViewForChild(child.identifier) ?: parentViewGroup!!
+            }
+
+            child.attachToView(target)
         }
     }
 
@@ -290,7 +301,9 @@ open class Node<V : RibView>(
     private fun updateToStateIfViewAttached(state: Lifecycle.State) {
         if (isAttachedToView) {
             ribLifecycleRegistry.markState(state)
-            view?.let { viewLifecycleRegistry.markState(state) }
+            if (!isViewless) {
+                view!!.let { viewLifecycleRegistry.markState(state) }
+            }
         }
     }
 

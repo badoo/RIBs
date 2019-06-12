@@ -53,12 +53,13 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<HelloWorldView>,
+        deps: HelloWorld.Dependency,
+        viewFactory: ViewFactory<HelloWorld.Dependency, HelloWorldView>,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
     ) : Node<HelloWorldView> = Node(
         identifier = object : HelloWorld {},
-        viewFactory = viewFactory,
+        viewFactory = viewFactory(deps),
         router = router,
         interactor = interactor
     )

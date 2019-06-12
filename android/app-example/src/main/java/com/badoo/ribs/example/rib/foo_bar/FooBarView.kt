@@ -1,11 +1,11 @@
 package com.badoo.ribs.example.rib.foo_bar
 
-import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.util.AttributeSet
+import android.support.annotation.LayoutRes
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
@@ -31,23 +31,27 @@ interface FooBarView : RibView,
 
 
 class FooBarViewImpl private constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0, private val events: PublishRelay<Event>
-) : ConstraintLayout(context, attrs, defStyle),
-    FooBarView,
+    override val androidView: ViewGroup,
+    private val events: PublishRelay<Event> = PublishRelay.create()
+) : FooBarView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
-    @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-    ) : this(context, attrs, defStyle, PublishRelay.create<Event>())
+    class Factory(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_foobar
+    ) : ViewFactory<FooBar.Dependency, FooBarView> {
+        override fun invoke(deps: FooBar.Dependency): (ViewGroup) -> FooBarView = {
+            FooBarViewImpl(
+                com.badoo.ribs.customisation.inflate(it, layoutRes)
+            )
+        }
+    }
 
-    override val androidView = this
-    private val text: TextView by lazy { findViewById<TextView>(R.id.foobar_debug) }
-    private val checkButton: Button by lazy { findViewById<Button>(R.id.foobar_button_check_permissions) }
-    private val requestButton: Button by lazy { findViewById<Button>(R.id.foobar_button_request_permissions) }
+    private val text: TextView = androidView.findViewById(R.id.foobar_debug)
+    private val checkButton: Button = androidView.findViewById(R.id.foobar_button_check_permissions)
+    private val requestButton: Button = androidView.findViewById(R.id.foobar_button_request_permissions)
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    init {
         checkButton.setOnClickListener { events.accept(CheckPermissionsButtonClicked)}
         requestButton.setOnClickListener { events.accept(RequestPermissionsButtonClicked)}
     }

@@ -44,12 +44,13 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<FooBarView>,
+        deps: FooBar.Dependency,
+        viewFactory: ViewFactory<FooBar.Dependency, FooBarView>,
         router: FooBarRouter,
         interactor: FooBarInteractor
     ) : Node<FooBarView> = Node(
         identifier = object : FooBar {},
-        viewFactory = viewFactory,
+        viewFactory = viewFactory(deps),
         router = router,
         interactor = interactor
     )

@@ -46,12 +46,13 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<MenuView>,
+        deps: Menu.Dependency,
+        viewFactory: ViewFactory<Menu.Dependency, MenuView>,
         router: MenuRouter,
         interactor: MenuInteractor
     ) : Node<MenuView> = Node(
         identifier = object : Menu {},
-        viewFactory = viewFactory,
+        viewFactory = viewFactory(deps),
         router = router,
         interactor = interactor
     )

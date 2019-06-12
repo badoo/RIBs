@@ -8,8 +8,8 @@ import com.badoo.ribs.example.rib.dialog_example.DialogExampleInteractor
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
-import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.RibDialog
+import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder
 import dagger.Provides
@@ -77,12 +77,13 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<DialogExampleView>,
+        deps: DialogExample.Dependency,
+        viewFactory: ViewFactory<DialogExample.Dependency, DialogExampleView>,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor
     ) : Node<DialogExampleView> = Node(
         identifier = object : DialogExample {},
-        viewFactory = viewFactory,
+        viewFactory = viewFactory(deps),
         router = router,
         interactor = interactor
     )

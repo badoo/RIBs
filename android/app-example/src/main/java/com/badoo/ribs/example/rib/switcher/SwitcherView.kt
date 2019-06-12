@@ -1,10 +1,11 @@
 package com.badoo.ribs.example.rib.switcher
 
+import android.support.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory2
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.blocker.Blocker
@@ -38,10 +39,12 @@ class SwitcherViewImpl private constructor(
 ) : SwitcherView,
     ObservableSource<Event> by events {
 
-    companion object Factory : ViewFactory2<Switcher.Dependency, SwitcherView> {
+    class Factory(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_switcher
+    ) : ViewFactory<Switcher.Dependency, SwitcherView> {
         override fun invoke(deps: Switcher.Dependency): (ViewGroup) -> SwitcherView = {
             SwitcherViewImpl(
-                inflate(it, R.layout.rib_switcher),
+                inflate(it, layoutRes),
                 deps.coffeeMachine()
             )
         }

@@ -1,16 +1,17 @@
 package com.badoo.ribs.example.rib.menu
 
-import android.content.Context
+import android.support.annotation.LayoutRes
 import android.support.v4.content.ContextCompat
-import android.util.AttributeSet
-import android.widget.LinearLayout
+import android.view.ViewGroup
 import android.widget.TextView
+import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem
 import com.badoo.ribs.example.rib.menu.MenuView.Event
 import com.badoo.ribs.example.rib.menu.MenuView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
-import com.badoo.ribs.core.view.RibView
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -26,38 +27,34 @@ interface MenuView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
 }
 
 
+class MenuViewImpl private constructor(
+    override val androidView: ViewGroup,
+    private val events: PublishRelay<Event> = PublishRelay.create()
+) : MenuView,
+    ObservableSource<Event> by events {
 
-class MenuViewImpl @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0,
-    private val events: PublishRelay<Event> = PublishRelay.create<Event>()
-) : LinearLayout(context, attrs, defStyle),
-    MenuView,
-    ObservableSource<Event> by events,
-    Consumer<ViewModel> {
-
-    override val androidView = this
-
-    private lateinit var helloWorld: TextView
-    private lateinit var fooBar: TextView
-    private lateinit var dialogs: TextView
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-        helloWorld = menuItem(R.id.menu_hello, MenuItem.HelloWorld)
-        fooBar = menuItem(R.id.menu_foo, MenuItem.FooBar)
-        dialogs = menuItem(R.id.menu_dialogs, MenuItem.Dialogs)
+    class Factory(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_menu
+    ) : ViewFactory<Menu.Dependency, MenuView> {
+        override fun invoke(deps: Menu.Dependency): (ViewGroup) -> MenuView = {
+            MenuViewImpl(
+                inflate(it, layoutRes)
+            )
+        }
     }
 
+    private var helloWorld: TextView = menuItem(R.id.menu_hello, MenuItem.HelloWorld)
+    private var fooBar: TextView = menuItem(R.id.menu_foo, MenuItem.FooBar)
+    private var dialogs: TextView = menuItem(R.id.menu_dialogs, MenuItem.Dialogs)
+
     fun menuItem(id: Int, menuItem: MenuItem) : TextView =
-        findViewById<TextView>(id).apply {
+        androidView.findViewById<TextView>(id).apply {
             setOnClickListener { events.accept(Event.Select(menuItem)) }
         }
 
     override fun accept(vm: ViewModel) {
         listOf(helloWorld, fooBar, dialogs).forEach {
-            it.setTextColor(ContextCompat.getColor(context, R.color.material_grey_600))
+            it.setTextColor(ContextCompat.getColor(androidView.context, R.color.material_grey_600))
         }
 
         vm.selected?.let {

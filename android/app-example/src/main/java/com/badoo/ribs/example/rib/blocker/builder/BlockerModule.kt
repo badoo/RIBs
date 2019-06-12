@@ -39,12 +39,13 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<BlockerView>,
+        deps: Blocker.Dependency,
+        viewFactory: ViewFactory<Blocker.Dependency, BlockerView>,
         router: BlockerRouter,
         interactor: BlockerInteractor
     ) : Node<BlockerView> = Node(
         identifier = object : Blocker {},
-        viewFactory = viewFactory,
+        viewFactory = viewFactory(deps),
         router = router,
         interactor = interactor
     )

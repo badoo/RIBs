@@ -7,7 +7,7 @@ import com.badoo.ribs.core.view.ViewFactory
 
 class TestNode(
     identifier: Rib,
-    viewFactory: ViewFactory<TestView> = mock()
+    viewFactory: ViewFactory<TestView>? = mock()
 ) : Node<TestView>(
     identifier = identifier,
     viewFactory = viewFactory,

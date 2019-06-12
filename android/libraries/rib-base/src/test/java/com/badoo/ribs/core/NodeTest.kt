@@ -78,9 +78,9 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(object : RandomOtherNode1 {})
-        child2 = TestNode(object : RandomOtherNode2 {})
-        child3 = TestNode(object : RandomOtherNode3 {})
+        child1 = TestNode(identifier = object : RandomOtherNode1 {}, viewFactory = null)
+        child2 = TestNode(identifier = object : RandomOtherNode2 {}, viewFactory = null)
+        child3 = TestNode(identifier = object : RandomOtherNode3 {}, viewFactory = null)
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -145,7 +145,7 @@ class NodeTest {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
         RIBs.errorHandler = errorHandler
-        node.attachToView(mock())
+        node.attachToView(parentViewGroup)
 
         node.onDetach()
 
@@ -157,7 +157,7 @@ class NodeTest {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
         RIBs.errorHandler = errorHandler
-        node.attachToView(mock())
+        node.attachToView(parentViewGroup)
 
         node.onDetach()
 
@@ -459,21 +459,33 @@ class NodeTest {
     }
 
     @Test
-    fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
-        whenever(viewFactory.invoke(parentViewGroup)).thenReturn(null)
-        node.attachToView(parentViewGroup)
-        verify(parentViewGroup, never()).addView(anyOrNull())
-    }
-
-    @Test
     fun `When current Node has a view, attachToView() notifies Interactor of view creation`() {
         node.attachToView(parentViewGroup)
         verify(interactor).onViewCreated(node.viewLifecycleRegistry, view)
     }
 
     @Test
+    fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
+        node = Node(
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = null,
+            router = router,
+            interactor = interactor
+        )
+
+        node.attachToView(parentViewGroup)
+        verify(parentViewGroup, never()).addView(anyOrNull())
+    }
+
+    @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
-        whenever(viewFactory.invoke(parentViewGroup)).thenReturn(null)
+        node = Node(
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = null,
+            router = router,
+            interactor = interactor
+        )
+
         node.attachToView(parentViewGroup)
         verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
     }

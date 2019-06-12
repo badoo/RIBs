@@ -1,12 +1,13 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.util.AttributeSet
-import com.jakewharton.rxrelay2.PublishRelay
+import android.support.annotation.LayoutRes
+import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.template.R
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView.Event
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView.ViewModel
+import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -21,23 +22,24 @@ interface FooBarView : RibView,
     )
 }
 
+
 class FooBarViewImpl private constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0, private val events: PublishRelay<Event>
-) : ConstraintLayout(context, attrs, defStyle),
-    FooBarView,
+    override val androidView: ViewGroup,
+    private val events: PublishRelay<Event> = PublishRelay.create()
+) : FooBarView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
-    @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-    ) : this(context, attrs, defStyle, PublishRelay.create<Event>())
-
-    override val androidView = this
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    class Factory(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_foo_bar
+    ) : ViewFactory<FooBar.Dependency, FooBarView> {
+        override fun invoke(deps: FooBar.Dependency): (ViewGroup) -> FooBarView = {
+            FooBarViewImpl(
+                com.badoo.ribs.customisation.inflate(it, layoutRes)
+            )
+        }
     }
 
-    override fun accept(vm: ViewModel) {
+    override fun accept(vm: FooBarView.ViewModel) {
     }
 }

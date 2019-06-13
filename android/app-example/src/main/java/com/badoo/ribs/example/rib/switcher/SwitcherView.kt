@@ -21,6 +21,12 @@ interface SwitcherView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
+    interface Factory : ViewFactory<Dependency, SwitcherView>
+
+    interface Dependency {
+        fun coffeeMachine(): CoffeeMachine
+    }
+
     sealed class Event {
         object ShowOverlayDialogClicked : Event()
         object ShowBlockerClicked: Event()
@@ -41,8 +47,8 @@ class SwitcherViewImpl private constructor(
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_switcher
-    ) : ViewFactory<Switcher.Dependency, SwitcherView> {
-        override fun invoke(deps: Switcher.Dependency): (ViewGroup) -> SwitcherView = {
+    ) : SwitcherView.Factory {
+        override fun invoke(deps: SwitcherView.Dependency): (ViewGroup) -> SwitcherView = {
             SwitcherViewImpl(
                 inflate(it, layoutRes),
                 deps.coffeeMachine()

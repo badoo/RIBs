@@ -2,7 +2,6 @@ package com.badoo.ribs.example.rib.foo_bar
 
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
@@ -20,6 +19,6 @@ interface FooBar : Rib {
     sealed class Output
 
     class Customisation(
-        val viewFactory: ViewFactory<Dependency, FooBarView> = FooBarViewImpl.Factory()
+        val viewFactory: FooBarView.Factory = FooBarViewImpl.Factory()
     ) : RibCustomisation
 }

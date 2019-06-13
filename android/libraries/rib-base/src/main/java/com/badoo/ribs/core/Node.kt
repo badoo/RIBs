@@ -15,6 +15,18 @@
  */
 package com.badoo.ribs.core
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.Lifecycle.Event.ON_CREATE
+import android.arch.lifecycle.Lifecycle.Event.ON_DESTROY
+import android.arch.lifecycle.Lifecycle.Event.ON_PAUSE
+import android.arch.lifecycle.Lifecycle.Event.ON_RESUME
+import android.arch.lifecycle.Lifecycle.Event.ON_START
+import android.arch.lifecycle.Lifecycle.Event.ON_STOP
+import android.arch.lifecycle.Lifecycle.State.CREATED
+import android.arch.lifecycle.Lifecycle.State.INITIALIZED
+import android.arch.lifecycle.Lifecycle.State.STARTED
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LifecycleRegistry
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.CallSuper
@@ -30,13 +42,15 @@ import java.util.concurrent.CopyOnWriteArrayList
 /**
  * Responsible for handling the addition and removal of child nodes.
  **/
+@SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ViewFactory<V>?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
-) {
+) : LifecycleOwner {
+
     enum class ViewAttachMode {
         /**
          * The node's view attach/detach is managed by its parent.
@@ -68,8 +82,15 @@ open class Node<V : RibView>(
         router.node = this
     }
 
+    private val externalLifecycleRegistry = LifecycleRegistry(this)
+    internal val ribLifecycleRegistry = LifecycleRegistry(this)
+    internal val viewLifecycleRegistry = LifecycleRegistry(this)
+
     val tag: String = this::class.java.name
     internal val children = CopyOnWriteArrayList<Node<*>>()
+
+    private val isViewless: Boolean =
+        viewFactory == null
 
     internal open var view: V? = null
     protected var parentViewGroup: ViewGroup? = null
@@ -77,75 +98,82 @@ open class Node<V : RibView>(
     private var savedInstanceState: Bundle? = null
     internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
 
-    internal var isViewAttached: Boolean = false
+    internal var isAttachedToView: Boolean = false
         private set
 
     fun getChildren(): List<Node<*>> =
         children.toList()
 
+    @CallSuper
+    open fun onAttach(savedInstanceState: Bundle?) {
+        this.savedInstanceState = savedInstanceState
+
+        savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
+
+        if (externalLifecycleRegistry.currentState == INITIALIZED) externalLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
+        ribLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
+        router.onAttach(savedInstanceState?.getBundle(KEY_ROUTER))
+        interactor.onAttach(savedInstanceState?.getBundle(KEY_INTERACTOR), ribLifecycleRegistry)
+    }
+
     open fun attachToView(parentViewGroup: ViewGroup) {
         this.parentViewGroup = parentViewGroup
-        isViewAttached = true
-        view = createView(parentViewGroup)
-        view?.let {
-            parentViewGroup.addView(it.androidView)
-            it.androidView.restoreHierarchyState(savedViewState)
-            interactor.onViewCreated(it)
+        isAttachedToView = true
+
+        if (!isViewless) {
+            view = createView(parentViewGroup)
+            view!!.let {
+                parentViewGroup.addView(it.androidView)
+                it.androidView.restoreHierarchyState(savedViewState)
+                viewLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
+                interactor.onViewCreated(viewLifecycleRegistry, it)
+            }
         }
 
         router.onAttachView()
+        onStartInternal()
+        onResumeInternal()
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? =
         viewFactory?.invoke(parentViewGroup)
 
-    internal fun attachChildView(child: Node<*>) {
-        if (isViewAttached) {
-            child.attachToView(
-                // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                view?.getParentViewForChild(child.identifier) ?: parentViewGroup!!
-            )
-        }
-    }
-
-    internal fun saveViewState() {
-        view?.let {
-            it.androidView.saveHierarchyState(savedViewState)
-        }
-    }
-
-    internal fun detachChildView(child: Node<*>) {
-        parentViewGroup?.let {
-            child.detachFromView()
-        }
-    }
-
     open fun detachFromView() {
-        router.onDetachView()
+        if (isAttachedToView) {
+            onPauseInternal()
+            onStopInternal()
+            router.onDetachView()
 
-        view?.let {
-            parentViewGroup!!.removeView(it.androidView)
-            interactor.onViewDestroyed()
+            if (!isViewless) {
+                view!!.let {
+                    parentViewGroup!!.removeView(it.androidView)
+                    viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+                }
+            }
+
+            view = null
+            isAttachedToView = false
+            this.parentViewGroup = null
         }
-
-        view = null
-        isViewAttached = false
-        this.parentViewGroup = null
     }
 
-    /**
-     * Dispatch back press to the associated interactor.
-     *
-     * @return TRUE if the interactor handled the back press and no further action is necessary.
-     */
-    @CallSuper
-    open fun handleBackPress(): Boolean {
-        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
-        return children
-                .filter { it.isViewAttached }
-                .any { it.handleBackPress() }
-            || interactor.handleBackPress()
-            || router.popBackStack()
+    open fun onDetach() {
+        if (isAttachedToView) {
+            RIBs.errorHandler.handleNonFatalError(
+                "View was not detached before node detach!",
+                RuntimeException("View was not detached before node detach!")
+            )
+            detachFromView()
+        }
+
+        viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+        ribLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+        interactor.onDetach()
+        router.onDetach()
+
+        for (child in children) {
+            detachChildNode(child)
+        }
     }
 
     /**
@@ -160,7 +188,30 @@ open class Node<V : RibView>(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
         )
 
+        childNode.inheritExternalLifecycle(externalLifecycleRegistry)
         childNode.onAttach(bundle)
+    }
+
+    private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
+        externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
+    }
+
+    internal fun attachChildView(child: Node<*>) {
+        if (isAttachedToView) {
+            val target = when {
+                // parentViewGroup is guaranteed to be non-null if and only if view is attached
+                isViewless -> parentViewGroup!!
+                else -> view!!.getParentViewForChild(child.identifier) ?: parentViewGroup!!
+            }
+
+            child.attachToView(target)
+        }
+    }
+
+    internal fun detachChildView(child: Node<*>) {
+        parentViewGroup?.let {
+            child.detachFromView()
+        }
     }
 
     /**
@@ -183,30 +234,100 @@ open class Node<V : RibView>(
         childNode.onDetach()
     }
 
-    @CallSuper
-    open fun onAttach(savedInstanceState: Bundle?) {
-        this.savedInstanceState = savedInstanceState
-
-        savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
-
-        router.onAttach(savedInstanceState?.getBundle(KEY_ROUTER))
-        interactor.onAttach(savedInstanceState?.getBundle(KEY_INTERACTOR))
+    /**
+     * To be called only from the hosting environment (Activity, Fragment, etc.)
+     *
+     * For internal usage call onStartInternal() directly
+     */
+    fun onStart() {
+        externalLifecycleRegistry.handleLifecycleEvent(ON_START)
+        onStartInternal { it.onStart() }
     }
 
-    open fun onDetach() {
-        if (isViewAttached) {
-            RIBs.errorHandler.handleNonFatalError(
-                "View was not detached before node detach!",
-                RuntimeException("View was not detached before node detach!")
-            )
-            detachFromView()
+    /**
+     * To be called only from the hosting environment (Activity, Fragment, etc.)
+     *
+     * For internal usage call onStopInternal() directly
+     */
+    fun onStop() {
+        externalLifecycleRegistry.handleLifecycleEvent(ON_STOP)
+        onStopInternal { it.onStop() }
+    }
+
+    /**
+     * To be called only from the hosting environment (Activity, Fragment, etc.)
+     *
+     * For internal usage call onResumeInternal() directly
+     */
+    fun onResume() {
+        externalLifecycleRegistry.handleLifecycleEvent(ON_RESUME)
+        onResumeInternal { it.onResume() }
+    }
+
+    /**
+     * To be called only from the hosting environment (Activity, Fragment, etc.)
+     *
+     * For internal usage call onPauseInternal() directly
+     */
+    fun onPause() {
+        externalLifecycleRegistry.handleLifecycleEvent(ON_PAUSE)
+        onPauseInternal { it.onPause() }
+    }
+
+    internal fun onStartInternal(callOnChildren: (Node<*>) -> Unit = { it.onStartInternal() }) {
+        // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
+        updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
+        children.forEach { callOnChildren.invoke(it) }
+    }
+
+    // TODO call this when overlay is removed
+    internal fun onResumeInternal(callOnChildren: (Node<*>) -> Unit = { it.onResumeInternal() }) {
+        // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
+        updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
+        children.forEach { callOnChildren.invoke(it) }
+    }
+
+    // TODO call this when overlay hides content AND current rib is not in dialog
+    internal fun onPauseInternal(callOnChildren: (Node<*>) -> Unit = { it.onPauseInternal() }) {
+        // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
+        val targetState = if (externalLifecycleRegistry.currentState == CREATED) CREATED else STARTED
+        updateToStateIfViewAttached(targetState)
+        children.forEach { callOnChildren.invoke(it) }
+    }
+
+    internal fun onStopInternal(callOnChildren: (Node<*>) -> Unit = { it.onStopInternal() }) {
+        updateToStateIfViewAttached(CREATED)
+        children.forEach { callOnChildren.invoke(it) }
+    }
+
+    private fun updateToStateIfViewAttached(state: Lifecycle.State) {
+        if (isAttachedToView) {
+            ribLifecycleRegistry.markState(state)
+            if (!isViewless) {
+                view!!.let { viewLifecycleRegistry.markState(state) }
+            }
         }
+    }
 
-        interactor.onDetach()
-        router.onDetach()
+    /**
+     * Dispatch back press to the associated interactor.
+     *
+     * @return TRUE if the interactor handled the back press and no further action is necessary.
+     */
+    @CallSuper
+    open fun handleBackPress(): Boolean {
+        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
+        return children
+            .filter { it.isAttachedToView }
+            .any { it.handleBackPress() }
+            || interactor.handleBackPress()
+            || router.popBackStack()
+    }
 
-        for (child in children) {
-            detachChildNode(child)
+
+    internal fun saveViewState() {
+        view?.let {
+            it.androidView.saveHierarchyState(savedViewState)
         }
     }
 
@@ -215,10 +336,6 @@ open class Node<V : RibView>(
         saveInteractorState(outState)
         saveViewState()
         outState.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
-    }
-
-    fun onLowMemory() {
-        router.onLowMemory()
     }
 
     private fun saveRouterState(outState: Bundle) {
@@ -235,25 +352,12 @@ open class Node<V : RibView>(
         }
     }
 
-    fun onStart() {
-        interactor.onStart()
-        children.forEach { it.onStart() }
+    fun onLowMemory() {
+        router.onLowMemory()
     }
 
-    fun onStop() {
-        interactor.onStop()
-        children.forEach { it.onStop() }
-    }
-
-    fun onResume() {
-        interactor.onResume()
-        children.forEach { it.onResume() }
-    }
-
-    fun onPause() {
-        interactor.onPause()
-        children.forEach { it.onPause() }
-    }
+    override fun getLifecycle(): Lifecycle =
+        ribLifecycleRegistry
 
     override fun toString(): String =
         "Node@${hashCode()} ($identifier)"

@@ -10,7 +10,7 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
-    router: Router<*, *, *, *, V>,
+    router: Router<*, *, *, *, V> = mock(),
     identifier: Rib = object : Rib {},
     viewFactory: ViewFactory<V> = mock(),
     interactor: Interactor<*, *, *, V> = mock()

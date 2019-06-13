@@ -16,8 +16,6 @@
 package com.badoo.ribs.core
 
 import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LifecycleRegistry
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.CallSuper
@@ -42,15 +40,13 @@ import java.util.UUID
 abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>(
     protected val router: Router<C, *, Content, Overlay, V>,
     private val disposables: Disposable?
-) : LifecycleScopeProvider<InteractorEvent>, LifecycleOwner, Identifiable {
-
-    private val ribLifecycleRegistry = LifecycleRegistry(this)
-    private val viewLifecycleRegistry = LifecycleRegistry(this)
+) : LifecycleScopeProvider<InteractorEvent>, Identifiable {
 
     // todo these are leftovers, reconsider them
     private val behaviorRelay = BehaviorRelay.create<InteractorEvent>()
     private val lifecycleRelay = behaviorRelay.toSerialized()
 
+    // todo reconsider visibility or even removing
     val isAttached: Boolean
         get() = behaviorRelay.value == ACTIVE
 
@@ -64,55 +60,24 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
     override fun lifecycle(): Observable<InteractorEvent> =
         lifecycleRelay.hide()
 
-    fun onAttach(savedInstanceState: Bundle?) {
+    internal open fun onAttach(savedInstanceState: Bundle?, ribLifecycle: Lifecycle) {
         tag = savedInstanceState?.getString(KEY_TAG) ?: tag
-        lifecycleRelay.accept(ACTIVE)
-        ribLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        onAttach(ribLifecycleRegistry, savedInstanceState)
+        onAttach(ribLifecycle, savedInstanceState)
     }
 
     protected open fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
     }
 
     fun onDetach() {
-        viewLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        ribLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         disposables?.dispose()
         lifecycleRelay.accept(INACTIVE)
     }
 
-    fun onViewCreated(view: V) {
-        viewLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        onViewCreated(view, viewLifecycleRegistry)
+    internal fun onViewCreated(viewLifecycle: Lifecycle, view: V) {
+        onViewCreated(view, viewLifecycle)
     }
 
     protected open fun onViewCreated(view: V, viewLifecycle: Lifecycle) {
-    }
-
-    fun onViewDestroyed() {
-        viewLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    }
-
-    fun onStart() {
-        ribLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-        viewLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-    }
-
-    // todo call this when removed from view
-    fun onStop() {
-        ribLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-        viewLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-    }
-
-    fun onResume() {
-        ribLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        viewLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    }
-
-    // todo call this when removed from view
-    fun onPause() {
-        ribLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        viewLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     }
 
     /**
@@ -127,9 +92,6 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
     open fun onSaveInstanceState(outState: Bundle) {
         outState.putString(KEY_TAG, tag)
     }
-
-    override fun getLifecycle(): Lifecycle =
-        ribLifecycleRegistry
 
     // todo these are leftovers, reconsider them
     override fun correspondingEvents(): Function<InteractorEvent, InteractorEvent> =

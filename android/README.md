@@ -6,6 +6,7 @@ Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions:
 - Added back stack for routing with back stack operations (push, pop, replace, etc.)
 - Back stack is saved / restored automatically
 - Separated `View` lifecycle from logical `Node` lifecycle, which adds many new interesting possibilities (e.g. RIBs with business logic still alive in back stack, RIBs hosted in an AlertDialog)
+- Support for Android lifecycle events
 - Happily integrated with [MVICore](https://github.com/badoo/MVICore) for state management and reactive bindings
 - No more MVP, opinionated towards MVI 
 - `Consumer`s and `ObservableSource`s instead of `Listener`s bound with one-liner bindings
@@ -17,6 +18,6 @@ Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions:
 [See here](tutorials/README.md)
 
 ## WIP
-This is only a preview version. Tutorials and documentation are coming soon. In the meantime, check out the `app-example` module. Some points of interest might be:
-- MVICore usage pattern in [MenuInteractor](https://github.com/badoo/RIBs/blob/master/android/app-example/src/main/java/com/badoo/ribs/example/rib/menu/MenuInteractor.kt)
-- View routing example in [SwitcherRouter](https://github.com/badoo/RIBs/blob/master/android/app-example/src/main/java/com/badoo/ribs/example/rib/switcher/SwitcherRouter.kt) + [SwitcherInteractor](https://github.com/badoo/RIBs/blob/master/android/app-example/src/main/java/com/badoo/ribs/example/rib/switcher/SwitcherInteractor.kt)
+This is a heavily in-progress, preview version.
+
+Tutorials are in progress. In the meantime, you can also check out the `app-example` module. 

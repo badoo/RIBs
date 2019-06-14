@@ -24,6 +24,8 @@ interface MenuView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
     data class ViewModel(
         val selected: MenuItem?
     )
+
+    interface Factory : ViewFactory<Nothing?, MenuView>
 }
 
 
@@ -35,8 +37,8 @@ class MenuViewImpl private constructor(
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_menu
-    ) : ViewFactory<Menu.Dependency, MenuView> {
-        override fun invoke(deps: Menu.Dependency): (ViewGroup) -> MenuView = {
+    ) : MenuView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
             MenuViewImpl(
                 inflate(it, layoutRes)
             )

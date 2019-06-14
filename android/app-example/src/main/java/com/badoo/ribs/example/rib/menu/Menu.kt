@@ -2,7 +2,6 @@ package com.badoo.ribs.example.rib.menu
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
@@ -31,6 +30,6 @@ interface Menu : Rib {
     }
 
     class Customisation(
-        val viewFactory: ViewFactory<Dependency, MenuView> = MenuViewImpl.Factory()
+        val viewFactory: MenuView.Factory = MenuViewImpl.Factory()
     ) : RibCustomisation
 }

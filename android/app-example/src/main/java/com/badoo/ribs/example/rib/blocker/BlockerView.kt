@@ -24,6 +24,8 @@ interface BlockerView : RibView,
     data class ViewModel(
         val i: Int = 0
     )
+
+    interface Factory : ViewFactory<Nothing?, BlockerView>
 }
 
 class BlockerViewImpl private constructor(
@@ -35,8 +37,8 @@ class BlockerViewImpl private constructor(
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_blocker
-    ) : ViewFactory<Blocker.Dependency, BlockerView> {
-        override fun invoke(deps: Blocker.Dependency): (ViewGroup) -> BlockerView = {
+    ) : BlockerView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> BlockerView = {
             BlockerViewImpl(
                 inflate(it, layoutRes)
             )

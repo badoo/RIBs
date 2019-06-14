@@ -19,10 +19,6 @@ interface FooBarView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
-    interface Factory : ViewFactory<Dependency, FooBarView>
-
-    interface Dependency
-
     sealed class Event {
         object CheckPermissionsButtonClicked : Event()
         object RequestPermissionsButtonClicked : Event()
@@ -31,6 +27,8 @@ interface FooBarView : RibView,
     data class ViewModel(
         val text: String
     )
+
+    interface Factory : ViewFactory<Nothing?, FooBarView>
 }
 
 
@@ -44,7 +42,7 @@ class FooBarViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_foobar
     ) : FooBarView.Factory {
-        override fun invoke(deps: FooBarView.Dependency): (ViewGroup) -> FooBarView = {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
             FooBarViewImpl(
                 com.badoo.ribs.customisation.inflate(it, layoutRes)
             )
@@ -60,7 +58,7 @@ class FooBarViewImpl private constructor(
         requestButton.setOnClickListener { events.accept(RequestPermissionsButtonClicked)}
     }
 
-    override fun accept(vm: FooBarView.ViewModel) {
+    override fun accept(vm: ViewModel) {
         text.text = vm.text
     }
 }

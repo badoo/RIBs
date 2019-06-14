@@ -21,12 +21,6 @@ interface SwitcherView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
-    interface Factory : ViewFactory<Dependency, SwitcherView>
-
-    interface Dependency {
-        fun coffeeMachine(): CoffeeMachine
-    }
-
     sealed class Event {
         object ShowOverlayDialogClicked : Event()
         object ShowBlockerClicked: Event()
@@ -35,6 +29,12 @@ interface SwitcherView : RibView,
     data class ViewModel(
         val i: Int = 0
     )
+
+    interface Factory : ViewFactory<Dependency, SwitcherView>
+
+    interface Dependency {
+        fun coffeeMachine(): CoffeeMachine
+    }
 }
 
 

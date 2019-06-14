@@ -1,7 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleInteractor
@@ -77,13 +76,12 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun node(
-        deps: DialogExample.Dependency,
-        viewFactory: ViewFactory<DialogExample.Dependency, DialogExampleView>,
+        viewFactory: DialogExampleView.Factory,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor
     ) : Node<DialogExampleView> = Node(
         identifier = object : DialogExample {},
-        viewFactory = viewFactory(deps),
+        viewFactory = viewFactory(null),
         router = router,
         interactor = interactor
     )

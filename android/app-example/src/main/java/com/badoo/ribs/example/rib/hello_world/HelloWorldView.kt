@@ -24,9 +24,11 @@ interface HelloWorldView : RibView,
     data class ViewModel(
         val text: String
     )
+
+    interface Factory : ViewFactory<Nothing?, HelloWorldView>
 }
 
-class HelloWorldViewImpl  private constructor(
+class HelloWorldViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : HelloWorldView,
@@ -34,9 +36,9 @@ class HelloWorldViewImpl  private constructor(
     Consumer<ViewModel> {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_dialog_example
-    ) : ViewFactory<HelloWorld.Dependency, HelloWorldView> {
-        override fun invoke(deps: HelloWorld.Dependency): (ViewGroup) -> HelloWorldView = {
+        @LayoutRes private val layoutRes: Int = R.layout.rib_hello_world
+    ) : HelloWorldView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
             HelloWorldViewImpl(
                 inflate(it, layoutRes)
             )

@@ -1,7 +1,6 @@
 package com.badoo.ribs.example.rib.menu.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuInteractor
 import com.badoo.ribs.example.rib.menu.MenuRouter
@@ -46,13 +45,12 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     internal fun node(
-        deps: Menu.Dependency,
-        viewFactory: ViewFactory<Menu.Dependency, MenuView>,
+        viewFactory: MenuView.Factory,
         router: MenuRouter,
         interactor: MenuInteractor
     ) : Node<MenuView> = Node(
         identifier = object : Menu {},
-        viewFactory = viewFactory(deps),
+        viewFactory = viewFactory(null),
         router = router,
         interactor = interactor
     )

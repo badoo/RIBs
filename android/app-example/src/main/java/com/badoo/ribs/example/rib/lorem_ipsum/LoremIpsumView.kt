@@ -24,6 +24,8 @@ interface LoremIpsumView : RibView,
     data class ViewModel(
         val i: Int = 0
     )
+
+    interface Factory : ViewFactory<Nothing?, LoremIpsumView>
 }
 
 
@@ -36,8 +38,8 @@ class LoremIpsumViewImpl private constructor(
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_lorem_ipsum
-    ) : ViewFactory<LoremIpsum.Dependency, LoremIpsumView> {
-        override fun invoke(deps: LoremIpsum.Dependency): (ViewGroup) -> LoremIpsumView = {
+    ) : LoremIpsumView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> LoremIpsumView = {
             LoremIpsumViewImpl(
                 inflate(it, layoutRes)
             )

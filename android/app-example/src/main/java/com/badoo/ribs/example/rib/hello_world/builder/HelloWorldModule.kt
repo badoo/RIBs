@@ -2,7 +2,6 @@ package com.badoo.ribs.example.rib.hello_world.builder
 
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorld.Input
 import com.badoo.ribs.example.rib.hello_world.HelloWorld.Output
@@ -53,13 +52,12 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
-        deps: HelloWorld.Dependency,
-        viewFactory: ViewFactory<HelloWorld.Dependency, HelloWorldView>,
+        viewFactory: HelloWorldView.Factory,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
     ) : Node<HelloWorldView> = Node(
         identifier = object : HelloWorld {},
-        viewFactory = viewFactory(deps),
+        viewFactory = viewFactory(null),
         router = router,
         interactor = interactor
     )

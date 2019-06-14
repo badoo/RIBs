@@ -29,6 +29,8 @@ interface DialogExampleView : RibView,
     data class ViewModel(
         val text: String
     )
+
+    interface Factory : ViewFactory<Nothing?, DialogExampleView>
 }
 
 class DialogExampleViewImpl  private constructor(
@@ -40,8 +42,8 @@ class DialogExampleViewImpl  private constructor(
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_dialog_example
-    ) : ViewFactory<DialogExample.Dependency, DialogExampleView> {
-        override fun invoke(deps: DialogExample.Dependency): (ViewGroup) -> DialogExampleView = {
+    ) : DialogExampleView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> DialogExampleView = {
             DialogExampleViewImpl(
                 inflate(it, layoutRes)
             )

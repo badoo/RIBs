@@ -39,20 +39,13 @@ internal object FooBarModule {
     @FooBarScope
     @Provides
     @JvmStatic
-    internal fun viewDependency(): FooBarView.Dependency =
-        object : FooBarView.Dependency {}
-
-    @FooBarScope
-    @Provides
-    @JvmStatic
     internal fun node(
-        viewDependency: FooBarView.Dependency,
         viewFactory: FooBarView.Factory,
         router: FooBarRouter,
         interactor: FooBarInteractor
     ) : Node<FooBarView> = Node(
         identifier = object : FooBar {},
-        viewFactory = viewFactory(viewDependency),
+        viewFactory = viewFactory(null),
         router = router,
         interactor = interactor
     )

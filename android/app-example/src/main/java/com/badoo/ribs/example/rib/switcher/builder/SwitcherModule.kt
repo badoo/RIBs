@@ -62,7 +62,6 @@ internal object SwitcherModule {
             dialogToTestOverlay = dialogToTestOverlay
         )
 
-    @SwitcherScope
     @Provides
     @JvmStatic
     internal fun viewDependency(

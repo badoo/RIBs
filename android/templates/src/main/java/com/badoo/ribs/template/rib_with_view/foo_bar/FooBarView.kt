@@ -15,6 +15,10 @@ interface FooBarView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
+    interface Factory : ViewFactory<Dependency, FooBarView>
+
+    interface Dependency
+
     sealed class Event
 
     data class ViewModel(

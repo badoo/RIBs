@@ -2,7 +2,6 @@ package com.badoo.ribs.example.rib.hello_world
 
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
@@ -20,6 +19,6 @@ interface HelloWorld : Rib {
     sealed class Output
 
     class Customisation(
-        val viewFactory: ViewFactory<Dependency, HelloWorldView> = HelloWorldViewImpl.Factory()
+        val viewFactory: HelloWorldView.Factory = HelloWorldViewImpl.Factory()
     ) : RibCustomisation
 }

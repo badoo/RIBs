@@ -1,7 +1,6 @@
 package com.badoo.ribs.example.rib.blocker.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.Blocker.Output
 import com.badoo.ribs.example.rib.blocker.BlockerInteractor
@@ -39,13 +38,12 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        deps: Blocker.Dependency,
-        viewFactory: ViewFactory<Blocker.Dependency, BlockerView>,
+        viewFactory: BlockerView.Factory,
         router: BlockerRouter,
         interactor: BlockerInteractor
     ) : Node<BlockerView> = Node(
         identifier = object : Blocker {},
-        viewFactory = viewFactory(deps),
+        viewFactory = viewFactory(null),
         router = router,
         interactor = interactor
     )

@@ -4,14 +4,12 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
+import dagger.BindsInstance
 
 @DialogExampleScope
 @dagger.Component(
     modules = [DialogExampleModule::class],
-    dependencies = [
-        DialogExample.Dependency::class,
-        DialogExample.Customisation::class
-    ]
+    dependencies = [DialogExample.Dependency::class]
 )
 internal interface DialogExampleComponent : LoremIpsum.Dependency {
 
@@ -19,7 +17,7 @@ internal interface DialogExampleComponent : LoremIpsum.Dependency {
     interface Factory {
         fun create(
             dependency: DialogExample.Dependency,
-            customisation: DialogExample.Customisation
+            @BindsInstance customisation: DialogExample.Customisation
         ): DialogExampleComponent
     }
 

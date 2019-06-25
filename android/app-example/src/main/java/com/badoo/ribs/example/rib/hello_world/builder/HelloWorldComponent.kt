@@ -3,15 +3,13 @@ package com.badoo.ribs.example.rib.hello_world.builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView
+import dagger.BindsInstance
 
 
 @HelloWorldScope
 @dagger.Component(
     modules = [HelloWorldModule::class],
-    dependencies = [
-        HelloWorld.Dependency::class,
-        HelloWorld.Customisation::class
-    ]
+    dependencies = [HelloWorld.Dependency::class]
 )
 internal interface HelloWorldComponent {
 
@@ -19,7 +17,7 @@ internal interface HelloWorldComponent {
     interface Factory {
         fun create(
             dependency: HelloWorld.Dependency,
-            customisation: HelloWorld.Customisation
+            @BindsInstance customisation: HelloWorld.Customisation
         ): HelloWorldComponent
     }
 

@@ -22,6 +22,7 @@ import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.badoo.ribs.util.RIBs
+import com.nhaarman.mockitokotlin2.doReturn
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -36,6 +37,8 @@ class NodeTest {
     interface RandomOtherNode2 : Rib
     interface RandomOtherNode3 : Rib
 
+    interface TestViewFactory : (ViewGroup) -> TestView
+
     private lateinit var node: Node<TestView>
     private lateinit var view: TestView
     private lateinit var androidView: ViewGroup
@@ -43,7 +46,7 @@ class NodeTest {
     private lateinit var someViewGroup1: ViewGroup
     private lateinit var someViewGroup2: ViewGroup
     private lateinit var someViewGroup3: ViewGroup
-    private lateinit var viewFactory: ViewFactory<TestView>
+    private lateinit var viewFactory: TestViewFactory
     private lateinit var router: Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>
     private lateinit var interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView>
     private lateinit var child1: TestNode
@@ -59,7 +62,7 @@ class NodeTest {
         someViewGroup3 = mock()
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
-        viewFactory = mock { on { invoke(parentViewGroup) }.thenReturn(view) }
+        viewFactory = mock { on { invoke(parentViewGroup) } doReturn view }
         router = mock()
         interactor = mock()
 
@@ -401,7 +404,7 @@ class NodeTest {
 
     @Test
     fun `attachChild() does not imply attachToView when Android view system is not available`() {
-        val childViewFactory = mock<ViewFactory<TestView>>()
+        val childViewFactory = mock<TestViewFactory>()
         val child = TestNode(mock(), childViewFactory)
         node.attachChildNode(child, null)
         verify(childViewFactory, never()).invoke(parentViewGroup)

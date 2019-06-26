@@ -15,9 +15,10 @@ class TestChildBuilder {
     fun build(): TestNode<TestChildView> {
         return TestNode(
             identifier = object: TestRoot { },
-            viewFactory = object : ViewFactory<TestChildView> {
-                override fun invoke(viewGroup: ViewGroup): TestChildView =
-                    TestChildViewImpl(viewGroup.context)
+            viewFactory = object : ViewFactory<Nothing?, TestChildView> {
+                override fun invoke(deps: Nothing?): (ViewGroup) -> TestChildView = {
+                    TestChildViewImpl(it.context)
+                }
             },
             router = router,
             interactor = TestChildInteractor(router)

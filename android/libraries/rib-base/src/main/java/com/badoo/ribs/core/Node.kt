@@ -34,7 +34,6 @@ import android.support.annotation.MainThread
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.util.RIBs
 import com.uber.rib.util.RibRefWatcher
 import java.util.concurrent.CopyOnWriteArrayList
@@ -45,7 +44,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
     internal open val identifier: Rib,
-    private val viewFactory: ViewFactory<V>?,
+    private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()

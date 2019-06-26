@@ -43,7 +43,7 @@ internal object HelloWorldModule {
         interactor: HelloWorldInteractor
     ) : Node<HelloWorldView> = Node(
         identifier = object : HelloWorld {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

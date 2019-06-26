@@ -16,6 +16,7 @@ import com.badoo.ribs.example.rib.switcher.SwitcherInteractor
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter
 import com.badoo.ribs.example.rib.switcher.SwitcherView
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
+import com.badoo.ribs.example.util.CoffeeMachine
 import dagger.Provides
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -61,16 +62,26 @@ internal object SwitcherModule {
             dialogToTestOverlay = dialogToTestOverlay
         )
 
+    @Provides
+    @JvmStatic
+    internal fun viewDependency(
+        coffeeMachine: CoffeeMachine
+    ): SwitcherView.Dependency =
+        object : SwitcherView.Dependency {
+            override fun coffeeMachine(): CoffeeMachine = coffeeMachine
+        }
+
     @SwitcherScope
     @Provides
     @JvmStatic
     internal fun node(
         customisation: Switcher.Customisation,
+        viewDependency: SwitcherView.Dependency,
         router: SwitcherRouter,
         interactor: SwitcherInteractor
     ) : Node<SwitcherView> = Node(
         identifier = object : Switcher {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(viewDependency),
         router = router,
         interactor = interactor
     )

@@ -43,7 +43,7 @@ internal object LoremIpsumModule {
         interactor: LoremIpsumInteractor
     ) : Node<LoremIpsumView> = Node(
         identifier = object : LoremIpsum {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

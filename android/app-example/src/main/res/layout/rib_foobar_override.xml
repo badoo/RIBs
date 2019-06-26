@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.badoo.ribs.example.rib.foo_bar.FooBarViewImpl xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rib_foobar_override"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".app.RootActivity">
@@ -52,4 +54,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-</com.badoo.ribs.example.rib.foo_bar.FooBarViewImpl>
+</android.support.constraint.ConstraintLayout>

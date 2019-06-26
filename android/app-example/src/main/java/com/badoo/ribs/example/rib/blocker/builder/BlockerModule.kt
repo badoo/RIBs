@@ -43,7 +43,7 @@ internal object BlockerModule {
         interactor: BlockerInteractor
     ) : Node<BlockerView> = Node(
         identifier = object : Blocker {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

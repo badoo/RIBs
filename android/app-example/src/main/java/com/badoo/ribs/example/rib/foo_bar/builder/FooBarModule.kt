@@ -15,10 +15,7 @@ internal object FooBarModule {
     @FooBarScope
     @Provides
     @JvmStatic
-    internal fun router(
-        // pass component to child rib builders, or remove if there are none
-        component: FooBarComponent
-    ): FooBarRouter =
+    internal fun router(): FooBarRouter =
         FooBarRouter()
 
     @FooBarScope
@@ -48,7 +45,7 @@ internal object FooBarModule {
         interactor: FooBarInteractor
     ) : Node<FooBarView> = Node(
         identifier = object : FooBar {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

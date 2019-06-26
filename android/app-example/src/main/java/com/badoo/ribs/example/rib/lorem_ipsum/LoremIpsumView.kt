@@ -1,14 +1,15 @@
 package com.badoo.ribs.example.rib.lorem_ipsum
 
-import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.util.AttributeSet
+import android.support.annotation.LayoutRes
+import android.view.ViewGroup
 import android.widget.Button
-import com.jakewharton.rxrelay2.PublishRelay
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumView.Event
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumView.ViewModel
+import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -23,24 +24,31 @@ interface LoremIpsumView : RibView,
     data class ViewModel(
         val i: Int = 0
     )
+
+    interface Factory : ViewFactory<Nothing?, LoremIpsumView>
 }
 
+
 class LoremIpsumViewImpl private constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0, private val events: PublishRelay<Event>
-) : ConstraintLayout(context, attrs, defStyle),
-    LoremIpsumView,
+    override val androidView: ViewGroup,
+    private val events: PublishRelay<Event> = PublishRelay.create()
+) : LoremIpsumView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
-    @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-    ) : this(context, attrs, defStyle, PublishRelay.create<Event>())
+    class Factory(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_lorem_ipsum
+    ) : LoremIpsumView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> LoremIpsumView = {
+            LoremIpsumViewImpl(
+                inflate(it, layoutRes)
+            )
+        }
+    }
 
-    override val androidView = this
-    private val button: Button by lazy { findViewById<Button>(R.id.lorem_ipsum_button) }
+    private val button: Button = androidView.findViewById(R.id.lorem_ipsum_button)
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    init {
         button.setOnClickListener { events.accept(Event.ButtonClicked) }
     }
 

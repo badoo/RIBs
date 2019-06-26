@@ -4,9 +4,6 @@ import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
-import com.badoo.ribs.customisation.inflateOnDemand
-import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.example.R
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -22,8 +19,6 @@ interface HelloWorld : Rib {
     sealed class Output
 
     class Customisation(
-        val viewFactory: ViewFactory<HelloWorldView> = inflateOnDemand(
-            R.layout.rib_hello_world
-        )
+        val viewFactory: HelloWorldView.Factory = HelloWorldViewImpl.Factory()
     ) : RibCustomisation
 }

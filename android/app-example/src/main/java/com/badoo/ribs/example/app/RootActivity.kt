@@ -11,6 +11,8 @@ import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
+import com.badoo.ribs.example.util.CoffeeMachine
+import com.badoo.ribs.example.util.StupidCoffeeMachine
 
 /** The sample app's single activity */
 class RootActivity : RibActivity() {
@@ -29,7 +31,9 @@ class RootActivity : RibActivity() {
                 override fun activityStarter(): ActivityStarter = activityStarter
                 override fun permissionRequester(): PermissionRequester = permissionRequester
                 override fun dialogLauncher(): DialogLauncher = this@RootActivity
-            })
+                override fun coffeeMachine(): CoffeeMachine =
+                    StupidCoffeeMachine()
+        })
 
         return rootBuilder.build()
     }

@@ -24,4 +24,3 @@ internal interface FooBarComponent {
     fun node(): Node<FooBarView>
 }
 
-

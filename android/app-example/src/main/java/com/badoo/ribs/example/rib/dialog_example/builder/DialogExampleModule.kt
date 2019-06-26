@@ -81,7 +81,7 @@ internal object DialogExampleModule {
         interactor: DialogExampleInteractor
     ) : Node<DialogExampleView> = Node(
         identifier = object : DialogExample {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

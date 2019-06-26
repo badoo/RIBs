@@ -55,7 +55,7 @@ internal object FooBarModule {
         interactor: FooBarInteractor
     ) : Node<FooBarView> = Node(
         identifier = object : FooBar {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

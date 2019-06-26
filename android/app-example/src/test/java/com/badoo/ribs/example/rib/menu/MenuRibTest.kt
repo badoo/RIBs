@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.menu
 
+import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisationDirectory
@@ -10,7 +11,6 @@ import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.example.rib.menu.Menu.Output.MenuItemSelected
 import com.badoo.ribs.example.rib.menu.MenuView.Event.Select
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
-import com.badoo.ribs.example.rib.util.StaticViewFactory
 import com.badoo.ribs.example.rib.util.TestView
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.jakewharton.rxrelay2.PublishRelay
@@ -79,7 +79,11 @@ class MenuRibTest {
         MenuBuilder(object : Menu.Dependency, CanProvideRibCustomisation {
             override fun ribCustomisation(): RibCustomisationDirectory = RibCustomisationDirectoryImpl().apply {
                 put(Menu.Customisation::class, mock {
-                    on { viewFactory } doReturn StaticViewFactory<MenuView>(menuView)
+                    on { viewFactory } doReturn object : MenuView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+                            menuView
+                        }
+                    }
                 })
             }
 

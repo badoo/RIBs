@@ -4,9 +4,6 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
-import com.badoo.ribs.customisation.inflateOnDemand
-import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.example.R
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 import kotlinx.android.parcel.Parcelize
@@ -33,8 +30,6 @@ interface Menu : Rib {
     }
 
     class Customisation(
-        val viewFactory: ViewFactory<MenuView> = inflateOnDemand(
-            R.layout.rib_menu
-        )
+        val viewFactory: MenuView.Factory = MenuViewImpl.Factory()
     ) : RibCustomisation
 }

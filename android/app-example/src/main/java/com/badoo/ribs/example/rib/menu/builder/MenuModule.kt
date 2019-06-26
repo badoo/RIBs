@@ -50,7 +50,7 @@ internal object MenuModule {
         interactor: MenuInteractor
     ) : Node<MenuView> = Node(
         identifier = object : Menu {},
-        viewFactory = customisation.viewFactory,
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

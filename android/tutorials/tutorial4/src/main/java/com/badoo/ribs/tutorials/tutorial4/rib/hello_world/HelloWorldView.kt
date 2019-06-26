@@ -1,16 +1,17 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.hello_world
 
-import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.util.AttributeSet
+import android.support.annotation.LayoutRes
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import com.jakewharton.rxrelay2.PublishRelay
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.tutorials.tutorial4.R
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.tutorials.tutorial4.util.Lexem
+import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -26,31 +27,37 @@ interface HelloWorldView : RibView,
         val titleText: Lexem,
         val welcomeText: Lexem
     )
+
+    interface Factory : ViewFactory<Nothing?, HelloWorldView>
 }
 
 class HelloWorldViewImpl private constructor(
-    context: Context, attrs: AttributeSet? = null, defStyle: Int = 0, private val events: PublishRelay<Event>
-) : ConstraintLayout(context, attrs, defStyle),
-    HelloWorldView,
+    override val androidView: ViewGroup,
+    private val events: PublishRelay<Event> = PublishRelay.create()
+) : HelloWorldView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
-    @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
-    ) : this(context, attrs, defStyle, PublishRelay.create<Event>())
+    class Factory(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_hello_world
+    ) : HelloWorldView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
+            HelloWorldViewImpl(
+                inflate(it, layoutRes)
+            )
+        }
+    }
 
-    override val androidView = this
-    private val title: TextView by lazy { findViewById<TextView>(R.id.hello_world_title) }
-    private val welcome: TextView by lazy { findViewById<TextView>(R.id.hello_world_welcome) }
-    private val button: Button by lazy { findViewById<Button>(R.id.hello_world_button) }
+    private val title: TextView = androidView.findViewById(R.id.hello_world_title)
+    private val welcome: TextView = androidView.findViewById(R.id.hello_world_welcome)
+    private val button: Button = androidView.findViewById(R.id.hello_world_button)
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+    init {
         button.setOnClickListener { events.accept(Event.ButtonClicked) }
     }
 
     override fun accept(vm: ViewModel) {
-        title.text = vm.titleText.resolve(context)
-        welcome.text = vm.welcomeText.resolve(context)
+        title.text = vm.titleText.resolve(androidView.context)
+        welcome.text = vm.welcomeText.resolve(androidView.context)
     }
 }

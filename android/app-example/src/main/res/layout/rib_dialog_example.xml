@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.badoo.ribs.example.rib.dialog_example.DialogExampleViewImpl xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rib_dialog_example"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
@@ -48,4 +50,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-</com.badoo.ribs.example.rib.dialog_example.DialogExampleViewImpl>
+</android.support.constraint.ConstraintLayout>

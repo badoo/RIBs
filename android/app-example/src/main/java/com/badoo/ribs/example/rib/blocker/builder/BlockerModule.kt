@@ -38,12 +38,12 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: BlockerView.Factory,
+        customisation: Blocker.Customisation,
         router: BlockerRouter,
         interactor: BlockerInteractor
     ) : Node<BlockerView> = Node(
         identifier = object : Blocker {},
-        viewFactory = viewFactory(null),
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

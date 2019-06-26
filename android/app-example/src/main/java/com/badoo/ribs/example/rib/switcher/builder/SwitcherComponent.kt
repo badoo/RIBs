@@ -8,15 +8,13 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherView
+import dagger.BindsInstance
 
 
 @SwitcherScope
 @dagger.Component(
     modules = [SwitcherModule::class],
-    dependencies = [
-        Switcher.Dependency::class,
-        Switcher.Customisation::class
-    ]
+    dependencies = [Switcher.Dependency::class]
 )
 internal interface SwitcherComponent :
     HelloWorld.Dependency,
@@ -29,7 +27,7 @@ internal interface SwitcherComponent :
     interface Factory {
         fun create(
             dependency: Switcher.Dependency,
-            customisation: Switcher.Customisation
+            @BindsInstance customisation: Switcher.Customisation
         ): SwitcherComponent
     }
 

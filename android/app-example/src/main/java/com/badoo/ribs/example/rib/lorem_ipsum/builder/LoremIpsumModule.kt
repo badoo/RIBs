@@ -38,12 +38,12 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: LoremIpsumView.Factory,
+        customisation: LoremIpsum.Customisation,
         router: LoremIpsumRouter,
         interactor: LoremIpsumInteractor
     ) : Node<LoremIpsumView> = Node(
         identifier = object : LoremIpsum {},
-        viewFactory = viewFactory(null),
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

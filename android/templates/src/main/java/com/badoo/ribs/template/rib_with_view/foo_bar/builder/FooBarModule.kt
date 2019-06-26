@@ -1,7 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Output
@@ -52,12 +51,12 @@ internal object FooBarModule {
     @JvmStatic
     internal fun node(
         deps: FooBar.Dependency,
-        viewFactory: ViewFactory<FooBar.Dependency, FooBarView>,
+        customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor
     ) : Node<FooBarView> = Node(
         identifier = object : FooBar {},
-        viewFactory = viewFactory(deps),
+        viewFactory = customisation.viewFactory(deps),
         router = router,
         interactor = interactor
     )

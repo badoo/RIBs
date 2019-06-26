@@ -1,20 +1,23 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.Builder
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
+import com.badoo.ribs.example.rib.foo_bar.FooBarView
 import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
+import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
-import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
-import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
+import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Blocker
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Foo
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Hello
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Blocker
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay.Dialog
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
@@ -33,20 +36,20 @@ import org.junit.Test
  */
 class SwitcherRouterTest {
 
-    private val fooBarBuilder = createBuilder<FooBarBuilder> { build() }
-    private val fooBarNode = fooBarBuilder.build()
+    private val fooBarNode = TestNode<FooBarView>()
+    private val fooBarBuilder = mock<FooBarBuilder> { on { build() } doReturn fooBarNode }
 
-    private val helloWorldBuilder = createBuilder<HelloWorldBuilder> { build() }
-    private val helloWorldNode = helloWorldBuilder.build()
+    private val helloWorldNode = TestNode<HelloWorldView>()
+    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build() } doReturn helloWorldNode }
 
-    private val dialogExampleBuilder = createBuilder<DialogExampleBuilder> { build() }
-    private val dialogExampleNode = dialogExampleBuilder.build()
+    private val dialogExampleNode = TestNode<DialogExampleView>()
+    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build() } doReturn dialogExampleNode }
 
-    private val blockerBuilder = createBuilder<BlockerBuilder> { build() }
-    private val blockerNode = blockerBuilder.build()
+    private val blockerNode = TestNode<BlockerView>()
+    private val blockerBuilder = mock<BlockerBuilder> { on { build() } doReturn blockerNode }
 
-    private val menuBuilder = createBuilder<MenuBuilder> { build() }
-    private val menuNode = menuBuilder.build()
+    private val menuNode = TestNode<MenuView>()
+    private val menuBuilder = mock<MenuBuilder> { on { build() } doReturn menuNode }
 
     private val dialogLauncher: DialogLauncher = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
@@ -142,9 +145,4 @@ class SwitcherRouterTest {
 
         assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, blockerNode)
     }
-
-    private inline fun <reified B : Builder<*>> createBuilder(noinline buildCall: B.() -> Node<*>) =
-        mock<B> {
-            on(buildCall) doReturn mock(name = "Node mock for ${B::class.java.simpleName}")
-        }
 }

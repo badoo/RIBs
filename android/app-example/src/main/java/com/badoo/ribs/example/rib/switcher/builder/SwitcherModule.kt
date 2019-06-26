@@ -75,13 +75,13 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun node(
+        customisation: Switcher.Customisation,
         viewDependency: SwitcherView.Dependency,
-        viewFactory: SwitcherView.Factory,
         router: SwitcherRouter,
         interactor: SwitcherInteractor
     ) : Node<SwitcherView> = Node(
         identifier = object : Switcher {},
-        viewFactory = viewFactory(viewDependency),
+        viewFactory = customisation.viewFactory(viewDependency),
         router = router,
         interactor = interactor
     )

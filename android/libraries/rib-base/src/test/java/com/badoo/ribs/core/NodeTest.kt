@@ -1,3 +1,4 @@
+
 package com.badoo.ribs.core
 
 import android.os.Bundle
@@ -78,9 +79,9 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(object : RandomOtherNode1 {})
-        child2 = TestNode(object : RandomOtherNode2 {})
-        child3 = TestNode(object : RandomOtherNode3 {})
+        child1 = TestNode(identifier = object : RandomOtherNode1 {}, viewFactory = null)
+        child2 = TestNode(identifier = object : RandomOtherNode2 {}, viewFactory = null)
+        child3 = TestNode(identifier = object : RandomOtherNode3 {}, viewFactory = null)
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -107,7 +108,7 @@ class NodeTest {
     @Test
     fun `onAttach() notifies Interactor`() {
         node.onAttach(null)
-        verify(interactor).onAttach(null)
+        verify(interactor).onAttach(null, node.ribLifecycleRegistry)
     }
 
     @Test
@@ -125,7 +126,7 @@ class NodeTest {
         val childBundle: Bundle = mock()
         whenever(bundle.getBundle(KEY_INTERACTOR)).thenReturn(childBundle)
         node.onAttach(bundle)
-        verify(interactor).onAttach(childBundle)
+        verify(interactor).onAttach(childBundle, node.ribLifecycleRegistry)
     }
 
     @Test
@@ -145,7 +146,7 @@ class NodeTest {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
         RIBs.errorHandler = errorHandler
-        node.attachToView(mock())
+        node.attachToView(parentViewGroup)
 
         node.onDetach()
 
@@ -157,11 +158,11 @@ class NodeTest {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
         RIBs.errorHandler = errorHandler
-        node.attachToView(mock())
+        node.attachToView(parentViewGroup)
 
         node.onDetach()
 
-        assertEquals(false, node.isViewAttached)
+        assertEquals(false, node.isAttachedToView)
     }
 
     @Test
@@ -199,30 +200,6 @@ class NodeTest {
         node.onSaveInstanceState(bundle)
         verify(interactor).onSaveInstanceState(captor.capture())
         verify(bundle).putBundle(KEY_INTERACTOR, captor.firstValue)
-    }
-
-    @Test
-    fun `onStart() is forwarded to Interactor`() {
-        node.onStart()
-        verify(interactor).onStart()
-    }
-
-    @Test
-    fun `onStop() is forwarded to Interactor`() {
-        node.onStop()
-        verify(interactor).onStop()
-    }
-
-    @Test
-    fun `onPause() is forwarded to Interactor`() {
-        node.onPause()
-        verify(interactor).onPause()
-    }
-
-    @Test
-    fun `onResume()() is forwarded to Interactor`() {
-        node.onResume()
-        verify(interactor).onResume()
     }
 
     @Test
@@ -351,20 +328,20 @@ class NodeTest {
 
     @Test
     fun `isViewAttached flag is initially false`() {
-        assertEquals(false, node.isViewAttached)
+        assertEquals(false, node.isAttachedToView)
     }
 
     @Test
     fun `attachToView() sets isViewAttached flag to true`() {
         node.attachToView(parentViewGroup)
-        assertEquals(true, node.isViewAttached)
+        assertEquals(true, node.isAttachedToView)
     }
 
     @Test
     fun `onDetachFromView() resets isViewAttached flag to false`() {
         node.attachToView(parentViewGroup)
         node.detachFromView()
-        assertEquals(false, node.isViewAttached)
+        assertEquals(false, node.isAttachedToView)
     }
 
     @Test
@@ -424,9 +401,10 @@ class NodeTest {
 
     @Test
     fun `attachChild() does not imply attachToView when Android view system is not available`() {
-        val child = mock<Node<*>>()
+        val childViewFactory = mock<ViewFactory<TestView>>()
+        val child = TestNode(mock(), childViewFactory)
         node.attachChildNode(child, null)
-        verify(child, never()).attachToView(parentViewGroup)
+        verify(childViewFactory, never()).invoke(parentViewGroup)
     }
 
     @Test
@@ -482,22 +460,34 @@ class NodeTest {
     }
 
     @Test
+    fun `When current Node has a view, attachToView() notifies Interactor of view creation`() {
+        node.attachToView(parentViewGroup)
+        verify(interactor).onViewCreated(node.viewLifecycleRegistry, view)
+    }
+
+    @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
-        whenever(viewFactory.invoke(parentViewGroup)).thenReturn(null)
+        node = Node(
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = null,
+            router = router,
+            interactor = interactor
+        )
+
         node.attachToView(parentViewGroup)
         verify(parentViewGroup, never()).addView(anyOrNull())
     }
 
     @Test
-    fun `When current Node has a view, attachToView() notifies Interactor of view creation`() {
-        node.attachToView(parentViewGroup)
-        verify(interactor).onViewCreated(view)
-    }
-
-    @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
-        whenever(viewFactory.invoke(parentViewGroup)).thenReturn(null)
+        node = Node(
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = null,
+            router = router,
+            interactor = interactor
+        )
+
         node.attachToView(parentViewGroup)
-        verify(interactor, never()).onViewCreated(anyOrNull())
+        verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
     }
 }

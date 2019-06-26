@@ -3,12 +3,14 @@ package com.badoo.ribs.core.helper
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.nhaarman.mockitokotlin2.mock
+import com.badoo.ribs.core.view.ViewFactory
 
 class TestNode(
-    identifier: Rib
+    identifier: Rib,
+    viewFactory: ViewFactory<TestView>? = mock()
 ) : Node<TestView>(
     identifier = identifier,
-    viewFactory = mock(),
+    viewFactory = viewFactory,
     router = mock(),
     interactor = mock()
 ) {

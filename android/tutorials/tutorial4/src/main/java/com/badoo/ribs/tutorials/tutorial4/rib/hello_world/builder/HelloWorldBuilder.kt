@@ -9,13 +9,9 @@ class HelloWorldBuilder(
     override val dependency: HelloWorld.Dependency
 ) : Builder<HelloWorld.Dependency>() {
 
-    fun build(): Node<HelloWorldView> {
-        val customisation = HelloWorld.Customisation()
-        val component = DaggerHelloWorldComponent.builder()
-            .dependency(dependency)
-            .customisation(customisation)
-            .build()
-
-        return component.node()
-    }
+    fun build(): Node<HelloWorldView> =
+        DaggerHelloWorldComponent
+            .factory()
+            .create(dependency, HelloWorld.Customisation())
+            .node()
 }

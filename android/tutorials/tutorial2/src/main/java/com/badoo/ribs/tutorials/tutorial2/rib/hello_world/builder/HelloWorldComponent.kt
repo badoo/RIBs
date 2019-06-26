@@ -3,25 +3,21 @@ package com.badoo.ribs.tutorials.tutorial2.rib.hello_world.builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorldView
+import dagger.BindsInstance
 
 @HelloWorldScope
 @dagger.Component(
     modules = [HelloWorldModule::class],
-    dependencies = [
-        HelloWorld.Dependency::class,
-        HelloWorld.Customisation::class
-    ]
+    dependencies = [HelloWorld.Dependency::class]
 )
 internal interface HelloWorldComponent {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: HelloWorld.Dependency): Builder
-
-        fun customisation(component: HelloWorld.Customisation): Builder
-
-        fun build(): HelloWorldComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: HelloWorld.Dependency,
+            @BindsInstance customisation: HelloWorld.Customisation
+        ): HelloWorldComponent
     }
 
     fun node(): Node<HelloWorldView>

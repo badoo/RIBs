@@ -3,15 +3,13 @@ package com.badoo.ribs.example.rib.foo_bar.builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarView
+import dagger.BindsInstance
 
 
 @FooBarScope
 @dagger.Component(
     modules = [FooBarModule::class],
-    dependencies = [
-        FooBar.Dependency::class,
-        FooBar.Customisation::class
-    ]
+    dependencies = [FooBar.Dependency::class]
 )
 internal interface FooBarComponent {
 
@@ -19,7 +17,7 @@ internal interface FooBarComponent {
     interface Factory {
         fun create(
             dependency: FooBar.Dependency,
-            customisation: FooBar.Customisation
+            @BindsInstance customisation: FooBar.Customisation
         ): FooBarComponent
     }
 

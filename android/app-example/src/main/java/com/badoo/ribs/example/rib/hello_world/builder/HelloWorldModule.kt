@@ -52,12 +52,12 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: HelloWorldView.Factory,
+        customisation: HelloWorld.Customisation,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
     ) : Node<HelloWorldView> = Node(
         identifier = object : HelloWorld {},
-        viewFactory = viewFactory(null),
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

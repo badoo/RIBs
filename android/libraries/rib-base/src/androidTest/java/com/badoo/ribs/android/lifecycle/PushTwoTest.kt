@@ -1,8 +1,8 @@
 package com.badoo.ribs.android.lifecycle
 
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
-import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode3
@@ -13,10 +13,10 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Test
 
-class PushTwoConfigurationsNodesStateTest  : BaseNodesTest() {
+class PushTwoTest  : BaseNodesTest() {
 
     private fun pushTwoConfigurations(setup: When, expectedState: ExpectedState) {
-        test(setup, expectedState) { router ->
+        test(setup, expectedState) { router, _ ->
             runOnMainSync {
                 router.pushIt(setup.pushConfiguration1!!)
                 router.pushIt(setup.pushConfiguration2!!)

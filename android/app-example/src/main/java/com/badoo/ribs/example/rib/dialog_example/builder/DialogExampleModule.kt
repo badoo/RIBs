@@ -76,12 +76,12 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: DialogExampleView.Factory,
+        customisation: DialogExample.Customisation,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor
     ) : Node<DialogExampleView> = Node(
         identifier = object : DialogExample {},
-        viewFactory = viewFactory(null),
+        viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

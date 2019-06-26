@@ -12,7 +12,7 @@ import org.junit.Test
 class InitialNodesStateTest : BaseNodesTest() {
 
     private fun whenRootIsCreated(setup: When, expectedState: ExpectedState) {
-        test(setup, expectedState) {
+        test(setup, expectedState) { _, _ ->
             // no special operations here, just test initial
         }
     }

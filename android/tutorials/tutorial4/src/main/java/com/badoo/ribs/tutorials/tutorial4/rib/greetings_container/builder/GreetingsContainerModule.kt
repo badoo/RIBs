@@ -45,7 +45,7 @@ internal object GreetingsContainerModule {
         interactor: GreetingsContainerInteractor
     ) : Node<Nothing> = Node(
         identifier = object : GreetingsContainer {},
-        viewFactory = { null },
+        viewFactory = null,
         router = router,
         interactor = interactor
     )

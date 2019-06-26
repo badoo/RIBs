@@ -2,12 +2,10 @@ package com.badoo.ribs.example.rib.menu
 
 import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import android.support.test.rule.ActivityTestRule
-import android.view.LayoutInflater
 import com.badoo.ribs.example.app.OtherActivity
-import com.badoo.ribs.example.rib.menu.element.MenuElement
-import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
+import com.badoo.ribs.example.rib.menu.element.MenuElement
 import io.reactivex.ObservableSource
 import io.reactivex.observers.TestObserver
 import org.junit.Before

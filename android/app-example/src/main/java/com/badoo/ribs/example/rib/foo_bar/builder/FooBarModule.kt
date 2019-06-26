@@ -2,7 +2,6 @@ package com.badoo.ribs.example.rib.foo_bar.builder
 
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarInteractor
 import com.badoo.ribs.example.rib.foo_bar.FooBarRouter
@@ -44,12 +43,12 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<FooBarView>,
+        customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor
     ) : Node<FooBarView> = Node(
         identifier = object : FooBar {},
-        viewFactory = viewFactory,
+        viewFactory = customisation.viewFactory,
         router = router,
         interactor = interactor
     )

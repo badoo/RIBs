@@ -1,7 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum.Output
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumInteractor
@@ -39,12 +38,12 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<LoremIpsumView>,
+        customisation: LoremIpsum.Customisation,
         router: LoremIpsumRouter,
         interactor: LoremIpsumInteractor
     ) : Node<LoremIpsumView> = Node(
         identifier = object : LoremIpsum {},
-        viewFactory = viewFactory,
+        viewFactory = customisation.viewFactory,
         router = router,
         interactor = interactor
     )

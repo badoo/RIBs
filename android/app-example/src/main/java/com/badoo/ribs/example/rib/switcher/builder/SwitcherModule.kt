@@ -1,7 +1,6 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
@@ -66,12 +65,12 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<SwitcherView>,
+        customisation: Switcher.Customisation,
         router: SwitcherRouter,
         interactor: SwitcherInteractor
     ) : Node<SwitcherView> = Node(
         identifier = object : Switcher {},
-        viewFactory = viewFactory,
+        viewFactory = customisation.viewFactory,
         router = router,
         interactor = interactor
     )

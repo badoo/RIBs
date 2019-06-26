@@ -1,7 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.builder
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorld.Output
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldInteractor
@@ -35,12 +34,12 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
-        viewFactory: ViewFactory<HelloWorldView>,
+        customisation: HelloWorld.Customisation,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
     ) : Node<HelloWorldView> = Node(
         identifier = object : HelloWorld {},
-        viewFactory = viewFactory,
+        viewFactory = customisation.viewFactory,
         router = router,
         interactor = interactor
     )

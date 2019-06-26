@@ -6,18 +6,15 @@ import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsConta
 @GreetingsContainerScope
 @dagger.Component(
     modules = [GreetingsContainerModule::class],
-    dependencies = [
-        GreetingsContainer.Dependency::class
-    ]
+    dependencies = [GreetingsContainer.Dependency::class]
 )
 internal interface GreetingsContainerComponent {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: GreetingsContainer.Dependency): Builder
-
-        fun build(): GreetingsContainerComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(
+            dependency: GreetingsContainer.Dependency
+        ): GreetingsContainerComponent
     }
 
     fun node(): Node<Nothing>

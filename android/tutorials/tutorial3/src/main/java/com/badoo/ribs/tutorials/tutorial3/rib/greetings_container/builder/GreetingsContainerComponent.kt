@@ -7,18 +7,13 @@ import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorld
 @GreetingsContainerScope
 @dagger.Component(
     modules = [GreetingsContainerModule::class],
-    dependencies = [
-        GreetingsContainer.Dependency::class
-    ]
+    dependencies = [GreetingsContainer.Dependency::class]
 )
 internal interface GreetingsContainerComponent : HelloWorld.Dependency {
 
-    @dagger.Component.Builder
-    interface Builder {
-
-        fun dependency(component: GreetingsContainer.Dependency): Builder
-
-        fun build(): GreetingsContainerComponent
+    @dagger.Component.Factory
+    interface Factory {
+        fun create(dependency: GreetingsContainer.Dependency): GreetingsContainerComponent
     }
 
     fun node(): Node<Nothing>

@@ -9,9 +9,8 @@ class GreetingsContainerBuilder(
 ) : Builder<GreetingsContainer.Dependency>() {
 
     fun build(): Node<Nothing> {
-        val component = DaggerGreetingsContainerComponent.builder()
-            .dependency(dependency)
-            .build()
+        val component = DaggerGreetingsContainerComponent.factory()
+            .create(dependency)
 
         return component.node()
     }

@@ -294,7 +294,7 @@ class GreetingsContainerInteractor(
     disposables = null
 ) {
     // Add this:
-    internal val helloWorldInputSource: Relay<HelloWorld.Input> = PublishRelay.create()
+    internal val helloWorldInputSource: Relay<HelloWorld.Input> = BehaviorRelay.create()
 
     internal val helloWorldOutputConsumer: Consumer<HelloWorld.Output> = Consumer {
         when (it) {

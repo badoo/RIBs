@@ -1,5 +1,6 @@
 package com.badoo.ribs.core.helper
 
+import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.nhaarman.mockitokotlin2.mock
@@ -7,7 +8,7 @@ import com.badoo.ribs.core.view.ViewFactory
 
 class TestNode(
     identifier: Rib,
-    viewFactory: ViewFactory<TestView>? = mock()
+    viewFactory: ((ViewGroup) -> TestView?)? = mock()
 ) : Node<TestView>(
     identifier = identifier,
     viewFactory = viewFactory,

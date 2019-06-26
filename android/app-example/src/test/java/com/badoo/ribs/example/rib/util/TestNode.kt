@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.util
 
 import android.os.Bundle
+import android.view.ViewGroup
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -12,7 +13,7 @@ import com.nhaarman.mockitokotlin2.mock
 class TestNode<V : RibView>(
     router: Router<*, *, *, *, V> = mock(),
     identifier: Rib = object : Rib {},
-    viewFactory: ViewFactory<V> = mock(),
+    viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<*, *, *, V> = mock()
 ) : Node<V>(
     identifier = identifier,

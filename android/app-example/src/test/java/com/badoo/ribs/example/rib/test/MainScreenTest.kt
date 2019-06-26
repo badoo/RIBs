@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.test
 import android.app.Activity.RESULT_OK
 import android.app.Instrumentation
 import android.content.Intent
+import android.view.ViewGroup
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Node
@@ -21,11 +22,11 @@ import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherView
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
-import com.badoo.ribs.example.rib.util.StaticViewFactory
 import com.badoo.ribs.example.rib.util.TestDefaultDependencies
 import com.badoo.ribs.example.rib.util.TestView
 import com.badoo.ribs.example.rib.util.component
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
+import com.badoo.ribs.example.util.CoffeeMachine
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
@@ -94,21 +95,44 @@ class MainScreenTest {
             CanProvidePermissionRequester by dependencies,
             CanProvideDialogLauncher by dependencies {
 
+            override fun coffeeMachine(): CoffeeMachine =
+                mock()
+
             override fun ribCustomisation(): RibCustomisationDirectory = RibCustomisationDirectoryImpl().apply {
                 put(Menu.Customisation::class, mock {
-                    on { viewFactory } doReturn StaticViewFactory<MenuView>(menuView)
+                    on { viewFactory } doReturn object : MenuView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+                            menuView
+                        }
+                    }
                 })
                 put(Switcher.Customisation::class, mock {
-                    on { viewFactory } doReturn StaticViewFactory<SwitcherView>(switcherView)
+                    on { viewFactory } doReturn object : SwitcherView.Factory {
+                        override fun invoke(deps: SwitcherView.Dependency): (ViewGroup) -> SwitcherView = {
+                            switcherView
+                        }
+                    }
                 })
                 put(DialogExample.Customisation::class, mock {
-                    on { viewFactory } doReturn StaticViewFactory<DialogExampleView>(dialogExampleView)
+                    on { viewFactory } doReturn object : DialogExampleView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> DialogExampleView = {
+                            dialogExampleView
+                        }
+                    }
                 })
                 put(FooBar.Customisation::class, mock {
-                    on { viewFactory } doReturn StaticViewFactory<FooBarView>(fooBarView)
+                    on { viewFactory } doReturn object : FooBarView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
+                            fooBarView
+                        }
+                    }
                 })
                 put(HelloWorld.Customisation::class, mock {
-                    on { viewFactory } doReturn StaticViewFactory<HelloWorldView>(helloWorldView)
+                    on { viewFactory } doReturn object : HelloWorldView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
+                            helloWorldView
+                        }
+                    }
                 })
             }
         }).build()

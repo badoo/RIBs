@@ -33,7 +33,7 @@ class MenuViewTest {
     @Before
     fun setUp() {
         runOnUiThread {
-            menuView = LayoutInflater.from(activityRule.activity).inflate(R.layout.rib_menu, null, false) as MenuViewImpl
+            menuView = MenuViewImpl.Factory()(null).invoke(activityRule.activity.findViewById(android.R.id.content))
             activityRule.activity.setContentView(menuView.androidView)
         }
     }

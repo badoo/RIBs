@@ -108,7 +108,7 @@ class ConfigurationFeatureTest {
 
             private fun List<() -> Descriptor>.toRoutingAction(): RoutingAction<*> =
                 mock {
-                    on { buildNodes() } doAnswer {
+                    on { buildNodes(anyOrNull()) } doAnswer {
                         this@toRoutingAction.map {
                             factory -> factory.invoke()
                         }
@@ -217,8 +217,8 @@ class ConfigurationFeatureTest {
     @Test
     fun `On init, ALL initial configuration are added - Nodes that are created are attached with empty Bundles`() {
         createEmptyFeature()
-        helperPermanent1.nodes.forEach { verify(parentNode).attachChildNode(it.node, null) }
-        helperPermanent2.nodes.forEach { verify(parentNode).attachChildNode(it.node, null) }
+        helperPermanent1.nodes.forEach { verify(parentNode).attachChildNode(it.node) }
+        helperPermanent2.nodes.forEach { verify(parentNode).attachChildNode(it.node) }
     }
 
     @Test
@@ -269,19 +269,19 @@ class ConfigurationFeatureTest {
         feature.accept(WakeUp())
 
         helperPermanent1.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node, helperPermanent1.bundles[idx])
+            verify(parentNode).attachChildNode(item.node)
         }
         helperPermanent2.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node, helperPermanent2.bundles[idx])
+            verify(parentNode).attachChildNode(item.node)
         }
         helperContentViewParented1.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node, helperContentViewParented1.bundles[idx])
+            verify(parentNode).attachChildNode(item.node)
         }
         helperContentViewParented2.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node, helperContentViewParented2.bundles[idx])
+            verify(parentNode).attachChildNode(item.node)
         }
         helperContentExternal1.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node, helperContentExternal1.bundles[idx])
+            verify(parentNode).attachChildNode(item.node)
         }
     }
 
@@ -328,8 +328,8 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts are NOT added - Nodes that are created are NOT ttached`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it.node), anyOrNull()) }
-        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it.node), anyOrNull()) }
+        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it.node)) }
+        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it.node)) }
     }
 
     @Test
@@ -375,7 +375,7 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(Add(Content(0), ContentViewParented1))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode).attachChildNode(it.node, null)
+            verify(parentNode).attachChildNode(it.node)
         }
     }
 
@@ -385,7 +385,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Add(Content(0), ContentViewParented1))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode, times(1)).attachChildNode(it.node, null)
+            verify(parentNode, times(1)).attachChildNode(it.node)
         }
     }
 

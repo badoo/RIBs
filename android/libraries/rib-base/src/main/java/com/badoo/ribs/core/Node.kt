@@ -43,12 +43,15 @@ import java.util.concurrent.CopyOnWriteArrayList
  **/
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
+    savedInstanceState: Bundle?,
     internal open val identifier: Rib,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
+
+    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
 
     enum class ViewAttachMode {
         /**
@@ -72,13 +75,8 @@ open class Node<V : RibView>(
     )
 
     companion object {
-        internal const val KEY_ROUTER = "node.router"
-        internal const val KEY_INTERACTOR = "node.interactor"
+        private const val BUNDLE_KEY = "Node"
         internal const val KEY_VIEW_STATE = "view.state"
-    }
-
-    init {
-        router.node = this
     }
 
     private val externalLifecycleRegistry = LifecycleRegistry(this)
@@ -94,7 +92,6 @@ open class Node<V : RibView>(
     internal open var view: V? = null
     protected var parentViewGroup: ViewGroup? = null
 
-    private var savedInstanceState: Bundle? = null
     internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
 
     internal var isAttachedToView: Boolean = false
@@ -103,16 +100,18 @@ open class Node<V : RibView>(
     fun getChildren(): List<Node<*>> =
         children.toList()
 
-    @CallSuper
-    open fun onAttach(savedInstanceState: Bundle?) {
-        this.savedInstanceState = savedInstanceState
+    init {
+        router.init(this)
+    }
 
+    @CallSuper
+    open fun onAttach() {
         savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
 
         if (externalLifecycleRegistry.currentState == INITIALIZED) externalLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
         ribLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
-        router.onAttach(savedInstanceState?.getBundle(KEY_ROUTER))
-        interactor.onAttach(savedInstanceState?.getBundle(KEY_INTERACTOR), ribLifecycleRegistry)
+        router.onAttach()
+        interactor.onAttach(ribLifecycleRegistry)
     }
 
     open fun attachToView(parentViewGroup: ViewGroup) {
@@ -181,14 +180,14 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be attached.
      */
     @MainThread
-    internal fun attachChildNode(childNode: Node<*>, bundle: Bundle?) {
+    internal fun attachChildNode(childNode: Node<*>) {
         children.add(childNode)
         ribRefWatcher.logBreadcrumb(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
         )
 
         childNode.inheritExternalLifecycle(externalLifecycleRegistry)
-        childNode.onAttach(bundle)
+        childNode.onAttach()
     }
 
     private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
@@ -331,24 +330,13 @@ open class Node<V : RibView>(
     }
 
     open fun onSaveInstanceState(outState: Bundle) {
-        saveRouterState(outState)
-        saveInteractorState(outState)
+        router.onSaveInstanceState(outState)
+        interactor.onSaveInstanceState(outState)
         saveViewState()
-        outState.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
-    }
 
-    private fun saveRouterState(outState: Bundle) {
-        Bundle().let {
-            router.onSaveInstanceState(it)
-            outState.putBundle(KEY_ROUTER, it)
-        }
-    }
-
-    private fun saveInteractorState(outState: Bundle) {
-        Bundle().let {
-            interactor.onSaveInstanceState(it)
-            outState.putBundle(KEY_INTERACTOR, it)
-        }
+        val bundle = Bundle()
+        bundle.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
+        outState.putBundle(BUNDLE_KEY, bundle)
     }
 
     fun onLowMemory() {

@@ -21,14 +21,14 @@ internal object AddAction : ResolvedSingleConfigurationAction() {
      * Convenience method so that Add can be called only with only the knowledge of parentNode too
      */
     fun <C : Parcelable> execute(item: Resolved<C>, parentNode: Node<*>): Resolved<C> {
-        parentNode.attachNodes(item.nodes, item.bundles)
+        parentNode.attachNodes(item.nodes)
 
         return item
     }
 
-    private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>, bundles: List<Bundle?>) {
-        nodes.forEachIndexed { index, nodeDescriptor ->
-            attachChildNode(nodeDescriptor.node, bundles.bundleAt(index))
+    private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>) {
+        nodes.forEach {
+            attachChildNode(it.node)
         }
     }
 

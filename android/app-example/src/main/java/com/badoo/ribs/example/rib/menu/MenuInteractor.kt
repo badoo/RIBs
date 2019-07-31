@@ -15,11 +15,13 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MenuInteractor(
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, MenuView>,
     private val input: ObservableSource<Menu.Input>,
     private val output: Consumer<Menu.Output>,
     private val feature: MenuFeature
 ) : Interactor<Configuration, Configuration, Nothing, MenuView>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = feature
 ) {

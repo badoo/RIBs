@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
@@ -27,7 +28,8 @@ internal interface SwitcherComponent :
     interface Factory {
         fun create(
             dependency: Switcher.Dependency,
-            @BindsInstance customisation: Switcher.Customisation
+            @BindsInstance customisation: Switcher.Customisation,
+            @BindsInstance savedInstanceState: Bundle?
         ): SwitcherComponent
     }
 

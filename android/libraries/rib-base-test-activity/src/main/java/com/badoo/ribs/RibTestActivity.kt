@@ -28,8 +28,8 @@ class RibTestActivity : RibActivity(),
     override val rootViewGroup: ViewGroup
         get() = findViewById(android.R.id.content)
 
-    override fun createRib(): Node<*> =
-        ribFactory!!(this)
+    override fun createRib(savedInstanceState: Bundle?): Node<*> =
+        ribFactory!!(this, savedInstanceState)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_root)
@@ -37,6 +37,6 @@ class RibTestActivity : RibActivity(),
     }
 
     companion object {
-        var ribFactory: ((RibTestActivity) -> Node<*>)? = null
+        var ribFactory: ((RibTestActivity, Bundle?) -> Node<*>)? = null
     }
 }

@@ -20,7 +20,7 @@ class FooBarTest {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = empty()
             override fun fooBarOutput(): Consumer<FooBar.Output> = Consumer {}
             override fun ribCustomisation(): RibCustomisationDirectory = TODO()
-        }).build()
+        }).build(null)
 
     @Test
     fun testTextDisplayed() {

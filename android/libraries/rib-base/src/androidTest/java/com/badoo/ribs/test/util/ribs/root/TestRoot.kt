@@ -1,6 +1,7 @@
 package com.badoo.ribs.test.util.ribs.root
 
 import android.arch.lifecycle.Lifecycle
+import android.os.Bundle
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
@@ -41,14 +42,15 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): () -> TestNode<TestChildView> = {
-            TestChildBuilder().build().also {
+        private fun builder(block: (TestNode<TestChildView>) -> Unit): (Bundle?) -> TestNode<TestChildView> = {
+            TestChildBuilder().build(it).also {
                 block.invoke(it)
             }
         }
 
-        fun create(dialogLauncher: DialogLauncher): TestNode<TestRootView> {
+        fun create(dialogLauncher: DialogLauncher, savedInstanceState: Bundle?): TestNode<TestRootView> {
             val router = TestRootRouter(
+                savedInstanceState = savedInstanceState,
                 builderPermanent1 = builder { permanentNode1 = it },
                 builderPermanent2 = builder { permanentNode2 = it },
                 builder1 = builder { childNode1 = it },
@@ -66,7 +68,7 @@ interface TestRoot : Rib {
                     override fun router() = router
 
                 }
-            ).build() as TestNode<TestRootView>
+            ).build(savedInstanceState) as TestNode<TestRootView>
             rootNode = node
             return node
         }

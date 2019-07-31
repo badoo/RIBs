@@ -103,7 +103,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     configuration = configuration,
                     bundles = bundles,
                     routingAction = routingAction,
-                    nodes = routingAction.buildNodes()
+                    nodes = routingAction.buildNodes(bundles)
                 )
             )
         }

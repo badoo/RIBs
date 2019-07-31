@@ -1,13 +1,11 @@
 package com.badoo.ribs.example.rib.util
 
-import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
@@ -16,6 +14,7 @@ class TestNode<V : RibView>(
     viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<*, *, *, V> = mock()
 ) : Node<V>(
+    savedInstanceState = null,
     identifier = identifier,
     viewFactory = viewFactory,
     router = router,
@@ -25,8 +24,8 @@ class TestNode<V : RibView>(
     var isAttached: Boolean = false
         private set
 
-    override fun onAttach(savedInstanceState: Bundle?) {
-        super.onAttach(savedInstanceState)
+    override fun onAttach() {
+        super.onAttach()
         isAttached = true
     }
 

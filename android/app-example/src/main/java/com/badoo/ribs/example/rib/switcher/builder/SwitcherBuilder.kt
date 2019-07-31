@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
@@ -15,9 +16,13 @@ class SwitcherBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(Switcher::class)
     }
 
-    fun build(): Node<SwitcherView> =
+    fun build(savedInstanceState: Bundle?): Node<SwitcherView> =
         DaggerSwitcherComponent
             .factory()
-            .create(dependency, dependency.getOrDefault(Switcher.Customisation()))
+            .create(
+                dependency = dependency,
+                customisation = dependency.getOrDefault(Switcher.Customisation()),
+                savedInstanceState =savedInstanceState
+            )
             .node()
 }

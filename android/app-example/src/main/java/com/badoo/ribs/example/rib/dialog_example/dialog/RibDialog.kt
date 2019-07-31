@@ -10,7 +10,7 @@ class RibDialog(
 ) : Dialog<Dialog.Event>({
         title = "A title if you wish"
         ribFactory {
-            loremIpsumBuilder.build()
+            loremIpsumBuilder.build(it)
         }
         buttons {
             positive("Ok", Positive)

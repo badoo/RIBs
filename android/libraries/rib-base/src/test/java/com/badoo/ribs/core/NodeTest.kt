@@ -67,6 +67,7 @@ class NodeTest {
         interactor = mock()
 
         node = Node(
+            savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = viewFactory,
             router = router,
@@ -82,9 +83,9 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(identifier = object : RandomOtherNode1 {}, viewFactory = null)
-        child2 = TestNode(identifier = object : RandomOtherNode2 {}, viewFactory = null)
-        child3 = TestNode(identifier = object : RandomOtherNode3 {}, viewFactory = null)
+        child1 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode1 {}, viewFactory = null)
+        child2 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode2 {}, viewFactory = null)
+        child3 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode3 {}, viewFactory = null)
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -104,32 +105,34 @@ class NodeTest {
 
     @Test
     fun `onAttach() notifies Router`() {
-        node.onAttach(null)
-        verify(router).onAttach(null)
+        node.onAttach()
+        verify(router).onAttach()
     }
 
     @Test
     fun `onAttach() notifies Interactor`() {
-        node.onAttach(null)
-        verify(interactor).onAttach(null, node.ribLifecycleRegistry)
+        node.onAttach()
+        verify(interactor).onAttach(node.ribLifecycleRegistry)
     }
 
     @Test
     fun `A non-null Bundle in onAttach() is passed to Router`() {
+        // FIXME
         val bundle: Bundle = mock()
         val childBundle: Bundle = mock()
         whenever(bundle.getBundle(KEY_ROUTER)).thenReturn(childBundle)
-        node.onAttach(bundle)
-        verify(router).onAttach(childBundle)
+        node.onAttach()
+        verify(router).onAttach()
     }
 
     @Test
     fun `A non-null Bundle in onAttach() is passed to Interactor`() {
+        // FIXME
         val bundle: Bundle = mock()
         val childBundle: Bundle = mock()
         whenever(bundle.getBundle(KEY_INTERACTOR)).thenReturn(childBundle)
-        node.onAttach(bundle)
-        verify(interactor).onAttach(childBundle, node.ribLifecycleRegistry)
+        node.onAttach()
+        verify(interactor).onAttach(node.ribLifecycleRegistry)
     }
 
     @Test
@@ -405,8 +408,12 @@ class NodeTest {
     @Test
     fun `attachChild() does not imply attachToView when Android view system is not available`() {
         val childViewFactory = mock<TestViewFactory>()
-        val child = TestNode(mock(), childViewFactory)
-        node.attachChildNode(child, null)
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = childViewFactory
+        )
+        node.attachChildNode(child)
         verify(childViewFactory, never()).invoke(parentViewGroup)
     }
 
@@ -432,7 +439,14 @@ class NodeTest {
         val savedViewState = SparseArray<Parcelable>()
         whenever(savedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
 
-        node.onAttach(savedInstanceState)
+        node = Node(
+            savedInstanceState = savedInstanceState,
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = viewFactory,
+            router = router,
+            interactor = interactor
+        )
+        node.onAttach()
         assertEquals(savedViewState, node.savedViewState)
     }
 
@@ -471,6 +485,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
         node = Node(
+            savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = null,
             router = router,
@@ -484,6 +499,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
         node = Node(
+            savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = null,
             router = router,

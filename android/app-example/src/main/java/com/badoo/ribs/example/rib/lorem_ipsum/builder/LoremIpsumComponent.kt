@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumView
@@ -16,7 +17,8 @@ internal interface LoremIpsumComponent {
     interface Factory {
         fun create(
             dependency: LoremIpsum.Dependency,
-            @BindsInstance customisation: LoremIpsum.Customisation
+            @BindsInstance customisation: LoremIpsum.Customisation,
+            @BindsInstance savedInstanceState: Bundle?
         ): LoremIpsumComponent
     }
 

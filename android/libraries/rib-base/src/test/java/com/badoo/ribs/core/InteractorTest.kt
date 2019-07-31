@@ -30,7 +30,7 @@ class InteractorTest {
 
     @Test
     fun `Tag is generated automatically`() {
-        interactor.onAttach(null, mock())
+        interactor.onAttach(mock())
         assertNotNull(interactor.tag)
     }
 
@@ -45,7 +45,12 @@ class InteractorTest {
     fun `Tag is restored from bundle`() {
         val savedInstanceState = mock<Bundle>()
         whenever(savedInstanceState.getString(KEY_TAG)).thenReturn("abcdef")
-        interactor.onAttach(savedInstanceState, mock())
+        interactor = TestInteractor(
+            savedInstanceState = savedInstanceState,
+            router = mock(),
+            disposables = null
+        )
+        interactor.onAttach(mock())
         assertEquals("abcdef", interactor.tag)
     }
 }

@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.menu.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
@@ -15,9 +16,13 @@ class MenuBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(Menu::class)
     }
 
-    fun build(): Node<MenuView> =
+    fun build(savedInstanceState: Bundle?): Node<MenuView> =
         DaggerMenuComponent
             .factory()
-            .create(dependency, dependency.getOrDefault(Menu.Customisation()))
+            .create(
+                dependency = dependency,
+                customisation = dependency.getOrDefault(Menu.Customisation()),
+                savedInstanceState = savedInstanceState
+            )
             .node()
 }

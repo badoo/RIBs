@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
@@ -15,9 +16,13 @@ class LoremIpsumBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(LoremIpsum::class)
     }
 
-    fun build(): Node<LoremIpsumView> =
+    fun build(savedInstanceState: Bundle?): Node<LoremIpsumView> =
         DaggerLoremIpsumComponent
             .factory()
-            .create(dependency, dependency.getOrDefault(LoremIpsum.Customisation()))
+            .create(
+                dependency = dependency,
+                customisation = dependency.getOrDefault(LoremIpsum.Customisation()),
+                savedInstanceState = savedInstanceState
+            )
             .node()
 }

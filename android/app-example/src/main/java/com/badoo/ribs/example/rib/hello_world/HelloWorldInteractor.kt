@@ -23,12 +23,14 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, HelloWorldView>,
     private val input: ObservableSource<HelloWorld.Input>,
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
 ) : Interactor<Configuration, Configuration, Nothing, HelloWorldView>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = feature
 ) {

@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.hello_world.builder
 
+import android.os.Bundle
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
@@ -20,8 +21,11 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun router(
+        savedInstanceState: Bundle?
     ): HelloWorldRouter =
-        HelloWorldRouter()
+        HelloWorldRouter(
+            savedInstanceState = savedInstanceState
+        )
 
     @HelloWorldScope
     @Provides
@@ -34,6 +38,7 @@ internal object HelloWorldModule {
     @JvmStatic
     @SuppressWarnings("LongParameterList", "LongMethod")
     internal fun interactor(
+        savedInstanceState: Bundle?,
         router: HelloWorldRouter,
         input: ObservableSource<Input>,
         output: Consumer<Output>,
@@ -41,6 +46,7 @@ internal object HelloWorldModule {
         activityStarter: ActivityStarter
     ): HelloWorldInteractor =
         HelloWorldInteractor(
+            savedInstanceState = savedInstanceState,
             router = router,
             input = input,
             output = output,
@@ -52,10 +58,12 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
+        savedInstanceState: Bundle?,
         customisation: HelloWorld.Customisation,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
     ) : Node<HelloWorldView> = Node(
+        savedInstanceState = savedInstanceState,
         identifier = object : HelloWorld {},
         viewFactory = customisation.viewFactory(null),
         router = router,

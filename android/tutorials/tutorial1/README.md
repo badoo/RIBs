@@ -105,7 +105,7 @@ class RootActivity : RibActivity() {
 
     /* remainder omitted */
 
-    override fun createRib(): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Node<*> =
         TODO("Create HelloWorldBuilder, supply dependencies in constructor, return built Node")
 }
 ``` 
@@ -118,13 +118,13 @@ class HelloWorldBuilder(dependency: HelloWorld.Dependency) {
     
     /* remainder omitted */
     
-    fun build(): Node<HelloWorldView> {
+    fun build(savedInstanceState: Bundle?): Node<HelloWorldView> {
         /* remainder omitted */
     }
 }
 ``` 
 
-And also that it has a `build()` method which will give us the `Node` object we need to return from the `createRib()` method.
+And also that it has a `build` method which will give us the `Node` object we need to return from the `createRib()` method.
 
 So let's do that!
 
@@ -134,14 +134,14 @@ class RootActivity : RibActivity() {
 
     /* remainder omitted */
 
-    override fun createRib(): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Node<*> =
         HelloWorldBuilder(
             object : HelloWorld.Dependency {
                 override fun helloWorldOutput(): Consumer<HelloWorld.Output> = Consumer {
                     // not sure what to do here yet
                 }
             }
-        ).build()
+        ).build(savedInstanceState)
 }
 ```
 
@@ -158,14 +158,14 @@ So indeed, that button we see is coming from the RIB we built! Yay!
 Now this doesn't do to much. So let's change the `Consumer` dependency that we pass to the `Builder` so that it displays a Snackbar:
 
 ```kotlin
-override fun createRib(): Node<*> =
+override fun createRib(savedInstanceState: Bundle?): Node<*> =
         HelloWorldBuilder(
             object : HelloWorld.Dependency {
                 override fun helloWorldOutput(): Consumer<HelloWorld.Output> = Consumer {
                     Snackbar.make(rootViewGroup, "Hello world!", Snackbar.LENGTH_SHORT).show()
                 }
             }
-        ).build()
+        ).build(savedInstanceState)
 ```
 
 Build and deploy the app, and pressing the button this is what we should see:

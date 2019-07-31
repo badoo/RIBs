@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example
 
+import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
@@ -15,11 +16,13 @@ import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import kotlinx.android.parcel.Parcelize
 
 class DialogExampleRouter(
+    savedInstanceState: Bundle?,
     private val dialogLauncher: DialogLauncher,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
 ): Router<Configuration, Nothing, Content, Overlay, DialogExampleView>(
+    savedInstanceState = savedInstanceState,
     initialConfiguration = Content.Default
 ) {
     sealed class Configuration : Parcelable {

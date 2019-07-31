@@ -4,6 +4,7 @@ import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -35,13 +36,14 @@ class RouterTest {
                 Node.Descriptor(it, Node.ViewAttachMode.PARENT)
             }
 
-        routingActionForC2 = mock { on { buildNodes()} doReturn nodeDescriptorsC2 }
+        routingActionForC2 = mock { on { buildNodes(anyOrNull())} doReturn nodeDescriptorsC2 }
         routingActionForC1 = mock()
         routingActionForC3 = mock()
         routingActionForC4 = mock()
         routingActionForC5 = mock()
 
         router = TestRouter(
+            savedInstanceState = null,
             initialConfiguration = TestRouter.Configuration.C2,
             routingActionForC1 = routingActionForC1,
             routingActionForC2 = routingActionForC2,
@@ -60,7 +62,7 @@ class RouterTest {
 
     @Test
     fun `Save instance state call reaches child nodes`() {
-        router.onAttach(mock())
+        router.onAttach()
         router.onSaveInstanceState(mock())
         verify(childNodeC2_1).onSaveInstanceState(any())
         verify(childNodeC2_2).onSaveInstanceState(any())
@@ -68,7 +70,7 @@ class RouterTest {
 
     @Test
     fun `Pushing another configuration after initial is possible`() {
-        router.onAttach(mock())
+        router.onAttach()
         router.push(TestRouter.Configuration.C5)
     }
 }

@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.hello_world
 
+import android.os.Bundle
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -22,17 +23,17 @@ class HelloWorldTestDeferred {
     @get:Rule
     val ribsRule = RibsRule()
 
-    private fun buildRib(ribTestActivity: RibTestActivity) =
+    private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         HelloWorldBuilder(object : HelloWorld.Dependency {
             override fun helloWorldInput(): ObservableSource<HelloWorld.Input> = empty()
             override fun helloWorldOutput(): Consumer<HelloWorld.Output> = Consumer {}
             override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
             override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
-        }).build()
+        }).build(savedInstanceState)
 
     @Test
     fun testTextDisplayed() {
-        ribsRule.start { buildRib(it) }
+        ribsRule.start { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
         onView(withId(R.id.hello_title)).check(matches(isDisplayed()))
     }

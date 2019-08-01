@@ -23,6 +23,7 @@ import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
@@ -37,24 +38,25 @@ import org.junit.Test
 class SwitcherRouterTest {
 
     private val fooBarNode = TestNode<FooBarView>()
-    private val fooBarBuilder = mock<FooBarBuilder> { on { build() } doReturn fooBarNode }
+    private val fooBarBuilder = mock<FooBarBuilder> { on { build(anyOrNull()) } doReturn fooBarNode }
 
     private val helloWorldNode = TestNode<HelloWorldView>()
-    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build() } doReturn helloWorldNode }
+    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(anyOrNull()) } doReturn helloWorldNode }
 
     private val dialogExampleNode = TestNode<DialogExampleView>()
-    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build() } doReturn dialogExampleNode }
+    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(anyOrNull()) } doReturn dialogExampleNode }
 
     private val blockerNode = TestNode<BlockerView>()
-    private val blockerBuilder = mock<BlockerBuilder> { on { build() } doReturn blockerNode }
+    private val blockerBuilder = mock<BlockerBuilder> { on { build(anyOrNull()) } doReturn blockerNode }
 
     private val menuNode = TestNode<MenuView>()
-    private val menuBuilder = mock<MenuBuilder> { on { build() } doReturn menuNode }
+    private val menuBuilder = mock<MenuBuilder> { on { build(anyOrNull()) } doReturn menuNode }
 
     private val dialogLauncher: DialogLauncher = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val router = SwitcherRouter(
+        null,
         fooBarBuilder,
         helloWorldBuilder,
         dialogExampleBuilder,
@@ -68,7 +70,7 @@ class SwitcherRouterTest {
 
     @Test
     fun `attach - attaches menu and dialog example node`() {
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
 
         assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, dialogExampleNode)
@@ -78,7 +80,7 @@ class SwitcherRouterTest {
     fun `attach - publishes select dialog menu item event`() {
         val observer = router.menuUpdater.subscribeOnTestObserver()
 
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
 
         observer.assertValue(Menu.Input.SelectMenuItem(Dialogs))
@@ -86,7 +88,7 @@ class SwitcherRouterTest {
 
     @Test
     fun `hello configuration - attaches hello world and menu nodes`() {
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
 
         router.replace(Hello)
@@ -96,7 +98,7 @@ class SwitcherRouterTest {
 
     @Test
     fun `hello configuration - publishes select hello world menu item event`() {
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
         val observer = router.menuUpdater.subscribeOnTestObserver()
 
@@ -107,7 +109,7 @@ class SwitcherRouterTest {
 
     @Test
     fun `foo configuration - attaches foo bar and menu nodes`() {
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
 
         router.replace(Foo)
@@ -117,7 +119,7 @@ class SwitcherRouterTest {
 
     @Test
     fun `foo configuration - publishes select foo bar menu item event`() {
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
         val observer = router.menuUpdater.subscribeOnTestObserver()
 
@@ -128,7 +130,7 @@ class SwitcherRouterTest {
 
     @Test
     fun `overlay dialog configuration - shows overlay dialog`() {
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
 
         router.pushOverlay(Dialog)
@@ -138,7 +140,7 @@ class SwitcherRouterTest {
 
     @Test
     fun `blocker configuration - attaches blocker and menu nodes`() {
-        router.onAttach(null)
+        router.onAttach()
         router.onAttachView()
 
         router.replace(Blocker)

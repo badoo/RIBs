@@ -55,7 +55,7 @@ class MainScreenTest {
 
     @Before
     fun setUp() {
-        rootRib.onAttach(null)
+        rootRib.onAttach()
         rootRib.attachToView(mock())
         rootRib.onStart()
         rootRib.onResume()
@@ -135,7 +135,7 @@ class MainScreenTest {
                     }
                 })
             }
-        }).build()
+        }).build(null)
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
 

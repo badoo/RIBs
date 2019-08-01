@@ -17,7 +17,9 @@ class FooBarRouterTest {
 
   @Before
   fun setup() {
-    router = FooBarRouter()
+    router = FooBarRouter(
+      savedInstanceState = null
+    )
   }
 
   @After

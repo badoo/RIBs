@@ -116,26 +116,6 @@ class NodeTest {
     }
 
     @Test
-    fun `A non-null Bundle in onAttach() is passed to Router`() {
-        // FIXME
-        val bundle: Bundle = mock()
-        val childBundle: Bundle = mock()
-        whenever(bundle.getBundle(KEY_ROUTER)).thenReturn(childBundle)
-        node.onAttach()
-        verify(router).onAttach()
-    }
-
-    @Test
-    fun `A non-null Bundle in onAttach() is passed to Interactor`() {
-        // FIXME
-        val bundle: Bundle = mock()
-        val childBundle: Bundle = mock()
-        whenever(bundle.getBundle(KEY_INTERACTOR)).thenReturn(childBundle)
-        node.onAttach()
-        verify(interactor).onAttach(node.ribLifecycleRegistry)
-    }
-
-    @Test
     fun `onDetach() notifies Router`() {
         node.onDetach()
         verify(router).onDetach()

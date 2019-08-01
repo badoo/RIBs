@@ -24,7 +24,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private val permanentParts: List<Permanent> = emptyList()
 ) {
     companion object {
-        private const val BUNDLE_KEY = "Router"
+        internal const val BUNDLE_KEY = "Router"
     }
 
     private val binder = Binder()
@@ -33,7 +33,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var configurationFeature: ConfigurationFeature<C>
     lateinit var node: Node<V>
-        internal set
+        private set
 
     internal fun init(node: Node<V>) {
         this.node = node

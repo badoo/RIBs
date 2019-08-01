@@ -5,26 +5,25 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
-import com.badoo.ribs.core.Node.Companion.KEY_INTERACTOR
-import com.badoo.ribs.core.Node.Companion.KEY_ROUTER
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
+import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.isA
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.badoo.ribs.util.RIBs
-import com.nhaarman.mockitokotlin2.doReturn
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -99,8 +98,8 @@ class NodeTest {
     }
 
     @Test
-    fun `Router's node is set after init`() {
-        verify(router).node = node
+    fun `Router's node initialised after Node init`() {
+        verify(router).init(node)
     }
 
     @Test
@@ -167,10 +166,8 @@ class NodeTest {
     @Test
     fun `Router's bundle from onSaveInstanceState() call is put inside original bundle`() {
         val bundle: Bundle = mock()
-        val captor = argumentCaptor<Bundle>()
         node.onSaveInstanceState(bundle)
-        verify(router).onSaveInstanceState(captor.capture())
-        verify(bundle).putBundle(KEY_ROUTER, captor.firstValue)
+        verify(router).onSaveInstanceState(bundle)
     }
 
     @Test
@@ -182,10 +179,8 @@ class NodeTest {
     @Test
     fun `Interactor's bundle from onSaveInstanceState call is put inside original bundle`() {
         val bundle: Bundle = mock()
-        val captor = argumentCaptor<Bundle>()
         node.onSaveInstanceState(bundle)
-        verify(interactor).onSaveInstanceState(captor.capture())
-        verify(bundle).putBundle(KEY_INTERACTOR, captor.firstValue)
+        verify(interactor).onSaveInstanceState(bundle)
     }
 
     @Test
@@ -407,17 +402,22 @@ class NodeTest {
 
     @Test
     fun `View state saved to bundle`() {
-        val outState = mock<Bundle>()
+        val outState = Bundle()
         node.savedViewState = mock()
         node.onSaveInstanceState(outState)
-        verify(outState).putSparseParcelableArray(KEY_VIEW_STATE, node.savedViewState)
+        interactor.onSaveInstanceState(outState)
+        val inner = outState.getBundle(BUNDLE_KEY)
+        assertNotNull(inner)
+        assertEquals(node.savedViewState, inner!!.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE))
     }
 
     @Test
     fun `View state is restored from bundle`() {
         val savedInstanceState = mock<Bundle>()
+        val nodeSavedInstanceState = mock<Bundle>()
         val savedViewState = SparseArray<Parcelable>()
-        whenever(savedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
+        whenever(savedInstanceState.getBundle(BUNDLE_KEY)).thenReturn(nodeSavedInstanceState)
+        whenever(nodeSavedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
 
         node = Node(
             savedInstanceState = savedInstanceState,

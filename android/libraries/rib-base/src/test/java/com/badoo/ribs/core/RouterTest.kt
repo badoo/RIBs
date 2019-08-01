@@ -1,5 +1,6 @@
 package com.badoo.ribs.core
 
+import android.os.Bundle
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -8,10 +9,15 @@ import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Answers
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class RouterTest {
 
     private lateinit var router: TestRouter
@@ -57,7 +63,12 @@ class RouterTest {
         )
 
         node = mock(defaultAnswer = Answers.RETURNS_MOCKS)
-        router.node = node
+        router.init(node)
+    }
+
+    @Test
+    fun `Node is correctly set after init`() {
+        assertEquals(node, router.node)
     }
 
     @Test

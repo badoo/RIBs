@@ -107,7 +107,7 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
         behaviorRelay.value
 
     companion object {
-        private const val BUNDLE_KEY = "Interactor"
+        internal const val BUNDLE_KEY = "Interactor"
         internal const val KEY_TAG = "interactor.tag"
 
         // todo these are leftovers, reconsider them

@@ -1,6 +1,7 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
+import com.badoo.ribs.core.Interactor.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Interactor.Companion.KEY_TAG
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestRouter
@@ -36,15 +37,19 @@ class InteractorTest {
 
     @Test
     fun `Tag is saved to bundle`() {
-        val outState = mock<Bundle>()
+        val outState = Bundle()
         interactor.onSaveInstanceState(outState)
-        verify(outState).putString(KEY_TAG, interactor.tag)
+        val inner = outState.getBundle(BUNDLE_KEY)
+        assertNotNull(inner)
+        assertEquals(interactor.tag, inner.getString(KEY_TAG))
     }
 
     @Test
     fun `Tag is restored from bundle`() {
         val savedInstanceState = mock<Bundle>()
-        whenever(savedInstanceState.getString(KEY_TAG)).thenReturn("abcdef")
+        val interactorBundle = mock<Bundle>()
+        whenever(savedInstanceState.getBundle(BUNDLE_KEY)).thenReturn(interactorBundle)
+        whenever(interactorBundle.getString(KEY_TAG)).thenReturn("abcdef")
         interactor = TestInteractor(
             savedInstanceState = savedInstanceState,
             router = mock(),

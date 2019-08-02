@@ -75,7 +75,7 @@ open class Node<V : RibView>(
     )
 
     companion object {
-        private const val BUNDLE_KEY = "Node"
+        internal const val BUNDLE_KEY = "Node"
         internal const val KEY_VIEW_STATE = "view.state"
     }
 

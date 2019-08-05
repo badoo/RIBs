@@ -17,10 +17,26 @@ repositories {
 
 templates {
     template {
-        id = 'rib_with_view'
-        name = 'RIB with view'
+        id = 'rib_with_view_release_0.3.1'
+        name = '[0.3.1] RIB with view'
 
-        fromProject = project(':templates')
+        fromProject = project(':templates:release-0.3.1')
+        sourcePackage = 'com.badoo.ribs.template.rib_with_view'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
+
+    template {
+        id = 'rib_with_view_snapshot'
+        name = '[Snapshot] RIB with view'
+
+        fromProject = project(':templates:snapshot')
         sourcePackage = 'com.badoo.ribs.template.rib_with_view'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']
@@ -120,11 +136,11 @@ static boolean needToPublishPlugin() {
     def isContainsTemplateChanges = containsTemplateChanges()
     def isCi = System.getenv("CI") == "true"
     println("Checking IDEA plugin publishing conditions: " +
-            "isMergeCommit = $isMergeCommit, " +
-            "isMainBranch = $isMainBranch, " +
-            "isContainsTemplateChanges = $isContainsTemplateChanges, " +
-            "isNotPullRequest = $isNotPullRequest, " +
-            "isCi = $isCi")
+        "isMergeCommit = $isMergeCommit, " +
+        "isMainBranch = $isMainBranch, " +
+        "isContainsTemplateChanges = $isContainsTemplateChanges, " +
+        "isNotPullRequest = $isNotPullRequest, " +
+        "isCi = $isCi")
     return isMergeCommit && isMainBranch && isNotPullRequest && isContainsTemplateChanges && isCi
 }
 

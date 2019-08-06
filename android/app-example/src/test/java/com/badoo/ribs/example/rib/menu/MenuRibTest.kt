@@ -41,7 +41,7 @@ class MenuRibTest {
 
     @Before
     fun setUp() {
-        rib.onAttach(null)
+        rib.onAttach()
         rib.attachToView(mock())
         rib.onStart()
         rib.onResume()
@@ -89,7 +89,7 @@ class MenuRibTest {
 
             override fun menuInput(): ObservableSource<Menu.Input> = menuInput
             override fun menuOutput(): Consumer<Menu.Output> = menuOutput
-        }).build()
+        }).build(null)
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
 }

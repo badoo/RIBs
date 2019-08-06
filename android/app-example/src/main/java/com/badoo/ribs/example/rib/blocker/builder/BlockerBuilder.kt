@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.blocker.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
@@ -15,9 +16,13 @@ class BlockerBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(Blocker::class)
     }
 
-    fun build(): Node<BlockerView> =
+    fun build(savedInstanceState: Bundle? ): Node<BlockerView> =
         DaggerBlockerComponent
             .factory()
-            .create(dependency, dependency.getOrDefault(Blocker.Customisation()))
+            .create(
+                dependency = dependency,
+                customisation = dependency.getOrDefault(Blocker.Customisation()),
+                savedInstanceState = savedInstanceState
+            )
             .node()
 }

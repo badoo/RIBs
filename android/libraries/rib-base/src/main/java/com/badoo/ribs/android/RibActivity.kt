@@ -39,15 +39,15 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         super.onCreate(savedInstanceState)
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
-        rootNode = createRib().apply {
-            onAttach(savedInstanceState)
+        rootNode = createRib(savedInstanceState).apply {
+            onAttach()
             attachToView(rootViewGroup)
         }
     }
 
     abstract val rootViewGroup: ViewGroup
 
-    abstract fun createRib(): Node<*>
+    abstract fun createRib(savedInstanceState: Bundle?): Node<*>
 
     override fun onStart() {
         super.onStart()

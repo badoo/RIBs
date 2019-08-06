@@ -1,11 +1,13 @@
 package com.badoo.ribs.core.helper
 
+import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
+    savedInstanceState: Bundle?,
     initialConfiguration: Configuration,
     permanentParts: List<Nothing>,
     private val routingActionForC1: RoutingAction<TestView>,
@@ -17,6 +19,7 @@ class TestRouter(
     private val routingActionForO2: RoutingAction<TestView>,
     private val routingActionForO3: RoutingAction<TestView>
 ) : Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>(
+    savedInstanceState = savedInstanceState,
     initialConfiguration = initialConfiguration,
     permanentParts = permanentParts
 ) {

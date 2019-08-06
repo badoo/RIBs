@@ -19,13 +19,16 @@ import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
+import android.os.Bundle
 
 class DialogExampleInteractor(
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
 ) : Interactor<Configuration, Content, Overlay, DialogExampleView>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
 ) {

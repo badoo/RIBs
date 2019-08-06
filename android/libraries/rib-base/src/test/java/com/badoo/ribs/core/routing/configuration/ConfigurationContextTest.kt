@@ -10,6 +10,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -21,7 +22,7 @@ class ConfigurationContextTest {
     private val nodes: List<Node<*>> = listOf(mock(), mock())
     private val nodeDescriptors: List<Node.Descriptor> = nodes.map { Node.Descriptor(it, mock()) }
     private val routingAction = mock<RoutingAction<*>> {
-        on { buildNodes() } doReturn nodeDescriptors
+        on { buildNodes(anyOrNull()) } doReturn nodeDescriptors
     }
     private val resolver = mock<(Parcelable) -> RoutingAction<*>> {
         on { invoke(any()) } doReturn routingAction

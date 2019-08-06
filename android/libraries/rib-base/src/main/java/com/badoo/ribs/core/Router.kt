@@ -19,22 +19,28 @@ import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
+    savedInstanceState: Bundle?,
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList()
 ) {
+    companion object {
+        internal const val BUNDLE_KEY = "Router"
+    }
+
     private val binder = Binder()
-    private lateinit var timeCapsule: AndroidTimeCapsule
+    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(this.savedInstanceState)
     private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var configurationFeature: ConfigurationFeature<C>
     lateinit var node: Node<V>
-        internal set
+        private set
 
-    fun onAttach(savedInstanceState: Bundle?) {
-        timeCapsule = AndroidTimeCapsule(savedInstanceState)
-        initFeatures()
+    internal fun init(node: Node<V>) {
+        this.node = node
+        initFeatures(node)
     }
 
-    private fun initFeatures() {
+    private fun initFeatures(node: Node<V>) {
         backStackFeature = BackStackFeature(
             initialConfiguration = initialConfiguration,
             timeCapsule = timeCapsule
@@ -46,19 +52,23 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             resolver = this::resolveConfiguration,
             parentNode = node
         )
-
-        binder.bind(backStackFeature.toCommands() to configurationFeature)
     }
 
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
     fun onSaveInstanceState(outState: Bundle) {
         configurationFeature.accept(SaveInstanceState())
-        timeCapsule.saveState(outState)
+        val bundle = Bundle()
+        timeCapsule.saveState(bundle)
+        outState.putBundle(BUNDLE_KEY, bundle)
     }
 
     fun onLowMemory() {
         // TODO add back support for this
+    }
+
+    fun onAttach() {
+        binder.bind(backStackFeature.toCommands() to configurationFeature)
     }
 
     fun onAttachView() {

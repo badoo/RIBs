@@ -52,8 +52,10 @@ class HelloWorldViewImpl private constructor(
 class HelloWorldInteractor(
     user: User,
     config: HelloWorld.Configuration,
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
 ) {
@@ -115,7 +117,7 @@ class RootActivity : RibActivity() {
 
     // remainder the same
 
-    override fun createRib(): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Node<*> =
         GreetingsContainerBuilder(
             object : GreetingsContainer.Dependency {
                 override fun user(): User =

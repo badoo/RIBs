@@ -1,5 +1,6 @@
 package com.badoo.ribs.core.routing.action
 
+import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
@@ -9,10 +10,12 @@ class CompositeRoutingAction< V : RibView>(
 
     constructor(routingActions: List<RoutingAction<V>>) : this(*routingActions.toTypedArray())
 
-    override fun buildNodes(): List<Node.Descriptor> =
-        routingActions.flatMap {
-            it.buildNodes()
-        }
+    override fun buildNodes(bundles: List<Bundle?>): List<Node.Descriptor> =
+        routingActions.mapIndexed { index, routingAction ->
+            routingAction.buildNodes(
+                bundles.getOrNull(index)?.let { listOf(it) } ?: emptyList()
+            )
+        }.flatten()
 
     override fun execute() {
         routingActions.forEach {

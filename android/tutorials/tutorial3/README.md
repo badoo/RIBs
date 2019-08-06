@@ -292,18 +292,18 @@ class RootActivity : RibActivity() {
 
     // ... remainder omitted
     
-    override fun createRib(): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Node<*> =
         GreetingsContainerBuilder(
             object : GreetingsContainer.Dependency {
                 // add this block:
                 override fun user(): User =
                     User.DUMMY
 
-                override fun greetingsContainerOutput(): 
+                override fun greetingsContainerOutput(): Consumer<GreetingsContainer.Output> =
                 
                 // ... remainder omitted
             }
-        ).build()
+        ).build(savedInstanceState)
 }
 ```
 

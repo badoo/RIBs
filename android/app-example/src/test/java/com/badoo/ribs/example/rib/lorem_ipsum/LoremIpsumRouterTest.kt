@@ -16,7 +16,9 @@ class LoremIpsumRouterTest {
 
     @Before
     fun setup() {
-        router = LoremIpsumRouter()
+        router = LoremIpsumRouter(
+            savedInstanceState = null
+        )
     }
 
     @After

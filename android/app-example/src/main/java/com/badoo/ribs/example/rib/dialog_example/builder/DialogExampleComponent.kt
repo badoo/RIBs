@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
@@ -17,7 +18,8 @@ internal interface DialogExampleComponent : LoremIpsum.Dependency {
     interface Factory {
         fun create(
             dependency: DialogExample.Dependency,
-            @BindsInstance customisation: DialogExample.Customisation
+            @BindsInstance customisation: DialogExample.Customisation,
+            @BindsInstance savedInstanceState: Bundle?
         ): DialogExampleComponent
     }
 

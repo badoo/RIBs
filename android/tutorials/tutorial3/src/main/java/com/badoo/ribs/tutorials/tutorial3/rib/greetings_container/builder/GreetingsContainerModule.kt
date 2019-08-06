@@ -1,5 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerInteractor
@@ -16,9 +17,11 @@ internal object GreetingsContainerModule {
     @JvmStatic
     internal fun router(
         // pass component to child rib builders, or remove if there are none
-        component: GreetingsContainerComponent
+        component: GreetingsContainerComponent,
+        savedInstanceState: Bundle?
     ): GreetingsContainerRouter =
         GreetingsContainerRouter(
+            savedInstanceState = savedInstanceState,
             helloWorldBuilder = HelloWorldBuilder(component)
         )
 
@@ -26,10 +29,12 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
+        savedInstanceState: Bundle?,
         router: GreetingsContainerRouter,
         output: Consumer<GreetingsContainer.Output>
     ): GreetingsContainerInteractor =
         GreetingsContainerInteractor(
+            savedInstanceState = savedInstanceState,
             router = router,
             output = output
         )
@@ -38,9 +43,11 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun node(
+        savedInstanceState: Bundle?,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
     ) : Node<Nothing> = Node(
+        savedInstanceState = savedInstanceState,
         identifier = object : GreetingsContainer {},
         viewFactory = null,
         router = router,

@@ -1,5 +1,7 @@
+@file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.switcher.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
@@ -35,12 +37,13 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun router(
-        // pass component to child rib builders, or remove if there are none
+        savedInstanceState: Bundle?,
         component: SwitcherComponent,
         dialogLauncher: DialogLauncher,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherRouter =
         SwitcherRouter(
+            savedInstanceState = savedInstanceState,
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),
@@ -54,10 +57,12 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun interactor(
+        savedInstanceState: Bundle?,
         router: SwitcherRouter,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherInteractor =
         SwitcherInteractor(
+            savedInstanceState = savedInstanceState,
             router = router,
             dialogToTestOverlay = dialogToTestOverlay
         )
@@ -75,11 +80,13 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun node(
+        savedInstanceState: Bundle?,
         customisation: Switcher.Customisation,
         viewDependency: SwitcherView.Dependency,
         router: SwitcherRouter,
         interactor: SwitcherInteractor
     ) : Node<SwitcherView> = Node(
+        savedInstanceState = savedInstanceState,
         identifier = object : Switcher {},
         viewFactory = customisation.viewFactory(viewDependency),
         router = router,

@@ -25,16 +25,15 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    override fun createRib(): Node<*> {
+    override fun createRib(savedInstanceState: Bundle?): Node<*> {
         val rootBuilder = SwitcherBuilder(object : Switcher.Dependency {
                 override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
                 override fun activityStarter(): ActivityStarter = activityStarter
                 override fun permissionRequester(): PermissionRequester = permissionRequester
                 override fun dialogLauncher(): DialogLauncher = this@RootActivity
-                override fun coffeeMachine(): CoffeeMachine =
-                    StupidCoffeeMachine()
+                override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
         })
 
-        return rootBuilder.build()
+        return rootBuilder.build(savedInstanceState)
     }
 }

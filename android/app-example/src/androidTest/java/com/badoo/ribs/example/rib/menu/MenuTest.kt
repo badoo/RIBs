@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.menu
 
+import android.os.Bundle
 import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
@@ -73,11 +74,11 @@ class MenuTest {
         menuInput.accept(input)
     }
 
-    private fun buildRib(ribTestActivity: RibTestActivity) =
+    private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         MenuBuilder(object : Menu.Dependency, CanProvideRibCustomisation by ribTestActivity {
             override fun menuInput(): ObservableSource<Menu.Input> = menuInput
             override fun menuOutput(): Consumer<Menu.Output> = menuOutput
-        }).build()
+        }).build(savedInstanceState)
 
     private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
         subscribe(this)

@@ -28,7 +28,7 @@ abstract class BaseNodesTest {
             permanentParts = setup.permanentParts
         )
 
-        ribsRule.start { rootProvider.create(it.dialogLauncher()) }
+        ribsRule.start { activity, savedInstanceState -> rootProvider.create(activity.dialogLauncher(), savedInstanceState) }
 
         val router: TestRootRouter = rootProvider.rootNode?.getRouter() as TestRootRouter
 

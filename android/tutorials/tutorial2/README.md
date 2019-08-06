@@ -79,7 +79,11 @@ For simplicity, we will now only look at one of them: the `AttachRibRoutingActio
 Let's have a look at routing for the `GreetingsContainer`:
 
 ```kotlin
-class GreetingsContainerRouter: Router</* ... */>(
+
+class GreetingsContainerRouter(
+    savedInstanceState: Bundle?
+): Router</* ... */>(
+    savedInstanceState = savedInstanceState,
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {
@@ -123,10 +127,10 @@ override fun resolveConfiguration(configuration: Configuration): RoutingAction<N
 
 Alright, but what to put in place of the `TODO()` statement?
 
-Looking at the signature of the `attach` method it needs a lambda that can build another `Node`:
+Looking at the signature of the `attach` method it needs a lambda that can build another `Node` given a nullable `Bundle` (representing `savedInstanceState`):
 
 ```kotlin
-fun attach(builder: () -> Node<*>): RoutingAction
+fun attach(builder: (Bundle?) -> Node<*>): RoutingAction
 ```
 
 ## We need a Builder
@@ -144,7 +148,7 @@ We'll care about how to pass it here just in a moment, but first let's finish ou
 ```kotlin
 override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
     when (configuration) {
-        Configuration.HelloWorld -> attach { helloWorldBuilder.build() }
+        Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
     }
 ```
 
@@ -227,7 +231,7 @@ It's not very different from what we've seen in **tutorial1**, but now it's adde
 Steps to add a child RIB:
 1. Go to Router
     1. Define configuration
-    2. Resolve configuration to `attach { childBuilder.build() }` routing action
+    2. Resolve configuration to `attach { childBuilder.build(it) }` routing action
     3. Define `childBuilder` as a constructor dependency 
 2. Go to Dagger module
     1. When constructing the `Router`, create and pass in an instance of the required child `Builder`

@@ -1,6 +1,7 @@
 package com.badoo.common.ribs
 
 
+import android.os.Bundle
 import android.support.test.rule.ActivityTestRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.Node
@@ -8,7 +9,7 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 open class RibsRule(
-    builder: ((RibTestActivity) -> Node<*>)? = null
+    builder: ((RibTestActivity, Bundle?) -> Node<*>)? = null
 ): ActivityTestRule<RibTestActivity>(
     RibTestActivity::class.java, true, builder != null
 ) {
@@ -16,7 +17,7 @@ open class RibsRule(
         RibTestActivity.ribFactory = builder
     }
 
-    fun start(ribFactory: ((RibTestActivity) -> Node<*>)) {
+    fun start(ribFactory: ((RibTestActivity, Bundle?) -> Node<*>)) {
         RibTestActivity.ribFactory = ribFactory
         launchActivity(null)
     }

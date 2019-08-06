@@ -17,6 +17,6 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    override fun createRib(): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Node<*> =
         TODO("Create HelloWorldBuilder, supply dependencies in constructor, return built Node")
 }

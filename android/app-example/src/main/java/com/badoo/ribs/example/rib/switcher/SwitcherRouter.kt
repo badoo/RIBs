@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
+import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
@@ -25,6 +26,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
+    savedInstanceState: Bundle?,
     private val fooBarBuilder: FooBarBuilder,
     private val helloWorldBuilder: HelloWorldBuilder,
     private val dialogExampleBuilder: DialogExampleBuilder,
@@ -33,6 +35,7 @@ class SwitcherRouter(
     private val dialogLauncher: DialogLauncher,
     private val dialogToTestOverlay: DialogToTestOverlay
     ): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
+    savedInstanceState = savedInstanceState,
     initialConfiguration = Content.DialogsExample,
     permanentParts = listOf(
         Permanent.Menu
@@ -57,20 +60,20 @@ class SwitcherRouter(
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<SwitcherView> =
         when (configuration) {
-            is Permanent.Menu -> attach { menuBuilder.build() }
+            is Permanent.Menu -> attach { menuBuilder.build(it) }
             is Content.Hello -> composite(
-                attach { helloWorldBuilder.build() },
+                attach { helloWorldBuilder.build(it) },
                 execute { menuUpdater.accept(SelectMenuItem(MenuItem.HelloWorld)) }
             )
             is Content.Foo -> composite(
-                attach { fooBarBuilder.build() },
+                attach { fooBarBuilder.build(it) },
                 execute { menuUpdater.accept(SelectMenuItem(MenuItem.FooBar)) }
             )
             is Content.DialogsExample -> composite(
-                attach { dialogExampleBuilder.build() },
+                attach { dialogExampleBuilder.build(it) },
                 execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
             )
-            is Content.Blocker -> attach { blockerBuilder.build() }
+            is Content.Blocker -> attach { blockerBuilder.build(it) }
             is Overlay.Dialog -> showDialog(this, dialogLauncher, dialogToTestOverlay)
         }
 }

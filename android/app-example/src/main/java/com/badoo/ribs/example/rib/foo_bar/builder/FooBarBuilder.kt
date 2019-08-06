@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.foo_bar.builder
 
+import android.os.Bundle
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarView
 import com.badoo.ribs.core.Builder
@@ -15,9 +16,13 @@ class FooBarBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 
-    fun build(): Node<FooBarView> =
+    fun build(savedInstanceState: Bundle?): Node<FooBarView> =
         DaggerFooBarComponent
             .factory()
-            .create(dependency, dependency.getOrDefault(FooBar.Customisation()))
+            .create(
+                dependency = dependency,
+                customisation = dependency.getOrDefault(FooBar.Customisation()),
+                savedInstanceState = savedInstanceState
+            )
             .node()
 }

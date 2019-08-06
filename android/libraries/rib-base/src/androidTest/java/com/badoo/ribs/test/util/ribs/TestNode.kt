@@ -9,11 +9,13 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 
 class TestNode<V: RibView>(
+    savedInstanceState: Bundle?,
     identifier: Rib,
     viewFactory: ViewFactory<Nothing?, V>,
     private val router: Router<*, *, *, *, V>,
     interactor: Interactor<*, *, *, V>
 ): Node<V>(
+    savedInstanceState = savedInstanceState,
     identifier = identifier,
     viewFactory = viewFactory(null),
     router = router,
@@ -23,8 +25,8 @@ class TestNode<V: RibView>(
     var isAttached: Boolean = false
         private set
 
-    override fun onAttach(savedInstanceState: Bundle?) {
-        super.onAttach(savedInstanceState)
+    override fun onAttach() {
+        super.onAttach()
         isAttached = true
     }
 

@@ -41,11 +41,14 @@ Let's open `GreetingsContainerInteractor` and implement reacting to its child's 
 ```kotlin
 // mind the correct imports:
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
+import android.os.Bundle
 
 class GreetingsContainerInteractor(
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<Configuration, Configuration, Nothing, Nothing>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
 ) {
@@ -146,6 +149,7 @@ And:
 
 ```kotlin
 class HelloWorldInteractor(
+    savedInstanceState: Bundle?,
     private val user: User,
     private val config: HelloWorld.Configuration,
     private val input: ObservableSource<HelloWorld.Input>, // add this
@@ -286,10 +290,13 @@ Right now, we only implemented the functionality to react to exposed `Input` typ
 Now we also need to satisfy the dependency of `ObservableSource<Input>` in the parent, which we will do similarly to how we did with `Output` before:
 
 ```kotlin
+
 class GreetingsContainerInteractor(
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<Configuration, Configuration, Nothing, Nothing>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
 ) {

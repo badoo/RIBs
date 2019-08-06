@@ -1,5 +1,6 @@
 package com.badoo.ribs.test.util.ribs.root.builder
 
+import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
@@ -14,8 +15,9 @@ import com.badoo.ribs.test.util.ribs.root.TestRootViewImpl
 
 class TestRootBuilder(override val dependency: TestRoot.Dependency) : Builder<TestRoot.Dependency>() {
 
-    fun build(): Node<TestRootView> {
+    fun build(savedInstanceState: Bundle?): Node<TestRootView> {
         return TestNode(
+            savedInstanceState = savedInstanceState,
             identifier = object: TestRoot { },
             viewFactory = object : ViewFactory<Nothing?, TestRootView> {
                 override fun invoke(deps: Nothing?): (ViewGroup) -> TestRootView = {
@@ -23,7 +25,11 @@ class TestRootBuilder(override val dependency: TestRoot.Dependency) : Builder<Te
                 }
             },
             router = dependency.router(),
-            interactor = TestRootInteractor(dependency.router(), dependency.viewLifecycleObserver())
+            interactor = TestRootInteractor(
+                savedInstanceState = savedInstanceState,
+                router = dependency.router(),
+                viewLifecycleObserver = dependency.viewLifecycleObserver()
+            )
         )
     }
 }

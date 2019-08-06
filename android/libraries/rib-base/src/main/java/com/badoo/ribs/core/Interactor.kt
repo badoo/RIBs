@@ -38,9 +38,12 @@ import java.util.UUID
  * @param <V> the type of [RibView].
  **/
 abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>(
+    savedInstanceState: Bundle?,
     protected val router: Router<C, *, Content, Overlay, V>,
     private val disposables: Disposable?
 ) : LifecycleScopeProvider<InteractorEvent>, Identifiable {
+
+    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
 
     // todo these are leftovers, reconsider them
     private val behaviorRelay = BehaviorRelay.create<InteractorEvent>()
@@ -50,7 +53,7 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
     val isAttached: Boolean
         get() = behaviorRelay.value == ACTIVE
 
-    internal var tag = "${this::class.java.name}.${UUID.randomUUID()}"
+    internal var tag = this.savedInstanceState?.getString(KEY_TAG) ?: "${this::class.java.name}.${UUID.randomUUID()}"
         private set
 
     override val id: String
@@ -60,12 +63,12 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
     override fun lifecycle(): Observable<InteractorEvent> =
         lifecycleRelay.hide()
 
-    internal open fun onAttach(savedInstanceState: Bundle?, ribLifecycle: Lifecycle) {
-        tag = savedInstanceState?.getString(KEY_TAG) ?: tag
+    internal open fun onAttach(ribLifecycle: Lifecycle) {
         onAttach(ribLifecycle, savedInstanceState)
     }
 
     protected open fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
+        // TODO remove this method
     }
 
     fun onDetach() {
@@ -90,7 +93,9 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
 
     @CallSuper
     open fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(KEY_TAG, tag)
+        val bundle = Bundle()
+        bundle.putString(KEY_TAG, tag)
+        outState.putBundle(BUNDLE_KEY, bundle)
     }
 
     // todo these are leftovers, reconsider them
@@ -102,6 +107,7 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
         behaviorRelay.value
 
     companion object {
+        internal const val BUNDLE_KEY = "Interactor"
         internal const val KEY_TAG = "interactor.tag"
 
         // todo these are leftovers, reconsider them

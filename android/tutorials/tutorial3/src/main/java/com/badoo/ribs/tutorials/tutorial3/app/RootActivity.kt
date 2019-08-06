@@ -21,7 +21,7 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    override fun createRib(): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Node<*> =
         GreetingsContainerBuilder(
             object : GreetingsContainer.Dependency {
                 override fun greetingsContainerOutput(): Consumer<GreetingsContainer.Output> =
@@ -33,5 +33,5 @@ class RootActivity : RibActivity() {
                         }
                     }
             }
-        ).build()
+        ).build(savedInstanceState)
 }

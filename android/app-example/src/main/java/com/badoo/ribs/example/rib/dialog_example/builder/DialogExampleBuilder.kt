@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example.builder
 
+import android.os.Bundle
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
@@ -15,9 +16,13 @@ class DialogExampleBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(DialogExample::class)
     }
 
-    fun build(): Node<DialogExampleView> =
+    fun build(savedInstanceState: Bundle?): Node<DialogExampleView> =
         DaggerDialogExampleComponent
             .factory()
-            .create(dependency, dependency.getOrDefault(DialogExample.Customisation()))
+            .create(
+                dependency = dependency,
+                customisation = dependency.getOrDefault(DialogExample.Customisation()),
+                savedInstanceState = savedInstanceState
+            )
             .node()
 }

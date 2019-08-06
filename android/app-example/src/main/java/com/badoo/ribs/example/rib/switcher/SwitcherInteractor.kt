@@ -14,11 +14,14 @@ import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Permanen
 import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import io.reactivex.functions.Consumer
+import android.os.Bundle
 
 class SwitcherInteractor(
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Permanent, Content, Overlay, SwitcherView>,
     private val dialogToTestOverlay: DialogToTestOverlay
 ) : Interactor<Configuration, Content, Overlay, SwitcherView>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
 ) {

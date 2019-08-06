@@ -18,11 +18,14 @@ import com.badoo.ribs.example.rib.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.example.rib.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.functions.Consumer
+import android.os.Bundle
 
 class FooBarInteractor(
+    savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, FooBarView>,
     private val permissionRequester: PermissionRequester
 ) : Interactor<Configuration, Configuration, Nothing, FooBarView>(
+    savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
 ) {

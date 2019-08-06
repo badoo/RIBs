@@ -5,26 +5,25 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
-import com.badoo.ribs.core.Node.Companion.KEY_INTERACTOR
-import com.badoo.ribs.core.Node.Companion.KEY_ROUTER
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
+import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.isA
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.badoo.ribs.util.RIBs
-import com.nhaarman.mockitokotlin2.doReturn
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -67,6 +66,7 @@ class NodeTest {
         interactor = mock()
 
         node = Node(
+            savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = viewFactory,
             router = router,
@@ -82,9 +82,9 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(identifier = object : RandomOtherNode1 {}, viewFactory = null)
-        child2 = TestNode(identifier = object : RandomOtherNode2 {}, viewFactory = null)
-        child3 = TestNode(identifier = object : RandomOtherNode3 {}, viewFactory = null)
+        child1 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode1 {}, viewFactory = null)
+        child2 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode2 {}, viewFactory = null)
+        child3 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode3 {}, viewFactory = null)
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -98,38 +98,20 @@ class NodeTest {
     }
 
     @Test
-    fun `Router's node is set after init`() {
-        verify(router).node = node
+    fun `Router's node initialised after Node init`() {
+        verify(router).init(node)
     }
 
     @Test
     fun `onAttach() notifies Router`() {
-        node.onAttach(null)
-        verify(router).onAttach(null)
+        node.onAttach()
+        verify(router).onAttach()
     }
 
     @Test
     fun `onAttach() notifies Interactor`() {
-        node.onAttach(null)
-        verify(interactor).onAttach(null, node.ribLifecycleRegistry)
-    }
-
-    @Test
-    fun `A non-null Bundle in onAttach() is passed to Router`() {
-        val bundle: Bundle = mock()
-        val childBundle: Bundle = mock()
-        whenever(bundle.getBundle(KEY_ROUTER)).thenReturn(childBundle)
-        node.onAttach(bundle)
-        verify(router).onAttach(childBundle)
-    }
-
-    @Test
-    fun `A non-null Bundle in onAttach() is passed to Interactor`() {
-        val bundle: Bundle = mock()
-        val childBundle: Bundle = mock()
-        whenever(bundle.getBundle(KEY_INTERACTOR)).thenReturn(childBundle)
-        node.onAttach(bundle)
-        verify(interactor).onAttach(childBundle, node.ribLifecycleRegistry)
+        node.onAttach()
+        verify(interactor).onAttach(node.ribLifecycleRegistry)
     }
 
     @Test
@@ -184,10 +166,8 @@ class NodeTest {
     @Test
     fun `Router's bundle from onSaveInstanceState() call is put inside original bundle`() {
         val bundle: Bundle = mock()
-        val captor = argumentCaptor<Bundle>()
         node.onSaveInstanceState(bundle)
-        verify(router).onSaveInstanceState(captor.capture())
-        verify(bundle).putBundle(KEY_ROUTER, captor.firstValue)
+        verify(router).onSaveInstanceState(bundle)
     }
 
     @Test
@@ -199,10 +179,8 @@ class NodeTest {
     @Test
     fun `Interactor's bundle from onSaveInstanceState call is put inside original bundle`() {
         val bundle: Bundle = mock()
-        val captor = argumentCaptor<Bundle>()
         node.onSaveInstanceState(bundle)
-        verify(interactor).onSaveInstanceState(captor.capture())
-        verify(bundle).putBundle(KEY_INTERACTOR, captor.firstValue)
+        verify(interactor).onSaveInstanceState(bundle)
     }
 
     @Test
@@ -405,8 +383,12 @@ class NodeTest {
     @Test
     fun `attachChild() does not imply attachToView when Android view system is not available`() {
         val childViewFactory = mock<TestViewFactory>()
-        val child = TestNode(mock(), childViewFactory)
-        node.attachChildNode(child, null)
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = childViewFactory
+        )
+        node.attachChildNode(child)
         verify(childViewFactory, never()).invoke(parentViewGroup)
     }
 
@@ -420,19 +402,31 @@ class NodeTest {
 
     @Test
     fun `View state saved to bundle`() {
-        val outState = mock<Bundle>()
+        val outState = Bundle()
         node.savedViewState = mock()
         node.onSaveInstanceState(outState)
-        verify(outState).putSparseParcelableArray(KEY_VIEW_STATE, node.savedViewState)
+        interactor.onSaveInstanceState(outState)
+        val inner = outState.getBundle(BUNDLE_KEY)
+        assertNotNull(inner)
+        assertEquals(node.savedViewState, inner!!.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE))
     }
 
     @Test
     fun `View state is restored from bundle`() {
         val savedInstanceState = mock<Bundle>()
+        val nodeSavedInstanceState = mock<Bundle>()
         val savedViewState = SparseArray<Parcelable>()
-        whenever(savedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
+        whenever(savedInstanceState.getBundle(BUNDLE_KEY)).thenReturn(nodeSavedInstanceState)
+        whenever(nodeSavedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
 
-        node.onAttach(savedInstanceState)
+        node = Node(
+            savedInstanceState = savedInstanceState,
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = viewFactory,
+            router = router,
+            interactor = interactor
+        )
+        node.onAttach()
         assertEquals(savedViewState, node.savedViewState)
     }
 
@@ -471,6 +465,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
         node = Node(
+            savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = null,
             router = router,
@@ -484,6 +479,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
         node = Node(
+            savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = null,
             router = router,

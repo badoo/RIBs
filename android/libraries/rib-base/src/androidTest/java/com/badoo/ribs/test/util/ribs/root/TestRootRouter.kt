@@ -1,5 +1,6 @@
 package com.badoo.ribs.test.util.ribs.root
 
+import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
@@ -17,15 +18,17 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
-    private val builderPermanent1: () -> Node<*>,
-    private val builderPermanent2: () -> Node<*>,
-    private val builder3: () -> Node<*>,
-    private val builder1: () -> Node<*>,
-    private val builder2: () -> Node<*>,
+    savedInstanceState: Bundle?,
+    private val builderPermanent1: (Bundle?) -> Node<*>,
+    private val builderPermanent2: (Bundle?) -> Node<*>,
+    private val builder3: (Bundle?) -> Node<*>,
+    private val builder1: (Bundle?) -> Node<*>,
+    private val builder2: (Bundle?) -> Node<*>,
     private val dialogLauncher: DialogLauncher,
     permanentParts: List<Permanent>,
     initialConfiguration: Content
 ) : Router<Configuration, Permanent, Content, Overlay, TestRootView>(
+    savedInstanceState = savedInstanceState,
     initialConfiguration = initialConfiguration,
     permanentParts = permanentParts
 ) {

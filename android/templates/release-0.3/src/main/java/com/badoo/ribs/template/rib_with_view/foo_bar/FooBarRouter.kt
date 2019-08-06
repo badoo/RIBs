@@ -1,6 +1,5 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -10,10 +9,7 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
-class FooBarRouter(
-    savedInstanceState: Bundle?
-): Router<Configuration, Permanent, Content, Overlay, FooBarView>(
-    savedInstanceState = savedInstanceState,
+class FooBarRouter: Router<Configuration, Permanent, Content, Overlay, FooBarView>(
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
 ) {

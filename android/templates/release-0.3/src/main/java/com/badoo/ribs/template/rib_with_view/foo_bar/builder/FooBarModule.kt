@@ -1,7 +1,5 @@
-@file:Suppress("LongParameterList")
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
@@ -22,12 +20,9 @@ internal object FooBarModule {
     @JvmStatic
     internal fun router(
         // pass component to child rib builders, or remove if there are none
-        component: FooBarComponent,
-        savedInstanceState: Bundle?
+        component: FooBarComponent
     ): FooBarRouter =
-        FooBarRouter(
-            savedInstanceState = savedInstanceState
-        )
+        FooBarRouter()
 
     @FooBarScope
     @Provides
@@ -39,14 +34,12 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
         router: FooBarRouter,
         input: ObservableSource<Input>,
         output: Consumer<Output>,
         feature: FooBarFeature
     ): FooBarInteractor =
         FooBarInteractor(
-            savedInstanceState = savedInstanceState,
             router = router,
             input = input,
             output = output,
@@ -57,12 +50,10 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor
     ) : Node<FooBarView> = Node(
-        savedInstanceState = savedInstanceState,
         identifier = object : FooBar {},
         viewFactory = customisation.viewFactory(null),
         router = router,

@@ -20,13 +20,11 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    savedInstanceState: Bundle?,
     router: Router<Configuration, *, Content, Overlay, FooBarView>,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature
 ) : Interactor<Configuration, Content, Overlay, FooBarView>(
-    savedInstanceState = savedInstanceState,
     router = router,
     disposables = feature
 ) {

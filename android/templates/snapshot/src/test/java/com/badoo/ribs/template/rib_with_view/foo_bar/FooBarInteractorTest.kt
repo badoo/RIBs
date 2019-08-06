@@ -19,6 +19,7 @@ class FooBarInteractorTest {
     @Before
     fun setup() {
         interactor = FooBarInteractor(
+            savedInstanceState = null,
             input = input,
             output = output,
             feature = feature,

@@ -1,5 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
+import android.os.Bundle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.customisation.RibCustomisationDirectory
@@ -13,14 +14,14 @@ import org.junit.Test
 class FooBarTest {
 
     @get:Rule
-    val ribsRule = RibsRule { buildRib(it) }
+    val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
-    private fun buildRib(ribTestActivity: RibTestActivity) =
+    private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         FooBarBuilder(object : FooBar.Dependency {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = empty()
             override fun fooBarOutput(): Consumer<FooBar.Output> = Consumer {}
             override fun ribCustomisation(): RibCustomisationDirectory = TODO()
-        }).build()
+        }).build(savedInstanceState)
 
     @Test
     fun testTextDisplayed() {

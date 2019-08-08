@@ -17,10 +17,10 @@ repositories {
 
 templates {
     template {
-        id = 'rib_with_view_release_0.3'
-        name = '[0.3] RIB with view'
+        id = 'rib_with_view_release_0.4'
+        name = '[0.4] RIB with view'
 
-        fromProject = project(':templates:release-0.3')
+        fromProject = project(':templates:release-0.4')
         sourcePackage = 'com.badoo.ribs.template.rib_with_view'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']
@@ -31,12 +31,12 @@ templates {
             sourceValue = "FooBar"
         }
     }
-
+    
     template {
-        id = 'rib_with_view_release_0.4'
-        name = '[0.4] RIB with view'
+        id = 'rib_with_view_release_0.3'
+        name = '[0.3] RIB with view'
 
-        fromProject = project(':templates:release-0.4')
+        fromProject = project(':templates:release-0.3')
         sourcePackage = 'com.badoo.ribs.template.rib_with_view'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']

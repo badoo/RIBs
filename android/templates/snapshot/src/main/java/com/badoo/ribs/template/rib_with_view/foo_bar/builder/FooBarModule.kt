@@ -1,14 +1,13 @@
-@file:Suppress("LongParameterList")
+@file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Output
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarInteractor
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarNode
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView
 import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature
 import dagger.Provides
 import io.reactivex.ObservableSource
@@ -60,12 +59,17 @@ internal object FooBarModule {
         savedInstanceState: Bundle?,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
-        interactor: FooBarInteractor
-    ) : Node<FooBarView> = Node(
+        interactor: FooBarInteractor,
+        input: ObservableSource<Input>,
+        output: Consumer<Output>,
+        feature: FooBarFeature
+    ) : FooBarNode = FooBarNode(
         savedInstanceState = savedInstanceState,
-        identifier = object : FooBar {},
         viewFactory = customisation.viewFactory(null),
         router = router,
-        interactor = interactor
+        interactor = interactor,
+        input = input,
+        output = output,
+        feature = feature
     )
 }

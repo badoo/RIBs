@@ -1,9 +1,8 @@
 package com.badoo.ribs.example.rib.foo_bar.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.foo_bar.FooBar
-import com.badoo.ribs.example.rib.foo_bar.FooBarView
+import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import dagger.BindsInstance
 
 
@@ -23,6 +22,6 @@ internal interface FooBarComponent {
         ): FooBarComponent
     }
 
-    fun node(): Node<FooBarView>
+    fun node(): FooBarNode
 }
 

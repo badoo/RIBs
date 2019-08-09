@@ -1,9 +1,8 @@
 package com.badoo.ribs.example.rib.hello_world.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
-import com.badoo.ribs.example.rib.hello_world.HelloWorldView
+import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import dagger.BindsInstance
 
 
@@ -23,7 +22,7 @@ internal interface HelloWorldComponent {
         ): HelloWorldComponent
     }
 
-    fun node(): Node<HelloWorldView>
+    fun node(): HelloWorldNode
 }
 
 

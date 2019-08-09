@@ -21,4 +21,8 @@ interface FooBar : Rib {
     class Customisation(
         val viewFactory: FooBarView.Factory = FooBarViewImpl.Factory()
     ) : RibCustomisation
+
+    interface Workflow {
+
+    }
 }

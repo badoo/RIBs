@@ -5,6 +5,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
+import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
 interface HelloWorld : Rib {
@@ -21,4 +22,8 @@ interface HelloWorld : Rib {
     class Customisation(
         val viewFactory: HelloWorldView.Factory = HelloWorldViewImpl.Factory()
     ) : RibCustomisation
+
+    interface Workflow {
+        fun somethingSomethingDarkSide(): Single<HelloWorld.Workflow>
+    }
 }

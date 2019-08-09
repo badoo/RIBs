@@ -2,7 +2,6 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
@@ -15,6 +14,7 @@ import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherInteractor
+import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter
 import com.badoo.ribs.example.rib.switcher.SwitcherView
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
@@ -85,9 +85,8 @@ internal object SwitcherModule {
         viewDependency: SwitcherView.Dependency,
         router: SwitcherRouter,
         interactor: SwitcherInteractor
-    ) : Node<SwitcherView> = Node(
+    ) : SwitcherNode = SwitcherNode(
         savedInstanceState = savedInstanceState,
-        identifier = object : Switcher {},
         viewFactory = customisation.viewFactory(viewDependency),
         router = router,
         interactor = interactor

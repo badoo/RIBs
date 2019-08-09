@@ -20,15 +20,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 import com.badoo.ribs.core.view.RibView
-import com.jakewharton.rxrelay2.BehaviorRelay
-import com.uber.autodispose.LifecycleEndedException
-import com.uber.autodispose.LifecycleScopeProvider
-import com.uber.rib.core.lifecycle.InteractorEvent
-import com.uber.rib.core.lifecycle.InteractorEvent.ACTIVE
-import com.uber.rib.core.lifecycle.InteractorEvent.INACTIVE
-import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function
 import java.util.UUID
 
 /**
@@ -41,27 +33,15 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
     savedInstanceState: Bundle?,
     protected val router: Router<C, *, Content, Overlay, V>,
     private val disposables: Disposable?
-) : LifecycleScopeProvider<InteractorEvent>, Identifiable {
+) : Identifiable {
 
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
-
-    // todo these are leftovers, reconsider them
-    private val behaviorRelay = BehaviorRelay.create<InteractorEvent>()
-    private val lifecycleRelay = behaviorRelay.toSerialized()
-
-    // todo reconsider visibility or even removing
-    val isAttached: Boolean
-        get() = behaviorRelay.value == ACTIVE
 
     internal var tag = this.savedInstanceState?.getString(KEY_TAG) ?: "${this::class.java.name}.${UUID.randomUUID()}"
         private set
 
     override val id: String
         get() = tag
-
-    // todo these are leftovers, reconsider them
-    override fun lifecycle(): Observable<InteractorEvent> =
-        lifecycleRelay.hide()
 
     internal open fun onAttach(ribLifecycle: Lifecycle) {
         onAttach(ribLifecycle, savedInstanceState)
@@ -73,7 +53,6 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
 
     fun onDetach() {
         disposables?.dispose()
-        lifecycleRelay.accept(INACTIVE)
     }
 
     internal fun onViewCreated(viewLifecycle: Lifecycle, view: V) {
@@ -98,25 +77,8 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
         outState.putBundle(BUNDLE_KEY, bundle)
     }
 
-    // todo these are leftovers, reconsider them
-    override fun correspondingEvents(): Function<InteractorEvent, InteractorEvent> =
-        LIFECYCLE_MAP_FUNCTION
-
-    // todo these are leftovers, reconsider them
-    override fun peekLifecycle(): InteractorEvent? =
-        behaviorRelay.value
-
     companion object {
         internal const val BUNDLE_KEY = "Interactor"
         internal const val KEY_TAG = "interactor.tag"
-
-        // todo these are leftovers, reconsider them
-        private val LIFECYCLE_MAP_FUNCTION: Function<InteractorEvent, InteractorEvent> =
-            Function { interactorEvent ->
-                when (interactorEvent) {
-                    ACTIVE -> INACTIVE
-                    else -> throw LifecycleEndedException()
-                }
-            }
     }
 }

@@ -8,7 +8,6 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
-import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
@@ -16,6 +15,7 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
+import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(

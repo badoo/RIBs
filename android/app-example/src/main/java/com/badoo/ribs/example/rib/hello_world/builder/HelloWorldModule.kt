@@ -2,13 +2,12 @@ package com.badoo.ribs.example.rib.hello_world.builder
 
 import android.os.Bundle
 import com.badoo.ribs.android.ActivityStarter
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorld.Input
 import com.badoo.ribs.example.rib.hello_world.HelloWorld.Output
 import com.badoo.ribs.example.rib.hello_world.HelloWorldInteractor
+import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter
-import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
 import dagger.Provides
 import io.reactivex.ObservableSource
@@ -62,9 +61,8 @@ internal object HelloWorldModule {
         customisation: HelloWorld.Customisation,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
-    ) : Node<HelloWorldView> = Node(
+    ) : HelloWorldNode = HelloWorldNode(
         savedInstanceState = savedInstanceState,
-        identifier = object : HelloWorld {},
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

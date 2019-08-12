@@ -22,7 +22,7 @@ before_script:
 script:
   - cd android
   - adb devices
-  - ./gradlew build detekt connectedCheck --console=plain
+  - ./gradlew build detekt --console=plain
 
 env:
   # IDEA_PLUGIN_PUBLICATION_TOKEN environment variable

@@ -22,6 +22,7 @@
 
     <idea-version since-build="163"/>
 
+    <depends optional="false">com.intellij.modules.java</depends>
     <depends optional="false">org.jetbrains.android</depends>
     <depends optional="false">org.jetbrains.kotlin</depends>
 

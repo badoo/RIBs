@@ -6,7 +6,9 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
+import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.util.CoffeeMachine
+import io.reactivex.Single
 
 interface Switcher : Rib {
 
@@ -22,4 +24,12 @@ interface Switcher : Rib {
     class Customisation(
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory()
     ) : RibCustomisation
+
+    interface Workflow {
+        fun attachHelloWorld(): Single<HelloWorld.Workflow>
+        fun testCrash(): Single<HelloWorld.Workflow>
+        fun waitForHelloWorld(): Single<HelloWorld.Workflow>
+        fun doSomethingAndStayOnThisNode(): Single<Switcher.Workflow>
+    }
+
 }

@@ -34,7 +34,7 @@ class SwitcherRouter(
     private val menuBuilder: MenuBuilder,
     private val dialogLauncher: DialogLauncher,
     private val dialogToTestOverlay: DialogToTestOverlay
-    ): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
+): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
     savedInstanceState = savedInstanceState,
     initialConfiguration = Content.DialogsExample,
     permanentParts = listOf(

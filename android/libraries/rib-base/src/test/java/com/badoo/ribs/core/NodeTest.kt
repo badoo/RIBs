@@ -5,22 +5,24 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
-import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
+import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.helper.TestNode
+import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.isA
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Single
+import io.reactivex.observers.TestObserver
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -488,5 +490,88 @@ class NodeTest {
 
         node.attachToView(parentViewGroup)
         verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
+    }
+
+    @Test
+    fun `executeWorkflow executes action on subscribe`() {
+        var actionInvoked = false
+        val action = { actionInvoked = true }
+        val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
+        val testObserver = TestObserver<Node<*>>()
+        workflow.subscribe(testObserver)
+
+        assertEquals(true, actionInvoked)
+        testObserver.assertValue(node)
+        testObserver.assertComplete()
+    }
+
+    @Test
+    fun `executeWorkflow never executes action on lifecycle terminate before subscribe`() {
+        node.onDetach()
+
+        var actionInvoked = false
+        val action = { actionInvoked = true }
+        val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
+        val testObserver = TestObserver<Node<*>>()
+        workflow.subscribe(testObserver)
+
+        assertEquals(false, actionInvoked)
+        testObserver.assertNever(node)
+        testObserver.assertNotComplete()
+    }
+
+    @Test
+    fun `attachWorkflow executes action on subscribe`() {
+        var actionInvoked = false
+        val action = { actionInvoked = true }
+        val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
+        val testObserver = TestObserver<TestNode>()
+        workflow.subscribe(testObserver)
+
+        assertEquals(true, actionInvoked)
+        testObserver.assertValue(child3)
+        testObserver.assertComplete()
+    }
+
+    @Test
+    fun `attachWorkflow never executes action on lifecycle terminate before subscribe`() {
+        node.onDetach()
+
+        var actionInvoked = false
+        val action = { actionInvoked = true }
+        val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
+        val testObserver = TestObserver<TestNode>()
+        workflow.subscribe(testObserver)
+
+        assertEquals(false, actionInvoked)
+        testObserver.assertNever(child1)
+        testObserver.assertNever(child2)
+        testObserver.assertNever(child3)
+        testObserver.assertNotComplete()
+    }
+
+    @Test
+    fun `waitForChildAttached emits expected child immediately if it's already attached`() {
+        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
+        val testObserver = TestObserver<TestNode2>()
+        val testChildNode = TestNode2(object : Rib {})
+
+        node.attachChildNode(testChildNode)
+        workflow.subscribe(testObserver)
+
+        testObserver.assertValue(testChildNode)
+        testObserver.assertComplete()
+    }
+
+    @Test
+    fun `waitForChildAttached never executes action on lifecycle terminate before subscribe`() {
+        node.onDetach()
+
+        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
+        val testObserver = TestObserver<TestNode2>()
+        workflow.subscribe(testObserver)
+
+        testObserver.assertNoValues()
+        testObserver.assertNotComplete()
     }
 }

@@ -2,11 +2,10 @@ package com.badoo.ribs.example.rib.foo_bar.builder
 
 import android.os.Bundle
 import com.badoo.ribs.android.PermissionRequester
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarInteractor
+import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import com.badoo.ribs.example.rib.foo_bar.FooBarRouter
-import com.badoo.ribs.example.rib.foo_bar.FooBarView
 import com.badoo.ribs.example.rib.foo_bar.feature.FooBarFeature
 import dagger.Provides
 
@@ -51,9 +50,8 @@ internal object FooBarModule {
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor
-    ) : Node<FooBarView> = Node(
+    ) : FooBarNode = FooBarNode(
         savedInstanceState = savedInstanceState,
-        identifier = object : FooBar {},
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

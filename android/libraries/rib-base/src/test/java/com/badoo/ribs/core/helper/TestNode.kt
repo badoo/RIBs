@@ -6,7 +6,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.nhaarman.mockitokotlin2.mock
 
-class TestNode(
+open class TestNode(
     savedInstanceState: Bundle?,
     identifier: Rib,
     viewFactory: ((ViewGroup) -> TestView?)? = mock()

@@ -10,6 +10,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.dialog.toAlertDialog
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.util.WeakHashMap
 
 abstract class RibActivity : AppCompatActivity(), DialogLauncher {
@@ -33,7 +35,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         )
     }
 
-    private lateinit var rootNode: Node<*>
+    protected open lateinit var rootNode: Node<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +45,22 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
             onAttach()
             attachToView(rootViewGroup)
         }
+
+        if (intent?.action == Intent.ACTION_VIEW) {
+            handleDeepLink(intent)
+        }
+    }
+
+    private val disposables = CompositeDisposable()
+
+    fun handleDeepLink(intent: Intent) {
+        workflowFactory.invoke(intent)?.let {
+            disposables.add(it)
+        }
+    }
+
+    open val workflowFactory: (Intent) -> Disposable? = {
+        null
     }
 
     abstract val rootViewGroup: ViewGroup

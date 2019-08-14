@@ -95,6 +95,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             parentNode: Node<*>,
             onResolution: (Resolved<C>) -> Resolved<C>
         ): Resolved<C> {
+            bundles.forEach {
+                it.classLoader = ConfigurationContext::class.java.classLoader
+            }
+
             val routingAction = resolver.invoke(configuration)
 
             return onResolution.invoke(

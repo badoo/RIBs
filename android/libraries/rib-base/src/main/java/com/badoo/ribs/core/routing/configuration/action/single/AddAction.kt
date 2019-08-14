@@ -31,9 +31,4 @@ internal object AddAction : ResolvedSingleConfigurationAction() {
             attachChildNode(it.node)
         }
     }
-
-    private fun List<Bundle?>.bundleAt(index: Int): Bundle? =
-        elementAtOrNull(index)?.also {
-            it.classLoader = ConfigurationContext::class.java.classLoader
-        }
 }

@@ -51,7 +51,7 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
         // TODO remove this method
     }
 
-    fun onDetach() {
+    internal fun onDetach() {
         disposables?.dispose()
     }
 

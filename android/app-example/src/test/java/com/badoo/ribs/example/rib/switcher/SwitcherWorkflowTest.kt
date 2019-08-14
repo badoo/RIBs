@@ -25,19 +25,6 @@ class SwitcherWorkflowTest {
 
     @Before
     fun setup() {
-//        workflow = SwitcherBuilder(
-//            dependency = object : Switcher.Dependency {
-//                override fun activityStarter(): ActivityStarter = mock()
-//                override fun permissionRequester(): PermissionRequester = mock()
-//                override fun dialogLauncher(): DialogLauncher = mock()
-//                override fun coffeeMachine(): CoffeeMachine = mock()
-//                override fun ribCustomisation(): RibCustomisationDirectory =
-//                    RibCustomisationDirectoryImpl()
-//            }
-//        ).build(null).also {
-//            it.onAttach()
-//        }
-
         val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), null)
         val fooBarNode = FooBarNode(mock(), mock(), mock(), null)
         val node1 = Node<DialogExampleView>(null, mock(), mock(), mock(), mock())

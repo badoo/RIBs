@@ -1,9 +1,7 @@
 package com.badoo.ribs.core.routing.configuration.action.single
 
-import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 
@@ -31,9 +29,4 @@ internal object AddAction : ResolvedSingleConfigurationAction() {
             attachChildNode(it.node)
         }
     }
-
-    private fun List<Bundle?>.bundleAt(index: Int): Bundle? =
-        elementAtOrNull(index)?.also {
-            it.classLoader = ConfigurationContext::class.java.classLoader
-        }
 }

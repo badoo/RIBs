@@ -38,7 +38,7 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
-//import com.uber.rib.util.RibRefWatcher
+import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.lang.IllegalStateException
@@ -53,8 +53,8 @@ open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
-    private val interactor: Interactor<*, *, *, V>
-//    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
+    private val interactor: Interactor<*, *, *, V>,
+    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
@@ -193,9 +193,9 @@ open class Node<V : RibView>(
     @MainThread
     internal fun attachChildNode(childNode: Node<*>) {
         children.add(childNode)
-//        ribRefWatcher.logBreadcrumb(
-//            "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
-//        )
+        ribRefWatcher.logBreadcrumb(
+            "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+        )
 
         childNode.inheritExternalLifecycle(externalLifecycleRegistry)
         childNode.onAttach()
@@ -235,11 +235,10 @@ open class Node<V : RibView>(
     internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
 
-        val interactor = childNode.interactor
-//        ribRefWatcher.watchDeletedObject(interactor)
-//        ribRefWatcher.logBreadcrumb(
-//            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
-//        )
+        ribRefWatcher.watchDeletedObject(childNode)
+        ribRefWatcher.logBreadcrumb(
+            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+        )
 
         childNode.onDetach()
     }
@@ -326,7 +325,7 @@ open class Node<V : RibView>(
      */
     @CallSuper
     open fun handleBackPress(): Boolean {
-//        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
+        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return children
             .filter { it.isAttachedToView }
             .any { it.handleBackPress() }

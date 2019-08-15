@@ -47,6 +47,7 @@ dependencies {
     implementation deps.external.dagger
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
+    implementation deps.external.mviCoreDiff
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
 

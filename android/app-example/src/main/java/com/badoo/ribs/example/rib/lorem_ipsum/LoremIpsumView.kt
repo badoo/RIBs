@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.lorem_ipsum
 import android.support.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
+import com.badoo.mvicore.modelWatcher
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
@@ -21,9 +22,7 @@ interface LoremIpsumView : RibView,
         object ButtonClicked : Event()
     }
 
-    data class ViewModel(
-        val i: Int = 0
-    )
+    object ViewModel
 
     interface Factory : ViewFactory<Nothing?, LoremIpsumView>
 }
@@ -52,6 +51,9 @@ class LoremIpsumViewImpl private constructor(
         button.setOnClickListener { events.accept(Event.ButtonClicked) }
     }
 
+    private val modelWatcher = modelWatcher<ViewModel> {}
+
     override fun accept(vm: ViewModel) {
+        modelWatcher.invoke(vm)
     }
 }

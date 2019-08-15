@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.hello_world
 import android.support.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.TextView
+import com.badoo.mvicore.modelWatcher
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
@@ -52,7 +53,13 @@ class HelloWorldViewImpl private constructor(
         launchButton.setOnClickListener { events.accept(Event.ButtonClicked) }
     }
 
+    private val modelWatcher = modelWatcher<ViewModel> {
+        ViewModel::text {
+            text.text = it
+        }
+    }
+
     override fun accept(vm: ViewModel) {
-        text.text = vm.text
+        modelWatcher.invoke(vm)
     }
 }

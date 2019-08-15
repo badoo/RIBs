@@ -4,6 +4,7 @@ import android.support.annotation.LayoutRes
 import android.support.v4.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.TextView
+import com.badoo.mvicore.modelWatcher
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
@@ -48,6 +49,7 @@ class MenuViewImpl private constructor(
     private var helloWorld: TextView = menuItem(R.id.menu_hello, MenuItem.HelloWorld)
     private var fooBar: TextView = menuItem(R.id.menu_foo, MenuItem.FooBar)
     private var dialogs: TextView = menuItem(R.id.menu_dialogs, MenuItem.Dialogs)
+    private val allMenuItems = listOf(helloWorld, fooBar, dialogs)
 
     fun menuItem(id: Int, menuItem: MenuItem) : TextView =
         androidView.findViewById<TextView>(id).apply {
@@ -55,18 +57,29 @@ class MenuViewImpl private constructor(
         }
 
     override fun accept(vm: ViewModel) {
-        listOf(helloWorld, fooBar, dialogs).forEach {
-            it.setTextColor(ContextCompat.getColor(androidView.context, R.color.material_grey_600))
-        }
+        modelWatcher.invoke(vm)
+    }
 
-        vm.selected?.let {
-            when (it) {
-                MenuItem.HelloWorld -> helloWorld
-                MenuItem.FooBar -> fooBar
-                MenuItem.Dialogs -> dialogs
-            }.apply {
-                setTextColor(ContextCompat.getColor(context, R.color.material_blue_grey_950))
-            }
+    private val modelWatcher = modelWatcher<ViewModel> {
+        ViewModel::selected {
+            allMenuItems.forEach { textView -> textView.resetHighlight() }
+            it?.mapToTextView()?.highlight()
         }
     }
+
+    fun TextView.resetHighlight() =
+        setColor(R.color.material_grey_600)
+
+    fun TextView.highlight() =
+        setColor(R.color.material_blue_grey_950)
+
+    fun TextView.setColor(i: Int) =
+        setTextColor(ContextCompat.getColor(androidView.context, i))
+
+    private fun MenuItem.mapToTextView() =
+        when (this) {
+            MenuItem.HelloWorld -> helloWorld
+            MenuItem.FooBar -> fooBar
+            MenuItem.Dialogs -> dialogs
+        }
 }

@@ -4,6 +4,7 @@ import android.support.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.badoo.mvicore.modelWatcher
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -58,7 +59,13 @@ class FooBarViewImpl private constructor(
         requestButton.setOnClickListener { events.accept(RequestPermissionsButtonClicked)}
     }
 
+    private val modelWatcher = modelWatcher<ViewModel> {
+        ViewModel::text {
+            text.text = it
+        }
+    }
+
     override fun accept(vm: ViewModel) {
-        text.text = vm.text
+        modelWatcher.invoke(vm)
     }
 }

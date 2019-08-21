@@ -1,6 +1,5 @@
 include ':app-example'
 include ':templates:snapshot'
-include ':templates:release-0.4'
 include ':templates:release-0.5'
 //include ':libraries:rib-test-utils'
 include ':libraries:rib-android'

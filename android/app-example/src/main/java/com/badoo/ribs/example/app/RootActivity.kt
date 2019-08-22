@@ -2,7 +2,6 @@ package com.badoo.ribs.example.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
@@ -17,8 +16,6 @@ import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
 import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 
 /** The sample app's single activity */

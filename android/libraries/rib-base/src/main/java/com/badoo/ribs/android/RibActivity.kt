@@ -11,9 +11,7 @@ import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.dialog.toAlertDialog
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import java.util.WeakHashMap
 
 abstract class RibActivity : AppCompatActivity(), DialogLauncher {

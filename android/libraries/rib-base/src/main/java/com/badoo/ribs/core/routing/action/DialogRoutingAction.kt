@@ -19,13 +19,13 @@ class DialogRoutingAction<V : RibView, Event : Any>(
             Node.Descriptor(it, ViewAttachMode.EXTERNAL)
         }
 
-    override fun execute() {
+    override fun execute(nodes: List<Node.Descriptor>) {
         dialogLauncher.show(dialog, onClose = {
             router.popBackStack()
         })
     }
 
-    override fun cleanup() {
+    override fun cleanup(nodes: List<Node.Descriptor>) {
         dialogLauncher.hide(dialog)
     }
 

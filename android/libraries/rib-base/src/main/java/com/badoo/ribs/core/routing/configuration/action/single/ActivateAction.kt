@@ -37,7 +37,7 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
         }
 
         parentNode.attachParentedViews(item.nodes)
-        item.routingAction.execute()
+        item.routingAction.execute(item.nodes)
         return item.withActivationState(globalActivationLevel)
     }
 

@@ -124,6 +124,7 @@ open class Node<V : RibView>(
     }
 
     open fun attachToView(parentViewGroup: ViewGroup) {
+        detachFromView()
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
 
@@ -327,11 +328,18 @@ open class Node<V : RibView>(
     open fun handleBackPress(): Boolean {
         ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return children
-            .filter { it.isAttachedToView }
+            .filter { it.shouldPropagateBackPress }
             .any { it.handleBackPress() }
             || interactor.handleBackPress()
             || router.popBackStack()
     }
+
+    /**
+     * Valid use-case: RIB is detached from view, but a descendant of it is visible through a [Portal]
+     * In this case it should still propagate back press
+     */
+    private val shouldPropagateBackPress: Boolean
+        get() = isAttachedToView || children.any { it.shouldPropagateBackPress }
 
 
     internal fun saveViewState() {

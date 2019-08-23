@@ -3,12 +3,14 @@ package com.badoo.ribs.example.rib.hello_world
 import android.support.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.TextView
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
+import com.badoo.ribs.example.rib.small.Small
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -47,6 +49,7 @@ class HelloWorldViewImpl private constructor(
 
     private val text: TextView = androidView.findViewById(R.id.hello_debug)
     private val launchButton: TextView = androidView.findViewById(R.id.hello_button_launch)
+    private val smallContainer: ViewGroup = androidView.findViewById(R.id.small_container)
 
     init {
         launchButton.setOnClickListener { events.accept(Event.ButtonClicked) }
@@ -55,4 +58,10 @@ class HelloWorldViewImpl private constructor(
     override fun accept(vm: ViewModel) {
         text.text = vm.text
     }
+
+    override fun getParentViewForChild(child: Rib): ViewGroup? =
+        when (child) {
+            is Small -> smallContainer
+            else -> null
+        }
 }

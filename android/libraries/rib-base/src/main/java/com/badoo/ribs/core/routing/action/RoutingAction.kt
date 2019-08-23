@@ -9,11 +9,11 @@ interface RoutingAction<V : RibView> {
     fun buildNodes(bundles: List<Bundle?>) : List<Node.Descriptor> =
         emptyList()
 
-    fun execute() {
+    fun execute(nodes: List<Node.Descriptor>) {
 
     }
 
-    fun cleanup()  {
+    fun cleanup(nodes: List<Node.Descriptor>) {
     }
 
     companion object {

@@ -12,6 +12,7 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration
+import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.*
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.hello_world.analytics.HelloWorldAnalytics
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
@@ -24,12 +25,12 @@ import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, Nothing, Configuration, Nothing, HelloWorldView>,
+    router: Router<Configuration, Permanent, Content, Nothing, HelloWorldView>,
     private val input: ObservableSource<HelloWorld.Input>,
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : Interactor<Configuration, Configuration, Nothing, HelloWorldView>(
+) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
     savedInstanceState = savedInstanceState,
     router = router,
     disposables = feature

@@ -3,6 +3,8 @@ package com.badoo.ribs.example.rib.switcher
 import android.support.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
+import com.badoo.ribs.android.AndroidPortalRenderer
+import com.badoo.ribs.core.Portal
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -35,6 +37,8 @@ interface SwitcherView : RibView,
     interface Dependency {
         fun coffeeMachine(): CoffeeMachine
     }
+
+    val portalRenderer: Portal.Renderer
 }
 
 
@@ -62,6 +66,10 @@ class SwitcherViewImpl private constructor(
     private val showOverlayDialog: Button = androidView.findViewById(R.id.show_overlay_dialog)
     private val showBlocker: Button = androidView.findViewById(R.id.show_blocker)
     private val makeCoffee: Button = androidView.findViewById(R.id.make_coffee)
+    override val portalRenderer: Portal.Renderer = AndroidPortalRenderer(
+            androidView.findViewById(R.id.portal_container),
+            androidView.findViewById(R.id.own_content_container)
+        )
 
     init {
         showOverlayDialog.setOnClickListener { events.accept(Event.ShowOverlayDialogClicked) }

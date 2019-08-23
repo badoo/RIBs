@@ -9,6 +9,7 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldInteractor
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature
+import com.badoo.ribs.example.rib.small.builder.SmallBuilder
 import dagger.Provides
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -20,10 +21,12 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun router(
+        component: HelloWorldComponent,
         savedInstanceState: Bundle?
     ): HelloWorldRouter =
         HelloWorldRouter(
-            savedInstanceState = savedInstanceState
+            savedInstanceState = savedInstanceState,
+            smallBuilder = SmallBuilder(component)
         )
 
     @HelloWorldScope

@@ -9,6 +9,7 @@
     tools:context=".app.RootActivity">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/own_content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -65,6 +66,12 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
+
+
+    <FrameLayout
+        android:id="@+id/portal_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <FrameLayout
         android:id="@+id/blocker_container"

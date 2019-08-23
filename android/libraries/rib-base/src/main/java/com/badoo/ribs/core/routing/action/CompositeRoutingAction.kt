@@ -17,15 +17,15 @@ class CompositeRoutingAction< V : RibView>(
             )
         }.flatten()
 
-    override fun execute() {
+    override fun execute(nodes: List<Node.Descriptor>) {
         routingActions.forEach {
-            it.execute()
+            it.execute(nodes)
         }
     }
 
-    override fun cleanup() {
+    override fun cleanup(nodes: List<Node.Descriptor>) {
         routingActions.forEach {
-            it.cleanup()
+            it.cleanup(nodes)
         }
     }
 

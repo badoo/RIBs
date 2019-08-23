@@ -225,8 +225,8 @@ class ConfigurationFeatureTest {
     fun `On first WakeUp after init, ALL initial configuration are activated - associated RoutingActions are executed`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        verify(helperPermanent1.routingAction).execute()
-        verify(helperPermanent2.routingAction).execute()
+        verify(helperPermanent1.routingAction).execute(item.nodes)
+        verify(helperPermanent2.routingAction).execute(item.nodes)
     }
 
     @Test
@@ -289,11 +289,11 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously ACTIVE configurations are activated - associated RoutingActions are executed`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        verify(helperPermanent1.routingAction).execute()
-        verify(helperPermanent2.routingAction).execute()
-        verify(helperContentViewParented1.routingAction).execute()
-        verify(helperContentViewParented2.routingAction).execute()
-        verify(helperContentExternal1.routingAction).execute()
+        verify(helperPermanent1.routingAction).execute(item.nodes)
+        verify(helperPermanent2.routingAction).execute(item.nodes)
+        verify(helperContentViewParented1.routingAction).execute(item.nodes)
+        verify(helperContentViewParented2.routingAction).execute(item.nodes)
+        verify(helperContentExternal1.routingAction).execute(item.nodes)
     }
 
     @Test
@@ -336,8 +336,8 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously INACTIVE configurations are NOT activated - associated RoutingActions are NOT executed`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        verify(helperContentViewParented3.routingAction, never()).execute()
-        verify(helperContentExternal2.routingAction, never()).execute()
+        verify(helperContentViewParented3.routingAction, never()).execute(item.nodes)
+        verify(helperContentExternal2.routingAction, never()).execute(item.nodes)
     }
 
     @Test
@@ -400,7 +400,7 @@ class ConfigurationFeatureTest {
     fun `On Add, associated RoutingAction is not yet executed`() {
         createEmptyFeature()
         feature.accept(Add(Content(0), ContentViewParented1))
-        verify(helperContentViewParented1.routingAction, never()).execute()
+        verify(helperContentViewParented1.routingAction, never()).execute(item.nodes)
     }
     // endregion
 
@@ -410,7 +410,7 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
-        verify(helperContentViewParented1.routingAction, never()).execute()
+        verify(helperContentViewParented1.routingAction, never()).execute(item.nodes)
     }
 
     @Test
@@ -429,7 +429,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
         feature.accept(WakeUp())
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.routingAction).execute(item.nodes)
     }
 
     @Test
@@ -449,7 +449,7 @@ class ConfigurationFeatureTest {
         feature.accept(WakeUp())
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.routingAction).execute(item.nodes)
     }
 
     @Test
@@ -481,7 +481,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
         feature.accept(Activate(Content(0)))
-        verify(helperContentViewParented1.routingAction, times(1)).execute()
+        verify(helperContentViewParented1.routingAction, times(1)).execute(item.nodes)
     }
 
     @Test
@@ -503,7 +503,7 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Deactivate(Content(0)))
-        verify(helperContentViewParented1.routingAction).cleanup()
+        verify(helperContentViewParented1.routingAction).cleanup(item.nodes)
     }
 
     @Test
@@ -595,7 +595,7 @@ class ConfigurationFeatureTest {
         clearInvocations(parentNode)
         feature.accept(Sleep())
 
-        verify(helperContentViewParented1.routingAction).cleanup()
+        verify(helperContentViewParented1.routingAction).cleanup(item.nodes)
     }
 
     @Test
@@ -641,7 +641,7 @@ class ConfigurationFeatureTest {
         clearInvocations(helperContentViewParented1.routingAction)
         feature.accept(WakeUp())
 
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.routingAction).execute(item.nodes)
     }
 
     @Test

@@ -16,7 +16,7 @@ internal object DeactivateAction : ResolvedSingleConfigurationAction() {
 
     override fun <C : Parcelable> execute(item: Resolved<C>, params: ActionExecutionParams<C>): Resolved<C> {
         val (_, parentNode, _) = params
-        item.routingAction.cleanup()
+        item.routingAction.cleanup(item.nodes)
         item.nodes.saveViewState()
         parentNode.detachChildViews(item.nodes)
 

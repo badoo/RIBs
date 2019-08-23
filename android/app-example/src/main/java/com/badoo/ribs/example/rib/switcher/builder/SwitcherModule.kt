@@ -2,6 +2,7 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
 import android.os.Bundle
+import com.badoo.ribs.core.Portal
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
@@ -18,6 +19,7 @@ import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter
 import com.badoo.ribs.example.rib.switcher.SwitcherView
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
+import com.badoo.ribs.example.rib.switcher.feature.PortalFeature
 import com.badoo.ribs.example.util.CoffeeMachine
 import dagger.Provides
 import io.reactivex.Observable
@@ -26,6 +28,20 @@ import io.reactivex.functions.Consumer
 
 @dagger.Module
 internal object SwitcherModule {
+
+    @SwitcherScope
+    @Provides
+    @JvmStatic
+    internal fun portalFeature(): PortalFeature =
+        PortalFeature()
+
+    @SwitcherScope
+    @Provides
+    @JvmStatic
+    internal fun portal(
+        portalFeature: PortalFeature
+    ): Portal.Sink =
+        portalFeature
 
     @SwitcherScope
     @Provides
@@ -59,12 +75,14 @@ internal object SwitcherModule {
     internal fun interactor(
         savedInstanceState: Bundle?,
         router: SwitcherRouter,
-        dialogToTestOverlay: DialogToTestOverlay
+        dialogToTestOverlay: DialogToTestOverlay,
+        portalFeature: PortalFeature
     ): SwitcherInteractor =
         SwitcherInteractor(
             savedInstanceState = savedInstanceState,
             router = router,
-            dialogToTestOverlay = dialogToTestOverlay
+            dialogToTestOverlay = dialogToTestOverlay,
+            portal = portalFeature
         )
 
     @Provides

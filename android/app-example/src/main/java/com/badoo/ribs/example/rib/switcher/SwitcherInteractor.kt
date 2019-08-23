@@ -15,21 +15,25 @@ import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import io.reactivex.functions.Consumer
 import android.os.Bundle
+import com.badoo.ribs.example.rib.switcher.feature.PortalFeature
 
 class SwitcherInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, Permanent, Content, Overlay, SwitcherView>,
-    private val dialogToTestOverlay: DialogToTestOverlay
+    private val dialogToTestOverlay: DialogToTestOverlay,
+    private val portal: PortalFeature
 ) : Interactor<Configuration, Content, Overlay, SwitcherView>(
     savedInstanceState = savedInstanceState,
     router = router,
-    disposables = null
+    disposables = portal
 ) {
+
     override fun onViewCreated(view: SwitcherView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
         viewLifecycle.createDestroy {
             bind(view to viewEventConsumer)
             bind(dialogToTestOverlay to dialogEventConsumer)
+            bind(portal.models to view.portalRenderer)
         }
     }
 

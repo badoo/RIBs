@@ -1,6 +1,5 @@
 package com.badoo.ribs.core
 
-import android.os.Bundle
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -9,7 +8,6 @@ import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -39,7 +37,7 @@ class RouterTest {
 
         val nodeDescriptorsC2 =
             listOf(childNodeC2_1, childNodeC2_2).map {
-                Node.Descriptor(it, Node.ViewAttachMode.PARENT)
+                Node.Descriptor(it, Node.AttachMode.PARENT)
             }
 
         routingActionForC2 = mock { on { buildNodes(anyOrNull())} doReturn nodeDescriptorsC2 }

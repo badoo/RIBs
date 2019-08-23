@@ -16,7 +16,7 @@ class FullScreenRoutingAction<V : RibView>(
         listOf(
             Node.Descriptor(
                 node = builder.invoke(bundles.firstOrNull()),
-                viewAttachMode = Node.ViewAttachMode.EXTERNAL
+                viewAttachMode = Node.AttachMode.EXTERNAL
             )
         )
 

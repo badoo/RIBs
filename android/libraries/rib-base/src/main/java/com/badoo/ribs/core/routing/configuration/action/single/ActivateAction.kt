@@ -43,7 +43,7 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
 
     private fun Node<*>.attachParentedViews(nodes: List<Node.Descriptor>) {
         nodes.forEach {
-            if (it.viewAttachMode == Node.ViewAttachMode.PARENT && !it.node.isAttachedToView) {
+            if (it.viewAttachMode == Node.AttachMode.PARENT && !it.node.isAttachedToView) {
                 attachChildView(it.node)
             }
         }

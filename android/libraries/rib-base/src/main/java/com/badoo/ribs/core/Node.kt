@@ -32,6 +32,7 @@ import android.os.Parcelable
 import android.support.annotation.CallSuper
 import android.support.annotation.MainThread
 import android.support.annotation.VisibleForTesting
+import android.util.Log
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
@@ -55,13 +56,23 @@ open class Node<V : RibView>(
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
-) : LifecycleOwner {
+) : LifecycleOwner, LifecycleParent, LifecycleChild {
+
+    override fun addParented(child: LifecycleChild) {
+        Log.d("CHECK", "addParented - $this ---> $child")
+        lifecycleChildren.add(child)
+    }
+
+    override fun removeParented(child: LifecycleChild) {
+        Log.d("CHECK", "removeParented - $this -x-> $child")
+        lifecycleChildren.remove(child)
+    }
 
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
 
-    enum class ViewAttachMode {
+    enum class AttachMode {
         /**
-         * The node's view attach/detach is managed by its parent.
+         * The node's view attach/detach and lifecycle is managed by its parent.
          */
         PARENT,
 
@@ -77,7 +88,7 @@ open class Node<V : RibView>(
 
     data class Descriptor(
         val node: Node<*>,
-        val viewAttachMode: ViewAttachMode
+        val viewAttachMode: AttachMode
     )
 
     companion object {
@@ -92,6 +103,7 @@ open class Node<V : RibView>(
 
     val tag: String = this::class.java.name
     val children = CopyOnWriteArrayList<Node<*>>()
+    private val lifecycleChildren = CopyOnWriteArrayList<LifecycleChild>()
     private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
     val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
 
@@ -124,6 +136,7 @@ open class Node<V : RibView>(
     }
 
     open fun attachToView(parentViewGroup: ViewGroup) {
+        Log.d("CHECK", "attachToView - $this")
         detachFromView()
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
@@ -148,6 +161,7 @@ open class Node<V : RibView>(
 
     open fun detachFromView() {
         if (isAttachedToView) {
+            Log.d("CHECK", "detachFromView - $this")
             onPauseInternal()
             onStopInternal()
             router.onDetachView()
@@ -166,6 +180,7 @@ open class Node<V : RibView>(
     }
 
     open fun onDetach() {
+        Log.d("CHECK", "onDetach - $this")
         if (isAttachedToView) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
@@ -192,13 +207,19 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be attached.
      */
     @MainThread
-    internal fun attachChildNode(childNode: Node<*>) {
+    internal fun attachChildNode(childDescriptor: Descriptor) {
+        Log.d("CHECK", "attachChildNode - $this, $childDescriptor")
+        val (childNode, viewAttachMode) = childDescriptor
         children.add(childNode)
         ribRefWatcher.logBreadcrumb(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
         )
 
-        childNode.inheritExternalLifecycle(externalLifecycleRegistry)
+        if (viewAttachMode == AttachMode.PARENT) {
+            addParented(childNode)
+            childNode.inheritExternalLifecycle(externalLifecycleRegistry)
+        }
+
         childNode.onAttach()
         childrenAttachesRelay.accept(childNode)
     }
@@ -235,6 +256,7 @@ open class Node<V : RibView>(
     @MainThread
     internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
+        lifecycleChildren.remove(childNode)
 
         ribRefWatcher.watchDeletedObject(childNode)
         ribRefWatcher.logBreadcrumb(
@@ -249,7 +271,7 @@ open class Node<V : RibView>(
      *
      * For internal usage call onStartInternal() directly
      */
-    fun onStart() {
+    override fun onStart() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_START)
         onStartInternal { it.onStart() }
     }
@@ -259,7 +281,7 @@ open class Node<V : RibView>(
      *
      * For internal usage call onStopInternal() directly
      */
-    fun onStop() {
+    override fun onStop() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_STOP)
         onStopInternal { it.onStop() }
     }
@@ -269,7 +291,7 @@ open class Node<V : RibView>(
      *
      * For internal usage call onResumeInternal() directly
      */
-    fun onResume() {
+    override fun onResume() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_RESUME)
         onResumeInternal { it.onResume() }
     }
@@ -279,35 +301,39 @@ open class Node<V : RibView>(
      *
      * For internal usage call onPauseInternal() directly
      */
-    fun onPause() {
+    override fun onPause() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_PAUSE)
         onPauseInternal { it.onPause() }
     }
 
     internal fun onStartInternal(callOnChildren: (Node<*>) -> Unit = { it.onStartInternal() }) {
+        Log.d("CHECK", "onStartInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
-        children.forEach { callOnChildren.invoke(it) }
+        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
     }
 
     // TODO call this when overlay is removed
     internal fun onResumeInternal(callOnChildren: (Node<*>) -> Unit = { it.onResumeInternal() }) {
+        Log.d("CHECK", "onResumeInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
-        children.forEach { callOnChildren.invoke(it) }
+        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
     }
 
     // TODO call this when overlay hides content AND current rib is not in dialog
     internal fun onPauseInternal(callOnChildren: (Node<*>) -> Unit = { it.onPauseInternal() }) {
+        Log.d("CHECK", "onPauseInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         val targetState = if (externalLifecycleRegistry.currentState == CREATED) CREATED else STARTED
         updateToStateIfViewAttached(targetState)
-        children.forEach { callOnChildren.invoke(it) }
+        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
     }
 
     internal fun onStopInternal(callOnChildren: (Node<*>) -> Unit = { it.onStopInternal() }) {
+        Log.d("CHECK", "onStopInternal - $this")
         updateToStateIfViewAttached(CREATED)
-        children.forEach { callOnChildren.invoke(it) }
+        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
     }
 
     private fun updateToStateIfViewAttached(state: Lifecycle.State) {
@@ -316,6 +342,8 @@ open class Node<V : RibView>(
             if (!isViewless) {
                 view!!.let { viewLifecycleRegistry.markState(state) }
             }
+        } else {
+            Log.d("CHECK", "SKIPPED updating lifecycle to state: $state - $this, as not attached to view, current state is: ${ribLifecycleRegistry.currentState}")
         }
     }
 
@@ -326,6 +354,7 @@ open class Node<V : RibView>(
      */
     @CallSuper
     open fun handleBackPress(): Boolean {
+        Log.d("CHECK", "handleBackPress - $this")
         ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return children
             .filter { it.shouldPropagateBackPress }
@@ -366,7 +395,13 @@ open class Node<V : RibView>(
         ribLifecycleRegistry
 
     override fun toString(): String =
-        "Node@${hashCode()} ($identifier)"
+        identifier.toString()
+            .substring(
+                identifier.toString().lastIndexOf(".")
+            )
+//                ,
+//                identifier.toString().indexOf("$"))
+//            .replace(".", "")
 
     /**
      * Executes an action and remains on the same hierarchical level

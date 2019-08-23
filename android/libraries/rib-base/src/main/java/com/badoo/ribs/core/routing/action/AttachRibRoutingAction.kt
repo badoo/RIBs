@@ -12,7 +12,7 @@ class AttachRibRoutingAction<V : RibView>(
         listOf(
             Node.Descriptor(
                 node = builder.invoke(bundles.firstOrNull()),
-                viewAttachMode = Node.ViewAttachMode.PARENT
+                viewAttachMode = Node.AttachMode.PARENT
             )
         )
 

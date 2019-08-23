@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.switcher.feature
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.feature.ActorReducerFeature
+import com.badoo.ribs.core.LifecycleParent
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Portal
 import com.badoo.ribs.core.Portal.Sink.Command
@@ -18,10 +19,14 @@ import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
 import io.reactivex.ObservableSource
+import javax.inject.Provider
 
-class PortalFeature : ActorReducerFeature<Command, Effect, State, Nothing>(
+// FIXME move somewhere else
+class PortalFeature(
+    lifecycleParent: Provider<out LifecycleParent>
+): ActorReducerFeature<Command, Effect, State, Nothing>(
     initialState = State(),
-    actor = ActorImpl(),
+    actor = ActorImpl(lifecycleParent),
     reducer = ReducerImpl()
 ), Portal.Sink, Portal.Source {
 
@@ -34,14 +39,24 @@ class PortalFeature : ActorReducerFeature<Command, Effect, State, Nothing>(
         data class Removed(val node: Node<*>) : Effect()
     }
 
-    class ActorImpl : Actor<State, Command, Effect> {
+    class ActorImpl(
+        private val lifecycleParent: Provider<out LifecycleParent>
+    ) : Actor<State, Command, Effect> {
         override fun invoke(state: State, command: Command): Observable<out Effect> = when (command) {
-            is Add -> if (!state.nodes.contains(command.node)) just(Added(command.node)).doOnNext {
-                state.nodes.lastOrNull()?.detachFromView()
-            } else empty()
-            is Remove -> if (state.nodes.contains(command.node)) just(Removed(command.node)).doOnNext {
-                it.node.detachFromView()
-            } else empty()
+            is Add -> if (state.nodes.contains(command.node)) empty() else
+                just(Added(command.node)).doOnNext {
+                    state.nodes.lastOrNull()?.let {
+                        it.detachFromView()
+                        lifecycleParent.get().removeParented(it)
+                    }
+                    lifecycleParent.get().addParented(it.node)
+                }
+
+            is Remove -> if (!state.nodes.contains(command.node)) empty() else
+                just(Removed(command.node)).doOnNext {
+                    it.node.detachFromView()
+                    lifecycleParent.get().removeParented(it.node)
+                }
         }
     }
 

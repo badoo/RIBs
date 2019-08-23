@@ -32,20 +32,6 @@ internal object SwitcherModule {
     @SwitcherScope
     @Provides
     @JvmStatic
-    internal fun portalFeature(): PortalFeature =
-        PortalFeature()
-
-    @SwitcherScope
-    @Provides
-    @JvmStatic
-    internal fun portal(
-        portalFeature: PortalFeature
-    ): Portal.Sink =
-        portalFeature
-
-    @SwitcherScope
-    @Provides
-    @JvmStatic
     internal fun dialogToTestOverlay(): DialogToTestOverlay =
         DialogToTestOverlay()
 
@@ -75,14 +61,12 @@ internal object SwitcherModule {
     internal fun interactor(
         savedInstanceState: Bundle?,
         router: SwitcherRouter,
-        dialogToTestOverlay: DialogToTestOverlay,
-        portalFeature: PortalFeature
+        dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherInteractor =
         SwitcherInteractor(
             savedInstanceState = savedInstanceState,
             router = router,
-            dialogToTestOverlay = dialogToTestOverlay,
-            portal = portalFeature
+            dialogToTestOverlay = dialogToTestOverlay
         )
 
     @Provides

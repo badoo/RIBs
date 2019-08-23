@@ -2,7 +2,7 @@ package com.badoo.ribs.core.routing.action
 
 import android.os.Bundle
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Node.ViewAttachMode
+import com.badoo.ribs.core.Node.AttachMode
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.dialog.Dialog
@@ -16,7 +16,7 @@ class DialogRoutingAction<V : RibView, Event : Any>(
 
     override fun buildNodes(bundles: List<Bundle?>) : List<Node.Descriptor> =
         dialog.buildNodes(bundles).map {
-            Node.Descriptor(it, ViewAttachMode.EXTERNAL)
+            Node.Descriptor(it, AttachMode.EXTERNAL)
         }
 
     override fun execute(nodes: List<Node.Descriptor>) {

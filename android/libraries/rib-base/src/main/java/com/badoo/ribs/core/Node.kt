@@ -28,7 +28,6 @@ import android.arch.lifecycle.Lifecycle.State.STARTED
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.os.Bundle
-import android.os.Handler
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 import android.support.annotation.MainThread
@@ -56,44 +55,23 @@ open class Node<V : RibView>(
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
-//) : LifecycleOwner, LifecycleParent, LifecycleChild {
 ) : LifecycleOwner {
 
-    fun addManaged(child: Node<*>) {
-        Log.d("CHECK", "addManaged - $this ---> $child")
-        if (managedChildren.size == 1) {
-            router.onDetachView()
-            managedChildren.last().forEach { // FIXME this is a hack
-                detachChildView(it)
-            }
+    var parent: Node<*>? = null
 
-        } else {
-            managedChildren.last().forEach {
-                detachChildView(it)
-            }
-        }
-        managedChildren.add(
-            mutableListOf(child)
-        )
-        attachChildView(child)
-    }
+    fun resolverChain(): List<Parcelable> =
+        (parent?.resolverChain() ?: emptyList()) + ownResolver
 
-    fun removeManaged(child: Node<*>) {
-        Log.d("CHECK", "removeManaged - $this -x-> $child")
-        if (managedChildren.size <= 1) throw RuntimeException("This should never happen")
-        val target = managedChildren.find { it == mutableListOf(child) } ?: throw RuntimeException("This should never happen")
-        managedChildren.last().forEach {
-            detachChildView(it)
-        }
-        managedChildren.remove(target)
-        if (managedChildren.size > 1) {
-            managedChildren.last().forEach {
-                attachChildView(it)
-            }
-        } else {
-            router.onAttachView() // FIXME
-        }
-    }
+    var ownResolver = listOf<Parcelable>()
+        internal set
+
+//    var parentResolverChain = listOf<Parcelable>()
+//        internal set(value) {
+//            field = value
+//        }
+
+    val resolver: Resolver<*, V> =
+        router
 
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
 
@@ -130,7 +108,6 @@ open class Node<V : RibView>(
 
     val tag: String = this::class.java.name
     val children = CopyOnWriteArrayList<Node<*>>()
-    private val managedChildren = mutableListOf<MutableList<Node<*>>>(mutableListOf())
     private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
     val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
 
@@ -178,11 +155,7 @@ open class Node<V : RibView>(
             }
         }
 
-        if (managedChildren.size > 1) {
-            attachChildView(managedChildren.last().first())
-        } else {
-            router.onAttachView()
-        }
+        router.onAttachView()
         onStartInternal()
         onResumeInternal()
     }
@@ -195,11 +168,7 @@ open class Node<V : RibView>(
             Log.d("CHECK", "detachFromView - $this")
             onPauseInternal()
             onStopInternal()
-            if (managedChildren.size > 1) {
-                detachChildView(managedChildren.last().first())
-            } else {
-                router.onDetachView()
-            }
+            router.onDetachView()
 
             if (!isViewless) {
                 view!!.let {
@@ -245,16 +214,13 @@ open class Node<V : RibView>(
     internal fun attachChildNode(childDescriptor: Descriptor) {
         Log.d("CHECK", "attachChildNode - $this, $childDescriptor")
         val (childNode, viewAttachMode) = childDescriptor
+        childNode.parent = this
         children.add(childNode)
         ribRefWatcher.logBreadcrumb(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
         )
 
-        if (viewAttachMode == AttachMode.PARENT) {
-            managedChildren.first().add(childNode)
-            childNode.inheritExternalLifecycle(externalLifecycleRegistry)
-        }
-
+        childNode.inheritExternalLifecycle(externalLifecycleRegistry)
         childNode.onAttach()
         childrenAttachesRelay.accept(childNode)
     }
@@ -293,7 +259,6 @@ open class Node<V : RibView>(
     @MainThread
     internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
-        managedChildren.first().remove(childNode)
 
         ribRefWatcher.watchDeletedObject(childNode)
         ribRefWatcher.logBreadcrumb(
@@ -347,7 +312,7 @@ open class Node<V : RibView>(
         Log.d("CHECK", "onStartInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
-        managedChildren.last().forEach { callOnChildren.invoke(it) }
+        children.forEach { callOnChildren.invoke(it) }
     }
 
     // TODO call this when overlay is removed
@@ -355,7 +320,7 @@ open class Node<V : RibView>(
         Log.d("CHECK", "onResumeInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
-        managedChildren.last().forEach { callOnChildren.invoke(it) }
+        children.forEach { callOnChildren.invoke(it) }
     }
 
     // TODO call this when overlay hides content AND current rib is not in dialog
@@ -364,13 +329,13 @@ open class Node<V : RibView>(
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         val targetState = if (externalLifecycleRegistry.currentState == CREATED) CREATED else STARTED
         updateToStateIfViewAttached(targetState)
-        managedChildren.last().forEach { callOnChildren.invoke(it) }
+        children.forEach { callOnChildren.invoke(it) }
     }
 
     internal fun onStopInternal(callOnChildren: (Node<*>) -> Unit = { it.onStopInternal() }) {
         Log.d("CHECK", "onStopInternal - $this")
         updateToStateIfViewAttached(CREATED)
-        managedChildren.last().forEach { callOnChildren.invoke(it) }
+        children.forEach { callOnChildren.invoke(it) }
     }
 
     private fun updateToStateIfViewAttached(state: Lifecycle.State) {
@@ -394,18 +359,11 @@ open class Node<V : RibView>(
         Log.d("CHECK", "handleBackPress - $this")
         ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return children
-            .filter { it.shouldPropagateBackPress }
+            .filter { it.isAttachedToView }
             .any { it.handleBackPress() }
             || interactor.handleBackPress()
             || router.popBackStack()
     }
-
-    /**
-     * Valid use-case: RIB is detached from view, but a descendant of it is visible through a [Portal]
-     * In this case it should still propagate back press
-     */
-    private val shouldPropagateBackPress: Boolean
-        get() = isAttachedToView || children.any { it.shouldPropagateBackPress }
 
 
     internal fun saveViewState() {

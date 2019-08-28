@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Portal
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.FullScreenRoutingAction.Companion.fullScreen
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
@@ -14,7 +15,7 @@ import kotlinx.android.parcel.Parcelize
 
 class SmallRouter(
     savedInstanceState: Bundle?,
-    private val portal: Portal.Sink,
+//    private val portal: Portal.Sink,
     private val bigBuilder: BigBuilder
 ): Router<Configuration, Nothing, Content, Nothing, SmallView>(
     savedInstanceState = savedInstanceState,
@@ -31,7 +32,7 @@ class SmallRouter(
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<SmallView> =
         when (configuration) {
             Content.Default -> noop()
-//            Content.ShowBig -> fullScreen(portal) { bigBuilder.build(it) }
-            Content.ShowBig -> portal.remoteRoutingAction { bigBuilder.build(it) } as RoutingAction<SmallView>
+            Content.ShowBig -> attach { bigBuilder.build(it) }
+//            Content.ShowBig -> portal.remoteRoutingAction { bigBuilder.build(it) } as RoutingAction<SmallView>
         }
 }

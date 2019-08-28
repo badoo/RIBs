@@ -18,11 +18,15 @@ import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.view.RibView
 
+interface Resolver<C : Parcelable, V : RibView> {
+    fun resolveConfiguration(configuration: C): RoutingAction<V>
+}
+
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     savedInstanceState: Bundle?,
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList()
-) {
+) : Resolver<C, V> {
     companion object {
         internal const val BUNDLE_KEY = "Router"
     }
@@ -53,8 +57,6 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             parentNode = node
         )
     }
-
-    abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
     open fun onSaveInstanceState(outState: Bundle) {
         configurationFeature.accept(SaveInstanceState())

@@ -30,7 +30,7 @@ internal object RootModule {
     internal fun portal(
 //        interactor: RootInteractor
         router: RootRouter
-    ): Portal.Sink =
+    ): Portal =
         router
 
     @RootScope

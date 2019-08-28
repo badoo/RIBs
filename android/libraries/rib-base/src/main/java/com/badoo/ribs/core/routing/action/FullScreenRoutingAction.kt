@@ -3,12 +3,10 @@ package com.badoo.ribs.core.routing.action
 import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Portal
-import com.badoo.ribs.core.Portal.Sink.Command.Add
-import com.badoo.ribs.core.Portal.Sink.Command.Remove
 import com.badoo.ribs.core.view.RibView
 
 class FullScreenRoutingAction<V : RibView>(
-    private val portal: Portal.Sink,
+//    private val portal: Portal.Sink,
     private val builder: (Bundle?) -> Node<*>
 ) : RoutingAction<V> {
 
@@ -31,7 +29,11 @@ class FullScreenRoutingAction<V : RibView>(
     }
 
     companion object {
-        fun <V : RibView> fullScreen(portal: Portal.Sink, builder: (Bundle?) -> Node<*>): RoutingAction<V> =
-            FullScreenRoutingAction(portal, builder)
+        fun <V : RibView> fullScreen(
+//            portal: Portal.Sink,
+            builder: (Bundle?) -> Node<*>): RoutingAction<V> =
+            FullScreenRoutingAction(
+//                portal,
+                builder)
     }
 }

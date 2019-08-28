@@ -14,6 +14,7 @@ import com.badoo.ribs.example.rib.small.SmallView.ViewModel
 import io.reactivex.functions.Consumer
 
 class SmallInteractor(
+    portal: Portal,
     savedInstanceState: Bundle?,
     router: Router<Configuration, *, Content, Nothing, SmallView>
     ) : Interactor<Configuration, Content, Nothing, SmallView>(
@@ -30,7 +31,7 @@ class SmallInteractor(
 
     private val viewEventConsumer: Consumer<Event> = Consumer {
         when (it) {
-            Event.OpenBigClicked -> router.push(Content.ShowBig)
+            Event.OpenBigClicked -> portal.push(router.node.resolverChain() + Content.ShowBig)
         }
     }
 }

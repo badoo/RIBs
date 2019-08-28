@@ -107,7 +107,12 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     configuration = configuration,
                     bundles = bundles,
                     routingAction = routingAction,
-                    nodes = routingAction.buildNodes(bundles)
+                    nodes = routingAction.buildNodes(bundles).also {
+                        it.forEach {
+//                            it.node.parent = parentNode
+                            it.node.ownResolver = listOf(configuration)
+                        }
+                    }
                 )
             )
         }

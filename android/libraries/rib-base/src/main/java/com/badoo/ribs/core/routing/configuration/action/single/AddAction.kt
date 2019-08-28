@@ -20,6 +20,7 @@ internal object AddAction : ResolvedSingleConfigurationAction() {
      */
     fun <C : Parcelable> execute(item: Resolved<C>, parentNode: Node<*>): Resolved<C> {
         parentNode.attachNodes(item.nodes)
+        item.routingAction.onAttach(item.nodes)
 
         return item
     }

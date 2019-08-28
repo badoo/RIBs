@@ -20,7 +20,7 @@ interface Root : Rib {
         CanProvideRibCustomisation
 
     class Customisation(
-        val viewFactory: RootView.Factory = RootViewImpl.Factory()
+//        val viewFactory: RootView.Factory = RootViewImpl.Factory()
     ) : RibCustomisation
 
     interface Workflow {

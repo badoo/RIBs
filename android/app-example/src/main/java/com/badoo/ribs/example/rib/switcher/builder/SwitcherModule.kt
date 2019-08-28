@@ -19,7 +19,6 @@ import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter
 import com.badoo.ribs.example.rib.switcher.SwitcherView
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
-import com.badoo.ribs.example.rib.switcher.feature.PortalFeature
 import com.badoo.ribs.example.util.CoffeeMachine
 import dagger.Provides
 import io.reactivex.Observable

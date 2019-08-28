@@ -8,6 +8,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
+import com.badoo.ribs.core.view.RibView
 
 /**
  * Attaches views of associated [Node]s to a parentNode, and executes the associated [RoutingAction].
@@ -25,7 +26,7 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
         val (_, parentNode, globalActivationLevel) = params
 
         // If there's no view available (i.e. globalActivationLevel == SLEEPING) we must not execute
-        // routing actions or try to attach view. That will be done on next WakeUp. For not, let's
+        // routing actions or try to attach view. That will be done on next WakeUp. For now, let's
         // just mark the element to the same value.
         if (globalActivationLevel != ACTIVE) {
             return item.withActivationState(globalActivationLevel)
@@ -36,7 +37,8 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
             return item
         }
 
-        parentNode.attachParentedViews(item.nodes)
+        val targetNode = item.routingAction.parentNode() ?: parentNode
+        targetNode.attachParentedViews(item.nodes)
         item.routingAction.execute(item.nodes)
         return item.withActivationState(globalActivationLevel)
     }

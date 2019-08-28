@@ -22,12 +22,12 @@ class FullScreenRoutingAction<V : RibView>(
 
     override fun execute(nodes: List<Node.Descriptor>) {
         super.execute(nodes)
-        portal.accept(Add(nodes.first().node))
+//        portal.accept(Add(nodes.first().node))
     }
 
     override fun cleanup(nodes: List<Node.Descriptor>) {
         super.cleanup(nodes)
-        portal.accept(Remove(nodes.first().node))
+//        portal.accept(Remove(nodes.first().node))
     }
 
     companion object {

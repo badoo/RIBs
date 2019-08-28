@@ -31,6 +31,7 @@ class SmallRouter(
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<SmallView> =
         when (configuration) {
             Content.Default -> noop()
-            Content.ShowBig -> fullScreen(portal) { bigBuilder.build(it) }
+//            Content.ShowBig -> fullScreen(portal) { bigBuilder.build(it) }
+            Content.ShowBig -> portal.remoteRoutingAction { bigBuilder.build(it) } as RoutingAction<SmallView>
         }
 }

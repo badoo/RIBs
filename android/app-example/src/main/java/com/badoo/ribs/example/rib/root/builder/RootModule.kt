@@ -8,7 +8,6 @@ import com.badoo.ribs.example.rib.root.RootInteractor
 import com.badoo.ribs.example.rib.root.RootNode
 import com.badoo.ribs.example.rib.root.RootRouter
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
-import com.badoo.ribs.example.rib.switcher.feature.PortalFeature
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
 import dagger.Provides
@@ -17,21 +16,22 @@ import javax.inject.Provider
 @dagger.Module
 internal object RootModule {
 
-    @RootScope
-    @Provides
-    @JvmStatic
-    internal fun portalFeature(
-        node: Provider<RootNode>
-    ): PortalFeature =
-        PortalFeature(node)
+//    @RootScope
+//    @Provides
+//    @JvmStatic
+//    internal fun portalFeature(
+//        node: Provider<RootNode>
+//    ): PortalFeature =
+//        PortalFeature(node)
 
     @RootScope
     @Provides
     @JvmStatic
     internal fun portal(
-        portalFeature: PortalFeature
+//        interactor: RootInteractor
+        router: RootRouter
     ): Portal.Sink =
-        portalFeature
+        router
 
     @RootScope
     @Provides
@@ -51,13 +51,11 @@ internal object RootModule {
     @JvmStatic
     internal fun interactor(
         savedInstanceState: Bundle?,
-        router: RootRouter,
-        portalFeature: PortalFeature
+        router: RootRouter
     ): RootInteractor =
         RootInteractor(
             savedInstanceState = savedInstanceState,
-            router = router,
-            portal = portalFeature
+            router = router
         )
 
     @RootScope
@@ -65,12 +63,12 @@ internal object RootModule {
     @JvmStatic
     internal fun node(
         savedInstanceState: Bundle?,
-        customisation: Root.Customisation,
+//        customisation: Root.Customisation,
         router: RootRouter,
         interactor: RootInteractor
     ) : RootNode = RootNode(
         savedInstanceState = savedInstanceState,
-        viewFactory = customisation.viewFactory(null),
+        viewFactory = null, // customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )

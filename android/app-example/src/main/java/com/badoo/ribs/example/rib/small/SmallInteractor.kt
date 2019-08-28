@@ -4,7 +4,9 @@ import android.arch.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.Portal
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.example.rib.root.RootRouter
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.Content
 import com.badoo.ribs.example.rib.small.SmallView.Event
@@ -14,7 +16,7 @@ import io.reactivex.functions.Consumer
 class SmallInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, *, Content, Nothing, SmallView>
-) : Interactor<Configuration, Content, Nothing, SmallView>(
+    ) : Interactor<Configuration, Content, Nothing, SmallView>(
     savedInstanceState = savedInstanceState,
     router = router,
     disposables = null

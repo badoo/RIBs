@@ -18,7 +18,8 @@ internal object DeactivateAction : ResolvedSingleConfigurationAction() {
         val (_, parentNode, _) = params
         item.routingAction.cleanup(item.nodes)
         item.nodes.saveViewState()
-        parentNode.detachChildViews(item.nodes)
+        val targetNode = item.routingAction.parentNode() ?: parentNode
+        targetNode.detachChildViews(item.nodes)
 
         return item.withActivationState(INACTIVE)
     }

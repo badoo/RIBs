@@ -1,11 +1,17 @@
 package com.badoo.ribs.core
 
+import android.os.Bundle
+import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.view.RibView
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 interface Portal {
 
-    interface Sink : Consumer<Sink.Command> {
+//    interface Sink : Consumer<Sink.Command> {
+    interface Sink {
+
+        val remoteRoutingAction: ((Bundle?) -> Node<*>) -> RoutingAction<out RibView>
 
         sealed class Command {
             data class Add(val node: Node<*>) : Command()

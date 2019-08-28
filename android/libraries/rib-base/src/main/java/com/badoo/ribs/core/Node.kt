@@ -28,6 +28,7 @@ import android.arch.lifecycle.Lifecycle.State.STARTED
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 import android.support.annotation.MainThread
@@ -42,7 +43,6 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.lang.IllegalStateException
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -56,16 +56,43 @@ open class Node<V : RibView>(
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
-) : LifecycleOwner, LifecycleParent, LifecycleChild {
+//) : LifecycleOwner, LifecycleParent, LifecycleChild {
+) : LifecycleOwner {
 
-    override fun addParented(child: LifecycleChild) {
-        Log.d("CHECK", "addParented - $this ---> $child")
-        lifecycleChildren.add(child)
+    fun addManaged(child: Node<*>) {
+        Log.d("CHECK", "addManaged - $this ---> $child")
+        if (managedChildren.size == 1) {
+            router.onDetachView()
+            managedChildren.last().forEach { // FIXME this is a hack
+                detachChildView(it)
+            }
+
+        } else {
+            managedChildren.last().forEach {
+                detachChildView(it)
+            }
+        }
+        managedChildren.add(
+            mutableListOf(child)
+        )
+        attachChildView(child)
     }
 
-    override fun removeParented(child: LifecycleChild) {
-        Log.d("CHECK", "removeParented - $this -x-> $child")
-        lifecycleChildren.remove(child)
+    fun removeManaged(child: Node<*>) {
+        Log.d("CHECK", "removeManaged - $this -x-> $child")
+        if (managedChildren.size <= 1) throw RuntimeException("This should never happen")
+        val target = managedChildren.find { it == mutableListOf(child) } ?: throw RuntimeException("This should never happen")
+        managedChildren.last().forEach {
+            detachChildView(it)
+        }
+        managedChildren.remove(target)
+        if (managedChildren.size > 1) {
+            managedChildren.last().forEach {
+                attachChildView(it)
+            }
+        } else {
+            router.onAttachView() // FIXME
+        }
     }
 
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
@@ -103,7 +130,7 @@ open class Node<V : RibView>(
 
     val tag: String = this::class.java.name
     val children = CopyOnWriteArrayList<Node<*>>()
-    private val lifecycleChildren = CopyOnWriteArrayList<LifecycleChild>()
+    private val managedChildren = mutableListOf<MutableList<Node<*>>>(mutableListOf())
     private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
     val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
 
@@ -151,7 +178,11 @@ open class Node<V : RibView>(
             }
         }
 
-        router.onAttachView()
+        if (managedChildren.size > 1) {
+            attachChildView(managedChildren.last().first())
+        } else {
+            router.onAttachView()
+        }
         onStartInternal()
         onResumeInternal()
     }
@@ -164,7 +195,11 @@ open class Node<V : RibView>(
             Log.d("CHECK", "detachFromView - $this")
             onPauseInternal()
             onStopInternal()
-            router.onDetachView()
+            if (managedChildren.size > 1) {
+                detachChildView(managedChildren.last().first())
+            } else {
+                router.onDetachView()
+            }
 
             if (!isViewless) {
                 view!!.let {
@@ -216,7 +251,7 @@ open class Node<V : RibView>(
         )
 
         if (viewAttachMode == AttachMode.PARENT) {
-            addParented(childNode)
+            managedChildren.first().add(childNode)
             childNode.inheritExternalLifecycle(externalLifecycleRegistry)
         }
 
@@ -228,7 +263,8 @@ open class Node<V : RibView>(
         externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
     }
 
-    internal fun attachChildView(child: Node<*>) {
+    // FIXME internal + protected?
+    fun attachChildView(child: Node<*>) {
         if (isAttachedToView) {
             val target = when {
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
@@ -240,7 +276,8 @@ open class Node<V : RibView>(
         }
     }
 
-    internal fun detachChildView(child: Node<*>) {
+    // FIXME internal + protected?
+    fun detachChildView(child: Node<*>) {
         parentViewGroup?.let {
             child.detachFromView()
         }
@@ -256,7 +293,7 @@ open class Node<V : RibView>(
     @MainThread
     internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
-        lifecycleChildren.remove(childNode)
+        managedChildren.first().remove(childNode)
 
         ribRefWatcher.watchDeletedObject(childNode)
         ribRefWatcher.logBreadcrumb(
@@ -271,7 +308,7 @@ open class Node<V : RibView>(
      *
      * For internal usage call onStartInternal() directly
      */
-    override fun onStart() {
+    fun onStart() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_START)
         onStartInternal { it.onStart() }
     }
@@ -281,7 +318,7 @@ open class Node<V : RibView>(
      *
      * For internal usage call onStopInternal() directly
      */
-    override fun onStop() {
+    fun onStop() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_STOP)
         onStopInternal { it.onStop() }
     }
@@ -291,7 +328,7 @@ open class Node<V : RibView>(
      *
      * For internal usage call onResumeInternal() directly
      */
-    override fun onResume() {
+    fun onResume() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_RESUME)
         onResumeInternal { it.onResume() }
     }
@@ -301,7 +338,7 @@ open class Node<V : RibView>(
      *
      * For internal usage call onPauseInternal() directly
      */
-    override fun onPause() {
+    fun onPause() {
         externalLifecycleRegistry.handleLifecycleEvent(ON_PAUSE)
         onPauseInternal { it.onPause() }
     }
@@ -310,7 +347,7 @@ open class Node<V : RibView>(
         Log.d("CHECK", "onStartInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
-        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
+        managedChildren.last().forEach { callOnChildren.invoke(it) }
     }
 
     // TODO call this when overlay is removed
@@ -318,7 +355,7 @@ open class Node<V : RibView>(
         Log.d("CHECK", "onResumeInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
-        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
+        managedChildren.last().forEach { callOnChildren.invoke(it) }
     }
 
     // TODO call this when overlay hides content AND current rib is not in dialog
@@ -327,13 +364,13 @@ open class Node<V : RibView>(
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         val targetState = if (externalLifecycleRegistry.currentState == CREATED) CREATED else STARTED
         updateToStateIfViewAttached(targetState)
-        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
+        managedChildren.last().forEach { callOnChildren.invoke(it) }
     }
 
     internal fun onStopInternal(callOnChildren: (Node<*>) -> Unit = { it.onStopInternal() }) {
         Log.d("CHECK", "onStopInternal - $this")
         updateToStateIfViewAttached(CREATED)
-        lifecycleChildren.forEach { callOnChildren.invoke(it as Node<*>) } // TODO cast is safe, but make it correct
+        managedChildren.last().forEach { callOnChildren.invoke(it) }
     }
 
     private fun updateToStateIfViewAttached(state: Lifecycle.State) {

@@ -15,7 +15,7 @@ import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import io.reactivex.functions.Consumer
 import android.os.Bundle
-import com.badoo.ribs.example.rib.switcher.feature.PortalFeature
+//import com.badoo.ribs.example.rib.switcher.feature.PortalFeature
 
 class SwitcherInteractor(
     savedInstanceState: Bundle?,

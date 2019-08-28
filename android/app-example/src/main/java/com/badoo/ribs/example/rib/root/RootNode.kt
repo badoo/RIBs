@@ -9,16 +9,20 @@ import io.reactivex.Single
 
 class RootNode(
     savedInstanceState: Bundle?,
-    viewFactory: ((ViewGroup) -> RootView?)?,
+    viewFactory: ((ViewGroup) -> Nothing?)?,
     private val router: RootRouter,
     private val interactor: RootInteractor
-) : Node<RootView>(
+) : Node<Nothing>(
     savedInstanceState = savedInstanceState,
     identifier = object : Root {},
     viewFactory = viewFactory,
     router = router,
     interactor = interactor
 ), Root.Workflow {
+
+    override fun detachFromView() {
+        super.detachFromView()
+    }
 
     override fun goToSwitcher(): Single<Switcher.Workflow> =
         attachWorkflow {

@@ -56,7 +56,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
-    fun onSaveInstanceState(outState: Bundle) {
+    open fun onSaveInstanceState(outState: Bundle) {
         configurationFeature.accept(SaveInstanceState())
         val bundle = Bundle()
         timeCapsule.saveState(bundle)

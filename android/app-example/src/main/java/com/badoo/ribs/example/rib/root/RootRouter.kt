@@ -34,11 +34,6 @@ class RootRouter(
         push(Content.Portal(resolverChain))
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        newRoot(Content.Default)
-        super.onSaveInstanceState(outState)
-    }
-
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
         when (configuration) {
             is Content.Default -> attach { switcherBuilder.build(it) }
@@ -48,7 +43,7 @@ class RootRouter(
     private fun <E : Parcelable> List<E>.resolve(): RoutingAction<out RibView> {
         // FIXME grab first from real root somehow (makeRoot method called by RibActivity?):
         var targetRouter: Resolver<Parcelable, *> = this@RootRouter as Resolver<Parcelable, *>
-        var routingAction: RoutingAction<out RibView> = targetRouter.resolveConfiguration(Content.Default) // FIXME this is set to Content.Default
+        var routingAction: RoutingAction<out RibView> = targetRouter.resolveConfiguration(first()) // FIXME make first() safe to call
 
         drop(1).forEach { element ->
             // FIXME don't build it again if already available as child

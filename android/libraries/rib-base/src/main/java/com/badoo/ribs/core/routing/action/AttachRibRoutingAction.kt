@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
-class AttachRibRoutingAction<V : RibView>(
+open class AttachRibRoutingAction<V : RibView>(
     private val builder: (Bundle?) -> Node<*>
 ) : RoutingAction<V> {
 

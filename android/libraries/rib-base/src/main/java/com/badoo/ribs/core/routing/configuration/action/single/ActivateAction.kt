@@ -37,8 +37,8 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
             return item
         }
 
-        val targetNode = item.routingAction.parentNode() ?: parentNode
-        targetNode.attachParentedViews(item.nodes)
+//        val targetNode = item.routingAction.parentNode() ?: parentNode
+        parentNode.attachParentedViews(item.nodes)
         item.routingAction.execute(item.nodes)
         return item.withActivationState(globalActivationLevel)
     }

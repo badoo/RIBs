@@ -87,8 +87,9 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         }
 
         /**
-         * Resolves and sets the associated [RoutingAction], builds associated [Node]s, and adds
-         * them to the [parentNode]
+         * Resolves and sets the associated [RoutingAction], builds associated [Node]s
+         * FIXME outdated:
+         * , and adds them to the [parentNode]
          */
         override fun resolve(
             resolver: (C) -> RoutingAction<*>,
@@ -109,7 +110,8 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     routingAction = routingAction,
                     nodes = routingAction.buildNodes(bundles).also {
                         it.forEach {
-//                            it.node.parent = parentNode
+                            val anchor = routingAction.virtualParentNode()
+                            it.node.parent = anchor ?: parentNode
                             it.node.ownResolver = listOf(configuration)
                         }
                     }

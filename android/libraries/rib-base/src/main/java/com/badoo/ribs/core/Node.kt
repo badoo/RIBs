@@ -57,6 +57,7 @@ open class Node<V : RibView>(
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
+    // FIXME this is virtual parent, not necessarily actual
     var parent: Node<*>? = null
 
     fun resolverChain(): List<Parcelable> =
@@ -214,7 +215,7 @@ open class Node<V : RibView>(
     internal fun attachChildNode(childDescriptor: Descriptor) {
         Log.d("CHECK", "attachChildNode - $this, $childDescriptor")
         val (childNode, viewAttachMode) = childDescriptor
-        childNode.parent = this
+//        childNode.parent = this
         children.add(childNode)
         ribRefWatcher.logBreadcrumb(
             "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName

@@ -14,7 +14,7 @@ import com.badoo.ribs.example.rib.small.SmallView.ViewModel
 import io.reactivex.functions.Consumer
 
 class SmallInteractor(
-    portal: Portal.Sink,
+    portal: Portal.OtherSide,
     savedInstanceState: Bundle?,
     router: Router<Configuration, *, Content, Nothing, SmallView>
 ) : Interactor<Configuration, Content, Nothing, SmallView>(
@@ -31,7 +31,7 @@ class SmallInteractor(
 
     private val viewEventConsumer: Consumer<Event> = Consumer {
         when (it) {
-            Event.OpenBigClicked -> portal.showRemote(router.node.ancestryInfo + FullScreen.ShowBig)
+            Event.OpenBigClicked -> portal.showRemote(router, FullScreen.ShowBig)
         }
     }
 }

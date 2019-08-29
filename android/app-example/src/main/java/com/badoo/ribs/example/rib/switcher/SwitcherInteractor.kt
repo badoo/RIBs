@@ -15,18 +15,14 @@ import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import io.reactivex.functions.Consumer
 import android.os.Bundle
-//import com.badoo.ribs.example.rib.switcher.feature.PortalFeature
 
 class SwitcherInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, Permanent, Content, Overlay, SwitcherView>,
     private val dialogToTestOverlay: DialogToTestOverlay
-//    ,
-//    private val portal: PortalFeature
 ) : Interactor<Configuration, Content, Overlay, SwitcherView>(
     savedInstanceState = savedInstanceState,
     router = router,
-//    disposables = portal
     disposables = null
 ) {
 
@@ -35,17 +31,8 @@ class SwitcherInteractor(
         viewLifecycle.createDestroy {
             bind(view to viewEventConsumer)
             bind(dialogToTestOverlay to dialogEventConsumer)
-//            bind(portal.models to view.portalRenderer)
-//            bind(portal.news to portalNewsConsumer)
         }
     }
-
-//    private val portalNewsConsumer: Consumer<PortalFeature.News> = Consumer {
-//        when (it) {
-//            is PortalFeature.News.Activated -> TODO() // bind lifecycle to Node
-//            is PortalFeature.News.Deactivated -> TODO() // bind lifecycle to Node
-//        }
-//    }
 
     internal inner class MenuListener : Consumer<Menu.Output> {
         override fun accept(output: Menu.Output) = when (output) {

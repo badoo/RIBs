@@ -61,7 +61,7 @@ open class Node<V : RibView>(
 
     enum class AttachMode {
         /**
-         * The node's view attach/detach and lifecycle is managed by its parent.
+         * The node's view attach/detach is managed by its parent.
          */
         PARENT,
 
@@ -389,9 +389,6 @@ open class Node<V : RibView>(
             .substring(
                 identifier.toString().lastIndexOf(".")
             )
-//                ,
-//                identifier.toString().indexOf("$"))
-//            .replace(".", "")
 
     /**
      * Executes an action and remains on the same hierarchical level

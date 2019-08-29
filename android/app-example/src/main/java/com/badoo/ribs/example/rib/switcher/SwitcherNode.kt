@@ -46,8 +46,4 @@ class SwitcherNode(
             // push wish to feature
             Log.d("WORKFLOW", "Switcher / doSomethingAndStayOnThisNode")
         }
-
-    override fun detachFromView() {
-        super.detachFromView()
-    }
 }

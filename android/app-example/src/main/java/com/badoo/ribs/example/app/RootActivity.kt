@@ -14,6 +14,7 @@ import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.switcher.Switcher
+import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
@@ -34,19 +35,25 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?): PortalNode =
         PortalBuilder(
             object : Portal.Dependency {
-                override fun defaultRoutingAction(): (Portal.Sink) -> RoutingAction<Nothing> = { portal ->
-                    attach {
-                        SwitcherBuilder(
-                            object : Switcher.Dependency {
-                                override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
-                                override fun activityStarter(): ActivityStarter = activityStarter
-                                override fun permissionRequester(): PermissionRequester = permissionRequester
-                                override fun dialogLauncher(): DialogLauncher = this@RootActivity
-                                override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
-                                override fun portal(): Portal.Sink = portal
-                            }
-                        ).build(it)
-                    }
+                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction<Nothing> = { portal ->
+                    attach { buildSwitcherNode(portal, it) }
+                }
+
+                private fun buildSwitcherNode(portal: Portal.OtherSide, savedInstanceState: Bundle?): SwitcherNode {
+                    return SwitcherBuilder(
+                        object : Switcher.Dependency {
+                            override fun ribCustomisation(): RibCustomisationDirectory =
+                                AppRibCustomisations
+
+                            override fun activityStarter(): ActivityStarter = activityStarter
+                            override fun permissionRequester(): PermissionRequester =
+                                permissionRequester
+
+                            override fun dialogLauncher(): DialogLauncher = this@RootActivity
+                            override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
+                            override fun portal(): Portal.OtherSide = portal
+                        }
+                    ).build(savedInstanceState)
                 }
             }
 

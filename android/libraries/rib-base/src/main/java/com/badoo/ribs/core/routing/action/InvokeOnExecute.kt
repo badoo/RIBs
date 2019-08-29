@@ -1,13 +1,12 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
 class InvokeOnExecute< V : RibView>(
     private val onInvoke: () -> Unit
 ) : RoutingAction<V> {
 
-    override fun execute(nodes: List<Node.Descriptor>) {
+    override fun execute() {
         onInvoke()
     }
 

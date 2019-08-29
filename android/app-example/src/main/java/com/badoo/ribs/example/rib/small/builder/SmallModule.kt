@@ -20,11 +20,9 @@ internal object SmallModule {
         // pass component to child rib builders, or remove if there are none
         component: SmallComponent,
         savedInstanceState: Bundle?
-//        portal: Portal.Sink
     ): SmallRouter =
         SmallRouter(
             savedInstanceState = savedInstanceState,
-//            portal = portal,
             bigBuilder = BigBuilder(component)
         )
 
@@ -34,7 +32,7 @@ internal object SmallModule {
     internal fun interactor(
         savedInstanceState: Bundle?,
         router: SmallRouter,
-        portal: Portal.Sink
+        portal: Portal.OtherSide
     ): SmallInteractor =
         SmallInteractor(
             savedInstanceState = savedInstanceState,

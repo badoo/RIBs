@@ -39,13 +39,4 @@ sealed class AncestryInfo {
         override val configurationChain: List<Parcelable>
             get() = anchor.ancestryInfo.configurationChain + creatorConfiguration
     }
-
-    class Derived(
-        override val configurationChain: List<Parcelable>
-    ) : AncestryInfo()
-
-    infix operator fun plus(configuration: Parcelable): AncestryInfo =
-        Derived(
-            this.configurationChain + configuration
-        )
 }

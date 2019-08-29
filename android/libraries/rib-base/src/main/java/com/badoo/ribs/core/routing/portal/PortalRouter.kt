@@ -16,7 +16,7 @@ class PortalRouter(
     savedInstanceState = savedInstanceState,
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
-), Portal.Sink {
+), Portal.OtherSide {
 
     internal lateinit var defaultRoutingAction: RoutingAction<Nothing>
 
@@ -27,8 +27,8 @@ class PortalRouter(
         }
     }
 
-    override fun showRemote(ancestryInfo: AncestryInfo) {
-        push(Content.Portal(ancestryInfo.configurationChain))
+    override fun showRemote(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {
+        push(Content.Portal(remoteRouter.node.ancestryInfo.configurationChain + remoteConfiguration))
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
@@ -38,16 +38,16 @@ class PortalRouter(
         }
 
     private fun List<Parcelable>.resolve(): RoutingAction<out RibView> {
-        // FIXME grab first from real root somehow (makeRoot method called by RibActivity?):
+        // TODO grab first from real root somehow -- currently works only if PortalRouter is in the root rib
         var targetRouter: ConfigurationResolver<Parcelable, *> =
             this@PortalRouter as ConfigurationResolver<Parcelable, *>
         var routingAction: RoutingAction<out RibView> =
             targetRouter.resolveConfiguration(first())
 
         drop(1).forEach { element ->
-            // FIXME don't build it again if already available as child
-            val nodes = routingAction.buildNodes(emptyList()) // FIXME bundle
-            val node = nodes.first() // FIXME if 0 or more than 1
+            // TODO don't build it again if already available as child
+            val nodes = routingAction.buildNodes(emptyList()) // TODO add bundle
+            val node = nodes.first() // TODO handle if 0 or more than 1
             targetRouter = node.node.resolver as ConfigurationResolver<Parcelable, *>
             routingAction = targetRouter.resolveConfiguration(element)
         }

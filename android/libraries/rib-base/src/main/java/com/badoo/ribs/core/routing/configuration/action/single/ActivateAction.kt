@@ -8,7 +8,6 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
-import com.badoo.ribs.core.view.RibView
 
 /**
  * Attaches views of associated [Node]s to a parentNode, and executes the associated [RoutingAction].
@@ -39,7 +38,7 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
 
 //        val targetNode = item.routingAction.parentNode() ?: parentNode
         parentNode.attachParentedViews(item.nodes)
-        item.routingAction.execute(item.nodes)
+        item.routingAction.execute()
         return item.withActivationState(globalActivationLevel)
     }
 

@@ -89,8 +89,6 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
         /**
          * Resolves and sets the associated [RoutingAction], builds associated [Node]s
-         * FIXME outdated:
-         * , and adds them to the [parentNode]
          */
         override fun resolve(
             resolver: (C) -> RoutingAction<*>,

@@ -2,7 +2,6 @@ package com.badoo.ribs.example.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
@@ -17,7 +16,6 @@ import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
 import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 
 /** The sample app's single activity */
@@ -46,7 +44,7 @@ class RootActivity : RibActivity() {
             workflowRoot = it
         }
 
-    override val workflowFactory: (Intent) -> Disposable? = {
+    override val workflowFactory: (Intent) -> Observable<*>? = {
         when {
             // adb shell am start -a "android.intent.action.VIEW" -d "app-example://workflow1"
             (it.data?.host == "workflow1") -> executeWorkflow1()
@@ -60,15 +58,13 @@ class RootActivity : RibActivity() {
         }
     }
 
-    private fun executeWorkflow1(): Disposable? =
+    private fun executeWorkflow1(): Observable<*> =
         workflowRoot
             .attachHelloWorld()
-            .subscribe { workflow: HelloWorld.Workflow ->
-                Log.d("WORKFLOW", "Success")
-            }
+            .toObservable()
 
     @SuppressWarnings("OptionalUnit")
-    private fun executeWorkflow2(): Disposable? =
+    private fun executeWorkflow2(): Observable<*> =
         Observable.combineLatest(
             workflowRoot
                 .doSomethingAndStayOnThisNode()
@@ -80,14 +76,10 @@ class RootActivity : RibActivity() {
                 .toObservable(),
 
             BiFunction<Switcher.Workflow, HelloWorld.Workflow, Unit> { _, _ -> Unit }
-        ).subscribe {
-            Log.d("WORKFLOW", "Success")
-        }
+        )
 
-    private fun executeTestCrash(): Disposable? =
+    private fun executeTestCrash(): Observable<*> =
         (rootNode as Switcher.Workflow)
             .testCrash()
-            .subscribe { workflow: HelloWorld.Workflow ->
-                Log.d("WORKFLOW", "This should crash before here")
-            }
+            .toObservable()
 }

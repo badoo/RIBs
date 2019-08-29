@@ -9,6 +9,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
@@ -27,6 +28,16 @@ class ConfigurationContextTest {
     private val resolver = mock<(Parcelable) -> RoutingAction<*>> {
         on { invoke(any()) } doReturn routingAction
     }
+
+    private val mockAnchor: Node<*> = mock()
+    private val routingActionWithAnchor = mock<RoutingAction<*>> {
+        on { buildNodes(anyOrNull()) } doReturn nodeDescriptors
+        on { anchor() } doReturn mockAnchor
+    }
+    private val resolverWithAnchor = mock<(Parcelable) -> RoutingAction<*>> {
+        on { invoke(any()) } doReturn routingActionWithAnchor
+    }
+
     private val onResolution = { resolved: Resolved<Parcelable> ->
         resolved
     }
@@ -94,6 +105,39 @@ class ConfigurationContextTest {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
         val resolved = unresolved.resolve(resolver, mock(), onResolution)
         assertEquals(nodeDescriptors, resolved.nodes)
+    }
+
+    @Test
+    fun `Unresolved resolve() sets AncestryInfo on built Nodes with parent as default anchor `() {
+        val configuration = mock<Parcelable>()
+        val unresolved = Unresolved(mock(), configuration)
+        val targetResolver = resolver
+        val parentNode = mock<Node<*>>()
+        val resolved = unresolved.resolve(targetResolver, parentNode, onResolution)
+        resolved.nodes.forEach {
+            val expected = AncestryInfo.Child(
+                parentNode,
+                configuration
+            )
+
+            verify(it.node).ancestryInfo = expected
+        }
+    }
+
+    @Test
+    fun `Unresolved resolve() sets AncestryInfo on built Nodes with expected anchor `() {
+        val configuration = mock<Parcelable>()
+        val unresolved = Unresolved(mock(), configuration)
+        val targetResolver = resolverWithAnchor
+        val resolved = unresolved.resolve(targetResolver, mock(), onResolution)
+        resolved.nodes.forEach {
+            val expected = AncestryInfo.Child(
+                mockAnchor,
+                configuration
+            )
+
+            verify(it.node).ancestryInfo = expected
+        }
     }
 
     @Test

@@ -4,7 +4,7 @@ import android.arch.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Portal
+import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.Content
@@ -17,7 +17,7 @@ class SmallInteractor(
     portal: Portal,
     savedInstanceState: Bundle?,
     router: Router<Configuration, *, Content, Nothing, SmallView>
-    ) : Interactor<Configuration, Content, Nothing, SmallView>(
+) : Interactor<Configuration, Content, Nothing, SmallView>(
     savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
@@ -31,7 +31,7 @@ class SmallInteractor(
 
     private val viewEventConsumer: Consumer<Event> = Consumer {
         when (it) {
-            Event.OpenBigClicked -> portal.push(router.node.resolverChain() + FullScreen.ShowBig)
+            Event.OpenBigClicked -> portal.push(router.node.ancestryInfo.configurationChain + FullScreen.ShowBig)
         }
     }
 }

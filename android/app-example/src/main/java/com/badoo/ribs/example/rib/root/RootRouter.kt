@@ -2,9 +2,8 @@ package com.badoo.ribs.example.rib.root
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Portal
-import com.badoo.ribs.core.Resolver
+import com.badoo.ribs.core.routing.portal.Portal
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -30,8 +29,8 @@ class RootRouter(
         }
     }
 
-    override fun push(resolverChain: List<Parcelable>) {
-        push(Content.Portal(resolverChain))
+    override fun push(configurationChain: List<Parcelable>) {
+        push(Content.Portal(configurationChain))
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
@@ -42,14 +41,14 @@ class RootRouter(
 
     private fun <E : Parcelable> List<E>.resolve(): RoutingAction<out RibView> {
         // FIXME grab first from real root somehow (makeRoot method called by RibActivity?):
-        var targetRouter: Resolver<Parcelable, *> = this@RootRouter as Resolver<Parcelable, *>
+        var targetRouter: ConfigurationResolver<Parcelable, *> = this@RootRouter as ConfigurationResolver<Parcelable, *>
         var routingAction: RoutingAction<out RibView> = targetRouter.resolveConfiguration(first()) // FIXME make first() safe to call
 
         drop(1).forEach { element ->
             // FIXME don't build it again if already available as child
             val nodes = routingAction.buildNodes(emptyList()) // FIXME bundle
             val node = nodes.first() // FIXME if 0 or more than 1
-            targetRouter = node.node.resolver as Resolver<Parcelable, *>
+            targetRouter = node.node.resolver as ConfigurationResolver<Parcelable, *>
             routingAction = targetRouter.resolveConfiguration(element)
         }
 

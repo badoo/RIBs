@@ -1,15 +1,11 @@
 package com.badoo.ribs.example.rib.root
 
-import android.arch.lifecycle.Lifecycle
 import android.os.Bundle
-import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Portal
-//import com.badoo.ribs.core.Portal.Source.Model.*
+//import com.badoo.ribs.core.routing.portal.Portal.Source.Model.*
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.root.RootRouter.Configuration
 import com.badoo.ribs.example.rib.root.RootRouter.Configuration.Content
-import io.reactivex.functions.Consumer
 
 class RootInteractor(
     savedInstanceState: Bundle?,

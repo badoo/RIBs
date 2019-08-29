@@ -2,8 +2,7 @@
 package com.badoo.ribs.example.rib.root.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Portal
-import com.badoo.ribs.example.rib.root.Root
+import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.example.rib.root.RootInteractor
 import com.badoo.ribs.example.rib.root.RootNode
 import com.badoo.ribs.example.rib.root.RootRouter
@@ -11,7 +10,6 @@ import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
 import dagger.Provides
-import javax.inject.Provider
 
 @dagger.Module
 internal object RootModule {

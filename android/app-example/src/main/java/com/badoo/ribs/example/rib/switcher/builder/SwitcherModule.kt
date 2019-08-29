@@ -2,7 +2,6 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Portal
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder

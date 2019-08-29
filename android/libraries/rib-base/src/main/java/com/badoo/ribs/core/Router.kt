@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
-import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
@@ -18,15 +18,11 @@ import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.view.RibView
 
-interface Resolver<C : Parcelable, V : RibView> {
-    fun resolveConfiguration(configuration: C): RoutingAction<V>
-}
-
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     savedInstanceState: Bundle?,
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList()
-) : Resolver<C, V> {
+) : ConfigurationResolver<C, V> {
     companion object {
         internal const val BUNDLE_KEY = "Router"
     }

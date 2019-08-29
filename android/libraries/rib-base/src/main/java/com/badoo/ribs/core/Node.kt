@@ -35,6 +35,8 @@ import android.support.annotation.VisibleForTesting
 import android.util.Log
 import android.util.SparseArray
 import android.view.ViewGroup
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -56,25 +58,6 @@ open class Node<V : RibView>(
     private val interactor: Interactor<*, *, *, V>,
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
-
-    // FIXME this is virtual parent, not necessarily actual
-    var parent: Node<*>? = null
-
-    fun resolverChain(): List<Parcelable> =
-        (parent?.resolverChain() ?: emptyList()) + ownResolver
-
-    var ownResolver = listOf<Parcelable>()
-        internal set
-
-//    var parentResolverChain = listOf<Parcelable>()
-//        internal set(value) {
-//            field = value
-//        }
-
-    val resolver: Resolver<*, V> =
-        router
-
-    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
 
     enum class AttachMode {
         /**
@@ -102,6 +85,9 @@ open class Node<V : RibView>(
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
+    var ancestryInfo: AncestryInfo = AncestryInfo.Root
+    val resolver: ConfigurationResolver<*, V> = router
+    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
     private val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
     internal val viewLifecycleRegistry = LifecycleRegistry(this)

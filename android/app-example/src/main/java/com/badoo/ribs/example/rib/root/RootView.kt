@@ -1,16 +1,7 @@
 package com.badoo.ribs.example.rib.root
 
-import android.support.annotation.LayoutRes
-import android.view.ViewGroup
 //import com.badoo.ribs.android.AndroidPortalRenderer
-import com.badoo.ribs.core.Portal
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.example.R
 //import com.badoo.ribs.example.rib.root.RootView.Event
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 //interface RootView : RibView,
 //    ObservableSource<Event>

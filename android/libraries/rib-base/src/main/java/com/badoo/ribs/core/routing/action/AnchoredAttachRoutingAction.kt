@@ -5,21 +5,21 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
 class AnchoredAttachRoutingAction<V : RibView>(
-    private val virtualParent: Node<*>,
+    private val anchor: Node<*>,
     builder: (Bundle?) -> Node<*>
 ) : AttachRibRoutingAction<V>(
     builder = builder
 ) {
 
-    override fun virtualParentNode(): Node<*>? =
-        virtualParent
+    override fun anchor(): Node<*>? =
+        anchor
 
     companion object {
         fun <V : RibView> anchor(
-            virtualParent: Node<*>,
+            anchor: Node<*>,
             builder: (Bundle?) -> Node<*>): RoutingAction<V> =
             AnchoredAttachRoutingAction(
-                virtualParent,
+                anchor,
                 builder
             )
     }

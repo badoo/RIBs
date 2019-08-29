@@ -27,7 +27,7 @@ interface RoutingAction<V : RibView> {
     fun parentNode(): Node<*>? =
         null
 
-    fun virtualParentNode(): Node<*>? =
+    fun anchor(): Node<*>? =
         null
 
     companion object {

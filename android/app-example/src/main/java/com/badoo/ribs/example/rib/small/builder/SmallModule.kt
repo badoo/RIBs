@@ -2,7 +2,7 @@
 package com.badoo.ribs.example.rib.small.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Portal
+import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.example.rib.big.builder.BigBuilder
 import com.badoo.ribs.example.rib.small.Small
 import com.badoo.ribs.example.rib.small.SmallInteractor

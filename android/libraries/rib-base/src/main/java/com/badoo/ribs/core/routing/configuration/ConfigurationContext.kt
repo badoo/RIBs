@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -110,9 +111,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     routingAction = routingAction,
                     nodes = routingAction.buildNodes(bundles).also {
                         it.forEach {
-                            val anchor = routingAction.virtualParentNode()
-                            it.node.parent = anchor ?: parentNode
-                            it.node.ownResolver = listOf(configuration)
+                            it.node.ancestryInfo = AncestryInfo.Child(
+                                anchor = routingAction.anchor() ?: parentNode,
+                                creatorConfiguration = configuration
+                            )
                         }
                     }
                 )

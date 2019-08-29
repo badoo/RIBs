@@ -2,8 +2,8 @@ package com.badoo.ribs.android
 
 //import android.view.View
 //import android.view.ViewGroup
-//import com.badoo.ribs.core.Portal
-//import com.badoo.ribs.core.Portal.Source.Model.Showing
+//import com.badoo.ribs.core.routing.portal.Portal
+//import com.badoo.ribs.core.routing.portal.Portal.Source.Model.Showing
 //
 //class AndroidPortalRenderer(
 //    private val portalContainer: ViewGroup,

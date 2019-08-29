@@ -85,6 +85,14 @@ open class Node<V : RibView>(
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
+    /**
+     * FIXME the proper solution is to set this in constructor (pack it with savedInstanceState)
+     * If left like this, it's not guaranteed to be set correctly, and can lead to problems
+     * Proposed solution would mean passing Root only at integration point, Child is used automatically
+     * by building mechanism.
+     * Also PortalRouter.Configuration.Portal can then work directly with a @Parcelize AncestryInfo,
+     * which is not currently possible.
+     */
     var ancestryInfo: AncestryInfo = AncestryInfo.Root
     val resolver: ConfigurationResolver<*, V> = router
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)

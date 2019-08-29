@@ -22,14 +22,14 @@ internal object RootModule {
 //    ): PortalFeature =
 //        PortalFeature(node)
 
-    @RootScope
-    @Provides
-    @JvmStatic
-    internal fun portal(
-//        interactor: RootInteractor
-        router: RootRouter
-    ): Portal =
-        router
+//    @RootScope
+//    @Provides
+//    @JvmStatic
+//    internal fun portal(
+////        interactor: RootInteractor
+//        router: RootRouter
+//    ): Portal =
+//        router
 
     @RootScope
     @Provides

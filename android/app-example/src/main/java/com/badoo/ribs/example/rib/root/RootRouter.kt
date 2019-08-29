@@ -7,6 +7,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.example.rib.root.RootRouter.Configuration
 import com.badoo.ribs.example.rib.root.RootRouter.Configuration.Content
@@ -20,7 +21,7 @@ class RootRouter(
     savedInstanceState = savedInstanceState,
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
-), Portal {
+) {
 
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
@@ -29,9 +30,9 @@ class RootRouter(
         }
     }
 
-    override fun push(configurationChain: List<Parcelable>) {
-        push(Content.Portal(configurationChain))
-    }
+//    override fun showRemote(ancestryInfo: AncestryInfo) {
+//        push(Content.Portal(ancestryInfo))
+//    }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
         when (configuration) {

@@ -1,27 +1,22 @@
 package com.badoo.ribs.example.app
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
+import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
+import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.portal.Portal
+import com.badoo.ribs.core.routing.portal.PortalBuilder
+import com.badoo.ribs.core.routing.portal.PortalNode
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.rib.hello_world.HelloWorld
-import com.badoo.ribs.example.rib.root.Root
-import com.badoo.ribs.example.rib.root.RootNode
-import com.badoo.ribs.example.rib.root.builder.RootBuilder
 import com.badoo.ribs.example.rib.switcher.Switcher
-import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiFunction
 
 /** The sample app's single activity */
 class RootActivity : RibActivity() {
@@ -34,16 +29,27 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    private lateinit var workflowRoot: Root.Workflow
+    private lateinit var workflowRoot: Portal.Workflow
 
-    override fun createRib(savedInstanceState: Bundle?): RootNode =
-        RootBuilder(
-            object : Root.Dependency {
-                override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
-                override fun activityStarter(): ActivityStarter = activityStarter
-                override fun permissionRequester(): PermissionRequester = permissionRequester
-                override fun dialogLauncher(): DialogLauncher = this@RootActivity
+    override fun createRib(savedInstanceState: Bundle?): PortalNode =
+        PortalBuilder(
+            object : Portal.Dependency {
+                override fun defaultRoutingAction(): (Portal.Sink) -> RoutingAction<Nothing> = { portal ->
+                    attach {
+                        SwitcherBuilder(
+                            object : Switcher.Dependency {
+                                override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
+                                override fun activityStarter(): ActivityStarter = activityStarter
+                                override fun permissionRequester(): PermissionRequester = permissionRequester
+                                override fun dialogLauncher(): DialogLauncher = this@RootActivity
+                                override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
+                                override fun portal(): Portal.Sink = portal
+                            }
+                        ).build(it)
+                    }
+                }
             }
+
         ).build(savedInstanceState).also {
             workflowRoot = it
         }

@@ -4,5 +4,5 @@ import com.badoo.ribs.core.routing.portal.Portal
 
 
 interface CanProvidePortal {
-    fun portal(): Portal
+    fun portal(): Portal.Sink
 }

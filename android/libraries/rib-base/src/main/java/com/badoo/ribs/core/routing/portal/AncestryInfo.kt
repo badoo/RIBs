@@ -14,7 +14,7 @@ sealed class AncestryInfo {
      * Represents ancestry info of a [Node] that is a root of a tree and doesn't have any parents
      */
     object Root : AncestryInfo() {
-        override val configurationChain: List<Parcelable> = emptyList()
+        override var configurationChain: List<Parcelable> = emptyList()
     }
 
     /**
@@ -23,8 +23,8 @@ sealed class AncestryInfo {
     data class Child(
         /**
          * The virtual parent of the current [Node]. In most cases it is the same as the actual parent,
-         * however, it is different in the case of full screen [Portal]s: the actual parent is the
-         * portal host [Node], while the [anchor] refers to the [Node] that initiated building and adding
+         * however, it is different e.g. in the case of full screen [Portal]s: the actual parent is the
+         * portal host Node, while the anchor refers to the [Node] that initiated building and adding
          * the current one to the [Portal].
          */
         val anchor: Node<*>,
@@ -39,4 +39,13 @@ sealed class AncestryInfo {
         override val configurationChain: List<Parcelable>
             get() = anchor.ancestryInfo.configurationChain + creatorConfiguration
     }
+
+    class Derived(
+        override val configurationChain: List<Parcelable>
+    ) : AncestryInfo()
+
+    infix operator fun plus(configuration: Parcelable): AncestryInfo =
+        Derived(
+            this.configurationChain + configuration
+        )
 }

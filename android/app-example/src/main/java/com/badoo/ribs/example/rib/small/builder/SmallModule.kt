@@ -34,7 +34,7 @@ internal object SmallModule {
     internal fun interactor(
         savedInstanceState: Bundle?,
         router: SmallRouter,
-        portal: Portal
+        portal: Portal.Sink
     ): SmallInteractor =
         SmallInteractor(
             savedInstanceState = savedInstanceState,

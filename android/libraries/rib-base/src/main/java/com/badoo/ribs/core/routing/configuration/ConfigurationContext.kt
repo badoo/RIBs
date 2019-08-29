@@ -95,12 +95,8 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             parentNode: Node<*>,
             onResolution: (Resolved<C>) -> Resolved<C>
         ): Resolved<C> {
-            bundles.forEach {
-                it.classLoader = ConfigurationContext::class.java.classLoader
-            }
-
+            bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
             val routingAction = resolver.invoke(configuration)
-
             return onResolution.invoke(
                 Resolved(
                     activationState = activationState,
@@ -108,15 +104,23 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     bundles = bundles,
                     routingAction = routingAction,
                     nodes = routingAction.buildNodes(bundles).also {
-                        it.forEach {
-                            it.node.ancestryInfo = AncestryInfo.Child(
-                                anchor = routingAction.anchor() ?: parentNode,
-                                creatorConfiguration = configuration
-                            )
-                        }
+                        setAncestryInfo(it, routingAction, parentNode)
                     }
                 )
             )
+        }
+
+        private fun setAncestryInfo(
+            descriptors: List<Node.Descriptor>,
+            routingAction: RoutingAction<*>,
+            parentNode: Node<*>
+        ) {
+            descriptors.forEach {
+                it.node.ancestryInfo = AncestryInfo.Child(
+                    anchor = routingAction.anchor() ?: parentNode,
+                    creatorConfiguration = configuration
+                )
+            }
         }
 
         override fun sleep(): Unresolved<C> = copy(

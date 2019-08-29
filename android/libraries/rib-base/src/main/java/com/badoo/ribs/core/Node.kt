@@ -32,7 +32,6 @@ import android.os.Parcelable
 import android.support.annotation.CallSuper
 import android.support.annotation.MainThread
 import android.support.annotation.VisibleForTesting
-import android.util.Log
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
@@ -55,7 +54,7 @@ open class Node<V : RibView>(
     internal open val identifier: Rib,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
-    private val interactor: Interactor<*, *, *, V>,
+    private val interactor: Interactor<*, *, *, V>
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
@@ -135,7 +134,6 @@ open class Node<V : RibView>(
     }
 
     open fun attachToView(parentViewGroup: ViewGroup) {
-        Log.d("CHECK", "attachToView - $this")
         detachFromView()
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
@@ -160,7 +158,6 @@ open class Node<V : RibView>(
 
     open fun detachFromView() {
         if (isAttachedToView) {
-            Log.d("CHECK", "detachFromView - $this")
             onPauseInternal()
             onStopInternal()
             router.onDetachView()
@@ -179,7 +176,6 @@ open class Node<V : RibView>(
     }
 
     open fun onDetach() {
-        Log.d("CHECK", "onDetach - $this")
         if (isAttachedToView) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
@@ -206,18 +202,15 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be attached.
      */
     @MainThread
-    internal fun attachChildNode(childDescriptor: Descriptor) {
-        Log.d("CHECK", "attachChildNode - $this, $childDescriptor")
-        val (childNode, viewAttachMode) = childDescriptor
-//        childNode.parent = this
-        children.add(childNode)
+    internal fun attachChildNode(child: Node<*>) {
+        children.add(child)
         ribRefWatcher.logBreadcrumb(
-            "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+            "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
         )
 
-        childNode.inheritExternalLifecycle(externalLifecycleRegistry)
-        childNode.onAttach()
-        childrenAttachesRelay.accept(childNode)
+        child.inheritExternalLifecycle(externalLifecycleRegistry)
+        child.onAttach()
+        childrenAttachesRelay.accept(child)
     }
 
     private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
@@ -304,7 +297,6 @@ open class Node<V : RibView>(
     }
 
     internal fun onStartInternal(callOnChildren: (Node<*>) -> Unit = { it.onStartInternal() }) {
-        Log.d("CHECK", "onStartInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
         children.forEach { callOnChildren.invoke(it) }
@@ -312,7 +304,6 @@ open class Node<V : RibView>(
 
     // TODO call this when overlay is removed
     internal fun onResumeInternal(callOnChildren: (Node<*>) -> Unit = { it.onResumeInternal() }) {
-        Log.d("CHECK", "onResumeInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         updateToStateIfViewAttached(externalLifecycleRegistry.currentState)
         children.forEach { callOnChildren.invoke(it) }
@@ -320,7 +311,6 @@ open class Node<V : RibView>(
 
     // TODO call this when overlay hides content AND current rib is not in dialog
     internal fun onPauseInternal(callOnChildren: (Node<*>) -> Unit = { it.onPauseInternal() }) {
-        Log.d("CHECK", "onPauseInternal - $this")
         // The lifecycle cannot go higher than that of the hosting environment (e.g. Activity)
         val targetState = if (externalLifecycleRegistry.currentState == CREATED) CREATED else STARTED
         updateToStateIfViewAttached(targetState)
@@ -328,7 +318,6 @@ open class Node<V : RibView>(
     }
 
     internal fun onStopInternal(callOnChildren: (Node<*>) -> Unit = { it.onStopInternal() }) {
-        Log.d("CHECK", "onStopInternal - $this")
         updateToStateIfViewAttached(CREATED)
         children.forEach { callOnChildren.invoke(it) }
     }
@@ -339,8 +328,6 @@ open class Node<V : RibView>(
             if (!isViewless) {
                 view!!.let { viewLifecycleRegistry.markState(state) }
             }
-        } else {
-            Log.d("CHECK", "SKIPPED updating lifecycle to state: $state - $this, as not attached to view, current state is: ${ribLifecycleRegistry.currentState}")
         }
     }
 
@@ -351,7 +338,6 @@ open class Node<V : RibView>(
      */
     @CallSuper
     open fun handleBackPress(): Boolean {
-        Log.d("CHECK", "handleBackPress - $this")
         ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return children
             .filter { it.isAttachedToView }
@@ -386,9 +372,6 @@ open class Node<V : RibView>(
 
     override fun toString(): String =
         identifier.toString()
-            .substring(
-                identifier.toString().lastIndexOf(".")
-            )
 
     /**
      * Executes an action and remains on the same hierarchical level

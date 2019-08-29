@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
@@ -93,7 +94,8 @@ class MainScreenTest {
         SwitcherBuilder(object : Switcher.Dependency,
             CanProvideActivityStarter by dependencies,
             CanProvidePermissionRequester by dependencies,
-            CanProvideDialogLauncher by dependencies {
+            CanProvideDialogLauncher by dependencies,
+            CanProvidePortal by dependencies {
 
             override fun coffeeMachine(): CoffeeMachine =
                 mock()

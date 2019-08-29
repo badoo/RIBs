@@ -1,15 +1,16 @@
 package com.badoo.ribs.example.rib.hello_world
 
+import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration
-import kotlinx.android.parcel.Parcelize
-import android.os.Bundle
-import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.*
+import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.Content
+import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.Permanent
 import com.badoo.ribs.example.rib.small.builder.SmallBuilder
+import kotlinx.android.parcel.Parcelize
 
 class HelloWorldRouter(
     savedInstanceState: Bundle?,

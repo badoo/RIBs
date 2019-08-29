@@ -12,7 +12,8 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration
-import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.*
+import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.Content
+import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.Permanent
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.hello_world.analytics.HelloWorldAnalytics
 import com.badoo.ribs.example.rib.hello_world.feature.HelloWorldFeature

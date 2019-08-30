@@ -59,13 +59,13 @@ data class ViewModel(
 
 Let's scroll down to the Android view implementation. Notice how it already finds a reference to the welcome text view:
 ```kotlin
-private val welcome: TextView by lazy { findViewById<TextView>(R.id.hello_world_welcome) }
+private val welcome: TextView = androidView.findViewById(R.id.hello_world_welcome)
 ```
 
 So let's implement the `ViewModel` rendering:
 ```kotlin
 override fun accept(vm: ViewModel) {
-    welcome.text = vm.welcomeText.resolve(context)
+    welcome.text = vm.welcomeText.resolve(androidView.context)
 }
 ```
 

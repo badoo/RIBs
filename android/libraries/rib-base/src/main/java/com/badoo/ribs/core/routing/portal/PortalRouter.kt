@@ -37,6 +37,8 @@ class PortalRouter(
             is Content.Portal -> configuration.configurationChain.resolve() as RoutingAction<Nothing>
         }
 
+    // TODO probably needs to change from List<Parcelable> to List<AncestryInfo>,
+    //  so that extra info can be added too. See below for details.
     private fun List<Parcelable>.resolve(): RoutingAction<out RibView> {
         // TODO grab first from real root somehow -- currently works only if PortalRouter is in the root rib
         var targetRouter: ConfigurationResolver<Parcelable, *> =
@@ -45,9 +47,17 @@ class PortalRouter(
             targetRouter.resolveConfiguration(first())
 
         drop(1).forEach { element ->
-            // TODO don't build it again if already available as child
-            val nodes = routingAction.buildNodes(emptyList()) // TODO add bundle
-            val node = nodes.first() // TODO handle if 0 or more than 1
+            // TODO for maximum correctness, original List<> should also contain Bundles,
+            //  as that might change how dependencies are built.
+            val bundles = emptyList<Bundle?>()
+
+            // TODO don't build it again if already available as child.
+            //  This probably means storing Node identifier in addition to (Parcelable) configuration.
+            val nodes = routingAction.buildNodes(bundles)
+
+            // TODO having 0 nodes is an impossible scenario, but having more than 1 can be valid.
+            //  Solution is again to store Node identifiers & Bundles that help picking the correct one.
+            val node = nodes.first()
             targetRouter = node.node.resolver as ConfigurationResolver<Parcelable, *>
             routingAction = targetRouter.resolveConfiguration(element)
         }

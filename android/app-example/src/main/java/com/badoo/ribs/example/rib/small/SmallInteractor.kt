@@ -4,8 +4,8 @@ import android.arch.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.Content
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.FullScreen

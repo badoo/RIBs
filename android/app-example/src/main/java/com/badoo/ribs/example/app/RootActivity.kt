@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
@@ -13,12 +14,14 @@ import com.badoo.ribs.core.routing.portal.PortalNode
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
+import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
 /** The sample app's single activity */
@@ -77,19 +80,19 @@ class RootActivity : RibActivity() {
     }
 
     private fun executeWorkflow1(): Observable<*> =
-        workflowRoot
-            .attachHelloWorld()
+        switcher()
+            .flatMap { it.attachHelloWorld()}
             .toObservable()
 
     @SuppressWarnings("OptionalUnit")
     private fun executeWorkflow2(): Observable<*> =
         Observable.combineLatest(
-            workflowRoot
-                .doSomethingAndStayOnThisNode()
+            switcher()
+                .flatMap { it.doSomethingAndStayOnThisNode() }
                 .toObservable(),
 
-            workflowRoot
-                .waitForHelloWorld()
+            switcher()
+                .flatMap { it.waitForHelloWorld() }
                 .flatMap { it.somethingSomethingDarkSide() }
                 .toObservable(),
 
@@ -97,7 +100,13 @@ class RootActivity : RibActivity() {
         )
 
     private fun executeTestCrash(): Observable<*> =
-        (rootNode as Switcher.Workflow)
-            .testCrash()
+        switcher()
+            .flatMap { it.testCrash() }
             .toObservable()
+
+    @Suppress("UNCHECKED_CAST")
+    private fun switcher() =
+        Single
+            .just(workflowRoot)
+            .flatMap { it.showDefault() as Single<Switcher.Workflow> }
 }

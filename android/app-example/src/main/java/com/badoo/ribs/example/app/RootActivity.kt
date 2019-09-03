@@ -18,6 +18,8 @@ import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 
 /** The sample app's single activity */
 class RootActivity : RibActivity() {
@@ -56,54 +58,46 @@ class RootActivity : RibActivity() {
                     ).build(savedInstanceState)
                 }
             }
-
         ).build(savedInstanceState).also {
             workflowRoot = it
         }
 
-//    override val workflowFactory: (Intent) -> Disposable? = {
-//        when {
-//            // adb shell am start -a "android.intent.action.VIEW" -d "app-example://workflow1"
-//            (it.data?.host == "workflow1") -> executeWorkflow1()
-//
-//            // adb shell am start -a "android.intent.action.VIEW" -d "app-example://workflow2"
-//            (it.data?.host == "workflow2") -> executeWorkflow2()
-//
-//            // adb shell am start -a "android.intent.action.VIEW" -d "app-example://testcrash"
-//            (it.data?.host == "testcrash") -> executeTestCrash()
-//            else -> null
-//        }
-//    }
-//
-//    private fun executeWorkflow1(): Disposable? =
-//        workflowRoot
-//            .goToSwitcher()
-//            .flatMap { it.attachHelloWorld() }
-//            .subscribe { workflow: HelloWorld.Workflow ->
-//                Log.d("WORKFLOW", "Success")
-//            }
-//
-//    @SuppressWarnings("OptionalUnit")
-//    private fun executeWorkflow2(): Disposable? =
-//        workflowRoot
-//            .goToSwitcher()
-//            .flatMap {
-//                Observable.combineLatest(
-//                    it.doSomethingAndStayOnThisNode(),
-//                    it.waitForHelloWorld()
-//                        .flatMap { it.somethingSomethingDarkSide() },
-//                    BiFunction<Switcher.Workflow, HelloWorld.Workflow, Unit> { _, _ -> Unit }
-//            }
-//            .toObservable()
-//
-//        ).subscribe {
-//            Log.d("WORKFLOW", "Success")
-//        }
-//
-//    private fun executeTestCrash(): Disposable? =
-//        (rootNode as Switcher.Workflow)
-//            .testCrash()
-//            .subscribe { workflow: HelloWorld.Workflow ->
-//                Log.d("WORKFLOW", "This should crash before here")
-//            }
+    override val workflowFactory: (Intent) -> Observable<*>? = {
+        when {
+            // adb shell am start -a "android.intent.action.VIEW" -d "app-example://workflow1"
+            (it.data?.host == "workflow1") -> executeWorkflow1()
+
+            // adb shell am start -a "android.intent.action.VIEW" -d "app-example://workflow2"
+            (it.data?.host == "workflow2") -> executeWorkflow2()
+
+            // adb shell am start -a "android.intent.action.VIEW" -d "app-example://testcrash"
+            (it.data?.host == "testcrash") -> executeTestCrash()
+            else -> null
+        }
+    }
+
+    private fun executeWorkflow1(): Observable<*> =
+        workflowRoot
+            .attachHelloWorld()
+            .toObservable()
+
+    @SuppressWarnings("OptionalUnit")
+    private fun executeWorkflow2(): Observable<*> =
+        Observable.combineLatest(
+            workflowRoot
+                .doSomethingAndStayOnThisNode()
+                .toObservable(),
+
+            workflowRoot
+                .waitForHelloWorld()
+                .flatMap { it.somethingSomethingDarkSide() }
+                .toObservable(),
+
+            BiFunction<Switcher.Workflow, HelloWorld.Workflow, Unit> { _, _ -> Unit }
+        )
+
+    private fun executeTestCrash(): Observable<*> =
+        (rootNode as Switcher.Workflow)
+            .testCrash()
+            .toObservable()
 }

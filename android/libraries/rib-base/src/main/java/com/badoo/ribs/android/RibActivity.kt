@@ -10,8 +10,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.dialog.toAlertDialog
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import java.util.WeakHashMap
 
 abstract class RibActivity : AppCompatActivity(), DialogLauncher {
@@ -55,11 +55,11 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     fun handleDeepLink(intent: Intent) {
         workflowFactory.invoke(intent)?.let {
-            disposables.add(it)
+            disposables.add(it.subscribe())
         }
     }
 
-    open val workflowFactory: (Intent) -> Disposable? = {
+    open val workflowFactory: (Intent) -> Observable<*>? = {
         null
     }
 

@@ -22,6 +22,6 @@ class GreetingsContainerRouter(
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
         when (configuration) {
-            Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
+            is Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
         }
 }

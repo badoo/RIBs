@@ -119,11 +119,13 @@ import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attac
 
 override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
     when (configuration) {
-        Configuration.HelloWorld -> attach { TODO() }
+        is Configuration.HelloWorld -> attach { TODO() }
     }
 ```
 
 > ⚠️ Notice how `AttachRibRoutingAction` also offers a convenience method `attach` to construct it, for which you can use static imports. The same goes for other `RoutingActions`, too.
+
+> ⚠️ Also notice that even though `Configuration.HelloWorld` is a Kotlin object, there's still an `is` for it in the `when` expression. This is actually important, since after save/restore cycle, the instance restored from `Bundle` will be a different instance! Without using `is`, the `when` expression will not match in that case.
 
 Alright, but what to put in place of the `TODO()` statement?
 
@@ -148,7 +150,7 @@ We'll care about how to pass it here just in a moment, but first let's finish ou
 ```kotlin
 override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
     when (configuration) {
-        Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
+        is Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
     }
 ```
 

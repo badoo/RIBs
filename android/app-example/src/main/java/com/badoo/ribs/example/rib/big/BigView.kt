@@ -6,6 +6,7 @@ import android.widget.TextView
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.big.BigView.Event
 import com.badoo.ribs.example.rib.big.BigView.ViewModel
@@ -40,7 +41,7 @@ class BigViewImpl private constructor(
     ) : BigView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> BigView = {
             BigViewImpl(
-                com.badoo.ribs.customisation.inflate(it, layoutRes)
+                inflate(it, layoutRes)
             )
         }
     }

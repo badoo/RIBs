@@ -25,6 +25,7 @@ class SwitcherInteractor(
     router = router,
     disposables = null
 ) {
+
     override fun onViewCreated(view: SwitcherView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
         viewLifecycle.createDestroy {

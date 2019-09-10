@@ -13,8 +13,11 @@ interface RoutingAction<V : RibView> {
 
     }
 
-    fun cleanup()  {
+    fun cleanup() {
     }
+
+    fun anchor(): Node<*>? =
+        null
 
     companion object {
         fun <V : RibView> noop(): RoutingAction<V> = object :

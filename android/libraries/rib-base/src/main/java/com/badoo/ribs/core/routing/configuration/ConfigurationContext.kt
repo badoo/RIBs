@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -87,29 +88,39 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         }
 
         /**
-         * Resolves and sets the associated [RoutingAction], builds associated [Node]s, and adds
-         * them to the [parentNode]
+         * Resolves and sets the associated [RoutingAction], builds associated [Node]s
          */
         override fun resolve(
             resolver: (C) -> RoutingAction<*>,
             parentNode: Node<*>,
             onResolution: (Resolved<C>) -> Resolved<C>
         ): Resolved<C> {
-            bundles.forEach {
-                it.classLoader = ConfigurationContext::class.java.classLoader
-            }
-
+            bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
             val routingAction = resolver.invoke(configuration)
-
             return onResolution.invoke(
                 Resolved(
                     activationState = activationState,
                     configuration = configuration,
                     bundles = bundles,
                     routingAction = routingAction,
-                    nodes = routingAction.buildNodes(bundles)
+                    nodes = routingAction.buildNodes(bundles).also {
+                        setAncestryInfo(it, routingAction, parentNode)
+                    }
                 )
             )
+        }
+
+        private fun setAncestryInfo(
+            descriptors: List<Node.Descriptor>,
+            routingAction: RoutingAction<*>,
+            parentNode: Node<*>
+        ) {
+            descriptors.forEach {
+                it.node.ancestryInfo = AncestryInfo.Child(
+                    anchor = routingAction.anchor() ?: parentNode,
+                    creatorConfiguration = configuration
+                )
+            }
         }
 
         override fun sleep(): Unresolved<C> = copy(

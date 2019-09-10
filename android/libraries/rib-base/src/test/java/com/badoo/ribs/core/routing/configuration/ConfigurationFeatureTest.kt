@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Node.Descriptor
-import com.badoo.ribs.core.Node.ViewAttachMode
+import com.badoo.ribs.core.Node.AttachMode
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
@@ -79,7 +79,7 @@ class ConfigurationFeatureTest {
         val routingAction: RoutingAction<*>
     ) {
         companion object {
-            fun create(configuration: Configuration, nbNodes: Int, viewAttachMode: ViewAttachMode): ConfigurationTestHelper {
+            fun create(configuration: Configuration, nbNodes: Int, viewAttachMode: AttachMode): ConfigurationTestHelper {
                 val nodes = MutableList(nbNodes) { i ->
                     Descriptor(
                         mock { on { toString() } doReturn "Node #$i of $configuration" },
@@ -120,25 +120,25 @@ class ConfigurationFeatureTest {
     @Before
     fun setUp() {
         helperPermanent1 =
-            ConfigurationTestHelper.create(Permanent1,2, ViewAttachMode.PARENT)
+            ConfigurationTestHelper.create(Permanent1,2, AttachMode.PARENT)
 
         helperPermanent2 =
-            ConfigurationTestHelper.create(Permanent2,3, ViewAttachMode.PARENT)
+            ConfigurationTestHelper.create(Permanent2,3, AttachMode.PARENT)
 
         helperContentViewParented1 =
-            ConfigurationTestHelper.create(ContentViewParented1,2, ViewAttachMode.PARENT)
+            ConfigurationTestHelper.create(ContentViewParented1,2, AttachMode.PARENT)
 
         helperContentViewParented2 =
-            ConfigurationTestHelper.create(ContentViewParented2,3, ViewAttachMode.PARENT)
+            ConfigurationTestHelper.create(ContentViewParented2,3, AttachMode.PARENT)
 
         helperContentViewParented3 =
-            ConfigurationTestHelper.create(ContentViewParented3,2, ViewAttachMode.PARENT)
+            ConfigurationTestHelper.create(ContentViewParented3,2, AttachMode.PARENT)
 
         helperContentExternal1 =
-            ConfigurationTestHelper.create(ContentExternal1,2, ViewAttachMode.EXTERNAL)
+            ConfigurationTestHelper.create(ContentExternal1,2, AttachMode.EXTERNAL)
 
         helperContentExternal2 =
-            ConfigurationTestHelper.create(ContentExternal2,3, ViewAttachMode.EXTERNAL)
+            ConfigurationTestHelper.create(ContentExternal2,3, AttachMode.EXTERNAL)
 
         val helpers = listOf(
             helperPermanent1,

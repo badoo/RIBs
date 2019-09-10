@@ -25,7 +25,7 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
         val (_, parentNode, globalActivationLevel) = params
 
         // If there's no view available (i.e. globalActivationLevel == SLEEPING) we must not execute
-        // routing actions or try to attach view. That will be done on next WakeUp. For not, let's
+        // routing actions or try to attach view. That will be done on next WakeUp. For now, let's
         // just mark the element to the same value.
         if (globalActivationLevel != ACTIVE) {
             return item.withActivationState(globalActivationLevel)
@@ -43,7 +43,7 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
 
     private fun Node<*>.attachParentedViews(nodes: List<Node.Descriptor>) {
         nodes.forEach {
-            if (it.viewAttachMode == Node.ViewAttachMode.PARENT && !it.node.isAttachedToView) {
+            if (it.viewAttachMode == Node.AttachMode.PARENT && !it.node.isAttachedToView) {
                 attachChildView(it.node)
             }
         }

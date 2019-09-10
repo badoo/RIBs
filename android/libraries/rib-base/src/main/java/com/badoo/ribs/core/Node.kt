@@ -34,6 +34,8 @@ import android.support.annotation.MainThread
 import android.support.annotation.VisibleForTesting
 import android.util.SparseArray
 import android.view.ViewGroup
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -41,7 +43,6 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.lang.IllegalStateException
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -57,9 +58,7 @@ open class Node<V : RibView>(
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
-    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
-
-    enum class ViewAttachMode {
+    enum class AttachMode {
         /**
          * The node's view attach/detach is managed by its parent.
          */
@@ -77,7 +76,7 @@ open class Node<V : RibView>(
 
     data class Descriptor(
         val node: Node<*>,
-        val viewAttachMode: ViewAttachMode
+        val viewAttachMode: AttachMode
     )
 
     companion object {
@@ -85,6 +84,17 @@ open class Node<V : RibView>(
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
+    /**
+     * FIXME the proper solution is to set this in constructor (pack it with savedInstanceState)
+     * If left like this, it's not guaranteed to be set correctly, and can lead to problems
+     * Proposed solution would mean passing Root only at integration point, Child is used automatically
+     * by building mechanism.
+     * Also PortalRouter.Configuration.Portal can then work directly with a @Parcelize AncestryInfo,
+     * which is not currently possible.
+     */
+    var ancestryInfo: AncestryInfo = AncestryInfo.Root
+    val resolver: ConfigurationResolver<*, V> = router
+    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
     private val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
     internal val viewLifecycleRegistry = LifecycleRegistry(this)
@@ -124,6 +134,7 @@ open class Node<V : RibView>(
     }
 
     open fun attachToView(parentViewGroup: ViewGroup) {
+        detachFromView()
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
 
@@ -191,22 +202,23 @@ open class Node<V : RibView>(
      * @param childNode the [Node] to be attached.
      */
     @MainThread
-    internal fun attachChildNode(childNode: Node<*>) {
-        children.add(childNode)
+    internal fun attachChildNode(child: Node<*>) {
+        children.add(child)
         ribRefWatcher.logBreadcrumb(
-            "ATTACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+            "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
         )
 
-        childNode.inheritExternalLifecycle(externalLifecycleRegistry)
-        childNode.onAttach()
-        childrenAttachesRelay.accept(childNode)
+        child.inheritExternalLifecycle(externalLifecycleRegistry)
+        child.onAttach()
+        childrenAttachesRelay.accept(child)
     }
 
     private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
         externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
     }
 
-    internal fun attachChildView(child: Node<*>) {
+    // FIXME internal + protected?
+    fun attachChildView(child: Node<*>) {
         if (isAttachedToView) {
             val target = when {
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
@@ -218,7 +230,8 @@ open class Node<V : RibView>(
         }
     }
 
-    internal fun detachChildView(child: Node<*>) {
+    // FIXME internal + protected?
+    fun detachChildView(child: Node<*>) {
         parentViewGroup?.let {
             child.detachFromView()
         }
@@ -358,7 +371,7 @@ open class Node<V : RibView>(
         ribLifecycleRegistry
 
     override fun toString(): String =
-        "Node@${hashCode()} ($identifier)"
+        identifier.toString()
 
     /**
      * Executes an action and remains on the same hierarchical level

@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
-    savedInstanceState: Bundle?,
-    initialConfiguration: Configuration,
-    permanentParts: List<Nothing>,
-    private val routingActionForC1: RoutingAction<TestView>,
-    private val routingActionForC2: RoutingAction<TestView>,
-    private val routingActionForC3: RoutingAction<TestView>,
-    private val routingActionForC4: RoutingAction<TestView>,
-    private val routingActionForC5: RoutingAction<TestView>,
-    private val routingActionForO1: RoutingAction<TestView>,
-    private val routingActionForO2: RoutingAction<TestView>,
-    private val routingActionForO3: RoutingAction<TestView>
+    savedInstanceState: Bundle? = null,
+    initialConfiguration: Configuration = Configuration.C1,
+    permanentParts: List<Nothing> = emptyList(),
+    private val routingActionForC1: RoutingAction<TestView> = mock(),
+    private val routingActionForC2: RoutingAction<TestView> = mock(),
+    private val routingActionForC3: RoutingAction<TestView> = mock(),
+    private val routingActionForC4: RoutingAction<TestView> = mock(),
+    private val routingActionForC5: RoutingAction<TestView> = mock(),
+    private val routingActionForO1: RoutingAction<TestView> = mock(),
+    private val routingActionForO2: RoutingAction<TestView> = mock(),
+    private val routingActionForO3: RoutingAction<TestView> = mock()
 ) : Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>(
     savedInstanceState = savedInstanceState,
     initialConfiguration = initialConfiguration,

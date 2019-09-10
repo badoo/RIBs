@@ -6,6 +6,11 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
+import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
+import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.portal.Portal
+import com.badoo.ribs.core.routing.portal.PortalBuilder
+import com.badoo.ribs.core.routing.portal.PortalNode
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
@@ -16,6 +21,7 @@ import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
 /** The sample app's single activity */
@@ -29,16 +35,31 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    private lateinit var workflowRoot: Switcher.Workflow
+    private lateinit var workflowRoot: Portal.Workflow
 
-    override fun createRib(savedInstanceState: Bundle?): SwitcherNode =
-        SwitcherBuilder(
-            object : Switcher.Dependency {
-                override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
-                override fun activityStarter(): ActivityStarter = activityStarter
-                override fun permissionRequester(): PermissionRequester = permissionRequester
-                override fun dialogLauncher(): DialogLauncher = this@RootActivity
-                override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
+    override fun createRib(savedInstanceState: Bundle?): PortalNode =
+        PortalBuilder(
+            object : Portal.Dependency {
+                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction<Nothing> = { portal ->
+                    attach { buildSwitcherNode(portal, it) }
+                }
+
+                private fun buildSwitcherNode(portal: Portal.OtherSide, savedInstanceState: Bundle?): SwitcherNode {
+                    return SwitcherBuilder(
+                        object : Switcher.Dependency {
+                            override fun ribCustomisation(): RibCustomisationDirectory =
+                                AppRibCustomisations
+
+                            override fun activityStarter(): ActivityStarter = activityStarter
+                            override fun permissionRequester(): PermissionRequester =
+                                permissionRequester
+
+                            override fun dialogLauncher(): DialogLauncher = this@RootActivity
+                            override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
+                            override fun portal(): Portal.OtherSide = portal
+                        }
+                    ).build(savedInstanceState)
+                }
             }
         ).build(savedInstanceState).also {
             workflowRoot = it
@@ -59,19 +80,19 @@ class RootActivity : RibActivity() {
     }
 
     private fun executeWorkflow1(): Observable<*> =
-        workflowRoot
-            .attachHelloWorld()
+        switcher()
+            .flatMap { it.attachHelloWorld()}
             .toObservable()
 
     @SuppressWarnings("OptionalUnit")
     private fun executeWorkflow2(): Observable<*> =
         Observable.combineLatest(
-            workflowRoot
-                .doSomethingAndStayOnThisNode()
+            switcher()
+                .flatMap { it.doSomethingAndStayOnThisNode() }
                 .toObservable(),
 
-            workflowRoot
-                .waitForHelloWorld()
+            switcher()
+                .flatMap { it.waitForHelloWorld() }
                 .flatMap { it.somethingSomethingDarkSide() }
                 .toObservable(),
 
@@ -79,7 +100,13 @@ class RootActivity : RibActivity() {
         )
 
     private fun executeTestCrash(): Observable<*> =
-        (rootNode as Switcher.Workflow)
-            .testCrash()
+        switcher()
+            .flatMap { it.testCrash() }
             .toObservable()
+
+    @Suppress("UNCHECKED_CAST")
+    private fun switcher() =
+        Single
+            .just(workflowRoot)
+            .flatMap { it.showDefault() as Single<Switcher.Workflow> }
 }

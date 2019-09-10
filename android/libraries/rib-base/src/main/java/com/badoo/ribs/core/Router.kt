@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
-import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
@@ -22,7 +22,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     savedInstanceState: Bundle?,
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList()
-) {
+) : ConfigurationResolver<C, V> {
     companion object {
         internal const val BUNDLE_KEY = "Router"
     }
@@ -53,8 +53,6 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             parentNode = node
         )
     }
-
-    abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
 
     fun onSaveInstanceState(outState: Bundle) {
         configurationFeature.accept(SaveInstanceState())

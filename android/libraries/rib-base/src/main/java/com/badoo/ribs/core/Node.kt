@@ -135,7 +135,7 @@ open class Node<V : RibView>(
         interactor.onAttach(ribLifecycleRegistry)
     }
 
-    open fun attachToView(parentViewGroup: ViewGroup) {
+    fun attachToView(parentViewGroup: ViewGroup) {
         detachFromView()
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
@@ -159,7 +159,7 @@ open class Node<V : RibView>(
     private fun createView(parentViewGroup: ViewGroup): V? =
         viewFactory?.invoke(parentViewGroup)
 
-    open fun detachFromView() {
+    fun detachFromView() {
         if (isAttachedToView) {
             onPauseInternal()
             onStopInternal()

@@ -37,6 +37,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
@@ -55,6 +56,7 @@ open class Node<V : RibView>(
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
+    private val viewPlugins: Set<ViewPlugin> = emptySet(),
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
@@ -149,6 +151,7 @@ open class Node<V : RibView>(
         }
 
         router.onAttachView()
+        viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }
         onStartInternal()
         onResumeInternal()
     }
@@ -169,6 +172,7 @@ open class Node<V : RibView>(
                 }
             }
 
+            viewPlugins.forEach { it.onDetachFromView(parentViewGroup!!) }
             view = null
             isAttachedToView = false
             this.parentViewGroup = null

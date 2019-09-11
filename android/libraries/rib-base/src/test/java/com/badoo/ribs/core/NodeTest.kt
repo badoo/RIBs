@@ -12,6 +12,7 @@ import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
+import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
@@ -54,6 +55,7 @@ class NodeTest {
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode
     private lateinit var allChildren: List<Node<*>>
+    private lateinit var viewPlugins: Set<ViewPlugin>
 
     @Before
     fun setUp() {
@@ -66,13 +68,15 @@ class NodeTest {
         viewFactory = mock { on { invoke(parentViewGroup) } doReturn view }
         router = mock()
         interactor = mock()
+        viewPlugins = setOf(mock(), mock())
 
         node = Node(
             savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = viewFactory,
             router = router,
-            interactor = interactor
+            interactor = interactor,
+            viewPlugins = viewPlugins
         )
 
         addChildren()
@@ -321,7 +325,7 @@ class NodeTest {
     }
 
     @Test
-    fun `onDetachFromView() resets isViewAttached flag to false`() {
+    fun `detachFromView() resets isViewAttached flag to false`() {
         node.attachToView(parentViewGroup)
         node.detachFromView()
         assertEquals(false, node.isAttachedToView)
@@ -331,6 +335,23 @@ class NodeTest {
     fun `attachToView() forwards call to Router`() {
         node.attachToView(parentViewGroup)
         verify(router).onAttachView()
+    }
+
+    @Test
+    fun `attachToView() notifies all ViewPlugins`() {
+        node.attachToView(parentViewGroup)
+        viewPlugins.forEach {
+            verify(it).onAttachtoView(parentViewGroup)
+        }
+    }
+
+    @Test
+    fun `detachFromView() notifies all ViewPlugins`() {
+        node.attachToView(parentViewGroup)
+        node.detachFromView()
+        viewPlugins.forEach {
+            verify(it).onDetachFromView(parentViewGroup)
+        }
     }
 
     private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib> = mutableListOf()): List<Node<*>> {

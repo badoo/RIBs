@@ -4,6 +4,7 @@ package com.badoo.ribs.example.rib.small.builder
 import android.os.Bundle
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.example.rib.big.builder.BigBuilder
+import com.badoo.ribs.example.rib.portal_overlay_test.builder.PortalOverlayTestBuilder
 import com.badoo.ribs.example.rib.small.Small
 import com.badoo.ribs.example.rib.small.SmallInteractor
 import com.badoo.ribs.example.rib.small.SmallNode
@@ -23,7 +24,8 @@ internal object SmallModule {
     ): SmallRouter =
         SmallRouter(
             savedInstanceState = savedInstanceState,
-            bigBuilder = BigBuilder(component)
+            bigBuilder = BigBuilder(component),
+            portalOverlayTestBuilder = PortalOverlayTestBuilder(component)
         )
 
     @SmallScope

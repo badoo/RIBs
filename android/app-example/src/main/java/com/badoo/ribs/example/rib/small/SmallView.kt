@@ -19,6 +19,7 @@ interface SmallView : RibView,
 
     sealed class Event {
         object OpenBigClicked : Event()
+        object OpenOverlayClicked : Event()
     }
 
     data class ViewModel(
@@ -47,9 +48,11 @@ class SmallViewImpl private constructor(
 
     private val idText = androidView.findViewById<TextView>(R.id.small_id)
     private val openBigButton = androidView.findViewById<Button>(R.id.open_big)
+    private val openOverlayButton = androidView.findViewById<Button>(R.id.open_overlay)
 
     init {
         openBigButton.setOnClickListener { events.accept(Event.OpenBigClicked)  }
+        openOverlayButton.setOnClickListener { events.accept(Event.OpenOverlayClicked)  }
     }
 
     override fun accept(vm: ViewModel) {

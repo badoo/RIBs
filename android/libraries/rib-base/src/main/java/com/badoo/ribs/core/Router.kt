@@ -104,4 +104,12 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         } else {
             false
         }
+
+    fun popOverlay(): Boolean =
+        if (backStackFeature.state.canPopOverlay) {
+            backStackFeature.accept(Pop())
+            true
+        } else {
+            false
+        }
 }

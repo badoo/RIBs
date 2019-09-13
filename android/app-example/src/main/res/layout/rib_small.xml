@@ -20,4 +20,10 @@
         android:layout_height="wrap_content"
         android:text="Open Big"/>
 
+    <Button
+        android:id="@+id/open_overlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Overlay"/>
+
 </LinearLayout>

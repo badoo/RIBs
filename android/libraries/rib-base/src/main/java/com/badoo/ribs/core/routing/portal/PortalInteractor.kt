@@ -5,11 +5,12 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
+import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
 
 internal class PortalInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, *, Content, Nothing, Nothing>
-) : Interactor<Configuration, Content, Nothing, Nothing>(
+    router: Router<Configuration, *, Content, Overlay, Nothing>
+) : Interactor<Configuration, Content, Overlay, Nothing>(
     savedInstanceState = savedInstanceState,
     router = router,
     disposables = null

@@ -335,21 +335,19 @@ open class Node<V : RibView>(
         }
     }
 
-    /**
-     * Dispatch back press to the associated interactor.
-     *
-     * @return TRUE if the interactor handled the back press and no further action is necessary.
-     */
     @CallSuper
     open fun handleBackPress(): Boolean {
         ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
-        return children
-            .filter { it.isAttachedToView }
-            .any { it.handleBackPress() }
+        return router.popOverlay()
+            || delegateHandleBackPressToActiveChildren()
             || interactor.handleBackPress()
             || router.popBackStack()
     }
 
+    private fun delegateHandleBackPressToActiveChildren(): Boolean =
+        children
+            .filter { it.isAttachedToView }
+            .any { it.handleBackPress() }
 
     internal fun saveViewState() {
         view?.let {

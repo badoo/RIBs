@@ -10,7 +10,8 @@ import io.reactivex.Single
 interface Portal : Rib {
 
     interface OtherSide {
-        fun showRemote(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable)
+        fun showContent(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable)
+        fun showOverlay(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable)
     }
 
     interface Dependency {

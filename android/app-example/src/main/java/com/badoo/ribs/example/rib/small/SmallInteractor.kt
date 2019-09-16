@@ -31,7 +31,8 @@ class SmallInteractor(
 
     private val viewEventConsumer: Consumer<Event> = Consumer {
         when (it) {
-            Event.OpenBigClicked -> portal.showRemote(router, FullScreen.ShowBig)
+            Event.OpenBigClicked -> portal.showContent(router, FullScreen.ShowBig)
+            Event.OpenOverlayClicked -> portal.showOverlay(router, FullScreen.ShowOverlay)
         }
     }
 }

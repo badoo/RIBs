@@ -7,12 +7,13 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
+import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
 import com.badoo.ribs.core.view.RibView
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(
     savedInstanceState: Bundle?
-): Router<Configuration, Nothing, Content, Nothing, Nothing>(
+): Router<Configuration, Nothing, Content, Overlay, Nothing>(
     savedInstanceState = savedInstanceState,
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
@@ -25,16 +26,24 @@ class PortalRouter(
             @Parcelize object Default : Content()
             @Parcelize data class Portal(val configurationChain: List<Parcelable>) : Content()
         }
+        sealed class Overlay : Configuration() {
+            @Parcelize data class Portal(val configurationChain: List<Parcelable>) : Overlay()
+        }
     }
 
-    override fun showRemote(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {
+    override fun showContent(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {
         push(Content.Portal(remoteRouter.node.ancestryInfo.configurationChain + remoteConfiguration))
+    }
+
+    override fun showOverlay(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {
+        pushOverlay(Overlay.Portal(remoteRouter.node.ancestryInfo.configurationChain + remoteConfiguration))
     }
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
         when (configuration) {
             is Content.Default -> defaultRoutingAction
             is Content.Portal -> configuration.configurationChain.resolve() as RoutingAction<Nothing>
+            is Overlay.Portal -> configuration.configurationChain.resolve() as RoutingAction<Nothing>
         }
 
     // TODO probably needs to change from List<Parcelable> to List<AncestryInfo>,

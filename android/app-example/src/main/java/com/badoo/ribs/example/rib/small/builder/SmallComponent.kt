@@ -2,6 +2,7 @@ package com.badoo.ribs.example.rib.small.builder
 
 import android.os.Bundle
 import com.badoo.ribs.example.rib.big.Big
+import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTest
 import com.badoo.ribs.example.rib.small.Small
 import com.badoo.ribs.example.rib.small.SmallNode
 import dagger.BindsInstance
@@ -11,7 +12,9 @@ import dagger.BindsInstance
     modules = [SmallModule::class],
     dependencies = [Small.Dependency::class]
 )
-internal interface SmallComponent : Big.Dependency {
+internal interface SmallComponent :
+    Big.Dependency,
+    PortalOverlayTest.Dependency {
 
     @dagger.Component.Factory
     interface Factory {

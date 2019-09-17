@@ -15,19 +15,35 @@
  */
 
 def versions = [
-    androidx: '1.0.0',
-    androidxTest: '1.1.0',
     autodispose: '1.3.0', // TODO: remove?
     autoValue: '1.6.3',
-    constraintLayout: '1.1.3',
     dagger: '2.22.1',
     intellij: '2018.3.3',
     intellij_kotlin: '1.3.31-release-IJ2018.3-1',
-    lifecycleCommon: '2.0.0',
     kotlin: '1.3.41',
     mviCore: '793ca86', // = 1.1.8 + MemoFeature TODO change to 1.2.0 when released
     rave: '2.2.0',
-    robolectric: '4.2'
+    robolectric: '4.2',
+
+    materialVersion:'1.0.0', // https://github.com/material-components/material-components-android/releases
+    androidxAnnotationVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/annotation
+    androidxAppCompatVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
+    androidxBrowserVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/browser
+    androidxBroadcastVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
+    androidxCardViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
+    androidxCollectionVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
+    androidxConstraintLayoutVersion:'1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
+    androidxCoreVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/core
+    androidxExifVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
+    androidxFragmentVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/fragment
+    androidxGridLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
+    androidxLifecycleVersion:'2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    androidxLoaderVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
+    androidxPaletteVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
+    androidxPercentLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
+    androidxRecyclerViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
+    androidxTestVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/test
+    androidxTestUiAutoVersion:'2.2.0',
 ]
 
 def apt = [
@@ -63,14 +79,14 @@ def build = [
 ]
 
 def support = [
-    annotations: "androidx.annotation:annotation:${versions.androidx}",
-    appCompat: "androidx.appcompat:appcompat:${versions.androidx}",
-    lifecycleCommon: "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycleCommon}",
-    constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}",
-    design: "com.google.android.material:material:${versions.androidx}",
-    percent: "androidx.percentlayout:percentlayout:${versions.androidx}",
-    runner: "androidx.test:runner:${versions.androidxTest}",
-    rules: "androidx.test:rules:${versions.androidxTest}"
+    annotations: "androidx.annotation:annotation:${versions.androidxAnnotationVersion}",
+    appCompat: "androidx.appcompat:appcompat:${versions.androidxAppCompatVersion}",
+    lifecycleCommon: "androidx.lifecycle:lifecycle-common-java8:${versions.androidxLifecycleVersion}",
+    constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayoutVersion}",
+    design: "com.google.android.material:material:${versions.materialVersion}",
+    percent: "androidx.percentlayout:percentlayout:${versions.androidxPercentLayoutVersion}",
+    runner: "androidx.test:runner:${versions.androidxTestVersion}",
+    rules: "androidx.test:rules:${versions.androidxTestVersion}"
 ]
 
 def test = [

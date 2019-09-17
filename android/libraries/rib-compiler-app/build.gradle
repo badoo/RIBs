@@ -7,7 +7,7 @@ dependencies {
     implementation deps.external.dagger
     implementation deps.apt.javapoet
 
-    compileOnly deps.support.annotations
+    compileOnly deps.android.annotations
     annotationProcessor deps.apt.autoService
     compileOnly deps.apt.androidApi
 

@@ -37,10 +37,10 @@ dependencies {
     kapt deps.apt.daggerCompiler
     compileOnly deps.apt.javax
 
-    implementation deps.support.appCompat
-    implementation deps.support.constraintLayout
-    implementation deps.support.design
-    implementation deps.support.percent
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.design
+    implementation deps.android.percent
 
     implementation project(":libraries:rib-android")
 

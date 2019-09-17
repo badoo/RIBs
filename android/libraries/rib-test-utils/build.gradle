@@ -18,7 +18,7 @@ configureAndroidLibrary(project)
 
 dependencies {
     implementation project(":libraries:rib-base")
-    compileOnly deps.support.annotations
+    compileOnly deps.android.annotations
     implementation deps.external.rxjava2
     implementation deps.test.junit
     implementation deps.test.assertj

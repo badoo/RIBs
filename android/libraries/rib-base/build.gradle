@@ -26,7 +26,7 @@ androidExtensions {
 
 dependencies {
     api deps.uber.autodispose
-    api deps.support.appCompat
+    api deps.android.appCompat
 
     kapt deps.apt.daggerCompiler
     implementation deps.apt.javaxInject
@@ -38,10 +38,10 @@ dependencies {
     implementation deps.external.rxrelay2
     implementation deps.external.rxjava2
 
-    implementation deps.support.lifecycleCommon // TODO: remove
-    compileOnly deps.support.annotations
+    implementation deps.android.lifecycleCommon // TODO: remove
+    compileOnly deps.android.annotations
 
-    testImplementation deps.support.annotations
+    testImplementation deps.android.annotations
     testImplementation deps.test.junit
     testImplementation deps.test.mockito
     testImplementation deps.test.assertj

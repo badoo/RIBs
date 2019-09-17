@@ -78,7 +78,7 @@ def build = [
     ]
 ]
 
-def support = [
+def android = [
     annotations: "androidx.annotation:annotation:${versions.androidxAnnotationVersion}",
     appCompat: "androidx.appcompat:appcompat:${versions.androidxAppCompatVersion}",
     lifecycleCommon: "androidx.lifecycle:lifecycle-common-java8:${versions.androidxLifecycleVersion}",
@@ -130,7 +130,7 @@ ext.deps = [
     "apt": apt,
     "build": build,
     "external": external,
-    "support": support,
+    "android": android,
     "test": test,
     "androidTest": androidTest,
     "versions": versions,

@@ -51,7 +51,7 @@ templates {
 
 dependencies {
     implementation deps.build.commonsLang
-    implementation deps.support.annotations
+    implementation deps.android.annotations
     implementation deps.external.kotlinStdlib
     implementation deps.external.apacheCommons
     implementation deps.external.gson

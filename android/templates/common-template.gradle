@@ -14,9 +14,9 @@ dependencies {
     kapt deps.apt.daggerCompiler
     compileOnly deps.apt.javax
 
-    implementation deps.support.appCompat
-    implementation deps.support.constraintLayout
-    implementation deps.support.percent
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.percent
 
     implementation deps.external.dagger
     implementation deps.external.mviCore

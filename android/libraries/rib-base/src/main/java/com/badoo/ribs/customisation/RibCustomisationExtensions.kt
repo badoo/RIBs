@@ -1,6 +1,6 @@
 package com.badoo.ribs.customisation
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.ViewFactoryOld

@@ -15,10 +15,10 @@
  */
 package com.badoo.ribs.core
 
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable
 import java.util.UUID

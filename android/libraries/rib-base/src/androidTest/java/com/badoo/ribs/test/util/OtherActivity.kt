@@ -1,5 +1,5 @@
 package com.badoo.ribs.test.util
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
 class OtherActivity : AppCompatActivity()

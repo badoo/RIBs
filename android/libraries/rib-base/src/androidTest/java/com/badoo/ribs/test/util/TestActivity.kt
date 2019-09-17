@@ -2,7 +2,7 @@ package com.badoo.ribs.test.util
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarterImpl
 import com.badoo.ribs.android.PermissionRequester

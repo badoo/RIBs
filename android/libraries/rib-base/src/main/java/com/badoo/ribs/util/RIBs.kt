@@ -1,6 +1,6 @@
 package com.badoo.ribs.util
 
-import android.support.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting
 import android.util.Log
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
 

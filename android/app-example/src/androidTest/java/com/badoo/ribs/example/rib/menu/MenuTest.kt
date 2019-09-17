@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.menu
 
 import android.os.Bundle
-import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.customisation.CanProvideRibCustomisation

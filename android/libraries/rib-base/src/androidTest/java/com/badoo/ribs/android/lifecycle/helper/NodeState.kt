@@ -1,10 +1,10 @@
 package com.badoo.ribs.android.lifecycle.helper
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.Lifecycle.State.CREATED
-import android.arch.lifecycle.Lifecycle.State.DESTROYED
-import android.arch.lifecycle.Lifecycle.State.RESUMED
-import android.arch.lifecycle.Lifecycle.State.STARTED
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.State.CREATED
+import androidx.lifecycle.Lifecycle.State.DESTROYED
+import androidx.lifecycle.Lifecycle.State.RESUMED
+import androidx.lifecycle.Lifecycle.State.STARTED
 
 data class NodeState(
     val attached: Boolean,

@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.hello_world
 
 import android.app.Activity
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import android.content.Intent
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy

@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.hello_world
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import com.badoo.ribs.core.view.RibView

@@ -1,7 +1,7 @@
 package com.badoo.ribs.dialog
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.widget.FrameLayout
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable

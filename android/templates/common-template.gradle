@@ -27,7 +27,7 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.junit
 
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
 
 repositories {

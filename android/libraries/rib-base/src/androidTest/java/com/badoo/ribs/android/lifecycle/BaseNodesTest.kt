@@ -1,6 +1,6 @@
 package com.badoo.ribs.android.lifecycle
 
-import android.support.test.espresso.Espresso
+import androidx.test.espresso.Espresso
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.android.lifecycle.helper.NodeState

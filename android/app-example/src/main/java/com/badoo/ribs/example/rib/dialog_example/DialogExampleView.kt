@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView

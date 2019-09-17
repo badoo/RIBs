@@ -2,7 +2,7 @@ package com.badoo.ribs.example.app
 
 import android.content.Intent
 import android.net.Uri
-import android.support.test.rule.ActivityTestRule
+import androidx.test.rule.ActivityTestRule
 import io.reactivex.Observable
 import io.reactivex.observers.TestObserver
 import org.junit.Rule

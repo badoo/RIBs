@@ -38,7 +38,7 @@ dependencies {
     implementation deps.external.rxrelay2
     implementation deps.external.rxjava2
 
-    implementation deps.support.archLifecycleCommon // TODO: remove
+    implementation deps.support.lifecycleCommon // TODO: remove
     compileOnly deps.support.annotations
 
     testImplementation deps.support.annotations

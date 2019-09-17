@@ -15,19 +15,19 @@
  */
 
 def versions = [
-    archLifecycleCommon: '1.1.1',
-    autodispose: '0.2.0', // TODO: migrate to the new autodispose version with androidx support
+    androidx: '1.0.0',
+    androidxTest: '1.1.0',
+    autodispose: '0.2.0', // TODO: remove? or migrate to the new autodispose version with androidx support
     autoValue: '1.6.3',
     constraintLayout: '1.1.3',
     dagger: '2.22.1',
     intellij: '2018.3.3',
     intellij_kotlin: '1.3.31-release-IJ2018.3-1',
+    lifecycleCommon: '2.0.0',
     kotlin: '1.3.41',
     mviCore: '793ca86', // = 1.1.8 + MemoFeature TODO change to 1.2.0 when released
     rave: '2.2.0',
-    robolectric: '4.2',
-    support: '28.0.0', // TODO: migrate to androidx
-    supportTest: '1.0.2'
+    robolectric: '4.2'
 ]
 
 def apt = [
@@ -63,15 +63,14 @@ def build = [
 ]
 
 def support = [
-    annotations: 'androidx.annotation:annotation:1.0.0',
-    appcompat: "com.android.support:appcompat-v7:${versions.support}",
-    appCompat: 'androidx.appcompat:appcompat:1.0.0',
-    archLifecycleCommon: 'androidx.lifecycle:lifecycle-common-java8:2.0.0',
-    constraintLayout: 'androidx.constraintlayout:constraintlayout:1.1.3',
-    design: 'com.google.android.material:material:1.0.0',
-    percent: 'androidx.percentlayout:percentlayout:1.0.0',
-    runner: 'androidx.test:runner:1.1.0',
-    rules: 'androidx.test:rules:1.1.0'
+    annotations: "androidx.annotation:annotation:${versions.androidx}",
+    appCompat: "androidx.appcompat:appcompat:${versions.androidx}",
+    lifecycleCommon: "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycleCommon}",
+    constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}",
+    design: "com.google.android.material:material:${versions.androidx}",
+    percent: "androidx.percentlayout:percentlayout:${versions.androidx}",
+    runner: "androidx.test:runner:${versions.androidxTest}",
+    rules: "androidx.test:rules:${versions.androidxTest}"
 ]
 
 def test = [

@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.menu
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
@@ -33,7 +34,7 @@ class MenuInteractor(
     }
 
     override fun onViewCreated(view: MenuView, viewLifecycle: Lifecycle) {
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(feature to view using StateToViewModel)
             bind(view to output using ViewEventToOutput)
         }

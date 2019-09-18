@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
@@ -44,7 +45,7 @@ class FooBarViewImpl private constructor(
     ) : FooBarView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
             FooBarViewImpl(
-                com.badoo.ribs.customisation.inflate(it, layoutRes)
+                inflate(it, layoutRes)
             )
         }
     }

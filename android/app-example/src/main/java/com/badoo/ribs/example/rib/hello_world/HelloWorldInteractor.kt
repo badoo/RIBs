@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import android.content.Intent
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
@@ -52,7 +53,7 @@ class HelloWorldInteractor(
     }
 
     override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(view to HelloWorldAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
             bind(activityStarter.events(this@HelloWorldInteractor) to activityResultConsumer)

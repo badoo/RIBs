@@ -4,6 +4,7 @@ import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestView.Event
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestView.ViewModel
@@ -37,7 +38,7 @@ class PortalOverlayTestViewImpl private constructor(
     ) : PortalOverlayTestView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> PortalOverlayTestView = {
             PortalOverlayTestViewImpl(
-                com.badoo.ribs.customisation.inflate(it, layoutRes)
+                inflate(it, layoutRes)
             )
         }
     }

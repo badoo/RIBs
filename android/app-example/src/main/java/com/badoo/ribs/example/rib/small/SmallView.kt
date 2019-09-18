@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.small.SmallView.Event
 import com.badoo.ribs.example.rib.small.SmallView.ViewModel
@@ -41,7 +42,7 @@ class SmallViewImpl private constructor(
     ) : SmallView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> SmallView = {
             SmallViewImpl(
-                com.badoo.ribs.customisation.inflate(it, layoutRes)
+                inflate(it, layoutRes)
             )
         }
     }

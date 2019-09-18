@@ -4,6 +4,7 @@ import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.template.R
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView.Event
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView.ViewModel
@@ -37,7 +38,7 @@ class FooBarViewImpl private constructor(
     ) : FooBarView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
             FooBarViewImpl(
-                com.badoo.ribs.customisation.inflate(it, layoutRes)
+                inflate(it, layoutRes)
             )
         }
     }

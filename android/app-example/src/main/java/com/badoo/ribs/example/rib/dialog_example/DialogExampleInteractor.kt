@@ -1,7 +1,8 @@
 package com.badoo.ribs.example.rib.dialog_example
 
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.dialog.Dialog
@@ -19,7 +20,6 @@ import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
-import android.os.Bundle
 
 class DialogExampleInteractor(
     savedInstanceState: Bundle?,
@@ -38,7 +38,7 @@ class DialogExampleInteractor(
     )
 
     override fun onViewCreated(view: DialogExampleView, viewLifecycle: Lifecycle) {
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(dummyViewInput to view)
             bind(view to viewEventConsumer)
             bind(simpleDialog to dialogEventConsumer)

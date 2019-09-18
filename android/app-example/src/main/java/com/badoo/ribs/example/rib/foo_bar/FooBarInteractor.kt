@@ -1,8 +1,9 @@
 package com.badoo.ribs.example.rib.foo_bar
 
 import android.Manifest
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
@@ -18,7 +19,6 @@ import com.badoo.ribs.example.rib.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.example.rib.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.functions.Consumer
-import android.os.Bundle
 
 class FooBarInteractor(
     savedInstanceState: Bundle?,
@@ -37,7 +37,7 @@ class FooBarInteractor(
     private val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
             bind(dummyViewInput to view)

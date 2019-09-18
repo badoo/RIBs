@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.small
 
-import androidx.lifecycle.Lifecycle
 import android.os.Bundle
-import com.badoo.mvicore.android.lifecycle.createDestroy
+import androidx.lifecycle.Lifecycle
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.portal.Portal
@@ -24,7 +24,7 @@ class SmallInteractor(
 ) {
     override fun onViewCreated(view: SmallView, viewLifecycle: Lifecycle) {
         view.accept(ViewModel("My id: " + id.replace("${SmallInteractor::class.java.name}.", "")))
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(view to viewEventConsumer)
         }
     }

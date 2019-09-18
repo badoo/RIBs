@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial3.util
 
 import android.content.Context
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 
 interface Lexem {
 

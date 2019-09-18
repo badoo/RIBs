@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.portal_overlay_test
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory

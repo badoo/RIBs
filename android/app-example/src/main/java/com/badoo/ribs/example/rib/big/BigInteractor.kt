@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.big
 
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router

@@ -15,10 +15,8 @@
  */
 
 def versions = [
-    archLifecycleCommon: '1.1.1',
-    autodispose: '0.2.0', // TODO: migrate to the new autodispose version with androidx support
+    autodispose: '1.3.0', // TODO: remove?
     autoValue: '1.6.3',
-    constraintLayout: '1.1.3',
     dagger: '2.22.1',
     intellij: '2018.3.3',
     intellij_kotlin: '1.3.31-release-IJ2018.3-1',
@@ -26,8 +24,26 @@ def versions = [
     mviCore: '793ca86', // = 1.1.8 + MemoFeature TODO change to 1.2.0 when released
     rave: '2.2.0',
     robolectric: '4.2',
-    support: '28.0.0', // TODO: migrate to androidx
-    supportTest: '1.0.2'
+
+    materialVersion:'1.0.0', // https://github.com/material-components/material-components-android/releases
+    androidxAnnotationVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/annotation
+    androidxAppCompatVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
+    androidxBrowserVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/browser
+    androidxBroadcastVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
+    androidxCardViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
+    androidxCollectionVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
+    androidxConstraintLayoutVersion:'1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
+    androidxCoreVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/core
+    androidxExifVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
+    androidxFragmentVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/fragment
+    androidxGridLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
+    androidxLifecycleVersion:'2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
+    androidxLoaderVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
+    androidxPaletteVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
+    androidxPercentLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
+    androidxRecyclerViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
+    androidxTestVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/test
+    androidxTestUiAutoVersion:'2.2.0',
 ]
 
 def apt = [
@@ -62,16 +78,15 @@ def build = [
     ]
 ]
 
-def support = [
-    annotations: "com.android.support:support-annotations:${versions.support}",
-    appcompat: "com.android.support:appcompat-v7:${versions.support}",
-    appCompat: "com.android.support:appcompat-v7:${versions.support}",
-    archLifecycleCommon: "android.arch.lifecycle:common-java8:${versions.archLifecycleCommon}",
-    constraintLayout: "com.android.support.constraint:constraint-layout:${versions.constraintLayout}",
-    design: "com.android.support:design:${versions.support}",
-    percent: "com.android.support:percent:${versions.support}",
-    runner: "com.android.support.test:runner:${versions.supportTest}",
-    rules: "com.android.support.test:rules:${versions.supportTest}"
+def android = [
+    annotations: "androidx.annotation:annotation:${versions.androidxAnnotationVersion}",
+    appCompat: "androidx.appcompat:appcompat:${versions.androidxAppCompatVersion}",
+    lifecycleCommon: "androidx.lifecycle:lifecycle-common-java8:${versions.androidxLifecycleVersion}",
+    constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayoutVersion}",
+    design: "com.google.android.material:material:${versions.materialVersion}",
+    percent: "androidx.percentlayout:percentlayout:${versions.androidxPercentLayoutVersion}",
+    runner: "androidx.test:runner:${versions.androidxTestVersion}",
+    rules: "androidx.test:rules:${versions.androidxTestVersion}"
 ]
 
 def test = [
@@ -83,10 +98,10 @@ def test = [
 ]
 
 def androidTest = [
-    espresso: "com.android.support.test.espresso:espresso-core:3.0.2",
-    espressoIntents: "com.android.support.test.espresso:espresso-intents:3.0.2",
-    runner: "com.android.support.test:runner:1.0.2",
-    rules: "com.android.support.test:rules:1.0.2"
+    espresso: 'androidx.test.espresso:espresso-core:3.1.0',
+    espressoIntents: 'androidx.test.espresso:espresso-intents:3.1.0',
+    runner: 'androidx.test:runner:1.1.0',
+    rules: 'androidx.test:rules:1.1.0'
 ]
 
 def external = [
@@ -115,7 +130,7 @@ ext.deps = [
     "apt": apt,
     "build": build,
     "external": external,
-    "support": support,
+    "android": android,
     "test": test,
     "androidTest": androidTest,
     "versions": versions,

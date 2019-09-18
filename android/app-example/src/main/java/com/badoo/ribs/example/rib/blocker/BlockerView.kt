@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.blocker
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import com.badoo.ribs.core.view.RibView

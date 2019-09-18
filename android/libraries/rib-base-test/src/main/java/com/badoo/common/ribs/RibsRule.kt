@@ -2,7 +2,7 @@ package com.badoo.common.ribs
 
 
 import android.os.Bundle
-import android.support.test.rule.ActivityTestRule
+import androidx.test.rule.ActivityTestRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.Node
 import org.junit.runner.Description

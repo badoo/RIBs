@@ -17,7 +17,7 @@
 configureAndroidLibrary(project)
 
 dependencies {
-    implementation deps.support.annotations
+    implementation deps.android.annotations
     implementation deps.external.rxjava2
     implementation deps.external.rxandroid2
     implementation project(":libraries:rib-android")

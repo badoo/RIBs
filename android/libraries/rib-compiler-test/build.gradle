@@ -20,11 +20,11 @@ dependencies {
     implementation project(":libraries:rib-compiler-app")
     implementation deps.apt.javapoet
 
-    compileOnly deps.support.annotations
+    compileOnly deps.android.annotations
     compileOnly deps.apt.autoService
     compileOnly deps.apt.androidApi
 
-    testImplementation deps.support.annotations
+    testImplementation deps.android.annotations
     testImplementation deps.test.compileTesting
 }
 

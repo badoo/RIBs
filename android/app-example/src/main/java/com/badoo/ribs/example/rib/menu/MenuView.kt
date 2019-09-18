@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.menu
 
-import android.support.annotation.LayoutRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView

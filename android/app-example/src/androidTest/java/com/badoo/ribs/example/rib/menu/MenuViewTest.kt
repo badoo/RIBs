@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.menu
 
-import android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
-import android.support.test.rule.ActivityTestRule
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
+import androidx.test.rule.ActivityTestRule
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld

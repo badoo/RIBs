@@ -15,7 +15,7 @@ private def configureAndroidModule(Project project) {
         defaultConfig {
             minSdkVersion deps.build.minSdkVersion
             targetSdkVersion deps.build.targetSdkVersion
-            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
             multiDexEnabled true
         }
 

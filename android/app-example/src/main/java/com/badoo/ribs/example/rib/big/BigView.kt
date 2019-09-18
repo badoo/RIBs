@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.big
 
-import android.support.annotation.LayoutRes
+import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.TextView
 import com.badoo.ribs.core.Rib

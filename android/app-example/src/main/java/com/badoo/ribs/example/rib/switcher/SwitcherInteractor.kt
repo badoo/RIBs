@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router

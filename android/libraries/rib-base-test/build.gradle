@@ -19,16 +19,16 @@ android {
 }
 
 dependencies {
-    compileOnly deps.support.annotations
+    compileOnly deps.android.annotations
 
     compileOnly project(':libraries:rib-base')
     compileOnly project(':libraries:rib-base-test-activity')
     implementation deps.external.kotlinStdlib
-    implementation deps.support.annotations
-    implementation deps.support.runner
+    implementation deps.android.annotations
+    implementation deps.android.runner
     implementation deps.test.junit
 
-    api deps.support.rules
+    api deps.android.rules
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

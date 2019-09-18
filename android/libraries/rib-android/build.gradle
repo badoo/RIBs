@@ -6,12 +6,12 @@ dependencies {
     implementation deps.external.kotlinStdlib
 
     api project(":libraries:rib-base")
-    api deps.support.appCompat
+    api deps.android.appCompat
 
     implementation deps.external.rxrelay2
     implementation deps.external.rxjava2
     implementation deps.apt.javaxInject
-    implementation deps.support.annotations
+    implementation deps.android.annotations
 
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.junit

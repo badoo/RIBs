@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.foo_bar
 
 import android.Manifest
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.PermissionRequester

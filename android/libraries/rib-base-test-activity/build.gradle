@@ -19,11 +19,11 @@ android {
 }
 
 dependencies {
-    compileOnly deps.support.annotations
+    compileOnly deps.android.annotations
 
     compileOnly project(':libraries:rib-base')
-    implementation deps.support.annotations
-    implementation deps.support.appCompat
+    implementation deps.android.annotations
+    implementation deps.android.appCompat
     implementation deps.external.kotlinStdlib
 }
 

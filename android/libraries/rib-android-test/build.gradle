@@ -22,7 +22,7 @@ dependencies {
     implementation deps.apt.javaxInject
 
     testImplementation deps.external.roboelectricBase
-    testImplementation deps.support.appCompat
+    testImplementation deps.android.appCompat
     testImplementation project(":libraries:rib-test-utils")
 
     testImplementation deps.test.junit

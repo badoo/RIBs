@@ -1,11 +1,10 @@
 package com.badoo.ribs.test.util.ribs.root
 
-import android.arch.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
-import com.badoo.ribs.test.util.NoOpDialogLauncher
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildView
 import com.badoo.ribs.test.util.ribs.child.builder.TestChildBuilder

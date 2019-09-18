@@ -14,9 +14,9 @@ dependencies {
     kapt deps.apt.daggerCompiler
     compileOnly deps.apt.javax
 
-    implementation deps.support.appCompat
-    implementation deps.support.constraintLayout
-    implementation deps.support.percent
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.percent
 
     implementation deps.external.dagger
     implementation deps.external.mviCore
@@ -27,7 +27,7 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.junit
 
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
 
 repositories {

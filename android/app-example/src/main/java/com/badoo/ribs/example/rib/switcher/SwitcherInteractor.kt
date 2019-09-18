@@ -1,7 +1,8 @@
 package com.badoo.ribs.example.rib.switcher
 
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.dialog.Dialog
@@ -14,7 +15,6 @@ import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Permanen
 import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import io.reactivex.functions.Consumer
-import android.os.Bundle
 
 class SwitcherInteractor(
     savedInstanceState: Bundle?,
@@ -28,7 +28,7 @@ class SwitcherInteractor(
 
     override fun onViewCreated(view: SwitcherView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(view to viewEventConsumer)
             bind(dialogToTestOverlay to dialogEventConsumer)
         }

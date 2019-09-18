@@ -3,6 +3,7 @@ package com.badoo.ribs.template.rib_with_view.foo_bar
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
@@ -39,7 +40,7 @@ class FooBarInteractor(
     }
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(feature to view using StateToViewModel)
             bind(view to feature using ViewEventToWish)
             bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)

@@ -1,14 +1,14 @@
 package com.badoo.ribs.example.rib.lorem_ipsum
 
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumRouter.Configuration
 import com.badoo.ribs.example.rib.lorem_ipsum.mapper.ViewEventToOutput
 import io.reactivex.functions.Consumer
-import android.os.Bundle
 
 class LoremIpsumInteractor(
     savedInstanceState: Bundle?,
@@ -21,7 +21,7 @@ class LoremIpsumInteractor(
 ) {
 
     override fun onViewCreated(view: LoremIpsumView, viewLifecycle: Lifecycle) {
-        viewLifecycle.createDestroy {
+        viewLifecycle.startStop {
             bind(view to output using ViewEventToOutput)
         }
     }

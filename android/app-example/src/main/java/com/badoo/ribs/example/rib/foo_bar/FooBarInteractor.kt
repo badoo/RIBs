@@ -18,12 +18,14 @@ import com.badoo.ribs.example.rib.foo_bar.FooBarView.ViewModel
 import com.badoo.ribs.example.rib.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.example.rib.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay2.Relay
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, FooBarView>,
-    private val permissionRequester: PermissionRequester
+    private val permissionRequester: PermissionRequester,
+    private val dummyViewInput: Relay<ViewModel> = PublishRelay.create()
 ) : Interactor<Configuration, Configuration, Nothing, FooBarView>(
     savedInstanceState = savedInstanceState,
     router = router,
@@ -33,8 +35,6 @@ class FooBarInteractor(
     companion object {
         private const val REQUEST_CODE_CAMERA = 1
     }
-
-    private val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
@@ -49,7 +49,7 @@ class FooBarInteractor(
         )
     }
 
-    private val viewEventConsumer : Consumer<FooBarView.Event> = Consumer {
+    private val viewEventConsumer: Consumer<FooBarView.Event> = Consumer {
         when (it) {
             CheckPermissionsButtonClicked -> checkPermissions()
             RequestPermissionsButtonClicked -> requestPermissions()
@@ -77,7 +77,7 @@ class FooBarInteractor(
         )
     }
 
-    private val permissionEventConsumer : Consumer<RequestPermissionsEvent> = Consumer {
+    private val permissionEventConsumer: Consumer<RequestPermissionsEvent> = Consumer {
         // If it's a single request code, we might as well ignore the whole branching
         // as it's impossible to receive events that are not meant for this RIB
         when (it.requestCode) {

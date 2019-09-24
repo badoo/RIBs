@@ -22,7 +22,6 @@ class FooBarInteractorTest {
     }
 
     private val foobarViewEventEmitter = PublishRelay.create<FooBarView.Event>()
-    private val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
 
     private lateinit var interactor: FooBarInteractor
     private lateinit var nodeHelper: RibTestHelper<FooBarView>
@@ -32,8 +31,7 @@ class FooBarInteractorTest {
         interactor = FooBarInteractor(
             savedInstanceState = null,
             router = router,
-            permissionRequester = permissionRequester,
-            dummyViewInput = dummyViewInput
+            permissionRequester = permissionRequester
         )
 
         nodeHelper = RibTestHelper.create(interactor, foobarViewEventEmitter, router)
@@ -45,11 +43,11 @@ class FooBarInteractorTest {
 
     @Test
     fun `check permission when check permission button clicked`() {
-        val inputSubscriber = dummyViewInput.test()
+        val inputSubscriber = interactor.dummyViewInput.test()
         val result = PermissionRequester.CheckPermissionsResult(emptyList(), emptyList(), emptyList())
         whenever(permissionRequester.checkPermissions(any(), any())).doReturn(result)
 
-        nodeHelper.onStarted {
+        nodeHelper.startAndExecute {
             foobarViewEventEmitter.accept(CheckPermissionsButtonClicked)
 
             inputSubscriber.assertLast(FooBarView.ViewModel(result.toString()))
@@ -58,13 +56,13 @@ class FooBarInteractorTest {
 
     @Test
     fun `does not check permission when check permission button clicked event came after onStop`() {
-        val inputSubscriber = dummyViewInput.test()
+        val inputSubscriber = interactor.dummyViewInput.test()
         val result = PermissionRequester.CheckPermissionsResult(emptyList(), emptyList(), emptyList())
         whenever(permissionRequester.checkPermissions(any(), any())).doReturn(result)
 
-        nodeHelper.onStarted {}
-
+        nodeHelper.startAndExecute {}
         foobarViewEventEmitter.accept(CheckPermissionsButtonClicked)
+
         inputSubscriber.assertLastPredicate { it.text != result.toString() }
     }
 

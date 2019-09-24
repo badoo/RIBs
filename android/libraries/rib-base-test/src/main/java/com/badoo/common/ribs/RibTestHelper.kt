@@ -12,9 +12,9 @@ import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import kotlinx.android.parcel.Parcelize
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.`when`
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when` as whenever
 
 class RibTestHelper<View : RibView>(
     val interactor: Interactor<*, *, *, View>,
@@ -34,23 +34,23 @@ class RibTestHelper<View : RibView>(
         )
     }
 
-    fun onResumed(block: (Node<View>) -> Unit) {
-        onStarted {
+    fun resumeAndExecute(block: (Node<View>) -> Unit) {
+        startAndExecute {
             it.onResume()
             block(it)
             it.onPause()
         }
     }
 
-    fun onStarted(block: (Node<View>) -> Unit) {
-        onViewCreated {
+    fun startAndExecute(block: (Node<View>) -> Unit) {
+        createViewAndExecute {
             it.onStart()
             block(it)
             it.onStop()
         }
     }
 
-    fun onViewCreated(block: (Node<View>) -> Unit) {
+    fun createViewAndExecute(block: (Node<View>) -> Unit) {
         val node = nodeCreator()
         node.onAttach()
         node.attachToView(mock(ViewGroup::class.java))
@@ -73,8 +73,8 @@ class RibTestHelper<View : RibView>(
 
 inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView where RView : RibView, RView : ObservableSource<ViewEvent> =
     mock(RView::class.java).apply {
-        `when`(this.androidView).thenReturn(mock(ViewGroup::class.java))
-        `when`(this.subscribe(ArgumentMatchers.any())).thenAnswer {
+        whenever(this.androidView).thenReturn(mock(ViewGroup::class.java))
+        whenever(this.subscribe(any())).thenAnswer {
             val observer = it.getArgument<Observer<ViewEvent>>(0)
             this@subscribedView.subscribe(observer)
         }

@@ -18,14 +18,12 @@ import com.badoo.ribs.example.rib.foo_bar.FooBarView.ViewModel
 import com.badoo.ribs.example.rib.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.example.rib.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.jakewharton.rxrelay2.PublishRelay
-import com.jakewharton.rxrelay2.Relay
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, FooBarView>,
-    private val permissionRequester: PermissionRequester,
-    private val dummyViewInput: Relay<ViewModel> = PublishRelay.create()
+    private val permissionRequester: PermissionRequester
 ) : Interactor<Configuration, Configuration, Nothing, FooBarView>(
     savedInstanceState = savedInstanceState,
     router = router,
@@ -35,6 +33,8 @@ class FooBarInteractor(
     companion object {
         private const val REQUEST_CODE_CAMERA = 1
     }
+
+    internal val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {

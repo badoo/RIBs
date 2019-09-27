@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.helper.TestNode
@@ -70,7 +71,13 @@ class NodeTest {
         interactor = mock()
         viewPlugins = setOf(mock(), mock())
 
-        node = Node(
+        node = createNodeWithView()
+
+        addChildren()
+    }
+
+    private fun createNodeWithView(): Node<TestView> {
+        return Node(
             savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = viewFactory,
@@ -78,8 +85,17 @@ class NodeTest {
             interactor = interactor,
             viewPlugins = viewPlugins
         )
+    }
 
-        addChildren()
+    private fun createNodeWithoutView(): Node<TestView> {
+        return Node(
+            savedInstanceState = null,
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = null,
+            router = router,
+            interactor = interactor,
+            viewPlugins = viewPlugins
+        )
     }
 
     @After
@@ -404,7 +420,7 @@ class NodeTest {
     }
 
     @Test
-    fun `attachChild() does not imply attachToView when Android view system is not available`() {
+    fun `attachChildNode() does not imply attachToView when Android view system is not available`() {
         val childViewFactory = mock<TestViewFactory>()
         val child = TestNode(
             savedInstanceState = null,
@@ -471,6 +487,52 @@ class NodeTest {
     fun `attachToView() invokes viewFactory`() {
         node.attachToView(parentViewGroup)
         verify(viewFactory).invoke(parentViewGroup)
+    }
+
+    @Test
+    fun `attachToView() + has view = sets view lifecycle to external lifecycle - when INITIALIZED, view is in state INITIALIZED`() {
+        // by default it's not started, should be on INITIALIZED
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + has view = sets view lifecycle to external lifecycle - when CREATED, view is in state CREATED`() {
+        node.onStop()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.CREATED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when STARTED, view is in state STARTED`() {
+        node = createNodeWithView()
+        node.onStart()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.STARTED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when RESUMED, view is in state RESUMED`() {
+        node = createNodeWithView()
+        node.onResume()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + viewless = doesn't change view lifecycle - when STARTED, view is only INITIALIZED`() {
+        node = createNodeWithoutView()
+        node.onStart()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + viewless = doesn't change view lifecycle - when RESUMED, view is only INITIALIZED`() {
+        node = createNodeWithoutView()
+        node.onResume()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
     }
 
     @Test

@@ -432,6 +432,142 @@ class NodeTest {
     }
 
     @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - INITIALIZED`() {
+        // by default it's not started, should be on INITIALIZED
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.CREATED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - INITIALIZED`() {
+        // by default it's not started, should be on INITIALIZED
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.INITIALIZED, grandChild.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - CREATED`() {
+        node.onStop()
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.CREATED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - CREATED`() {
+        node.onStop()
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.CREATED, grandChild.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - STARTED`() {
+        node.onStart()
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.STARTED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - STARTED`() {
+        node.onStart()
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.STARTED, grandChild.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - RESUMED`() {
+        node.onResume()
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.RESUMED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - RESUMED`() {
+        node.onResume()
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.RESUMED, grandChild.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
     fun `attachChildView() implies attachToView() when Android view system is available`() {
         val child = mock<Node<*>>()
         node.attachToView(parentViewGroup)

@@ -219,6 +219,9 @@ open class Node<V : RibView>(
 
     private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
         externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
+        children.forEach {
+            it.inheritExternalLifecycle(lifecycleRegistry)
+        }
     }
 
     // FIXME internal + protected?

@@ -34,6 +34,8 @@ import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import android.util.SparseArray
 import android.view.ViewGroup
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleObserver
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
@@ -145,8 +147,7 @@ open class Node<V : RibView>(
             view!!.let {
                 parentViewGroup.addView(it.androidView)
                 it.androidView.restoreHierarchyState(savedViewState)
-                interactor.onViewCreated(viewLifecycleRegistry, it)
-                viewLifecycleRegistry.markState(externalLifecycleRegistry.currentState)
+                interactor.deferOnViewCreated(it)
             }
         }
 
@@ -154,6 +155,30 @@ open class Node<V : RibView>(
         viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }
         onStartInternal()
         onResumeInternal()
+    }
+
+    var viewLifecycleObserver: LifecycleObserver? = null
+
+    /**
+     * It's important that [Interactor.onViewCreated] doesn't get immediately called on view object
+     * creation, but when related view lifecycle gets onCreate() signal, so that when it is called,
+     * it's actually in the expected lifecycle state. Otherwise it can be misleading (method called
+     * but lifecycle not there yet) and lead to unexpected behavior.
+     */
+    private fun Interactor<*, *, *, V>.deferOnViewCreated(view: V) {
+        viewLifecycleObserver = object : DefaultLifecycleObserver {
+            override fun onCreate(owner: LifecycleOwner) {
+                this@deferOnViewCreated.onViewCreated(viewLifecycleRegistry, view)
+            }
+
+            override fun onStart(owner: LifecycleOwner) {}
+            override fun onResume(owner: LifecycleOwner) {}
+            override fun onPause(owner: LifecycleOwner) {}
+            override fun onStop(owner: LifecycleOwner) {}
+            override fun onDestroy(owner: LifecycleOwner) {}
+        }.also {
+            viewLifecycleRegistry.addObserver(it)
+        }
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? =
@@ -176,6 +201,8 @@ open class Node<V : RibView>(
             view = null
             isAttachedToView = false
             this.parentViewGroup = null
+            viewLifecycleObserver?.let { viewLifecycleRegistry.removeObserver(it) }
+            viewLifecycleObserver = null
         }
     }
 

@@ -678,7 +678,15 @@ class NodeTest {
     }
 
     @Test
-    fun `When current Node has a view, attachToView() notifies Interactor of view creation`() {
+    fun `When current Node has a view, attachToView() doesn't yet notify Interactor of view creation if external lifecycle is not above INITIALIZED`() {
+        node.attachToView(parentViewGroup)
+        verify(interactor, never()).onViewCreated(node.viewLifecycleRegistry, view)
+    }
+
+    @Test
+    fun `When current Node has a view, attachToView() notifies Interactor of view creation when external lifecycle goes above INITIALIZED`() {
+        node.onStart()
+        node.onStop()
         node.attachToView(parentViewGroup)
         verify(interactor).onViewCreated(node.viewLifecycleRegistry, view)
     }

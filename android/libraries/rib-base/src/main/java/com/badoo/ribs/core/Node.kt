@@ -97,7 +97,7 @@ open class Node<V : RibView>(
     var ancestryInfo: AncestryInfo = AncestryInfo.Root
     val resolver: ConfigurationResolver<*, V> = router
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
-    private val externalLifecycleRegistry = LifecycleRegistry(this)
+    internal val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
     internal val viewLifecycleRegistry = LifecycleRegistry(this)
     val detachSignal = BehaviorRelay.create<Unit>()
@@ -145,8 +145,8 @@ open class Node<V : RibView>(
             view!!.let {
                 parentViewGroup.addView(it.androidView)
                 it.androidView.restoreHierarchyState(savedViewState)
-                viewLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
                 interactor.onViewCreated(viewLifecycleRegistry, it)
+                viewLifecycleRegistry.markState(externalLifecycleRegistry.currentState)
             }
         }
 
@@ -219,6 +219,9 @@ open class Node<V : RibView>(
 
     private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
         externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
+        children.forEach {
+            it.inheritExternalLifecycle(lifecycleRegistry)
+        }
     }
 
     // FIXME internal + protected?

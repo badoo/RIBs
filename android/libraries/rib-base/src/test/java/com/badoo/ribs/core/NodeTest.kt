@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.helper.TestNode
@@ -70,7 +71,13 @@ class NodeTest {
         interactor = mock()
         viewPlugins = setOf(mock(), mock())
 
-        node = Node(
+        node = createNodeWithView()
+
+        addChildren()
+    }
+
+    private fun createNodeWithView(): Node<TestView> {
+        return Node(
             savedInstanceState = null,
             identifier = object : TestPublicRibInterface {},
             viewFactory = viewFactory,
@@ -78,8 +85,17 @@ class NodeTest {
             interactor = interactor,
             viewPlugins = viewPlugins
         )
+    }
 
-        addChildren()
+    private fun createNodeWithoutView(): Node<TestView> {
+        return Node(
+            savedInstanceState = null,
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = null,
+            router = router,
+            interactor = interactor,
+            viewPlugins = viewPlugins
+        )
     }
 
     @After
@@ -404,7 +420,7 @@ class NodeTest {
     }
 
     @Test
-    fun `attachChild() does not imply attachToView when Android view system is not available`() {
+    fun `attachChildNode() does not imply attachToView when Android view system is not available`() {
         val childViewFactory = mock<TestViewFactory>()
         val child = TestNode(
             savedInstanceState = null,
@@ -413,6 +429,142 @@ class NodeTest {
         )
         node.attachChildNode(child)
         verify(childViewFactory, never()).invoke(parentViewGroup)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - INITIALIZED`() {
+        // by default it's not started, should be on INITIALIZED
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.CREATED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - INITIALIZED`() {
+        // by default it's not started, should be on INITIALIZED
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.INITIALIZED, grandChild.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - CREATED`() {
+        node.onStop()
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.CREATED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - CREATED`() {
+        node.onStop()
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.CREATED, grandChild.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - STARTED`() {
+        node.onStart()
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.STARTED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - STARTED`() {
+        node.onStart()
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.STARTED, grandChild.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to direct children - RESUMED`() {
+        node.onResume()
+
+        val child = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        node.attachChildNode(child)
+
+        assertEquals(Lifecycle.State.RESUMED, child.externalLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() passes on current lifecycle to children of children - RESUMED`() {
+        node.onResume()
+
+        val directChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        val grandChild = TestNode(
+            savedInstanceState = null,
+            identifier = mock(),
+            viewFactory = mock<TestViewFactory>()
+        )
+        directChild.attachChildNode(grandChild)
+        node.attachChildNode(directChild)
+
+        assertEquals(Lifecycle.State.RESUMED, grandChild.externalLifecycleRegistry.currentState)
     }
 
     @Test
@@ -471,6 +623,52 @@ class NodeTest {
     fun `attachToView() invokes viewFactory`() {
         node.attachToView(parentViewGroup)
         verify(viewFactory).invoke(parentViewGroup)
+    }
+
+    @Test
+    fun `attachToView() + has view = sets view lifecycle to external lifecycle - when INITIALIZED, view is in state INITIALIZED`() {
+        // by default it's not started, should be on INITIALIZED
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + has view = sets view lifecycle to external lifecycle - when CREATED, view is in state CREATED`() {
+        node.onStop()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.CREATED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when STARTED, view is in state STARTED`() {
+        node = createNodeWithView()
+        node.onStart()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.STARTED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when RESUMED, view is in state RESUMED`() {
+        node = createNodeWithView()
+        node.onResume()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + viewless = doesn't change view lifecycle - when STARTED, view is only INITIALIZED`() {
+        node = createNodeWithoutView()
+        node.onStart()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
+    }
+
+    @Test
+    fun `attachToView() + viewless = doesn't change view lifecycle - when RESUMED, view is only INITIALIZED`() {
+        node = createNodeWithoutView()
+        node.onResume()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
     }
 
     @Test

@@ -15,6 +15,7 @@
  */
 package com.badoo.ribs.core
 
+import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
 import java.util.UUID
 
 /**
@@ -53,11 +54,6 @@ abstract class Builder<D, P, N : Node<*>> {
                 ),
                 data = buildContext.data
             )
-
-    companion object {
-        // FIXME persist to Bundle
-        internal const val KEY_UUID = "rib.uuid"
-    }
 }
 
 

@@ -12,6 +12,10 @@ interface Rib {
 
         override val id: String
             get() = uuid.toString()
+
+        companion object {
+            internal const val KEY_UUID = "rib.uuid"
+        }
     }
 }
 

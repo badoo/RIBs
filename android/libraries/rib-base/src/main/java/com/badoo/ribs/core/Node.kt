@@ -16,6 +16,12 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.SparseArray
+import android.view.ViewGroup
+import androidx.annotation.CallSuper
+import androidx.annotation.MainThread
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
@@ -28,12 +34,7 @@ import androidx.lifecycle.Lifecycle.State.INITIALIZED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import android.os.Parcelable
-import androidx.annotation.CallSuper
-import androidx.annotation.MainThread
-import androidx.annotation.VisibleForTesting
-import android.util.SparseArray
-import android.view.ViewGroup
+import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
@@ -359,6 +360,7 @@ open class Node<V : RibView>(
     }
 
     open fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable(Identifier.KEY_UUID, identifier.uuid)
         router.onSaveInstanceState(outState)
         interactor.onSaveInstanceState(outState)
         saveViewState()

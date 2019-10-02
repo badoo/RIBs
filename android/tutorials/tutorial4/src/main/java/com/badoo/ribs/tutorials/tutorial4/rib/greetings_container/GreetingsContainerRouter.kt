@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
@@ -10,10 +10,10 @@ import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.builder.HelloWorldBuil
 import kotlinx.android.parcel.Parcelize
 
 class GreetingsContainerRouter(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     private val helloWorldBuilder: HelloWorldBuilder
 ): Router<Configuration, Nothing, Configuration, Nothing, Nothing>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     initialConfiguration = Configuration.HelloWorld
 ) {
     sealed class Configuration : Parcelable {

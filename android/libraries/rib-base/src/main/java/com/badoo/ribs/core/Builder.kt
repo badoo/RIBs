@@ -15,16 +15,48 @@
  */
 package com.badoo.ribs.core
 
+import java.util.UUID
+
 /**
- * Responsible for building a node. Parent routers should pass in static dependencies via the
+ * Responsible for building a [Node]. Parent [Router]s should pass in static dependencies via the
  * dependency passed in via the constructor. For dynamic dependencies (things that are fetched
- * asynchronously - or created dyanmically in the parent), they should be passed in via a build
+ * asynchronously - or created dynamically in the parent), they should be passed in via a build
  * method that vends a node.
  *
  * @param <D> type of dependency required to build the interactor.
+ * @param <P> type of parameters that are only known build-time and not ahead (e.g. user id of another user to build the RIB for)
+ * @param <N> type of [Node] this Builder is expected to build
+ *
 </D> */
-abstract class Builder<D> {
+abstract class Builder<D, P, N : Node<*>> {
     abstract val dependency: D
+
+    fun build(params: BuildContext.Params): N =
+        build(params.with())
+
+    abstract fun build(params: BuildContext.ParamsWithData<P>): N
+
+    /**
+     * Helper method to create [BuildContext.Resolved] that is then passed to RIB components.
+     */
+    protected fun resolve(
+        rib: Rib,
+        buildContext: BuildContext.ParamsWithData<P>
+    ): BuildContext.Resolved<P> =
+            BuildContext.Resolved(
+                savedInstanceState = buildContext.savedInstanceState,
+                identifier = Rib.Identifier(
+                    rib = rib,
+                    uuid = buildContext.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID(),
+                    tag = buildContext.tag
+                ),
+                data = buildContext.data
+            )
+
+    companion object {
+        // FIXME persist to Bundle
+        internal const val KEY_UUID = "rib.uuid"
+    }
 }
 
 

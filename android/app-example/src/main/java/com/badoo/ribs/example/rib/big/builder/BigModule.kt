@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.big.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.example.rib.big.Big
 import com.badoo.ribs.example.rib.big.BigInteractor
 import com.badoo.ribs.example.rib.big.BigNode
@@ -18,10 +18,10 @@ internal object BigModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: BigComponent,
-        savedInstanceState: Bundle?
+        buildContext: BuildContext.Resolved<Nothing?>
     ): BigRouter =
         BigRouter(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             smallBuilder = SmallBuilder(component)
         )
 
@@ -29,11 +29,11 @@ internal object BigModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: BigRouter
     ): BigInteractor =
         BigInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router
         )
 
@@ -41,12 +41,12 @@ internal object BigModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: Big.Customisation,
         router: BigRouter,
         interactor: BigInteractor
     ) : BigNode = BigNode(
-        savedInstanceState = savedInstanceState,
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

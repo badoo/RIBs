@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
@@ -44,7 +45,7 @@ class RootActivity : RibActivity() {
                     attach { buildSwitcherNode(portal, it) }
                 }
 
-                private fun buildSwitcherNode(portal: Portal.OtherSide, savedInstanceState: Bundle?): SwitcherNode {
+                private fun buildSwitcherNode(portal: Portal.OtherSide, params: BuildContext.Params): SwitcherNode {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
                             override fun ribCustomisation(): RibCustomisationDirectory =
@@ -58,10 +59,10 @@ class RootActivity : RibActivity() {
                             override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
                             override fun portal(): Portal.OtherSide = portal
                         }
-                    ).build(savedInstanceState)
+                    ).build(params)
                 }
             }
-        ).build(savedInstanceState).also {
+        ).build(BuildContext.Params(savedInstanceState)).also {
             workflowRoot = it
         }
 

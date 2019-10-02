@@ -12,16 +12,16 @@ import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.mapper.ViewEventToOutp
 import com.badoo.ribs.tutorials.tutorial4.util.Lexem
 import com.badoo.ribs.tutorials.tutorial4.util.User
 import io.reactivex.functions.Consumer
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 
 class HelloWorldInteractor(
     user: User,
     config: HelloWorld.Config,
     private val output: Consumer<HelloWorld.Output>,
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     router = router,
     disposables = null
 ) {

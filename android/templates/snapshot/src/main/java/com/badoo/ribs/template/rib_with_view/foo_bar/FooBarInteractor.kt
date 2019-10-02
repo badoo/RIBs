@@ -1,7 +1,8 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import androidx.lifecycle.Lifecycle
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
@@ -21,13 +22,13 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     router: Router<Configuration, *, Content, Overlay, FooBarView>,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature
 ) : Interactor<Configuration, Content, Overlay, FooBarView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     router = router,
     disposables = feature
 ) {

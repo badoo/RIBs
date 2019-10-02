@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.foo_bar.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import dagger.BindsInstance
@@ -18,7 +18,7 @@ internal interface FooBarComponent {
         fun create(
             dependency: FooBar.Dependency,
             @BindsInstance customisation: FooBar.Customisation,
-            @BindsInstance savedInstanceState: Bundle?
+            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
         ): FooBarComponent
     }
 

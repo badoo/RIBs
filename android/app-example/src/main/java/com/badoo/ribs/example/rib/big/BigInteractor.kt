@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.big
 
 import androidx.lifecycle.Lifecycle
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.big.BigRouter.Configuration
@@ -9,10 +9,10 @@ import com.badoo.ribs.example.rib.big.BigRouter.Configuration.Content
 import com.badoo.ribs.example.rib.big.BigRouter.Configuration.Overlay
 
 class BigInteractor(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     router: Router<Configuration, *, Content, Overlay, BigView>
 ) : Interactor<Configuration, Content, Overlay, BigView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     router = router,
     disposables = null
 ) {

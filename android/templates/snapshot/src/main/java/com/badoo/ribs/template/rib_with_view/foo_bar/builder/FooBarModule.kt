@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Output
@@ -22,10 +22,10 @@ internal object FooBarModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: FooBarComponent,
-        savedInstanceState: Bundle?
+        buildContext: BuildContext.Resolved<Nothing?>
     ): FooBarRouter =
         FooBarRouter(
-            savedInstanceState = savedInstanceState
+            buildContext = buildContext
         )
 
     @FooBarScope
@@ -38,14 +38,14 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: FooBarRouter,
         input: ObservableSource<Input>,
         output: Consumer<Output>,
         feature: FooBarFeature
     ): FooBarInteractor =
         FooBarInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             input = input,
             output = output,
@@ -56,7 +56,7 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,
@@ -64,7 +64,7 @@ internal object FooBarModule {
         output: Consumer<Output>,
         feature: FooBarFeature
     ) : FooBarNode = FooBarNode(
-        savedInstanceState = savedInstanceState,
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor,

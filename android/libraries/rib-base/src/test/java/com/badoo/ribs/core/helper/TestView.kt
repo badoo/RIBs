@@ -9,6 +9,6 @@ class TestView : RibView {
 
     override val androidView: ViewGroup = mock()
 
-    override fun getParentViewForChild(child: Rib): ViewGroup? =
+    override fun getParentViewForChild(child: Rib.Identifier): ViewGroup? =
         androidView
 }

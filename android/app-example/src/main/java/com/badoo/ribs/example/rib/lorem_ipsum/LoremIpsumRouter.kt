@@ -5,12 +5,12 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumRouter.Configuration
 import kotlinx.android.parcel.Parcelize
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 
 class LoremIpsumRouter(
-    savedInstanceState: Bundle?
+    buildContext: BuildContext.Resolved<Nothing?>
 ): Router<Configuration, Nothing, Configuration, Nothing, LoremIpsumView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {

@@ -2,6 +2,7 @@ package com.badoo.ribs.dialog
 
 import android.os.Bundle
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
@@ -14,7 +15,7 @@ abstract class Dialog<T : Any> private constructor(
     var message: String? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
-    private var ribFactory: ((Bundle?) -> Node<*>)? = null
+    private var ribFactory: ((BuildContext.Params) -> Node<*>)? = null
     internal var rib: Node<*>? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
@@ -26,7 +27,7 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun ribFactory(ribFactory: (Bundle?) -> Node<*>) {
+    fun ribFactory(ribFactory: (BuildContext.Params) -> Node<*>) {
         this.ribFactory = ribFactory
     }
 
@@ -70,8 +71,11 @@ abstract class Dialog<T : Any> private constructor(
 
     fun buildNodes(bundles: List<Bundle?>): List<Node<*>> =
         ribFactory?.let { factory ->
+            val savedInstanceState = bundles.firstOrNull()
+            val clientParams = BuildContext.Params(savedInstanceState)
+
             listOf(
-                factory.invoke(bundles.firstOrNull()).also {
+                factory.invoke(clientParams).also {
                     rib = it
                 }
             )

@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.core.Interactor
@@ -22,13 +22,13 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
 ) : Interactor<Configuration, Content, Overlay, DialogExampleView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     router = router,
     disposables = null
 ) {

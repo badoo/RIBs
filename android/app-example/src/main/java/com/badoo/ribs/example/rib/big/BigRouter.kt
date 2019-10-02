@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.big
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
@@ -14,10 +14,10 @@ import com.badoo.ribs.example.rib.small.builder.SmallBuilder
 import kotlinx.android.parcel.Parcelize
 
 class BigRouter(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     private val smallBuilder: SmallBuilder
 ): Router<Configuration, Permanent, Content, Overlay, BigView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     initialConfiguration = Content.Default,
     permanentParts = listOf(Permanent.Small)
 ) {

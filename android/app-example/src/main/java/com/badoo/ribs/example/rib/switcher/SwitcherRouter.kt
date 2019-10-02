@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
@@ -26,7 +26,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     private val fooBarBuilder: FooBarBuilder,
     private val helloWorldBuilder: HelloWorldBuilder,
     private val dialogExampleBuilder: DialogExampleBuilder,
@@ -35,7 +35,7 @@ class SwitcherRouter(
     private val dialogLauncher: DialogLauncher,
     private val dialogToTestOverlay: DialogToTestOverlay
 ): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     initialConfiguration = Content.DialogsExample,
     permanentParts = listOf(
         Permanent.Menu

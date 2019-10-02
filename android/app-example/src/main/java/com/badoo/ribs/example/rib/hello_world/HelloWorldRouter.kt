@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.hello_world
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
@@ -13,10 +13,10 @@ import com.badoo.ribs.example.rib.small.builder.SmallBuilder
 import kotlinx.android.parcel.Parcelize
 
 class HelloWorldRouter(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     private val smallBuilder: SmallBuilder
 ): Router<Configuration, Permanent, Content, Nothing, HelloWorldView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     initialConfiguration = Content.Default,
     permanentParts = listOf(Permanent.Small)
 ) {

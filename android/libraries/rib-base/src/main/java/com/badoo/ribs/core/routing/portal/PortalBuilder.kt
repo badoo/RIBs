@@ -1,26 +1,28 @@
 package com.badoo.ribs.core.routing.portal
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Builder
 
 class PortalBuilder(
     override val dependency: Portal.Dependency
-) : Builder<Portal.Dependency>() {
+) : Builder<Portal.Dependency, Nothing?, PortalNode>() {
 
-    fun build(savedInstanceState: Bundle?): PortalNode {
+    override fun build(params: BuildContext.ParamsWithData<Nothing?>): PortalNode {
+        val buildContext = resolve(object : Portal {}, params)
+
         val router = PortalRouter(
-            savedInstanceState = savedInstanceState
+            buildContext = buildContext
         )
 
         router.defaultRoutingAction = dependency.defaultRoutingAction().invoke(router)
 
         val interactor = PortalInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router
         )
 
         return PortalNode(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             interactor = interactor
         )

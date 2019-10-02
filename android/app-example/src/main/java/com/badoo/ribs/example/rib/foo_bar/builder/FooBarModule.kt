@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList")
 package com.badoo.ribs.example.rib.foo_bar.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.example.rib.foo_bar.FooBar
@@ -19,10 +19,10 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun router(
-        savedInstanceState: Bundle?
+        buildContext: BuildContext.Resolved<Nothing?>
     ): FooBarRouter =
         FooBarRouter(
-            savedInstanceState = savedInstanceState
+            buildContext = buildContext
         )
 
     @FooBarScope
@@ -35,12 +35,12 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: FooBarRouter,
         permissionRequester: PermissionRequester
     ): FooBarInteractor =
         FooBarInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             permissionRequester = permissionRequester
         )
@@ -56,13 +56,13 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,
         viewPlugins: Set<@JvmSuppressWildcards ViewPlugin>
     ) : FooBarNode = FooBarNode(
-        savedInstanceState = savedInstanceState,
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor,

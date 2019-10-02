@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.small.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.example.rib.big.builder.BigBuilder
 import com.badoo.ribs.example.rib.portal_overlay_test.builder.PortalOverlayTestBuilder
@@ -20,10 +20,10 @@ internal object SmallModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: SmallComponent,
-        savedInstanceState: Bundle?
+        buildContext: BuildContext.Resolved<Nothing?>
     ): SmallRouter =
         SmallRouter(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             bigBuilder = BigBuilder(component),
             portalOverlayTestBuilder = PortalOverlayTestBuilder(component)
         )
@@ -32,12 +32,12 @@ internal object SmallModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: SmallRouter,
         portal: Portal.OtherSide
     ): SmallInteractor =
         SmallInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             portal = portal
         )
@@ -46,12 +46,12 @@ internal object SmallModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: Small.Customisation,
         router: SmallRouter,
         interactor: SmallInteractor
     ) : SmallNode = SmallNode(
-        savedInstanceState = savedInstanceState,
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

@@ -1,7 +1,7 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.switcher.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
@@ -37,13 +37,13 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun router(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         component: SwitcherComponent,
         dialogLauncher: DialogLauncher,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherRouter =
         SwitcherRouter(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),
@@ -57,12 +57,12 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: SwitcherRouter,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherInteractor =
         SwitcherInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             dialogToTestOverlay = dialogToTestOverlay
         )
@@ -80,13 +80,13 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: Switcher.Customisation,
         viewDependency: SwitcherView.Dependency,
         router: SwitcherRouter,
         interactor: SwitcherInteractor
     ) : SwitcherNode = SwitcherNode(
-        savedInstanceState = savedInstanceState,
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(viewDependency),
         router = router,
         interactor = interactor

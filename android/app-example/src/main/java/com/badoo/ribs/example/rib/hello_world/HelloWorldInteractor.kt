@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.Lifecycle
 import android.content.Intent
 import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
@@ -26,14 +27,14 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     router: Router<Configuration, Permanent, Content, Nothing, HelloWorldView>,
     private val input: ObservableSource<HelloWorld.Input>,
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     router = router,
     disposables = feature
 ) {

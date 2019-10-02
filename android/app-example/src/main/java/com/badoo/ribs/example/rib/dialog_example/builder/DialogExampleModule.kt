@@ -1,7 +1,7 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.dialog_example.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
@@ -45,14 +45,14 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun router(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         dialogLauncher: DialogLauncher,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleRouter =
         DialogExampleRouter(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             dialogLauncher = dialogLauncher,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
@@ -63,14 +63,14 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: DialogExampleRouter,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleInteractor =
         DialogExampleInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
@@ -81,13 +81,12 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: DialogExample.Customisation,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor
     ) : Node<DialogExampleView> = Node(
-        savedInstanceState = savedInstanceState,
-        identifier = object : DialogExample {},
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

@@ -1,3 +1,24 @@
 package com.badoo.ribs.core
 
-interface Rib
+import java.util.UUID
+
+interface Rib {
+
+    data class Identifier(
+        val rib: Rib,
+        val uuid: UUID,
+        val tag: Any? = null // can be set by client code to anything
+    ) : Identifiable {
+
+        override val id: String
+            get() = uuid.toString()
+    }
+}
+
+// TODO better name
+fun <T> BuildContext.Params.with(tag: Any = Unit, data: T? = null) =
+    BuildContext.ParamsWithData(
+        savedInstanceState = savedInstanceState,
+        tag = tag,
+        data = data
+    )

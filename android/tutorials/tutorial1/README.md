@@ -118,7 +118,7 @@ class HelloWorldBuilder(dependency: HelloWorld.Dependency) {
     
     /* remainder omitted */
     
-    fun build(savedInstanceState: Bundle?): Node<HelloWorldView> {
+    fun build(buildContext: BuildContext.Params): Node<HelloWorldView> {
         /* remainder omitted */
     }
 }
@@ -141,7 +141,7 @@ class RootActivity : RibActivity() {
                     // not sure what to do here yet
                 }
             }
-        ).build(savedInstanceState)
+        ).build(Params(savedInstanceState))
 }
 ```
 
@@ -165,7 +165,7 @@ override fun createRib(savedInstanceState: Bundle?): Node<*> =
                     Snackbar.make(rootViewGroup, "Hello world!", Snackbar.LENGTH_SHORT).show()
                 }
             }
-        ).build(savedInstanceState)
+        ).build(Params(savedInstanceState))
 ```
 
 Build and deploy the app, and pressing the button this is what we should see:

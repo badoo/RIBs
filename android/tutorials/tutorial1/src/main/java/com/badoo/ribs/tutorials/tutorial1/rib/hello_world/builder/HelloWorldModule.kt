@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorld.Output
@@ -17,22 +17,22 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun router(
-        savedInstanceState: Bundle?
+        buildContext: BuildContext.Resolved<Nothing?>
     ): HelloWorldRouter =
         HelloWorldRouter(
-            savedInstanceState = savedInstanceState
+            buildContext = buildContext
         )
 
     @HelloWorldScope
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: HelloWorldRouter,
         output: Consumer<Output>
     ): HelloWorldInteractor =
         HelloWorldInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             output = output
         )
@@ -41,13 +41,12 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: HelloWorld.Customisation,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
     ) : Node<HelloWorldView> = Node(
-        savedInstanceState = savedInstanceState,
-        identifier = object : HelloWorld {},
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

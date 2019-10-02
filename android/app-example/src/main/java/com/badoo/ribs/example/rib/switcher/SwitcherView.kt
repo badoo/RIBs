@@ -72,8 +72,8 @@ class SwitcherViewImpl private constructor(
     override fun accept(vm: ViewModel) {
     }
 
-    override fun getParentViewForChild(child: Rib): ViewGroup? =
-        when (child) {
+    override fun getParentViewForChild(child: Rib.Identifier): ViewGroup? =
+        when (child.rib) {
             is Menu -> menuContainer
             is Blocker -> blockerContainer
             else -> contentContainer

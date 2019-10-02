@@ -7,6 +7,6 @@ interface RibView {
 
     val androidView: ViewGroup
 
-    fun getParentViewForChild(child: Rib): ViewGroup? =
+    fun getParentViewForChild(child: Rib.Identifier): ViewGroup? =
         androidView
 }

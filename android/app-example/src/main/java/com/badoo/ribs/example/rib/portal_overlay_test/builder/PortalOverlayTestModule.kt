@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.portal_overlay_test.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTest
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestInteractor
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestNode
@@ -17,21 +17,21 @@ internal object PortalOverlayTestModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: PortalOverlayTestComponent,
-        savedInstanceState: Bundle?
+        buildContext: BuildContext.Resolved<Nothing?>
     ): PortalOverlayTestRouter =
         PortalOverlayTestRouter(
-            savedInstanceState = savedInstanceState
+            buildContext = buildContext
         )
 
     @PortalOverlayTestScope
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: PortalOverlayTestRouter
     ): PortalOverlayTestInteractor =
         PortalOverlayTestInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router
         )
 
@@ -39,12 +39,12 @@ internal object PortalOverlayTestModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: PortalOverlayTest.Customisation,
         router: PortalOverlayTestRouter,
         interactor: PortalOverlayTestInteractor
     ) : PortalOverlayTestNode = PortalOverlayTestNode(
-        savedInstanceState = savedInstanceState,
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

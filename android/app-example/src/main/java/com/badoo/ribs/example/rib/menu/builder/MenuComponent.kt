@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.menu.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.core.Node
@@ -18,7 +18,7 @@ interface MenuComponent {
         fun create(
             dependency: Menu.Dependency,
             @BindsInstance customisation: Menu.Customisation,
-            @BindsInstance savedInstanceState: Bundle?
+            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
         ): MenuComponent
     }
 

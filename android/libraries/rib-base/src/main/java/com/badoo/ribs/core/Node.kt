@@ -15,6 +15,7 @@
  */
 package com.badoo.ribs.core
 
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
@@ -27,7 +28,6 @@ import androidx.lifecycle.Lifecycle.State.INITIALIZED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
@@ -51,8 +51,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  **/
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
-    savedInstanceState: Bundle?,
-    internal open val identifier: Rib,
+    buildContext: BuildContext.Resolved<*>,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
@@ -86,6 +85,9 @@ open class Node<V : RibView>(
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
+    internal val identifier: Rib.Identifier =
+        buildContext.identifier
+
     /**
      * FIXME the proper solution is to set this in constructor (pack it with savedInstanceState)
      * If left like this, it's not guaranteed to be set correctly, and can lead to problems
@@ -96,8 +98,8 @@ open class Node<V : RibView>(
      */
     var ancestryInfo: AncestryInfo = AncestryInfo.Root
     val resolver: ConfigurationResolver<*, V> = router
-    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
-    internal val externalLifecycleRegistry = LifecycleRegistry(this)
+    private val savedInstanceState = buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
     internal var viewLifecycleRegistry: LifecycleRegistry? = null
     val detachSignal = BehaviorRelay.create<Unit>()

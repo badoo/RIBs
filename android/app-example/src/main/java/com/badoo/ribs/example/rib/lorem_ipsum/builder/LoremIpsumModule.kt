@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum.Output
@@ -19,10 +19,10 @@ internal object LoremIpsumModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: LoremIpsumComponent,
-        savedInstanceState: Bundle?
+        buildContext: BuildContext.Resolved<Nothing?>
     ): LoremIpsumRouter =
         LoremIpsumRouter(
-            savedInstanceState = savedInstanceState
+            buildContext = buildContext
         )
 
 
@@ -30,12 +30,12 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         router: LoremIpsumRouter,
         output: Consumer<Output>
     ): LoremIpsumInteractor =
         LoremIpsumInteractor(
-            savedInstanceState = savedInstanceState,
+            buildContext = buildContext,
             router = router,
             output = output
         )
@@ -44,13 +44,12 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildContext: BuildContext.Resolved<Nothing?>,
         customisation: LoremIpsum.Customisation,
         router: LoremIpsumRouter,
         interactor: LoremIpsumInteractor
     ) : Node<LoremIpsumView> = Node(
-        savedInstanceState = savedInstanceState,
-        identifier = object : LoremIpsum {},
+        buildContext = buildContext,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

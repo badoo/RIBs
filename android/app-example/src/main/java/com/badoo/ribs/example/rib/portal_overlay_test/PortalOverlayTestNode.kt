@@ -1,17 +1,16 @@
 package com.badoo.ribs.example.rib.portal_overlay_test
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 
 class PortalOverlayTestNode(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<*>,
     viewFactory: ((ViewGroup) -> PortalOverlayTestView?)?,
     router: PortalOverlayTestRouter,
     interactor: PortalOverlayTestInteractor
 ) : Node<PortalOverlayTestView>(
-    savedInstanceState = savedInstanceState,
-    identifier = object : PortalOverlayTest {},
+    buildContext = buildContext,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor

@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.portal_overlay_test.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTest
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestNode
 import dagger.BindsInstance
@@ -17,7 +17,7 @@ internal interface PortalOverlayTestComponent {
         fun create(
             dependency: PortalOverlayTest.Dependency,
             @BindsInstance customisation: PortalOverlayTest.Customisation,
-            @BindsInstance savedInstanceState: Bundle?
+            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
         ): PortalOverlayTestComponent
     }
 

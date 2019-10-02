@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.hello_world
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
@@ -10,10 +10,9 @@ class HelloWorldNode(
     viewFactory: ((ViewGroup) -> HelloWorldView?)?,
     private val router: HelloWorldRouter,
     interactor: HelloWorldInteractor,
-    savedInstanceState: Bundle?
+    buildContext: BuildContext.Resolved<*>
 ) : Node<HelloWorldView>(
-    savedInstanceState = savedInstanceState,
-    identifier = object : HelloWorld {},
+    buildContext = buildContext,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor

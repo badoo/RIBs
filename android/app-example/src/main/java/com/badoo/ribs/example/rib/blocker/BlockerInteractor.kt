@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.blocker
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
@@ -11,11 +11,11 @@ import com.badoo.ribs.example.rib.blocker.mapper.ViewEventToOutput
 import io.reactivex.functions.Consumer
 
 class BlockerInteractor(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, BlockerView>,
     private val output: Consumer<Blocker.Output>
 ) : Interactor<Configuration, Configuration, Nothing, BlockerView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     router = router,
     disposables = null
 ) {

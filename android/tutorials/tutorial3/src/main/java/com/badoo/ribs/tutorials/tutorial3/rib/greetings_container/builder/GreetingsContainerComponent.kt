@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorld
@@ -17,7 +17,7 @@ internal interface GreetingsContainerComponent : HelloWorld.Dependency {
     interface Factory {
         fun create(
             dependency: GreetingsContainer.Dependency,
-            @BindsInstance savedInstanceState: Bundle?
+            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
         ): GreetingsContainerComponent
     }
 

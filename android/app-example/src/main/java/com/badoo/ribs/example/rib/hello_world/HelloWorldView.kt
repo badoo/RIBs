@@ -59,8 +59,8 @@ class HelloWorldViewImpl private constructor(
         text.text = vm.text
     }
 
-    override fun getParentViewForChild(child: Rib): ViewGroup? =
-        when (child) {
+    override fun getParentViewForChild(child: Rib.Identifier): ViewGroup? =
+        when (child.rib) {
             is Small -> smallContainer
             else -> null
         }

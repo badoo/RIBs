@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.big.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.example.rib.big.Big
 import com.badoo.ribs.example.rib.big.BigNode
 import com.badoo.ribs.example.rib.small.Small
@@ -18,7 +18,7 @@ internal interface BigComponent : Small.Dependency {
         fun create(
             dependency: Big.Dependency,
             @BindsInstance customisation: Big.Customisation,
-            @BindsInstance savedInstanceState: Bundle?
+            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
         ): BigComponent
     }
 

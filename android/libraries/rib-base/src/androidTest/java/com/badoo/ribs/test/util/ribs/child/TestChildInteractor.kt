@@ -3,13 +3,13 @@ package com.badoo.ribs.test.util.ribs.child
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter.Configuration
-import android.os.Bundle
+import com.badoo.ribs.core.BuildContext
 
 class TestChildInteractor(
-    savedInstanceState: Bundle?,
+    buildContext: BuildContext.Resolved<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, TestChildView>
 ) : Interactor<Configuration, Configuration, Nothing, TestChildView>(
-    savedInstanceState = savedInstanceState,
+    buildContext = buildContext,
     router = router,
     disposables = null
 )

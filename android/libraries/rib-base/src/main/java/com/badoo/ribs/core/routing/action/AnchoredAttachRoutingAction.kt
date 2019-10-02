@@ -1,12 +1,12 @@
 package com.badoo.ribs.core.routing.action
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.view.RibView
 
 class AnchoredAttachRoutingAction<V : RibView>(
     private val anchor: Node<*>,
-    builder: (Bundle?) -> Node<*>
+    builder: (params: BuildContext.Params) -> Node<*>
 ) : AttachRibRoutingAction<V>(
     builder = builder
 ) {
@@ -17,10 +17,10 @@ class AnchoredAttachRoutingAction<V : RibView>(
     companion object {
         fun <V : RibView> anchor(
             anchor: Node<*>,
-            builder: (Bundle?) -> Node<*>): RoutingAction<V> =
-            AnchoredAttachRoutingAction(
-                anchor,
-                builder
-            )
+            builder: (params: BuildContext.Params) -> Node<*>): RoutingAction<V> =
+                AnchoredAttachRoutingAction(
+                    anchor,
+                    builder
+                )
     }
 }

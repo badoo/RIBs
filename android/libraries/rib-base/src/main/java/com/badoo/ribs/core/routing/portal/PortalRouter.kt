@@ -57,13 +57,17 @@ class PortalRouter(
             targetRouter.resolveConfiguration(first())
 
         drop(1).forEach { element ->
-            // TODO for maximum correctness, original List<> should also contain Bundles,
-            //  as that might change how dependencies are built.
             val bundles = emptyList<Bundle?>()
 
             // TODO don't build it again if already available as child.
             //  This probably means storing Node identifier in addition to (Parcelable) configuration.
-            val nodes = routingAction.buildNodes(bundles)
+            val nodes = routingAction.buildNodes(
+                ancestryInfo = AncestryInfo.Root, // we'll be discarding these Nodes, it doesn't matter
+                // TODO for maximum correctness, original List<> should also contain Bundles,
+                //  as that might change how dependencies are built (right now there's no case for this,
+                //  but can be in the future).
+                bundles = emptyList()
+            )
 
             // TODO having 0 nodes is an impossible scenario, but having more than 1 can be valid.
             //  Solution is again to store Node identifiers & Bundles that help picking the correct one.

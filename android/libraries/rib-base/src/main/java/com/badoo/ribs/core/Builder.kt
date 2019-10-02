@@ -45,6 +45,7 @@ abstract class Builder<D, P, N : Node<*>> {
     ): BuildContext.Resolved<P> =
             BuildContext.Resolved(
                 savedInstanceState = buildContext.savedInstanceState,
+                ancestryInfo = buildContext.ancestryInfo,
                 identifier = Rib.Identifier(
                     rib = rib,
                     uuid = buildContext.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID(),

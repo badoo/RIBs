@@ -88,15 +88,9 @@ open class Node<V : RibView>(
     internal val identifier: Rib.Identifier =
         buildContext.identifier
 
-    /**
-     * FIXME the proper solution is to set this in constructor (pack it with savedInstanceState)
-     * If left like this, it's not guaranteed to be set correctly, and can lead to problems
-     * Proposed solution would mean passing Root only at integration point, Child is used automatically
-     * by building mechanism.
-     * Also PortalRouter.Configuration.Portal can then work directly with a @Parcelize AncestryInfo,
-     * which is not currently possible.
-     */
-    var ancestryInfo: AncestryInfo = AncestryInfo.Root
+    internal val ancestryInfo: AncestryInfo =
+        buildContext.ancestryInfo
+
     val resolver: ConfigurationResolver<*, V> = router
     private val savedInstanceState = buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
     private val externalLifecycleRegistry = LifecycleRegistry(this)

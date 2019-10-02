@@ -9,6 +9,7 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.core.routing.portal.PortalBuilder
 import com.badoo.ribs.core.routing.portal.PortalNode
@@ -62,7 +63,12 @@ class RootActivity : RibActivity() {
                     ).build(params)
                 }
             }
-        ).build(BuildContext.Params(savedInstanceState)).also {
+        ).build(
+            BuildContext.Params(
+                ancestryInfo = AncestryInfo.Root,
+                savedInstanceState = savedInstanceState
+            )
+        ).also {
             workflowRoot = it
         }
 

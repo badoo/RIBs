@@ -23,7 +23,7 @@ class ConfigurationContextTest {
     private val nodes: List<Node<*>> = listOf(mock(), mock())
     private val nodeDescriptors: List<Node.Descriptor> = nodes.map { Node.Descriptor(it, mock()) }
     private val routingAction = mock<RoutingAction<*>> {
-        on { buildNodes(anyOrNull()) } doReturn nodeDescriptors
+        on { buildNodes(any(), anyOrNull()) } doReturn nodeDescriptors
     }
     private val resolver = mock<(Parcelable) -> RoutingAction<*>> {
         on { invoke(any()) } doReturn routingAction
@@ -31,7 +31,7 @@ class ConfigurationContextTest {
 
     private val mockAnchor: Node<*> = mock()
     private val routingActionWithAnchor = mock<RoutingAction<*>> {
-        on { buildNodes(anyOrNull()) } doReturn nodeDescriptors
+        on { buildNodes(any(), anyOrNull()) } doReturn nodeDescriptors
         on { anchor() } doReturn mockAnchor
     }
     private val resolverWithAnchor = mock<(Parcelable) -> RoutingAction<*>> {
@@ -120,7 +120,7 @@ class ConfigurationContextTest {
                 configuration
             )
 
-            verify(it.node).ancestryInfo = expected
+            assertEquals(expected, it.node.ancestryInfo)
         }
     }
 
@@ -136,7 +136,7 @@ class ConfigurationContextTest {
                 configuration
             )
 
-            verify(it.node).ancestryInfo = expected
+            assertEquals(expected, it.node.ancestryInfo)
         }
     }
 

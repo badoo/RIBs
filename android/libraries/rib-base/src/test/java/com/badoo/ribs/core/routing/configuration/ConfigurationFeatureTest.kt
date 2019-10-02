@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Node.Descriptor
 import com.badoo.ribs.core.Node.AttachMode
+import com.badoo.ribs.core.Node.Descriptor
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
@@ -108,7 +108,7 @@ class ConfigurationFeatureTest {
 
             private fun List<() -> Descriptor>.toRoutingAction(): RoutingAction<*> =
                 mock {
-                    on { buildNodes(anyOrNull()) } doAnswer {
+                    on { buildNodes(anyOrNull(), anyOrNull()) } doAnswer {
                         this@toRoutingAction.map {
                             factory -> factory.invoke()
                         }

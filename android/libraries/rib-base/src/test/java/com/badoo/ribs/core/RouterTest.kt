@@ -40,14 +40,13 @@ class RouterTest {
                 Node.Descriptor(it, Node.AttachMode.PARENT)
             }
 
-        routingActionForC2 = mock { on { buildNodes(anyOrNull())} doReturn nodeDescriptorsC2 }
+        routingActionForC2 = mock { on { buildNodes(any(), anyOrNull())} doReturn nodeDescriptorsC2 }
         routingActionForC1 = mock()
         routingActionForC3 = mock()
         routingActionForC4 = mock()
         routingActionForC5 = mock()
 
         router = TestRouter(
-            savedInstanceState = null,
             initialConfiguration = TestRouter.Configuration.C2,
             routingActionForC1 = routingActionForC1,
             routingActionForC2 = routingActionForC2,

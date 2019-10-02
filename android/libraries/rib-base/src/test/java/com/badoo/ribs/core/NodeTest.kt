@@ -15,6 +15,7 @@ import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
+import com.badoo.ribs.core.helper.testBuildContext
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
@@ -83,8 +84,7 @@ class NodeTest {
 
     private fun createNodeWithView(): Node<TestView> {
         return Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
+            buildContext = testBuildContext(),
             viewFactory = viewFactory,
             router = router,
             interactor = interactor,
@@ -94,8 +94,7 @@ class NodeTest {
 
     private fun createNodeWithoutView(): Node<TestView> {
         return Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
+            buildContext = testBuildContext(),
             viewFactory = null,
             router = router,
             interactor = interactor,
@@ -109,9 +108,9 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode1 {}, viewFactory = null)
-        child2 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode2 {}, viewFactory = null)
-        child3 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode3 {}, viewFactory = null)
+        child1 = TestNode(testBuildContext(object : RandomOtherNode1 {}), viewFactory = null)
+        child2 = TestNode(testBuildContext(object : RandomOtherNode2 {}), viewFactory = null)
+        child3 = TestNode(testBuildContext(object : RandomOtherNode3 {}), viewFactory = null)
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -375,10 +374,10 @@ class NodeTest {
         }
     }
 
-    private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib> = mutableListOf()): List<Node<*>> {
+    private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib.Identifier> = mutableListOf()): List<Node<*>> {
         if (identifiers.isEmpty()) {
             for (i in 0 until n) {
-                identifiers.add(object : Rib {})
+                identifiers.add(testBuildContext().identifier)
             }
         }
         val mocks = mutableListOf<Node<*>>()
@@ -403,9 +402,9 @@ class NodeTest {
 
     @Test
     fun `attachToView() results in children added to target defined by Router`() {
-        val n1 = object : RandomOtherNode1 {}
-        val n2 = object : RandomOtherNode2 {}
-        val n3 = object : RandomOtherNode3 {}
+        val n1 = testBuildContext(object : RandomOtherNode1 {}).identifier
+        val n2 = testBuildContext(object : RandomOtherNode2 {}).identifier
+        val n3 = testBuildContext(object : RandomOtherNode3 {}).identifier
         val mocks = createAndAttachChildMocks(3, mutableListOf(n1, n2, n3))
 
         whenever(view.getParentViewForChild(n1)).thenReturn(someViewGroup1)
@@ -428,8 +427,6 @@ class NodeTest {
     fun `attachChildNode() does not imply attachToView when Android view system is not available`() {
         val childViewFactory = mock<TestViewFactory>()
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = childViewFactory
         )
         node.attachChildNode(child)
@@ -441,8 +438,6 @@ class NodeTest {
         // by default it's not started, should be on INITIALIZED
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -455,13 +450,9 @@ class NodeTest {
         // by default it's not started, should be on INITIALIZED
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -475,8 +466,6 @@ class NodeTest {
         node.onStop()
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -489,13 +478,9 @@ class NodeTest {
         node.onStop()
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -509,8 +494,6 @@ class NodeTest {
         node.onStart()
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -523,13 +506,9 @@ class NodeTest {
         node.onStart()
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -543,8 +522,6 @@ class NodeTest {
         node.onResume()
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -557,13 +534,9 @@ class NodeTest {
         node.onResume()
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -578,6 +551,15 @@ class NodeTest {
         node.attachToView(parentViewGroup)
         node.attachChildView(child)
         verify(child).attachToView(parentViewGroup)
+    }
+
+    @Test
+    fun `Tag is saved to bundle`() {
+        val outState = Bundle()
+        node.onSaveInstanceState(outState)
+        val inner = outState.getBundle(BUNDLE_KEY)
+        assertNotNull(inner)
+        assertEquals(node.identifier.uuid, inner.getSerializable(Rib.Identifier.KEY_UUID))
     }
 
     @Test
@@ -600,8 +582,7 @@ class NodeTest {
         whenever(nodeSavedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
 
         node = Node(
-            savedInstanceState = savedInstanceState,
-            identifier = object : TestPublicRibInterface {},
+            buildContext = testBuildContext(),
             viewFactory = viewFactory,
             router = router,
             interactor = interactor
@@ -713,8 +694,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
         node = Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
+            buildContext = testBuildContext(),
             viewFactory = null,
             router = router,
             interactor = interactor
@@ -727,8 +707,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
         node = Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
+            buildContext = testBuildContext(),
             viewFactory = null,
             router = router,
             interactor = interactor
@@ -800,7 +779,7 @@ class NodeTest {
     fun `waitForChildAttached emits expected child immediately if it's already attached`() {
         val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = TestObserver<TestNode2>()
-        val testChildNode = TestNode2(object : Rib {})
+        val testChildNode = TestNode2()
 
         node.attachChildNode(testChildNode)
         workflow.subscribe(testObserver)

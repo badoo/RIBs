@@ -337,7 +337,7 @@ open class Node<V : RibView>(
         if (isAttachedToView) {
             ribLifecycleRegistry.markState(state)
             if (!isViewless) {
-                view!!.let { viewLifecycleRegistry!!.markState(state) }
+                viewLifecycleRegistry!!.markState(state)
             }
         }
     }

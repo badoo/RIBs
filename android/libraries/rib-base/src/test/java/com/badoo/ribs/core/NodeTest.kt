@@ -6,8 +6,10 @@ import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
+import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestPublicRibInterface
@@ -15,6 +17,7 @@ import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
+import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
@@ -24,10 +27,12 @@ import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
+import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -629,14 +634,14 @@ class NodeTest {
     fun `attachToView() + has view = sets view lifecycle to external lifecycle - when INITIALIZED, view is in state INITIALIZED`() {
         // by default it's not started, should be on INITIALIZED
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry!!.currentState)
     }
 
     @Test
     fun `attachToView() + has view = sets view lifecycle to external lifecycle - when CREATED, view is in state CREATED`() {
         node.onStop()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.CREATED, node.viewLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.CREATED, node.viewLifecycleRegistry!!.currentState)
     }
 
     @Test
@@ -644,7 +649,7 @@ class NodeTest {
         node = createNodeWithView()
         node.onStart()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.STARTED, node.viewLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.STARTED, node.viewLifecycleRegistry!!.currentState)
     }
 
     @Test
@@ -652,23 +657,15 @@ class NodeTest {
         node = createNodeWithView()
         node.onResume()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry!!.currentState)
     }
 
     @Test
-    fun `attachToView() + viewless = doesn't change view lifecycle - when STARTED, view is only INITIALIZED`() {
-        node = createNodeWithoutView()
-        node.onStart()
-        node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
-    }
-
-    @Test
-    fun `attachToView() + viewless = doesn't change view lifecycle - when RESUMED, view is only INITIALIZED`() {
+    fun `attachToView() + viewless = doesn't have view lifecycle`() {
         node = createNodeWithoutView()
         node.onResume()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry.currentState)
+        assertNull(node.viewLifecycleRegistry)
     }
 
     @Test
@@ -678,17 +675,39 @@ class NodeTest {
     }
 
     @Test
-    fun `When current Node has a view, attachToView() doesn't yet notify Interactor of view creation if external lifecycle is not above INITIALIZED`() {
-        node.attachToView(parentViewGroup)
-        verify(interactor, never()).onViewCreated(node.viewLifecycleRegistry, view)
-    }
-
-    @Test
     fun `When current Node has a view, attachToView() notifies Interactor of view creation when external lifecycle goes above INITIALIZED`() {
         node.onStart()
         node.onStop()
         node.attachToView(parentViewGroup)
-        verify(interactor).onViewCreated(node.viewLifecycleRegistry, view)
+        verify(interactor).onViewCreated(node.viewLifecycleRegistry!!, view)
+    }
+
+    @Test
+    fun `By the time onViewCreated is called, passed in lifecycle is ready for bindings`() {
+        val trigger: PublishRelay<Unit> = PublishRelay.create()
+        val receiver: Consumer<Unit> = mock()
+        val onViewCreated: (TestView, Lifecycle) -> Unit = { _, viewLifecycle ->
+            viewLifecycle.createDestroy {
+                bind(trigger to receiver)
+            }
+
+            trigger.accept(Unit)
+        }
+
+        node = Node(
+            savedInstanceState = null,
+            identifier = object : TestPublicRibInterface {},
+            viewFactory = viewFactory,
+            router = router,
+            interactor = TestInteractor(
+                onViewCreated = onViewCreated
+            )
+        )
+
+        node.onStart()
+        node.onStop()
+        node.attachToView(parentViewGroup)
+        verify(receiver).accept(Unit)
     }
 
     @Test

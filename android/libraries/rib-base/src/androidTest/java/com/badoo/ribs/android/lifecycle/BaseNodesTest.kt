@@ -58,6 +58,6 @@ abstract class BaseNodesTest {
             attached = isAttached,
             viewAttached = isAttachedToView,
             ribLifeCycleState = ribLifecycleRegistry.currentState,
-            viewLifeCycleState = viewLifecycleRegistry.currentState
+            viewLifeCycleState = viewLifecycleRegistry?.currentState
         )
 }

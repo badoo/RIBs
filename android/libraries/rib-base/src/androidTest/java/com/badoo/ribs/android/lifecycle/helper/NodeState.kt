@@ -10,7 +10,7 @@ data class NodeState(
     val attached: Boolean,
     val viewAttached: Boolean,
     val ribLifeCycleState: Lifecycle.State,
-    val viewLifeCycleState: Lifecycle.State
+    val viewLifeCycleState: Lifecycle.State?
 ) {
     companion object {
         val ON_SCREEN = NodeState(

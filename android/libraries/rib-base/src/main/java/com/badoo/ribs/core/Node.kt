@@ -34,8 +34,6 @@ import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import android.util.SparseArray
 import android.view.ViewGroup
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleObserver
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
@@ -101,7 +99,7 @@ open class Node<V : RibView>(
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
-    internal val viewLifecycleRegistry = LifecycleRegistry(this)
+    internal var viewLifecycleRegistry: LifecycleRegistry? = null
     val detachSignal = BehaviorRelay.create<Unit>()
 
     val tag: String = this::class.java.name
@@ -143,12 +141,7 @@ open class Node<V : RibView>(
         isAttachedToView = true
 
         if (!isViewless) {
-            view = createView(parentViewGroup)
-            view!!.let {
-                parentViewGroup.addView(it.androidView)
-                it.androidView.restoreHierarchyState(savedViewState)
-                interactor.deferOnViewCreated(it)
-            }
+            createView(parentViewGroup)
         }
 
         router.onAttachView()
@@ -157,32 +150,18 @@ open class Node<V : RibView>(
         onResumeInternal()
     }
 
-    var viewLifecycleObserver: LifecycleObserver? = null
-
-    /**
-     * It's important that [Interactor.onViewCreated] doesn't get immediately called on view object
-     * creation, but when related view lifecycle gets onCreate() signal, so that when it is called,
-     * it's actually in the expected lifecycle state. Otherwise it can be misleading (method called
-     * but lifecycle not there yet) and lead to unexpected behavior.
-     */
-    private fun Interactor<*, *, *, V>.deferOnViewCreated(view: V) {
-        viewLifecycleObserver = object : DefaultLifecycleObserver {
-            override fun onCreate(owner: LifecycleOwner) {
-                this@deferOnViewCreated.onViewCreated(viewLifecycleRegistry, view)
+    private fun createView(parentViewGroup: ViewGroup) {
+        view = viewFactory?.invoke(parentViewGroup)
+        view!!.let { view ->
+            parentViewGroup.addView(view.androidView)
+            viewLifecycleRegistry = LifecycleRegistry(this).apply {
+                // At this point externalLifecycleRegistry is at least CREATED, otherwise we wouldn't be attaching to view
+                markState(externalLifecycleRegistry.currentState)
+                interactor.onViewCreated(this, view)
             }
-
-            override fun onStart(owner: LifecycleOwner) {}
-            override fun onResume(owner: LifecycleOwner) {}
-            override fun onPause(owner: LifecycleOwner) {}
-            override fun onStop(owner: LifecycleOwner) {}
-            override fun onDestroy(owner: LifecycleOwner) {}
-        }.also {
-            viewLifecycleRegistry.addObserver(it)
+            view.androidView.restoreHierarchyState(savedViewState)
         }
     }
-
-    private fun createView(parentViewGroup: ViewGroup): V? =
-        viewFactory?.invoke(parentViewGroup)
 
     fun detachFromView() {
         if (isAttachedToView) {
@@ -193,7 +172,8 @@ open class Node<V : RibView>(
             if (!isViewless) {
                 view!!.let {
                     parentViewGroup!!.removeView(it.androidView)
-                    viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+                    viewLifecycleRegistry?.handleLifecycleEvent(ON_DESTROY)
+                    viewLifecycleRegistry = null
                 }
             }
 
@@ -201,8 +181,6 @@ open class Node<V : RibView>(
             view = null
             isAttachedToView = false
             this.parentViewGroup = null
-            viewLifecycleObserver?.let { viewLifecycleRegistry.removeObserver(it) }
-            viewLifecycleObserver = null
         }
     }
 
@@ -215,7 +193,6 @@ open class Node<V : RibView>(
             detachFromView()
         }
 
-        viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
         ribLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
         interactor.onDetach()
         router.onDetach()
@@ -360,7 +337,7 @@ open class Node<V : RibView>(
         if (isAttachedToView) {
             ribLifecycleRegistry.markState(state)
             if (!isViewless) {
-                view!!.let { viewLifecycleRegistry.markState(state) }
+                viewLifecycleRegistry!!.markState(state)
             }
         }
     }

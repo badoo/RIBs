@@ -99,7 +99,7 @@ open class Node<V : RibView>(
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
-    internal val viewLifecycleRegistry = LifecycleRegistry(this)
+    internal var viewLifecycleRegistry: LifecycleRegistry? = null
     val detachSignal = BehaviorRelay.create<Unit>()
 
     val tag: String = this::class.java.name
@@ -141,13 +141,7 @@ open class Node<V : RibView>(
         isAttachedToView = true
 
         if (!isViewless) {
-            view = createView(parentViewGroup)
-            view!!.let {
-                parentViewGroup.addView(it.androidView)
-                it.androidView.restoreHierarchyState(savedViewState)
-                viewLifecycleRegistry.markState(externalLifecycleRegistry.currentState)
-                interactor.onViewCreated(viewLifecycleRegistry, it)
-            }
+            createView(parentViewGroup)
         }
 
         router.onAttachView()
@@ -156,8 +150,18 @@ open class Node<V : RibView>(
         onResumeInternal()
     }
 
-    private fun createView(parentViewGroup: ViewGroup): V? =
-        viewFactory?.invoke(parentViewGroup)
+    private fun createView(parentViewGroup: ViewGroup) {
+        view = viewFactory?.invoke(parentViewGroup)
+        view!!.let { view ->
+            parentViewGroup.addView(view.androidView)
+            viewLifecycleRegistry = LifecycleRegistry(this).apply {
+                // At this point externalLifecycleRegistry is at least CREATED, otherwise we wouldn't be attaching to view
+                markState(externalLifecycleRegistry.currentState)
+                interactor.onViewCreated(this, view)
+            }
+            view.androidView.restoreHierarchyState(savedViewState)
+        }
+    }
 
     fun detachFromView() {
         if (isAttachedToView) {
@@ -168,7 +172,8 @@ open class Node<V : RibView>(
             if (!isViewless) {
                 view!!.let {
                     parentViewGroup!!.removeView(it.androidView)
-                    viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
+                    viewLifecycleRegistry?.handleLifecycleEvent(ON_DESTROY)
+                    viewLifecycleRegistry = null
                 }
             }
 
@@ -188,7 +193,6 @@ open class Node<V : RibView>(
             detachFromView()
         }
 
-        viewLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
         ribLifecycleRegistry.handleLifecycleEvent(ON_DESTROY)
         interactor.onDetach()
         router.onDetach()
@@ -333,7 +337,7 @@ open class Node<V : RibView>(
         if (isAttachedToView) {
             ribLifecycleRegistry.markState(state)
             if (!isViewless) {
-                view!!.let { viewLifecycleRegistry.markState(state) }
+                view!!.let { viewLifecycleRegistry!!.markState(state) }
             }
         }
     }

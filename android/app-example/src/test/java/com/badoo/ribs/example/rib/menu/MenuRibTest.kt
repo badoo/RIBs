@@ -1,7 +1,9 @@
 package com.badoo.ribs.example.rib.menu
 
 import android.view.ViewGroup
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
@@ -89,7 +91,12 @@ class MenuRibTest {
 
             override fun menuInput(): ObservableSource<Menu.Input> = menuInput
             override fun menuOutput(): Consumer<Menu.Output> = menuOutput
-        }).build(null)
+        }).build(
+            BuildContext.Params(
+                ancestryInfo = AncestryInfo.Root,
+                savedInstanceState = null
+            )
+        )
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
 }

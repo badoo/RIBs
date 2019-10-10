@@ -16,7 +16,7 @@ class DialogExampleRouterTest {
     @Before
     fun setup() {
         router = DialogExampleRouter(
-            savedInstanceState = null,
+            buildContext = mock(),
             dialogLauncher = mock(),
             simpleDialog = mock(),
             lazyDialog = mock(),

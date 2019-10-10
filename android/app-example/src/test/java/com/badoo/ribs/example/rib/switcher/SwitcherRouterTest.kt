@@ -1,14 +1,14 @@
 package com.badoo.ribs.example.rib.switcher
 
+import com.badoo.ribs.core.BuildContext.Params
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.foo_bar.FooBarView
+import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
-import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs
@@ -24,7 +24,6 @@ import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
@@ -38,26 +37,27 @@ import org.junit.Test
  */
 class SwitcherRouterTest {
 
-    private val fooBarNode = TestNode<FooBarView>()
-    private val fooBarBuilder = mock<FooBarBuilder> { on { build(anyOrNull()) } doReturn fooBarNode }
 
-    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), mock())
-    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(anyOrNull()) } doReturn helloWorldNode }
+    private val fooBarNode = FooBarNode(null, mock(), mock(), TestNode.mockBuildContext, emptySet())
+    private val fooBarBuilder = mock<FooBarBuilder> { on { build(any<Params>()) } doReturn fooBarNode }
+
+    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), TestNode.mockBuildContext)
+    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(any<Params>()) } doReturn helloWorldNode }
 
     private val dialogExampleNode = TestNode<DialogExampleView>()
-    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(anyOrNull()) } doReturn dialogExampleNode }
+    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(any<Params>()) } doReturn dialogExampleNode }
 
     private val blockerNode = TestNode<BlockerView>()
-    private val blockerBuilder = mock<BlockerBuilder> { on { build(anyOrNull()) } doReturn blockerNode }
+    private val blockerBuilder = mock<BlockerBuilder> { on { build(any<Params>()) } doReturn blockerNode }
 
     private val menuNode = TestNode<MenuView>()
-    private val menuBuilder = mock<MenuBuilder> { on { build(anyOrNull()) } doReturn menuNode }
+    private val menuBuilder = mock<MenuBuilder> { on { build(any<Params>()) } doReturn menuNode }
 
     private val dialogLauncher: DialogLauncher = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val router = SwitcherRouter(
-        null,
+        mock(),
         fooBarBuilder,
         helloWorldBuilder,
         dialogExampleBuilder,
@@ -67,7 +67,7 @@ class SwitcherRouterTest {
         dialogToTestOverlay
     )
 
-    private val rootNode = TestNode(router)
+    private val rootNode = TestNode(router = router)
 
     @Test
     fun `attach - attaches menu and dialog example node`() {

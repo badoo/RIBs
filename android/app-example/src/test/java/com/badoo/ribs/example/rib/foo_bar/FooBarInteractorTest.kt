@@ -15,7 +15,7 @@ class FooBarInteractorTest {
     @Before
     fun setup() {
         interactor = FooBarInteractor(
-            savedInstanceState = null,
+            buildContext = mock(),
             router = router,
             permissionRequester = permissionRequester
         )

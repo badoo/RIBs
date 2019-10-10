@@ -13,7 +13,7 @@ class DialogExampleInteractorTest {
     @Before
     fun setup() {
         interactor = DialogExampleInteractor(
-            savedInstanceState = null,
+            buildContext = mock(),
             router = router,
             simpleDialog = mock(),
             lazyDialog = mock(),

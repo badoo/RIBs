@@ -1,21 +1,22 @@
 package com.badoo.ribs.example.rib.util
 
 import android.view.ViewGroup
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.view.RibView
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
+    buildContext: BuildContext.Resolved<*> = mockBuildContext,
     router: Router<*, *, *, *, V> = mock(),
-    identifier: Rib = object : Rib {},
     viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<*, *, *, V> = mock()
 ) : Node<V>(
-    savedInstanceState = null,
-    identifier = identifier,
+    buildContext = buildContext,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor
@@ -32,5 +33,9 @@ class TestNode<V : RibView>(
     override fun onDetach() {
         super.onDetach()
         isAttached = false
+    }
+
+    companion object {
+        val mockBuildContext = mock<BuildContext.Resolved<Nothing?>> { on { identifier} doReturn mock() }
     }
 }

@@ -11,13 +11,12 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class LoremIpsumRouterTest {
 
-    private var interactor: LoremIpsumInteractor = mock()
     private var router: LoremIpsumRouter? = null
 
     @Before
     fun setup() {
         router = LoremIpsumRouter(
-            savedInstanceState = null
+            buildContext = mock()
         )
     }
 

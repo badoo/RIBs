@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 
 class TestInteractor(
     private val onViewCreated: (view: TestView, viewLifecycle: Lifecycle) -> Unit = { _, _ -> },
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext.Resolved<Nothing?> = testBuildContext(),
     router: Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView> = mock(),
     disposables: Disposable? = null
 ) : Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView>(

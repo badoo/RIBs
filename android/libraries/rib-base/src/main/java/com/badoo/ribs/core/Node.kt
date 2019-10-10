@@ -88,7 +88,7 @@ open class Node<V : RibView>(
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
-    internal val identifier: Rib.Identifier =
+    internal open val identifier: Rib.Identifier =
         buildContext.identifier
 
     internal val ancestryInfo: AncestryInfo =

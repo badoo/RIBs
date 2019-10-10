@@ -3,7 +3,6 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
@@ -75,31 +74,22 @@ class NodeTest {
         router = mock()
         interactor = mock()
         viewPlugins = setOf(mock(), mock())
-
-        node = createNodeWithView()
+        node = createNode(viewFactory = viewFactory)
 
         addChildren()
     }
 
-    private fun createNodeWithView(): Node<TestView> {
-        return Node(
-            buildContext = testBuildContext(),
-            viewFactory = viewFactory,
-            router = router,
-            interactor = interactor,
-            viewPlugins = viewPlugins
-        )
-    }
-
-    private fun createNodeWithoutView(): Node<TestView> {
-        return Node(
-            buildContext = testBuildContext(),
-            viewFactory = null,
-            router = router,
-            interactor = interactor,
-            viewPlugins = viewPlugins
-        )
-    }
+    private fun createNode(
+        buildContext: BuildContext.Resolved<Nothing?> = testBuildContext(),
+        viewFactory: TestViewFactory? = this@NodeTest.viewFactory,
+        interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView> = this@NodeTest.interactor
+    ): Node<TestView> = Node(
+        buildContext = buildContext,
+        viewFactory = viewFactory,
+        router = router,
+        interactor = interactor,
+        viewPlugins = viewPlugins
+    )
 
     @After
     fun tearDown() {
@@ -382,9 +372,7 @@ class NodeTest {
         val mocks = mutableListOf<Node<*>>()
         for (i in 0 until n) {
             val mockNode = mock<Node<*>>()
-//            mocks.add(mock { on { identifier }.thenReturn(identifiers[i]) })
-//            whenever(mockNode.identifier).thenReturn(identifiers[i])
-//            doReturn(identifiers[i]).`when`(mockNode.identifier)
+            whenever(mockNode.identifier).thenReturn(identifiers[i])
             mocks.add(mockNode)
 
         }
@@ -578,20 +566,14 @@ class NodeTest {
     }
 
     @Test
-    fun `View state is restored from bundle`() {
-        val savedInstanceState = mock<Bundle>()
-        val nodeSavedInstanceState = mock<Bundle>()
-        val savedViewState = SparseArray<Parcelable>()
-        whenever(savedInstanceState.getBundle(BUNDLE_KEY)).thenReturn(nodeSavedInstanceState)
-        whenever(nodeSavedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
+    fun `View state is saved and restored from bundle`() {
+        node = createNode(buildContext = testBuildContext(savedInstanceState = null))
 
-        node = Node(
-            buildContext = testBuildContext(),
-            viewFactory = viewFactory,
-            router = router,
-            interactor = interactor
-        )
-        node.onAttach()
+        val outState = Bundle()
+        node.onSaveInstanceState(outState)
+        val savedViewState = node.savedViewState
+
+        node = createNode(buildContext = testBuildContext(savedInstanceState = outState))
         assertEquals(savedViewState, node.savedViewState)
     }
 
@@ -631,7 +613,7 @@ class NodeTest {
 
     @Test
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when STARTED, view is in state STARTED`() {
-        node = createNodeWithView()
+        node = createNode(viewFactory = viewFactory)
         node.onStart()
         node.attachToView(parentViewGroup)
         assertEquals(Lifecycle.State.STARTED, node.viewLifecycleRegistry!!.currentState)
@@ -639,15 +621,23 @@ class NodeTest {
 
     @Test
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when RESUMED, view is in state RESUMED`() {
-        node = createNodeWithView()
+        node = createNode(viewFactory = viewFactory)
         node.onResume()
         node.attachToView(parentViewGroup)
         assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry!!.currentState)
     }
 
     @Test
+    fun `attachToView() + viewless = doesn't change view lifecycle - when STARTED, view is only INITIALIZED`() {
+        node = createNode(viewFactory = null)
+        node.onStart()
+        node.attachToView(parentViewGroup)
+        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry!!.currentState)
+    }
+
+    @Test
     fun `attachToView() + viewless = doesn't have view lifecycle`() {
-        node = createNodeWithoutView()
+        node = createNode(viewFactory = null)
         node.onResume()
         node.attachToView(parentViewGroup)
         assertNull(node.viewLifecycleRegistry)
@@ -679,11 +669,7 @@ class NodeTest {
             trigger.accept(Unit)
         }
 
-        node = Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
-            viewFactory = viewFactory,
-            router = router,
+        node = createNode(
             interactor = TestInteractor(
                 onViewCreated = onViewCreated
             )
@@ -697,26 +683,14 @@ class NodeTest {
 
     @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
-        node = Node(
-            buildContext = testBuildContext(),
-            viewFactory = null,
-            router = router,
-            interactor = interactor
-        )
-
+        node = createNode(viewFactory = null)
         node.attachToView(parentViewGroup)
         verify(parentViewGroup, never()).addView(anyOrNull())
     }
 
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
-        node = Node(
-            buildContext = testBuildContext(),
-            viewFactory = null,
-            router = router,
-            interactor = interactor
-        )
-
+        node = createNode(viewFactory = null)
         node.attachToView(parentViewGroup)
         verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
     }

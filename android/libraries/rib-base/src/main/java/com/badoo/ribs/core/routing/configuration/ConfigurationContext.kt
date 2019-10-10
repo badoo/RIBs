@@ -2,7 +2,6 @@ package com.badoo.ribs.core.routing.configuration
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
@@ -104,16 +103,19 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     configuration = configuration,
                     bundles = bundles,
                     routingAction = routingAction,
-                    nodes = routingAction.buildNodes(
-                        ancestryInfo = AncestryInfo.Child(
-                            anchor = routingAction.anchor() ?: parentNode,
-                            creatorConfiguration = configuration
-                        ),
-                        bundles = bundles
-                    )
+                    nodes = buildNodes(routingAction, parentNode)
                 )
             )
         }
+
+        private fun buildNodes(routingAction: RoutingAction<*>, parentNode: Node<*>): List<Node<*>> =
+            routingAction.buildNodes(
+                ancestryInfo = AncestryInfo.Child(
+                    anchor = routingAction.anchor() ?: parentNode,
+                    creatorConfiguration = configuration
+                ),
+                bundles = bundles
+            )
 
         override fun sleep(): Unresolved<C> = copy(
             activationState = activationState.sleep()
@@ -133,7 +135,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override val configuration: C,
         var bundles: List<Bundle>,
         val routingAction: RoutingAction<*>,
-        val nodes: List<Node.Descriptor>
+        val nodes: List<Node<*>>
     ) : ConfigurationContext<C>() {
 
         override fun resolve(
@@ -157,9 +159,9 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
         fun saveInstanceState() =
             copy(
-                bundles = nodes.map { nodeDescriptor ->
+                bundles = nodes.map { node ->
                     Bundle().also {
-                        nodeDescriptor.node.onSaveInstanceState(it)
+                        node.onSaveInstanceState(it)
                     }
                 }
             )

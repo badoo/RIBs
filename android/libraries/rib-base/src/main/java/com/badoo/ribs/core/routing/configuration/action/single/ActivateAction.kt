@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
@@ -41,10 +42,10 @@ internal object ActivateAction : ResolvedSingleConfigurationAction() {
         return item.withActivationState(globalActivationLevel)
     }
 
-    private fun Node<*>.attachParentedViews(nodes: List<Node.Descriptor>) {
+    private fun Node<*>.attachParentedViews(nodes: List<Node<*>>) {
         nodes.forEach {
-            if (it.viewAttachMode == Node.AttachMode.PARENT && !it.node.isAttachedToView) {
-                attachChildView(it.node)
+            if (it.viewAttachMode == AttachMode.PARENT && !it.isAttachedToView) {
+                attachChildView(it)
             }
         }
     }

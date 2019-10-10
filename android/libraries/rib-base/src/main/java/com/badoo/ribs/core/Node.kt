@@ -42,7 +42,7 @@ import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
-//import com.uber.rib.util.RibRefWatcher
+import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.concurrent.CopyOnWriteArrayList
@@ -56,32 +56,9 @@ open class Node<V : RibView>(
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
-    private val viewPlugins: Set<ViewPlugin> = emptySet()
-//    ,
-//    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
+    private val viewPlugins: Set<ViewPlugin> = emptySet(),
+    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
-
-    // TODO consider moving to BuildContext
-    enum class AttachMode {
-        /**
-         * The node's view attach/detach is managed by its parent.
-         */
-        PARENT,
-
-        /**
-         * The node's view is somewhere else in the view tree, and it should not be managed
-         *  by its parent.
-         *
-         * Examples can be: the child's view is hosted in a dialog, or added to some other
-         *  generic host node.
-         */
-        EXTERNAL
-    }
-
-    data class Descriptor(
-        val node: Node<*>,
-        val viewAttachMode: AttachMode
-    )
 
     companion object {
         internal const val BUNDLE_KEY = "Node"
@@ -93,6 +70,9 @@ open class Node<V : RibView>(
 
     internal val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
+
+    internal open val viewAttachMode: AttachMode =
+        buildContext.viewAttachMode
 
     val resolver: ConfigurationResolver<*, V> = router
     private val savedInstanceState = buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
@@ -210,9 +190,9 @@ open class Node<V : RibView>(
     @MainThread
     internal fun attachChildNode(child: Node<*>) {
         children.add(child)
-//        ribRefWatcher.logBreadcrumb(
-//            "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
-//        )
+        ribRefWatcher.logBreadcrumb(
+            "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
+        )
 
         child.inheritExternalLifecycle(externalLifecycleRegistry)
         child.onAttach()
@@ -257,10 +237,10 @@ open class Node<V : RibView>(
     internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
 
-//        ribRefWatcher.watchDeletedObject(childNode)
-//        ribRefWatcher.logBreadcrumb(
-//            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
-//        )
+        ribRefWatcher.watchDeletedObject(childNode)
+        ribRefWatcher.logBreadcrumb(
+            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+        )
 
         childNode.onDetach()
     }
@@ -342,7 +322,7 @@ open class Node<V : RibView>(
 
     @CallSuper
     open fun handleBackPress(): Boolean {
-//        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
+        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return router.popOverlay()
             || delegateHandleBackPressToActiveChildren()
             || interactor.handleBackPress()

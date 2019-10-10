@@ -24,9 +24,9 @@ internal object AddAction : ResolvedSingleConfigurationAction() {
         return item
     }
 
-    private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>) {
+    private fun Node<*>.attachNodes(nodes: List<Node<*>>) {
         nodes.forEach {
-            attachChildNode(it.node)
+            attachChildNode(it)
         }
     }
 }

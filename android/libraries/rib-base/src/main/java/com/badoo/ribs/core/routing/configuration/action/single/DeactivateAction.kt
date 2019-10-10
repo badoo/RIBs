@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
@@ -23,16 +24,16 @@ internal object DeactivateAction : ResolvedSingleConfigurationAction() {
         return item.withActivationState(INACTIVE)
     }
 
-    private fun List<Node.Descriptor>.saveViewState() {
+    private fun List<Node<*>>.saveViewState() {
         forEach {
-            it.node.saveViewState()
+            it.saveViewState()
         }
     }
 
-    private fun Node<*>.detachChildViews(nodes: List<Node.Descriptor>) {
+    private fun Node<*>.detachChildViews(nodes: List<Node<*>>) {
         nodes.forEach {
-            if (it.viewAttachMode == Node.AttachMode.PARENT) {
-                detachChildView(it.node)
+            if (it.viewAttachMode == AttachMode.PARENT) {
+                detachChildView(it)
             }
         }
     }

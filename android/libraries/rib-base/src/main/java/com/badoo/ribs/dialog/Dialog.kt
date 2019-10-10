@@ -1,6 +1,7 @@
 package com.badoo.ribs.dialog
 
 import android.os.Bundle
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.routing.portal.AncestryInfo
@@ -82,6 +83,7 @@ abstract class Dialog<T : Any> private constructor(
                  * Not entirely sure it is needed. To be reconsidered later.
                  */
                 ancestryInfo = ancestryInfo,
+                viewAttachMode = AttachMode.EXTERNAL,
                 savedInstanceState = bundles.firstOrNull()
             )
 

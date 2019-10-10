@@ -11,7 +11,7 @@ class CompositeRoutingAction< V : RibView>(
 
     constructor(routingActions: List<RoutingAction<V>>) : this(*routingActions.toTypedArray())
 
-    override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node.Descriptor> =
+    override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node<*>> =
         routingActions.mapIndexed { index, routingAction ->
             routingAction.buildNodes(
                 ancestryInfo = ancestryInfo,

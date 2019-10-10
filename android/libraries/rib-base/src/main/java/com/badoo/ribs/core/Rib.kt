@@ -22,8 +22,9 @@ interface Rib {
 // TODO better name
 fun <T> BuildContext.Params.with(tag: Any = Unit, data: T? = null) =
     BuildContext.ParamsWithData(
-        savedInstanceState = savedInstanceState,
         ancestryInfo = ancestryInfo,
+        viewAttachMode = viewAttachMode,
+        savedInstanceState = savedInstanceState,
         tag = tag,
         data = data
     )

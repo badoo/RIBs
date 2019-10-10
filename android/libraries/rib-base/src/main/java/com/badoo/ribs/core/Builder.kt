@@ -46,8 +46,9 @@ abstract class Builder<D, P, N : Node<*>> {
         buildContext: BuildContext.ParamsWithData<P>
     ): BuildContext.Resolved<P> =
             BuildContext.Resolved(
-                savedInstanceState = buildContext.savedInstanceState,
                 ancestryInfo = buildContext.ancestryInfo,
+                viewAttachMode = buildContext.viewAttachMode,
+                savedInstanceState = buildContext.savedInstanceState,
                 identifier = Rib.Identifier(
                     rib = rib,
                     uuid = buildContext.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID(),

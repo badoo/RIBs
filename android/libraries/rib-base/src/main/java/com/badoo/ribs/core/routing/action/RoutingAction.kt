@@ -7,7 +7,7 @@ import com.badoo.ribs.core.view.RibView
 
 interface RoutingAction<V : RibView> {
 
-    fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node.Descriptor> =
+    fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node<*>> =
         emptyList()
 
     fun execute() {

@@ -1,6 +1,5 @@
 package com.badoo.ribs.core
 
-// TODO consider moving to BuildContext
 enum class AttachMode {
     /**
      * The node's view attach/detach is managed by its parent.

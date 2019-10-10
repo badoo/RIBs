@@ -44,7 +44,7 @@ class PortalRouterTest {
             )
         )
 
-        val builtNodes = remoteRoutingAction.buildNodes(AncestryInfo.Root, emptyList()).map { it.node }
+        val builtNodes = remoteRoutingAction.buildNodes(AncestryInfo.Root, emptyList())
         assertEquals(listOf(node3), builtNodes)
     }
 }

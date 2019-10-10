@@ -21,12 +21,11 @@ import org.junit.Test
 class ConfigurationContextTest {
 
     private val nodes: List<Node<*>> = listOf(mock(), mock())
-    private val nodeDescriptors: List<Node.Descriptor> = nodes.map { Node.Descriptor(it, mock()) }
     private val nothingElseToDo = { resolved: Resolved<Parcelable> -> resolved }
 
     // Default
     private val defaultRoutingAction = mock<RoutingAction<*>> {
-        on { buildNodes(any(), anyOrNull()) } doReturn nodeDescriptors
+        on { buildNodes(any(), anyOrNull()) } doReturn nodes
     }
     private val defaultResolver = mock<(Parcelable) -> RoutingAction<*>> {
         on { invoke(any()) } doReturn defaultRoutingAction
@@ -35,7 +34,7 @@ class ConfigurationContextTest {
     // With Anchor
     private val mockAnchor: Node<*> = mock()
     private val routingActionWithAnchor = mock<RoutingAction<*>> {
-        on { buildNodes(any(), anyOrNull()) } doReturn nodeDescriptors
+        on { buildNodes(any(), anyOrNull()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }
     private val resolverWithAnchor = mock<(Parcelable) -> RoutingAction<*>> {
@@ -133,7 +132,7 @@ class ConfigurationContextTest {
     fun `Unresolved resolve() stores built Nodes returned by RoutingAction buildNodes()`() {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
         val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
-        assertEquals(nodeDescriptors, resolved.nodes)
+        assertEquals(nodes, resolved.nodes)
     }
 
     @Test
@@ -218,7 +217,7 @@ class ConfigurationContextTest {
     @Test
     fun `Resolved saveInstanceState() sets correct bundles`() {
         val bundles = mock<List<Bundle>>()
-        val resolved = Resolved<Parcelable>(ACTIVE, mock(), bundles, mock(), nodeDescriptors)
+        val resolved = Resolved<Parcelable>(ACTIVE, mock(), bundles, mock(), nodes)
         val afterInvocation = resolved.saveInstanceState()
 
         afterInvocation.bundles.forEachIndexed { i, bundle ->

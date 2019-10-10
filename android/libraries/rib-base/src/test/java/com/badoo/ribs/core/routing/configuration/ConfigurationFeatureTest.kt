@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Node.AttachMode
-import com.badoo.ribs.core.Node.Descriptor
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
@@ -73,18 +72,18 @@ class ConfigurationFeatureTest {
 
     data class ConfigurationTestHelper(
         val configuration: Configuration,
-        val nodes: List<Descriptor>,
+        val nodes: List<Node<*>>,
         val bundles: List<Bundle>,
-        val nodeFactories: List<() -> Descriptor>,
+        val nodeFactories: List<() -> Node<*>>,
         val routingAction: RoutingAction<*>
     ) {
         companion object {
             fun create(configuration: Configuration, nbNodes: Int, viewAttachMode: AttachMode): ConfigurationTestHelper {
                 val nodes = MutableList(nbNodes) { i ->
-                    Descriptor(
-                        mock { on { toString() } doReturn "Node #$i of $configuration" },
-                        viewAttachMode
-                    )
+                    mock<Node<*>> {
+                        on { this.viewAttachMode } doReturn viewAttachMode
+                        on { toString() } doReturn "Node #$i of $configuration"
+                    }
                 }
                 val bundles = MutableList(nbNodes) { mock<Bundle>() }
                 val factories = nodes.toFactory()
@@ -99,14 +98,14 @@ class ConfigurationFeatureTest {
                 )
             }
 
-            private fun List<Descriptor>.toFactory(): List<() -> Descriptor> =
-                map { descriptor ->
-                    mock<() -> Descriptor> {
-                        on { invoke() } doReturn descriptor
+            private fun List<Node<*>>.toFactory(): List<() -> Node<*>> =
+                map { node ->
+                    mock<() -> Node<*>> {
+                        on { invoke() } doReturn node
                     }
                 }
 
-            private fun List<() -> Descriptor>.toRoutingAction(): RoutingAction<*> =
+            private fun List<() -> Node<*>>.toRoutingAction(): RoutingAction<*> =
                 mock {
                     on { buildNodes(anyOrNull(), anyOrNull()) } doAnswer {
                         this@toRoutingAction.map {
@@ -217,8 +216,8 @@ class ConfigurationFeatureTest {
     @Test
     fun `On init, ALL initial configuration are added - Nodes that are created are attached with empty Bundles`() {
         createEmptyFeature()
-        helperPermanent1.nodes.forEach { verify(parentNode).attachChildNode(it.node) }
-        helperPermanent2.nodes.forEach { verify(parentNode).attachChildNode(it.node) }
+        helperPermanent1.nodes.forEach { verify(parentNode).attachChildNode(it) }
+        helperPermanent2.nodes.forEach { verify(parentNode).attachChildNode(it) }
     }
 
     @Test
@@ -233,8 +232,8 @@ class ConfigurationFeatureTest {
     fun `On first WakeUp after init, ALL initial configuration are activated - Nodes that are created are attached to the view`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        helperPermanent1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
-        helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it.node) }
+        helperPermanent1.nodes.forEach { verify(parentNode).attachChildView(it) }
+        helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it) }
     }
 
     // endregion
@@ -269,19 +268,19 @@ class ConfigurationFeatureTest {
         feature.accept(WakeUp())
 
         helperPermanent1.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node)
+            verify(parentNode).attachChildNode(item)
         }
         helperPermanent2.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node)
+            verify(parentNode).attachChildNode(item)
         }
         helperContentViewParented1.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node)
+            verify(parentNode).attachChildNode(item)
         }
         helperContentViewParented2.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node)
+            verify(parentNode).attachChildNode(item)
         }
         helperContentExternal1.nodes.forEachIndexed{ idx, item ->
-            verify(parentNode).attachChildNode(item.node)
+            verify(parentNode).attachChildNode(item)
         }
     }
 
@@ -300,12 +299,12 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously ACTIVE configurations are activated - Nodes that are created are attached to the view with respect to their ViewAttachMode`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        helperPermanent1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
-        helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it.node) }
-        helperContentViewParented1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
-        helperContentViewParented2.nodes.forEach { verify(parentNode).attachChildView(it.node) }
+        helperPermanent1.nodes.forEach { verify(parentNode).attachChildView(it) }
+        helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it) }
+        helperContentViewParented1.nodes.forEach { verify(parentNode).attachChildView(it) }
+        helperContentViewParented2.nodes.forEach { verify(parentNode).attachChildView(it) }
         // External should not be attached:
-        helperContentExternal1.nodes.forEach { verify(parentNode, never()).attachChildView(it.node) }
+        helperContentExternal1.nodes.forEach { verify(parentNode, never()).attachChildView(it) }
     }
 
     @Test
@@ -328,8 +327,8 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts are NOT added - Nodes that are created are NOT ttached`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it.node)) }
-        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it.node)) }
+        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it)) }
+        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it)) }
     }
 
     @Test
@@ -344,8 +343,8 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously INACTIVE configurations are NOT activated - Nodes that are created are NOT attached to the view`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildView(it.node) }
-        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildView(it.node) }
+        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildView(it) }
+        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildView(it) }
     }
 
     // endregion
@@ -375,7 +374,7 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(Add(Content(0), ContentViewParented1))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode).attachChildNode(it.node)
+            verify(parentNode).attachChildNode(it)
         }
     }
 
@@ -385,7 +384,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Add(Content(0), ContentViewParented1))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode, times(1)).attachChildNode(it.node)
+            verify(parentNode, times(1)).attachChildNode(it)
         }
     }
 
@@ -419,7 +418,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode, never()).attachChildView(it.node)
+            verify(parentNode, never()).attachChildView(it)
         }
     }
 
@@ -439,7 +438,7 @@ class ConfigurationFeatureTest {
         feature.accept(Activate(Content(0)))
         feature.accept(WakeUp())
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode).attachChildView(it.node)
+            verify(parentNode).attachChildView(it)
         }
     }
 
@@ -459,7 +458,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Activate(Content(0)))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode).attachChildView(it.node)
+            verify(parentNode).attachChildView(it)
         }
     }
 
@@ -470,7 +469,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentExternal1))
         feature.accept(Activate(Content(0)))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode, never()).attachChildView(it.node)
+            verify(parentNode, never()).attachChildView(it)
         }
     }
 
@@ -492,7 +491,7 @@ class ConfigurationFeatureTest {
         feature.accept(Activate(Content(0)))
         feature.accept(Activate(Content(0)))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode, times(1)).attachChildView(it.node)
+            verify(parentNode, times(1)).attachChildView(it)
         }
     }
     // endregion
@@ -512,7 +511,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Deactivate(Content(0)))
         helperContentViewParented1.nodes.forEach {
-            verify(it.node).saveViewState()
+            verify(it).saveViewState()
         }
     }
 
@@ -522,7 +521,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentViewParented1))
         feature.accept(Deactivate(Content(0)))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode).detachChildView(it.node)
+            verify(parentNode).detachChildView(it)
         }
     }
 
@@ -532,7 +531,7 @@ class ConfigurationFeatureTest {
         feature.accept(Add(Content(0), ContentExternal1))
         feature.accept(Deactivate(Content(0)))
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode, never()).detachChildView(it.node)
+            verify(parentNode, never()).detachChildView(it)
         }
     }
 
@@ -558,14 +557,14 @@ class ConfigurationFeatureTest {
 
         helperContentExternal1.nodes.forEach {
             inOrder(parentNode) {
-                verify(parentNode).detachChildView(it.node)
-                verify(parentNode).detachChildNode(it.node)
+                verify(parentNode).detachChildView(it)
+                verify(parentNode).detachChildNode(it)
             }
         }
         helperContentViewParented1.nodes.forEach {
             inOrder(parentNode) {
-                verify(parentNode).detachChildView(it.node)
-                verify(parentNode).detachChildNode(it.node)
+                verify(parentNode).detachChildView(it)
+                verify(parentNode).detachChildNode(it)
             }
         }
     }
@@ -609,7 +608,7 @@ class ConfigurationFeatureTest {
         feature.accept(Sleep())
 
         helperContentViewParented1.nodes.forEach {
-            verify(it.node).saveViewState()
+            verify(it).saveViewState()
         }
     }
 
@@ -624,7 +623,7 @@ class ConfigurationFeatureTest {
         feature.accept(Sleep())
 
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode).detachChildView(it.node)
+            verify(parentNode).detachChildView(it)
         }
     }
     // endregion
@@ -656,7 +655,7 @@ class ConfigurationFeatureTest {
         feature.accept(WakeUp())
 
         helperContentViewParented1.nodes.forEach {
-            verify(parentNode).attachChildView(it.node)
+            verify(parentNode).attachChildView(it)
         }
     }
     // endregion

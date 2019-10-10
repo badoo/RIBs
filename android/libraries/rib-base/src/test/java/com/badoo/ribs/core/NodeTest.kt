@@ -628,14 +628,6 @@ class NodeTest {
     }
 
     @Test
-    fun `attachToView() + viewless = doesn't change view lifecycle - when STARTED, view is only INITIALIZED`() {
-        node = createNode(viewFactory = null)
-        node.onStart()
-        node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry!!.currentState)
-    }
-
-    @Test
     fun `attachToView() + viewless = doesn't have view lifecycle`() {
         node = createNode(viewFactory = null)
         node.onResume()

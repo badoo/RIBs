@@ -35,12 +35,7 @@ class RouterTest {
         childNodeC2_1 = mock()
         childNodeC2_2 = mock()
 
-        val nodeDescriptorsC2 =
-            listOf(childNodeC2_1, childNodeC2_2).map {
-                Node.Descriptor(it, Node.AttachMode.PARENT)
-            }
-
-        routingActionForC2 = mock { on { buildNodes(any(), anyOrNull())} doReturn nodeDescriptorsC2 }
+        routingActionForC2 = mock { on { buildNodes(any(), anyOrNull())} doReturn listOf(childNodeC2_1, childNodeC2_2) }
         routingActionForC1 = mock()
         routingActionForC3 = mock()
         routingActionForC4 = mock()

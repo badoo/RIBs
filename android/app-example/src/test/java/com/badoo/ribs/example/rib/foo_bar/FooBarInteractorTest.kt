@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.foo_bar
 
-import com.badoo.common.ribs.RibTestHelper
+import androidx.lifecycle.Lifecycle
+import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.example.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
 import com.jakewharton.rxrelay2.PublishRelay
@@ -24,7 +25,7 @@ class FooBarInteractorTest {
     private val foobarViewEventEmitter = PublishRelay.create<FooBarView.Event>()
 
     private lateinit var interactor: FooBarInteractor
-    private lateinit var nodeHelper: RibTestHelper<FooBarView>
+    private lateinit var nodeHelper: InteractorTestHelper<FooBarView>
 
     @Before
     fun setup() {
@@ -34,7 +35,7 @@ class FooBarInteractorTest {
             permissionRequester = permissionRequester
         )
 
-        nodeHelper = RibTestHelper.create(interactor, foobarViewEventEmitter, router)
+        nodeHelper = InteractorTestHelper.create(interactor, foobarViewEventEmitter, router)
     }
 
     @After
@@ -47,7 +48,7 @@ class FooBarInteractorTest {
         val result = PermissionRequester.CheckPermissionsResult(emptyList(), emptyList(), emptyList())
         whenever(permissionRequester.checkPermissions(any(), any())).doReturn(result)
 
-        nodeHelper.startAndExecute {
+        nodeHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             foobarViewEventEmitter.accept(CheckPermissionsButtonClicked)
 
             inputSubscriber.assertLast(FooBarView.ViewModel(result.toString()))
@@ -60,10 +61,11 @@ class FooBarInteractorTest {
         val result = PermissionRequester.CheckPermissionsResult(emptyList(), emptyList(), emptyList())
         whenever(permissionRequester.checkPermissions(any(), any())).doReturn(result)
 
-        nodeHelper.startAndExecute {}
-        foobarViewEventEmitter.accept(CheckPermissionsButtonClicked)
+        nodeHelper.moveToStateAndCheck(Lifecycle.State.CREATED) {
+            foobarViewEventEmitter.accept(CheckPermissionsButtonClicked)
+            inputSubscriber.assertLastPredicate { it.text != result.toString() }
+        }
 
-        inputSubscriber.assertLastPredicate { it.text != result.toString() }
     }
 
     /**

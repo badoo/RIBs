@@ -112,7 +112,8 @@ open class Node<V : RibView>(
     internal open var view: V? = null
     protected var parentViewGroup: ViewGroup? = null
 
-    internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
+    internal open var savedViewState: SparseArray<Parcelable> =
+        savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
 
     internal var isAttachedToView: Boolean = false
         private set
@@ -126,8 +127,6 @@ open class Node<V : RibView>(
 
     @CallSuper
     open fun onAttach() {
-        savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
-
         if (externalLifecycleRegistry.currentState == INITIALIZED) externalLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
         ribLifecycleRegistry.handleLifecycleEvent(ON_CREATE)
         router.onAttach()

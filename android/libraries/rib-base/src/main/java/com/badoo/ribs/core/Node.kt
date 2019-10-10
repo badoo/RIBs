@@ -61,6 +61,7 @@ open class Node<V : RibView>(
 //    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
+    // TODO consider moving to BuildContext
     enum class AttachMode {
         /**
          * The node's view attach/detach is managed by its parent.

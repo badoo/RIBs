@@ -12,7 +12,6 @@ import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
-import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildContext
@@ -382,7 +381,12 @@ class NodeTest {
         }
         val mocks = mutableListOf<Node<*>>()
         for (i in 0 until n) {
-            mocks.add(mock { on { identifier }.thenReturn(identifiers[i]) })
+            val mockNode = mock<Node<*>>()
+//            mocks.add(mock { on { identifier }.thenReturn(identifiers[i]) })
+//            whenever(mockNode.identifier).thenReturn(identifiers[i])
+//            doReturn(identifiers[i]).`when`(mockNode.identifier)
+            mocks.add(mockNode)
+
         }
         node.children.clear()
         node.children.addAll(mocks)
@@ -402,25 +406,27 @@ class NodeTest {
 
     @Test
     fun `attachToView() results in children added to target defined by Router`() {
-        val n1 = testBuildContext(object : RandomOtherNode1 {}).identifier
-        val n2 = testBuildContext(object : RandomOtherNode2 {}).identifier
-        val n3 = testBuildContext(object : RandomOtherNode3 {}).identifier
-        val mocks = createAndAttachChildMocks(3, mutableListOf(n1, n2, n3))
-
-        whenever(view.getParentViewForChild(n1)).thenReturn(someViewGroup1)
-        whenever(view.getParentViewForChild(n2)).thenReturn(someViewGroup2)
-        whenever(view.getParentViewForChild(n3)).thenReturn(someViewGroup3)
+        val id1 = testBuildContext(object : RandomOtherNode1 {}).identifier
+        val id2 = testBuildContext(object : RandomOtherNode2 {}).identifier
+        val id3 = testBuildContext(object : RandomOtherNode3 {}).identifier
+        val mockChildNodes = createAndAttachChildMocks(3, mutableListOf(id1, id2, id3))
+        assertEquals(id1, mockChildNodes[0].identifier)
+        assertEquals(id2, mockChildNodes[1].identifier)
+        assertEquals(id3, mockChildNodes[2].identifier)
+        whenever(view.getParentViewForChild(id1)).thenReturn(someViewGroup1)
+        whenever(view.getParentViewForChild(id2)).thenReturn(someViewGroup2)
+        whenever(view.getParentViewForChild(id3)).thenReturn(someViewGroup3)
 
         node.attachToView(parentViewGroup)
 
-        mocks.forEach {
+        mockChildNodes.forEach {
             node.attachChildView(it)
             verify(it, never()).attachToView(parentViewGroup)
         }
 
-        verify(mocks[0]).attachToView(someViewGroup1)
-        verify(mocks[1]).attachToView(someViewGroup2)
-        verify(mocks[2]).attachToView(someViewGroup3)
+        verify(mockChildNodes[0]).attachToView(someViewGroup1)
+        verify(mockChildNodes[1]).attachToView(someViewGroup2)
+        verify(mockChildNodes[2]).attachToView(someViewGroup3)
     }
 
     @Test
@@ -557,9 +563,7 @@ class NodeTest {
     fun `Tag is saved to bundle`() {
         val outState = Bundle()
         node.onSaveInstanceState(outState)
-        val inner = outState.getBundle(BUNDLE_KEY)
-        assertNotNull(inner)
-        assertEquals(node.identifier.uuid, inner.getSerializable(Rib.Identifier.KEY_UUID))
+        assertEquals(node.identifier.uuid, outState.getSerializable(Rib.Identifier.KEY_UUID))
     }
 
     @Test

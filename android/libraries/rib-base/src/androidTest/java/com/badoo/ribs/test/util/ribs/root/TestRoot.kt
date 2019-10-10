@@ -2,7 +2,10 @@ package com.badoo.ribs.test.util.ribs.root
 
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
+import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
@@ -11,6 +14,7 @@ import com.badoo.ribs.test.util.ribs.child.builder.TestChildBuilder
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import io.reactivex.observers.TestObserver
+import java.util.UUID
 
 interface TestRoot : Rib {
 
@@ -41,7 +45,7 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (Bundle?) -> TestNode<TestChildView> = {
+        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext.Params) -> TestNode<TestChildView> = {
             TestChildBuilder().build(it).also {
                 block.invoke(it)
             }
@@ -49,7 +53,15 @@ interface TestRoot : Rib {
 
         fun create(dialogLauncher: DialogLauncher, savedInstanceState: Bundle?): TestNode<TestRootView> {
             val router = TestRootRouter(
-                savedInstanceState = savedInstanceState,
+                buildContext = BuildContext.Resolved(
+                    ancestryInfo = AncestryInfo.Root,
+                    viewAttachMode = AttachMode.PARENT,
+                    savedInstanceState = savedInstanceState,
+                    identifier = Rib.Identifier(
+                        rib = object : TestRoot {},
+                        uuid = UUID.randomUUID()
+                    )
+                ),
                 builderPermanent1 = builder { permanentNode1 = it },
                 builderPermanent2 = builder { permanentNode2 = it },
                 builder1 = builder { childNode1 = it },
@@ -67,7 +79,12 @@ interface TestRoot : Rib {
                     override fun router() = router
 
                 }
-            ).build(savedInstanceState) as TestNode<TestRootView>
+            ).build(
+                BuildContext.Params(
+                    ancestryInfo = AncestryInfo.Root,
+                    savedInstanceState = savedInstanceState
+                )
+            ) as TestNode<TestRootView>
             rootNode = node
             return node
         }

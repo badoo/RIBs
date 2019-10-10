@@ -6,6 +6,7 @@ import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
+import com.badoo.ribs.test.util.ribs.child.TestChildInteractor
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter
 import com.badoo.ribs.test.util.ribs.child.TestChildView
 import com.badoo.ribs.test.util.ribs.child.TestChildViewImpl
@@ -15,19 +16,19 @@ class TestChildBuilder : Builder<Nothing?, Nothing?, TestNode<TestChildView>>() 
 
     override val dependency: Nothing? = null
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): TestNode<TestChildView>
-        val router = TestChildRouter(params)
+    override fun build(params: BuildContext.ParamsWithData<Nothing?>): TestNode<TestChildView> {
+        val router = TestChildRouter(resolve(object: TestRoot { }, params))
+        val buildContext = resolve(object : Rib {}, params)
 
         return TestNode(
-            buildContext = resolve(object : Rib {}, params),
-            identifier = object: TestRoot { },
+            buildContext = buildContext,
             viewFactory = object : ViewFactory<Nothing?, TestChildView> {
                 override fun invoke(deps: Nothing?): (ViewGroup) -> TestChildView = {
                     TestChildViewImpl(it.context)
                 }
             },
             router = router,
-            interactor = TestChildInteractor(savedInstanceState, router)
+            interactor = TestChildInteractor(buildContext, router)
         )
     }
 }

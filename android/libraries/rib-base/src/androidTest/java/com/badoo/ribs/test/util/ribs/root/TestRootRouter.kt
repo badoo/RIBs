@@ -19,11 +19,11 @@ import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
     buildContext: BuildContext.Resolved<Nothing?>,
-    private val builderPermanent1: (Bundle?) -> Node<*>,
-    private val builderPermanent2: (Bundle?) -> Node<*>,
-    private val builder3: (Bundle?) -> Node<*>,
-    private val builder1: (Bundle?) -> Node<*>,
-    private val builder2: (Bundle?) -> Node<*>,
+    private val builderPermanent1: (BuildContext.Params) -> Node<*>,
+    private val builderPermanent2: (BuildContext.Params) -> Node<*>,
+    private val builder3: (BuildContext.Params) -> Node<*>,
+    private val builder1: (BuildContext.Params) -> Node<*>,
+    private val builder2: (BuildContext.Params) -> Node<*>,
     private val dialogLauncher: DialogLauncher,
     permanentParts: List<Permanent>,
     initialConfiguration: Content

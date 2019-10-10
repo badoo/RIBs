@@ -4,7 +4,9 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.tutorials.tutorial3.R
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder.GreetingsContainerBuilder
@@ -33,5 +35,10 @@ class RootActivity : RibActivity() {
                         }
                     }
             }
-        ).build(savedInstanceState)
+        ).build(
+            BuildContext.Params(
+                ancestryInfo = AncestryInfo.Root,
+                savedInstanceState = savedInstanceState
+            )
+        )
 }

@@ -34,7 +34,7 @@ class FooBarInteractor(
         private const val REQUEST_CODE_CAMERA = 1
     }
 
-    internal val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
+    private val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {

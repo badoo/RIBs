@@ -1,4 +1,8 @@
 # RIBs
+[![Version](https://jitpack.io/v/badoo/RIBs.svg)](https://jitpack.io/#badoo/RIBs)
+[![Build Status](https://travis-ci.org/badoo/RIBs.svg?branch=master)](https://travis-ci.org/badoo/RIBs)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
 ## About Badoo's fork
 Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions:
 - Tree structure is saved / restored automatically
@@ -14,10 +18,13 @@ Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions:
 - Template generator plugin compiled from live code templates
 - Kotlin
 
+## Roadmap to 1.0
+[See here](https://github.com/badoo/RIBs/issues/96)
+
 ## Tutorials
-[See here](tutorials/README.md)
+[See here](tutorials/README.md). Check back later for more, as only basic functionality is covered as of yet. In the meantime, you can also check out the `app-example` module. 
 
-## WIP
-This is a heavily in-progress, preview version.
+## WIP warning
+This is a heavily in-progress, preview version. 
 
-Tutorials are in progress. In the meantime, you can also check out the `app-example` module. 
+Bugs are probably less of an issue, as the framework is pretty well covered with unit tests, but API can change until 1.0.

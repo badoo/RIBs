@@ -19,7 +19,7 @@ android {
 
 
     lintOptions {
-        disable 'InvalidPackage'
+        lintConfig file("lint.xml")
     }
 }
 

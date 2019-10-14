@@ -49,7 +49,7 @@ class FooBarInteractor(
         )
     }
 
-    private val viewEventConsumer : Consumer<FooBarView.Event> = Consumer {
+    private val viewEventConsumer: Consumer<FooBarView.Event> = Consumer {
         when (it) {
             CheckPermissionsButtonClicked -> checkPermissions()
             RequestPermissionsButtonClicked -> requestPermissions()
@@ -77,7 +77,7 @@ class FooBarInteractor(
         )
     }
 
-    private val permissionEventConsumer : Consumer<RequestPermissionsEvent> = Consumer {
+    private val permissionEventConsumer: Consumer<RequestPermissionsEvent> = Consumer {
         // If it's a single request code, we might as well ignore the whole branching
         // as it's impossible to receive events that are not meant for this RIB
         when (it.requestCode) {

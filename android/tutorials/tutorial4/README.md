@@ -131,7 +131,7 @@ Let's use this input - add it to the constructor of our `Interactor` inside `Hel
 @JvmStatic
 internal fun interactor(
     user: User,
-    config: HelloWorld.Configuration,
+    config: HelloWorld.Config,
     input: ObservableSource<HelloWorld.Input>, // add this
     output: Consumer<HelloWorld.Output>,
     router: HelloWorldRouter
@@ -151,7 +151,7 @@ And:
 class HelloWorldInteractor(
     savedInstanceState: Bundle?,
     private val user: User,
-    private val config: HelloWorld.Configuration,
+    private val config: HelloWorld.Config,
     private val input: ObservableSource<HelloWorld.Input>, // add this
     private val output: Consumer<HelloWorld.Output>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
@@ -236,7 +236,7 @@ import com.badoo.ribs.tutorials.tutorial5.util.User
 
 class InputToViewModel(
     private val user: User,
-    private val config: HelloWorld.Configuration
+    private val config: HelloWorld.Config
 ) : (HelloWorld.Input) -> ViewModel? {
     
     override fun invoke(input: HelloWorld.Input): ViewModel? =

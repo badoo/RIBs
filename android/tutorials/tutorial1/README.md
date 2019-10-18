@@ -1,4 +1,14 @@
 # Tutorial #1
+
+## Before you start
+
+1. Clone the repo:
+   ```
+   git clone https://github.com/badoo/RIBs
+   ```
+
+2. Open the project in Android Studio
+
 ## The goal of this tutorial
 Building and attaching an existing RIB to an integration point. Hello world!
 

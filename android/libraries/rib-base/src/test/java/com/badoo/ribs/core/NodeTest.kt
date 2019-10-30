@@ -138,7 +138,7 @@ class NodeTest {
     @Test
     fun `onAttach() notifies Interactor`() {
         node.onAttach()
-        verify(interactor).onAttach(node.ribLifecycleRegistry)
+        verify(interactor).onAttach(node.effectiveRibLifecycle)
     }
 
     @Test
@@ -215,7 +215,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onStart()
         mocks.forEach {
-            verify(it).onStart()
+            verify(it).onStart(it.externalLifecycleRegistry)
         }
     }
 
@@ -224,7 +224,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onStop()
         mocks.forEach {
-            verify(it).onStop()
+            verify(it).onStop(it.externalLifecycleRegistry)
         }
     }
 
@@ -233,7 +233,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onPause()
         mocks.forEach {
-            verify(it).onPause()
+            verify(it).onPause(it.externalLifecycleRegistry)
         }
     }
 
@@ -242,7 +242,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onResume()
         mocks.forEach {
-            verify(it).onResume()
+            verify(it).onResume(it.externalLifecycleRegistry)
         }
     }
 
@@ -383,7 +383,14 @@ class NodeTest {
         }
         val mocks = mutableListOf<Node<*>>()
         for (i in 0 until n) {
-            mocks.add(mock { on { identifier }.thenReturn(identifiers[i]) })
+            mocks.add(
+                mock {
+                    on { identifier }.thenReturn(identifiers[i])
+                    on { externalLifecycleRegistry }.thenReturn(mock())
+                    on { virtualRibLifecycle }.thenReturn(mock())
+                    on { virtualViewLifecycle }.thenReturn(mock())
+                }
+            )
         }
         node.children.clear()
         node.children.addAll(mocks)
@@ -437,7 +444,13 @@ class NodeTest {
     }
 
     @Test
-    fun `attachChildNode() passes on current lifecycle to direct children - INITIALIZED`() {
+    fun `onAttach() results in lifecycle of node going to CREATED`() {
+        node.onAttach()
+        assertEquals(Lifecycle.State.CREATED, node.effectiveRibLifecycle.currentState)
+    }
+
+    @Test
+    fun `attachChildNode() results in lifecycle of children going to CREATED`() {
         // by default it's not started, should be on INITIALIZED
 
         val child = TestNode(
@@ -447,11 +460,11 @@ class NodeTest {
         )
         node.attachChildNode(child)
 
-        assertEquals(Lifecycle.State.CREATED, child.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.CREATED, child.effectiveRibLifecycle.currentState)
     }
 
     @Test
-    fun `attachChildNode() passes on current lifecycle to children of children - INITIALIZED`() {
+    fun `attachChildNode() results in lifecycle of grandchildren going to CREATED`() {
         // by default it's not started, should be on INITIALIZED
 
         val directChild = TestNode(
@@ -467,7 +480,7 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.INITIALIZED, grandChild.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.CREATED, grandChild.effectiveRibLifecycle.currentState)
     }
 
     @Test
@@ -631,17 +644,16 @@ class NodeTest {
     }
 
     @Test
-    fun `attachToView() + has view = sets view lifecycle to external lifecycle - when INITIALIZED, view is in state INITIALIZED`() {
-        // by default it's not started, should be on INITIALIZED
+    fun `attachToView() = view lifecycle is in state CREATED`() {
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.INITIALIZED, node.viewLifecycleRegistry!!.currentState)
+        assertEquals(Lifecycle.State.CREATED, node.effectiveViewLifecycle!!.currentState)
     }
 
     @Test
     fun `attachToView() + has view = sets view lifecycle to external lifecycle - when CREATED, view is in state CREATED`() {
         node.onStop()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.CREATED, node.viewLifecycleRegistry!!.currentState)
+        assertEquals(Lifecycle.State.CREATED, node.effectiveViewLifecycle!!.currentState)
     }
 
     @Test
@@ -649,7 +661,7 @@ class NodeTest {
         node = createNodeWithView()
         node.onStart()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.STARTED, node.viewLifecycleRegistry!!.currentState)
+        assertEquals(Lifecycle.State.STARTED, node.effectiveViewLifecycle!!.currentState)
     }
 
     @Test
@@ -657,15 +669,7 @@ class NodeTest {
         node = createNodeWithView()
         node.onResume()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry!!.currentState)
-    }
-
-    @Test
-    fun `attachToView() + viewless = doesn't have view lifecycle`() {
-        node = createNodeWithoutView()
-        node.onResume()
-        node.attachToView(parentViewGroup)
-        assertNull(node.viewLifecycleRegistry)
+        assertEquals(Lifecycle.State.RESUMED, node.effectiveViewLifecycle!!.currentState)
     }
 
     @Test
@@ -679,7 +683,7 @@ class NodeTest {
         node.onStart()
         node.onStop()
         node.attachToView(parentViewGroup)
-        verify(interactor).onViewCreated(node.viewLifecycleRegistry!!, view)
+        verify(interactor).onViewCreated(node.effectiveViewLifecycle!!, view)
     }
 
     @Test

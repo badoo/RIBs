@@ -15,24 +15,15 @@
  */
 package com.badoo.ribs.core
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Lifecycle.Event.ON_CREATE
-import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
-import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
-import androidx.lifecycle.Lifecycle.Event.ON_RESUME
-import androidx.lifecycle.Lifecycle.Event.ON_START
-import androidx.lifecycle.Lifecycle.Event.ON_STOP
-import androidx.lifecycle.Lifecycle.State.CREATED
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.SparseArray
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
-import android.util.SparseArray
-import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle.State.INITIALIZED
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
@@ -43,7 +34,6 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.lang.IllegalArgumentException
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -97,11 +87,7 @@ open class Node<V : RibView>(
     var ancestryInfo: AncestryInfo = AncestryInfo.Root
     val resolver: ConfigurationResolver<*, V> = router
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
-    internal open val externalLifecycleRegistry = LifecycleRegistry(this)
-    internal open val virtualRibLifecycle = LifecycleRegistry(this)
-    internal open var virtualViewLifecycle: LifecycleRegistry? = null
-    internal val effectiveRibLifecycle = LifecycleRegistry(this)
-    internal var effectiveViewLifecycle: LifecycleRegistry? = null
+
     val detachSignal = BehaviorRelay.create<Unit>()
 
     val tag: String = this::class.java.name
@@ -109,7 +95,9 @@ open class Node<V : RibView>(
     private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
     val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
 
-    private val isViewless: Boolean =
+    internal open val lifecycleManager = LifecycleManager(this)
+
+    internal val isViewless: Boolean =
         viewFactory == null
 
     internal open var view: V? = null
@@ -127,44 +115,13 @@ open class Node<V : RibView>(
         router.init(this)
     }
 
-    /**
-     * To be used internally to update either external, or one of the virtual lifecycles.
-     *
-     * After change, effective lifecycles are updated to capped values, which is sent to client code.
-     *
-     * In effect this means that whenever virtual lifecycles or external lifecycles change,
-     * the effective lifecycles are updated to min(external, virtual) and enforced to be at least
-     * in CREATED state.
-     */
-    private fun handleLifecycleEvent(registry: LifecycleRegistry, event: Lifecycle.Event) {
-        registry.handleLifecycleEvent(event)
-        effectiveRibLifecycle.markState(capLifecycle(externalLifecycleRegistry, virtualRibLifecycle))
-        effectiveViewLifecycle?.markState(capLifecycle(externalLifecycleRegistry, virtualViewLifecycle))
-    }
-
-    /**
-     * Takes the minimum of the two lifecycles, and enforces it to at least CREATED level.
-     * (We do not track INITIALIZED state)
-     */
-    private fun capLifecycle(reg1: LifecycleRegistry, reg2: LifecycleRegistry?): Lifecycle.State =
-        atLeastCreated(
-            min(reg1.currentState, reg2?.currentState)
-        )
-
-    private fun atLeastCreated(state: Lifecycle.State): Lifecycle.State =
-        if (state == INITIALIZED) CREATED else state
-
-    private fun min(state1: Lifecycle.State, state2: Lifecycle.State?): Lifecycle.State =
-        if (state2 != null && state2 < state1) state2 else state1
-
     @CallSuper
     open fun onAttach() {
         savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
 
-        // RIBs without view will always be at: min(RESUMED, external)
-        if (isViewless) onResume(virtualRibLifecycle) else onCreate(virtualRibLifecycle)
+        lifecycleManager.onCreateRib()
         router.onAttach()
-        interactor.onAttach(effectiveRibLifecycle)
+        interactor.onAttach(lifecycleManager.ribLifecycle)
     }
 
     fun attachToView(parentViewGroup: ViewGroup) {
@@ -176,27 +133,12 @@ open class Node<V : RibView>(
             createView(parentViewGroup)
         }
 
-        setupLifecycleOnViewCreate()
+        lifecycleManager.onCreateView()
         view?.let {
-            interactor.onViewCreated(effectiveViewLifecycle!!, it)
+            interactor.onViewCreated(lifecycleManager.viewLifecycle!!, it)
         }
         router.onAttachView()
         viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }
-    }
-
-    private fun setupLifecycleOnViewCreate() {
-        // These should be set even for viewless Nodes so that
-        // lifecycle propagation to children will work.
-        virtualViewLifecycle = LifecycleRegistry(this)
-        effectiveViewLifecycle = LifecycleRegistry(this)
-        onCreate(virtualViewLifecycle!!)
-        if (!isViewless) {
-            // If isViewless, it's already RESUMED in onAttach()
-            onStart(virtualRibLifecycle)
-            onResume(virtualRibLifecycle)
-        }
-        onStart(virtualViewLifecycle!!)
-        onResume(virtualViewLifecycle!!)
     }
 
     private fun createView(parentViewGroup: ViewGroup) {
@@ -210,7 +152,7 @@ open class Node<V : RibView>(
     fun detachFromView() {
         if (isAttachedToView) {
             router.onDetachView()
-            tearDownLifecycleOnViewDestroy()
+            lifecycleManager.onDestroyView()
 
             if (!isViewless) {
                 parentViewGroup!!.removeView(view!!.androidView)
@@ -226,27 +168,6 @@ open class Node<V : RibView>(
         }
     }
 
-    private fun tearDownLifecycleOnViewDestroy() {
-        if (isViewless) {
-            // Implication: if RIB is viewless, we're keeping it resumed capped by external lifecycle only
-            return
-        }
-
-        virtualViewLifecycle!!.let {
-            onPause(it)
-            onStop(it)
-            onDestroy(it)
-        }
-
-        virtualViewLifecycle = null
-        effectiveViewLifecycle = null
-
-        virtualRibLifecycle.let {
-            onPause(it)
-            onStop(it)
-        }
-    }
-
     open fun onDetach() {
         if (isAttachedToView) {
             RIBs.errorHandler.handleNonFatalError(
@@ -256,7 +177,7 @@ open class Node<V : RibView>(
             detachFromView()
         }
 
-        onDestroy(virtualRibLifecycle)
+        lifecycleManager.onDestroyRib()
         interactor.onDetach()
         router.onDetach()
 
@@ -279,16 +200,9 @@ open class Node<V : RibView>(
             "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
         )
 
-        child.inheritExternalLifecycle(externalLifecycleRegistry)
+        lifecycleManager.onAttachChild(child)
         child.onAttach()
         childrenAttachesRelay.accept(child)
-    }
-
-    private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
-        externalLifecycleRegistry.markState(lifecycleRegistry.currentState)
-        children.forEach {
-            it.inheritExternalLifecycle(lifecycleRegistry)
-        }
     }
 
     // FIXME internal + protected?
@@ -336,7 +250,8 @@ open class Node<V : RibView>(
      * For internal usage call onStart() with proper inner lifecycle registry directly
      */
     fun onStart() {
-        onStart(externalLifecycleRegistry)
+        lifecycleManager.onStartExternal()
+
     }
 
     /**
@@ -345,7 +260,7 @@ open class Node<V : RibView>(
      * For internal usage call onStop() with proper inner lifecycle registry directly
      */
     fun onStop() {
-        onStop(externalLifecycleRegistry)
+        lifecycleManager.onStopExternal()
     }
 
     /**
@@ -354,7 +269,7 @@ open class Node<V : RibView>(
      * For internal usage call onResume() with proper inner lifecycle registry directly
      */
     fun onResume() {
-        onResume(externalLifecycleRegistry)
+        lifecycleManager.onResumeExternal()
     }
 
     /**
@@ -363,89 +278,8 @@ open class Node<V : RibView>(
      * For internal usage call onPause() with proper inner lifecycle registry directly
      */
     fun onPause() {
-        onPause(externalLifecycleRegistry)
+        lifecycleManager.onPauseExternal()
     }
-
-    /**
-     * Called only from onAttach() / attachToView(), not tied to external onCreate()
-     */
-    private fun onCreate(registry: LifecycleRegistry) {
-        handleLifecycleEvent(registry, ON_CREATE)
-        // We do NOT pass this to children. They will be created later.
-    }
-
-    internal fun onStart(registry: LifecycleRegistry) {
-        handleLifecycleEvent(registry, ON_START)
-        updateChildren(registry) { child, targetRegistry ->
-            child.onStart(targetRegistry)
-        }
-    }
-
-    // TODO call this when overlay is removed
-    internal fun onResume(registry: LifecycleRegistry) {
-        handleLifecycleEvent(registry, ON_RESUME)
-        updateChildren(registry) { child, targetRegistry ->
-            child.onResume(targetRegistry)
-        }
-    }
-
-    // TODO call this when overlay hides content AND current rib is not in dialog
-    internal fun onPause(registry: LifecycleRegistry) {
-        handleLifecycleEvent(registry, ON_PAUSE)
-        updateChildren(registry) { child, targetRegistry ->
-            child.onPause(targetRegistry)
-        }
-    }
-
-    internal fun onStop(registry: LifecycleRegistry) {
-        handleLifecycleEvent(registry, ON_STOP)
-        updateChildren(registry) { child, targetRegistry ->
-            child.onStop(targetRegistry)
-        }
-    }
-
-    /**
-     * Called only from onDetach() / detachFromView(), not tied to external onDestroy()
-     */
-    private fun onDestroy(registry: LifecycleRegistry) {
-        handleLifecycleEvent(registry, ON_DESTROY)
-        updateChildren(registry) { child, targetRegistry ->
-            child.onDestroy(targetRegistry)
-        }
-    }
-
-    /**
-     * Matches incoming LifecycleRegistry to its equivalent in all children, and calls passed in
-     * method on children with that target registry as parameter.
-     *
-     * To be used for recursively calling lifecycle updates on children.
-     */
-    private fun updateChildren(
-        parentRegistry: LifecycleRegistry,
-        block: (child: Node<*>, childRegistry: LifecycleRegistry) -> Unit
-    ) {
-        children.forEach { child ->
-            targetChildRegistry(parentRegistry, child)?.let { targetRegistry ->
-                block.invoke(child, targetRegistry)
-            }
-        }
-    }
-
-    /**
-     * Matches incoming LifecycleRegistry to its equivalent in a child.
-     */
-    private fun targetChildRegistry(
-        registry: LifecycleRegistry,
-        child: Node<*>
-    ): LifecycleRegistry? =
-        when (registry) {
-            externalLifecycleRegistry -> child.externalLifecycleRegistry
-            virtualRibLifecycle -> child.virtualRibLifecycle
-            virtualViewLifecycle -> child.virtualViewLifecycle
-            else -> throw IllegalArgumentException(
-                "This should never happen. Only external and virtual registries should be targeted"
-            )
-        }
 
     @CallSuper
     open fun handleBackPress(): Boolean {
@@ -482,7 +316,7 @@ open class Node<V : RibView>(
     }
 
     override fun getLifecycle(): Lifecycle =
-        effectiveRibLifecycle
+        lifecycleManager.lifecycle
 
     override fun toString(): String =
         identifier.toString()

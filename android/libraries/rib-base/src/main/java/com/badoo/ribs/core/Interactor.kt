@@ -19,6 +19,7 @@ import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.CallSuper
+import androidx.lifecycle.LifecycleOwner
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable
 import java.util.UUID
@@ -43,8 +44,8 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
     override val id: String
         get() = tag
 
-    internal open fun onAttach(ribLifecycle: Lifecycle) {
-        onAttach(ribLifecycle, savedInstanceState)
+    internal open fun onAttach(ribLifecycle: LifecycleOwner) {
+        onAttach(ribLifecycle.lifecycle, savedInstanceState)
     }
 
     protected open fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
@@ -55,8 +56,8 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
         disposables?.dispose()
     }
 
-    internal fun onViewCreated(viewLifecycle: Lifecycle, view: V) {
-        onViewCreated(view, viewLifecycle)
+    internal fun onViewCreated(viewLifecycle: LifecycleOwner, view: V) {
+        onViewCreated(view, viewLifecycle.lifecycle)
     }
 
     protected open fun onViewCreated(view: V, viewLifecycle: Lifecycle) {

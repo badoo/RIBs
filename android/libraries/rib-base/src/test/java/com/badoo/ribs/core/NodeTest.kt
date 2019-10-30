@@ -32,7 +32,6 @@ import io.reactivex.observers.TestObserver
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -138,7 +137,7 @@ class NodeTest {
     @Test
     fun `onAttach() notifies Interactor`() {
         node.onAttach()
-        verify(interactor).onAttach(node.effectiveRibLifecycle)
+        verify(interactor).onAttach(node.lifecycleManager.ribLifecycle)
     }
 
     @Test
@@ -215,7 +214,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onStart()
         mocks.forEach {
-            verify(it).onStart(it.externalLifecycleRegistry)
+            verify(it).onStart()
         }
     }
 
@@ -224,7 +223,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onStop()
         mocks.forEach {
-            verify(it).onStop(it.externalLifecycleRegistry)
+            verify(it).onStop()
         }
     }
 
@@ -233,7 +232,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onPause()
         mocks.forEach {
-            verify(it).onPause(it.externalLifecycleRegistry)
+            verify(it).onPause()
         }
     }
 
@@ -242,7 +241,7 @@ class NodeTest {
         val mocks = createAndAttachChildMocks(3)
         node.onResume()
         mocks.forEach {
-            verify(it).onResume(it.externalLifecycleRegistry)
+            verify(it).onResume()
         }
     }
 
@@ -386,9 +385,7 @@ class NodeTest {
             mocks.add(
                 mock {
                     on { identifier }.thenReturn(identifiers[i])
-                    on { externalLifecycleRegistry }.thenReturn(mock())
-                    on { virtualRibLifecycle }.thenReturn(mock())
-                    on { virtualViewLifecycle }.thenReturn(mock())
+                    on { lifecycleManager }.thenReturn(mock())
                 }
             )
         }
@@ -446,7 +443,7 @@ class NodeTest {
     @Test
     fun `onAttach() results in lifecycle of node going to CREATED`() {
         node.onAttach()
-        assertEquals(Lifecycle.State.CREATED, node.effectiveRibLifecycle.currentState)
+        assertEquals(Lifecycle.State.CREATED, node.lifecycle.currentState)
     }
 
     @Test
@@ -460,7 +457,7 @@ class NodeTest {
         )
         node.attachChildNode(child)
 
-        assertEquals(Lifecycle.State.CREATED, child.effectiveRibLifecycle.currentState)
+        assertEquals(Lifecycle.State.CREATED, child.lifecycle.currentState)
     }
 
     @Test
@@ -480,9 +477,10 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.CREATED, grandChild.effectiveRibLifecycle.currentState)
+        assertEquals(Lifecycle.State.CREATED, grandChild.lifecycle.currentState)
     }
 
+    // TODO these and related methods should be tested as part of LifecycleManager
     @Test
     fun `attachChildNode() passes on current lifecycle to direct children - CREATED`() {
         node.onStop()
@@ -494,7 +492,7 @@ class NodeTest {
         )
         node.attachChildNode(child)
 
-        assertEquals(Lifecycle.State.CREATED, child.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.CREATED, child.lifecycleManager.externalLifecycle.currentState)
     }
 
     @Test
@@ -514,7 +512,7 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.CREATED, grandChild.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.CREATED, grandChild.lifecycleManager.externalLifecycle.currentState)
     }
 
     @Test
@@ -528,7 +526,7 @@ class NodeTest {
         )
         node.attachChildNode(child)
 
-        assertEquals(Lifecycle.State.STARTED, child.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.STARTED, child.lifecycleManager.externalLifecycle.currentState)
     }
 
     @Test
@@ -548,7 +546,7 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.STARTED, grandChild.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.STARTED, grandChild.lifecycleManager.externalLifecycle.currentState)
     }
 
     @Test
@@ -562,7 +560,7 @@ class NodeTest {
         )
         node.attachChildNode(child)
 
-        assertEquals(Lifecycle.State.RESUMED, child.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.RESUMED, child.lifecycleManager.externalLifecycle.currentState)
     }
 
     @Test
@@ -582,7 +580,7 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.RESUMED, grandChild.externalLifecycleRegistry.currentState)
+        assertEquals(Lifecycle.State.RESUMED, grandChild.lifecycleManager.externalLifecycle.currentState)
     }
 
     @Test
@@ -646,14 +644,14 @@ class NodeTest {
     @Test
     fun `attachToView() = view lifecycle is in state CREATED`() {
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.CREATED, node.effectiveViewLifecycle!!.currentState)
+        assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
     @Test
     fun `attachToView() + has view = sets view lifecycle to external lifecycle - when CREATED, view is in state CREATED`() {
         node.onStop()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.CREATED, node.effectiveViewLifecycle!!.currentState)
+        assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
     @Test
@@ -661,7 +659,7 @@ class NodeTest {
         node = createNodeWithView()
         node.onStart()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.STARTED, node.effectiveViewLifecycle!!.currentState)
+        assertEquals(Lifecycle.State.STARTED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
     @Test
@@ -669,7 +667,7 @@ class NodeTest {
         node = createNodeWithView()
         node.onResume()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.RESUMED, node.effectiveViewLifecycle!!.currentState)
+        assertEquals(Lifecycle.State.RESUMED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
     @Test
@@ -683,7 +681,7 @@ class NodeTest {
         node.onStart()
         node.onStop()
         node.attachToView(parentViewGroup)
-        verify(interactor).onViewCreated(node.effectiveViewLifecycle!!, view)
+        verify(interactor).onViewCreated(node.lifecycleManager.viewLifecycle!!, view)
     }
 
     @Test

@@ -28,6 +28,6 @@ class RIBIconProvider: IconProvider() {
 
 }
 
-object RIBIcons {
+object RibIcons {
     val GENERATE_RIB_ICON = IconLoader.getIcon("/icons/generate_rib.png", RIBIcons::class.java)
 }

@@ -1,5 +1,6 @@
 package com.badoo.ribs.plugin.action
 
+import com.android.tools.idea.gradle.project.model.AndroidModuleModel
 import com.badoo.ribs.plugin.generator.SourceSetDirectoriesProvider
 import com.badoo.ribs.plugin.generator.TemplateWriter
 import com.badoo.ribs.plugin.generator.createReplacements
@@ -56,7 +57,7 @@ open class GenerateTemplateAction : AnAction(), GenerateRibDialog.Listener {
         val androidFacet = FacetManager.getInstance(currentModule).getFacetByType(AndroidFacet.ID)!!
 
         val targetPackage = PackageWrapper(PsiManager.getInstance(project), getCurrentPackageName())
-        val targetModulePackage = androidFacet.manifest?.getPackage()?.value!!
+        val targetModulePackage = AndroidModuleModel.get(androidFacet)?.applicationId!!
 
         val template = metaInformationProvider.templates.find { it.id == templateId }!!
 

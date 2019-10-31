@@ -14,7 +14,7 @@ class RIBIconProvider: IconProvider() {
         if (element !is PsiDirectory) return null
 
         if (element.hasRib()) {
-            return IconLoader.getIcon("icons/generate_rib.png")
+            return RIBIcons.GENERATE_RIB_ICON
         }
 
         return null
@@ -25,4 +25,9 @@ class RIBIconProvider: IconProvider() {
 
         return getRibName() != null
     }
+
+}
+
+object RIBIcons {
+    val GENERATE_RIB_ICON = IconLoader.getIcon("/icons/generate_rib.png", RIBIcons::class.java)
 }

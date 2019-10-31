@@ -121,7 +121,7 @@ open class Node<V : RibView>(
 
         lifecycleManager.onCreateRib()
         router.onAttach()
-        interactor.onAttach(lifecycleManager.ribLifecycle)
+        interactor.onAttach(lifecycleManager.ribLifecycle.lifecycle)
     }
 
     fun attachToView(parentViewGroup: ViewGroup) {
@@ -135,7 +135,7 @@ open class Node<V : RibView>(
 
         lifecycleManager.onCreateView()
         view?.let {
-            interactor.onViewCreated(lifecycleManager.viewLifecycle!!, it)
+            interactor.onViewCreated(lifecycleManager.viewLifecycle!!.lifecycle, it)
         }
         router.onAttachView()
         viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }

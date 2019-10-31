@@ -6,6 +6,7 @@ import com.badoo.ribs.core.Interactor.Companion.KEY_TAG
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals

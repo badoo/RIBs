@@ -137,7 +137,7 @@ class NodeTest {
     @Test
     fun `onAttach() notifies Interactor`() {
         node.onAttach()
-        verify(interactor).onAttach(node.lifecycleManager.ribLifecycle)
+        verify(interactor).onAttach(node.lifecycleManager.ribLifecycle.lifecycle)
     }
 
     @Test
@@ -681,7 +681,7 @@ class NodeTest {
         node.onStart()
         node.onStop()
         node.attachToView(parentViewGroup)
-        verify(interactor).onViewCreated(node.lifecycleManager.viewLifecycle!!, view)
+        verify(interactor).onViewCreated(node.lifecycleManager.viewLifecycle!!.lifecycle, view)
     }
 
     @Test

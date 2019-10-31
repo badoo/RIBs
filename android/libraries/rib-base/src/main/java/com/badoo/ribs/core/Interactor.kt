@@ -44,8 +44,8 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
     override val id: String
         get() = tag
 
-    internal open fun onAttach(ribLifecycle: LifecycleOwner) {
-        onAttach(ribLifecycle.lifecycle, savedInstanceState)
+    internal open fun onAttach(ribLifecycle: Lifecycle) {
+        onAttach(ribLifecycle, savedInstanceState)
     }
 
     protected open fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
@@ -56,8 +56,8 @@ abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>
         disposables?.dispose()
     }
 
-    internal fun onViewCreated(viewLifecycle: LifecycleOwner, view: V) {
-        onViewCreated(view, viewLifecycle.lifecycle)
+    internal fun onViewCreated(viewLifecycle: Lifecycle, view: V) {
+        onViewCreated(view, viewLifecycle)
     }
 
     protected open fun onViewCreated(view: V, viewLifecycle: Lifecycle) {

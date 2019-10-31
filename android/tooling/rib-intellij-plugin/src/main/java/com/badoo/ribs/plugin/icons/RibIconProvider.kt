@@ -1,5 +1,6 @@
 package com.badoo.ribs.plugin.icons
 
+import com.badoo.ribs.plugin.icons.RibIcons.GENERATE_RIB_ICON
 import com.badoo.ribs.plugin.util.getRibName
 import com.intellij.ide.IconProvider
 import com.intellij.openapi.project.DumbService
@@ -8,13 +9,13 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import javax.swing.Icon
 
-class RIBIconProvider: IconProvider() {
+class RibIconProvider: IconProvider() {
 
     override fun getIcon(element: PsiElement, flags: Int): Icon? {
         if (element !is PsiDirectory) return null
 
         if (element.hasRib()) {
-            return IconLoader.getIcon("icons/generate_rib.png")
+            return GENERATE_RIB_ICON
         }
 
         return null
@@ -25,4 +26,9 @@ class RIBIconProvider: IconProvider() {
 
         return getRibName() != null
     }
+
+}
+
+object RibIcons {
+    val GENERATE_RIB_ICON = IconLoader.getIcon("/icons/generate_rib.png", RibIcons::class.java)
 }

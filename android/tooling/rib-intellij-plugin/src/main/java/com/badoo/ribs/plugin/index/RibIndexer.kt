@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.psi.psiUtil.getSuperNames
 import java.io.DataInput
 import java.io.DataOutput
 
-class RIBIndexer : FileBasedIndexExtension<String, String?>() {
+class RibIndexer : FileBasedIndexExtension<String, String?>() {
     override fun getValueExternalizer(): DataExternalizer<String?> =
         object : DataExternalizer<String?> {
             override fun save(out: DataOutput, value: String?) {
@@ -78,7 +78,7 @@ class RIBIndexer : FileBasedIndexExtension<String, String?>() {
         EnumeratorStringDescriptor()
 
     companion object {
-        val INDEX_ID = ID.create<String, String?>(RIBIndexer::class.java.canonicalName)
+        val INDEX_ID = ID.create<String, String?>(RibIndexer::class.java.canonicalName)
 
         private const val RIB_CANONICAL_NAME = "com.badoo.ribs.core.Rib"
         private val RIB_SIMPLE_NAME = RIB_CANONICAL_NAME.takeLastWhile { it != '.' }

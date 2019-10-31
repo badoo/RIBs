@@ -480,7 +480,6 @@ class NodeTest {
         assertEquals(Lifecycle.State.CREATED, grandChild.lifecycle.currentState)
     }
 
-    // TODO these and related methods should be tested as part of LifecycleManager
     @Test
     fun `attachChildNode() passes on current lifecycle to direct children - CREATED`() {
         node.onStop()

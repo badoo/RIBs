@@ -8,9 +8,9 @@ internal class LifecycleManager(
     private val owner: Node<*>
 ) : LifecycleOwner {
 
-    internal open val externalLifecycle = LifecycleRegistry(this)
-    internal open var ribLifecycle = CappedLifecycle(externalLifecycle)
-    internal open var viewLifecycle: CappedLifecycle? = null
+    internal val externalLifecycle = LifecycleRegistry(this)
+    internal var ribLifecycle = CappedLifecycle(externalLifecycle)
+    internal var viewLifecycle: CappedLifecycle? = null
 
     override fun getLifecycle(): Lifecycle =
         ribLifecycle.lifecycle
@@ -21,6 +21,9 @@ internal class LifecycleManager(
 
     private fun inheritExternalLifecycle(lifecycleRegistry: LifecycleRegistry) {
         externalLifecycle.markState(lifecycleRegistry.currentState)
+        ribLifecycle.update()
+        viewLifecycle?.update()
+
         owner.children.forEach {
             it.lifecycleManager.inheritExternalLifecycle(lifecycleRegistry)
         }

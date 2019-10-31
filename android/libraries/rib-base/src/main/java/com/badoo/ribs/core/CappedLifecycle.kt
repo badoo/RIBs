@@ -13,7 +13,7 @@ import androidx.lifecycle.LifecycleRegistry
 /**
  * Applies a capping of lifecycles by making:
  *
- * effective = min(external, internal)
+ * effective = min(external, internal) followed by replace INITIALIZED => CREATED
  */
 internal class CappedLifecycle(
     private val external: LifecycleRegistry
@@ -69,11 +69,11 @@ internal class CappedLifecycle(
      * (We do not track INITIALIZED state)
      */
     private fun capLifecycle(reg1: LifecycleRegistry, reg2: LifecycleRegistry?): Lifecycle.State =
-        atLeastCreated(
+        replaceInitializedToCreated(
             min(reg1.currentState, reg2?.currentState)
         )
 
-    private fun atLeastCreated(state: Lifecycle.State): Lifecycle.State =
+    private fun replaceInitializedToCreated(state: Lifecycle.State): Lifecycle.State =
         if (state == Lifecycle.State.INITIALIZED) Lifecycle.State.CREATED else state
 
     private fun min(state1: Lifecycle.State, state2: Lifecycle.State?): Lifecycle.State =

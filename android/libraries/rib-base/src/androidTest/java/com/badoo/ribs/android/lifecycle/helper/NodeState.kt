@@ -35,13 +35,13 @@ data class NodeState(
             attached = true,
             viewAttached = false,
             ribLifeCycleState = CREATED,
-            viewLifeCycleState = DESTROYED
+            viewLifeCycleState = null
         )
         val DETACHED = NodeState(
             attached = false,
             viewAttached = false,
             ribLifeCycleState = DESTROYED,
-            viewLifeCycleState = DESTROYED
+            viewLifeCycleState = null
         )
     }
 

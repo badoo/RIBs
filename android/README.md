@@ -5,9 +5,14 @@
 
 ## Why should I care about this?
 
-Practical implementation of ideas presented in this DroidconUK 19 talk: [The immense benefits of not thinking in screens](https://badootech.badoo.com/the-immense-benefits-of-not-thinking-in-screens-6c311e3344a0)
+Practical implementation of ideas presented in this DroidconUK 19 talk: 
+
+[The immense benefits of not thinking in screens](https://badootech.badoo.com/the-immense-benefits-of-not-thinking-in-screens-6c311e3344a0)
 
 ### RIBs as a pattern
+#### Single-activity approach
+Your view hierarchy is already a tree - RIBs gives you a way to compose your application in a similar way.
+
 #### Simplicity
 Break down the complexity of your project into manageable chunks. Compose them together to create abstractions on higher levels. Different levels - same approach.
 
@@ -22,20 +27,18 @@ Use the same approach that works on any level of view-hierarchy:
 - pure business logic without any view
 
 #### Reusability on steroids
-Achieve bare minimum coupling: RIBs are not coupled to their parents or siblings, and are easy to move around.
-
-Easily take any RIB and plug it to different screens / apps in a matter of minutes. 
-
-Just provide dependencies to a **Builder**, and you are ready to go. No additional wiring or deep understanding of the internals of a RIB is needed.
-
-#### Routing
-Decentralised, local navigation. Every level in a RIB tree decides which subtree to attach. No need for global navigator approach.
+Achieve bare minimum coupling: RIBs are not coupled to their parents or siblings, and are easy to move around. Just provide dependencies to a **Builder**, and you are ready to go.
 
 #### Deep scope trees
 Fine-grained control over object lifetimes. Want to go more specific than a single @Singleton and @Activity scope? RIBs tree lends a natural and easy way to do this.
 
 #### Instumentation testing in isolation
 RIBs can be tested in isolation even in instrumentation tests
+ 
+## RIBs as an implementation
+
+#### Builders
+Compile-time safety over runtime crashes: you construct RIBs yourself, and can leverage constructor dependency injection.
 
 #### Remote control
 Workflows allow you to chain operations of individual RIBs together. You can then trigger workflows from e.g.:
@@ -43,7 +46,6 @@ Workflows allow you to chain operations of individual RIBs together. You can the
 - push notifications from deep links
 
 Use it to easily move your app to specific states.  
- 
 
 ## About Badoo's fork
 Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions

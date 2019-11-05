@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Badoo RIBs Tutorial #5</string>
+    <string name="hello_world_title_placeholder">[Title text goes here]</string>
+    <string name="hello_world_title">Hello %s!</string>
+    <string name="hello_world_welcome_text_placeholder">[Welcome text goes here]</string>
+    <string name="hello_world_welcome_text">Let\'s have a drink in the Foo Bar!</string>
+    <string name="hello_world_button_text">Say hello!</string>
+    <string name="hello_world_more_options_text">More options</string>
+    <string name="more_options_primary_button_text">Use selected</string>
+    <string name="greetings_container_text">Greetings container</string>
+    <string name="greeting_1">Hello there!</string>
+    <string name="greeting_2">Hey, how are you?</string>
+    <string name="greeting_3">Bonjour, bonjour!</string>
+    <string name="greeting_4">今日は!</string>
+</resources>

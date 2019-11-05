@@ -6,7 +6,7 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-class FooBarNode(
+class FooBarNode internal constructor(
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val router: FooBarRouter,
     interactor: FooBarInteractor,

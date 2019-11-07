@@ -10,7 +10,7 @@
 2. [Adding a child RIB to a parent](tutorial2/README.md)
 3. [Satisfying dependencies of a child RIB](tutorial3/README.md)
 4. [Communicating with child RIBs](tutorial4/README.md)
-5. TODO
+5. [Routing](tutorial5/README.md)
 6. TODO
 7. TODO
 

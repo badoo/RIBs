@@ -18,6 +18,6 @@ interface Text {
 
     class Resource(private val resId: Int, private vararg val formatArgs: Any) : Text {
         override fun resolve(context: Context): String =
-            context.resources.getString(resId, formatArgs)
+            context.resources.getString(resId, *formatArgs)
     }
 }

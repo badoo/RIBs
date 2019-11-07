@@ -57,7 +57,7 @@ By now you should be able to:
     1. making `GreetingsContainerComponent` extend child dependency interface
     1. satisfying child dependencies (prepared for you in `GreetingsContainerModule`)
     2. providing `optionsSelectorBuilder` to the `GreetingsContainerRouter`
-    3. adding a new Configuration to `GreetingsContainerRouter`
+    3. adding a new Configuration to `GreetingsContainerRouter`: "OptionsSelector"
     4. resolving it to an `attach { optionsSelectorBuilder.build() }` action
  
 For help with the above tasks, you can refer to:
@@ -126,21 +126,19 @@ So our default back stack was in fact:
 back stack = [*Configuration.HelloWorld] 
 ```
 
-A simplified rule of the back stack is that the last configuration is **active** (in simple terms: it's on screen). We'll mark this with an asterisk (*) from now on.
+A configuration can be either **active**/**inactive**. In simple terms, it's **active** if it's on screen.
+
+A simplified rule of the back stack is that only the last configuration is **active**. We'll mark this with an asterisk (*) from now on.
 
 `Router` offers you operations to manipulate this back stack.
 
 ```kotlin
 fun push(configuration: Content)
 
-fun replace(configuration: Content)
-
-fun newRoot(configuration: Content)
-
 fun popBackStack(): Boolean
 ```
 
-We'll deal with other operations later, now what's important is that `push` adds a new element to the back stack.
+There are other operations too, but we'll discuss them later in other tutorials. What's important is that `push` adds a new element to the end of the back stack, while `popBackStack` removes the last one from the end.
 
 So when we did ```router.push(Configuration.OptionsSelector)```, this happened:
 
@@ -150,18 +148,18 @@ back stack 0 = [*Configuration.HelloWorld]
 back stack 1 = [Configuration.HelloWorld, *Configuration.OptionsSelector]
 ```
 
-And because we just said that the last element in the back stack is on screen, this means that the view of `HelloWorld` gets detached, and `OptionsSelector` gets created and attached.
+And because we just said that the last element in the back stack is  **active** (on screen), this means that the view of `HelloWorld` gets detached, and `OptionsSelector` gets created and attached.
 
 
 ## Back pressing and the back stack
 
 The reverse is happening when we pressed back.
 
-By default, back pressing is propagated to the deepest (active) levels of the RIB tree by default, where each RIB has a chance to react to it:
+By default, back pressing is propagated to the deepest **active** levels of the RIB tree by default, where each RIB has a chance to react to it:
 
 1. `Interactor` has a chance to override `handleBackPress()` to do something based on business logic
 2. `Router` will be asked if it has back stack to pop. If yes, pop is triggered and nothing else is done.
-3. If `Router` had only one more configuration left in its back stack, there's nothing more to remove. The whole thing starts bubbling up the RIB tree to higher levels until one of the levels can handle it (points 1 and 2).
+3. If `Router` had only one more configuration left in its back stack, there's nothing more to remove. The whole thing starts bubbling up the RIB tree to higher levels until one of the levels can handle it (points 1 and 2). If it is handled, the propagation stops.
 4. If the whole RIB tree didn't handle the back press, then the last fallback is the Android environment (in practice this probably means that the hosting `Activity` finishes).
 
 In our case, when we were on the `OptionsSelector` screen, `GreetingsContainerRouter` had 2 elements in its back stack, so it could automatically handle the back press event by popping the latest:
@@ -182,14 +180,14 @@ And again, because last element in the back stack is on screen, this means that 
 Of course there's no point of opening the second screen if we cannot interact with it and our only option is to press back.
 
 So let's make it a bit more useful:
-1. Add a new element to `Output` in `OptionsSelector`: ```data class LexemSelected(val lexem: Lexem) : Output()```
+1. Add a new element to `Output` in `OptionsSelector`: ```data class OptionSelected(val text: Text) : Output()```
 2. Add a new element to `Event` in `OptionsSelectorView`: ```data class ConfirmButtonClicked(val selectionIndex: Int) : Event()```
 3. In `OptionsSelectorViewImpl`, add a click listener on `confirmButton` that will trigger this event. 
 4. Go to `OptionSelectorInteractor`. Add the transformation between `Event` and `Output` in the `viewEventToOutput` transformer.
 5. Go to `GreetingsContainerInteractor`, and add a branch to the `when` expression in `moreOptionsOutputConsumer`
 
 What we want to do is:
-- Take the `Lexem` that's coming in the `Output`
+- Take the `Text` that's coming in the `Output`
 - Feed it to `HelloWorld` using an Input of `UpdateButtonText`
 - Actually go back one screen = manually popping the back stack
 
@@ -197,10 +195,10 @@ This is how it might look:
 ```kotlin
 internal val optionsSelectorOutputConsumer: Consumer<OptionSelector.Output> = Consumer {
     when (it) {
-        is Output.LexemSelected -> {
+        is Output.OptionSelected -> {
             router.popBackStack()
             helloWorldInputSource.accept(
-                UpdateButtonText(it.lexem)
+                UpdateButtonText(it.text)
             )
         }
     }

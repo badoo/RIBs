@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.hello_world
 
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.tutorials.tutorial4.util.Lexem
 import com.badoo.ribs.tutorials.tutorial4.util.User
 import io.reactivex.functions.Consumer
 
@@ -18,7 +18,7 @@ interface HelloWorld : Rib {
     }
 
     data class Config(
-        val welcomeMessage: Lexem
+        val welcomeMessage: Text
     )
 
     class Customisation(

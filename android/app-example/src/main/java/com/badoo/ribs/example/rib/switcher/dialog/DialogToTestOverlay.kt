@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.switcher.dialog
 
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.dialog.Dialog.Event.Positive
@@ -10,10 +11,10 @@ import com.badoo.ribs.dialog.Dialog.Event.Positive
  * demonstrating that they do not get detached while this dialog is on the screen.
  */
 class DialogToTestOverlay : Dialog<Dialog.Event>({
-    title = "Test overlay"
-    message = "Watch the background behind this dialog, is it still there?"
+    title = Text.Plain("Test overlay")
+    message = Text.Plain("Watch the background behind this dialog, is it still there?")
     buttons {
-        positive("Ok man whatever", Positive)
+        positive(Text.Plain("Ok man whatever"), Positive)
     }
 
     cancellationPolicy = Cancellable(

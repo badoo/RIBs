@@ -13,23 +13,33 @@ Compiling and launching **tutorial3**, this is what we see:
 
 We will provide text to the placeholders first manually, then as a dependency.
 
-Have a brief look at the `Lexem` interface found in this tutorial, as we will use it in the example:
+Have a brief look at the `Text` interface found in the library, as we will use it in the example:
 
 ```kotlin
-interface Lexem {
+package com.badoo.ribs.android
+
+import android.content.Context
+
+/**
+ * An abstraction over text, so that you can provide it from different sources.
+ *
+ * In case the default implementations are not good enough, feel free to implement your own.
+ */
+interface Text {
 
     fun resolve(context: Context): String
 
-    data class Text(val text: String) : Lexem {
+    class Plain(private val string: String): Text {
         override fun resolve(context: Context): String =
-            text
+            string
     }
 
-    class Resource(@StringRes val resId: Int, private vararg val formatArgs: Any) : Lexem {
+    class Resource(private val resId: Int, private vararg val formatArgs: Any) : Text {
         override fun resolve(context: Context): String =
-            context.getString(resId, *formatArgs)
+            context.resources.getString(resId, formatArgs)
     }
 }
+
 ```
 
 It provides us with an abstraction over textual information, and two simple implementations – one for actual Strings, the other for String resources. 
@@ -49,11 +59,11 @@ data class ViewModel(
 )
 ```
 
-Let's change that so that we will give a `Lexem` to the view to render instead:
+Let's change that so that we will give a `Text` to the view to render instead:
 
 ```kotlin
 data class ViewModel(
-    val welcomeText: Lexem
+    val welcomeText: Text
 )
 ```
 
@@ -69,7 +79,7 @@ override fun accept(vm: ViewModel) {
 }
 ```
 
-Notice how we added `welcomeText` as a `Lexem`, which we could now resolve using the `Context` our view has access to.
+Notice how we added `welcomeText` as a `Text`, which we could now resolve using the `Context` our view has access to.
 
 
 ## Feeding the view with data
@@ -94,7 +104,7 @@ override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
 
 private val initialViewModel =
     HelloWorldView.ViewModel(
-        welcomeText = Lexem.Text("Does this work at all?")
+        welcomeText = Text.Plain("Does this work at all?")
     )
 ```
 
@@ -127,7 +137,7 @@ interface HelloWorld : Rib {
     // It's a good idea to group all "simple data" dependencies into a Config 
     // object, instead of directly adding them to Dependency interface:
     data class Config(
-        val welcomeMessage: Lexem
+        val welcomeMessage: Text
     )
     
     // ...
@@ -153,7 +163,7 @@ Let's head to `GreetingsContainerModule`, the place where we add all the `@Provi
 @JvmStatic
 internal fun helloWorldConfig(): HelloWorld.Config =
     HelloWorld.Config(
-        welcomeMessage = Lexem.Resource(
+        welcomeMessage = Text.Resource(
             R.string.hello_world_welcome_text
         )
     )
@@ -246,13 +256,13 @@ So in this case, we will need to bubble up this dependency until at some level w
 
 Based on the previous sections, you should be able to:
 1. Add a new field to `HelloWorldViewImpl` that holds a reference to the `TextView` for the other placeholder, found in `rib_hello_world.xml` with the id `@+id/hello_world_title`
-2. Add a new field to `HelloWorldView.ViewModel`, named `titleText`, type `Lexem`
-3. Set the text of the `TextView` by resolving the `Lexem` from `titleText` whenever the `ViewModel` is rendered in `HelloWorldViewImpl`
+2. Add a new field to `HelloWorldView.ViewModel`, named `titleText`, type `Text`
+3. Set the text of the `TextView` by resolving the `Text` from `titleText` whenever the `ViewModel` is rendered in `HelloWorldViewImpl`
 4. Set a fixed value for this field from `HelloWorldInteractor` just to test it out.
 
 Now let's make it more dynamic. You should also be able to:
 1. Add an instance of `user: User` as a constructor dependency to `HelloWorldInteractor`
-2. Use `user.name()` to construct: `Lexem.Resource(R.string.hello_world_title, user.name())`, and pass it as the value for `titleText` when creating the `ViewModel`
+2. Use `user.name()` to construct: `Text.Resource(R.string.hello_world_title, user.name())`, and pass it as the value for `titleText` when creating the `ViewModel`
 3. Add the instance of `User` as a dependency for the creation of `HelloWorldInteractor` in the respective `@Provides` function in `HelloWorldModule` 
 4. Add `User` to `HelloWorld.Dependency` interface to say that `HelloWorld` RIB needs this from the outside
 

@@ -1,6 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.builder
 
 import android.os.Bundle
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial4.R
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainer
@@ -8,7 +9,6 @@ import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsConta
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainerRouter
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.builder.HelloWorldBuilder
-import com.badoo.ribs.tutorials.tutorial4.util.Lexem
 import dagger.Provides
 import io.reactivex.functions.Consumer
 
@@ -62,7 +62,7 @@ internal object GreetingsContainerModule {
     @JvmStatic
     internal fun helloWorldConfig(): HelloWorld.Config =
         HelloWorld.Config(
-            welcomeMessage = Lexem.Resource(
+            welcomeMessage = Text.Resource(
                 R.string.hello_world_welcome_text
             )
         )

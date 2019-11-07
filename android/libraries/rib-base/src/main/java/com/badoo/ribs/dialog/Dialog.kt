@@ -1,6 +1,7 @@
 package com.badoo.ribs.dialog
 
 import android.os.Bundle
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
@@ -10,8 +11,8 @@ abstract class Dialog<T : Any> private constructor(
     factory: Dialog<T>.() -> Unit,
     private val events: PublishRelay<T>
 ) : ObservableSource<T> by events {
-    var title: String? = null
-    var message: String? = null
+    var title: Text? = null
+    var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
     private var ribFactory: ((Bundle?) -> Node<*>)? = null
@@ -45,20 +46,20 @@ abstract class Dialog<T : Any> private constructor(
             factory()
         }
 
-        fun positive(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+        fun positive(title: Text, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
             positive = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
-        fun negative(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+        fun negative(title: Text, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
             negative = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
-        fun neutral(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+        fun neutral(title: Text, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
             neutral = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
         data class ButtonConfig<T : Any>(
-            var title: String? = null,
+            var title: Text? = null,
             var onClickEvent: T? = null,
             var closesDialogAutomatically: Boolean = true
         )

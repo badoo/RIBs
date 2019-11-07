@@ -103,7 +103,7 @@ interface HelloWorld : Rib {
 
     // add this
     sealed class Input {
-        data class UpdateButtonText(val text: Lexem): Input()
+        data class UpdateButtonText(val text: Text): Input()
     }
 
     sealed class Output {
@@ -172,9 +172,9 @@ interface HelloWorldView : RibView,
     }
 
     data class ViewModel(
-        val titleText: Lexem,
-        val welcomeText: Lexem,
-        val buttonText: Lexem // add this
+        val titleText: Text,
+        val welcomeText: Text,
+        val buttonText: Text // add this
     )
 }
 ```
@@ -196,9 +196,9 @@ We can easily modify the initial one by adding the last line:
 ```kotlin
 view.accept(
     HelloWorldView.ViewModel(
-        titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+        titleText = Text.Resource(R.string.hello_world_title, user.name()),
         welcomeText = config.welcomeMessage,
-        buttonText = Lexem.Resource(R.string.hello_world_button_text)
+        buttonText = Text.Resource(R.string.hello_world_button_text)
     )
 )
 ```
@@ -225,14 +225,14 @@ viewLifecycle.startStop {
 Create `InputToViewModel` in the `mapper` package:
 
 ```kotlin
-package com.badoo.ribs.tutorials.tutorial5.rib.hello_world.mapper
+package com.badoo.ribs.tutorials.tutorial4.rib.hello_world.mapper
 
-import com.badoo.ribs.tutorials.tutorial5.R
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Input.UpdateButtonText
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.ViewModel
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
-import com.badoo.ribs.tutorials.tutorial5.util.User
+import com.badoo.ribs.android.Text
+import com.badoo.ribs.tutorials.tutorial4.R
+import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld
+import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld.Input.UpdateButtonText
+import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorldView.ViewModel
+import com.badoo.ribs.tutorials.tutorial4.util.User
 
 class InputToViewModel(
     private val user: User,
@@ -242,7 +242,7 @@ class InputToViewModel(
     override fun invoke(input: HelloWorld.Input): ViewModel? =
         when (input) {
             is UpdateButtonText -> ViewModel(
-                titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+                titleText = Text.Resource(R.string.hello_world_title, user.name()),
                 welcomeText = config.welcomeMessage,
                 buttonText = input.text // using the incoming data
             )
@@ -272,9 +272,9 @@ Two things worth mentioning here:
     private fun setInitialViewModel(view: HelloWorldView) {
         view.accept(
             HelloWorldView.ViewModel(
-                titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+                titleText = Text.Resource(R.string.hello_world_title, user.name()),
                 welcomeText = config.welcomeMessage,
-                buttonText = Lexem.Resource(R.string.hello_world_button_text)
+                buttonText = Text.Resource(R.string.hello_world_button_text)
             )
         )
     }
@@ -314,7 +314,7 @@ class GreetingsContainerInteractor(
         super.onAttach(ribLifecycle, savedInstanceState)
         helloWorldInputSource.accept(
             HelloWorld.Input.UpdateButtonText(
-                Lexem.Text("Woo hoo!")
+                Text.Plain("Woo hoo!")
             )
         )
     }

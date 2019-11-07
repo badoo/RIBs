@@ -52,8 +52,8 @@ private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
 }
 
 private fun AlertDialog.Builder.setTexts(dialog: Dialog<*>) {
-    dialog.title?.let { setTitle(it) }
-    dialog.message?.let { setMessage(it) }
+    dialog.title?.let { setTitle(it.resolve(context)) }
+    dialog.message?.let { setMessage(it.resolve(context)) }
 }
 
 private fun AlertDialog.Builder.setButtons(dialog: Dialog<*>) {
@@ -63,13 +63,13 @@ private fun AlertDialog.Builder.setButtons(dialog: Dialog<*>) {
         // Dialogs are Router configuration based, so the corresponding configurations needs
         // to change and that as a result should close the dialog - not the dialog automatically
         // by itself, because that would leave the Router stuck in the dialog configuration.
-        setPositiveButton(config.title, null)
+        setPositiveButton(config.title?.resolve(context), null)
     }
     dialog.buttons?.negative?.let { config ->
-        setNegativeButton(config.title, null)
+        setNegativeButton(config.title?.resolve(context), null)
     }
     dialog.buttons?.neutral?.let { config ->
-        setNeutralButton(config.title, null)
+        setNeutralButton(config.title?.resolve(context), null)
     }
 }
 

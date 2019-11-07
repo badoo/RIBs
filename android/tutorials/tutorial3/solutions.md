@@ -11,8 +11,8 @@ interface HelloWorldView : RibView,
     }
 
     data class ViewModel(
-        val titleText: Lexem,
-        val welcomeText: Lexem
+        val titleText: Text,
+        val welcomeText: Text
     )
 }
 ```
@@ -67,7 +67,7 @@ class HelloWorldInteractor(
     
     private val initialViewModel =
         HelloWorldView.ViewModel(
-            titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+            titleText = Text.Resource(R.string.hello_world_title, user.name()),
             welcomeText = config.welcomeMessage
         )
 }

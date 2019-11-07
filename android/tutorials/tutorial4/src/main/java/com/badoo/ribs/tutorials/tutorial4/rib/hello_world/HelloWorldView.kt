@@ -4,13 +4,13 @@ import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.tutorials.tutorial4.R
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorldView.ViewModel
-import com.badoo.ribs.tutorials.tutorial4.util.Lexem
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -24,8 +24,8 @@ interface HelloWorldView : RibView,
     }
 
     data class ViewModel(
-        val titleText: Lexem,
-        val welcomeText: Lexem
+        val titleText: Text,
+        val welcomeText: Text
     )
 
     interface Factory : ViewFactory<Nothing?, HelloWorldView>

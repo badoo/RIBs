@@ -115,5 +115,5 @@ internal object GreetingsContainerModule {
     internal fun moreOptionsOutput(
         interactor: GreetingsContainerInteractor
     ): Consumer<OptionSelector.Output> =
-        interactor.moreOptionsOutputConsumer
+        interactor.optionsSelectorOutputConsumer
 }

@@ -22,9 +22,7 @@ interface OptionSelectorView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
-    sealed class Event {
-        data class ConfirmButtonClicked(val selectionIndex: Int) : Event()
-    }
+    sealed class Event
 
     data class ViewModel(
         val options: List<Lexem>
@@ -57,9 +55,6 @@ class OptionSelectorViewImpl private constructor(
     init {
         // TODO set click listener on confirmButton that will emit ConfirmButtonClicked
         //  hint: use radioGroup.checkedIndex to set the value of ConfirmButtonClicked.selectionIndex
-        confirmButton.setOnClickListener { events.accept(
-            Event.ConfirmButtonClicked(radioGroup.checkedIndex))
-        }
     }
 
     private val RadioGroup.checkedIndex: Int
@@ -72,10 +67,10 @@ class OptionSelectorViewImpl private constructor(
         createRadios(vm.options)
     }
 
-    fun createRadios(options: List<Lexem>) {
+    private fun createRadios(options: List<Lexem>) {
         radioGroup.removeAllViews()
 
-        options.forEachIndexed() { idx, lexem ->
+        options.forEachIndexed { idx, lexem ->
             RadioButton(androidView.context).apply {
                 text = lexem.resolve(context)
                 id = View.generateViewId()

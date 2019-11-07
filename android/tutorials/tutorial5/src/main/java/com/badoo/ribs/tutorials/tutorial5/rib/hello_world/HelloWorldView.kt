@@ -56,6 +56,7 @@ class HelloWorldViewImpl private constructor(
 
     init {
         helloButton.setOnClickListener { events.accept(Event.HelloButtonClicked) }
+        // TODO set click listener on moreOptionsButton to emit event
     }
 
     override fun accept(vm: ViewModel) {

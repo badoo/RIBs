@@ -7,7 +7,7 @@ import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsConta
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Output.HelloThere
-import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector.Output
+import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.functions.Consumer
@@ -28,7 +28,7 @@ class GreetingsContainerInteractor(
         }
     }
 
-    internal val moreOptionsOutputConsumer: Consumer<Output> = Consumer {
+    internal val optionsSelectorOutputConsumer: Consumer<OptionSelector.Output> = Consumer {
         // TODO
     }
 }

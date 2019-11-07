@@ -50,13 +50,15 @@ By now you should be able to:
 1. Trigger a new event from the UI that reaches the parent as `Output`
     1. Add a new element to `Output` in `HelloWorld` called `ShowMoreOptions`
     2. Add a new element to `Event` in `HelloWorldView` called `MoreOptionsButtonClicked`
-    3. In `HelloWorldView`, find the Button with `R.id.hello_world_more_options`, and set a click listener that will publish `MoreOptionsButtonClicked`
-    4. Add the transformation between `Event` and `Output` in the `ViewEventToOutput` transformer
+    3. In `HelloWorldView`, set a click listener on `moreOptionsButton` that will publish `MoreOptionsButtonClicked`
+    4. Add the transformation between `Event` and `Output` in the `viewEventToOutput` transformer
     5. React to this new output in `GreetingsContainerInteractor`. Leave the actual implementation a `TODO()`
 2. Add `OptionSelector` RIB as a child of `GreetingsContainer`. This involves:
-    1. a new Configuration added to its `GreetingsContainerRouter`
-    2. resolving it to an `attach { moreOptionsBuilder.build() }` action
-    3. providing `moreOptionsBuilder` to the `GreetingsContainerRouter`
+    1. making `GreetingsContainerComponent` extend child dependency interface
+    1. satisfying child dependencies (prepared for you in `GreetingsContainerModule`)
+    2. providing `optionsSelectorBuilder` to the `GreetingsContainerRouter`
+    3. adding a new Configuration to `GreetingsContainerRouter`
+    4. resolving it to an `attach { optionsSelectorBuilder.build() }` action
  
 For help with the above tasks, you can refer to:
 - **tutorial1** / **Further reading** section on how to make a Button trigger an `Output`
@@ -66,7 +68,11 @@ For help with the above tasks, you can refer to:
 
 ## Implement routing
 
-Now that our new Button can signal the correct `Output`, and now that our container's Router can build the other RIB we need, the only thing we need is to connect the dots.
+Right now:
+1. our new Button can signal the correct `Output`
+2. the container's `Router` can build the other RIB we need
+
+The only thing we need is to connect the dots, so that `1.` actually triggers doing `2.` 
 
 Business logic triggers routing:
 1. in `GreetingsContainerInteractor` we consume the `Output` of `HelloWorld`
@@ -81,7 +87,7 @@ class GreetingsContainerInteractor
     internal val helloWorldOutputConsumer: Consumer<HelloWorld.Output> = Consumer {
         when (it) {
             HelloThere -> output.accept(GreetingsSaid("Someone said hello"))
-            ShowMoreOptions -> router.push(Configuration.MoreOptions)
+            ShowMoreOptions -> router.push(Configuration.OptionsSelector)    
         }
     }
 }
@@ -103,13 +109,16 @@ Why did the above work?
 All `Routers` have a routing back stack. By default, this back stack has a single element:
 
 ```
-back stack = [(default configuration)]
+back stack = [(initial configuration)]
 ```
 
 This is the one you set in your `Router`. In `GreetingsContainerRouter` this reads:
 
 ```kotlin
-initialConfiguration = Configuration.HelloWorld
+class GreetingsContainerRouter(
+    // ...
+    initialConfiguration = Configuration.HelloWorld
+)
 ```
 
 So our default back stack was in fact:
@@ -117,7 +126,7 @@ So our default back stack was in fact:
 back stack = [*Configuration.HelloWorld] 
 ```
 
-A simplified rule of the back stack is that the last configuration is active (in simple terms: it's on screen). We'll mark this with an asterisk (*) from now on.
+A simplified rule of the back stack is that the last configuration is **active** (in simple terms: it's on screen). We'll mark this with an asterisk (*) from now on.
 
 `Router` offers you operations to manipulate this back stack.
 
@@ -133,15 +142,15 @@ fun popBackStack(): Boolean
 
 We'll deal with other operations later, now what's important is that `push` adds a new element to the back stack.
 
-So when we did ```router.push(Configuration.MoreOptions)```, this happened:
+So when we did ```router.push(Configuration.OptionsSelector)```, this happened:
 
 ```
 back stack 0 = [*Configuration.HelloWorld] 
 // push
-back stack 1 = [Configuration.HelloWorld, *Configuration.MoreOptions]
+back stack 1 = [Configuration.HelloWorld, *Configuration.OptionsSelector]
 ```
 
-And because we just said that the last element in the back stack is on screen, this means that the view of `HelloWorld` gets detached, and `MoreOptions` gets created and attached.
+And because we just said that the last element in the back stack is on screen, this means that the view of `HelloWorld` gets detached, and `OptionsSelector` gets created and attached.
 
 
 ## Back pressing and the back stack
@@ -155,17 +164,17 @@ By default, back pressing is propagated to the deepest (active) levels of the RI
 3. If `Router` had only one more configuration left in its back stack, there's nothing more to remove. The whole thing starts bubbling up the RIB tree to higher levels until one of the levels can handle it (points 1 and 2).
 4. If the whole RIB tree didn't handle the back press, then the last fallback is the Android environment (in practice this probably means that the hosting `Activity` finishes).
 
-In our case, when we were on the `MoreOptions` screen, `GreetingsContainerRouter` had 2 elements in its back stack, so it could automatically handle the back press event by popping the latest:
+In our case, when we were on the `OptionsSelector` screen, `GreetingsContainerRouter` had 2 elements in its back stack, so it could automatically handle the back press event by popping the latest:
 
 ```
 back stack 0 = [*Configuration.HelloWorld] 
 // push
-back stack 1 = [Configuration.HelloWorld, *Configuration.MoreOptions]
+back stack 1 = [Configuration.HelloWorld, *Configuration.OptionsSelector]
 // back press
 back stack 2 = [*Configuration.HelloWorld]
 ```
 
-And again, because last element in the back stack is on screen, this means that `MoreOptions` gets detached, and `HelloWorld` gets attached back to the screen again.
+And again, because last element in the back stack is on screen, this means that `OptionsSelector` gets detached, and `HelloWorld` gets attached back to the screen again.
 
 
 ## Almost there: use the result from options screen
@@ -186,7 +195,7 @@ What we want to do is:
 
 This is how it might look:
 ```kotlin
-internal val moreOptionsOutputConsumer: Consumer<Output> = Consumer {
+internal val optionsSelectorOutputConsumer: Consumer<OptionSelector.Output> = Consumer {
     when (it) {
         is Output.LexemSelected -> {
             router.popBackStack()

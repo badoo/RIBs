@@ -12,7 +12,7 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature.Wish
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 
-class FooBarFeature : ActorReducerFeature<Wish, Effect, State, News>(
+internal class FooBarFeature : ActorReducerFeature<Wish, Effect, State, News>(
     initialState = State(),
     bootstrapper = BootStrapperImpl(),
     actor = ActorImpl(),

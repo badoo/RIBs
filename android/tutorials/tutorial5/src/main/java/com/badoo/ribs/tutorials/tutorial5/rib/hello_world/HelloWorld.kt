@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.hello_world
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.tutorials.tutorial5.util.User
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -16,16 +16,16 @@ interface HelloWorld : Rib {
     }
 
     sealed class Input {
-        data class UpdateButtonText(val text: Lexem): Input()
+        data class UpdateButtonText(val text: Text): Input()
     }
 
     sealed class Output {
-        data class HelloThere(val greeting: Lexem) : Output()
+        data class HelloThere(val greeting: Text) : Output()
     }
 
     data class Config(
-        val welcomeMessage: Lexem,
-        val buttonText: Lexem
+        val welcomeMessage: Text,
+        val buttonText: Text
     )
 
     class Customisation(

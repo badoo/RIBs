@@ -10,14 +10,14 @@ import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector.Out
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.ViewModel
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
+import com.badoo.ribs.android.Text
 import io.reactivex.functions.Consumer
 
 class OptionSelectorInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, *, Configuration, Nothing, OptionSelectorView>,
     private val output: Consumer<Output>,
-    options: List<Lexem>
+    options: List<Text>
 ) : Interactor<Configuration, Configuration, Nothing, OptionSelectorView>(
     savedInstanceState = savedInstanceState,
     router = router,
@@ -28,10 +28,8 @@ class OptionSelectorInteractor(
         options
     )
 
-    private val viewEventToOutput = { event: Event ->
-        when (event) {
-            is Event.ConfirmButtonClicked -> TODO()
-        }
+    private val viewEventToOutput: (Event) -> Output = {
+        TODO()
     }
 
     override fun onViewCreated(view: OptionSelectorView, viewLifecycle: Lifecycle) {

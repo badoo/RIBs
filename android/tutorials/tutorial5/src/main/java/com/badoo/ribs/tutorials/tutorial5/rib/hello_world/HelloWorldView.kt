@@ -11,7 +11,7 @@ import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.ViewModel
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
+import com.badoo.ribs.android.Text
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -24,9 +24,9 @@ interface HelloWorldView : RibView,
     }
 
     data class ViewModel(
-        val titleText: Lexem,
-        val welcomeText: Lexem,
-        val buttonText: Lexem
+        val titleText: Text,
+        val welcomeText: Text,
+        val buttonText: Text
     )
 
     interface Factory : ViewFactory<Nothing?, HelloWorldView>

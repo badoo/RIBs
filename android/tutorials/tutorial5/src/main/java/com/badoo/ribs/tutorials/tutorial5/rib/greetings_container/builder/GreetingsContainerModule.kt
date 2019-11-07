@@ -9,7 +9,7 @@ import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsConta
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
+import com.badoo.ribs.android.Text
 import dagger.Provides
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -47,14 +47,14 @@ internal object GreetingsContainerModule {
     @GreetingsContainerScope
     @Provides
     @JvmStatic
-    internal fun lexemes(): List<@JvmSuppressWildcards Lexem> =
+    internal fun lexemes(): List<@JvmSuppressWildcards Text> =
         listOf(
-            Lexem.Text("Hello"),
-            Lexem.Text("Grüss gott"),
-            Lexem.Text("Bonjour"),
-            Lexem.Text("Hola"),
-            Lexem.Text("Szép jó napot"),
-            Lexem.Text("Góðan dag")
+            Text.Plain("Hello"),
+            Text.Plain("Grüss gott"),
+            Text.Plain("Bonjour"),
+            Text.Plain("Hola"),
+            Text.Plain("Szép jó napot"),
+            Text.Plain("Góðan dag")
         )
 
     @GreetingsContainerScope
@@ -76,10 +76,10 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun helloWorldConfig(
-        options: @JvmSuppressWildcards List<Lexem>
+        options: @JvmSuppressWildcards List<Text>
     ): HelloWorld.Config =
         HelloWorld.Config(
-            welcomeMessage = Lexem.Resource(R.string.hello_world_welcome_text),
+            welcomeMessage = Text.Resource(R.string.hello_world_welcome_text),
             buttonText = options.first()
         )
 
@@ -103,7 +103,7 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun moreOptionsConfig(
-        options: @JvmSuppressWildcards List<Lexem>
+        options: @JvmSuppressWildcards List<Text>
     ): OptionSelector.Config =
         OptionSelector.Config(
             options = options

@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.tutorials.tutorial5.util.User
 import io.reactivex.functions.Consumer
 
@@ -13,6 +13,6 @@ interface GreetingsContainer : Rib {
     }
 
     sealed class Output {
-        data class GreetingsSaid(val greeting: Lexem) : Output()
+        data class GreetingsSaid(val greeting: Text) : Output()
     }
 }

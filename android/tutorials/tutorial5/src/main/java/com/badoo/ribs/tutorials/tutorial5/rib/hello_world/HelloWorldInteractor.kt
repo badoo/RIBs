@@ -14,7 +14,7 @@ import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldRouter.Confi
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldRouter.Configuration.Content
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.ViewModel
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.tutorials.tutorial5.util.User
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -42,9 +42,9 @@ class HelloWorldInteractor(
         }
     }
 
-    private fun viewModel(buttonText: Lexem): ViewModel {
+    private fun viewModel(buttonText: Text): ViewModel {
         return ViewModel(
-            titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+            titleText = Text.Resource(R.string.hello_world_title, user.name()),
             welcomeText = config.welcomeMessage,
             buttonText = buttonText
         )

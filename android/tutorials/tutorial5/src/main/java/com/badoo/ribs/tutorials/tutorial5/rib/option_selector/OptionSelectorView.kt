@@ -12,7 +12,7 @@ import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.ViewModel
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
+import com.badoo.ribs.android.Text
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -25,7 +25,7 @@ interface OptionSelectorView : RibView,
     sealed class Event
 
     data class ViewModel(
-        val options: List<Lexem>
+        val options: List<Text>
     )
 
     interface Factory : ViewFactory<Nothing?, OptionSelectorView>
@@ -67,7 +67,7 @@ class OptionSelectorViewImpl private constructor(
         createRadios(vm.options)
     }
 
-    private fun createRadios(options: List<Lexem>) {
+    private fun createRadios(options: List<Text>) {
         radioGroup.removeAllViews()
 
         options.forEachIndexed { idx, lexem ->

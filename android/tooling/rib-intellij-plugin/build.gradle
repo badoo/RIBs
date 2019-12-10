@@ -47,6 +47,22 @@ templates {
             sourceValue = "FooBar"
         }
     }
+
+    template {
+        id = 'rib_with_view_no_dagger'
+        name = '[No Dagger] RIB with view'
+
+        fromProject = project(':templates:no-dagger')
+        sourcePackage = 'com.badoo.ribs.template.no_dagger'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
 }
 
 dependencies {

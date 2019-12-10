@@ -49,8 +49,8 @@ templates {
     }
 
     template {
-        id = 'rib_with_view_no_dagger'
-        name = '[No Dagger] RIB with view'
+        id = 'rib_with_view_no_dagger_snapshot'
+        name = '[Snapshot][No Dagger] RIB with view'
 
         fromProject = project(':templates:snapshot')
         sourcePackage = 'com.badoo.ribs.template.no_dagger'

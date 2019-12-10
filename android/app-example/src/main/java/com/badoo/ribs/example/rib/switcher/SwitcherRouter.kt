@@ -11,8 +11,8 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
-import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
+import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
+import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem

@@ -5,11 +5,10 @@ import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
+import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBarView
-import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
+import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
-import com.badoo.ribs.example.rib.hello_world.HelloWorldView
-import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar

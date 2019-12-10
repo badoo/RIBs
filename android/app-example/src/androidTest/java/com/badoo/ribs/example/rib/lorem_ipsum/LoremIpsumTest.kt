@@ -10,7 +10,6 @@ import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.app.AppRibCustomisations
-import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder
 import io.reactivex.functions.Consumer
 import org.junit.Rule
 import org.junit.Test

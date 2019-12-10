@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.switcher
 
 import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
-import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
@@ -13,8 +13,8 @@ import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
+import com.badoo.ribs.example.rib.menu.MenuBuilder
 import com.badoo.ribs.example.rib.menu.MenuView
-import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Blocker
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Foo
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Hello

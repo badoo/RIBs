@@ -42,7 +42,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
     savedInstanceState: Bundle?,
-    internal open val identifier: Rib,
+    open val identifier: Rib,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
@@ -55,6 +55,12 @@ open class Node<V : RibView>(
          * The node's view attach/detach is managed by its parent.
          */
         PARENT,
+
+        /**
+         * The node's view attach/detach is managed by its parent, but only on request:
+         * [WakeUpAction] will not cause it automatically, only explicit [ActivateAction]
+         */
+        DEFERRED,
 
         /**
          * The node's view is somewhere else in the view tree, and it should not be managed
@@ -211,7 +217,7 @@ open class Node<V : RibView>(
             val target = when {
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
                 isViewless -> parentViewGroup!!
-                else -> view!!.getParentViewForChild(child.identifier) ?: parentViewGroup!!
+                else -> view!!.getParentViewForChild(child) ?: parentViewGroup!!
             }
 
             child.attachToView(target)

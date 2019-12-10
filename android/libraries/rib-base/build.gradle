@@ -31,6 +31,7 @@ dependencies {
     kapt deps.apt.daggerCompiler
     implementation deps.apt.javaxInject
 
+    implementation deps.android.recyclerView
     implementation deps.external.kotlinStdlib
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid

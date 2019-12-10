@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.hello_world
 import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.TextView
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -59,8 +60,8 @@ class HelloWorldViewImpl private constructor(
         text.text = vm.text
     }
 
-    override fun getParentViewForChild(child: Rib): ViewGroup? =
-        when (child) {
+    override fun getParentViewForChild(child: Node<*>): ViewGroup? =
+        when (child.identifier) {
             is Small -> smallContainer
             else -> null
         }

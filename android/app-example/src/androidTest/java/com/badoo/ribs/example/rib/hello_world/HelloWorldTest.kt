@@ -14,7 +14,6 @@ import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.app.AppRibCustomisations
-import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
 import io.reactivex.Observable.empty
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

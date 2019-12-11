@@ -8,7 +8,6 @@ import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
-import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.menu.element.MenuElement
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable

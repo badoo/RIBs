@@ -4,7 +4,7 @@ import com.badoo.ribs.android.Text
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.Event.Negative
 import com.badoo.ribs.dialog.Dialog.Event.Positive
-import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder
+import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumBuilder
 
 class RibDialog(
     loremIpsumBuilder: LoremIpsumBuilder

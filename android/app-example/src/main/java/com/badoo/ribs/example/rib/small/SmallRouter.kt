@@ -7,7 +7,7 @@ import com.badoo.ribs.core.routing.action.AnchoredAttachRoutingAction.Companion.
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.example.rib.big.builder.BigBuilder
-import com.badoo.ribs.example.rib.portal_overlay_test.builder.PortalOverlayTestBuilder
+import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestBuilder
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.Content
 import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.FullScreen

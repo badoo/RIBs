@@ -7,7 +7,7 @@ import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
-import com.badoo.ribs.example.rib.hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
 import com.badoo.ribs.example.util.CoffeeMachine
 import io.reactivex.Single
 

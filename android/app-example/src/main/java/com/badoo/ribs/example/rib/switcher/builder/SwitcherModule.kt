@@ -5,11 +5,11 @@ import android.os.Bundle
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
-import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.foo_bar.FooBar
-import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
-import com.badoo.ribs.example.rib.hello_world.HelloWorld
-import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
+import com.badoo.ribs.example.rib.main_dialog_example.builder.DialogExampleBuilder
+import com.badoo.ribs.example.rib.main_foo_bar.FooBar
+import com.badoo.ribs.example.rib.main_foo_bar.FooBarBuilder
+import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.Switcher

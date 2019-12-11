@@ -10,9 +10,9 @@ import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
-import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
-import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
+import com.badoo.ribs.example.rib.main_dialog_example.builder.DialogExampleBuilder
+import com.badoo.ribs.example.rib.main_foo_bar.FooBarBuilder
+import com.badoo.ribs.example.rib.main_hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem

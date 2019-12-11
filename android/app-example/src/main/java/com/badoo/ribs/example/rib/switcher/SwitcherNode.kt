@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.example.rib.hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Foo
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Hello
 import io.reactivex.Single

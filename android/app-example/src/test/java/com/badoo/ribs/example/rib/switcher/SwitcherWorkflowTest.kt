@@ -2,10 +2,10 @@ package com.badoo.ribs.example.rib.switcher
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.BlockerView
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
-import com.badoo.ribs.example.rib.foo_bar.FooBarNode
-import com.badoo.ribs.example.rib.hello_world.HelloWorld
-import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
+import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView
+import com.badoo.ribs.example.rib.main_foo_bar.FooBarNode
+import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.nhaarman.mockitokotlin2.doReturn

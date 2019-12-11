@@ -12,12 +12,12 @@ import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.example.app.OtherActivity
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExample
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView
-import com.badoo.ribs.example.rib.main_foo_bar.FooBar
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldView
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExample
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBar
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldView
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.Switcher
@@ -69,7 +69,7 @@ class MainScreenTest {
     @Test
     fun openHelloSectionAndClickButton_launchesActivity() {
         menuView.uiEvents.accept(MenuView.Event.Select(Menu.MenuItem.HelloWorld))
-        helloWorldView.uiEvents.accept(HelloWorldView.Event.ButtonClicked)
+        helloWorldView.uiEvents.accept(MainHelloWorldView.Event.ButtonClicked)
 
         dependencies.activityStarter.assertIntents {
             last().has(component<OtherActivity>())
@@ -85,9 +85,9 @@ class MainScreenTest {
         ))
 
         menuView.uiEvents.accept(MenuView.Event.Select(Menu.MenuItem.HelloWorld))
-        helloWorldView.uiEvents.accept(HelloWorldView.Event.ButtonClicked)
+        helloWorldView.uiEvents.accept(MainHelloWorldView.Event.ButtonClicked)
 
-        assertThat(helloWorldViewModelObserver.values()).last().isEqualTo(HelloWorldView.ViewModel("Data returned: 1234"))
+        assertThat(helloWorldViewModelObserver.values()).last().isEqualTo(MainHelloWorldView.ViewModel("Data returned: 1234"))
     }
 
     private fun buildRootRib() =
@@ -115,23 +115,23 @@ class MainScreenTest {
                         }
                     }
                 })
-                put(DialogExample.Customisation::class, mock {
-                    on { viewFactory } doReturn object : DialogExampleView.Factory {
-                        override fun invoke(deps: Nothing?): (ViewGroup) -> DialogExampleView = {
+                put(MainDialogExample.Customisation::class, mock {
+                    on { viewFactory } doReturn object : MainDialogExampleView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> MainDialogExampleView = {
                             dialogExampleView
                         }
                     }
                 })
-                put(FooBar.Customisation::class, mock {
-                    on { viewFactory } doReturn object : FooBarView.Factory {
-                        override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
+                put(MainFooBar.Customisation::class, mock {
+                    on { viewFactory } doReturn object : MainFooBarView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> MainFooBarView = {
                             fooBarView
                         }
                     }
                 })
-                put(HelloWorld.Customisation::class, mock {
-                    on { viewFactory } doReturn object : HelloWorldView.Factory {
-                        override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
+                put(MainHelloWorld.Customisation::class, mock {
+                    on { viewFactory } doReturn object : MainHelloWorldView.Factory {
+                        override fun invoke(deps: Nothing?): (ViewGroup) -> MainHelloWorldView = {
                             helloWorldView
                         }
                     }
@@ -141,11 +141,11 @@ class MainScreenTest {
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
 
-    class TestFooBarView : TestView<FooBarView.ViewModel, FooBarView.Event>(), FooBarView
+    class TestFooBarView : TestView<MainFooBarView.ViewModel, MainFooBarView.Event>(), MainFooBarView
 
-    class TestDialogExampleView : TestView<DialogExampleView.ViewModel, DialogExampleView.Event>(), DialogExampleView
+    class TestDialogExampleView : TestView<MainDialogExampleView.ViewModel, MainDialogExampleView.Event>(), MainDialogExampleView
 
-    class TestHelloWorldView : TestView<HelloWorldView.ViewModel, HelloWorldView.Event>(), HelloWorldView
+    class TestHelloWorldView : TestView<MainHelloWorldView.ViewModel, MainHelloWorldView.Event>(), MainHelloWorldView
 
     class TestSwitcherView : TestView<SwitcherView.ViewModel, SwitcherView.Event>(),
         SwitcherView

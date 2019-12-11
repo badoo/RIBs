@@ -7,21 +7,21 @@ import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDial
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.dialog.DialogLauncher
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleRouter.Configuration
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleRouter.Configuration.Content
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleRouter.Configuration.Overlay
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleRouter.Configuration
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleRouter.Configuration.Content
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.RibDialog
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.SimpleDialog
 import kotlinx.android.parcel.Parcelize
 
-class DialogExampleRouter(
+class MainDialogExampleRouter(
     savedInstanceState: Bundle?,
     private val dialogLauncher: DialogLauncher,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-): Router<Configuration, Nothing, Content, Overlay, DialogExampleView>(
+): Router<Configuration, Nothing, Content, Overlay, MainDialogExampleView>(
     savedInstanceState = savedInstanceState,
     initialConfiguration = Content.Default
 ) {
@@ -36,7 +36,7 @@ class DialogExampleRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<DialogExampleView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction<MainDialogExampleView> =
         when (configuration) {
             is Content.Default -> noop()
             is Overlay.SimpleDialog -> showDialog(this, dialogLauncher, simpleDialog)

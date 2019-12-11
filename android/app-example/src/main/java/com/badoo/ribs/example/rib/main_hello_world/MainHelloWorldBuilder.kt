@@ -6,23 +6,23 @@ import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
-import com.badoo.ribs.example.rib.main_hello_world.feature.HelloWorldFeature
+import com.badoo.ribs.example.rib.main_hello_world.feature.MainHelloWorldFeature
 import com.badoo.ribs.example.rib.portal_sub_screen.PortalSubScreen
 import com.badoo.ribs.example.rib.portal_sub_screen.builder.PortalSubScreenBuilder
 
-class HelloWorldBuilder(
-    dependency: HelloWorld.Dependency
-) : Builder<HelloWorld.Dependency>() {
+class MainHelloWorldBuilder(
+    dependency: MainHelloWorld.Dependency
+) : Builder<MainHelloWorld.Dependency>() {
 
-    override val dependency : HelloWorld.Dependency = object : HelloWorld.Dependency by dependency {
-        override fun ribCustomisation() = dependency.customisationsBranchFor(HelloWorld::class)
+    override val dependency : MainHelloWorld.Dependency = object : MainHelloWorld.Dependency by dependency {
+        override fun ribCustomisation() = dependency.customisationsBranchFor(MainHelloWorld::class)
     }
 
-    fun build(savedInstanceState: Bundle?): HelloWorldNode {
-        val customisation = dependency.getOrDefault(HelloWorld.Customisation())
-        val router = HelloWorldRouter(savedInstanceState, smallBuilder())
-        val feature = HelloWorldFeature()
-        val interactor = HelloWorldInteractor(
+    fun build(savedInstanceState: Bundle?): MainHelloWorldNode {
+        val customisation = dependency.getOrDefault(MainHelloWorld.Customisation())
+        val router = MainHelloWorldRouter(savedInstanceState, smallBuilder())
+        val feature = MainHelloWorldFeature()
+        val interactor = MainHelloWorldInteractor(
             savedInstanceState,
             router,
             dependency.helloWorldInput(),
@@ -31,7 +31,7 @@ class HelloWorldBuilder(
             dependency.activityStarter()
         )
 
-        return HelloWorldNode(
+        return MainHelloWorldNode(
             customisation.viewFactory(null),
             router,
             interactor,

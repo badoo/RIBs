@@ -1,23 +1,23 @@
-package com.badoo.ribs.example.rib.main_foo_bar
+package com.badoo.ribs.example.rib.main_dialog_example
 
-import com.badoo.ribs.android.PermissionRequester
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-class FooBarInteractorTest {
+class MainDialogExampleInteractorTest {
 
-    private val router: FooBarRouter = mock()
-    private val permissionRequester: PermissionRequester = mock()
-    private lateinit var interactor: FooBarInteractor
+    private val router: MainDialogExampleRouter = mock()
+    private lateinit var interactor: MainDialogExampleInteractor
 
     @Before
     fun setup() {
-        interactor = FooBarInteractor(
+        interactor = MainDialogExampleInteractor(
             savedInstanceState = null,
             router = router,
-            permissionRequester = permissionRequester
+            simpleDialog = mock(),
+            lazyDialog = mock(),
+            ribDialog = mock()
         )
     }
 

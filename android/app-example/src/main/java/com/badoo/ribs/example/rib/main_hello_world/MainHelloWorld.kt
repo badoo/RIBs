@@ -9,7 +9,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
-interface HelloWorld : Rib {
+interface MainHelloWorld : Rib {
 
     interface Dependency :
         CanProvideActivityStarter,
@@ -24,10 +24,10 @@ interface HelloWorld : Rib {
     sealed class Output
 
     class Customisation(
-        val viewFactory: HelloWorldView.Factory = HelloWorldViewImpl.Factory()
+        val viewFactory: MainHelloWorldView.Factory = MainHelloWorldViewImpl.Factory()
     ) : RibCustomisation
 
     interface Workflow {
-        fun somethingSomethingDarkSide(): Single<HelloWorld.Workflow>
+        fun somethingSomethingDarkSide(): Single<MainHelloWorld.Workflow>
     }
 }

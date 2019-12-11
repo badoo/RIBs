@@ -10,14 +10,14 @@ import org.robolectric.RobolectricTestRunner
 
 
 @RunWith(RobolectricTestRunner::class)
-class FooBarRouterTest {
+class MainFooBarRouterTest {
 
-  private var interactor: FooBarInteractor = mock()
-  private var router: FooBarRouter? = null
+  private var interactor: MainFooBarInteractor = mock()
+  private var router: MainFooBarRouter? = null
 
   @Before
   fun setup() {
-    router = FooBarRouter(
+    router = MainFooBarRouter(
       savedInstanceState = null
     )
   }

@@ -7,7 +7,7 @@ import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
 import com.badoo.ribs.example.util.CoffeeMachine
 import io.reactivex.Single
 
@@ -28,9 +28,9 @@ interface Switcher : Rib {
     ) : RibCustomisation
 
     interface Workflow {
-        fun attachHelloWorld(): Single<HelloWorld.Workflow>
-        fun testCrash(): Single<HelloWorld.Workflow>
-        fun waitForHelloWorld(): Single<HelloWorld.Workflow>
+        fun attachHelloWorld(): Single<MainHelloWorld.Workflow>
+        fun testCrash(): Single<MainHelloWorld.Workflow>
+        fun waitForHelloWorld(): Single<MainHelloWorld.Workflow>
         fun doSomethingAndStayOnThisNode(): Single<Switcher.Workflow>
     }
 

@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarRouter.Configuration
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
-class FooBarRouter(
+class MainFooBarRouter(
     savedInstanceState: Bundle?
-): Router<Configuration, Nothing, Configuration, Nothing, FooBarView>(
+): Router<Configuration, Nothing, Configuration, Nothing, MainFooBarView>(
     savedInstanceState = savedInstanceState,
     initialConfiguration = Configuration.Default
 ) {
@@ -17,6 +17,6 @@ class FooBarRouter(
         @Parcelize object Default : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<FooBarView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction<MainFooBarView> =
         RoutingAction.noop()
 }

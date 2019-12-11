@@ -5,19 +5,19 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.ViewPlugin
 
-class FooBarNode(
-    viewFactory: ((ViewGroup) -> FooBarView?)?,
-    private val router: FooBarRouter,
-    interactor: FooBarInteractor,
+class MainFooBarNode(
+    viewFactory: ((ViewGroup) -> MainFooBarView?)?,
+    private val router: MainFooBarRouter,
+    interactor: MainFooBarInteractor,
     savedInstanceState: Bundle?,
     viewPlugins: Set<ViewPlugin>
-) : Node<FooBarView>(
+) : Node<MainFooBarView>(
     savedInstanceState = savedInstanceState,
-    identifier = object : FooBar {},
+    identifier = object : MainFooBar {},
     viewFactory = viewFactory,
     router = router,
     interactor = interactor,
     viewPlugins = viewPlugins
-), FooBar.Workflow {
+), MainFooBar.Workflow {
 
 }

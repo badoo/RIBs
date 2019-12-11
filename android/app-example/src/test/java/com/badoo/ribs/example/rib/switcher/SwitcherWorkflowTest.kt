@@ -2,10 +2,10 @@ package com.badoo.ribs.example.rib.switcher
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.BlockerView
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarNode
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldNode
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarNode
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldNode
 import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.nhaarman.mockitokotlin2.doReturn
@@ -25,9 +25,9 @@ class SwitcherWorkflowTest {
 
     @Before
     fun setup() {
-        val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), null)
-        val fooBarNode = FooBarNode(mock(), mock(), mock(), null, emptySet())
-        val node1 = Node<DialogExampleView>(null, mock(), mock(), mock(), mock())
+        val helloWorldNode = MainHelloWorldNode(mock(), mock(), mock(), null)
+        val fooBarNode = MainFooBarNode(mock(), mock(), mock(), null, emptySet())
+        val node1 = Node<MainDialogExampleView>(null, mock(), mock(), mock(), mock())
         val node2 = Node<BlockerView>(null, mock(), mock(), mock(), mock())
         val node3 = Node<MenuView>(null, mock(), mock(), mock(), mock())
 
@@ -53,7 +53,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `attachHelloWorld`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<MainHelloWorld.Workflow>()
 
         workflow.attachHelloWorld().subscribe(testObserver)
 
@@ -63,7 +63,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `testCrash`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<MainHelloWorld.Workflow>()
 
         workflow.testCrash().subscribe(testObserver)
 
@@ -72,7 +72,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is already attached`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<MainHelloWorld.Workflow>()
 
         router.push(Content.Hello)
         workflow.waitForHelloWorld().subscribe(testObserver)
@@ -83,7 +83,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is attached after`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<MainHelloWorld.Workflow>()
 
         workflow.waitForHelloWorld().subscribe(testObserver)
         router.push(Content.Hello)
@@ -94,7 +94,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is not attached`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<MainHelloWorld.Workflow>()
 
         workflow.waitForHelloWorld().subscribe(testObserver)
 

@@ -8,15 +8,15 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.Event
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.Event.ShowRibDialogClicked
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.ViewModel
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.Event
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.Event.ShowRibDialogClicked
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-interface DialogExampleView : RibView,
+interface MainDialogExampleView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
@@ -30,21 +30,21 @@ interface DialogExampleView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, DialogExampleView>
+    interface Factory : ViewFactory<Nothing?, MainDialogExampleView>
 }
 
-class DialogExampleViewImpl  private constructor(
+class MainDialogExampleViewImpl  private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : DialogExampleView,
+) : MainDialogExampleView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_dialog_example
-    ) : DialogExampleView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> DialogExampleView = {
-            DialogExampleViewImpl(
+    ) : MainDialogExampleView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> MainDialogExampleView = {
+            MainDialogExampleViewImpl(
                 inflate(it, layoutRes)
             )
         }

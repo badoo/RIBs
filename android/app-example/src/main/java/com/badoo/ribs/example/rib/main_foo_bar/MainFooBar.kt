@@ -7,7 +7,7 @@ import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-interface FooBar : Rib {
+interface MainFooBar : Rib {
 
     interface Dependency : CanProvidePermissionRequester, CanProvideRibCustomisation {
         fun foobarInput(): ObservableSource<Input>
@@ -19,7 +19,7 @@ interface FooBar : Rib {
     sealed class Output
 
     class Customisation(
-        val viewFactory: FooBarView.Factory = FooBarViewImpl.Factory()
+        val viewFactory: MainFooBarView.Factory = MainFooBarViewImpl.Factory()
     ) : RibCustomisation
 
     interface Workflow {

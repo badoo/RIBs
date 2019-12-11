@@ -5,14 +5,14 @@ import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.NewsPublisher
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.feature.ActorReducerFeature
-import com.badoo.ribs.example.rib.main_foo_bar.feature.FooBarFeature.Effect
-import com.badoo.ribs.example.rib.main_foo_bar.feature.FooBarFeature.News
-import com.badoo.ribs.example.rib.main_foo_bar.feature.FooBarFeature.State
-import com.badoo.ribs.example.rib.main_foo_bar.feature.FooBarFeature.Wish
+import com.badoo.ribs.example.rib.main_foo_bar.feature.MainFooBarFeature.Effect
+import com.badoo.ribs.example.rib.main_foo_bar.feature.MainFooBarFeature.News
+import com.badoo.ribs.example.rib.main_foo_bar.feature.MainFooBarFeature.State
+import com.badoo.ribs.example.rib.main_foo_bar.feature.MainFooBarFeature.Wish
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 
-class FooBarFeature : ActorReducerFeature<Wish, Effect, State, News>(
+class MainFooBarFeature : ActorReducerFeature<Wish, Effect, State, News>(
     initialState = State(),
     bootstrapper = BootStrapperImpl(),
     actor = ActorImpl(),

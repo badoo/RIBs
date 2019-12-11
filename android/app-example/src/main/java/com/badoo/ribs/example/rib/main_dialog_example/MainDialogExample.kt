@@ -5,11 +5,11 @@ import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 
-interface DialogExample : Rib {
+interface MainDialogExample : Rib {
 
     interface Dependency : CanProvideDialogLauncher, CanProvideRibCustomisation
 
     class Customisation(
-        val viewFactory: DialogExampleView.Factory = DialogExampleViewImpl.Factory()
+        val viewFactory: MainDialogExampleView.Factory = MainDialogExampleViewImpl.Factory()
     ) : RibCustomisation
 }

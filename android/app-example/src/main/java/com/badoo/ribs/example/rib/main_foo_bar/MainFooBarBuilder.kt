@@ -7,25 +7,25 @@ import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.example.rib.main_foo_bar.viewplugin.ParentLongClickListener
 
-class FooBarBuilder(
-    dependency: FooBar.Dependency
-) : Builder<FooBar.Dependency>() {
+class MainFooBarBuilder(
+    dependency: MainFooBar.Dependency
+) : Builder<MainFooBar.Dependency>() {
 
-    override val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
-        override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
+    override val dependency : MainFooBar.Dependency = object : MainFooBar.Dependency by dependency {
+        override fun ribCustomisation() = dependency.customisationsBranchFor(MainFooBar::class)
     }
 
-    fun build(savedInstanceState: Bundle?): Node<FooBarView> {
-        val customisation = dependency.getOrDefault(FooBar.Customisation())
-        val router = FooBarRouter(savedInstanceState)
-        val interactor = FooBarInteractor(
+    fun build(savedInstanceState: Bundle?): Node<MainFooBarView> {
+        val customisation = dependency.getOrDefault(MainFooBar.Customisation())
+        val router = MainFooBarRouter(savedInstanceState)
+        val interactor = MainFooBarInteractor(
             savedInstanceState,
             router,
             dependency.permissionRequester()
         )
         val viewPlugins = setOf(ParentLongClickListener())
 
-        return FooBarNode(
+        return MainFooBarNode(
             customisation.viewFactory(null),
             router,
             interactor,

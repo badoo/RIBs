@@ -10,9 +10,9 @@ import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
-import com.badoo.ribs.example.rib.main_dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarBuilder
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldBuilder
+import com.badoo.ribs.example.rib.main_dialog_example.builder.MainDialogExampleBuilder
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarBuilder
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem
@@ -27,9 +27,9 @@ import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
     savedInstanceState: Bundle?,
-    private val fooBarBuilder: FooBarBuilder,
-    private val helloWorldBuilder: HelloWorldBuilder,
-    private val dialogExampleBuilder: DialogExampleBuilder,
+    private val fooBarBuilder: MainFooBarBuilder,
+    private val helloWorldBuilder: MainHelloWorldBuilder,
+    private val dialogExampleBuilder: MainDialogExampleBuilder,
     private val blockerBuilder: BlockerBuilder,
     private val menuBuilder: MenuBuilder,
     private val dialogLauncher: DialogLauncher,

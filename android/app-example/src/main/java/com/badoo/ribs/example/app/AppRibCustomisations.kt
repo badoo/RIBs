@@ -5,22 +5,22 @@ import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.dialog_lorem_ipsum.DialogLoremIpsum
 import com.badoo.ribs.example.rib.dialog_lorem_ipsum.DialogLoremIpsumViewImpl
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExample
-import com.badoo.ribs.example.rib.main_foo_bar.FooBar
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarViewImpl
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExample
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBar
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarViewImpl
 import com.badoo.ribs.example.rib.switcher.Switcher
 
 object AppRibCustomisations : RibCustomisationDirectory by customisations({
     Switcher::class {
-        DialogExample::class {
+        MainDialogExample::class {
             + DialogLoremIpsum.Customisation(
                 viewFactory = DialogLoremIpsumViewImpl.Factory(R.layout.rib_dialog_lorem_ipsum_override)
             )
         }
     }
 
-    + FooBar.Customisation(
-        viewFactory = FooBarViewImpl.Factory(R.layout.rib_foobar_override)
+    + MainFooBar.Customisation(
+        viewFactory = MainFooBarViewImpl.Factory(R.layout.rib_main_foobar_override)
     )
 })
 

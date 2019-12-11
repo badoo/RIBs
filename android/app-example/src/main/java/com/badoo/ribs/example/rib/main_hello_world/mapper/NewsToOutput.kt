@@ -1,10 +1,10 @@
 package com.badoo.ribs.example.rib.main_hello_world.mapper
 
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
-import com.badoo.ribs.example.rib.main_hello_world.feature.HelloWorldFeature
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.feature.MainHelloWorldFeature
 
-internal object NewsToOutput : (HelloWorldFeature.News) -> HelloWorld.Output? {
+internal object NewsToOutput : (MainHelloWorldFeature.News) -> MainHelloWorld.Output? {
 
-    override fun invoke(news: HelloWorldFeature.News): HelloWorld.Output? =
+    override fun invoke(news: MainHelloWorldFeature.News): MainHelloWorld.Output? =
         TODO("Implement HelloWorldNewsToOutput mapping")
 }

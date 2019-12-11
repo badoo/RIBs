@@ -5,11 +5,11 @@ import android.os.Bundle
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
-import com.badoo.ribs.example.rib.main_dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.main_foo_bar.FooBar
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarBuilder
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldBuilder
+import com.badoo.ribs.example.rib.main_dialog_example.builder.MainDialogExampleBuilder
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBar
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarBuilder
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.Switcher
@@ -44,9 +44,9 @@ internal object SwitcherModule {
     ): SwitcherRouter =
         SwitcherRouter(
             savedInstanceState = savedInstanceState,
-            fooBarBuilder = FooBarBuilder(component),
-            helloWorldBuilder = HelloWorldBuilder(component),
-            dialogExampleBuilder = DialogExampleBuilder(component),
+            fooBarBuilder = MainFooBarBuilder(component),
+            helloWorldBuilder = MainHelloWorldBuilder(component),
+            dialogExampleBuilder = MainDialogExampleBuilder(component),
             blockerBuilder = BlockerBuilder(component),
             menuBuilder = MenuBuilder(component),
             dialogLauncher = dialogLauncher,
@@ -95,22 +95,22 @@ internal object SwitcherModule {
     @SwitcherScope
     @Provides
     @JvmStatic
-    internal fun helloWorldInput(): ObservableSource<HelloWorld.Input> = Observable.empty()
+    internal fun helloWorldInput(): ObservableSource<MainHelloWorld.Input> = Observable.empty()
 
     @SwitcherScope
     @Provides
     @JvmStatic
-    internal fun helloWorldOutput(): Consumer<HelloWorld.Output> = Consumer { }
+    internal fun helloWorldOutput(): Consumer<MainHelloWorld.Output> = Consumer { }
 
     @SwitcherScope
     @Provides
     @JvmStatic
-    internal fun fooBarInput(): ObservableSource<FooBar.Input> = Observable.empty()
+    internal fun fooBarInput(): ObservableSource<MainFooBar.Input> = Observable.empty()
 
     @SwitcherScope
     @Provides
     @JvmStatic
-    internal fun fooBarOutput(): Consumer<FooBar.Output> = Consumer { }
+    internal fun fooBarOutput(): Consumer<MainFooBar.Output> = Consumer { }
 
     @SwitcherScope
     @Provides

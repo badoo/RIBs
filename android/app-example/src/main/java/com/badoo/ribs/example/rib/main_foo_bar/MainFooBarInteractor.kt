@@ -11,20 +11,20 @@ import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.Cancel
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarRouter.Configuration
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView.Event.RequestPermissionsButtonClicked
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView.ViewModel
-import com.badoo.ribs.example.rib.main_foo_bar.analytics.FooBarAnalytics
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarRouter.Configuration
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView.Event.CheckPermissionsButtonClicked
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView.Event.RequestPermissionsButtonClicked
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView.ViewModel
+import com.badoo.ribs.example.rib.main_foo_bar.analytics.MainFooBarAnalytics
 import com.badoo.ribs.example.rib.main_foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.functions.Consumer
 
-class FooBarInteractor(
+class MainFooBarInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, Nothing, Configuration, Nothing, FooBarView>,
+    router: Router<Configuration, Nothing, Configuration, Nothing, MainFooBarView>,
     private val permissionRequester: PermissionRequester
-) : Interactor<Configuration, Configuration, Nothing, FooBarView>(
+) : Interactor<Configuration, Configuration, Nothing, MainFooBarView>(
     savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
@@ -34,22 +34,22 @@ class FooBarInteractor(
         private const val REQUEST_CODE_CAMERA = 1
     }
 
-    private val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
+    private val dummyViewInput = PublishRelay.create<MainFooBarView.ViewModel>()
 
-    override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: MainFooBarView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
-            bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
+            bind(view to MainFooBarAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
             bind(dummyViewInput to view)
-            bind(permissionRequester.events(this@FooBarInteractor) to permissionEventConsumer)
+            bind(permissionRequester.events(this@MainFooBarInteractor) to permissionEventConsumer)
         }
 
         dummyViewInput.accept(
-            ViewModel("My id: " + id.replace("${FooBarInteractor::class.java.name}.", ""))
+            ViewModel("My id: " + id.replace("${MainFooBarInteractor::class.java.name}.", ""))
         )
     }
 
-    private val viewEventConsumer: Consumer<FooBarView.Event> = Consumer {
+    private val viewEventConsumer: Consumer<MainFooBarView.Event> = Consumer {
         when (it) {
             CheckPermissionsButtonClicked -> checkPermissions()
             RequestPermissionsButtonClicked -> requestPermissions()

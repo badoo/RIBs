@@ -8,14 +8,14 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldView.Event
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldView.ViewModel
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldView.Event
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.portal_sub_screen.PortalSubScreen
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-interface HelloWorldView : RibView,
+interface MainHelloWorldView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
@@ -27,21 +27,21 @@ interface HelloWorldView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, HelloWorldView>
+    interface Factory : ViewFactory<Nothing?, MainHelloWorldView>
 }
 
-class HelloWorldViewImpl private constructor(
+class MainHelloWorldViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : HelloWorldView,
+) : MainHelloWorldView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_hello_world
-    ) : HelloWorldView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
-            HelloWorldViewImpl(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_main_hello_world
+    ) : MainHelloWorldView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> MainHelloWorldView = {
+            MainHelloWorldViewImpl(
                 inflate(it, layoutRes)
             )
         }

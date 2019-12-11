@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Foo
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Hello
 import io.reactivex.Single
@@ -22,21 +22,21 @@ class SwitcherNode(
     interactor = interactor
 ), Switcher.Workflow {
     
-    override fun attachHelloWorld(): Single<HelloWorld.Workflow> =
+    override fun attachHelloWorld(): Single<MainHelloWorld.Workflow> =
         attachWorkflow {
             Log.d("WORKFLOW", "Switcher / attachHelloWorld")
             router.push(Hello)
         }
 
-    override fun testCrash(): Single<HelloWorld.Workflow> =
+    override fun testCrash(): Single<MainHelloWorld.Workflow> =
         attachWorkflow {
             // test case: attaching Foo, but expecting HelloWorld by mistake
             Log.d("WORKFLOW", "Switcher / testCrash")
             router.push(Foo)
         }
 
-    override fun waitForHelloWorld(): Single<HelloWorld.Workflow> =
-        waitForChildAttached<HelloWorld.Workflow>()
+    override fun waitForHelloWorld(): Single<MainHelloWorld.Workflow> =
+        waitForChildAttached<MainHelloWorld.Workflow>()
             .doOnSuccess {
                 Log.d("WORKFLOW", "Switcher / waitForHelloWorld")
             }

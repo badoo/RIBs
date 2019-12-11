@@ -1,10 +1,10 @@
 package com.badoo.ribs.example.rib.main_foo_bar.mapper
 
-import com.badoo.ribs.example.rib.main_foo_bar.FooBar
-import com.badoo.ribs.example.rib.main_foo_bar.feature.FooBarFeature
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBar
+import com.badoo.ribs.example.rib.main_foo_bar.feature.MainFooBarFeature
 
-internal object NewsToOutput : (FooBarFeature.News) -> FooBar.Output? {
+internal object NewsToOutput : (MainFooBarFeature.News) -> MainFooBar.Output? {
 
-    override fun invoke(news: FooBarFeature.News): FooBar.Output? =
+    override fun invoke(news: MainFooBarFeature.News): MainFooBar.Output? =
         TODO("Implement FooBarNewsToOutput mapping")
 }

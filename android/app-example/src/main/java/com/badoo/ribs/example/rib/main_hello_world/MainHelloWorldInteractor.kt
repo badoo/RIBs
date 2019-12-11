@@ -12,12 +12,12 @@ import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.app.OtherActivity
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldRouter.Configuration
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldRouter.Configuration.Content
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldRouter.Configuration.Permanent
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldView.ViewModel
-import com.badoo.ribs.example.rib.main_hello_world.analytics.HelloWorldAnalytics
-import com.badoo.ribs.example.rib.main_hello_world.feature.HelloWorldFeature
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldRouter.Configuration
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldRouter.Configuration.Content
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldRouter.Configuration.Permanent
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldView.ViewModel
+import com.badoo.ribs.example.rib.main_hello_world.analytics.MainHelloWorldAnalytics
+import com.badoo.ribs.example.rib.main_hello_world.feature.MainHelloWorldFeature
 import com.badoo.ribs.example.rib.main_hello_world.mapper.InputToWish
 import com.badoo.ribs.example.rib.main_hello_world.mapper.NewsToOutput
 import com.badoo.ribs.example.rib.main_hello_world.mapper.ViewEventToAnalyticsEvent
@@ -25,14 +25,14 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-class HelloWorldInteractor(
+class MainHelloWorldInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, Permanent, Content, Nothing, HelloWorldView>,
-    private val input: ObservableSource<HelloWorld.Input>,
-    private val output: Consumer<HelloWorld.Output>,
-    private val feature: HelloWorldFeature,
+    router: Router<Configuration, Permanent, Content, Nothing, MainHelloWorldView>,
+    private val input: ObservableSource<MainHelloWorld.Input>,
+    private val output: Consumer<MainHelloWorld.Output>,
+    private val feature: MainHelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
+) : Interactor<Configuration, Content, Nothing, MainHelloWorldView>(
     savedInstanceState = savedInstanceState,
     router = router,
     disposables = feature
@@ -42,7 +42,7 @@ class HelloWorldInteractor(
     }
 
     private val dummyViewInput = BehaviorRelay.createDefault(
-        ViewModel("My id: " + id.replace("${HelloWorldInteractor::class.java.name}.", ""))
+        ViewModel("My id: " + id.replace("${MainHelloWorldInteractor::class.java.name}.", ""))
     )
 
     override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
@@ -52,18 +52,18 @@ class HelloWorldInteractor(
         }
     }
 
-    override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: MainHelloWorldView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
-            bind(view to HelloWorldAnalytics using ViewEventToAnalyticsEvent)
+            bind(view to MainHelloWorldAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
-            bind(activityStarter.events(this@HelloWorldInteractor) to activityResultConsumer)
+            bind(activityStarter.events(this@MainHelloWorldInteractor) to activityResultConsumer)
             bind(dummyViewInput to view)
         }
     }
 
-    private val viewEventConsumer : Consumer<HelloWorldView.Event> = Consumer {
+    private val viewEventConsumer : Consumer<MainHelloWorldView.Event> = Consumer {
         when (it) {
-            HelloWorldView.Event.ButtonClicked -> launchOtherActivityForResult()
+            MainHelloWorldView.Event.ButtonClicked -> launchOtherActivityForResult()
         }
     }
 

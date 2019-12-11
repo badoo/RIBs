@@ -6,10 +6,10 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_lorem_ipsum.DialogLoremIpsum
 import com.badoo.ribs.example.rib.dialog_lorem_ipsum.DialogLoremIpsumBuilder
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExample
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleInteractor
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleRouter
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExample
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleInteractor
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleRouter
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.RibDialog
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.SimpleDialog
@@ -17,31 +17,31 @@ import dagger.Provides
 import io.reactivex.functions.Consumer
 
 @dagger.Module
-internal object DialogExampleModule {
+internal object MainDialogExampleModule {
 
-    @DialogExampleScope
+    @MainDialogExampleScope
     @Provides
     @JvmStatic
     internal fun simpleDialog(): SimpleDialog =
         SimpleDialog()
 
-    @DialogExampleScope
+    @MainDialogExampleScope
     @Provides
     @JvmStatic
     internal fun lazyDialog(): LazyDialog =
         LazyDialog()
 
-    @DialogExampleScope
+    @MainDialogExampleScope
     @Provides
     @JvmStatic
     internal fun ribDialog(
-        component: DialogExampleComponent
+        component: MainDialogExampleComponent
     ): RibDialog =
         RibDialog(
             loremIpsumBuilder = DialogLoremIpsumBuilder(component)
         )
 
-    @DialogExampleScope
+    @MainDialogExampleScope
     @Provides
     @JvmStatic
     internal fun router(
@@ -50,8 +50,8 @@ internal object DialogExampleModule {
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
-    ): DialogExampleRouter =
-        DialogExampleRouter(
+    ): MainDialogExampleRouter =
+        MainDialogExampleRouter(
             savedInstanceState = savedInstanceState,
             dialogLauncher = dialogLauncher,
             simpleDialog = simpleDialog,
@@ -59,17 +59,17 @@ internal object DialogExampleModule {
             ribDialog = ribDialog
         )
 
-    @DialogExampleScope
+    @MainDialogExampleScope
     @Provides
     @JvmStatic
     internal fun interactor(
         savedInstanceState: Bundle?,
-        router: DialogExampleRouter,
+        router: MainDialogExampleRouter,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
-    ): DialogExampleInteractor =
-        DialogExampleInteractor(
+    ): MainDialogExampleInteractor =
+        MainDialogExampleInteractor(
             savedInstanceState = savedInstanceState,
             router = router,
             simpleDialog = simpleDialog,
@@ -77,27 +77,27 @@ internal object DialogExampleModule {
             ribDialog = ribDialog
         )
 
-    @DialogExampleScope
+    @MainDialogExampleScope
     @Provides
     @JvmStatic
     internal fun node(
         savedInstanceState: Bundle?,
-        customisation: DialogExample.Customisation,
-        router: DialogExampleRouter,
-        interactor: DialogExampleInteractor
-    ) : Node<DialogExampleView> = Node(
+        customisation: MainDialogExample.Customisation,
+        router: MainDialogExampleRouter,
+        interactor: MainDialogExampleInteractor
+    ) : Node<MainDialogExampleView> = Node(
         savedInstanceState = savedInstanceState,
-        identifier = object : DialogExample {},
+        identifier = object : MainDialogExample {},
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor
     )
 
-    @DialogExampleScope
+    @MainDialogExampleScope
     @Provides
     @JvmStatic
     internal fun loremIpsumOutputConsumer(
-        interactor: DialogExampleInteractor
+        interactor: MainDialogExampleInteractor
     ): Consumer<DialogLoremIpsum.Output> =
         interactor.loremIpsumOutputConsumer
 }

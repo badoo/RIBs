@@ -14,7 +14,7 @@ import com.badoo.ribs.core.routing.portal.PortalNode
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
@@ -96,7 +96,7 @@ class RootActivity : RibActivity() {
                 .flatMap { it.somethingSomethingDarkSide() }
                 .toObservable(),
 
-            BiFunction<Switcher.Workflow, HelloWorld.Workflow, Unit> { _, _ -> Unit }
+            BiFunction<Switcher.Workflow, MainHelloWorld.Workflow, Unit> { _, _ -> Unit }
         )
 
     private fun executeTestCrash(): Observable<*> =

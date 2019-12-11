@@ -6,17 +6,17 @@ import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.app.AppRibCustomisations
-import com.badoo.ribs.example.rib.main_dialog_example.builder.DialogExampleBuilder
+import com.badoo.ribs.example.rib.main_dialog_example.builder.MainDialogExampleBuilder
 import org.junit.Rule
 import org.junit.Test
 
-class DialogExampleTest {
+class MainDialogExampleTest {
 
     @get:Rule
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-        DialogExampleBuilder(object : DialogExample.Dependency {
+        MainDialogExampleBuilder(object : MainDialogExample.Dependency {
             override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
             override fun dialogLauncher(): DialogLauncher = ribTestActivity
         }).build(savedInstanceState)

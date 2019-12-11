@@ -3,12 +3,12 @@ package com.badoo.ribs.example.rib.switcher
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView
-import com.badoo.ribs.example.rib.main_dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarBuilder
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldBuilder
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorldNode
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView
+import com.badoo.ribs.example.rib.main_dialog_example.builder.MainDialogExampleBuilder
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarBuilder
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldBuilder
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorldNode
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
@@ -37,14 +37,14 @@ import org.junit.Test
  */
 class SwitcherRouterTest {
 
-    private val fooBarNode = TestNode<FooBarView>()
-    private val fooBarBuilder = mock<FooBarBuilder> { on { build(anyOrNull()) } doReturn fooBarNode }
+    private val fooBarNode = TestNode<MainFooBarView>()
+    private val fooBarBuilder = mock<MainFooBarBuilder> { on { build(anyOrNull()) } doReturn fooBarNode }
 
-    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), mock())
-    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(anyOrNull()) } doReturn helloWorldNode }
+    private val helloWorldNode = MainHelloWorldNode(null, mock(), mock(), mock())
+    private val helloWorldBuilder = mock<MainHelloWorldBuilder> { on { build(anyOrNull()) } doReturn helloWorldNode }
 
-    private val dialogExampleNode = TestNode<DialogExampleView>()
-    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(anyOrNull()) } doReturn dialogExampleNode }
+    private val dialogExampleNode = TestNode<MainDialogExampleView>()
+    private val dialogExampleBuilder = mock<MainDialogExampleBuilder> { on { build(anyOrNull()) } doReturn dialogExampleNode }
 
     private val blockerNode = TestNode<BlockerView>()
     private val blockerBuilder = mock<BlockerBuilder> { on { build(anyOrNull()) } doReturn blockerNode }

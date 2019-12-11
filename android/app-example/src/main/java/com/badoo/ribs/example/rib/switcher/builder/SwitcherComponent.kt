@@ -2,9 +2,9 @@ package com.badoo.ribs.example.rib.switcher.builder
 
 import android.os.Bundle
 import com.badoo.ribs.example.rib.blocker.Blocker
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExample
-import com.badoo.ribs.example.rib.main_foo_bar.FooBar
-import com.badoo.ribs.example.rib.main_hello_world.HelloWorld
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExample
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBar
+import com.badoo.ribs.example.rib.main_hello_world.MainHelloWorld
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherNode
@@ -17,9 +17,9 @@ import dagger.BindsInstance
     dependencies = [Switcher.Dependency::class]
 )
 internal interface SwitcherComponent :
-    HelloWorld.Dependency,
-    FooBar.Dependency,
-    DialogExample.Dependency,
+    MainHelloWorld.Dependency,
+    MainFooBar.Dependency,
+    MainDialogExample.Dependency,
     Blocker.Dependency,
     Menu.Dependency {
 

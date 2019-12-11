@@ -9,26 +9,26 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.example.rib.dialog_lorem_ipsum.DialogLoremIpsum
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleRouter.Configuration
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleRouter.Configuration.Content
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleRouter.Configuration.Overlay
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.Event.ShowLazyDialog
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.Event.ShowRibDialogClicked
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
-import com.badoo.ribs.example.rib.main_dialog_example.DialogExampleView.ViewModel
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleRouter.Configuration
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleRouter.Configuration.Content
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleRouter.Configuration.Overlay
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.Event.ShowLazyDialog
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.Event.ShowRibDialogClicked
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.example.rib.main_dialog_example.MainDialogExampleView.ViewModel
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.RibDialog
 import com.badoo.ribs.example.rib.main_dialog_example.dialog.SimpleDialog
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
-class DialogExampleInteractor(
+class MainDialogExampleInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
+    router: Router<Configuration, Nothing, Content, Overlay, MainDialogExampleView>,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-) : Interactor<Configuration, Content, Overlay, DialogExampleView>(
+) : Interactor<Configuration, Content, Overlay, MainDialogExampleView>(
     savedInstanceState = savedInstanceState,
     router = router,
     disposables = null
@@ -38,7 +38,7 @@ class DialogExampleInteractor(
         ViewModel("Dialog examples")
     )
 
-    override fun onViewCreated(view: DialogExampleView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: MainDialogExampleView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
             bind(dummyViewInput to view)
             bind(view to viewEventConsumer)
@@ -48,7 +48,7 @@ class DialogExampleInteractor(
         }
     }
 
-    private val viewEventConsumer: Consumer<DialogExampleView.Event> = Consumer {
+    private val viewEventConsumer: Consumer<MainDialogExampleView.Event> = Consumer {
         when (it) {
             ShowSimpleDialogClicked -> router.pushOverlay(Overlay.SimpleDialog)
             ShowLazyDialog -> {

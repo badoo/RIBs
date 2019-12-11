@@ -20,28 +20,25 @@ import io.reactivex.functions.Consumer
 import org.junit.Rule
 import org.junit.Test
 
-class HelloWorldTestDeferred {
+class MainHelloWorldTest {
 
     @get:Rule
-    val ribsRule = RibsRule()
+    val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-        HelloWorldBuilder(object : HelloWorld.Dependency {
+        MainHelloWorldBuilder(object : MainHelloWorld.Dependency {
             override fun portal(): Portal.OtherSide = object : Portal.OtherSide {
                 override fun showContent(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {}
                 override fun showOverlay(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {}
             }
-
-            override fun helloWorldInput(): ObservableSource<HelloWorld.Input> = empty()
-            override fun helloWorldOutput(): Consumer<HelloWorld.Output> = Consumer {}
+            override fun helloWorldInput(): ObservableSource<MainHelloWorld.Input> = empty()
+            override fun helloWorldOutput(): Consumer<MainHelloWorld.Output> = Consumer {}
             override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
             override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
         }).build(savedInstanceState)
 
     @Test
     fun testTextDisplayed() {
-        ribsRule.start { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
-
         onView(withId(R.id.hello_title)).check(matches(isDisplayed()))
     }
 }

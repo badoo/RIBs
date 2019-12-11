@@ -1,10 +1,10 @@
 package com.badoo.ribs.example.rib.main_foo_bar.mapper
 
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView
-import com.badoo.ribs.example.rib.main_foo_bar.feature.FooBarFeature
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView
+import com.badoo.ribs.example.rib.main_foo_bar.feature.MainFooBarFeature
 
-internal object ViewEventToWish : (FooBarView.Event) -> FooBarFeature.Wish? {
+internal object ViewEventToWish : (MainFooBarView.Event) -> MainFooBarFeature.Wish? {
 
-    override fun invoke(event: FooBarView.Event): FooBarFeature.Wish? =
+    override fun invoke(event: MainFooBarView.Event): MainFooBarFeature.Wish? =
         TODO("Implement FooBarViewEventToWish mapping")
 }

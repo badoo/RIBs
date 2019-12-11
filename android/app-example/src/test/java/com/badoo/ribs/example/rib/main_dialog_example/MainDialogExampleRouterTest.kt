@@ -9,13 +9,13 @@ import org.robolectric.RobolectricTestRunner
 
 
 @RunWith(RobolectricTestRunner::class)
-class DialogExampleRouterTest {
+class MainDialogExampleRouterTest {
 
-    private var router: DialogExampleRouter? = null
+    private var router: MainDialogExampleRouter? = null
 
     @Before
     fun setup() {
-        router = DialogExampleRouter(
+        router = MainDialogExampleRouter(
             savedInstanceState = null,
             dialogLauncher = mock(),
             simpleDialog = mock(),

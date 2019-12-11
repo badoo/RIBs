@@ -6,20 +6,20 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import io.reactivex.Single
 
-class HelloWorldNode(
-    viewFactory: ((ViewGroup) -> HelloWorldView?)?,
-    private val router: HelloWorldRouter,
-    interactor: HelloWorldInteractor,
+class MainHelloWorldNode(
+    viewFactory: ((ViewGroup) -> MainHelloWorldView?)?,
+    private val router: MainHelloWorldRouter,
+    interactor: MainHelloWorldInteractor,
     savedInstanceState: Bundle?
-) : Node<HelloWorldView>(
+) : Node<MainHelloWorldView>(
     savedInstanceState = savedInstanceState,
-    identifier = object : HelloWorld {},
+    identifier = object : MainHelloWorld {},
     viewFactory = viewFactory,
     router = router,
     interactor = interactor
-), HelloWorld.Workflow {
+), MainHelloWorld.Workflow {
 
-    override fun somethingSomethingDarkSide(): Single<HelloWorld.Workflow> =
+    override fun somethingSomethingDarkSide(): Single<MainHelloWorld.Workflow> =
         executeWorkflow {
             Log.d("WORKFLOW", "Hello world / somethingSomethingDarkSide")
         }

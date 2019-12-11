@@ -8,15 +8,15 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView.Event
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView.Event.RequestPermissionsButtonClicked
-import com.badoo.ribs.example.rib.main_foo_bar.FooBarView.ViewModel
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView.Event
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView.Event.CheckPermissionsButtonClicked
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView.Event.RequestPermissionsButtonClicked
+import com.badoo.ribs.example.rib.main_foo_bar.MainFooBarView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-interface FooBarView : RibView,
+interface MainFooBarView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
@@ -29,22 +29,22 @@ interface FooBarView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, FooBarView>
+    interface Factory : ViewFactory<Nothing?, MainFooBarView>
 }
 
 
-class FooBarViewImpl private constructor(
+class MainFooBarViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : FooBarView,
+) : MainFooBarView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_foobar
-    ) : FooBarView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
-            FooBarViewImpl(
+        @LayoutRes private val layoutRes: Int = R.layout.rib_main_foobar
+    ) : MainFooBarView.Factory {
+        override fun invoke(deps: Nothing?): (ViewGroup) -> MainFooBarView = {
+            MainFooBarViewImpl(
                 inflate(it, layoutRes)
             )
         }

@@ -9,6 +9,8 @@ import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Dependency.LayoutManagerFactory
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
@@ -103,6 +105,7 @@ class RootActivity : RibActivity() {
                 override fun initialElements(): List<Item> = listOf(Item.FooBarItem)
                 override fun recyclerViewHostInput(): ObservableSource<RecyclerViewHost.Input<Item>> =
                     just(Add<Item>(Item.LoremIpsumItem))
+                override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = LAZY
             }
         ).build(savedInstanceState)
 

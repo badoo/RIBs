@@ -178,7 +178,7 @@ open class Node<V : RibView>(
         if (isAttachedToView) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
-                RuntimeException("View was not detached before node detach!")
+                RuntimeException("View was not detached before node detach! RIB: $this")
             )
             detachFromView()
         }

@@ -9,12 +9,16 @@ import com.badoo.ribs.core.Rib
 import io.reactivex.ObservableSource
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * Considered experimental. Handle with care.
+ */
 interface RecyclerViewHost : Rib {
 
     interface Dependency<T : Parcelable> {
+        fun hostingStrategy(): HostingStrategy
         fun initialElements(): List<T>
-        fun resolver(): RecyclerViewRibResolver<T>
         fun recyclerViewHostInput(): ObservableSource<Input<T>>
+        fun resolver(): RecyclerViewRibResolver<T>
         fun layoutManagerFactory(): LayoutManagerFactory
 
         interface LayoutManagerFactory: (Context) -> RecyclerView.LayoutManager {
@@ -25,6 +29,19 @@ interface RecyclerViewHost : Rib {
                 }
             }
         }
+    }
+
+    enum class HostingStrategy {
+        /**
+         * Child RIBs get created immediately and are only destroyed along with host
+         */
+        EAGER,
+
+        /**
+         * Child RIBs get created when their associated ViewHolders are attached, and get destroyed
+         * along with them
+         */
+        LAZY
     }
 
     sealed class Input<T : Parcelable> : Parcelable {

@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content.Item
@@ -13,6 +15,7 @@ import io.reactivex.functions.Consumer
 import java.util.UUID
 
 internal class Adapter<T : Parcelable>(
+    private val hostingStrategy: RecyclerViewHost.HostingStrategy,
     initialEntries: List<Entry<T>>? = null,
     private val router: RecyclerViewHostRouter<T>
 ) : RecyclerView.Adapter<Adapter.ViewHolder>(),
@@ -32,9 +35,19 @@ internal class Adapter<T : Parcelable>(
         items = state.items
 
         when (state.lastCommand) {
-            null -> { /* No-op when restored from TimeCapsule or genuinely empty state */ }
-            is Input.Add ->
+            null -> { /* No-op when restored from TimeCapsule or genuinely empty state */
+            }
+            is Input.Add -> {
+                eagerAdd(state.items.last())
                 notifyItemInserted(state.items.lastIndex)
+            }
+
+        }
+    }
+
+    private fun eagerAdd(entry: Entry<T>) {
+        if (hostingStrategy == EAGER) {
+            router.add(entry.configurationKey, Item(entry.uuid))
         }
     }
 
@@ -58,7 +71,9 @@ internal class Adapter<T : Parcelable>(
     override fun onViewAttachedToWindow(holder: ViewHolder) {
         super.onViewAttachedToWindow(holder)
         val configurationKey = holder.configurationKey!! // at this point it should be bound
-        router.add(configurationKey, Item(holder.uuid!!))
+        if (hostingStrategy == LAZY) {
+            router.add(configurationKey, Item(holder.uuid!!))
+        }
         router.activate(configurationKey)
         router.getNodes(configurationKey)!!.forEach { childNode ->
             childNode.attachToView(holder.itemView as FrameLayout)
@@ -72,9 +87,17 @@ internal class Adapter<T : Parcelable>(
         router.getNodes(configurationKey)!!.forEach { childNode ->
             childNode.detachFromView()
         }
-        // TODO: this implies we kill the associated RIBs, so if we intend to keep them alive,
-        //  we should think about managing their lifecycle some other way to avoid
-        //  ending up with lots of child RIBs that are never killed
-        router.remove(holder.configurationKey!!)
+        if (hostingStrategy == LAZY) {
+            router.remove(holder.configurationKey!!)
+        }
+    }
+
+    internal fun onDestroy() {
+        items.forEach {
+            router.deactivate(it.configurationKey)
+            router.getNodes(it.configurationKey)!!.forEach { childNode ->
+                childNode.detachFromView()
+            }
+        }
     }
 }

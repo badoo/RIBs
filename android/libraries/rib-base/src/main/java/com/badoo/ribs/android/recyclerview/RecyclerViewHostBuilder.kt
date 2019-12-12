@@ -25,6 +25,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
         )
 
         val adapter = Adapter(
+            hostingStrategy = dependency.hostingStrategy(),
             initialEntries = feature.state.items,
             router = router
         )
@@ -45,7 +46,8 @@ class RecyclerViewHostBuilder<T : Parcelable>(
                 override fun adapter(): Adapter<*> = adapter
                 override fun layoutManagerFactory(): LayoutManagerFactory = dependency.layoutManagerFactory()
             },
-            timeCapsule = timeCapsule
+            timeCapsule = timeCapsule,
+            adapter = adapter
         )
     }
 }

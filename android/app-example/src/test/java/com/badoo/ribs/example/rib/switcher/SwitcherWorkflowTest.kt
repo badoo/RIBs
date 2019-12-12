@@ -26,7 +26,7 @@ class SwitcherWorkflowTest {
     @Before
     fun setup() {
         val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), null)
-        val fooBarNode = FooBarNode(mock(), mock(), mock(), null, emptySet())
+        val fooBarNode = FooBarNode(mock(), mock(), null, emptySet())
         val node1 = Node<DialogExampleView>(null, mock(), mock(), mock(), mock())
         val node2 = Node<BlockerView>(null, mock(), mock(), mock(), mock())
         val node3 = Node<MenuView>(null, mock(), mock(), mock(), mock())

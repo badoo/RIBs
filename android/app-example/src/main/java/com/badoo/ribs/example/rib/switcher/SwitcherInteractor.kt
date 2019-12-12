@@ -18,11 +18,10 @@ import io.reactivex.functions.Consumer
 
 class SwitcherInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, Permanent, Content, Overlay, SwitcherView>,
+    private val router: Router<Configuration, Permanent, Content, Overlay, SwitcherView>,
     private val dialogToTestOverlay: DialogToTestOverlay
-) : Interactor<Configuration, Content, Overlay, SwitcherView>(
+) : Interactor<SwitcherView>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = null
 ) {
 

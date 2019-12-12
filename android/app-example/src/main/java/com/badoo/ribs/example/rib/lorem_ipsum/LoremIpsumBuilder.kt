@@ -16,10 +16,8 @@ class LoremIpsumBuilder(
 
     fun build(savedInstanceState: Bundle?): Node<LoremIpsumView> {
         val customisation = dependency.getOrDefault(LoremIpsum.Customisation())
-        val router = LoremIpsumRouter(savedInstanceState)
         val interactor = LoremIpsumInteractor(
             savedInstanceState,
-            router,
             dependency.loremIpsumOutput()
         )
 
@@ -27,7 +25,7 @@ class LoremIpsumBuilder(
             savedInstanceState = savedInstanceState,
             identifier = object : LoremIpsum {},
             viewFactory = customisation.viewFactory(null),
-            router = router,
+            router = null,
             interactor = interactor
         )
     }

@@ -24,13 +24,12 @@ import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
+    private val router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-) : Interactor<Configuration, Content, Overlay, DialogExampleView>(
+) : Interactor<DialogExampleView>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = null
 ) {
 

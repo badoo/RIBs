@@ -15,13 +15,11 @@ class PortalOverlayTestBuilder(
 
     fun build(savedInstanceState: Bundle?): PortalOverlayTestNode {
         val customisation = dependency.getOrDefault(PortalOverlayTest.Customisation())
-        val router = PortalOverlayTestRouter(savedInstanceState)
-        val interactor = PortalOverlayTestInteractor(savedInstanceState, router)
+        val interactor = PortalOverlayTestInteractor(savedInstanceState)
 
         return PortalOverlayTestNode(
             savedInstanceState,
             viewFactory = customisation.viewFactory(null),
-            router = router,
             interactor = interactor
         )
     }

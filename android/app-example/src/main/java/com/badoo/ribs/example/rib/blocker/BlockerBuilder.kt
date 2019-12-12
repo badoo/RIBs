@@ -16,10 +16,8 @@ class BlockerBuilder(
 
     fun build(savedInstanceState: Bundle? ): Node<BlockerView> {
         val customisation = dependency.getOrDefault(Blocker.Customisation())
-        val router = BlockerRouter(savedInstanceState)
         val interactor = BlockerInteractor(
             savedInstanceState,
-            router,
             dependency.blockerOutput()
         )
 
@@ -27,7 +25,7 @@ class BlockerBuilder(
             savedInstanceState = savedInstanceState,
             identifier = object : Blocker {},
             viewFactory = customisation.viewFactory(null),
-            router = router,
+            router = null,
             interactor = interactor
         )
     }

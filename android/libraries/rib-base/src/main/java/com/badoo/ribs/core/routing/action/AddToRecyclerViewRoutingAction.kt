@@ -12,7 +12,7 @@ open class AddToRecyclerViewRoutingAction<V : RibView>(
         super.buildNodes(bundles).map {
             it.copy(
                 node = builder.invoke(bundles.firstOrNull()),
-                viewAttachMode = Node.AttachMode.DEFERRED
+                viewAttachMode = Node.AttachMode.EXTERNAL
             )
         }
 

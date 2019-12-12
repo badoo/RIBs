@@ -57,12 +57,6 @@ open class Node<V : RibView>(
         PARENT,
 
         /**
-         * The node's view attach/detach is managed by its parent, but only on request:
-         * [WakeUpAction] will not cause it automatically, only explicit [ActivateAction]
-         */
-        DEFERRED,
-
-        /**
          * The node's view is somewhere else in the view tree, and it should not be managed
          *  by its parent.
          *

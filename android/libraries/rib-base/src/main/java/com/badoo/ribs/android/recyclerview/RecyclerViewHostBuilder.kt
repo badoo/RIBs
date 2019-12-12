@@ -3,6 +3,7 @@ package com.badoo.ribs.android.recyclerview
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Dependency.LayoutManagerFactory
 import com.badoo.ribs.core.Builder
 
 class RecyclerViewHostBuilder<T : Parcelable>(
@@ -25,7 +26,6 @@ class RecyclerViewHostBuilder<T : Parcelable>(
 
         val adapter = Adapter(
             initialEntries = feature.state.items,
-//            items = { feature.state.items },
             router = router
         )
 
@@ -42,9 +42,8 @@ class RecyclerViewHostBuilder<T : Parcelable>(
             router = router,
             interactor = interactor,
             viewDeps =  object : RecyclerViewHostView.Dependency {
-                override fun router(): RecyclerViewHostRouter<*> = router
                 override fun adapter(): Adapter<*> = adapter
-                override fun feature(): RecyclerViewHostFeature<*> = feature
+                override fun layoutManagerFactory(): LayoutManagerFactory = dependency.layoutManagerFactory()
             },
             timeCapsule = timeCapsule
         )

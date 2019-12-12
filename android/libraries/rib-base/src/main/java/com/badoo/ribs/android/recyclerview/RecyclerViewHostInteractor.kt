@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
-import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
-import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.Wish.Execute
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content
 import com.badoo.ribs.core.Interactor
@@ -28,7 +26,7 @@ internal class RecyclerViewHostInteractor<T : Parcelable>(
     override fun onAttach(ribLifecycle: Lifecycle) {
         ribLifecycle.createDestroy {
             bind(feature to adapter) // TODO consider viewLifecycle
-            bind(input to feature using { Execute(it) })
+            bind(input to feature)
         }
     }
 }

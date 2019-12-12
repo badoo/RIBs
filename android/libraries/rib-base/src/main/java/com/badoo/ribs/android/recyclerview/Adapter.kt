@@ -1,6 +1,5 @@
 package com.badoo.ribs.android.recyclerview
 
-import android.os.Handler
 import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content.Item
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import io.reactivex.functions.Consumer
+import java.util.UUID
 
 internal class Adapter<T : Parcelable>(
     initialEntries: List<Entry<T>>? = null,
@@ -18,44 +18,23 @@ internal class Adapter<T : Parcelable>(
 ) : RecyclerView.Adapter<Adapter.ViewHolder>(),
     Consumer<RecyclerViewHostFeature.State<T>> {
 
-    val handler = Handler()
-    var items: List<Entry<T>> = initialEntries ?: emptyList()
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var configurationKey: ConfigurationKey? = null
+        var uuid: UUID? = null
     }
 
-//    override fun accept(news: News<T>) {
-//        when (news) {
-//            is Executed -> when (news.input) {
-//                is Input.Add -> handler.post { notifyItemInserted(items().lastIndex) }
-//            }
-//        }
-//    }
+    private var items: List<Entry<T>> = initialEntries ?: emptyList()
 
-//    init {
-//        if (initialInserts > 0) {
-//            handler.post {
-//                for (i in 0 until initialInserts) {
-//                    notifyItemInserted(i)
-//                }
-//            }
-//        }
-//    }
+    override fun getItemCount(): Int =
+        items.size
 
     override fun accept(state: RecyclerViewHostFeature.State<T>) {
         items = state.items
 
         when (state.lastCommand) {
-            // When restored from TimeCapsule or genuinely empty state (but then items will be empty)
-            null -> handler.post {
-//                state.items.forEach {
-//                    notifyItemInserted(state.items.lastIndex)
-//                }
-            }
-            is Input.Add -> handler.post {
+            null -> { /* No-op when restored from TimeCapsule or genuinely empty state */ }
+            is Input.Add ->
                 notifyItemInserted(state.items.lastIndex)
-            }
         }
     }
 
@@ -69,41 +48,33 @@ internal class Adapter<T : Parcelable>(
             }
         )
 
-    override fun getItemCount(): Int =
-        items.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entry = items[position]
-        router.add(
-            entry.configurationKey,
-            Item(entry.uuid)
-        )
-        holder.itemView.tag = entry.configurationKey
         holder.configurationKey = entry.configurationKey
+        holder.uuid = entry.uuid
 
     }
 
-//    override fun onViewAttachedToWindow(holder: ViewHolder) {
-//        super.onViewAttachedToWindow(holder)
-//        Handler().post {
-//            router.activate(holder.configurationKey!!)
-//        }
-//    }
-//
-//    override fun onViewDetachedFromWindow(holder: ViewHolder) {
-//        super.onViewDetachedFromWindow(holder)
-//        Handler().post {
-//            router.deactivate(holder.configurationKey!!)
-//        }
-//    }
-
-    override fun onViewRecycled(holder: ViewHolder) {
-        super.onViewRecycled(holder)
-        Handler().post {
-            // TODO: this implies we kill the associated RIB, so if we intend to keep it alive,
-            //  we should think about managing its lifecycle some other way to avoid
-            //  ending up with lots of child RIBs that are never killed
-            router.remove(holder.configurationKey!!)
+    override fun onViewAttachedToWindow(holder: ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        val configurationKey = holder.configurationKey!! // at this point it should be bound
+        router.add(configurationKey, Item(holder.uuid!!))
+        router.activate(configurationKey)
+        router.getNodes(configurationKey)!!.forEach { childNode ->
+            childNode.attachToView(holder.itemView as FrameLayout)
         }
+    }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        val configurationKey = holder.configurationKey!! // at this point it should be bound
+        router.deactivate(configurationKey)
+        router.getNodes(configurationKey)!!.forEach { childNode ->
+            childNode.detachFromView()
+        }
+        // TODO: this implies we kill the associated RIBs, so if we intend to keep them alive,
+        //  we should think about managing their lifecycle some other way to avoid
+        //  ending up with lots of child RIBs that are never killed
+        router.remove(holder.configurationKey!!)
     }
 }

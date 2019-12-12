@@ -3,10 +3,12 @@ package com.badoo.ribs.example.app
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Dependency.LayoutManagerFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
@@ -96,6 +98,7 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?): Node<*> =
         RecyclerViewHostBuilder(
             object : RecyclerViewHost.Dependency<Item> {
+                override fun layoutManagerFactory(): LayoutManagerFactory = LayoutManagerFactory.linear
                 override fun resolver(): RecyclerViewRibResolver<Item> = ribPagerImpl
                 override fun initialElements(): List<Item> = listOf(Item.FooBarItem)
                 override fun recyclerViewHostInput(): ObservableSource<RecyclerViewHost.Input<Item>> =

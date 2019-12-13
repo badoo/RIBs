@@ -76,9 +76,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     fun onAttachView() {
-//        Handler().postDelayed({
-            configurationFeature.accept(WakeUp())
-//        }, 1000)
+        configurationFeature.accept(WakeUp())
     }
 
     fun onDetachView() {

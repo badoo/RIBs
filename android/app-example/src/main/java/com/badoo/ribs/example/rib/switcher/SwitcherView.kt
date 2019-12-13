@@ -1,15 +1,13 @@
 package com.badoo.ribs.example.rib.switcher
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.SwitcherView.ViewModel

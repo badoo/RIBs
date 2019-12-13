@@ -1,10 +1,9 @@
 package com.badoo.ribs.example.rib.big
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate

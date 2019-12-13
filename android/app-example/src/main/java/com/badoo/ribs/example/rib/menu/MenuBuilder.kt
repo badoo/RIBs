@@ -17,11 +17,9 @@ class MenuBuilder(
 
     fun build(savedInstanceState: Bundle?): Node<MenuView> {
         val customisation = dependency.getOrDefault(Menu.Customisation())
-        val router = MenuRouter(savedInstanceState)
         val feature = MenuFeature()
         val interactor = MenuInteractor(
             savedInstanceState,
-            router,
             dependency.menuInput(),
             dependency.menuOutput(),
             feature
@@ -31,7 +29,7 @@ class MenuBuilder(
             savedInstanceState = savedInstanceState,
             identifier = object : Menu {},
             viewFactory = customisation.viewFactory(null),
-            router = router,
+            router = null,
             interactor = interactor
         )
     }

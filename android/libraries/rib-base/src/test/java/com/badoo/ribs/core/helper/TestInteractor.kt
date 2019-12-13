@@ -12,9 +12,8 @@ class TestInteractor(
     savedInstanceState: Bundle? = null,
     router: Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView> = mock(),
     disposables: Disposable? = null
-) : Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView>(
+) : Interactor<TestView>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = disposables
 ) {
 

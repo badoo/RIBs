@@ -8,7 +8,6 @@ import org.junit.Test
 
 class LoremIpsumInteractorTest {
 
-    private val router: LoremIpsumRouter = mock()
     private val output: Consumer<LoremIpsum.Output> = mock()
     private lateinit var interactor: LoremIpsumInteractor
 
@@ -16,7 +15,6 @@ class LoremIpsumInteractorTest {
     fun setup() {
         interactor = LoremIpsumInteractor(
             savedInstanceState = null,
-            router = router,
             output = output
         )
     }

@@ -44,8 +44,8 @@ open class Node<V : RibView>(
     savedInstanceState: Bundle?,
     internal open val identifier: Rib,
     private val viewFactory: ((ViewGroup) -> V?)?,
-    private val router: Router<*, *, *, *, V>,
-    private val interactor: Interactor<*, *, *, V>,
+    private val router: Router<*, *, *, *, V>?,
+    private val interactor: Interactor<V>,
     private val viewPlugins: Set<ViewPlugin> = emptySet(),
     private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
@@ -85,7 +85,7 @@ open class Node<V : RibView>(
      * which is not currently possible.
      */
     var ancestryInfo: AncestryInfo = AncestryInfo.Root
-    val resolver: ConfigurationResolver<*, V> = router
+    val resolver: ConfigurationResolver<*, V>? = router
     private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
 
     val detachSignal = BehaviorRelay.create<Unit>()
@@ -112,7 +112,7 @@ open class Node<V : RibView>(
         children.toList()
 
     init {
-        router.init(this)
+        router?.init(this)
     }
 
     @CallSuper
@@ -120,7 +120,7 @@ open class Node<V : RibView>(
         savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
 
         lifecycleManager.onCreateRib()
-        router.onAttach()
+        router?.onAttach()
         interactor.onAttach(lifecycleManager.ribLifecycle.lifecycle)
     }
 
@@ -137,7 +137,7 @@ open class Node<V : RibView>(
         view?.let {
             interactor.onViewCreated(lifecycleManager.viewLifecycle!!.lifecycle, it)
         }
-        router.onAttachView()
+        router?.onAttachView()
         viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }
     }
 
@@ -151,7 +151,7 @@ open class Node<V : RibView>(
 
     fun detachFromView() {
         if (isAttachedToView) {
-            router.onDetachView()
+            router?.onDetachView()
             lifecycleManager.onDestroyView()
 
             if (!isViewless) {
@@ -179,7 +179,7 @@ open class Node<V : RibView>(
 
         lifecycleManager.onDestroyRib()
         interactor.onDetach()
-        router.onDetach()
+        router?.onDetach()
 
         for (child in children) {
             detachChildNode(child)
@@ -284,10 +284,10 @@ open class Node<V : RibView>(
     @CallSuper
     open fun handleBackPress(): Boolean {
         ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
-        return router.popOverlay()
+        return router?.popOverlay() == true
             || delegateHandleBackPressToActiveChildren()
             || interactor.handleBackPress()
-            || router.popBackStack()
+            || router?.popBackStack() == true
     }
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =
@@ -302,7 +302,7 @@ open class Node<V : RibView>(
     }
 
     open fun onSaveInstanceState(outState: Bundle) {
-        router.onSaveInstanceState(outState)
+        router?.onSaveInstanceState(outState)
         interactor.onSaveInstanceState(outState)
         saveViewState()
 
@@ -312,7 +312,7 @@ open class Node<V : RibView>(
     }
 
     fun onLowMemory() {
-        router.onLowMemory()
+        router?.onLowMemory()
     }
 
     override fun getLifecycle(): Lifecycle =

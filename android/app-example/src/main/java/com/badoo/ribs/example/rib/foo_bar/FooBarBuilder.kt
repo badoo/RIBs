@@ -17,17 +17,14 @@ class FooBarBuilder(
 
     fun build(savedInstanceState: Bundle?): Node<FooBarView> {
         val customisation = dependency.getOrDefault(FooBar.Customisation())
-        val router = FooBarRouter(savedInstanceState)
         val interactor = FooBarInteractor(
             savedInstanceState,
-            router,
             dependency.permissionRequester()
         )
         val viewPlugins = setOf(ParentLongClickListener())
 
         return FooBarNode(
             customisation.viewFactory(null),
-            router,
             interactor,
             savedInstanceState,
             viewPlugins

@@ -6,9 +6,6 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.template.no_dagger.foo_bar.FooBarRouter.Configuration
-import com.badoo.ribs.template.no_dagger.foo_bar.FooBarRouter.Configuration.Content
-import com.badoo.ribs.template.no_dagger.foo_bar.FooBarRouter.Configuration.Overlay
 import com.badoo.ribs.template.no_dagger.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.no_dagger.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.no_dagger.foo_bar.mapper.InputToWish
@@ -21,13 +18,12 @@ import io.reactivex.functions.Consumer
 
 internal class FooBarInteractor(
     savedInstanceState: Bundle?,
-    router: FooBarRouter,
+    private val router: FooBarRouter,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature
-) : Interactor<Configuration, Content, Overlay, FooBarView>(
+) : Interactor<FooBarView>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = feature
 ) {
 

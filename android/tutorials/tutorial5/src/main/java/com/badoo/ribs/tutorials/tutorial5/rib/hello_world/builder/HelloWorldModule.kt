@@ -16,20 +16,21 @@ internal object HelloWorldModule {
     @HelloWorldScope
     @Provides
     @JvmStatic
+    @Suppress("LongParameterList")
     internal fun interactor(
         savedInstanceState: Bundle?,
         user: User,
         config: HelloWorld.Config,
         input: ObservableSource<HelloWorld.Input>,
         output: Consumer<HelloWorld.Output>
-        ): HelloWorldInteractor =
-            HelloWorldInteractor(
-                savedInstanceState = savedInstanceState,
-                user = user,
-                config = config,
-                input = input,
-                output = output
-            )
+    ): HelloWorldInteractor =
+        HelloWorldInteractor(
+            savedInstanceState = savedInstanceState,
+            user = user,
+            config = config,
+            input = input,
+            output = output
+        )
 
     @HelloWorldScope
     @Provides

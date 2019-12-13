@@ -20,13 +20,13 @@ internal object HelloWorldModule {
         user: User,
         config: HelloWorld.Config,
         output: Consumer<HelloWorld.Output>
-        ): HelloWorldInteractor =
-            HelloWorldInteractor(
-                savedInstanceState = savedInstanceState,
-                user = user,
-                config = config,
-                output = output
-            )
+    ): HelloWorldInteractor =
+        HelloWorldInteractor(
+            savedInstanceState = savedInstanceState,
+            user = user,
+            config = config,
+            output = output
+        )
 
     @HelloWorldScope
     @Provides

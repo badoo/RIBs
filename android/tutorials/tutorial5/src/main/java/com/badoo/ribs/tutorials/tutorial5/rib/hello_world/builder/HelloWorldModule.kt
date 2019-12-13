@@ -5,7 +5,10 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldInteractor
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView
+import com.badoo.ribs.tutorials.tutorial5.util.User
 import dagger.Provides
+import io.reactivex.ObservableSource
+import io.reactivex.functions.Consumer
 
 @dagger.Module
 internal object HelloWorldModule {
@@ -14,11 +17,19 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?
-    ): HelloWorldInteractor =
-        HelloWorldInteractor(
-            savedInstanceState = savedInstanceState
-        )
+        savedInstanceState: Bundle?,
+        user: User,
+        config: HelloWorld.Config,
+        input: ObservableSource<HelloWorld.Input>,
+        output: Consumer<HelloWorld.Output>
+        ): HelloWorldInteractor =
+            HelloWorldInteractor(
+                savedInstanceState = savedInstanceState,
+                user = user,
+                config = config,
+                input = input,
+                output = output
+            )
 
     @HelloWorldScope
     @Provides

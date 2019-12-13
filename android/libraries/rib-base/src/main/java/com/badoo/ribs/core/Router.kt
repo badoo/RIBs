@@ -1,7 +1,6 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
-import android.os.Handler
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder

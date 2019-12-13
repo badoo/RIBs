@@ -10,6 +10,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
     override val dependency: RecyclerViewHost.Dependency<T>
 ) : Builder<RecyclerViewHost.Dependency<T>>() {
 
+    @SuppressWarnings("LongMethod")
     fun build(savedInstanceState: Bundle? = null): RecyclerViewHostNode<T> {
         val timeCapsule = AndroidTimeCapsule(savedInstanceState)
 

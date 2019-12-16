@@ -55,7 +55,7 @@ class NodeTest {
     private lateinit var someViewGroup3: ViewGroup
     private lateinit var viewFactory: TestViewFactory
     private lateinit var router: Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>
-    private lateinit var interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView>
+    private lateinit var interactor: Interactor<TestView>
     private lateinit var child1: TestNode
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode

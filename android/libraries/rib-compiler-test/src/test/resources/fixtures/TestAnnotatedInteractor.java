@@ -1,8 +1,5 @@
 package fixtures;
 
-import java.lang.Boolean;
-import java.lang.Integer;
-
 public class TestAnnotatedInteractor {
     private TestAnnotatedInteractor() {
     }

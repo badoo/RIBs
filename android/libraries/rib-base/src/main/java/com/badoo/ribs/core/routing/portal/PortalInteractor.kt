@@ -9,9 +9,8 @@ import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
 
 internal class PortalInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, *, Content, Overlay, Nothing>
-) : Interactor<Configuration, Content, Overlay, Nothing>(
+    private val router: Router<Configuration, *, Content, Overlay, Nothing>
+) : Interactor<Nothing>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = null
 )

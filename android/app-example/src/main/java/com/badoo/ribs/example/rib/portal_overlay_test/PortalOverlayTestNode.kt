@@ -7,13 +7,12 @@ import com.badoo.ribs.core.Node
 class PortalOverlayTestNode(
     savedInstanceState: Bundle?,
     viewFactory: ((ViewGroup) -> PortalOverlayTestView?)?,
-    router: PortalOverlayTestRouter,
     interactor: PortalOverlayTestInteractor
 ) : Node<PortalOverlayTestView>(
     savedInstanceState = savedInstanceState,
     identifier = object : PortalOverlayTest {},
     viewFactory = viewFactory,
-    router = router,
+    router = null,
     interactor = interactor
 ) {
 

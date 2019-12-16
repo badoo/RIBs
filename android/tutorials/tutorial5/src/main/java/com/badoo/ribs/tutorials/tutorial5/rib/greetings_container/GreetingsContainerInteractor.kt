@@ -16,9 +16,8 @@ class GreetingsContainerInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
-) : Interactor<Configuration, Configuration, Nothing, Nothing>(
+) : Interactor<Nothing>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = null
 ) {
     internal val helloWorldInputSource: Relay<HelloWorld.Input> = PublishRelay.create()

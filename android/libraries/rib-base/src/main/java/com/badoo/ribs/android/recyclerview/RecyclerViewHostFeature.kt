@@ -12,7 +12,7 @@ import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 import java.util.UUID
 
-private val timeCapsuleKey = RecyclerViewHostFeature::class.java.name
+private val timeCapsuleKey = "RecyclerViewHostFeature"
 private fun <T : Parcelable> TimeCapsule<State<T>>.initialState(): State<T> =
     (get(timeCapsuleKey) ?: State())
 

@@ -80,10 +80,7 @@ internal class Adapter<T : Parcelable>(
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         val configurationKey = holder.configurationKey!! // at this point it should be bound
-        router.deactivate(configurationKey)
-        router.getNodes(configurationKey)!!.forEach { childNode ->
-            childNode.detachFromView()
-        }
+        deactivate(configurationKey)
         if (hostingStrategy == LAZY) {
             router.remove(configurationKey)
         }
@@ -91,10 +88,14 @@ internal class Adapter<T : Parcelable>(
 
     internal fun onDestroy() {
         items.forEach {
-            router.deactivate(it.configurationKey)
-            router.getNodes(it.configurationKey)!!.forEach { childNode ->
-                childNode.detachFromView()
-            }
+            deactivate(it.configurationKey)
+        }
+    }
+
+    private fun deactivate(configurationKey: ConfigurationKey) {
+        router.deactivate(configurationKey)
+        router.getNodes(configurationKey)!!.forEach { childNode ->
+            childNode.detachFromView()
         }
     }
 }

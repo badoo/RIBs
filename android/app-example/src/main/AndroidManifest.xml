@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".app.RecyclerViewTestActivity">
+        <activity android:name=".app.RootActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

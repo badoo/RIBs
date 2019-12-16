@@ -3,6 +3,7 @@ package com.badoo.ribs.example.app
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
@@ -115,6 +116,11 @@ class RecyclerViewTestActivity : RibActivity() {
                 override fun recyclerViewHostInput(): ObservableSource<Input<Item>> = inputCommands
                 override fun resolver(): RecyclerViewRibResolver<Item> = ribResolver
                 override fun layoutManagerFactory(): LayoutManagerFactory = LayoutManagerFactory.linear
+                override fun viewHolderLayoutParams(): FrameLayout.LayoutParams =
+                    FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                    )
             }
         ).build(savedInstanceState)
 }

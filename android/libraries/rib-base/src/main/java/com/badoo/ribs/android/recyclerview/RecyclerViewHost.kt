@@ -2,6 +2,7 @@ package com.badoo.ribs.android.recyclerview
 
 import android.content.Context
 import android.os.Parcelable
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
@@ -20,6 +21,7 @@ interface RecyclerViewHost : Rib {
         fun recyclerViewHostInput(): ObservableSource<Input<T>>
         fun resolver(): RecyclerViewRibResolver<T>
         fun layoutManagerFactory(): LayoutManagerFactory
+        fun viewHolderLayoutParams(): FrameLayout.LayoutParams
 
         interface LayoutManagerFactory: (Context) -> RecyclerView.LayoutManager {
             companion object {

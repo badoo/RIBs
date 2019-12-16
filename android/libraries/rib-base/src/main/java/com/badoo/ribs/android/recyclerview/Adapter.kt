@@ -17,7 +17,8 @@ import java.util.UUID
 internal class Adapter<T : Parcelable>(
     private val hostingStrategy: RecyclerViewHost.HostingStrategy,
     initialEntries: List<Entry<T>>? = null,
-    private val router: RecyclerViewHostRouter<T>
+    private val router: RecyclerViewHostRouter<T>,
+    private val viewHolderLayoutParams: FrameLayout.LayoutParams
 ) : RecyclerView.Adapter<Adapter.ViewHolder>(),
     Consumer<RecyclerViewHostFeature.State<T>> {
 
@@ -54,10 +55,7 @@ internal class Adapter<T : Parcelable>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
             FrameLayout(parent.context).apply {
-                layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-                )
+                layoutParams = viewHolderLayoutParams
             }
         )
 

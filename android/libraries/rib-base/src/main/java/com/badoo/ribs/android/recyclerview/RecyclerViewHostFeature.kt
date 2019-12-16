@@ -36,7 +36,7 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
     @Parcelize
     data class State<T : Parcelable>(
         val nextKey: Int = 1000,
-        val items: List<Entry<T>> = listOf(),
+        val items: List<Entry<T>> = emptyList(),
         val lastCommand: Input<T>? = null
     ) : Parcelable {
 

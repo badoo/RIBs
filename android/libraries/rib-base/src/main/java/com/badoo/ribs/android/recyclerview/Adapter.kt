@@ -80,7 +80,7 @@ internal class Adapter<T : Parcelable>(
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+    override fun onViewRecycled(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         val configurationKey = holder.configurationKey!! // at this point it should be bound
         router.deactivate(configurationKey)

@@ -33,7 +33,6 @@ class RecyclerViewHostBuilder<T : Parcelable>(
 
         val interactor = RecyclerViewHostInteractor(
             savedInstanceState = savedInstanceState,
-            router = router,
             input = dependency.recyclerViewHostInput(),
             feature = feature,
             adapter = adapter

@@ -101,7 +101,7 @@ open class Node<V : RibView>(
         viewFactory == null
 
     internal open var view: V? = null
-    protected var parentViewGroup: ViewGroup? = null
+    internal var parentViewGroup: ViewGroup? = null
 
     internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
 

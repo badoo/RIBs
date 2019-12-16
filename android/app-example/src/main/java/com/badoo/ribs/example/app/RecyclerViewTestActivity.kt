@@ -22,9 +22,9 @@ import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.foo_bar.FooBar
-import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
+import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
-import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder
+import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumBuilder
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine

@@ -36,8 +36,7 @@ internal class Adapter<T : Parcelable>(
         items = state.items
 
         when (state.lastCommand) {
-            null -> { /* No-op when restored from TimeCapsule or genuinely empty state */
-            }
+            null -> { /* No-op when restored from TimeCapsule or genuinely empty state */ }
             is Input.Add -> {
                 eagerAdd(state.items.last())
                 notifyItemInserted(state.items.lastIndex)
@@ -86,7 +85,7 @@ internal class Adapter<T : Parcelable>(
             childNode.detachFromView()
         }
         if (hostingStrategy == LAZY) {
-            router.remove(holder.configurationKey!!)
+            router.remove(configurationKey)
         }
     }
 

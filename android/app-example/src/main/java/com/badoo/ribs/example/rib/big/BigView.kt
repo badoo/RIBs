@@ -1,9 +1,9 @@
 package com.badoo.ribs.example.rib.big
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.TextView
-import com.badoo.ribs.core.Rib
+import androidx.annotation.LayoutRes
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
@@ -53,8 +53,8 @@ class BigViewImpl private constructor(
         idText.text = vm.text
     }
 
-    override fun getParentViewForChild(child: Rib): ViewGroup? =
-        when (child) {
+    override fun getParentViewForChild(child: Node<*>): ViewGroup? =
+        when (child.identifier) {
             is Small -> smallContainer
             else -> null
         }

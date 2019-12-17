@@ -63,7 +63,7 @@ def build = [
     compileSdkVersion: 28,
     gradlePluginsUrl : "https://plugins.gradle.org/m2/",
     ci: 'true' == System.getenv('CI'),
-    minSdkVersion: 16,
+    minSdkVersion: 17,
     targetSdkVersion: 28,
     guava: "com.google.guava:guava:20.0",
     commonsLang: "commons-lang:commons-lang:2.6",
@@ -86,6 +86,7 @@ def android = [
     design: "com.google.android.material:material:${versions.materialVersion}",
     percent: "androidx.percentlayout:percentlayout:${versions.androidxPercentLayoutVersion}",
     runner: "androidx.test:runner:${versions.androidxTestVersion}",
+    recyclerView: "androidx.recyclerview:recyclerview:${versions.androidxRecyclerViewVersion}",
     rules: "androidx.test:rules:${versions.androidxTestVersion}"
 ]
 

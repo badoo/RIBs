@@ -42,7 +42,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
     savedInstanceState: Bundle?,
-    internal open val identifier: Rib,
+    open val identifier: Rib,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>?,
     private val interactor: Interactor<V>,
@@ -101,7 +101,7 @@ open class Node<V : RibView>(
         viewFactory == null
 
     internal open var view: V? = null
-    protected var parentViewGroup: ViewGroup? = null
+    internal var parentViewGroup: ViewGroup? = null
 
     internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
 
@@ -172,7 +172,7 @@ open class Node<V : RibView>(
         if (isAttachedToView) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
-                RuntimeException("View was not detached before node detach!")
+                RuntimeException("View was not detached before node detach! RIB: $this")
             )
             detachFromView()
         }
@@ -211,7 +211,7 @@ open class Node<V : RibView>(
             val target = when {
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
                 isViewless -> parentViewGroup!!
-                else -> view!!.getParentViewForChild(child.identifier) ?: parentViewGroup!!
+                else -> view!!.getParentViewForChild(child) ?: parentViewGroup!!
             }
 
             child.attachToView(target)

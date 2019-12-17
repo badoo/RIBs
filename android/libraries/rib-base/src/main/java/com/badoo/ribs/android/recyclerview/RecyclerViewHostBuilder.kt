@@ -3,7 +3,6 @@ package com.badoo.ribs.android.recyclerview
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Dependency.LayoutManagerFactory
 import com.badoo.ribs.core.Builder
 
 class RecyclerViewHostBuilder<T : Parcelable>(

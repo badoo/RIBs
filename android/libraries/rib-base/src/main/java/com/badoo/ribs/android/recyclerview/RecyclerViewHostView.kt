@@ -2,7 +2,6 @@ package com.badoo.ribs.android.recyclerview
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Dependency.LayoutManagerFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostView.Dependency
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory

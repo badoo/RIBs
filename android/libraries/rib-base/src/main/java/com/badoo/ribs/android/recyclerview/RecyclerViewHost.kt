@@ -3,7 +3,6 @@ package com.badoo.ribs.android.recyclerview
 import android.content.Context
 import android.os.Parcelable
 import android.widget.FrameLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
 import com.badoo.ribs.core.Rib
@@ -22,15 +21,6 @@ interface RecyclerViewHost : Rib {
         fun resolver(): RecyclerViewRibResolver<T>
         fun layoutManagerFactory(): LayoutManagerFactory
         fun viewHolderLayoutParams(): FrameLayout.LayoutParams
-
-        interface LayoutManagerFactory: (Context) -> RecyclerView.LayoutManager {
-            companion object {
-                val linear = object : LayoutManagerFactory {
-                    override fun invoke(context: Context): RecyclerView.LayoutManager =
-                        LinearLayoutManager(context)
-                }
-            }
-        }
     }
 
     enum class HostingStrategy {
@@ -51,3 +41,5 @@ interface RecyclerViewHost : Rib {
         data class Add<T : Parcelable>(val element: T): Input<T>()
     }
 }
+
+typealias LayoutManagerFactory = (Context) -> RecyclerView.LayoutManager

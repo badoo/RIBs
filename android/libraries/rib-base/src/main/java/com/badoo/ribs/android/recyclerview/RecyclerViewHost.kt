@@ -19,6 +19,7 @@ interface RecyclerViewHost : Rib {
         fun initialElements(): List<T>
         fun recyclerViewHostInput(): ObservableSource<Input<T>>
         fun resolver(): RecyclerViewRibResolver<T>
+        fun recyclerViewFactory(): RecyclerViewFactory
         fun layoutManagerFactory(): LayoutManagerFactory
         fun viewHolderLayoutParams(): FrameLayout.LayoutParams
     }
@@ -41,5 +42,7 @@ interface RecyclerViewHost : Rib {
         data class Add<T : Parcelable>(val element: T): Input<T>()
     }
 }
+
+typealias RecyclerViewFactory = (Context) -> RecyclerView
 
 typealias LayoutManagerFactory = (Context) -> RecyclerView.LayoutManager

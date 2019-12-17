@@ -5,10 +5,12 @@ import android.os.Parcelable
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.recyclerview.LayoutManagerFactory
+import com.badoo.ribs.android.recyclerview.RecyclerViewFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
@@ -116,6 +118,7 @@ class RecyclerViewTestActivity : RibActivity() {
                 override fun initialElements(): List<Item> = initialElements
                 override fun recyclerViewHostInput(): ObservableSource<Input<Item>> = inputCommands
                 override fun resolver(): RecyclerViewRibResolver<Item> = ribResolver
+                override fun recyclerViewFactory(): RecyclerViewFactory = ::RecyclerView
                 override fun layoutManagerFactory(): LayoutManagerFactory = ::LinearLayoutManager
                 override fun viewHolderLayoutParams(): FrameLayout.LayoutParams =
                     FrameLayout.LayoutParams(

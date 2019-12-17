@@ -44,6 +44,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
             interactor = interactor,
             viewDeps =  object : RecyclerViewHostView.Dependency {
                 override fun adapter(): Adapter<*> = adapter
+                override fun recyclerViewFactory(): RecyclerViewFactory = dependency.recyclerViewFactory()
                 override fun layoutManagerFactory(): LayoutManagerFactory = dependency.layoutManagerFactory()
             },
             timeCapsule = timeCapsule,

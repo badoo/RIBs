@@ -281,7 +281,7 @@ Really, just a one-liner.
 
 Try it:
 
-'''kotlin
+```kotlin
 interface GreetingsContainer : Rib {
 
     interface Dependency {

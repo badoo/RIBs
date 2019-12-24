@@ -74,7 +74,7 @@ class HelloWorldInteractor(
 ```
 
 ### HelloWorld
-'''kotlin
+```kotlin
 interface GreetingsContainer : Rib {
 
     interface Dependency {

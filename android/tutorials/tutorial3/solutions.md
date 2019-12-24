@@ -72,6 +72,24 @@ class HelloWorldInteractor(
         )
 }
 ```
+
+### HelloWorld
+'''kotlin
+interface GreetingsContainer : Rib {
+
+    interface Dependency {
+        fun user(): User
+        fun config(): Config
+    }
+
+    data class Config {
+        val welcomeMessage: Text
+    }
+
+    // remainder the same
+}
+```
+
 ### HelloWorldModule
 ```kotlin
 @dagger.Module

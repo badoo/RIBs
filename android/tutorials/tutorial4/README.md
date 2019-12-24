@@ -365,6 +365,6 @@ Congratulations! You can advance to the next one.
 - When satisfying `Output` and `Input` dependencies, we **always** want to do that directly in the parent:
     - By satisfying these dependencies, we create a connection between the place where we satisfy them and the RIB in question.
     - Having a certain RIB as a child is an implementation detail of the parent, that should be kept hidden to maintain flexibility.
-    - If we were to bubble up the dependency to a higher level level, we would expose this implementation detail. We would create a connection between the outside world and the implementation detail, making the immediate parent lose its ability to easily change it. This should be avoided at all costs.
+    - If we were to bubble up the dependency to a higher level, we would expose this implementation detail. We would create a connection between the outside world and the implementation detail, making the immediate parent lose its ability to easily change it. This should be avoided at all costs.
     - If the parent cannot handle an `Output` message directly, it can transform it to its own `Output` type, keeping the implementation detail hidden.
 

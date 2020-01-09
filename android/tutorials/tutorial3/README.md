@@ -275,28 +275,11 @@ Building the project at this point, Dagger should give you:
 
 ## Bubbling up dependencies
 
-This will be super easy, if you got this far. The only difference is that if we cannot provide a dependency directly, we also add it to the `Dependency` interface of parent and to the 'Dependency' interfaces of all parent ribs until this rib can actually provide id.
+This will be super easy, if you got this far. The only difference is that if we cannot provide a dependency directly, we also add it to the Dependency interface of parent. We can keep doing this further until on some level we can actually provide it.
 
 Really, just a one-liner.
 
 Try it:
-
-```kotlin
-interface HelloWorld : Rib {
-
-    interface Dependency {
-        // Add this to say that `HelloWorld` RIB needs this from the outside
-        fun user(): User
-        fun config(): Config
-    }
-
-    data class Config {
-        val welcomeMessage: Text
-    }
-
-    // remainder the same
-}
-```
 
 ```kotlin
 interface GreetingsContainer : Rib {

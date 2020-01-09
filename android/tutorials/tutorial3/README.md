@@ -275,7 +275,7 @@ Building the project at this point, Dagger should give you:
 
 ## Bubbling up dependencies
 
-This will be super easy, if you got this far. The only difference is that if we cannot provide a dependency directly, we also add it to the `Dependency` interface of the parent (and then to its parent and so on until we can actually provide id).
+This will be super easy, if you got this far. The only difference is that if we cannot provide a dependency directly, we also add it to the `Dependency` interface of parent. We can keep doing this further until on some level we can actually provide it.
 
 Really, just a one-liner.
 

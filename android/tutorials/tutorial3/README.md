@@ -282,7 +282,7 @@ Really, just a one-liner.
 Try it:
 
 ```kotlin
-interface GreetingsContainer : Rib {
+interface HelloWorld : Rib {
 
     interface Dependency {
         // Add this to say that `HelloWorld` RIB needs this from the outside

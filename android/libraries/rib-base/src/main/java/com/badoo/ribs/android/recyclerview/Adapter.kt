@@ -78,7 +78,7 @@ internal class Adapter<T : Parcelable>(
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
-        super.onViewDetachedFromWindow(holder)
+        super.onViewRecycled(holder)
         val configurationKey = holder.configurationKey!! // at this point it should be bound
         deactivate(configurationKey)
         if (hostingStrategy == LAZY) {

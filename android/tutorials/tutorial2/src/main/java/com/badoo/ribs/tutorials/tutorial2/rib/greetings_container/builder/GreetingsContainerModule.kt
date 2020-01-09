@@ -16,6 +16,7 @@ internal object GreetingsContainerModule {
     @JvmStatic
     internal fun router(
         // pass component to child rib builders, or remove if there are none
+        component: GreetingsContainerComponent,
         savedInstanceState: Bundle?
     ): GreetingsContainerRouter =
         GreetingsContainerRouter(

@@ -275,7 +275,7 @@ Building the project at this point, Dagger should give you:
 
 ## Bubbling up dependencies
 
-This will be super easy, if you got this far. The only difference is that if we cannot provide a dependency directly. We also add it to the `Dependency` interface of our rib and to the 'Dependency' interfaces of all parent ribs until this rib can actually provide id.
+This will be super easy, if you got this far. The only difference is that if we cannot provide a dependency directly, we also add it to the `Dependency` interface of parent and to the 'Dependency' interfaces of all parent ribs until this rib can actually provide id.
 
 Really, just a one-liner.
 

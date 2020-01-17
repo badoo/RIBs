@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.view.TransitionElement
 
 /**
  * A convenience class to automatically call resolution on the key.
@@ -27,4 +28,23 @@ internal abstract class ResolvedSingleConfigurationAction : SingleConfigurationA
         item: ConfigurationContext.Resolved<C>,
         params: ActionExecutionParams<C>
     ): ConfigurationContext.Resolved<C>
+
+
+    override fun <C : Parcelable> transitionElements(
+        key: ConfigurationKey,
+        params: ActionExecutionParams<C>
+    ): List<TransitionElement<C>> {
+        val resolved = params.resolver.invoke(key)
+
+        return transitionElements(
+            resolved,
+            params
+        )
+    }
+
+    open fun <C : Parcelable> transitionElements(
+        item: ConfigurationContext.Resolved<C>,
+        params: ActionExecutionParams<C>
+    ): List<TransitionElement<C>> =
+        emptyList()
 }

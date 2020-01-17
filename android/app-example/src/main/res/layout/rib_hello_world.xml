@@ -8,6 +8,13 @@
     android:layout_height="match_parent"
     tools:context=".app.RootActivity">
 
+<!--    <View-->
+<!--        android:id="@+id/qwe2"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:transitionName="bla"-->
+<!--        android:background="@color/colorPrimary"/>-->
+
     <TextView
         android:id="@+id/hello_title"
         android:layout_width="wrap_content"

@@ -4,16 +4,18 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.Transaction
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
@@ -105,25 +107,33 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     internal fun add(configurationKey: ConfigurationKey, configuration: Content) {
         configurationFeature.accept(
-            Add(configurationKey, configuration)
+            Transaction.from<C>(
+                Add(configurationKey, configuration)
+            )
         )
     }
 
     internal fun remove(configurationKey: ConfigurationKey) {
         configurationFeature.accept(
-            Remove(configurationKey)
+            Transaction.from(
+                Remove(configurationKey)
+            )
         )
     }
 
     internal fun activate(configurationKey: ConfigurationKey) {
         configurationFeature.accept(
-            Activate(configurationKey)
+            Transaction.from(
+                Activate(configurationKey)
+            )
         )
     }
 
     internal fun deactivate(configurationKey: ConfigurationKey) {
         configurationFeature.accept(
-            Deactivate(configurationKey)
+            Transaction.from(
+                Deactivate(configurationKey)
+            )
         )
     }
 

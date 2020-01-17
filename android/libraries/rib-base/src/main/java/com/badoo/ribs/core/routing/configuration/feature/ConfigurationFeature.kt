@@ -9,15 +9,10 @@ import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
@@ -25,15 +20,23 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.Transaction
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
+import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.view.RoutingTransitionHandler
+import com.badoo.ribs.core.view.TransitionElement
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.fromCallable
 import io.reactivex.Observable.fromIterable
+import io.reactivex.Single
 
 private val timeCapsuleKey = ConfigurationFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
@@ -60,7 +63,7 @@ internal class ConfigurationFeature<C : Parcelable>(
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: (C) -> RoutingAction<*>,
     parentNode: Node<*>
-) : ActorReducerFeature<ConfigurationCommand<C>, Effect<C>, WorkingState<C>, Nothing>(
+) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
     bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), initialConfigurations),
     actor = ActorImpl(resolver, parentNode),
@@ -77,9 +80,14 @@ internal class ConfigurationFeature<C : Parcelable>(
         ) : Effect<C>()
 
         data class Individual<C : Parcelable>(
-            val command: SingleConfigurationCommand<C>,
+            val command: ConfigurationCommand<C>,
             val updatedElement: Resolved<C>
         ) : Effect<C>()
+
+//        sealed class Signal<C : Parcelable> : Effect<C>() {
+//            class TransactionBegin<C : Parcelable> : Signal<C>()
+//            class TransactionEnd<C : Parcelable> : Signal<C>()
+//        }
     }
 
     /**
@@ -88,22 +96,23 @@ internal class ConfigurationFeature<C : Parcelable>(
     class BootStrapperImpl<C : Parcelable>(
         private val initialState: WorkingState<C>,
         private val initialConfigurations: List<C>
-    ) : Bootstrapper<ConfigurationCommand<C>> {
+    ) : Bootstrapper<Transaction<C>> {
 
-        override fun invoke(): Observable<ConfigurationCommand<C>> =
+        override fun invoke(): Observable<Transaction<C>> =
             when {
                 initialState.pool.isEmpty() -> fromIterable(
                     initialConfigurations
                         .mapIndexed { index, configuration ->
                             val key = ConfigurationKey.Permanent(index)
 
-                            listOf<ConfigurationCommand<C>>(
-                                Add(key, configuration),
-                                Activate(key)
+                            Transaction.ListOfCommands<C>(
+                                listOf(
+                                    Add(key, configuration),
+                                    Activate(key)
+                                )
                             )
                         }
-                        .flatten()
-                    )
+                )
                 else -> empty()
             }
     }
@@ -118,37 +127,124 @@ internal class ConfigurationFeature<C : Parcelable>(
     class ActorImpl<C : Parcelable>(
         private val resolver: (C) -> RoutingAction<*>,
         private val parentNode: Node<*>
-    ) : Actor<WorkingState<C>, ConfigurationCommand<C>, Effect<C>> {
-        override fun invoke(state: WorkingState<C>, command: ConfigurationCommand<C>): Observable<Effect<C>> =
-            when (command) {
+    ) : Actor<WorkingState<C>, Transaction<C>, Effect<C>> {
+        override fun invoke(
+            state: WorkingState<C>,
+            transaction: Transaction<C>
+        ): Observable<Effect<C>> =
+            when (transaction) {
                 is MultiConfigurationCommand ->
                     fromCallable {
-                        command.action.execute(
+                        transaction.action.execute(
                             pool = state.pool,
-                            params = createParams(command, state)
+                            params = createParams(transaction, state)
                         )
-                    }
-                    .map { updated -> Effect.Global(command, updated) }
+                    }.map { updated -> Effect.Global(transaction, updated) }
 
-                is SingleConfigurationCommand ->
-                    fromCallable {
-                        command.action.execute(
-                            key = command.key,
-                            params = createParams(command, state)
-                        )
+                // FIXME clean up this whole block
+                is Transaction.ListOfCommands -> Single.create<List<Effect<C>>> { emitter ->
+                    val commands = transaction.commands
+                    val defaultElements = mutableMapOf<ConfigurationKey, Resolved<C>>()
+
+                    commands.forEach { command ->
+                        if (command is Add<C>) {
+                            // TODO maybe move this back to resolve?
+                            defaultElements[command.key] =
+                                Unresolved(INACTIVE, command.configuration).resolve(
+                                    resolver,
+                                    parentNode
+                                ) {
+                                    /**
+                                     * Resolution involves building the associated [Node]s, which need to be guaranteed
+                                     * to be added to the parentNode.
+                                     *
+                                     * Because of this, we need to make sure that [AddAction] is executed every time
+                                     * we resolve, even when no explicit [Add] command was asked.
+                                     *
+                                     * This is to cover cases e.g. when restoring from Bundle:
+                                     * we have a list of [Unresolved] elements that will be resolved on next command
+                                     * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
+                                     *
+                                     * [Add] is only called explicitly with direct back stack manipulation, but not on
+                                     * state restoration.
+                                     */
+                                    /**
+                                     * Resolution involves building the associated [Node]s, which need to be guaranteed
+                                     * to be added to the parentNode.
+                                     *
+                                     * Because of this, we need to make sure that [AddAction] is executed every time
+                                     * we resolve, even when no explicit [Add] command was asked.
+                                     *
+                                     * This is to cover cases e.g. when restoring from Bundle:
+                                     * we have a list of [Unresolved] elements that will be resolved on next command
+                                     * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
+                                     *
+                                     * [Add] is only called explicitly with direct back stack manipulation, but not on
+                                     * state restoration.
+                                     */
+                                    AddAction.execute(
+                                        it,
+                                        parentNode
+                                    )
+                                }
+                        }
                     }
-                    .map { updated -> Effect.Individual(command, updated) }
+
+                    val params = createParams(
+                        state.copy(
+                            pool = state.pool + defaultElements
+                        )
+                    )
+
+                    val transitionElements = commands.flatMap { command ->
+                        command.action.transitionElements(command.key, params)
+                    }
+
+                    // FIXME from Node constructor
+                    val transitionHandler: RoutingTransitionHandler<C> =
+                        RoutingTransitionHandler.DEFAULT as RoutingTransitionHandler<C>
+
+                    val onFinished: () -> Unit = {
+                        val effects = commands.map { command ->
+                            val result = command.action.execute(command.key, params)
+                            Effect.Individual(command, result) as Effect<C>
+                        }
+
+                        emitter.onSuccess(effects)
+                    }
+
+
+                    val exitingElements = transitionElements.filterIsInstance<TransitionElement.Exit<C>>()
+                    val enteringElements  = transitionElements.filterIsInstance<TransitionElement.Enter<C>>()
+                    transitionHandler.onTransition(
+                        exitingElements,
+                        enteringElements,
+                        onFinished
+                    )
+                }
+                    .toObservable()
+                    .flatMapIterable { it }
             }
 
-        private fun createParams(command: ConfigurationCommand<C>, state: WorkingState<C>): ActionExecutionParams<C> =
+        // FIXME unify this two if possible
+        private fun createParams(
+            state: WorkingState<C>
+        ): ActionExecutionParams<C> =
             ActionExecutionParams(
                 resolver = { key ->
-                    val defaultElement = when (command) {
-                        is Add<C> -> Unresolved(INACTIVE, command.configuration)
-                        else -> null
-                    }
+                    state.resolve(key, null)
+                },
+                parentNode = parentNode,
+                globalActivationLevel = state.activationLevel
+            )
 
-                    state.resolve(key, defaultElement)
+        private fun createParams(
+            command: Transaction<C>,
+            state: WorkingState<C>
+        ): ActionExecutionParams<C> =
+            ActionExecutionParams(
+                resolver = { key ->
+                    state.resolve(key, null)
                 },
                 parentNode = parentNode,
                 globalActivationLevel = when (command) {
@@ -167,7 +263,10 @@ internal class ConfigurationFeature<C : Parcelable>(
          * The only exception when it's acceptable not to already have an element under [key] is
          * when [defaultElement] is not null, used in the case of the [Add] command.
          */
-        private fun WorkingState<C>.resolve(key: ConfigurationKey, defaultElement: Unresolved<C>?): Resolved<C> {
+        private fun WorkingState<C>.resolve(
+            key: ConfigurationKey,
+            defaultElement: Unresolved<C>?
+        ): Resolved<C> {
             val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")
 
             return item.resolve(resolver, parentNode) {

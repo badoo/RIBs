@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.switcher
 
 import android.os.Bundle
+import android.graphics.Rect
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach

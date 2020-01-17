@@ -26,6 +26,5 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
         pool.invokeOn(ACTIVE, params) { foundByFilter ->
             DeactivateAction
                 .execute(foundByFilter, params)
-                .withActivationState(SLEEPING)
         }
 }

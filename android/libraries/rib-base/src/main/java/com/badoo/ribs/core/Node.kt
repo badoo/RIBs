@@ -128,9 +128,34 @@ open class Node<V : RibView>(
         detachFromView()
         this.parentViewGroup = parentViewGroup
         isAttachedToView = true
+//        createView(parentViewGroup.context)
+//        view?.let {
+//            parentViewGroup.addView(it.androidView)
+//            it.androidView.restoreHierarchyState(savedViewState)
+//            interactor.onViewCreated(it)
+//        }
+//
+//        router?.onAttachView()
+//    }
+//
+//    internal fun attachChildView(child: Node<*>) {
+//        if (isViewAttached) {
+//            child.attachToView(
+//                // parentViewGroup is guaranteed to be non-null if and only if view is attached
+//                view?.getParentViewForChild(child.identifier) ?: parentViewGroup!!
+//            )
+//        }
+//    }
+//
+//    internal fun saveViewState() {
+//        view?.let {
+//            it.androidView.saveHierarchyState(savedViewState)
+//        }
+//    }
 
         if (!isViewless) {
             createView(parentViewGroup)
+            attachToParentViewGroup()
         }
 
         lifecycleManager.onCreateView()
@@ -141,11 +166,34 @@ open class Node<V : RibView>(
         viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }
     }
 
-    private fun createView(parentViewGroup: ViewGroup) {
-        view = viewFactory?.invoke(parentViewGroup)
+    internal fun attachToParentViewGroup() {
         view!!.let { view ->
-            parentViewGroup.addView(view.androidView)
+            parentViewGroup!!.addView(view.androidView)
             view.androidView.restoreHierarchyState(savedViewState)
+        }
+    }
+
+//    private fun createView(viewGroup: ViewGroup) {
+//        if (view == null) view = viewFactory?.invoke(viewGroup)
+//    }
+
+    internal fun createChildView(child: Node<*>) {
+        if (isAttachedToView) {
+            child.createView(
+                // parentViewGroup is guaranteed to be non-null if and only if view is attached
+                (view?.getParentViewForChild(child) ?: parentViewGroup!!)
+            )
+        }
+    }
+
+    // FIXME
+    private fun createView(parentViewGroup: ViewGroup) {
+        if (view == null) {
+            view = viewFactory?.invoke(parentViewGroup)
+//            view!!.let { view ->
+//                parentViewGroup.addView(view.androidView)
+//                view.androidView.restoreHierarchyState(savedViewState)
+//            }
         }
     }
 
@@ -208,13 +256,16 @@ open class Node<V : RibView>(
     // FIXME internal + protected?
     fun attachChildView(child: Node<*>) {
         if (isAttachedToView) {
-            val target = when {
-                // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                isViewless -> parentViewGroup!!
-                else -> view!!.getParentViewForChild(child) ?: parentViewGroup!!
-            }
-
+            val target = targetViewGroupForChild(child)
             child.attachToView(target)
+        }
+    }
+
+    internal fun targetViewGroupForChild(child: Node<*>): ViewGroup {
+        return when {
+            // parentViewGroup is guaranteed to be non-null if and only if view is attached
+            isViewless -> parentViewGroup!!
+            else -> view!!.getParentViewForChild(child) ?: parentViewGroup!!
         }
     }
 

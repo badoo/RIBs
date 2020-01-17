@@ -40,6 +40,8 @@ dependencies {
     implementation deps.android.lifecycleCommon // TODO: remove
     compileOnly deps.android.annotations
 
+    implementation "com.andkulikov:transitionseverywhere:1.8.1" // FIXME
+
     testImplementation deps.android.annotations
     testImplementation deps.test.junit
     testImplementation deps.test.mockito

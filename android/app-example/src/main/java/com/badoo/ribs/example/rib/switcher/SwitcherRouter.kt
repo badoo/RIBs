@@ -9,6 +9,7 @@ import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.compo
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.transition.TransitionHandler
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
@@ -28,6 +29,7 @@ import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
     savedInstanceState: Bundle?,
+    transitionHandler: TransitionHandler<Configuration>,
     private val fooBarBuilder: FooBarBuilder,
     private val helloWorldBuilder: HelloWorldBuilder,
     private val dialogExampleBuilder: DialogExampleBuilder,
@@ -37,6 +39,7 @@ class SwitcherRouter(
     private val dialogToTestOverlay: DialogToTestOverlay
 ): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
     savedInstanceState = savedInstanceState,
+    transitionHandler = transitionHandler,
     initialConfiguration = Content.DialogsExample,
     permanentParts = listOf(
         Permanent.Menu

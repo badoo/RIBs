@@ -39,11 +39,13 @@ internal object SwitcherModule {
     internal fun router(
         savedInstanceState: Bundle?,
         component: SwitcherComponent,
+        customisation: Switcher.Customisation,
         dialogLauncher: DialogLauncher,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherRouter =
         SwitcherRouter(
             savedInstanceState = savedInstanceState,
+            transitionHandler = customisation.transitionHandler,
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),

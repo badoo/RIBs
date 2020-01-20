@@ -5,7 +5,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.view.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Represents an action that affects a single [ConfigurationContext.Resolved] configuration when executed.

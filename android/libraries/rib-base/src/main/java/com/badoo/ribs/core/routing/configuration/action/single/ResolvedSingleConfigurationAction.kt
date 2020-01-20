@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.view.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * A convenience class to automatically call resolution on the key.

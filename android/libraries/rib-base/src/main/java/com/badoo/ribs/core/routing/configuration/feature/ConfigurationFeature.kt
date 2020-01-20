@@ -1,5 +1,6 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
+import android.os.Handler
 import android.os.Parcelable
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Bootstrapper
@@ -8,6 +9,7 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.configuration.Action
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
@@ -27,11 +29,13 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
+import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
-import com.badoo.ribs.core.view.RoutingTransitionHandler
-import com.badoo.ribs.core.view.TransitionElement
+import com.badoo.ribs.core.routing.transition.ProgressEvaluator
+import com.badoo.ribs.core.routing.transition.TransitionHandler
+import com.badoo.ribs.core.routing.transition.TransitionElement
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.fromCallable
@@ -62,11 +66,12 @@ internal class ConfigurationFeature<C : Parcelable>(
     initialConfigurations: List<C>,
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: (C) -> RoutingAction<*>,
-    parentNode: Node<*>
+    parentNode: Node<*>,
+    private val transitionHandler: TransitionHandler<C>?
 ) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
     bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), initialConfigurations),
-    actor = ActorImpl(resolver, parentNode),
+    actor = ActorImpl(resolver, parentNode, transitionHandler),
     reducer = ReducerImpl()
 ) {
     init {
@@ -83,11 +88,6 @@ internal class ConfigurationFeature<C : Parcelable>(
             val command: ConfigurationCommand<C>,
             val updatedElement: Resolved<C>
         ) : Effect<C>()
-
-//        sealed class Signal<C : Parcelable> : Effect<C>() {
-//            class TransactionBegin<C : Parcelable> : Signal<C>()
-//            class TransactionEnd<C : Parcelable> : Signal<C>()
-//        }
     }
 
     /**
@@ -126,8 +126,12 @@ internal class ConfigurationFeature<C : Parcelable>(
      */
     class ActorImpl<C : Parcelable>(
         private val resolver: (C) -> RoutingAction<*>,
-        private val parentNode: Node<*>
+        private val parentNode: Node<*>,
+        private val transitionHandler: TransitionHandler<C>?
     ) : Actor<WorkingState<C>, Transaction<C>, Effect<C>> {
+
+        private val handler = Handler()
+
         override fun invoke(
             state: WorkingState<C>,
             transaction: Transaction<C>
@@ -196,31 +200,48 @@ internal class ConfigurationFeature<C : Parcelable>(
                         )
                     )
 
-                    val transitionElements = commands.flatMap { command ->
-                        command.action.transitionElements(command.key, params)
+                    val actions = commands.map { command ->
+                        command.actionFactory.create(command.key, params)
                     }
 
-                    // FIXME from Node constructor
-                    val transitionHandler: RoutingTransitionHandler<C> =
-                        RoutingTransitionHandler.DEFAULT as RoutingTransitionHandler<C>
+                    actions.forEach { it.onPreExecute() }
+                    val transitionElements = actions.flatMap { it.transitionElements }
+                    transitionHandler?.onTransition(transitionElements)
+                    actions.forEach { it.execute() }
 
-                    val onFinished: () -> Unit = {
-                        val effects = commands.map { command ->
-                            val result = command.action.execute(command.key, params)
-                            Effect.Individual(command, result) as Effect<C>
+                    val onFinish = {
+                        actions.forEach { it.finally() }
+                        val effects = commands.mapIndexed { index, command ->
+                            Effect.Individual(command, actions[index].result) as Effect<C>
                         }
 
                         emitter.onSuccess(effects)
                     }
 
+                    val runnable = object : Runnable {
+                        override fun run() {
+                            actions.forEach { action ->
+                                if (action.transitionElements.all { it.progressEvaluator.progress == 1.0f }) {
+                                    action.transitionElements.forEach {
+                                        it.progressEvaluator = ProgressEvaluator.DONE
+                                    }
+                                    action.onPostExecute()
+                                }
+                            }
+                            if (transitionElements.any { it.progressEvaluator.progress < 1.0f }) {
+                                handler.post(this)
+                            } else {
+                                onFinish()
+                            }
+                        }
+                    }
 
-                    val exitingElements = transitionElements.filterIsInstance<TransitionElement.Exit<C>>()
-                    val enteringElements  = transitionElements.filterIsInstance<TransitionElement.Enter<C>>()
-                    transitionHandler.onTransition(
-                        exitingElements,
-                        enteringElements,
-                        onFinished
-                    )
+                    if (params.globalActivationLevel == SLEEPING) {
+                        actions.forEach { it.onPostExecute() }
+                        onFinish()
+                    } else {
+                        handler.post(runnable)
+                    }
                 }
                     .toObservable()
                     .flatMapIterable { it }

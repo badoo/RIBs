@@ -23,29 +23,29 @@ import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurati
  */
 internal sealed class ConfigurationCommand<C : Parcelable> {
     abstract val key: ConfigurationKey
-    abstract val action: SingleConfigurationAction
+    abstract val actionFactory: ActionFactory
 
     data class Add<C : Parcelable>(override val key: ConfigurationKey, val configuration: C) : ConfigurationCommand<C>() {
         /**
          * No additional action here, as [AddAction] is executed automatically
          * during [ConfigurationContext.Unresolved.resolve],
          */
-        override val action: SingleConfigurationAction =
-            NoOpAction
+        override val actionFactory: ActionFactory =
+            NoOpAction.Factory
     }
 
     data class Activate<C : Parcelable>(override val key: ConfigurationKey) : ConfigurationCommand<C>() {
-        override val action: SingleConfigurationAction =
-            ActivateAction
+        override val actionFactory: ActionFactory =
+            ActivateAction.Factory
     }
 
     data class Deactivate<C : Parcelable>(override val key: ConfigurationKey) : ConfigurationCommand<C>() {
-        override val action: SingleConfigurationAction =
-            DeactivateAction
+        override val actionFactory: ActionFactory =
+            DeactivateAction.Factory
     }
 
     data class Remove<C : Parcelable>(override val key: ConfigurationKey) : ConfigurationCommand<C>() {
-        override val action: SingleConfigurationAction =
-            RemoveAction
+        override val actionFactory: ActionFactory =
+            RemoveAction.Factory
     }
 }

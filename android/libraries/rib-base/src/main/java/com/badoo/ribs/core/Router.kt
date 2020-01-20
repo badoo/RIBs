@@ -23,11 +23,12 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
-import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.routing.transition.TransitionHandler
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     savedInstanceState: Bundle?,
+    private val transitionHandler: TransitionHandler<C>? = null,
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList()
 ) : ConfigurationResolver<C, V> {
@@ -58,7 +59,8 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             initialConfigurations = permanentParts,
             timeCapsule = timeCapsule,
             resolver = this::resolveConfiguration,
-            parentNode = node
+            parentNode = node,
+            transitionHandler = transitionHandler
         )
     }
 

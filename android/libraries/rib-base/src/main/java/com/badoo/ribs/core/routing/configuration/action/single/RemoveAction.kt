@@ -2,21 +2,49 @@ package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.configuration.Action
+import com.badoo.ribs.core.routing.configuration.ActionFactory
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.transition.TransitionDirection
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Removes [Node]s from their parent, resulting in the end of their lifecycles.
  */
-internal object RemoveAction : ResolvedSingleConfigurationAction() {
+internal class RemoveAction<C : Parcelable>(
+    private var item: Resolved<C>,
+    private val params: ActionExecutionParams<C>
+) : Action<C> {
 
-    override fun <C : Parcelable> execute(item: Resolved<C>, params: ActionExecutionParams<C>): Resolved<C> {
-        val (_, parentNode, _) = params
-        item.nodes.forEach {
-            parentNode.detachChildView(it.node)
-            parentNode.detachChildNode(it.node)
+    object Factory: ActionFactory {
+        override fun <C : Parcelable> create(key: ConfigurationKey, params: ActionExecutionParams<C>): Action<C> {
+            val item = params.resolver.invoke(key)
+            return RemoveAction(item, params)
         }
-
-        return item
     }
+
+    override var transitionElements: List<TransitionElement<C>> =
+        emptyList()
+
+    override fun onPreExecute() {
+    }
+
+    override fun execute() {
+    }
+
+    override fun onPostExecute() {
+    }
+
+    override fun finally() {
+        item.nodes.forEach {
+            params.parentNode.detachChildView(it.node)
+            params.parentNode.detachChildNode(it.node)
+        }
+    }
+
+    override val result: Resolved<C> =
+        item
 }

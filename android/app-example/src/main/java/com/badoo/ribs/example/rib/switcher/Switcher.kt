@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.switcher
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.routing.transition.TransitionHandler
 import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
@@ -24,7 +25,8 @@ interface Switcher : Rib {
     }
 
     class Customisation(
-        val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory()
+        val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),
+        val transitionHandler: TransitionHandler<SwitcherRouter.Configuration> = SwitcherTransitionHandler()
     ) : RibCustomisation
 
     interface Workflow {

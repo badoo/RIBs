@@ -7,6 +7,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
 
 /**
@@ -24,7 +25,11 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
         pool.invokeOn(ACTIVE, params) { foundByFilter ->
-            DeactivateAction
-                .execute(foundByFilter, params)
+            val action = DeactivateAction(foundByFilter, params)
+            action.onPreExecute()
+            action.execute()
+            action.onPostExecute()
+            action.finally()
+            foundByFilter
         }
 }

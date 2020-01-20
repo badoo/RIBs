@@ -23,7 +23,11 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
         pool.invokeOn(SLEEPING, params) { foundByFilter ->
-            ActivateAction
-                .execute(foundByFilter, params)
+            val action = ActivateAction(foundByFilter, params)
+            action.onPreExecute()
+            action.execute()
+            action.onPostExecute()
+            action.finally()
+            action.result
         }
 }

@@ -30,6 +30,6 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
             action.execute()
             action.onPostExecute()
             action.finally()
-            foundByFilter
+            action.result.withActivationState(SLEEPING)
         }
 }

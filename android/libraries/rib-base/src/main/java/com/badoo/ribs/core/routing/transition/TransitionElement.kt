@@ -16,14 +16,12 @@ open class TransitionElement<C>(
         ProgressEvaluator.Finished
 }
 
+operator fun <T> TransitionElement<out T>?.invoke(transition: TransitionElement<out T>.() -> Unit) {
+    this?.apply(transition)
+}
 
-sealed class ProgressEvaluator {
-
-    class InProgress : ProgressEvaluator() {
-        var progress: Float = 0f
+operator fun <T> List<TransitionElement<out T>>.invoke(transition: TransitionElement<out T>.() -> Unit) {
+    forEach {
+        it.apply(transition)
     }
-
-    object Finished : ProgressEvaluator()
-
-    object Processed : ProgressEvaluator()
 }

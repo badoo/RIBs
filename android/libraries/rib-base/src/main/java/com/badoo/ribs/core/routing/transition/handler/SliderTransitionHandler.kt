@@ -5,6 +5,7 @@ import android.view.animation.Interpolator
 import com.badoo.ribs.core.routing.transition.TransitionDirection.Enter
 import com.badoo.ribs.core.routing.transition.TransitionDirection.Exit
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.invoke
 
 
 open class SliderTransitionHandler<T>(

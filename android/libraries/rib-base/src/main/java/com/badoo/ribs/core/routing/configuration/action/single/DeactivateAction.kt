@@ -17,14 +17,15 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class DeactivateAction<C : Parcelable>(
     private var item: Resolved<C>,
-    private val params: ActionExecutionParams<C>
+    private val params: ActionExecutionParams<C>,
+    private val isBackStackOperation: Boolean
 ) : Action<C> {
 
     object Factory:
         ActionFactory {
-        override fun <C : Parcelable> create(key: ConfigurationKey, params: ActionExecutionParams<C>): Action<C> {
+        override fun <C : Parcelable> create(key: ConfigurationKey, params: ActionExecutionParams<C>, isBackStackOperation: Boolean): Action<C> {
             val item = params.resolver.invoke(key)
-            return DeactivateAction(item, params)
+            return DeactivateAction(item, params, isBackStackOperation)
         }
     }
 
@@ -40,6 +41,7 @@ internal class DeactivateAction<C : Parcelable>(
                 TransitionElement(
                     configuration = item.configuration,
                     direction = TransitionDirection.Exit,
+                    isBackStackOperation = isBackStackOperation,
                     parentViewGroup = params.parentNode.targetViewGroupForChild(it.node),
                     identifier = it.node.identifier,
                     view = ribView.androidView

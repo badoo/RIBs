@@ -7,6 +7,7 @@ import com.badoo.ribs.core.Rib
 open class TransitionElement<C>(
     val configuration: C,
     val direction: TransitionDirection,
+    val isBackStackOperation: Boolean,
     val parentViewGroup: ViewGroup,
     val identifier: Rib,
     val view: View

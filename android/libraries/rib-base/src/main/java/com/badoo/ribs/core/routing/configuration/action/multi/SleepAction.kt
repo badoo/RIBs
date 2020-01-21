@@ -24,7 +24,7 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
         pool.invokeOn(ACTIVE, params) { foundByFilter ->
-            val action = DeactivateAction(foundByFilter, params)
+            val action = DeactivateAction(foundByFilter, params, false)
             action.onBeforeTransition()
             action.onTransition()
             action.onPostTransition()

@@ -15,9 +15,13 @@ internal class RemoveAction<C : Parcelable>(
     private val params: ActionExecutionParams<C>
 ) : Action<C> {
 
-    object Factory:
+    object Factory :
         ActionFactory {
-        override fun <C : Parcelable> create(key: ConfigurationKey, params: ActionExecutionParams<C>): Action<C> {
+        override fun <C : Parcelable> create(
+            key: ConfigurationKey,
+            params: ActionExecutionParams<C>,
+            isBackStackOperation: Boolean
+        ): Action<C> {
             val item = params.resolver.invoke(key)
             return RemoveAction(item, params)
         }

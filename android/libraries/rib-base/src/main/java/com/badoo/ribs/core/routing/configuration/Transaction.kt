@@ -33,12 +33,7 @@ internal sealed class Transaction<C : Parcelable> {
 
     data class ListOfCommands<C : Parcelable>(
         val commands: List<ConfigurationCommand<C>>
-    ) : Transaction<C>() {
-
-        fun isAcrossLifecycleBarrier(key: ConfigurationKey): Boolean =
-            commands.find { it.key == key && (it is Add || it is Remove) } != null
-
-    }
+    ) : Transaction<C>()
 
     companion object {
         fun <C : Parcelable> from(command: ConfigurationCommand<C>): Transaction<C> =
@@ -49,3 +44,6 @@ internal sealed class Transaction<C : Parcelable> {
             )
     }
 }
+
+internal fun List<ConfigurationCommand<*>>.isBackStackOperation(key: ConfigurationKey): Boolean =
+    none { it.key == key && (it is Add || it is Remove) }

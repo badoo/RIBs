@@ -24,7 +24,8 @@ internal class NoOpAction<C : Parcelable>(
         ActionFactory {
         override fun <C : Parcelable> create(
             key: ConfigurationKey,
-            params: ActionExecutionParams<C>
+            params: ActionExecutionParams<C>,
+            isBackStackOperation: Boolean
         ): Action<C> =
             NoOpAction(params.resolver.invoke(key))
     }

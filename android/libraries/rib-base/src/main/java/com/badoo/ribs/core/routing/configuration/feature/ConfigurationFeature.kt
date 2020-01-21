@@ -33,6 +33,7 @@ import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurati
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.action.single.containsInProgress
 import com.badoo.ribs.core.routing.configuration.action.single.allTransitionsFinished
+import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.ProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionHandler
 import io.reactivex.Observable
@@ -200,7 +201,11 @@ internal class ConfigurationFeature<C : Parcelable>(
                     )
 
                     val actions = commands.map { command ->
-                        command.actionFactory.create(command.key, params)
+                        command.actionFactory.create(
+                            command.key,
+                            params,
+                            commands.isBackStackOperation(command.key)
+                        )
                     }
 
                     actions.forEach { it.onBeforeTransition() }

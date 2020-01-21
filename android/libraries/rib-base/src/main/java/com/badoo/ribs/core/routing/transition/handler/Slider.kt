@@ -10,8 +10,8 @@ import com.badoo.ribs.core.routing.transition.effect.slide
 import com.badoo.ribs.core.routing.transition.invoke
 
 
-open class TabSwitcherTransitionHandler<T>(
-    private val tabsOrder: List<T>,
+open class Slider<T>(
+    private val gravity: Gravity = Gravity.LEFT,
     private val duration: Long = 200,
     private val interpolator: Interpolator = AccelerateDecelerateInterpolator()
 ) : TransitionHandler<T> {
@@ -20,13 +20,8 @@ open class TabSwitcherTransitionHandler<T>(
         val exit = elements.filter { it.direction == Exit }
         val enter = elements.filter { it.direction == Enter }
 
-        val exitIndex = tabsOrder.indexOfFirst { it == exit.firstOrNull()?.configuration }
-        val enterIndex = tabsOrder.indexOfFirst { it == enter.firstOrNull()?.configuration }
-        val dir = enterIndex - exitIndex
-        val gravity = if (dir < 0) Gravity.RIGHT else Gravity.LEFT
-
-        exit { slide(gravity, duration, interpolator, false) }
-        enter { slide(gravity.reverse(), duration, interpolator, false) }
+        exit { slide(gravity, duration, interpolator) }
+        enter { slide(gravity.reverse(), duration, interpolator) }
     }
 }
 

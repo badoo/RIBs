@@ -7,7 +7,7 @@ import com.badoo.ribs.core.routing.transition.effect.fade
 import com.badoo.ribs.core.routing.transition.invoke
 
 
-class CrossFaderTransitionHandler<T>(
+class CrossFader<T>(
     private val duration: Long = 300,
     private val interpolator: Interpolator = AccelerateDecelerateInterpolator()
 ) : TransitionHandler<T> {

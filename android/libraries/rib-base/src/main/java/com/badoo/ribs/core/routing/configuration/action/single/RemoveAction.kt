@@ -2,8 +2,6 @@ package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.configuration.Action
-import com.badoo.ribs.core.routing.configuration.ActionFactory
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
@@ -17,7 +15,8 @@ internal class RemoveAction<C : Parcelable>(
     private val params: ActionExecutionParams<C>
 ) : Action<C> {
 
-    object Factory: ActionFactory {
+    object Factory:
+        ActionFactory {
         override fun <C : Parcelable> create(key: ConfigurationKey, params: ActionExecutionParams<C>): Action<C> {
             val item = params.resolver.invoke(key)
             return RemoveAction(item, params)

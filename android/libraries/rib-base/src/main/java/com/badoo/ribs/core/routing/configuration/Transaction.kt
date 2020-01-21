@@ -32,9 +32,6 @@ internal sealed class Transaction<C : Parcelable> {
     }
 
     data class ListOfCommands<C : Parcelable>(
-        // TODO pre-fill list of added && removed
-//        val exiting: C?,
-//        val entering: C?,
         val commands: List<ConfigurationCommand<C>>
     ) : Transaction<C>() {
 

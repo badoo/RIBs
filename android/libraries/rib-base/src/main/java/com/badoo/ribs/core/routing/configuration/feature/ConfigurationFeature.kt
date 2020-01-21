@@ -31,8 +31,8 @@ import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfiguration
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
-import com.badoo.ribs.core.routing.configuration.containsInProgress
-import com.badoo.ribs.core.routing.configuration.allTransitionsFinished
+import com.badoo.ribs.core.routing.configuration.action.single.containsInProgress
+import com.badoo.ribs.core.routing.configuration.action.single.allTransitionsFinished
 import com.badoo.ribs.core.routing.transition.ProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionHandler
 import io.reactivex.Observable

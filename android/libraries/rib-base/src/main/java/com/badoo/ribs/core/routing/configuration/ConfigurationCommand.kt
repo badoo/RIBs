@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
+import com.badoo.ribs.core.routing.configuration.action.single.ActionFactory
 import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction

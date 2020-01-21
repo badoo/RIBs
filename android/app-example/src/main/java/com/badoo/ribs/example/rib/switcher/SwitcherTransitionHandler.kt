@@ -6,13 +6,10 @@ import android.animation.ValueAnimator
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
-import com.badoo.ribs.core.routing.transition.MutableProgressEvaluator
-import com.badoo.ribs.core.routing.transition.TransitionDirection
+import com.badoo.ribs.core.routing.transition.ProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionDirection.*
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionHandler
-import com.badoo.ribs.example.rib.foo_bar.FooBar
-import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration
 
 
@@ -83,7 +80,7 @@ class SwitcherTransitionHandler : TransitionHandler<Configuration> {
         duration: Long,
         interpolator: Interpolator = AccelerateDecelerateInterpolator()
     ) {
-        progressEvaluator = MutableProgressEvaluator()
+        progressEvaluator = ProgressEvaluator.InProgress()
 
         val valueAnimator = ValueAnimator.ofFloat(from, to)
         valueAnimator.interpolator = interpolator
@@ -93,13 +90,14 @@ class SwitcherTransitionHandler : TransitionHandler<Configuration> {
             // TODO could be controlled by Gravity
             this.view.translationX = progress
             this.view.invalidate()
+            (progressEvaluator as ProgressEvaluator.InProgress).progress = 1.0f * (progress - from) / (to - from)
             // TODO granular progress update of evaluator
         }
 
         valueAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
-                (progressEvaluator as MutableProgressEvaluator).setProgress(1.0f)
+                progressEvaluator = ProgressEvaluator.Finished
             }
         })
 
@@ -109,7 +107,7 @@ class SwitcherTransitionHandler : TransitionHandler<Configuration> {
     private fun <T> TransitionElement<out T>.delay(
         duration: Long
     ) {
-        progressEvaluator = MutableProgressEvaluator()
+        progressEvaluator = ProgressEvaluator.InProgress()
 
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.duration = duration
@@ -119,7 +117,7 @@ class SwitcherTransitionHandler : TransitionHandler<Configuration> {
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
                 this@delay.view.visibility = View.VISIBLE
-                (progressEvaluator as MutableProgressEvaluator).setProgress(1.0f)
+                progressEvaluator = ProgressEvaluator.Finished
             }
         })
 

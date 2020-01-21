@@ -4,11 +4,9 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.configuration.Action
 import com.badoo.ribs.core.routing.configuration.ActionFactory
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
@@ -29,16 +27,16 @@ internal class RemoveAction<C : Parcelable>(
     override var transitionElements: List<TransitionElement<C>> =
         emptyList()
 
-    override fun onPreExecute() {
+    override fun onBeforeTransition() {
     }
 
-    override fun execute() {
+    override fun onTransition() {
     }
 
-    override fun onPostExecute() {
+    override fun onPostTransition() {
     }
 
-    override fun finally() {
+    override fun onFinish() {
         item.nodes.forEach {
             params.parentNode.detachChildView(it.node)
             params.parentNode.detachChildNode(it.node)

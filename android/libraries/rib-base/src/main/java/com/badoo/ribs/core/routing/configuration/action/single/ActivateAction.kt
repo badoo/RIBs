@@ -5,12 +5,10 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.Action
 import com.badoo.ribs.core.routing.configuration.ActionFactory
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
@@ -41,7 +39,7 @@ internal class ActivateAction<C : Parcelable>(
     override var result: Resolved<C> =
         item
 
-    override fun onPreExecute() {
+    override fun onBeforeTransition() {
         canExecute = when {
             // If there's no view available (i.e. globalActivationLevel == SLEEPING) we must not execute
             // routing actions or try to attach view. That will be done on next WakeUp. For now, let's
@@ -74,17 +72,17 @@ internal class ActivateAction<C : Parcelable>(
         }
     }
 
-    override fun execute() {
+    override fun onTransition() {
         if (canExecute) {
             item.routingAction.execute()
         }
     }
 
-    override fun onPostExecute() {
+    override fun onPostTransition() {
     }
 
     // TODO check if can be merged with [CappedLifecycle], as this one has the same conceptual effect
-    override fun finally() {
+    override fun onFinish() {
         result = result.copy(activationState = params.globalActivationLevel)
     }
 }

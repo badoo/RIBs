@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.Action
 import com.badoo.ribs.core.routing.configuration.ActionFactory
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
@@ -13,10 +12,10 @@ internal class NoOpAction<C : Parcelable>(
     item: Resolved<C>
 ) : Action<C> {
 
-    override fun onPreExecute() {}
-    override fun execute() {}
-    override fun onPostExecute() {}
-    override fun finally() {}
+    override fun onBeforeTransition() {}
+    override fun onTransition() {}
+    override fun onPostTransition() {}
+    override fun onFinish() {}
     override val result: Resolved<C> =
         item
 

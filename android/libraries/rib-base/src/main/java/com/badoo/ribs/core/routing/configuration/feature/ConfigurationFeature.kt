@@ -9,7 +9,6 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.Action
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
@@ -29,13 +28,13 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
-import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.containsInProgress
+import com.badoo.ribs.core.routing.configuration.allTransitionsFinished
 import com.badoo.ribs.core.routing.transition.ProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionHandler
-import com.badoo.ribs.core.routing.transition.TransitionElement
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.fromCallable
@@ -67,7 +66,7 @@ internal class ConfigurationFeature<C : Parcelable>(
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: (C) -> RoutingAction<*>,
     parentNode: Node<*>,
-    private val transitionHandler: TransitionHandler<C>?
+    transitionHandler: TransitionHandler<C>?
 ) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
     bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), initialConfigurations),
@@ -204,13 +203,13 @@ internal class ConfigurationFeature<C : Parcelable>(
                         command.actionFactory.create(command.key, params)
                     }
 
-                    actions.forEach { it.onPreExecute() }
-                    val transitionElements = actions.flatMap { it.transitionElements }
-                    transitionHandler?.onTransition(transitionElements)
-                    actions.forEach { it.execute() }
+                    actions.forEach { it.onBeforeTransition() }
+                    val allTransitionElements = actions.flatMap { it.transitionElements }
+                    transitionHandler?.onTransition(allTransitionElements)
+                    actions.forEach { it.onTransition() }
 
                     val onFinish = {
-                        actions.forEach { it.finally() }
+                        actions.forEach { it.onFinish() }
                         val effects = commands.mapIndexed { index, command ->
                             Effect.Individual(command, actions[index].result) as Effect<C>
                         }
@@ -218,17 +217,17 @@ internal class ConfigurationFeature<C : Parcelable>(
                         emitter.onSuccess(effects)
                     }
 
-                    val runnable = object : Runnable {
+                    val waitForTransitionsToFinish = object : Runnable {
                         override fun run() {
                             actions.forEach { action ->
-                                if (action.transitionElements.all { it.progressEvaluator.progress == 1.0f }) {
+                                if (action.allTransitionsFinished()) {
+                                    action.onPostTransition()
                                     action.transitionElements.forEach {
-                                        it.progressEvaluator = ProgressEvaluator.DONE
+                                        it.progressEvaluator = ProgressEvaluator.Processed
                                     }
-                                    action.onPostExecute()
                                 }
                             }
-                            if (transitionElements.any { it.progressEvaluator.progress < 1.0f }) {
+                            if (allTransitionElements.containsInProgress()) {
                                 handler.post(this)
                             } else {
                                 onFinish()
@@ -237,10 +236,10 @@ internal class ConfigurationFeature<C : Parcelable>(
                     }
 
                     if (params.globalActivationLevel == SLEEPING) {
-                        actions.forEach { it.onPostExecute() }
+                        actions.forEach { it.onPostTransition() }
                         onFinish()
                     } else {
-                        handler.post(runnable)
+                        handler.post(waitForTransitionsToFinish)
                     }
                 }
                     .toObservable()

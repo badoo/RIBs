@@ -11,7 +11,8 @@ open class TransitionElement<C>(
     val identifier: Rib,
     val view: View
 ) {
-    var progressEvaluator: ProgressEvaluator = ProgressEvaluator.DEFAULT
+    var progressEvaluator: ProgressEvaluator =
+        ProgressEvaluator.Finished
 
 //    data class Enter<C>(
 //        override val configuration: C,
@@ -31,30 +32,44 @@ open class TransitionElement<C>(
 }
 
 
-interface ProgressEvaluator {
+sealed class ProgressEvaluator {
 
-    // @FloatRange(from = 0.0, to = 1.0)
-    val progress: Float
+//    var progress: Float = 0f
+//        set(value) {
+////            if (hasBeenProcessed()) throw IllegalStateException("Can't set progress after processed")
+////            if (hasFinished()) throw IllegalStateException("Can't set progress after finished")
+//            field = value
+//        }
 
-    companion object {
-        val DEFAULT = object : ProgressEvaluator {
-            override val progress: Float =
-                1.0f
-        }
-
-        val DONE = object : ProgressEvaluator {
-            override val progress: Float =
-                Float.POSITIVE_INFINITY
-        }
+    class InProgress : ProgressEvaluator() {
+        var progress: Float = 0f
     }
-}
 
-class MutableProgressEvaluator : ProgressEvaluator {
-    private var _progress: Float = 0f
-    override val progress: Float
-        get() = _progress
+    object Finished : ProgressEvaluator()
 
-    fun setProgress(progress: Float) {
-        _progress = progress
-    }
+    object Processed : ProgressEvaluator()
+
+
+//    companion object {
+//        private val PROGRESS_FINISHED = Float.POSITIVE_INFINITY
+//        private val PROGRESS_PROCESSED = Float.NaN
+//
+////        val DONE = object : ProgressEvaluator {
+////            override val progress: Float =
+////                Float.POSITIVE_INFINITY
+////        }
+//    }
+
+//    fun hasFinished(): Boolean =
+//        progress == PROGRESS_FINISHED
+//
+//    fun hasBeenProcessed(): Boolean =
+//        progress == PROGRESS_PROCESSED
+//
+//    fun finish() {
+//        progress = PROGRESS_FINISHED
+//    }
+//    internal fun markAsProcessed() {
+//        progress = PROGRESS_PROCESSED
+//    }
 }

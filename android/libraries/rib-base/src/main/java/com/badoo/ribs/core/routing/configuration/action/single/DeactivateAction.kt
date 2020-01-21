@@ -35,7 +35,7 @@ internal class DeactivateAction<C : Parcelable>(
     private val actionableNodes = item.nodes
         .filter { it.viewAttachMode == Node.AttachMode.PARENT && it.node.isAttachedToView }
 
-    override fun onPreExecute() {
+    override fun onBeforeTransition() {
         transitionElements = actionableNodes.mapNotNull {
             it.node.view?.let { ribView ->
                 TransitionElement(
@@ -49,20 +49,20 @@ internal class DeactivateAction<C : Parcelable>(
         }
     }
 
-    override fun execute() {
+    override fun onTransition() {
         item.routingAction.cleanup()
         actionableNodes.forEach {
             it.node.saveViewState()
         }
     }
 
-    override fun onPostExecute() {
+    override fun onPostTransition() {
         actionableNodes.forEach {
             params.parentNode.detachChildView(it.node)
         }
     }
 
-    override fun finally() {
+    override fun onFinish() {
         item = item.copy(activationState = INACTIVE)
     }
 

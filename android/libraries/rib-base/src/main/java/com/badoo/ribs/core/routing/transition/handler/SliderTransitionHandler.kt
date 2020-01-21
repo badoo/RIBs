@@ -1,9 +1,10 @@
-package com.badoo.ribs.core.routing.transition
+package com.badoo.ribs.core.routing.transition.handler
 
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
 import com.badoo.ribs.core.routing.transition.TransitionDirection.Enter
 import com.badoo.ribs.core.routing.transition.TransitionDirection.Exit
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 
 open class SliderTransitionHandler<T>(

@@ -3,8 +3,8 @@ package com.badoo.ribs.example.rib.switcher
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.routing.transition.SliderTransitionHandler
-import com.badoo.ribs.core.routing.transition.TransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TabSwitcherTransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation

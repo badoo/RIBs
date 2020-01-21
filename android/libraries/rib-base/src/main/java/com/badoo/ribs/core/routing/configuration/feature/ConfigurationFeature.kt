@@ -35,7 +35,7 @@ import com.badoo.ribs.core.routing.configuration.action.single.containsInProgres
 import com.badoo.ribs.core.routing.configuration.action.single.allTransitionsFinished
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.ProgressEvaluator
-import com.badoo.ribs.core.routing.transition.TransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.fromCallable

@@ -9,7 +9,7 @@ import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.compo
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.transition.TransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder

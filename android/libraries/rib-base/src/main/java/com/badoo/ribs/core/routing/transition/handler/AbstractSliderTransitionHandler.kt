@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.transition
+package com.badoo.ribs.core.routing.transition.handler
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -9,9 +9,11 @@ import com.badoo.ribs.core.routing.transition.TransitionDirection.Enter
 import com.badoo.ribs.core.routing.transition.TransitionDirection.Exit
 import android.graphics.Point
 import android.view.Display
+import com.badoo.ribs.core.routing.transition.ProgressEvaluator
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 
-abstract class AbstractSliderTransitionHandler<T>() : TransitionHandler<T> {
+abstract class AbstractSliderTransitionHandler<T> : TransitionHandler<T> {
 
     enum class Gravity {
         LEFT, RIGHT, TOP, BOTTOM;
@@ -38,7 +40,8 @@ abstract class AbstractSliderTransitionHandler<T>() : TransitionHandler<T> {
 
         val _gravity = if (reverseOnBackStack && (isBackStackOperation xor (direction == Exit))) gravity.reverse() else gravity
 
-        progressEvaluator = ProgressEvaluator.InProgress()
+        progressEvaluator =
+            ProgressEvaluator.InProgress()
 
         val translation = when (_gravity) {
             Gravity.LEFT -> 0f to -width
@@ -70,7 +73,8 @@ abstract class AbstractSliderTransitionHandler<T>() : TransitionHandler<T> {
         valueAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
-                progressEvaluator = ProgressEvaluator.Finished
+                progressEvaluator =
+                    ProgressEvaluator.Finished
             }
         })
 

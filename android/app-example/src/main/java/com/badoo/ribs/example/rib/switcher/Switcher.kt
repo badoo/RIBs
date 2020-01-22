@@ -3,8 +3,12 @@ package com.badoo.ribs.example.rib.switcher
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.routing.transition.handler.CrossFader
+import com.badoo.ribs.core.routing.transition.handler.SharedElements
+import com.badoo.ribs.core.routing.transition.handler.Slider
 import com.badoo.ribs.core.routing.transition.handler.TabSwitcher
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler.Companion.multiple
 import com.badoo.ribs.core.routing.transition.sharedelement.SharedElementTransition.Params
 import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
@@ -12,9 +16,7 @@ import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.DialogsExample
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Foo
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Hello
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.*
 import com.badoo.ribs.example.util.CoffeeMachine
 import io.reactivex.Single
 
@@ -33,18 +35,27 @@ interface Switcher : Rib {
     class Customisation(
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),
         val transitionHandler: TransitionHandler<SwitcherRouter.Configuration> =
-//            CrossFader()
-        // try these too:
-//            Slider()
-            TabSwitcher(
-                tabsOrder = listOf(Hello, Foo, DialogsExample),
-                sharedelementTransitions = listOf(
-                    Params(
-                        exitingElement = { it.findViewById(R.id.sharedElementSquare) },
-                        enteringElement = { it.findViewById(R.id.sharedElementSquare) }
+            multiple<SwitcherRouter.Configuration>(
+                SharedElements(
+                    duration = 1000,
+                    params = listOf(
+                        Params(
+                            exitingElement = { it.findViewById(R.id.sharedElementSquare) },
+                            enteringElement = { it.findViewById(R.id.sharedElementSquare) }
+                        )
                     )
+                ),
+                //            Slider(),
+                TabSwitcher(
+                    duration = 300,
+                    tabsOrder = listOf(Hello, Foo, DialogsExample)
+                ),
+                CrossFader(
+                    duration = 300
                 )
+
             )
+
     ) : RibCustomisation
 
     interface Workflow {
@@ -53,5 +64,4 @@ interface Switcher : Rib {
         fun waitForHelloWorld(): Single<HelloWorld.Workflow>
         fun doSomethingAndStayOnThisNode(): Single<Switcher.Workflow>
     }
-
 }

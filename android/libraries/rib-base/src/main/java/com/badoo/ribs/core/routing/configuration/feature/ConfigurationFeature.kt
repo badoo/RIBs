@@ -33,10 +33,7 @@ import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfiguration
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
-import com.badoo.ribs.core.routing.configuration.action.single.containsInProgress
-import com.badoo.ribs.core.routing.configuration.action.single.allTransitionsFinished
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
-import com.badoo.ribs.core.routing.transition.ProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
@@ -242,14 +239,14 @@ internal class ConfigurationFeature<C : Parcelable>(
                     val waitForTransitionsToFinish = object : Runnable {
                         override fun run() {
                             actions.forEach { action ->
-                                if (action.allTransitionsFinished()) {
+                                if (action.transitionElements.all { it.isFinished() }) {
                                     action.onPostTransition()
                                     action.transitionElements.forEach {
-                                        it.progressEvaluator = ProgressEvaluator.Processed
+                                        it.markProcessed()
                                     }
                                 }
                             }
-                            if (allTransitionElements.containsInProgress()) {
+                            if (allTransitionElements.any { it.isInProgress() }) {
                                 handler.post(this)
                             } else {
                                 onFinish()

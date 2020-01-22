@@ -5,7 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
-import com.badoo.ribs.core.routing.transition.ProgressEvaluator
+import com.badoo.ribs.core.routing.transition.SingleProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
@@ -13,7 +13,8 @@ fun <T> TransitionElement<out T>.fade(
     duration: Long,
     interpolator: Interpolator = AccelerateDecelerateInterpolator()
 ) {
-    progressEvaluator = ProgressEvaluator.InProgress()
+    val evaluator = SingleProgressEvaluator()
+    progressEvaluator.add(evaluator)
 
     val (from, to) = when (direction) {
         is TransitionDirection.Exit -> 1f to 0f
@@ -27,13 +28,13 @@ fun <T> TransitionElement<out T>.fade(
         val progress = animation.animatedValue as Float
         this.view.alpha = (progress)
         this.view.invalidate()
-        (progressEvaluator as ProgressEvaluator.InProgress).progress = 1.0f * (progress - from) / (to - from)
+        evaluator.updateProgress(1.0f * (progress - from) / (to - from))
     }
 
     valueAnimator.addListener(object : AnimatorListenerAdapter() {
         override fun onAnimationEnd(animation: Animator?) {
             super.onAnimationEnd(animation)
-            progressEvaluator = ProgressEvaluator.Finished
+            evaluator.markFinished()
         }
     })
 

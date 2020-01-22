@@ -10,11 +10,9 @@ open class TransitionElement<C>(
     val isBackStackOperation: Boolean,
     val parentViewGroup: ViewGroup,
     val identifier: Rib,
-    val view: View
-) {
-    var progressEvaluator: ProgressEvaluator =
-        ProgressEvaluator.Finished
-}
+    val view: View,
+    val progressEvaluator: MultiProgressEvaluator = MultiProgressEvaluator()
+) : ProgressEvaluator by progressEvaluator
 
 operator fun <T> TransitionElement<out T>?.invoke(transition: TransitionElement<out T>.() -> Unit) {
     this?.apply(transition)

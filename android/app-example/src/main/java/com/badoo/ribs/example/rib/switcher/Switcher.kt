@@ -36,6 +36,11 @@ interface Switcher : Rib {
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),
         val transitionHandler: TransitionHandler<SwitcherRouter.Configuration> =
             multiple<SwitcherRouter.Configuration>(
+                //            Slider(),
+                TabSwitcher(
+                    duration = 300,
+                    tabsOrder = listOf(Hello, Foo, DialogsExample)
+                ),
                 SharedElements(
                     duration = 1000,
                     params = listOf(
@@ -45,15 +50,9 @@ interface Switcher : Rib {
                         )
                     )
                 ),
-                //            Slider(),
-                TabSwitcher(
-                    duration = 300,
-                    tabsOrder = listOf(Hello, Foo, DialogsExample)
-                ),
                 CrossFader(
                     duration = 300
                 )
-
             )
 
     ) : RibCustomisation

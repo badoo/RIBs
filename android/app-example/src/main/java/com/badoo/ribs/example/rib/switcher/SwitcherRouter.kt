@@ -39,7 +39,7 @@ class SwitcherRouter(
 ): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
     savedInstanceState = savedInstanceState,
     transitionHandler = transitionHandler,
-    initialConfiguration = Content.DialogsExample,
+    initialConfiguration = Content.Foo,
     permanentParts = listOf(
         Permanent.Menu
     )

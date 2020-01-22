@@ -2,6 +2,8 @@ package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Handler
 import android.os.Parcelable
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.Reducer
@@ -35,6 +37,7 @@ import com.badoo.ribs.core.routing.configuration.action.single.containsInProgres
 import com.badoo.ribs.core.routing.configuration.action.single.allTransitionsFinished
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.ProgressEvaluator
+import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
@@ -210,7 +213,21 @@ internal class ConfigurationFeature<C : Parcelable>(
 
                     actions.forEach { it.onBeforeTransition() }
                     val allTransitionElements = actions.flatMap { it.transitionElements }
-                    transitionHandler?.onTransition(allTransitionElements)
+                    // TODO try with tree listener
+
+                    allTransitionElements
+                        .filter { it.direction == TransitionDirection.Enter }
+                        .forEach {
+                            it.view.visibility = INVISIBLE
+                        }
+                    handler.post {
+                        transitionHandler?.onTransition(allTransitionElements)
+                        allTransitionElements
+                            .filter { it.direction == TransitionDirection.Enter }
+                            .forEach {
+                                it.view.visibility = VISIBLE
+                            }
+                    }
                     actions.forEach { it.onTransition() }
 
                     val onFinish = {
@@ -292,7 +309,7 @@ internal class ConfigurationFeature<C : Parcelable>(
             key: ConfigurationKey,
             defaultElement: Unresolved<C>?
         ): Resolved<C> {
-            val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool")
+            val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool: $pool")
 
             return item.resolve(resolver, parentNode) {
                 /**

@@ -7,16 +7,19 @@ import android.graphics.Point
 import android.view.Display
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
+import androidx.annotation.CheckResult
 import com.badoo.ribs.core.routing.transition.SingleProgressEvaluator
+import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
+@CheckResult
 fun <T> TransitionElement<out T>.slide(
     gravity: Gravity,
     duration: Long,
     interpolator: Interpolator = AccelerateDecelerateInterpolator(),
     reverseOnBackStack: Boolean = true
-) {
+) : Transition {
     val display: Display = view.display
     val size = Point()
     display.getSize(size)
@@ -63,4 +66,10 @@ fun <T> TransitionElement<out T>.slide(
     })
 
     valueAnimator.start()
+
+    return object : Transition {
+        override fun end() {
+            valueAnimator.end()
+        }
+    }
 }

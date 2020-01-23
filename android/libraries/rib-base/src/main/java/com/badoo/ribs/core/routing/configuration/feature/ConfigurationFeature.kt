@@ -34,6 +34,7 @@ import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
+import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
@@ -88,6 +89,14 @@ internal class ConfigurationFeature<C : Parcelable>(
             val command: ConfigurationCommand<C>,
             val updatedElement: Resolved<C>
         ) : Effect<C>()
+
+        data class TransitionStarted<C : Parcelable>(
+            val transition: Transition
+        ) : Effect<C>()
+
+        data class TransitionFinished<C : Parcelable>(
+            val transition: Transition
+        ) : Effect<C>()
     }
 
     /**
@@ -131,6 +140,7 @@ internal class ConfigurationFeature<C : Parcelable>(
     ) : Actor<WorkingState<C>, Transaction<C>, Effect<C>> {
 
         private val handler = Handler()
+        private var waitForTransitionsToFinish: Runnable? = null
 
         override fun invoke(
             state: WorkingState<C>,
@@ -146,7 +156,15 @@ internal class ConfigurationFeature<C : Parcelable>(
                     }.map { updated -> Effect.Global(transaction, updated) }
 
                 // FIXME clean up this whole block
-                is Transaction.ListOfCommands -> Single.create<List<Effect<C>>> { emitter ->
+                is Transaction.ListOfCommands -> Observable.create<List<Effect<C>>> { emitter ->
+                    if (state.onGoingTransitions.isNotEmpty()) {
+                        state.onGoingTransitions.forEach { it.end() }
+                        waitForTransitionsToFinish?.let {
+                            handler.removeCallbacks(it)
+                            it.run()
+                        }
+                    }
+
                     val commands = transaction.commands
                     val defaultElements = mutableMapOf<ConfigurationKey, Resolved<C>>()
 
@@ -217,8 +235,17 @@ internal class ConfigurationFeature<C : Parcelable>(
                         .forEach {
                             it.view.visibility = INVISIBLE
                         }
+
+                    var transition: Transition? = null
                     handler.post {
-                        transitionHandler?.onTransition(allTransitionElements)
+                        transition = transitionHandler?.onTransition(allTransitionElements)
+                        transition?.let {
+                            emitter.onNext(
+                                listOf(
+                                    Effect.TransitionStarted<C>(it) as Effect<C>
+                                )
+                            )
+                        }
                         allTransitionElements
                             .filter { it.direction == TransitionDirection.Enter }
                             .forEach {
@@ -228,7 +255,7 @@ internal class ConfigurationFeature<C : Parcelable>(
 
                     actions.forEach { it.onTransition() }
 
-                    val waitForTransitionsToFinish = object : Runnable {
+                    waitForTransitionsToFinish = object : Runnable {
                         override fun run() {
                             actions.forEach { action ->
                                 if (action.transitionElements.all { it.isFinished() }) {
@@ -240,24 +267,32 @@ internal class ConfigurationFeature<C : Parcelable>(
                                 handler.post(this)
                             } else {
                                 actions.forEach { it.onFinish() }
+                                transition?.let {
+                                    emitter.onNext(
+                                        listOf(
+                                            Effect.TransitionFinished<C>(it) as Effect<C>
+                                        )
+                                    )
+                                }
+                                emitter.onComplete()
                             }
                         }
-                    }
-
-                    if (params.globalActivationLevel == SLEEPING) {
-                        actions.forEach { it.onPostTransition() }
-                        actions.forEach { it.onFinish() }
-                    } else {
-                        handler.post(waitForTransitionsToFinish)
                     }
 
                     val effects = commands.mapIndexed { index, command ->
                         Effect.Individual(command, actions[index].result) as Effect<C>
                     }
 
-                    emitter.onSuccess(effects)
+                    if (params.globalActivationLevel == SLEEPING) {
+                        actions.forEach { it.onPostTransition() }
+                        actions.forEach { it.onFinish() }
+                        emitter.onNext(effects)
+                        emitter.onComplete()
+                    } else {
+                        emitter.onNext(effects)
+                        handler.post(waitForTransitionsToFinish)
+                    }
                 }
-                    .toObservable()
                     .flatMapIterable { it }
             }
 
@@ -338,6 +373,8 @@ internal class ConfigurationFeature<C : Parcelable>(
             when (effect) {
                 is Effect.Global -> state.global(effect)
                 is Effect.Individual -> state.individual(effect)
+                is Effect.TransitionStarted -> state.copy(onGoingTransitions = state.onGoingTransitions + effect.transition)
+                is Effect.TransitionFinished -> state.copy(onGoingTransitions = state.onGoingTransitions - effect.transition)
             }
 
         private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =

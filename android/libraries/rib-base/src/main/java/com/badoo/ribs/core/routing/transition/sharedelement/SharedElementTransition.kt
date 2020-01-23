@@ -5,11 +5,12 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
+import androidx.annotation.CheckResult
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.Transition
 
 interface SharedElementTransition {
     data class Params(
@@ -30,11 +31,11 @@ internal data class SharedElementTransitionInfo<T>(
     val params: SharedElementTransition.Params
 )
 
-
+@CheckResult
 fun <T> List<TransitionElement<out T>>.sharedElementTransition(
     transitionParams: List<SharedElementTransition.Params>,
     duration: Long
-) {
+): Transition {
     val exit = filter { it.direction == TransitionDirection.Exit }
     val enter = filter { it.direction == TransitionDirection.Enter }
     val transitions: MutableList<SharedElementTransitionInfo<T>> = mutableListOf()
@@ -68,15 +69,17 @@ fun <T> List<TransitionElement<out T>>.sharedElementTransition(
         }
     }
 
-    transitions.forEach {
-        it.transition(duration)
-    }
+    return Transition.multiple(
+        transitions.map {
+            it.transition(duration)
+        }
+    )
 }
 
-
+@CheckResult
 internal fun <T> SharedElementTransitionInfo<T>.transition(
     duration: Long
-) {
+): Transition {
     // TODO consider supporting multiple progressEvaluators with min() evaluation in TransitionElement
     //  right now this stay commented out as it would just override other transitions
     //  but this also means there has to be at least one other transition in addition to shared element transition
@@ -137,4 +140,10 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
     }
 
     valueAnimator.start()
+
+    return object : Transition {
+        override fun end() {
+            valueAnimator.end()
+        }
+    }
 }

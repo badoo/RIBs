@@ -6,6 +6,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.transition.Transition
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -34,7 +35,8 @@ internal data class SavedState<C : Parcelable>(
  */
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
-    val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf()
+    val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf(),
+    val onGoingTransitions: List<Transition> = emptyList()
 ) {
     /**
      * Converts the [WorkingState] to [SavedState] by shrinking all

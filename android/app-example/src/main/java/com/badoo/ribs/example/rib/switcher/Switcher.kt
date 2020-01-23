@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
+import android.view.animation.OvershootInterpolator
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
@@ -38,7 +39,7 @@ interface Switcher : Rib {
             multiple<SwitcherRouter.Configuration>(
                 //            Slider(),
                 TabSwitcher(
-                    duration = 300,
+                    duration = 1000,
                     tabsOrder = listOf(Hello, Foo, DialogsExample)
                 ),
                 SharedElements(
@@ -46,12 +47,14 @@ interface Switcher : Rib {
                     params = listOf(
                         Params(
                             exitingElement = { it.findViewById(R.id.sharedElementSquare) },
-                            enteringElement = { it.findViewById(R.id.sharedElementSquare) }
+                            enteringElement = { it.findViewById(R.id.sharedElementSquare) },
+                            translateXInterpolator = OvershootInterpolator(),
+                            translateYInterpolator = OvershootInterpolator(14f)
                         )
                     )
                 ),
                 CrossFader(
-                    duration = 300
+                    duration = 1000
                 )
             )
 

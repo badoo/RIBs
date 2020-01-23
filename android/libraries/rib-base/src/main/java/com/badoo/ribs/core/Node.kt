@@ -108,6 +108,9 @@ open class Node<V : RibView>(
     internal var isAttachedToView: Boolean = false
         private set
 
+    private var isPendingViewDetach: Boolean = false
+    private var isPendingDetach: Boolean = false
+
     fun getChildren(): List<Node<*>> =
         children.toList()
 
@@ -213,6 +216,7 @@ open class Node<V : RibView>(
             view = null
             isAttachedToView = false
             this.parentViewGroup = null
+            isPendingViewDetach = false
         }
     }
 
@@ -234,6 +238,7 @@ open class Node<V : RibView>(
         }
 
         detachSignal.accept(Unit)
+        isPendingDetach = false
     }
 
     /**
@@ -295,6 +300,14 @@ open class Node<V : RibView>(
         childNode.onDetach()
     }
 
+    internal fun markPendingViewDetach() {
+        isPendingViewDetach = true
+    }
+
+    internal fun markPendingDetach() {
+        isPendingDetach = true
+    }
+
     /**
      * To be called only from the hosting environment (Activity, Fragment, etc.)
      *
@@ -343,7 +356,7 @@ open class Node<V : RibView>(
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =
         children
-            .filter { it.isAttachedToView }
+            .filter { it.isAttachedToView && !(it.isPendingDetach || it.isPendingViewDetach ) }
             .any { it.handleBackPress() }
 
     internal fun saveViewState() {

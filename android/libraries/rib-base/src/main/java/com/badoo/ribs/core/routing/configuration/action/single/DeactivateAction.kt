@@ -54,6 +54,7 @@ internal class DeactivateAction<C : Parcelable>(
         item.routingAction.cleanup()
         actionableNodes.forEach {
             it.node.saveViewState()
+            it.node.markPendingViewDetach()
         }
     }
 
@@ -64,9 +65,8 @@ internal class DeactivateAction<C : Parcelable>(
     }
 
     override fun onFinish() {
-        item = item.copy(activationState = INACTIVE)
     }
 
     override val result: Resolved<C> =
-        item
+        item.copy(activationState = INACTIVE)
 }

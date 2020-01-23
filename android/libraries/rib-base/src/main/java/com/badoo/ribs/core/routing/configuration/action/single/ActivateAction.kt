@@ -41,7 +41,8 @@ internal class ActivateAction<C : Parcelable>(
 
 
     override var result: Resolved<C> =
-        item
+        // TODO check if can be merged with [CappedLifecycle], as this one has the same conceptual effect
+        item.copy(activationState = params.globalActivationLevel)
 
     override fun onBeforeTransition() {
         canExecute = when {
@@ -86,8 +87,6 @@ internal class ActivateAction<C : Parcelable>(
     override fun onPostTransition() {
     }
 
-    // TODO check if can be merged with [CappedLifecycle], as this one has the same conceptual effect
     override fun onFinish() {
-        result = result.copy(activationState = params.globalActivationLevel)
     }
 }

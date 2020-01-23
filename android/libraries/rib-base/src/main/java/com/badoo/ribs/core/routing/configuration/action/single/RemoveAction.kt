@@ -34,6 +34,9 @@ internal class RemoveAction<C : Parcelable>(
     }
 
     override fun onTransition() {
+        item.nodes.forEach {
+            it.node.markPendingDetach()
+        }
     }
 
     override fun onPostTransition() {

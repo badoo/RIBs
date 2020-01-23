@@ -210,8 +210,8 @@ internal class ConfigurationFeature<C : Parcelable>(
 
                     actions.forEach { it.onBeforeTransition() }
                     val allTransitionElements = actions.flatMap { it.transitionElements }
-                    // TODO try with tree listener
 
+                    // TODO try with tree listener
                     allTransitionElements
                         .filter { it.direction == TransitionDirection.Enter }
                         .forEach {
@@ -225,41 +225,37 @@ internal class ConfigurationFeature<C : Parcelable>(
                                 it.view.visibility = VISIBLE
                             }
                     }
+
                     actions.forEach { it.onTransition() }
-
-                    val onFinish = {
-                        actions.forEach { it.onFinish() }
-                        val effects = commands.mapIndexed { index, command ->
-                            Effect.Individual(command, actions[index].result) as Effect<C>
-                        }
-
-                        emitter.onSuccess(effects)
-                    }
 
                     val waitForTransitionsToFinish = object : Runnable {
                         override fun run() {
                             actions.forEach { action ->
                                 if (action.transitionElements.all { it.isFinished() }) {
                                     action.onPostTransition()
-                                    action.transitionElements.forEach {
-                                        it.markProcessed()
-                                    }
+                                    action.transitionElements.forEach { it.markProcessed() }
                                 }
                             }
                             if (allTransitionElements.any { it.isInProgress() }) {
                                 handler.post(this)
                             } else {
-                                onFinish()
+                                actions.forEach { it.onFinish() }
                             }
                         }
                     }
 
                     if (params.globalActivationLevel == SLEEPING) {
                         actions.forEach { it.onPostTransition() }
-                        onFinish()
+                        actions.forEach { it.onFinish() }
                     } else {
                         handler.post(waitForTransitionsToFinish)
                     }
+
+                    val effects = commands.mapIndexed { index, command ->
+                        Effect.Individual(command, actions[index].result) as Effect<C>
+                    }
+
+                    emitter.onSuccess(effects)
                 }
                     .toObservable()
                     .flatMapIterable { it }

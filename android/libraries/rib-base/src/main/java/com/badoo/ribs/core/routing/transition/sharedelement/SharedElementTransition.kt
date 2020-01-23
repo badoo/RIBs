@@ -117,11 +117,11 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
 
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)
-
                 (exitingView.parent as ViewGroup).removeView(exitingView)
                 rootView.addView(exitingView)
                 enteringView.visibility = View.INVISIBLE
             }
+
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
                 // progressEvaluator = ProgressEvaluator.Finished FIXME
@@ -141,9 +141,5 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
 
     valueAnimator.start()
 
-    return object : Transition {
-        override fun end() {
-            valueAnimator.end()
-        }
-    }
+    return Transition.from(valueAnimator)
 }

@@ -67,9 +67,5 @@ fun <T> TransitionElement<out T>.slide(
 
     valueAnimator.start()
 
-    return object : Transition {
-        override fun end() {
-            valueAnimator.end()
-        }
-    }
+    return Transition.from(valueAnimator)
 }

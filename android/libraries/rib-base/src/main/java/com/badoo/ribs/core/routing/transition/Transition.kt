@@ -1,5 +1,7 @@
 package com.badoo.ribs.core.routing.transition
 
+import android.animation.ValueAnimator
+
 interface Transition {
 
     fun end()
@@ -12,6 +14,12 @@ interface Transition {
                     .flatMap {
                         it.map { it.end() }
                     }
+            }
+        }
+
+        fun from(valueAnimator: ValueAnimator) = object : Transition {
+            override fun end() {
+                valueAnimator.end()
             }
         }
     }

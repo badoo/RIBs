@@ -44,9 +44,5 @@ fun <T> TransitionElement<out T>.fade(
 
     valueAnimator.start()
 
-    return object : Transition {
-        override fun end() {
-            valueAnimator.end()
-        }
-    }
+    return Transition.from(valueAnimator)
 }

@@ -65,7 +65,5 @@ fun <T> TransitionElement<out T>.slide(
         }
     })
 
-    valueAnimator.start()
-
     return Transition.from(valueAnimator)
 }

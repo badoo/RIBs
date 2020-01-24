@@ -139,7 +139,5 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
         }
     }
 
-    valueAnimator.start()
-
     return Transition.from(valueAnimator)
 }

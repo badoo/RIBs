@@ -42,7 +42,5 @@ fun <T> TransitionElement<out T>.fade(
         }
     })
 
-    valueAnimator.start()
-
     return Transition.from(valueAnimator)
 }

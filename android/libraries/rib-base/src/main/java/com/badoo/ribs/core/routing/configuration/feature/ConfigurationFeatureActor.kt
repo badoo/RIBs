@@ -59,10 +59,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     )
                 }
 
-            is Transaction.ListOfCommands -> handleTransitions(state, transaction)
+            is Transaction.ListOfCommands -> processTransaction(state, transaction)
         }
 
-    private fun handleTransitions(
+    private fun processTransaction(
         state: WorkingState<C>,
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
@@ -90,6 +90,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             var transition: Transition? = null
             handler.post {
                 transition = transitionHandler?.onTransition(allTransitionElements)
+                transition?.start()
                 transition?.signalTransitionStart(emitter)
                 enteringElements.visibility(View.VISIBLE)
             }

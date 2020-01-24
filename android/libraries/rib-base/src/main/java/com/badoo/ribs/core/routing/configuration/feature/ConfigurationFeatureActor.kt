@@ -10,6 +10,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.Transaction
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
@@ -40,11 +41,11 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         when (transaction) {
-            is Transaction.MultiConfigurationCommand ->
+            is MultiConfigurationCommand ->
                 fromCallable {
                     transaction.action.execute(
                         pool = state.pool,
-                        params = createParams(transaction, state)
+                        params = createParams(state, transaction)
                     )
                 }.map { updated ->
                     ConfigurationFeature.Effect.Global(
@@ -78,9 +79,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 }
 
                 val params = createParams(
-                    state.copy(
-                        pool = state.pool + defaultElements
-                    )
+                    state = state.copy(pool = state.pool + defaultElements),
+                    command = transaction
                 )
 
                 val actions = commands.map { command ->
@@ -168,21 +168,9 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 .flatMapIterable { it }
         }
 
-    // FIXME unify this two if possible
     private fun createParams(
-        state: WorkingState<C>
-    ): ActionExecutionParams<C> =
-        ActionExecutionParams(
-            resolver = { key ->
-                state.resolve(key, null)
-            },
-            parentNode = parentNode,
-            globalActivationLevel = state.activationLevel
-        )
-
-    private fun createParams(
-        command: Transaction<C>,
-        state: WorkingState<C>
+        state: WorkingState<C>,
+        command: Transaction<C>? = null
     ): ActionExecutionParams<C> =
         ActionExecutionParams(
             resolver = { key ->
@@ -190,8 +178,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             },
             parentNode = parentNode,
             globalActivationLevel = when (command) {
-                is Transaction.MultiConfigurationCommand.Sleep -> ConfigurationContext.ActivationState.SLEEPING
-                is Transaction.MultiConfigurationCommand.WakeUp -> ConfigurationContext.ActivationState.ACTIVE
+                is MultiConfigurationCommand.Sleep -> ConfigurationContext.ActivationState.SLEEPING
+                is MultiConfigurationCommand.WakeUp -> ConfigurationContext.ActivationState.ACTIVE
                 else -> state.activationLevel
             }
         )

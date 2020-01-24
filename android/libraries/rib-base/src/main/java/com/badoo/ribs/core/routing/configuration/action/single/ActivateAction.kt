@@ -51,6 +51,7 @@ internal class ActivateAction<C : Parcelable>(
             // just mark the element to the same value.
             params.globalActivationLevel != ACTIVE -> false
             // Don't execute activation twice
+            item.activationState == ACTIVE -> false
             else -> true
         }
 

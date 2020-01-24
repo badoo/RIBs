@@ -85,47 +85,66 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             val allTransitionElements = actions.flatMap { it.transitionElements }
             val enteringElements = allTransitionElements.filter { it.direction == TransitionDirection.Enter }
 
-            // TODO try with tree listener
-            enteringElements.visibility(View.INVISIBLE)
-            var transition: Transition? = null
-            handler.post {
-                transition = transitionHandler?.onTransition(allTransitionElements)
-                transition?.start()
-                transition?.signalTransitionStart(emitter)
-                enteringElements.visibility(View.VISIBLE)
-            }
-
-            actions.forEach { it.onTransition() }
-
-            waitForTransitionsToFinish = object : Runnable {
-                override fun run() {
-                    actions.forEach { action ->
-                        if (action.transitionElements.all { it.isFinished() }) {
-                            action.onPostTransition()
-                            action.transitionElements.forEach { it.markProcessed() }
-                        }
-                    }
-                    if (allTransitionElements.any { it.isInProgress() }) {
-                        handler.post(this)
-                    } else {
-                        actions.forEach { it.onFinish() }
-                        transition?.signalTransitionFinished(emitter)
-                        emitter.onComplete()
-                    }
-                }
-            }
-
             if (params.globalActivationLevel == ConfigurationContext.ActivationState.SLEEPING) {
+                actions.forEach { it.onTransition() }
                 actions.forEach { it.onPostTransition() }
                 actions.forEach { it.onFinish() }
                 emitter.onNext(effects)
                 emitter.onComplete()
             } else {
-                emitter.onNext(effects)
-                handler.post(waitForTransitionsToFinish)
+                beginTransitions(
+                    enteringElements,
+                    allTransitionElements,
+                    emitter,
+                    actions,
+                    effects
+                )
             }
         }
             .flatMapIterable { it }
+
+    private fun beginTransitions(
+        enteringElements: List<TransitionElement<C>>,
+        allTransitionElements: List<TransitionElement<C>>,
+        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>,
+        actions: List<Action<C>>,
+        effects: List<ConfigurationFeature.Effect<C>>
+    ) {
+        var transition: Transition? = null
+
+        if (transitionHandler != null) {
+            enteringElements.visibility(View.INVISIBLE)
+            handler.post {
+                transition = transitionHandler.onTransition(allTransitionElements)
+                transition?.start()
+                transition?.signalTransitionStart(emitter)
+                enteringElements.visibility(View.VISIBLE)
+            }
+        }
+
+        actions.forEach { it.onTransition() }
+
+        waitForTransitionsToFinish = object : Runnable {
+            override fun run() {
+                actions.forEach { action ->
+                    if (action.transitionElements.all { it.isFinished() }) {
+                        action.onPostTransition()
+                        action.transitionElements.forEach { it.markProcessed() }
+                    }
+                }
+                if (allTransitionElements.any { it.isInProgress() }) {
+                    handler.post(this)
+                } else {
+                    actions.forEach { it.onFinish() }
+                    transition?.signalTransitionFinished(emitter)
+                    emitter.onComplete()
+                }
+            }
+        }
+
+        handler.post(waitForTransitionsToFinish)
+        emitter.onNext(effects)
+    }
 
     private fun List<TransitionElement<C>>.visibility(visibility: Int) {
         forEach {

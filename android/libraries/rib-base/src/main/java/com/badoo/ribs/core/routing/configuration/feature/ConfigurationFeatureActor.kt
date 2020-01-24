@@ -12,6 +12,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.single.Action
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.Transition
@@ -54,119 +55,128 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     )
                 }
 
-            // FIXME clean up this whole block
-            is Transaction.ListOfCommands -> Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
-                if (state.onGoingTransitions.isNotEmpty()) {
-                    state.onGoingTransitions.forEach { it.end() }
-                    waitForTransitionsToFinish?.let {
-                        handler.removeCallbacks(it)
-                        it.run()
-                    }
+            is Transaction.ListOfCommands -> handleTransitions(state, transaction)
+        }
+
+    private fun handleTransitions(
+        state: WorkingState<C>,
+        transaction: Transaction.ListOfCommands<C>
+    ): Observable<ConfigurationFeature.Effect<C>> =
+        Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
+            if (state.onGoingTransitions.isNotEmpty()) {
+                state.onGoingTransitions.forEach { it.end() }
+                waitForTransitionsToFinish?.let {
+                    handler.removeCallbacks(it)
+                    it.run()
+                }
+            }
+
+            val commands = transaction.commands
+            val defaultElements = createDefaultElements(commands)
+            val params = createParams(
+                state = state.copy(pool = state.pool + defaultElements),
+                command = transaction
+            )
+            val actions = createActions(commands, params)
+
+            actions.forEach { it.onBeforeTransition() }
+            val allTransitionElements = actions.flatMap { it.transitionElements }
+
+            // TODO try with tree listener
+            allTransitionElements
+                .filter { it.direction == TransitionDirection.Enter }
+                .forEach {
+                    it.view.visibility = View.INVISIBLE
                 }
 
-                val commands = transaction.commands
-                val defaultElements = mutableMapOf<ConfigurationKey, ConfigurationContext.Resolved<C>>()
-
-                commands.forEach { command ->
-                    if (command is ConfigurationCommand.Add<C>) {
-                        // TODO maybe move this back to resolve?
-                        defaultElements[command.key] =
-                            ConfigurationContext.Unresolved(
-                                ConfigurationContext.ActivationState.INACTIVE,
-                                command.configuration
-                            ).resolveAndAddIfNeeded()
-                    }
-                }
-
-                val params = createParams(
-                    state = state.copy(pool = state.pool + defaultElements),
-                    command = transaction
-                )
-
-                val actions = commands.map { command ->
-                    command.actionFactory.create(
-                        command.key,
-                        params,
-                        commands.isBackStackOperation(command.key)
+            var transition: Transition? = null
+            handler.post {
+                transition = transitionHandler?.onTransition(allTransitionElements)
+                transition?.let {
+                    emitter.onNext(
+                        listOf(
+                            ConfigurationFeature.Effect.TransitionStarted<C>(
+                                it
+                            ) as ConfigurationFeature.Effect<C>
+                        )
                     )
                 }
-
-                actions.forEach { it.onBeforeTransition() }
-                val allTransitionElements = actions.flatMap { it.transitionElements }
-
-                // TODO try with tree listener
                 allTransitionElements
                     .filter { it.direction == TransitionDirection.Enter }
                     .forEach {
-                        it.view.visibility = View.INVISIBLE
+                        it.view.visibility = View.VISIBLE
                     }
+            }
 
-                var transition: Transition? = null
-                handler.post {
-                    transition = transitionHandler?.onTransition(allTransitionElements)
-                    transition?.let {
-                        emitter.onNext(
-                            listOf(
-                                ConfigurationFeature.Effect.TransitionStarted<C>(
-                                    it
-                                ) as ConfigurationFeature.Effect<C>
-                            )
-                        )
+            actions.forEach { it.onTransition() }
+
+            waitForTransitionsToFinish = object : Runnable {
+                override fun run() {
+                    actions.forEach { action ->
+                        if (action.transitionElements.all { it.isFinished() }) {
+                            action.onPostTransition()
+                            action.transitionElements.forEach { it.markProcessed() }
+                        }
                     }
-                    allTransitionElements
-                        .filter { it.direction == TransitionDirection.Enter }
-                        .forEach {
-                            it.view.visibility = View.VISIBLE
-                        }
-                }
-
-                actions.forEach { it.onTransition() }
-
-                waitForTransitionsToFinish = object : Runnable {
-                    override fun run() {
-                        actions.forEach { action ->
-                            if (action.transitionElements.all { it.isFinished() }) {
-                                action.onPostTransition()
-                                action.transitionElements.forEach { it.markProcessed() }
-                            }
-                        }
-                        if (allTransitionElements.any { it.isInProgress() }) {
-                            handler.post(this)
-                        } else {
-                            actions.forEach { it.onFinish() }
-                            transition?.let {
-                                emitter.onNext(
-                                    listOf(
-                                        ConfigurationFeature.Effect.TransitionFinished<C>(
-                                            it
-                                        ) as ConfigurationFeature.Effect<C>
-                                    )
+                    if (allTransitionElements.any { it.isInProgress() }) {
+                        handler.post(this)
+                    } else {
+                        actions.forEach { it.onFinish() }
+                        transition?.let {
+                            emitter.onNext(
+                                listOf(
+                                    ConfigurationFeature.Effect.TransitionFinished<C>(
+                                        it
+                                    ) as ConfigurationFeature.Effect<C>
                                 )
-                            }
-                            emitter.onComplete()
+                            )
                         }
+                        emitter.onComplete()
                     }
-                }
-
-                val effects = commands.mapIndexed { index, command ->
-                    ConfigurationFeature.Effect.Individual(
-                        command,
-                        actions[index].result
-                    ) as ConfigurationFeature.Effect<C>
-                }
-
-                if (params.globalActivationLevel == ConfigurationContext.ActivationState.SLEEPING) {
-                    actions.forEach { it.onPostTransition() }
-                    actions.forEach { it.onFinish() }
-                    emitter.onNext(effects)
-                    emitter.onComplete()
-                } else {
-                    emitter.onNext(effects)
-                    handler.post(waitForTransitionsToFinish)
                 }
             }
-                .flatMapIterable { it }
+
+            val effects = commands.mapIndexed { index, command ->
+                ConfigurationFeature.Effect.Individual(
+                    command,
+                    actions[index].result
+                ) as ConfigurationFeature.Effect<C>
+            }
+
+            if (params.globalActivationLevel == ConfigurationContext.ActivationState.SLEEPING) {
+                actions.forEach { it.onPostTransition() }
+                actions.forEach { it.onFinish() }
+                emitter.onNext(effects)
+                emitter.onComplete()
+            } else {
+                emitter.onNext(effects)
+                handler.post(waitForTransitionsToFinish)
+            }
         }
+            .flatMapIterable { it }
+
+    /**
+     * Since the state doesn't yet reflect elements we're just about to add, we'll create them ahead
+     * so that other [ConfigurationCommand]s that rely on their existence can function properly.
+     */
+    private fun createDefaultElements(
+        commands: List<ConfigurationCommand<C>>
+    ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> {
+
+        val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext.Resolved<C>> = mutableMapOf()
+
+        commands.forEach { command ->
+            if (command is ConfigurationCommand.Add<C>) {
+                defaultElements[command.key] =
+                    ConfigurationContext.Unresolved(
+                        ConfigurationContext.ActivationState.INACTIVE,
+                        command.configuration
+                    ).resolveAndAddIfNeeded()
+            }
+        }
+
+        return defaultElements
+    }
 
     private fun createParams(
         state: WorkingState<C>,
@@ -183,6 +193,19 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 else -> state.activationLevel
             }
         )
+
+    private fun createActions(
+        commands: List<ConfigurationCommand<C>>,
+        params: ActionExecutionParams<C>
+    ): List<Action<C>> {
+        return commands.map { command ->
+            command.actionFactory.create(
+                command.key,
+                params,
+                commands.isBackStackOperation(command.key)
+            )
+        }
+    }
 
     /**
      * Returns a [Resolved] [ConfigurationContext] looked up by [key].

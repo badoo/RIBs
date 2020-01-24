@@ -73,43 +73,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                             ConfigurationContext.Unresolved(
                                 ConfigurationContext.ActivationState.INACTIVE,
                                 command.configuration
-                            ).resolve(
-                                resolver,
-                                parentNode
-                            ) {
-                                /**
-                                 * Resolution involves building the associated [Node]s, which need to be guaranteed
-                                 * to be added to the parentNode.
-                                 *
-                                 * Because of this, we need to make sure that [AddAction] is executed every time
-                                 * we resolve, even when no explicit [Add] command was asked.
-                                 *
-                                 * This is to cover cases e.g. when restoring from Bundle:
-                                 * we have a list of [Unresolved] elements that will be resolved on next command
-                                 * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
-                                 *
-                                 * [Add] is only called explicitly with direct back stack manipulation, but not on
-                                 * state restoration.
-                                 */
-                                /**
-                                 * Resolution involves building the associated [Node]s, which need to be guaranteed
-                                 * to be added to the parentNode.
-                                 *
-                                 * Because of this, we need to make sure that [AddAction] is executed every time
-                                 * we resolve, even when no explicit [Add] command was asked.
-                                 *
-                                 * This is to cover cases e.g. when restoring from Bundle:
-                                 * we have a list of [Unresolved] elements that will be resolved on next command
-                                 * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
-                                 *
-                                 * [Add] is only called explicitly with direct back stack manipulation, but not on
-                                 * state restoration.
-                                 */
-                                AddAction.execute(
-                                    it,
-                                    parentNode
-                                )
-                            }
+                            ).resolveAndAddIfNeeded()
                     }
                 }
 
@@ -247,7 +211,11 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     ): ConfigurationContext.Resolved<C> {
         val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool: $pool")
 
-        return item.resolve(resolver, parentNode) {
+        return item.resolveAndAddIfNeeded()
+    }
+
+    private fun ConfigurationContext<C>.resolveAndAddIfNeeded(): ConfigurationContext.Resolved<C> =
+        resolve(resolver, parentNode) {
             /**
              * Resolution involves building the associated [Node]s, which need to be guaranteed
              * to be added to the parentNode.
@@ -267,5 +235,4 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 parentNode
             )
         }
-    }
 }

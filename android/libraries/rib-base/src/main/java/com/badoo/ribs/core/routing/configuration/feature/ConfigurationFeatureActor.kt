@@ -8,6 +8,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
@@ -39,27 +40,31 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
 
     private val handler = Handler()
-    private var waitForTransitionsToFinish: Runnable? = null
+    private var waitingForTransitionsToFinish: Runnable? = null
 
     override fun invoke(
         state: WorkingState<C>,
         transaction: Transaction<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         when (transaction) {
-            is MultiConfigurationCommand ->
-                fromCallable {
-                    transaction.action.execute(
-                        pool = state.pool,
-                        params = createParams(state, transaction)
-                    )
-                }.map { updated ->
-                    ConfigurationFeature.Effect.Global(
-                        transaction,
-                        updated
-                    )
-                }
-
+            is MultiConfigurationCommand -> processMultiConfigurationCommand(transaction, state)
             is Transaction.ListOfCommands -> processTransaction(state, transaction)
+        }
+
+    private fun processMultiConfigurationCommand(
+        transaction: MultiConfigurationCommand<C>,
+        state: WorkingState<C>
+    ): Observable<ConfigurationFeature.Effect<C>> =
+        fromCallable {
+            transaction.action.execute(
+                pool = state.pool,
+                params = createParams(state, transaction)
+            )
+        }.map { updated ->
+            ConfigurationFeature.Effect.Global(
+                transaction,
+                updated
+            )
         }
 
     private fun processTransaction(
@@ -69,7 +74,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
             if (state.onGoingTransitions.isNotEmpty()) {
                 state.onGoingTransitions.forEach { it.end() }
-                waitForTransitionsToFinish?.let {
+                waitingForTransitionsToFinish?.let {
                     handler.removeCallbacks(it)
                     it.run()
                 }
@@ -80,70 +85,70 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             val params = createParams(state.copy(pool = state.pool + defaultElements), transaction)
             val actions = createActions(commands, params)
             val effects = createEffects(commands, actions)
+            emitter.onNext(effects)
 
             actions.forEach { it.onBeforeTransition() }
-            val allTransitionElements = actions.flatMap { it.transitionElements }
-            val enteringElements = allTransitionElements.filter { it.direction == TransitionDirection.Enter }
+            val transitionElements = actions.flatMap { it.transitionElements }
 
-            if (params.globalActivationLevel == ConfigurationContext.ActivationState.SLEEPING) {
+            if (params.globalActivationLevel == SLEEPING || transitionHandler == null) {
                 actions.forEach { it.onTransition() }
                 actions.forEach { it.onPostTransition() }
                 actions.forEach { it.onFinish() }
-                emitter.onNext(effects)
                 emitter.onComplete()
             } else {
                 beginTransitions(
-                    enteringElements,
-                    allTransitionElements,
+                    transitionElements,
                     emitter,
-                    actions,
-                    effects
+                    actions
                 )
             }
-        }
-            .flatMapIterable { it }
+        }.flatMapIterable { it }
 
     private fun beginTransitions(
-        enteringElements: List<TransitionElement<C>>,
-        allTransitionElements: List<TransitionElement<C>>,
+        transitionElements: List<TransitionElement<C>>,
         emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>,
-        actions: List<Action<C>>,
-        effects: List<ConfigurationFeature.Effect<C>>
+        actions: List<Action<C>>
     ) {
-        var transition: Transition? = null
+        requireNotNull(transitionHandler)
+        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.Enter }
 
-        if (transitionHandler != null) {
-            enteringElements.visibility(View.INVISIBLE)
-            handler.post {
-                transition = transitionHandler.onTransition(allTransitionElements)
-                transition?.start()
-                transition?.signalTransitionStart(emitter)
-                enteringElements.visibility(View.VISIBLE)
+        enteringElements.visibility(View.INVISIBLE)
+        handler.post {
+            val transition = transitionHandler.onTransition(transitionElements)
+            transition.start()
+            transition.signalTransitionStart(emitter)
+            enteringElements.visibility(View.VISIBLE)
+            actions.forEach { it.onTransition() }
+            waitingForTransitionsToFinish = waitForTransitionsToFinish(
+                actions,
+                transitionElements,
+                transition,
+                emitter
+            ).apply { run() }
+        }
+    }
+
+    private fun waitForTransitionsToFinish(
+        actions: List<Action<C>>,
+        transitionElements: List<TransitionElement<C>>,
+        transition: Transition,
+        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
+    ): Runnable = object : Runnable {
+        override fun run() {
+            actions.forEach { action ->
+                if (action.transitionElements.all { it.isFinished() }) {
+                    action.onPostTransition()
+                    action.transitionElements.forEach { it.markProcessed() }
+                }
+            }
+            if (transitionElements.any { it.isInProgress() }) {
+                handler.post(this)
+            } else {
+                actions.forEach { it.onFinish() }
+                transition.signalTransitionFinished(emitter)
+                emitter.onComplete()
             }
         }
-
-        actions.forEach { it.onTransition() }
-
-        waitForTransitionsToFinish = object : Runnable {
-            override fun run() {
-                actions.forEach { action ->
-                    if (action.transitionElements.all { it.isFinished() }) {
-                        action.onPostTransition()
-                        action.transitionElements.forEach { it.markProcessed() }
-                    }
-                }
-                if (allTransitionElements.any { it.isInProgress() }) {
-                    handler.post(this)
-                } else {
-                    actions.forEach { it.onFinish() }
-                    transition?.signalTransitionFinished(emitter)
-                    emitter.onComplete()
-                }
-            }
-        }
-
-        handler.post(waitForTransitionsToFinish)
-        emitter.onNext(effects)
     }
 
     private fun List<TransitionElement<C>>.visibility(visibility: Int) {
@@ -207,7 +212,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             },
             parentNode = parentNode,
             globalActivationLevel = when (command) {
-                is MultiConfigurationCommand.Sleep -> ConfigurationContext.ActivationState.SLEEPING
+                is MultiConfigurationCommand.Sleep -> SLEEPING
                 is MultiConfigurationCommand.WakeUp -> ConfigurationContext.ActivationState.ACTIVE
                 else -> state.activationLevel
             }

@@ -14,12 +14,16 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.Action
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.TransitionFinished
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.TransitionStarted
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
+import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
 import io.reactivex.Observable.fromCallable
+import io.reactivex.ObservableEmitter
 
 /**
  * Executes [MultiConfigurationAction] / [SingleConfigurationAction] associated with the incoming
@@ -73,39 +77,21 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
             val commands = transaction.commands
             val defaultElements = createDefaultElements(commands)
-            val params = createParams(
-                state = state.copy(pool = state.pool + defaultElements),
-                command = transaction
-            )
+            val params = createParams(state.copy(pool = state.pool + defaultElements), transaction)
             val actions = createActions(commands, params)
+            val effects = createEffects(commands, actions)
 
             actions.forEach { it.onBeforeTransition() }
             val allTransitionElements = actions.flatMap { it.transitionElements }
+            val enteringElements = allTransitionElements.filter { it.direction == TransitionDirection.Enter }
 
             // TODO try with tree listener
-            allTransitionElements
-                .filter { it.direction == TransitionDirection.Enter }
-                .forEach {
-                    it.view.visibility = View.INVISIBLE
-                }
-
+            enteringElements.visibility(View.INVISIBLE)
             var transition: Transition? = null
             handler.post {
                 transition = transitionHandler?.onTransition(allTransitionElements)
-                transition?.let {
-                    emitter.onNext(
-                        listOf(
-                            ConfigurationFeature.Effect.TransitionStarted<C>(
-                                it
-                            ) as ConfigurationFeature.Effect<C>
-                        )
-                    )
-                }
-                allTransitionElements
-                    .filter { it.direction == TransitionDirection.Enter }
-                    .forEach {
-                        it.view.visibility = View.VISIBLE
-                    }
+                transition?.signalTransitionStart(emitter)
+                enteringElements.visibility(View.VISIBLE)
             }
 
             actions.forEach { it.onTransition() }
@@ -122,25 +108,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                         handler.post(this)
                     } else {
                         actions.forEach { it.onFinish() }
-                        transition?.let {
-                            emitter.onNext(
-                                listOf(
-                                    ConfigurationFeature.Effect.TransitionFinished<C>(
-                                        it
-                                    ) as ConfigurationFeature.Effect<C>
-                                )
-                            )
-                        }
+                        transition?.signalTransitionFinished(emitter)
                         emitter.onComplete()
                     }
                 }
-            }
-
-            val effects = commands.mapIndexed { index, command ->
-                ConfigurationFeature.Effect.Individual(
-                    command,
-                    actions[index].result
-                ) as ConfigurationFeature.Effect<C>
             }
 
             if (params.globalActivationLevel == ConfigurationContext.ActivationState.SLEEPING) {
@@ -154,6 +125,34 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             }
         }
             .flatMapIterable { it }
+
+    private fun List<TransitionElement<C>>.visibility(visibility: Int) {
+        forEach {
+            it.view.visibility = visibility
+        }
+    }
+
+    private fun Transition.signalTransitionStart(
+        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
+    ) {
+        emitter.emitEffect(TransitionStarted(this))
+    }
+
+    private fun Transition.signalTransitionFinished(
+        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
+    ) {
+        emitter.emitEffect(TransitionFinished(this))
+    }
+
+    private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(
+        effect: ConfigurationFeature.Effect<C>
+    ) {
+        onNext(
+            listOf(
+                effect
+            )
+        )
+    }
 
     /**
      * Since the state doesn't yet reflect elements we're just about to add, we'll create them ahead
@@ -206,6 +205,17 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             )
         }
     }
+
+    private fun createEffects(
+        commands: List<ConfigurationCommand<C>>,
+        actions: List<Action<C>>
+    ): List<ConfigurationFeature.Effect<C>> =
+        commands.mapIndexed { index, command ->
+            ConfigurationFeature.Effect.Individual(
+                command,
+                actions[index].result
+            ) as ConfigurationFeature.Effect<C>
+        }
 
     /**
      * Returns a [Resolved] [ConfigurationContext] looked up by [key].

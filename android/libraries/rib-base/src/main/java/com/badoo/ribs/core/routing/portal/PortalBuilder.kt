@@ -9,7 +9,8 @@ class PortalBuilder(
 
     fun build(savedInstanceState: Bundle?): PortalNode {
         val router = PortalRouter(
-            savedInstanceState = savedInstanceState
+            savedInstanceState = savedInstanceState,
+            transitionHandler = dependency.transitionHandler()
         )
 
         router.defaultRoutingAction = dependency.defaultRoutingAction().invoke(router)

@@ -8,13 +8,16 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.view.RibView
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(
-    savedInstanceState: Bundle?
-): Router<Configuration, Nothing, Content, Overlay, Nothing>(
+    savedInstanceState: Bundle?,
+    transitionHandler: TransitionHandler<Configuration>? = null
+    ): Router<Configuration, Nothing, Content, Overlay, Nothing>(
     savedInstanceState = savedInstanceState,
+    transitionHandler = transitionHandler,
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
 ), Portal.OtherSide {

@@ -5,19 +5,20 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.graphics.Point
 import android.view.Display
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
 import androidx.annotation.CheckResult
 import com.badoo.ribs.core.routing.transition.SingleProgressEvaluator
 import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.handler.defaultDuration
+import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
 
 @CheckResult
 fun <T> TransitionElement<out T>.slide(
     gravity: Gravity,
-    duration: Long,
-    interpolator: Interpolator = AccelerateDecelerateInterpolator(),
+    duration: Long = defaultDuration,
+    interpolator: Interpolator = defaultInterpolator,
     reverseOnBackStack: Boolean = true
 ) : Transition {
     val display: Display = view.display

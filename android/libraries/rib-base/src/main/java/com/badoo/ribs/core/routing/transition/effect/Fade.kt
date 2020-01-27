@@ -3,18 +3,19 @@ package com.badoo.ribs.core.routing.transition.effect
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator
 import androidx.annotation.CheckResult
 import com.badoo.ribs.core.routing.transition.SingleProgressEvaluator
 import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
+import com.badoo.ribs.core.routing.transition.handler.defaultDuration
 
 @CheckResult
 fun <T> TransitionElement<out T>.fade(
-    duration: Long,
-    interpolator: Interpolator = AccelerateDecelerateInterpolator()
+    duration: Long = defaultDuration,
+    interpolator: Interpolator = defaultInterpolator
 ) : Transition {
 
     val evaluator = SingleProgressEvaluator()

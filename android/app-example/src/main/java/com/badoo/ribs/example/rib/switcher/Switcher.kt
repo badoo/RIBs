@@ -1,16 +1,18 @@
 package com.badoo.ribs.example.rib.switcher
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.animation.OvershootInterpolator
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.transition.handler.CrossFader
 import com.badoo.ribs.core.routing.transition.handler.SharedElements
-import com.badoo.ribs.core.routing.transition.handler.Slider
 import com.badoo.ribs.core.routing.transition.handler.TabSwitcher
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler.Companion.multiple
 import com.badoo.ribs.core.routing.transition.sharedelement.SharedElementTransition.Params
+import com.badoo.ribs.core.routing.transition.sharedelement.SharedElementTransition.RotationParams
 import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
@@ -49,7 +51,8 @@ interface Switcher : Rib {
                             exitingElement = { it.findViewById(R.id.sharedElementSquare) },
                             enteringElement = { it.findViewById(R.id.sharedElementSquare) },
                             translateXInterpolator = OvershootInterpolator(),
-                            translateYInterpolator = OvershootInterpolator(14f)
+                            translateYInterpolator = OvershootInterpolator(14f),
+                            rotation = RotationParams(0.75f * 360)
                         )
                     )
                 ),
@@ -58,7 +61,31 @@ interface Switcher : Rib {
                 )
             )
 
-    ) : RibCustomisation
+    ) : RibCustomisation, Parcelable {
+        constructor(parcel: Parcel) : this(
+            TODO("viewFactory"),
+            TODO("transitionHandler")
+        ) {
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<Customisation> {
+            override fun createFromParcel(parcel: Parcel): Customisation {
+                return Customisation(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Customisation?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 
     interface Workflow {
         fun attachHelloWorld(): Single<HelloWorld.Workflow>

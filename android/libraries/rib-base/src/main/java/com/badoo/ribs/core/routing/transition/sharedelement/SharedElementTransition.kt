@@ -13,6 +13,8 @@ import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.handler.defaultDuration
+import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
+import com.badoo.ribs.core.routing.transition.sharedelement.SharedElementTransition.RotationParams
 
 interface SharedElementTransition {
     data class Params(
@@ -22,7 +24,15 @@ interface SharedElementTransition {
         val translateXInterpolator: Interpolator = LinearInterpolator(),
         val translateYInterpolator: Interpolator = LinearInterpolator(),
         val scaleXInterpolator: Interpolator = LinearInterpolator(),
-        val scaleYInterpolator: Interpolator = LinearInterpolator()
+        val scaleYInterpolator: Interpolator = LinearInterpolator(),
+        val rotation: RotationParams? = null,
+        val rotationX: RotationParams? = null,
+        val rotationY: RotationParams? = null
+    )
+
+    data class RotationParams(
+        val degrees: Float,
+        val interpolator: Interpolator = defaultInterpolator
     )
 }
 
@@ -79,8 +89,7 @@ fun <T> List<TransitionElement<out T>>.sharedElementTransition(
 }
 
 @CheckResult
-internal fun <T> SharedElementTransitionInfo<T>.transition(
-): Transition {
+internal fun <T> SharedElementTransitionInfo<T>.transition(): Transition {
     val evaluator = SingleProgressEvaluator()
     exitingElement.progressEvaluator.add(evaluator)
     enteringElement.progressEvaluator.add(evaluator)
@@ -107,6 +116,7 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
     fun Float.y(): Float = params.translateYInterpolator.getInterpolation(this)
     fun Float.scaleX(): Float = params.scaleXInterpolator.getInterpolation(this)
     fun Float.scaleY(): Float = params.scaleYInterpolator.getInterpolation(this)
+    fun RotationParams.rotation(progress: Float): Float = degrees * interpolator.getInterpolation(progress)
 
     val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
         duration = params.duration
@@ -135,6 +145,9 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
             exitingView.translationY = exitingAbsY + progress.y() * targetYDiff - exitingLayoutParams.topMargin
             exitingView.scaleX = 1 + progress.scaleX() * (targetScaleX - 1)
             exitingView.scaleY = 1 + progress.scaleY() * (targetScaleY - 1)
+            params.rotation?.let { exitingView.rotation = it.rotation(progress) }
+            params.rotationX?.let { exitingView.rotationX = it.rotation(progress) }
+            params.rotationY?.let { exitingView.rotationY = it.rotation(progress) }
         }
     }
 

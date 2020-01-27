@@ -12,9 +12,11 @@ import com.badoo.ribs.core.routing.transition.SingleProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.handler.defaultDuration
 
 interface SharedElementTransition {
     data class Params(
+        val duration: Long = defaultDuration,
         val exitingElement: (View) -> View?,
         val enteringElement: (View) -> View?,
         val translateXInterpolator: Interpolator = LinearInterpolator(),
@@ -34,8 +36,7 @@ internal data class SharedElementTransitionInfo<T>(
 
 @CheckResult
 fun <T> List<TransitionElement<out T>>.sharedElementTransition(
-    transitionParams: List<SharedElementTransition.Params>,
-    duration: Long
+    transitionParams: List<SharedElementTransition.Params>
 ): Transition {
     val exit = filter { it.direction == TransitionDirection.Exit }
     val enter = filter { it.direction == TransitionDirection.Enter }
@@ -72,14 +73,13 @@ fun <T> List<TransitionElement<out T>>.sharedElementTransition(
 
     return Transition.multiple(
         transitions.map {
-            it.transition(duration)
+            it.transition()
         }
     )
 }
 
 @CheckResult
 internal fun <T> SharedElementTransitionInfo<T>.transition(
-    duration: Long
 ): Transition {
     val evaluator = SingleProgressEvaluator()
     exitingElement.progressEvaluator.add(evaluator)
@@ -109,7 +109,7 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
     fun Float.scaleY(): Float = params.scaleYInterpolator.getInterpolation(this)
 
     val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
-        this.duration = duration
+        duration = params.duration
 
         addListener(object : AnimatorListenerAdapter() {
             val rootView = exitingView.rootView as ViewGroup

@@ -43,9 +43,9 @@ interface Switcher : Rib {
                     tabsOrder = listOf(Hello, Foo, DialogsExample)
                 ),
                 SharedElements(
-                    duration = 1000,
                     params = listOf(
                         Params(
+                            duration = 1000,
                             exitingElement = { it.findViewById(R.id.sharedElementSquare) },
                             enteringElement = { it.findViewById(R.id.sharedElementSquare) },
                             translateXInterpolator = OvershootInterpolator(),

@@ -73,11 +73,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
             if (state.onGoingTransitions.isNotEmpty()) {
                 state.onGoingTransitions.forEach {
-                    it.transition.end()
-                    it.runnable.let {
-                        handler.removeCallbacks(it)
-                        it.run()
-                    }
+                    it.jumpToEnd()
                 }
             }
 

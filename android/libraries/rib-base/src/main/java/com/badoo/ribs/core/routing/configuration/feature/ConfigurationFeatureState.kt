@@ -61,10 +61,10 @@ internal data class WorkingState<C : Parcelable>(
 
 internal class OngoingTransition<C : Parcelable>(
     val descriptor: TransitionDescriptor,
-    val transition: Transition,
-    val actions: List<Action<C>>,
-    val transitionElements: List<TransitionElement<C>>,
-    val emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
+    private val transition: Transition,
+    private val actions: List<Action<C>>,
+    private val transitionElements: List<TransitionElement<C>>,
+    private val emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
 ) {
     private val handler = Handler()
 
@@ -91,10 +91,16 @@ internal class OngoingTransition<C : Parcelable>(
         transition.start()
     }
 
-    fun finish() {
+    private fun finish() {
+        handler.removeCallbacks(runnable)
         actions.forEach { it.onFinish() }
         emitter.emitEffect(ConfigurationFeature.Effect.TransitionFinished(this))
         emitter.onComplete()
+    }
+
+    fun jumpToEnd() {
+        transition.end()
+        runnable.run()
     }
 
     private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(

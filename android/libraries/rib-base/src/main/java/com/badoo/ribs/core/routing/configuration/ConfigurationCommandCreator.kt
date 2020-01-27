@@ -11,6 +11,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 import io.reactivex.Observable
 import java.lang.Math.min
 
@@ -24,8 +25,12 @@ internal fun <C : Parcelable> BackStackFeature<C>.toCommands(): Observable<Trans
     Observable.wrap(this)
         .startWith(initialState) // Bootstrapper can overwrite it by the time we receive the first state emission here
         .buffer(2, 1)
-        .map { (previous, current) -> diff(previous.backStack, current.backStack) }
-        .map { Transaction.ListOfCommands(it) } // FIXME update tests
+        .map { (previous, current) ->
+            Transaction.ListOfCommands(
+                descriptor = TransitionDescriptor(from = previous, to = current),
+                commands = diff(previous.backStack, current.backStack)
+            )
+        }
 
 internal object ConfigurationCommandCreator {
 

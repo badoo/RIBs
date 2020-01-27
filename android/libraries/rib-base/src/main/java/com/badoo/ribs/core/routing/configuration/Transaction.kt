@@ -7,6 +7,7 @@ import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfiguration
 import com.badoo.ribs.core.routing.configuration.action.multi.SaveInstanceStateAction
 import com.badoo.ribs.core.routing.configuration.action.multi.SleepAction
 import com.badoo.ribs.core.routing.configuration.action.multi.WakeUpAction
+import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 
 internal sealed class Transaction<C : Parcelable> {
 
@@ -32,15 +33,15 @@ internal sealed class Transaction<C : Parcelable> {
     }
 
     data class ListOfCommands<C : Parcelable>(
+        val descriptor: TransitionDescriptor,
         val commands: List<ConfigurationCommand<C>>
     ) : Transaction<C>()
 
     companion object {
         fun <C : Parcelable> from(command: ConfigurationCommand<C>): Transaction<C> =
             ListOfCommands(
-                listOf(
-                    command
-                )
+                descriptor = TransitionDescriptor.None,
+                commands = listOf(command)
             )
     }
 }

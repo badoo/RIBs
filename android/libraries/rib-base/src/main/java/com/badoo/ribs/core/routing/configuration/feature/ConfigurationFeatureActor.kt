@@ -71,9 +71,15 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
-            if (state.onGoingTransitions.isNotEmpty()) {
-                state.onGoingTransitions.forEach {
-                    it.jumpToEnd()
+            state.onGoingTransitions.forEach {
+                when {
+                    transaction.descriptor.isReverseOf(it.descriptor) -> {
+                        // TODO implement reverse
+                        it.reverse()
+                    }
+                    transaction.descriptor.isContinuationOf(it.descriptor) -> {
+                        it.abandon()
+                    }
                 }
             }
 
@@ -94,6 +100,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 emitter.onComplete()
             } else {
                 beginTransitions(
+                    transaction.descriptor,
                     transitionElements,
                     emitter,
                     actions
@@ -102,6 +109,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         }.flatMapIterable { it }
 
     private fun beginTransitions(
+        descriptor: TransitionDescriptor,
         transitionElements: List<TransitionElement<C>>,
         emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>,
         actions: List<Action<C>>
@@ -115,7 +123,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             enteringElements.visibility(View.VISIBLE)
 
             OngoingTransition(
-                descriptor = TransitionDescriptor(from = Unit, to = Unit),
+                descriptor = descriptor,
                 transition = transition,
                 actions = actions,
                 transitionElements = transitionElements,

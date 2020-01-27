@@ -106,7 +106,8 @@ internal class ConfigurationFeature<C : Parcelable>(
                             val key = ConfigurationKey.Permanent(index)
 
                             Transaction.ListOfCommands<C>(
-                                listOf(
+                                descriptor = TransitionDescriptor.None,
+                                commands = listOf(
                                     Add(key, configuration),
                                     Activate(key)
                                 )

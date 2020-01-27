@@ -68,7 +68,7 @@ internal class OngoingTransition<C : Parcelable>(
 ) {
     private val handler = Handler()
 
-    val runnable = object : Runnable {
+    private val runnable = object : Runnable {
         override fun run() {
             actions.forEach { action ->
                 if (action.transitionElements.all { it.isFinished() }) {
@@ -98,9 +98,21 @@ internal class OngoingTransition<C : Parcelable>(
         emitter.onComplete()
     }
 
+    // TODO remove when reverse() and abandon() are impemented
     fun jumpToEnd() {
         transition.end()
         runnable.run()
+    }
+
+    fun reverse() {
+        // TODO implement
+    }
+
+    fun abandon() {
+        // TODO consider its progressEvaluator
+        // TODO consider what happens later if reversed
+        // TODO implement:
+        // enteringTransition.pause()
     }
 
     private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(
@@ -115,6 +127,16 @@ internal class OngoingTransition<C : Parcelable>(
 }
 
 data class TransitionDescriptor(
-    val from: Any,
-    val to: Any
-)
+    val from: Any?,
+    val to: Any?
+) {
+    fun isReverseOf(other: TransitionDescriptor) =
+        from == other.to && to == other.from
+
+    fun isContinuationOf(other: TransitionDescriptor) =
+        from == other.to && to != other.from
+
+    companion object {
+        val None = TransitionDescriptor(null, null)
+    }
+}

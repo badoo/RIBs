@@ -81,11 +81,9 @@ fun <T> List<TransitionElement<out T>>.sharedElementTransition(
 internal fun <T> SharedElementTransitionInfo<T>.transition(
     duration: Long
 ): Transition {
-    // TODO consider supporting multiple progressEvaluators with min() evaluation in TransitionElement
-    //  right now this stay commented out as it would just override other transitions
-    //  but this also means there has to be at least one other transition in addition to shared element transition
-    //  for progress evaluation to work properly
-    // exitingElement.progressEvaluator = ProgressEvaluator.InProgress()
+    val evaluator = SingleProgressEvaluator()
+    exitingElement.progressEvaluator.add(evaluator)
+    enteringElement.progressEvaluator.add(evaluator)
 
     enteringElement.view.measure(0, 0)
 
@@ -125,9 +123,9 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(
 
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
-                // progressEvaluator = ProgressEvaluator.Finished FIXME
                 rootView.removeView(exitingView)
                 enteringView.visibility = View.VISIBLE
+                evaluator.markFinished()
             }
         })
 

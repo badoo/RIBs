@@ -7,9 +7,12 @@ import com.badoo.ribs.core.routing.transition.sharedelement.sharedElementTransit
 
 
 open class SharedElements<T>(
-    private val params: List<Params>
+    private val params: List<Params>,
+    private val condition: (TransitionElement<out T>) -> Boolean = { true }
 ) : TransitionHandler<T> {
 
     override fun onTransition(elements: List<TransitionElement<out T>>): Transition =
-        elements.sharedElementTransition(params)
+        elements
+            .filter(condition)
+            .sharedElementTransition(params)
 }

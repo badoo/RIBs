@@ -13,12 +13,13 @@ import com.badoo.ribs.core.routing.transition.invoke
 open class TabSwitcher<T>(
     private val tabsOrder: List<T>,
     private val duration: Long = defaultDuration,
-    private val interpolator: Interpolator = defaultInterpolator
+    private val interpolator: Interpolator = defaultInterpolator,
+    private val condition: (TransitionElement<out T>) -> Boolean = { true }
 ) : TransitionHandler<T> {
 
     override fun onTransition(elements: List<TransitionElement<out T>>): Transition {
-        val exit = elements.filter { it.direction == Exit }
-        val enter = elements.filter { it.direction == Enter }
+        val exit = elements.filter { it.direction == Exit && condition(it) }
+        val enter = elements.filter { it.direction == Enter && condition(it) }
 
         val exitIndex = tabsOrder.indexOfFirst { it == exit.firstOrNull()?.configuration }
         val enterIndex = tabsOrder.indexOfFirst { it == enter.firstOrNull()?.configuration }

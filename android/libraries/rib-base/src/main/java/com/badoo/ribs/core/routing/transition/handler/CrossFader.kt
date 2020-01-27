@@ -9,12 +9,17 @@ import com.badoo.ribs.core.routing.transition.invoke
 
 class CrossFader<T>(
     private val duration: Long = defaultDuration,
-    private val interpolator: Interpolator = defaultInterpolator
+    private val interpolator: Interpolator = defaultInterpolator,
+    private val condition: (TransitionElement<out T>) -> Boolean = { true }
 ) : TransitionHandler<T> {
 
-    override fun onTransition(elements: List<TransitionElement<out T>>) =
+    override fun onTransition(elements: List<TransitionElement<out T>>): Transition =
         Transition.multiple(
-            elements { fade(duration, interpolator) }
+            elements
+                .filter(condition)
+                .invoke {
+                    fade(duration, interpolator)
+                }
         )
 
 }

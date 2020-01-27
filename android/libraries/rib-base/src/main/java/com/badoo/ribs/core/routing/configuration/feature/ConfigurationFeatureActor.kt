@@ -40,7 +40,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
 
     private val handler = Handler()
-    private var waitingForTransitionsToFinish: Runnable? = null
 
     override fun invoke(
         state: WorkingState<C>,
@@ -73,10 +72,12 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
             if (state.onGoingTransitions.isNotEmpty()) {
-                state.onGoingTransitions.forEach { it.end() }
-                waitingForTransitionsToFinish?.let {
-                    handler.removeCallbacks(it)
-                    it.run()
+                state.onGoingTransitions.forEach {
+                    it.transition.end()
+                    it.runnable.let {
+                        handler.removeCallbacks(it)
+                        it.run()
+                    }
                 }
             }
 
@@ -115,39 +116,15 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         enteringElements.visibility(View.INVISIBLE)
         handler.post {
             val transition = transitionHandler.onTransition(transitionElements)
-            transition.start()
-            transition.signalTransitionStart(emitter)
             enteringElements.visibility(View.VISIBLE)
-            actions.forEach { it.onTransition() }
-            waitingForTransitionsToFinish = waitForTransitionsToFinish(
-                actions,
-                transitionElements,
-                transition,
-                emitter
-            ).apply { run() }
-        }
-    }
 
-    private fun waitForTransitionsToFinish(
-        actions: List<Action<C>>,
-        transitionElements: List<TransitionElement<C>>,
-        transition: Transition,
-        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
-    ): Runnable = object : Runnable {
-        override fun run() {
-            actions.forEach { action ->
-                if (action.transitionElements.all { it.isFinished() }) {
-                    action.onPostTransition()
-                    action.transitionElements.forEach { it.markProcessed() }
-                }
-            }
-            if (transitionElements.any { it.isInProgress() }) {
-                handler.post(this)
-            } else {
-                actions.forEach { it.onFinish() }
-                transition.signalTransitionFinished(emitter)
-                emitter.onComplete()
-            }
+            OngoingTransition(
+                descriptor = TransitionDescriptor(from = Unit, to = Unit),
+                transition = transition,
+                actions = actions,
+                transitionElements = transitionElements,
+                emitter = emitter
+            ).start()
         }
     }
 
@@ -157,27 +134,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         }
     }
 
-    private fun Transition.signalTransitionStart(
-        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
-    ) {
-        emitter.emitEffect(TransitionStarted(this))
-    }
-
-    private fun Transition.signalTransitionFinished(
-        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
-    ) {
-        emitter.emitEffect(TransitionFinished(this))
-    }
-
-    private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(
-        effect: ConfigurationFeature.Effect<C>
-    ) {
-        onNext(
-            listOf(
-                effect
-            )
-        )
-    }
 
     /**
      * Since the state doesn't yet reflect elements we're just about to add, we'll create them ahead

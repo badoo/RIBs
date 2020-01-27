@@ -82,11 +82,11 @@ internal class ConfigurationFeature<C : Parcelable>(
         ) : Effect<C>()
 
         data class TransitionStarted<C : Parcelable>(
-            val transition: Transition
+            val transition: OngoingTransition<C>
         ) : Effect<C>()
 
         data class TransitionFinished<C : Parcelable>(
-            val transition: Transition
+            val transition: OngoingTransition<C>
         ) : Effect<C>()
     }
 

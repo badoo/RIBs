@@ -1,12 +1,16 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
+import android.os.Handler
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.action.single.Action
 import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.TransitionElement
+import io.reactivex.ObservableEmitter
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -36,7 +40,7 @@ internal data class SavedState<C : Parcelable>(
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
     val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf(),
-    val onGoingTransitions: List<Transition> = emptyList()
+    val onGoingTransitions: List<OngoingTransition<C>> = emptyList()
 ) {
     /**
      * Converts the [WorkingState] to [SavedState] by shrinking all
@@ -54,3 +58,57 @@ internal data class WorkingState<C : Parcelable>(
             }.toMap()
         )
 }
+
+internal class OngoingTransition<C : Parcelable>(
+    val descriptor: TransitionDescriptor,
+    val transition: Transition,
+    val actions: List<Action<C>>,
+    val transitionElements: List<TransitionElement<C>>,
+    val emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
+) {
+    private val handler = Handler()
+
+    val runnable = object : Runnable {
+        override fun run() {
+            actions.forEach { action ->
+                if (action.transitionElements.all { it.isFinished() }) {
+                    action.onPostTransition()
+                    action.transitionElements.forEach { it.markProcessed() }
+                }
+            }
+            if (transitionElements.any { it.isInProgress() }) {
+                handler.post(this)
+            } else {
+                finish()
+            }
+        }
+    }
+
+    fun start() {
+        actions.forEach { it.onTransition() }
+        emitter.emitEffect(ConfigurationFeature.Effect.TransitionStarted(this))
+        runnable.run()
+        transition.start()
+    }
+
+    fun finish() {
+        actions.forEach { it.onFinish() }
+        emitter.emitEffect(ConfigurationFeature.Effect.TransitionFinished(this))
+        emitter.onComplete()
+    }
+
+    private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(
+        effect: ConfigurationFeature.Effect<C>
+    ) {
+        onNext(
+            listOf(
+                effect
+            )
+        )
+    }
+}
+
+data class TransitionDescriptor(
+    val from: Any,
+    val to: Any
+)

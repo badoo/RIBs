@@ -79,11 +79,18 @@ internal class OngoingTransition<C : Parcelable>(
         actions.forEach { it.reverse() }
     }
 
+    // TODO consider blocking (if push new config from user) or delaying (if from interactor) instead of this
     fun abandon() {
         // TODO consider its progressEvaluator
         // TODO consider what happens later if reversed
         transitionPair.entering?.pause()
+
+        // FIXME this is incorrect towards exiting stuff:
         finish()
+        // what it should do is to remove callback waiting for finish on entering stuff, as new exit takes over
+        // FIXME probably only fixable if this class is split to one per direction
+
+
         // TODO yes, the above will pause incoming transitions,
         //  leaving them on the screen (visual bug)
         //  new configuration's view should take over in some form

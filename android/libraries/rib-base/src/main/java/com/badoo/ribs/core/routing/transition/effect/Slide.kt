@@ -49,14 +49,13 @@ fun <T> TransitionElement<out T>.slide(
         Gravity.TOP, Gravity.BOTTOM -> { v: Float -> view.translationY = v }
     }
 
-    val valueAnimator = ValueAnimator.ofFloat(from, to)
+    val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
     valueAnimator.interpolator = interpolator
     valueAnimator.duration = duration
     valueAnimator.addUpdateListener { animation ->
         val progress = animation.animatedValue as Float
-        update(progress)
-        this.view.invalidate()
-        evaluator.updateProgress(1.0f * (progress - from) / (to - from))
+        update(from + progress * (to - from))
+        evaluator.updateProgress(progress)
     }
 
     valueAnimator.addListener(object : AnimatorListenerAdapter() {

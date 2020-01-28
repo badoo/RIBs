@@ -57,7 +57,7 @@ class SingleProgressEvaluator : ProgressEvaluator {
     fun updateProgress(progress: Float) {
         when (val state = state) {
             is Progress.InProgress -> state.progress = progress
-            else -> throw IllegalStateException("Not in progress anymore")
+            else -> if (progress != 1.0f) throw IllegalStateException("Not in progress anymore")
         }
     }
 

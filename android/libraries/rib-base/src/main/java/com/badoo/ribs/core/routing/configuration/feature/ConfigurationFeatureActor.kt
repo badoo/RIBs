@@ -68,7 +68,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
-            var skipExitTransitions = false
             state.onGoingTransitions.forEach {
                 when {
                     // TODO consider partial! this is only for exit matching, abandon is only for enter matching
@@ -80,7 +79,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     }
                     transaction.descriptor.isContinuationOf(it.descriptor) -> {
                         it.abandon()
-                        skipExitTransitions = true
                     }
                 }
             }
@@ -105,8 +103,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     transaction.descriptor,
                     transitionElements,
                     emitter,
-                    actions,
-                    skipExitTransitions
+                    actions
                 )
             }
         }.flatMapIterable { it }
@@ -115,16 +112,14 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         descriptor: TransitionDescriptor,
         transitionElements: List<TransitionElement<C>>,
         emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>,
-        actions: List<Action<C>>,
-        skipExitTransitions: Boolean
+        actions: List<Action<C>>
     ) {
         requireNotNull(transitionHandler)
         val enteringElements = transitionElements.filter { it.direction == TransitionDirection.Enter }
 
         enteringElements.visibility(View.INVISIBLE)
         handler.post {
-            val playableElements = if (skipExitTransitions) enteringElements else transitionElements
-            val transitionPair = transitionHandler.onTransition(playableElements)
+            val transitionPair = transitionHandler.onTransition(transitionElements)
             enteringElements.visibility(View.VISIBLE)
 
             OngoingTransition(
@@ -132,7 +127,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 direction = TransitionDirection.Exit,
                 transitionPair = transitionPair, // TODO split or not?
                 actions = actions, // TODO split or not?
-                transitionElements = playableElements, // TODO split or not?
+                transitionElements = transitionElements, // TODO split or not?
                 emitter = emitter
             ).start()
         }

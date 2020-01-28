@@ -13,6 +13,7 @@ import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.defaultDuration
 import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
+import kotlin.math.abs
 
 @CheckResult
 fun <T> TransitionElement<out T>.slide(
@@ -49,9 +50,14 @@ fun <T> TransitionElement<out T>.slide(
         Gravity.TOP, Gravity.BOTTOM -> { v: Float -> view.translationY = v }
     }
 
-    val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
+    val startProgress = when (_gravity) {
+        Gravity.LEFT, Gravity.RIGHT -> view.translationX / (to - from)
+        Gravity.TOP, Gravity.BOTTOM -> view.translationY / (to - from)
+    }
+
+    val valueAnimator = ValueAnimator.ofFloat(startProgress, 1f)
     valueAnimator.interpolator = interpolator
-    valueAnimator.duration = duration
+    valueAnimator.duration = abs((1 - startProgress) * duration).toLong()
     valueAnimator.addUpdateListener { animation ->
         val progress = animation.animatedValue as Float
         update(from + progress * (to - from))

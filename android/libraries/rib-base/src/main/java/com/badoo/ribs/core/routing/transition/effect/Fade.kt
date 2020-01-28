@@ -11,6 +11,7 @@ import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
 import com.badoo.ribs.core.routing.transition.handler.defaultDuration
+import kotlin.math.abs
 
 @CheckResult
 fun <T> TransitionElement<out T>.fade(
@@ -22,13 +23,13 @@ fun <T> TransitionElement<out T>.fade(
     progressEvaluator.add(evaluator)
 
     val (from, to) = when (direction) {
-        is TransitionDirection.Exit -> 1f to 0f
-        is TransitionDirection.Enter -> 0f to 1f
+        is TransitionDirection.Exit -> (if (view.alpha != 1.0f) view.alpha else 1f) to 0f
+        is TransitionDirection.Enter -> (if (view.alpha != 1.0f) view.alpha else 0f) to 1f
     }
 
     val valueAnimator = ValueAnimator.ofFloat(from, to)
     valueAnimator.interpolator = interpolator
-    valueAnimator.duration = duration
+    valueAnimator.duration = abs((to - from) * duration).toLong()
     valueAnimator.addUpdateListener { animation ->
         val progress = animation.animatedValue as Float
         this.view.alpha = (progress)

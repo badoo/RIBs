@@ -2,11 +2,12 @@ package com.badoo.ribs.core.routing.transition.handler
 
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.TransitionPair
 
 
 interface TransitionHandler<C> {
 
-    fun onTransition(elements: List<TransitionElement<out C>>): Transition
+    fun onTransition(elements: List<TransitionElement<out C>>): TransitionPair
 
     companion object {
         fun <C> multiple(vararg transitionhandlers: TransitionHandler<C>) =
@@ -32,10 +33,16 @@ interface TransitionHandler<C> {
             return list
         }
 
-        override fun onTransition(elements: List<TransitionElement<out C>>): Transition =
-            Transition.multiple(
-                handlers.map { it.onTransition(elements) }
+        override fun onTransition(elements: List<TransitionElement<out C>>): TransitionPair {
+            val pairs = handlers.map { it.onTransition(elements) }
+
+            return TransitionPair(
+                exiting = Transition.multiple ( pairs.map { it.exiting } ),
+                entering = Transition.multiple ( pairs.map { it.entering } )
             )
+        }
+
+
     }
 }
 

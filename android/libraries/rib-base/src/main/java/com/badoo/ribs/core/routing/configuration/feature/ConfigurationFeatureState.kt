@@ -8,8 +8,9 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.single.Action
-import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionPair
 import io.reactivex.ObservableEmitter
 import kotlinx.android.parcel.Parcelize
 
@@ -61,7 +62,8 @@ internal data class WorkingState<C : Parcelable>(
 
 internal class OngoingTransition<C : Parcelable>(
     val descriptor: TransitionDescriptor,
-    private val transition: Transition,
+    val direction: TransitionDirection,
+    private val transitionPair: TransitionPair,
     private val actions: List<Action<C>>,
     private val transitionElements: List<TransitionElement<C>>,
     private val emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
@@ -88,7 +90,8 @@ internal class OngoingTransition<C : Parcelable>(
         actions.forEach { it.onTransition() }
         emitter.emitEffect(ConfigurationFeature.Effect.TransitionStarted(this))
         runnable.run()
-        transition.start()
+        transitionPair.exiting?.start()
+        transitionPair.entering?.start()
     }
 
     private fun finish() {
@@ -100,19 +103,24 @@ internal class OngoingTransition<C : Parcelable>(
 
     // TODO remove when reverse() and abandon() are impemented
     fun jumpToEnd() {
-        transition.end()
+        transitionPair.exiting?.end()
+        transitionPair.entering?.end()
         runnable.run()
     }
 
     fun reverse() {
         // TODO implement
+        jumpToEnd()
     }
 
     fun abandon() {
         // TODO consider its progressEvaluator
         // TODO consider what happens later if reversed
-        // TODO implement:
-        // enteringTransition.pause()
+        transitionPair.entering?.pause()
+        finish()
+        // TODO yes, the above will pause incoming shared element transition,
+        //  new configuration's view should take over in some form
+        //  or old view should receive new target
     }
 
     private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(
@@ -131,10 +139,10 @@ data class TransitionDescriptor(
     val to: Any?
 ) {
     fun isReverseOf(other: TransitionDescriptor) =
-        from == other.to && to == other.from
+        from == other.to && to == other.from // todo only match exiting
 
     fun isContinuationOf(other: TransitionDescriptor) =
-        from == other.to && to != other.from
+        from == other.to && to != other.from // todo only match entering
 
     companion object {
         val None = TransitionDescriptor(null, null)

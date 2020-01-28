@@ -5,6 +5,7 @@ import com.badoo.ribs.core.routing.transition.TransitionDirection.Enter
 import com.badoo.ribs.core.routing.transition.TransitionDirection.Exit
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.TransitionPair
 import com.badoo.ribs.core.routing.transition.effect.Gravity
 import com.badoo.ribs.core.routing.transition.effect.slide
 import com.badoo.ribs.core.routing.transition.invoke
@@ -17,15 +18,18 @@ open class Slider<T>(
     private val condition: (TransitionElement<out T>) -> Boolean = { true }
 ) : TransitionHandler<T> {
 
-    override fun onTransition(elements: List<TransitionElement<out T>>): Transition {
+    override fun onTransition(elements: List<TransitionElement<out T>>): TransitionPair {
         val exit = elements.filter { it.direction == Exit && condition(it) }
         val enter = elements.filter { it.direction == Enter && condition(it)}
 
-        return Transition.multiple(
-            exit { slide(gravity, duration, interpolator) },
-            enter { slide(gravity.reverse(), duration, interpolator) }
+        return TransitionPair(
+            exiting = Transition.multiple(
+                exit { slide(gravity, duration, interpolator) }
+            ),
+            entering = Transition.multiple(
+                enter { slide(gravity.reverse(), duration, interpolator) }
+            )
         )
-
     }
 }
 

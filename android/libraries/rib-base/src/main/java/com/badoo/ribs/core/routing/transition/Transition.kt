@@ -8,17 +8,25 @@ interface Transition {
 
     fun end()
 
+    fun pause()
+
     companion object {
-        fun multiple(vararg transitions: Collection<Transition>) = object : Transition {
+        fun multiple(vararg transitions: Collection<Transition?>) = object : Transition {
             override fun start() {
                 transitions.flatMap {
-                    it.map { it.start() }
+                    it.map { it?.start() }
                 }
             }
 
             override fun end() {
                 transitions.flatMap {
-                    it.map { it.end() }
+                    it.map { it?.end() }
+                }
+            }
+
+            override fun pause() {
+                transitions.flatMap {
+                    it.map { it?.pause() }
                 }
             }
         }
@@ -30,6 +38,10 @@ interface Transition {
 
             override fun end() {
                 valueAnimator.end()
+            }
+
+            override fun pause() {
+                valueAnimator.pause()
             }
         }
     }

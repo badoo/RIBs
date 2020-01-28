@@ -73,6 +73,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
             state.onGoingTransitions.forEach {
                 when {
+                    // TODO consider partial! this is only for exit matching, abandon is only for enter matching
+                    //  == only exiting part is reverse of new entering
                     transaction.descriptor.isReverseOf(it.descriptor) -> {
                         // TODO implement reverse
                         it.reverse()
@@ -119,14 +121,15 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
         enteringElements.visibility(View.INVISIBLE)
         handler.post {
-            val transition = transitionHandler.onTransition(transitionElements)
+            val transitionPair = transitionHandler.onTransition(transitionElements)
             enteringElements.visibility(View.VISIBLE)
 
             OngoingTransition(
                 descriptor = descriptor,
-                transition = transition,
-                actions = actions,
-                transitionElements = transitionElements,
+                direction = TransitionDirection.Exit,
+                transitionPair = transitionPair, // TODO split or not?
+                actions = actions, // TODO split or not?
+                transitionElements = transitionElements, // TODO split or not?
                 emitter = emitter
             ).start()
         }

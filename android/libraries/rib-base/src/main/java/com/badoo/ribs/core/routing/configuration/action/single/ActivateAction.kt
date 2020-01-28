@@ -19,7 +19,7 @@ internal class ActivateAction<C : Parcelable>(
     private var item: Resolved<C>,
     private val params: ActionExecutionParams<C>,
     private val isBackStackOperation: Boolean
-) : Action<C> {
+) : ReversibleAction<C>() {
 
     object Factory:
         ActionFactory {
@@ -39,6 +39,9 @@ internal class ActivateAction<C : Parcelable>(
     override var transitionElements: List<TransitionElement<C>> =
         emptyList()
 
+    private var actionableNodes: List<Node.Descriptor> =
+        emptyList()
+
 
     override var result: Resolved<C> =
         // TODO check if can be merged with [CappedLifecycle], as this one has the same conceptual effect
@@ -56,7 +59,7 @@ internal class ActivateAction<C : Parcelable>(
         }
 
         if (canExecute) {
-            val actionableNodes = item.nodes
+            actionableNodes = item.nodes
                 .filter { it.viewAttachMode == Node.AttachMode.PARENT && !it.node.isAttachedToView }
 
             actionableNodes.forEach {
@@ -79,9 +82,14 @@ internal class ActivateAction<C : Parcelable>(
         }
     }
 
+    // FIXME reverse should affect this too
     override fun onTransition() {
         if (canExecute) {
-            item.routingAction.execute()
+            if (isReversed) {
+                item.routingAction.cleanup()
+            } else {
+                item.routingAction.execute()
+            }
         }
     }
 
@@ -89,5 +97,10 @@ internal class ActivateAction<C : Parcelable>(
     }
 
     override fun onFinish() {
+        if (isReversed) {
+            actionableNodes.forEach {
+                params.parentNode.detachChildView(it.node)
+            }
+        }
     }
 }

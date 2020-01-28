@@ -13,7 +13,7 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
 internal class RemoveAction<C : Parcelable>(
     private var item: Resolved<C>,
     private val params: ActionExecutionParams<C>
-) : Action<C> {
+) : ReversibleAction<C>() {
 
     object Factory :
         ActionFactory {
@@ -33,9 +33,16 @@ internal class RemoveAction<C : Parcelable>(
     override fun onBeforeTransition() {
     }
 
+    // FIXME reverse should affect this too
     override fun onTransition() {
-        item.nodes.forEach {
-            it.node.markPendingDetach()
+        if (isReversed) {
+            item.nodes.forEach {
+                it.node.markPendingDetach(false)
+            }
+        } else {
+            item.nodes.forEach {
+                it.node.markPendingDetach(true)
+            }
         }
     }
 
@@ -43,9 +50,11 @@ internal class RemoveAction<C : Parcelable>(
     }
 
     override fun onFinish() {
-        item.nodes.forEach {
-            params.parentNode.detachChildView(it.node)
-            params.parentNode.detachChildNode(it.node)
+        if (!isReversed) {
+            item.nodes.forEach {
+                params.parentNode.detachChildView(it.node)
+                params.parentNode.detachChildNode(it.node)
+            }
         }
     }
 

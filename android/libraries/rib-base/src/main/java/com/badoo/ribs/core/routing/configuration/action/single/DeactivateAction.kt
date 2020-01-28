@@ -19,7 +19,7 @@ internal class DeactivateAction<C : Parcelable>(
     private var item: Resolved<C>,
     private val params: ActionExecutionParams<C>,
     private val isBackStackOperation: Boolean
-) : Action<C> {
+) : ReversibleAction<C>() {
 
     object Factory:
         ActionFactory {
@@ -51,20 +51,29 @@ internal class DeactivateAction<C : Parcelable>(
     }
 
     override fun onTransition() {
-        item.routingAction.cleanup()
-        actionableNodes.forEach {
-            it.node.saveViewState()
-            it.node.markPendingViewDetach()
+        if (isReversed) {
+            item.routingAction.execute()
+            actionableNodes.forEach {
+                it.node.markPendingViewDetach(false)
+            }
+        } else {
+            item.routingAction.cleanup()
+            actionableNodes.forEach {
+                it.node.saveViewState()
+                it.node.markPendingViewDetach(true)
+            }
         }
     }
 
     override fun onPostTransition() {
-        actionableNodes.forEach {
-            params.parentNode.detachChildView(it.node)
-        }
     }
 
     override fun onFinish() {
+        if (!isReversed) {
+            actionableNodes.forEach {
+                params.parentNode.detachChildView(it.node)
+            }
+        }
     }
 
     override val result: Resolved<C> =

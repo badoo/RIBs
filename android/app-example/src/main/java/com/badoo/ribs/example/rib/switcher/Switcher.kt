@@ -8,6 +8,7 @@ import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.transition.handler.CrossFader
 import com.badoo.ribs.core.routing.transition.handler.SharedElements
+import com.badoo.ribs.core.routing.transition.handler.Slider
 import com.badoo.ribs.core.routing.transition.handler.TabSwitcher
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler.Companion.multiple
@@ -39,15 +40,19 @@ interface Switcher : Rib {
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),
         val transitionHandler: TransitionHandler<SwitcherRouter.Configuration> =
             multiple<SwitcherRouter.Configuration>(
-                //            Slider(),
+//                Slider(
+//                    duration = 1000
+//                )
+//                ,
                 TabSwitcher(
-                    duration = 1000,
+                    duration = 2000,
                     tabsOrder = listOf(Hello, Foo, DialogsExample)
-                ),
+                )
+                ,
                 SharedElements(
                     params = listOf(
                         Params(
-                            duration = 1000,
+                            duration = 2000,
                             exitingElement = { it.findViewById(R.id.sharedElementSquare) },
                             enteringElement = { it.findViewById(R.id.sharedElementSquare) },
                             translateXInterpolator = OvershootInterpolator(),
@@ -55,37 +60,13 @@ interface Switcher : Rib {
                             rotation = RotationParams(0.75f * 360)
                         )
                     )
-                ),
+                )
+                ,
                 CrossFader(
-                    duration = 1000
+                    duration = 2000
                 )
             )
-
-    ) : RibCustomisation, Parcelable {
-        constructor(parcel: Parcel) : this(
-            TODO("viewFactory"),
-            TODO("transitionHandler")
-        ) {
-        }
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Customisation> {
-            override fun createFromParcel(parcel: Parcel): Customisation {
-                return Customisation(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Customisation?> {
-                return arrayOfNulls(size)
-            }
-        }
-    }
+    ) : RibCustomisation
 
     interface Workflow {
         fun attachHelloWorld(): Single<HelloWorld.Workflow>

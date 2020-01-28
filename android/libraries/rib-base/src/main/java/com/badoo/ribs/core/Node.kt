@@ -300,12 +300,12 @@ open class Node<V : RibView>(
         childNode.onDetach()
     }
 
-    internal fun markPendingViewDetach() {
-        isPendingViewDetach = true
+    internal fun markPendingViewDetach(b: Boolean) {
+        isPendingViewDetach = b
     }
 
-    internal fun markPendingDetach() {
-        isPendingDetach = true
+    internal fun markPendingDetach(b: Boolean) {
+        isPendingDetach = b
     }
 
     /**

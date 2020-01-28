@@ -122,20 +122,33 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(): Transition {
         duration = params.duration
 
         addListener(object : AnimatorListenerAdapter() {
+            val originalParent = exitingView.parent as ViewGroup
+            val originalParentIdx = originalParent.indexOfChild(exitingView)
+            val originalLayoutParams = exitingView.layoutParams
+            val originalTX = exitingView.translationX
+            val originalTY = exitingView.translationY
             val rootView = exitingView.rootView as ViewGroup
 
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)
-                (exitingView.parent as ViewGroup).removeView(exitingView)
+                evaluator.start()
+                originalParent.removeView(exitingView)
                 rootView.addView(exitingView)
                 enteringView.visibility = View.INVISIBLE
             }
 
-            override fun onAnimationEnd(animation: Animator?) {
-                super.onAnimationEnd(animation)
+            override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                super.onAnimationEnd(animation, isReverse)
                 rootView.removeView(exitingView)
-                enteringView.visibility = View.VISIBLE
-                evaluator.markFinished()
+                if (isReverse) {
+                    originalParent.addView(exitingView, originalParentIdx, originalLayoutParams)
+                    exitingView.translationX = originalTX
+                    exitingView.translationY = originalTY
+                    evaluator.reset()
+                } else {
+                    enteringView.visibility = View.VISIBLE
+                    evaluator.markFinished()
+                }
             }
         })
 

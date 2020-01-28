@@ -10,6 +10,8 @@ interface Transition {
 
     fun pause()
 
+    fun reverse()
+
     companion object {
         fun multiple(vararg transitions: Collection<Transition?>) = object : Transition {
             override fun start() {
@@ -29,6 +31,12 @@ interface Transition {
                     it.map { it?.pause() }
                 }
             }
+
+            override fun reverse() {
+                transitions.flatMap {
+                    it.map { it?.reverse() }
+                }
+            }
         }
 
         fun from(valueAnimator: ValueAnimator) = object : Transition {
@@ -42,6 +50,10 @@ interface Transition {
 
             override fun pause() {
                 valueAnimator.pause()
+            }
+
+            override fun reverse() {
+                valueAnimator.reverse()
             }
         }
     }

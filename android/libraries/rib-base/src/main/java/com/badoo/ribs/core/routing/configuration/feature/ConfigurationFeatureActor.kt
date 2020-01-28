@@ -15,10 +15,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.Action
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.TransitionFinished
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.TransitionStarted
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
-import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
@@ -71,16 +68,19 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
+            var skipExitTransitions = false
             state.onGoingTransitions.forEach {
                 when {
                     // TODO consider partial! this is only for exit matching, abandon is only for enter matching
                     //  == only exiting part is reverse of new entering
                     transaction.descriptor.isReverseOf(it.descriptor) -> {
-                        // TODO implement reverse
                         it.reverse()
+                        emitter.onComplete()
+                        return@create
                     }
                     transaction.descriptor.isContinuationOf(it.descriptor) -> {
                         it.abandon()
+                        skipExitTransitions = true
                     }
                 }
             }
@@ -105,7 +105,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     transaction.descriptor,
                     transitionElements,
                     emitter,
-                    actions
+                    actions,
+                    skipExitTransitions
                 )
             }
         }.flatMapIterable { it }
@@ -114,14 +115,16 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         descriptor: TransitionDescriptor,
         transitionElements: List<TransitionElement<C>>,
         emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>,
-        actions: List<Action<C>>
+        actions: List<Action<C>>,
+        skipExitTransitions: Boolean
     ) {
         requireNotNull(transitionHandler)
         val enteringElements = transitionElements.filter { it.direction == TransitionDirection.Enter }
 
         enteringElements.visibility(View.INVISIBLE)
         handler.post {
-            val transitionPair = transitionHandler.onTransition(transitionElements)
+            val playableElements = if (skipExitTransitions) enteringElements else transitionElements
+            val transitionPair = transitionHandler.onTransition(playableElements)
             enteringElements.visibility(View.VISIBLE)
 
             OngoingTransition(
@@ -129,7 +132,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 direction = TransitionDirection.Exit,
                 transitionPair = transitionPair, // TODO split or not?
                 actions = actions, // TODO split or not?
-                transitionElements = transitionElements, // TODO split or not?
+                transitionElements = playableElements, // TODO split or not?
                 emitter = emitter
             ).start()
         }
@@ -140,7 +143,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             it.view.visibility = visibility
         }
     }
-
 
     /**
      * Since the state doesn't yet reflect elements we're just about to add, we'll create them ahead

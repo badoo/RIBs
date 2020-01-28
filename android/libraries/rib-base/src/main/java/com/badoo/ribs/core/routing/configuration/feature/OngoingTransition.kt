@@ -21,12 +21,18 @@ internal class OngoingTransition<C : Parcelable>(
     private val runnable = object : Runnable {
         override fun run() {
             actions.forEach { action ->
-                if (action.transitionElements.all { it.isFinished() }) {
+                // TODO consider removing onPostTransition + processed state
+                if (action.transitionElements.all { it.isFinished() || it.isReset() }) {
                     action.onPostTransition()
                     action.transitionElements.forEach { it.markProcessed() }
                 }
             }
-            if (transitionElements.any { it.isInProgress() }) {
+            // FIXME check: after reverse it goes bck to 0.0, make sure else branch gets called
+            // FIXME initial run with all Initialised goes straight to else?
+            //  needs to have info on reverse:
+            //  not reversed and all initialised or any in progress: wait
+            //  reversed and all initialised: finish
+            if (transitionElements.any { it.isPending() }) {
                 handler.post(this)
             } else {
                 finish()
@@ -57,16 +63,20 @@ internal class OngoingTransition<C : Parcelable>(
         emitter.onComplete()
     }
 
-    // TODO remove when reverse() and abandon() are impemented
     fun jumpToEnd() {
         transitionPair.exiting?.end()
         transitionPair.entering?.end()
         runnable.run()
     }
 
+    // TODO consider splitting to two different methods + split actions and other stuff
+    //  so that reverse can be detected and triggered separately for exiting and entering things
+    //  (maybe even split OngoingTransition to 2 instances, each with Transition instead of Pair)
+    //  also consider why this is maybe wrong altogether
     fun reverse() {
-        // TODO implement
-        jumpToEnd()
+        transitionPair.exiting?.reverse()
+        transitionPair.entering?.reverse()
+        actions.forEach { it.reverse() }
     }
 
     fun abandon() {
@@ -74,9 +84,13 @@ internal class OngoingTransition<C : Parcelable>(
         // TODO consider what happens later if reversed
         transitionPair.entering?.pause()
         finish()
-        // TODO yes, the above will pause incoming shared element transition,
+        // TODO yes, the above will pause incoming transitions,
+        //  leaving them on the screen (visual bug)
         //  new configuration's view should take over in some form
         //  or old view should receive new target
+        //  -
+        //  idea: some meta info registry entry that survives individual transitions if
+        //    they are abandoned for another
     }
 
     private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(

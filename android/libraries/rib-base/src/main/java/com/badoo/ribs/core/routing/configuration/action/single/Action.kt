@@ -11,6 +11,7 @@ internal interface Action<C : Parcelable> {
     fun onTransition()
     fun onPostTransition()
     fun onFinish()
+    fun reverse()
     val result: ConfigurationContext.Resolved<C>
     val transitionElements: List<TransitionElement<C>>
 }

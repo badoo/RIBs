@@ -38,9 +38,18 @@ fun <T> TransitionElement<out T>.fade(
     }
 
     valueAnimator.addListener(object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
-            super.onAnimationEnd(animation)
-            evaluator.markFinished()
+        override fun onAnimationStart(animation: Animator?) {
+            super.onAnimationStart(animation)
+            evaluator.start()
+        }
+
+        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+            super.onAnimationEnd(animation, isReverse)
+            if (isReverse) {
+                evaluator.reset()
+            } else {
+                evaluator.markFinished()
+            }
         }
     })
 

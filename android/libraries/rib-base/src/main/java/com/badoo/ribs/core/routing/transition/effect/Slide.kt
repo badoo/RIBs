@@ -56,6 +56,7 @@ fun <T> TransitionElement<out T>.slide(
     }
 
     val valueAnimator = ValueAnimator.ofFloat(startProgress, 1f)
+    val id = System.identityHashCode(valueAnimator)
     valueAnimator.interpolator = interpolator
     valueAnimator.duration = abs((1 - startProgress) * duration).toLong()
     valueAnimator.addUpdateListener { animation ->
@@ -65,9 +66,18 @@ fun <T> TransitionElement<out T>.slide(
     }
 
     valueAnimator.addListener(object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
-            super.onAnimationEnd(animation)
-            evaluator.markFinished()
+        override fun onAnimationStart(animation: Animator?) {
+            super.onAnimationStart(animation)
+            evaluator.start()
+        }
+
+        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+            super.onAnimationEnd(animation, isReverse)
+            if (isReverse) {
+                evaluator.reset()
+            } else {
+                evaluator.markFinished()
+            }
         }
     })
 

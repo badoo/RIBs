@@ -24,7 +24,6 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
-import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
 import io.reactivex.Observable.empty

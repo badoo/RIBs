@@ -1,11 +1,11 @@
 package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommandCreator.diff
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommandCreator.diff
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key

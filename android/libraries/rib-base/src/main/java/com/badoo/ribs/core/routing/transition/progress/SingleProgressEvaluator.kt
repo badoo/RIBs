@@ -1,7 +1,5 @@
 package com.badoo.ribs.core.routing.transition.progress
 
-import java.lang.IllegalStateException
-
 
 class SingleProgressEvaluator : ProgressEvaluator {
 

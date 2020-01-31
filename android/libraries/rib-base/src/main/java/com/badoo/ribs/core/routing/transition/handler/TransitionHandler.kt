@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.transition.handler
 
-import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
 
 

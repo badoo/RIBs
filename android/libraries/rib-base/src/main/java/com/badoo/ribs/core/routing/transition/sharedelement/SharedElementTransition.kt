@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import androidx.annotation.CheckResult
-import com.badoo.ribs.core.routing.transition.SingleProgressEvaluator
+import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.Transition

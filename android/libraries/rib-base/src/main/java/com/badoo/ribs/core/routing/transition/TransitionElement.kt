@@ -4,6 +4,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CheckResult
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.routing.transition.progress.MultiProgressEvaluator
+import com.badoo.ribs.core.routing.transition.progress.ProgressEvaluator
 
 open class TransitionElement<C>(
     val configuration: C,

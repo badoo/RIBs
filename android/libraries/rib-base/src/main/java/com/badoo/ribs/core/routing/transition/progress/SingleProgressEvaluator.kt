@@ -1,62 +1,6 @@
-package com.badoo.ribs.core.routing.transition
+package com.badoo.ribs.core.routing.transition.progress
 
 import java.lang.IllegalStateException
-
-
-// TODO simplify and remove as many as possible
-interface ProgressEvaluator {
-    val progress: Float
-
-    fun isInitialised(): Boolean
-
-    fun isReset(): Boolean
-
-    fun isInProgress(): Boolean
-
-    fun isFinished(): Boolean
-
-    fun isProcessed(): Boolean
-
-    fun isPending(): Boolean
-
-    fun markProcessed()
-}
-
-class MultiProgressEvaluator : ProgressEvaluator {
-
-    private val evaluators = mutableListOf<ProgressEvaluator>()
-
-    fun add(evaluator: ProgressEvaluator) {
-        evaluators.add(evaluator)
-    }
-
-    override var progress: Float =
-        evaluators.map { it.progress }.min() ?: 0f
-
-    override fun isInitialised(): Boolean =
-        evaluators.all { it.isInitialised() }
-
-    override fun isReset(): Boolean =
-        evaluators.all { it.isReset() }
-
-    override fun isInProgress(): Boolean =
-        evaluators.any { it.isInProgress() }
-
-    override fun isFinished(): Boolean =
-        evaluators.all { it.isFinished() }
-
-    override fun isProcessed(): Boolean =
-        evaluators.all { it.isProcessed() }
-
-    override fun isPending(): Boolean =
-        evaluators.any { it.isPending() }
-
-    override fun markProcessed() {
-        evaluators.forEach {
-            it.markProcessed()
-        }
-    }
-}
 
 
 class SingleProgressEvaluator : ProgressEvaluator {

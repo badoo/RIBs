@@ -69,35 +69,10 @@ internal class OngoingTransition<C : Parcelable>(
         runnable.run()
     }
 
-    // TODO consider splitting to two different methods + split actions and other stuff
-    //  so that reverse can be detected and triggered separately for exiting and entering things
-    //  (maybe even split OngoingTransition to 2 instances, each with Transition instead of Pair)
-    //  also consider why this is maybe wrong altogether
     fun reverse() {
         transitionPair.exiting?.reverse()
         transitionPair.entering?.reverse()
         actions.forEach { it.reverse() }
-    }
-
-    // TODO consider blocking (if push new config from user) or delaying (if from interactor) instead of this
-    fun abandon() {
-        // TODO consider its progressEvaluator
-        // TODO consider what happens later if reversed
-        transitionPair.entering?.pause()
-
-        // FIXME this is incorrect towards exiting stuff:
-        finish()
-        // what it should do is to remove callback waiting for finish on entering stuff, as new exit takes over
-        // FIXME probably only fixable if this class is split to one per direction
-
-
-        // TODO yes, the above will pause incoming transitions,
-        //  leaving them on the screen (visual bug)
-        //  new configuration's view should take over in some form
-        //  or old view should receive new target
-        //  -
-        //  idea: some meta info registry entry that survives individual transitions if
-        //    they are abandoned for another
     }
 
     private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(

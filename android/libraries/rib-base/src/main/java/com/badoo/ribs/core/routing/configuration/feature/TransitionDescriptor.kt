@@ -8,7 +8,7 @@ data class TransitionDescriptor(
         from == other.to && to == other.from // todo only match exiting
 
     fun isContinuationOf(other: TransitionDescriptor) =
-        from == other.to && to != other.from // todo only match entering
+        from == other.to && to != other.from
 
     companion object {
         val None =

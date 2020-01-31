@@ -78,7 +78,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                         return@create
                     }
                     transaction.descriptor.isContinuationOf(it.descriptor) -> {
-                        it.abandon()
+                        it.jumpToEnd()
                     }
                 }
             }

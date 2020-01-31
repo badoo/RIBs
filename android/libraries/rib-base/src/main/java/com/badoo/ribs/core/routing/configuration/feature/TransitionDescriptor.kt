@@ -5,7 +5,7 @@ data class TransitionDescriptor(
     val to: Any?
 ) {
     fun isReverseOf(other: TransitionDescriptor) =
-        from == other.to && to == other.from // todo only match exiting
+        from == other.to && to == other.from
 
     fun isContinuationOf(other: TransitionDescriptor) =
         from == other.to && to != other.from

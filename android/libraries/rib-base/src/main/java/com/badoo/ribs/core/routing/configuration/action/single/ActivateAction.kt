@@ -82,7 +82,6 @@ internal class ActivateAction<C : Parcelable>(
         }
     }
 
-    // FIXME reverse should affect this too
     override fun onTransition() {
         if (canExecute) {
             if (isReversed) {

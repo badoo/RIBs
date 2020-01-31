@@ -33,7 +33,6 @@ internal class RemoveAction<C : Parcelable>(
     override fun onBeforeTransition() {
     }
 
-    // FIXME reverse should affect this too
     override fun onTransition() {
         if (isReversed) {
             item.nodes.forEach {

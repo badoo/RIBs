@@ -27,11 +27,7 @@ internal class OngoingTransition<C : Parcelable>(
                     action.transitionElements.forEach { it.markProcessed() }
                 }
             }
-            // FIXME check: after reverse it goes bck to 0.0, make sure else branch gets called
-            // FIXME initial run with all Initialised goes straight to else?
-            //  needs to have info on reverse:
-            //  not reversed and all initialised or any in progress: wait
-            //  reversed and all initialised: finish
+
             if (transitionElements.any { it.isPending() }) {
                 handler.post(this)
             } else {

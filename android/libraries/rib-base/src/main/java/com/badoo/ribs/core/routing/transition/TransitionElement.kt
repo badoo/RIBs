@@ -15,15 +15,8 @@ open class TransitionElement<C>(
     val identifier: Rib,
     val view: View,
     val progressEvaluator: MultiProgressEvaluator = MultiProgressEvaluator()
-) : ProgressEvaluator by progressEvaluator {
+) : ProgressEvaluator by progressEvaluator
 
-//    internal var transitions: MutableList<Transition> = mutableListOf()
-}
-
-//operator fun <T> TransitionElement<out T>?.invoke(transition: TransitionElement<out T>.() -> Transition): Transition? =
-//    this?.let {
-//        transition.invoke(this)
-//    }
 
 @CheckResult
 operator fun <T> List<TransitionElement<out T>>.invoke(transition: TransitionElement<out T>.() -> Transition): List<Transition> =

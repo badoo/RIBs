@@ -49,7 +49,7 @@ class MultiProgressEvaluator : ProgressEvaluator {
         evaluators.all { it.isProcessed() }
 
     override fun isPending(): Boolean =
-        evaluators.all { it.isPending() }
+        evaluators.any { it.isPending() }
 
     override fun markProcessed() {
         evaluators.forEach {

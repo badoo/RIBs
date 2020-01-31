@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.transition.sharedelement
+package com.badoo.ribs.core.routing.transition.effect
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -14,7 +14,7 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.defaultDuration
 import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
 import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator
-import com.badoo.ribs.core.routing.transition.sharedelement.SharedElementTransition.RotationParams
+import com.badoo.ribs.core.routing.transition.effect.SharedElementTransition.RotationParams
 
 interface SharedElementTransition {
     data class Params(

@@ -45,9 +45,6 @@ internal class RemoveAction<C : Parcelable>(
         }
     }
 
-    override fun onPostTransition() {
-    }
-
     override fun onFinish() {
         if (!isReversed) {
             item.nodes.forEach {

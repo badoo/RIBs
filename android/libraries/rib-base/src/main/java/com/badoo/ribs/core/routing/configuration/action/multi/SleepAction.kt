@@ -27,7 +27,6 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
             val action = DeactivateAction(foundByFilter, params, false)
             action.onBeforeTransition()
             action.onTransition()
-            action.onPostTransition()
             action.onFinish()
             action.result.withActivationState(SLEEPING)
         }

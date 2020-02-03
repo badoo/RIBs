@@ -36,9 +36,6 @@ internal class AddAction<C : Parcelable>(
         }
     }
 
-    override fun onPostTransition() {
-    }
-
     override fun onFinish() {
     }
 

@@ -11,7 +11,6 @@ class SingleProgressEvaluator : ProgressEvaluator {
             is Progress.Reset -> 0f
             is Progress.InProgress -> state.progress
             is Progress.Finished -> 1f
-            is Progress.Processed -> 1f
         }
 
     fun start() {
@@ -46,15 +45,8 @@ class SingleProgressEvaluator : ProgressEvaluator {
     override fun isFinished(): Boolean =
         state is Progress.Finished
 
-    override fun isProcessed(): Boolean =
-        state is Progress.Processed
-
     fun markFinished() {
         state = Progress.Finished
-    }
-
-    override fun markProcessed() {
-        state = Progress.Processed
     }
 
     sealed class Progress {
@@ -67,8 +59,6 @@ class SingleProgressEvaluator : ProgressEvaluator {
         }
 
         object Finished : Progress()
-
-        object Processed : Progress()
     }
 
 }

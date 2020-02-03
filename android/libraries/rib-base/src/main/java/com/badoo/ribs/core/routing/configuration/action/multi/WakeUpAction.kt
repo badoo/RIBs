@@ -26,7 +26,6 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
             val action = ActivateAction(foundByFilter, params, false)
             action.onBeforeTransition()
             action.onTransition()
-            action.onPostTransition()
             action.onFinish()
             action.result
         }

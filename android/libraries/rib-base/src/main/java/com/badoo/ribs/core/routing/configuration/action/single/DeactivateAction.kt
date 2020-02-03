@@ -65,9 +65,6 @@ internal class DeactivateAction<C : Parcelable>(
         }
     }
 
-    override fun onPostTransition() {
-    }
-
     override fun onFinish() {
         if (!isReversed) {
             actionableNodes.forEach {

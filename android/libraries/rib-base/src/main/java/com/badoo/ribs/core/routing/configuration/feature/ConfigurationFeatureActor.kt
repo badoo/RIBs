@@ -93,7 +93,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
             if (params.globalActivationLevel == SLEEPING || transitionHandler == null) {
                 actions.forEach { it.onTransition() }
-                actions.forEach { it.onPostTransition() }
                 actions.forEach { it.onFinish() }
                 emitter.onComplete()
             } else {

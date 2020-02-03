@@ -24,15 +24,6 @@ class MultiProgressEvaluator :
     override fun isFinished(): Boolean =
         evaluators.all { it.isFinished() }
 
-    override fun isProcessed(): Boolean =
-        evaluators.all { it.isProcessed() }
-
     override fun isPending(): Boolean =
         evaluators.any { it.isPending() }
-
-    override fun markProcessed() {
-        evaluators.forEach {
-            it.markProcessed()
-        }
-    }
 }

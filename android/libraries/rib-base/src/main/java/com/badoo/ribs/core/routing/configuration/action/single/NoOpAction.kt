@@ -12,7 +12,6 @@ internal class NoOpAction<C : Parcelable>(
 
     override fun onBeforeTransition() {}
     override fun onTransition() {}
-    override fun onPostTransition() {}
     override fun onFinish() {}
     override fun reverse() {}
     override val result: Resolved<C> =

@@ -20,14 +20,6 @@ internal class OngoingTransition<C : Parcelable>(
 
     private val runnable = object : Runnable {
         override fun run() {
-            actions.forEach { action ->
-                // TODO consider removing onPostTransition + processed state
-                if (action.transitionElements.all { it.isFinished() || it.isReset() }) {
-                    action.onPostTransition()
-                    action.transitionElements.forEach { it.markProcessed() }
-                }
-            }
-
             if (transitionElements.any { it.isPending() }) {
                 handler.post(this)
             } else {

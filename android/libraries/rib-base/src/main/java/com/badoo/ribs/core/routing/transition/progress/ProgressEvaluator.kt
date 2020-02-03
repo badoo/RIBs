@@ -12,9 +12,5 @@ interface ProgressEvaluator {
 
     fun isFinished(): Boolean
 
-    fun isProcessed(): Boolean
-
     fun isPending(): Boolean
-
-    fun markProcessed()
 }

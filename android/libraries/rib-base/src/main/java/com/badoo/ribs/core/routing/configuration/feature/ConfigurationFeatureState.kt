@@ -53,4 +53,3 @@ internal data class WorkingState<C : Parcelable>(
             }.toMap()
         )
 }
-

@@ -8,15 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".app.RootActivity">
 
-    <View
-        android:id="@+id/qwe"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="50dp"
-        android:transitionName="bla"
-        android:background="@color/colorPrimary" />
-
     <TextView
         android:id="@+id/foobar_title"
         android:layout_width="wrap_content"

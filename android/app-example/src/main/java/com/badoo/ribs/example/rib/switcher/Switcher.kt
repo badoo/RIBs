@@ -37,10 +37,6 @@ interface Switcher : Rib {
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),
         val transitionHandler: TransitionHandler<SwitcherRouter.Configuration> =
             multiple<SwitcherRouter.Configuration>(
-//                Slider(
-//                    duration = 1000
-//                )
-//                ,
                 TabSwitcher(
                     duration = 2000,
                     tabsOrder = listOf(Hello, Foo, DialogsExample)
@@ -57,8 +53,7 @@ interface Switcher : Rib {
                             rotation = RotationParams(0.75f * 360)
                         )
                     )
-                )
-                ,
+                ),
                 CrossFader(
                     duration = 2000
                 )

@@ -44,8 +44,6 @@ dependencies {
 
     implementation project(":libraries:rib-android")
 
-    implementation "com.andkulikov:transitionseverywhere:1.8.1"
-
     implementation deps.external.dagger
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid

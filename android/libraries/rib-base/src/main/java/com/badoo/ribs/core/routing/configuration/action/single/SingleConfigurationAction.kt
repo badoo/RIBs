@@ -5,7 +5,6 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Represents an action that affects a single [ConfigurationContext.Resolved] configuration when executed.
@@ -19,6 +18,4 @@ internal interface SingleConfigurationAction {
      * @return the updated configuration
      */
     fun <C : Parcelable> execute(key: ConfigurationKey, params: ActionExecutionParams<C>): Resolved<C>
-
-    fun <C : Parcelable> transitionElements(key: ConfigurationKey, params: ActionExecutionParams<C>): List<TransitionElement<C>>
 }

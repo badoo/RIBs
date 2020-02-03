@@ -1,16 +1,18 @@
 package com.badoo.ribs.core.routing.transition.progress
 
-// TODO simplify and remove as many as possible
 interface ProgressEvaluator {
+    /**
+     * A value in the range of typically 0f to 1f.
+     *
+     * It cannot go below 0f, however, it can go temporarily over 1f e.g. when
+     * using OvershootInterpolator. End result is expected to land at 1f.
+     *
+     * Don't rely on its value for determining whether we're running still, use [isPending] for that.
+     *
+     * This field is currently not used by the framework. It's kept here for pending support of
+     * notifying child RibViews. It might be removed later if that functionality is dropped.
+     */
     val progress: Float
-
-    fun isInitialised(): Boolean
-
-    fun isReset(): Boolean
-
-    fun isInProgress(): Boolean
-
-    fun isFinished(): Boolean
 
     fun isPending(): Boolean
 }

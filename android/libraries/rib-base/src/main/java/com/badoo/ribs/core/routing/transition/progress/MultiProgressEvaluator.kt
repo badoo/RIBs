@@ -1,7 +1,6 @@
 package com.badoo.ribs.core.routing.transition.progress
 
-class MultiProgressEvaluator :
-    ProgressEvaluator {
+class MultiProgressEvaluator : ProgressEvaluator {
 
     private val evaluators = mutableListOf<ProgressEvaluator>()
 
@@ -11,18 +10,6 @@ class MultiProgressEvaluator :
 
     override var progress: Float =
         evaluators.map { it.progress }.min() ?: 0f
-
-    override fun isInitialised(): Boolean =
-        evaluators.all { it.isInitialised() }
-
-    override fun isReset(): Boolean =
-        evaluators.all { it.isReset() }
-
-    override fun isInProgress(): Boolean =
-        evaluators.any { it.isInProgress() }
-
-    override fun isFinished(): Boolean =
-        evaluators.all { it.isFinished() }
 
     override fun isPending(): Boolean =
         evaluators.any { it.isPending() }

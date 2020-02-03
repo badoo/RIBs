@@ -3,7 +3,17 @@ package com.badoo.ribs.core.routing.transition.progress
 
 class SingleProgressEvaluator : ProgressEvaluator {
 
-    var state: Progress = Progress.Initialised
+    private sealed class Progress {
+        object Initialised : Progress()
+        object Reset : Progress()
+        class InProgress : Progress() {
+            var progress: Float = 0f
+        }
+        object Finished : Progress()
+    }
+
+    private var state: Progress =
+        Progress.Initialised
 
     override val progress: Float =
         when (val state = state) {
@@ -30,35 +40,16 @@ class SingleProgressEvaluator : ProgressEvaluator {
         state = Progress.Reset
     }
 
-    override fun isInitialised(): Boolean =
-        state is Progress.Initialised
-
-    override fun isReset(): Boolean =
-        state is Progress.Reset
-
-    override fun isPending(): Boolean =
-        isInProgress() || isInitialised()
-
-    override fun isInProgress(): Boolean =
-        state is Progress.InProgress
-
-    override fun isFinished(): Boolean =
-        state is Progress.Finished
-
     fun markFinished() {
         state = Progress.Finished
     }
 
-    sealed class Progress {
-        object Initialised : Progress()
+    override fun isPending(): Boolean =
+        isInProgress() || isInitialised()
 
-        object Reset : Progress()
+    private fun isInProgress(): Boolean =
+        state is Progress.InProgress
 
-        class InProgress : Progress() {
-            var progress: Float = 0f
-        }
-
-        object Finished : Progress()
-    }
-
+    private fun isInitialised(): Boolean =
+        state is Progress.Initialised
 }

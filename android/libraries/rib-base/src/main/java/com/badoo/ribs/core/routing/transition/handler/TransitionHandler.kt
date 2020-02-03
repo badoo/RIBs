@@ -14,7 +14,7 @@ interface TransitionHandler<C> {
             Multiple(transitionhandlers.toList())
     }
 
-    class Multiple<C>(
+    open class Multiple<C>(
         private val transitionhandlers: List<TransitionHandler<C>>
     ) : TransitionHandler<C> {
         private val handlers: List<TransitionHandler<C>>

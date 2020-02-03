@@ -236,9 +236,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
              * [Add] is only called explicitly with direct back stack manipulation, but not on
              * state restoration.
              */
-            AddAction.execute(
-                it,
-                parentNode
-            )
+            val action = AddAction(it, parentNode)
+            action.onTransition()
+            action.result
         }
 }

@@ -3,25 +3,25 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Attaches [Node]s to a parentNode without their views
  */
-internal object AddAction : ResolvedSingleConfigurationAction() {
+internal class AddAction<C : Parcelable>(
+    private var item: Resolved<C>,
+    private val parentNode: Node<*>
+) : ReversibleAction<C>() {
 
-    override fun <C : Parcelable> execute(item: Resolved<C>, params: ActionExecutionParams<C>): Resolved<C> {
-        val (_, parentNode, _) = params
-        return execute(item, parentNode)
+    override fun onBeforeTransition() {
     }
 
-    /**
-     * Convenience method so that Add can be called only with only the knowledge of parentNode too
-     */
-    fun <C : Parcelable> execute(item: Resolved<C>, parentNode: Node<*>): Resolved<C> {
-        parentNode.attachNodes(item.nodes)
-
-        return item
+    override fun onTransition() {
+        if (isReversed) {
+            parentNode.detachNodes(item.nodes)
+        } else {
+            parentNode.attachNodes(item.nodes)
+        }
     }
 
     private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>) {
@@ -30,5 +30,21 @@ internal object AddAction : ResolvedSingleConfigurationAction() {
         }
     }
 
-    // FIXME implement reverse()
+    private fun Node<*>.detachNodes(nodes: List<Node.Descriptor>) {
+        nodes.forEach {
+            detachChildNode(it.node)
+        }
+    }
+
+    override fun onPostTransition() {
+    }
+
+    override fun onFinish() {
+    }
+
+    override val result: Resolved<C> =
+        item
+
+    override val transitionElements: List<TransitionElement<C>> =
+        emptyList()
 }

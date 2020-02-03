@@ -3,14 +3,12 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
 import com.badoo.ribs.core.routing.configuration.action.single.ActionFactory
 import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.NoOpAction
 import com.badoo.ribs.core.routing.configuration.action.single.RemoveAction
-import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
 
 /**
  * Represents a command to change one or more [ConfigurationContext] elements.
@@ -19,8 +17,7 @@ import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurati
  * command needs to be executed on on a logical level.
  *
  * Associated actions that need to be executed (resulting in [RoutingAction] and
- * [Node] manipulations) are to be found in the associated [MultiConfigurationAction] or
- * [SingleConfigurationAction] implementations.
+ * [Node] manipulations) are to be found in the associated Actions created by [ActionFactory].
  */
 internal sealed class ConfigurationCommand<C : Parcelable> {
     abstract val key: ConfigurationKey

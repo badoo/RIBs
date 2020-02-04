@@ -30,12 +30,13 @@ import io.reactivex.ObservableEmitter
  * Updated elements are then passed on to the [ReducerImpl] in the respective [Effect]s
  */
 internal class ConfigurationFeatureActor<C : Parcelable>(
-    private val resolver: (C) -> RoutingAction<*>,
+    configurationResolver: (C) -> RoutingAction<*>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
 
     private val handler = Handler()
+    private val configurationKeyResolver = ConfigurationKeyResolver(configurationResolver, parentNode)
 
     override fun invoke(
         state: WorkingState<C>,
@@ -154,16 +155,17 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun createDefaultElements(
         commands: List<ConfigurationCommand<C>>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> {
-
         val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext.Resolved<C>> = mutableMapOf()
 
         commands.forEach { command ->
             if (command is ConfigurationCommand.Add<C>) {
                 defaultElements[command.key] =
-                    ConfigurationContext.Unresolved(
-                        ConfigurationContext.ActivationState.INACTIVE,
-                        command.configuration
-                    ).resolveAndAddIfNeeded()
+                    configurationKeyResolver.resolveAndAddIfNeeded(
+                        ConfigurationContext.Unresolved(
+                            ConfigurationContext.ActivationState.INACTIVE,
+                            command.configuration
+                        )
+                    )
             }
         }
 
@@ -175,9 +177,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         command: Transaction<C>? = null
     ): ActionExecutionParams<C> =
         ActionExecutionParams(
-            resolver = { key ->
-                state.resolve(key, null)
-            },
+            resolver = { key -> configurationKeyResolver.resolve(state, key, null) },
             parentNode = parentNode,
             globalActivationLevel = when (command) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING
@@ -189,14 +189,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun createActions(
         commands: List<ConfigurationCommand<C>>,
         params: ActionExecutionParams<C>
-    ): List<Action<C>> {
-        return commands.map { command ->
-            command.actionFactory.create(
-                command.key,
-                params,
-                commands.isBackStackOperation(command.key)
-            )
-        }
+    ): List<Action<C>> = commands.map { command ->
+        command.actionFactory.create(command.key, params, commands.isBackStackOperation(command.key))
     }
 
     private fun createEffects(
@@ -204,48 +198,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         actions: List<Action<C>>
     ): List<ConfigurationFeature.Effect<C>> =
         commands.mapIndexed { index, command ->
-            ConfigurationFeature.Effect.Individual(
-                command,
-                actions[index].result
-            ) as ConfigurationFeature.Effect<C>
-        }
-
-    /**
-     * Returns a [Resolved] [ConfigurationContext] looked up by [key].
-     *
-     * A [ConfigurationContext] should be already present in the pool either in already [Resolved],
-     * or [Unresolved] form, the latter of which will be resolved on invocation.
-     *
-     * The only exception when it's acceptable not to already have an element under [key] is
-     * when [defaultElement] is not null, used in the case of the [Add] command.
-     */
-    private fun WorkingState<C>.resolve(
-        key: ConfigurationKey,
-        defaultElement: ConfigurationContext.Unresolved<C>?
-    ): ConfigurationContext.Resolved<C> {
-        val item = pool[key] ?: defaultElement ?: error("Key $key was not found in pool: $pool")
-
-        return item.resolveAndAddIfNeeded()
-    }
-
-    private fun ConfigurationContext<C>.resolveAndAddIfNeeded(): ConfigurationContext.Resolved<C> =
-        resolve(resolver, parentNode) {
-            /**
-             * Resolution involves building the associated [Node]s, which need to be guaranteed
-             * to be added to the parentNode.
-             *
-             * Because of this, we need to make sure that [AddAction] is executed every time
-             * we resolve, even when no explicit [Add] command was asked.
-             *
-             * This is to cover cases e.g. when restoring from Bundle:
-             * we have a list of [Unresolved] elements that will be resolved on next command
-             * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
-             *
-             * [Add] is only called explicitly with direct back stack manipulation, but not on
-             * state restoration.
-             */
-            val action = AddAction(it, parentNode)
-            action.onTransition()
-            action.result
+            ConfigurationFeature.Effect.Individual(command, actions[index].result) as ConfigurationFeature.Effect<C>
         }
 }

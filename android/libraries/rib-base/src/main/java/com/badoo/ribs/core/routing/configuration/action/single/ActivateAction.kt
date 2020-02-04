@@ -59,25 +59,29 @@ internal class ActivateAction<C : Parcelable>(
         }
 
         if (canExecute) {
-            actionableNodes = item.nodes
-                .filter { it.viewAttachMode == Node.AttachMode.PARENT && !it.node.isAttachedToView }
+            prepareTransition()
+        }
+    }
 
-            actionableNodes.forEach {
-                params.parentNode.createChildView(it.node)
-                params.parentNode.attachChildView(it.node)
-            }
+    private fun prepareTransition() {
+        actionableNodes = item.nodes
+            .filter { it.viewAttachMode == Node.AttachMode.PARENT && !it.node.isAttachedToView }
 
-            transitionElements = actionableNodes.mapNotNull {
-                it.node.view?.let { ribView ->
-                    TransitionElement(
-                        configuration = item.configuration,
-                        direction = TransitionDirection.Enter,
-                        isBackStackOperation = isBackStackOperation,
-                        parentViewGroup = params.parentNode.targetViewGroupForChild(it.node),
-                        identifier = it.node.identifier,
-                        view = ribView.androidView
-                    )
-                }
+        actionableNodes.forEach {
+            params.parentNode.createChildView(it.node)
+            params.parentNode.attachChildView(it.node)
+        }
+
+        transitionElements = actionableNodes.mapNotNull {
+            it.node.view?.let { ribView ->
+                TransitionElement(
+                    configuration = item.configuration,
+                    direction = TransitionDirection.Enter,
+                    isBackStackOperation = isBackStackOperation,
+                    parentViewGroup = params.parentNode.targetViewGroupForChild(it.node),
+                    identifier = it.node.identifier,
+                    view = ribView.androidView
+                )
             }
         }
     }

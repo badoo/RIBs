@@ -1,3 +1,4 @@
+@file:SuppressWarnings("LongMethod")
 package com.badoo.ribs.core.routing.transition.effect
 
 import android.animation.Animator

@@ -27,7 +27,7 @@ interface Switcher : Rib {
 
     class Customisation(
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),
-        val transitionHandler: TransitionHandler<Configuration> = SwitcherTransitionHandler(2000)
+        val transitionHandler: TransitionHandler<Configuration> = SwitcherTransitionHandler(duration = 2000)
     ) : RibCustomisation
 
     interface Workflow {

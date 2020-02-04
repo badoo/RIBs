@@ -1,4 +1,4 @@
-@file:Suppress("LongParameterList")
+@file:Suppress("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.switcher.builder
 
 import android.os.Bundle

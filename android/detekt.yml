@@ -158,7 +158,7 @@ complexity:
   active: true
   LongMethod:
     active: true
-    threshold: 20
+    threshold: 30
   NestedBlockDepth:
     active: true
     threshold: 4 # TODO: create custom rule that doesn't count run/let/apply/etc.

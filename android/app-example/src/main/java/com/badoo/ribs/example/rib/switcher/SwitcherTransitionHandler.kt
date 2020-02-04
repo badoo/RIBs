@@ -8,6 +8,7 @@ import com.badoo.ribs.core.routing.transition.handler.TabSwitcher
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.example.R
 
+@SuppressWarnings("MagicNumber")
 class SwitcherTransitionHandler(duration: Long): TransitionHandler.Multiple<SwitcherRouter.Configuration>(
     listOf<TransitionHandler<SwitcherRouter.Configuration>>(
 

@@ -56,14 +56,15 @@ class SwitcherRouterTest {
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val router = SwitcherRouter(
-        null,
-        fooBarBuilder,
-        helloWorldBuilder,
-        dialogExampleBuilder,
-        blockerBuilder,
-        menuBuilder,
-        dialogLauncher,
-        dialogToTestOverlay
+        savedInstanceState = null,
+        transitionHandler = null,
+        fooBarBuilder = fooBarBuilder,
+        helloWorldBuilder = helloWorldBuilder,
+        dialogExampleBuilder = dialogExampleBuilder,
+        blockerBuilder = blockerBuilder,
+        menuBuilder = menuBuilder,
+        dialogLauncher = dialogLauncher,
+        dialogToTestOverlay = dialogToTestOverlay
     )
 
     private val rootNode = TestNode(router)

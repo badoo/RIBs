@@ -28,7 +28,7 @@ import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
     savedInstanceState: Bundle?,
-    transitionHandler: TransitionHandler<Configuration>,
+    transitionHandler: TransitionHandler<Configuration>? = null,
     private val fooBarBuilder: FooBarBuilder,
     private val helloWorldBuilder: HelloWorldBuilder,
     private val dialogExampleBuilder: DialogExampleBuilder,

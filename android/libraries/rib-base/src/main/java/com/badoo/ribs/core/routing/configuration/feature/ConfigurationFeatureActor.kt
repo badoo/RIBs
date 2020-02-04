@@ -14,7 +14,6 @@ import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.Action
-import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
@@ -63,22 +62,18 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             )
         }
 
+    private enum class NewTransitionsExecution {
+        ABORT, CONTINUE
+    }
+
     private fun processTransaction(
         state: WorkingState<C>,
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
-            state.onGoingTransitions.forEach {
-                when {
-                    transaction.descriptor.isReverseOf(it.descriptor) -> {
-                        it.reverse()
-                        emitter.onComplete()
-                        return@create
-                    }
-                    transaction.descriptor.isContinuationOf(it.descriptor) -> {
-                        it.jumpToEnd()
-                    }
-                }
+            if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
+                emitter.onComplete()
+                return@create
             }
 
             val commands = transaction.commands
@@ -96,14 +91,28 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 actions.forEach { it.onFinish() }
                 emitter.onComplete()
             } else {
-                beginTransitions(
-                    transaction.descriptor,
-                    transitionElements,
-                    emitter,
-                    actions
-                )
+                beginTransitions(transaction.descriptor, transitionElements, emitter, actions)
             }
         }.flatMapIterable { it }
+
+    private fun checkOngoingTransitions(
+        state: WorkingState<C>,
+        transaction: Transaction.ListOfCommands<C>
+    ): NewTransitionsExecution {
+        state.onGoingTransitions.forEach {
+            when {
+                transaction.descriptor.isReverseOf(it.descriptor) -> {
+                    it.reverse()
+                    return NewTransitionsExecution.ABORT
+                }
+                transaction.descriptor.isContinuationOf(it.descriptor) -> {
+                    it.jumpToEnd()
+                }
+            }
+        }
+
+        return NewTransitionsExecution.CONTINUE
+    }
 
     private fun beginTransitions(
         descriptor: TransitionDescriptor,

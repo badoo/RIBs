@@ -17,7 +17,7 @@ class FooBarBuilder(
     fun build(savedInstanceState: Bundle?): FooBarNode {
         val customisation = dependency.getOrDefault(FooBar.Customisation())
         val feature = FooBarFeature()
-        val router = FooBarRouter(savedInstanceState)
+        val router = FooBarRouter(savedInstanceState, customisation.transitionHandler)
         val interactor = createInteractor(savedInstanceState, router, dependency, feature)
 
         return FooBarNode(

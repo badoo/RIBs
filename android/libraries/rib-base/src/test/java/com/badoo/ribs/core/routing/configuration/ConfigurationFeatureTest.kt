@@ -28,6 +28,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Permanent
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.SavedState
+import com.badoo.ribs.core.routing.configuration.feature.println
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doAnswer
@@ -364,8 +365,15 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Add TWICE, Node factories are NOT invoked again`() {
         createEmptyFeature()
+        println = true
+        println("")
+        println("--- Begin test")
+        println("--- Test | add #1")
         feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        println("--- Test | add #2")
         feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        println("--- Test | checks")
+        println = false
         helperContentViewParented1.nodeFactories.forEach {
             verify(it, times(1)).invoke()
         }

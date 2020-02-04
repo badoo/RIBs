@@ -54,7 +54,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         fromCallable {
             transaction.action.execute(
                 pool = state.pool,
-                params = createParams(state, transaction)
+                params = createParams(state, emptyMap(), transaction)
             )
         }.map { updated ->
             ConfigurationFeature.Effect.Global(
@@ -72,6 +72,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
+            if (println) println("Begin transaction")
+            if (println) println("Pool keys: ${state.pool.keys}")
+            if (println) println("Pool: ${state.pool.filter { it.key is ConfigurationKey.Content }}")
+            if (println) println()
             if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
                 emitter.onComplete()
                 return@create
@@ -79,7 +83,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
             val commands = transaction.commands
             val defaultElements = createDefaultElements(commands)
-            val params = createParams(state.copy(pool = state.pool + defaultElements), transaction)
+            // FIXME state.pool + defaultElements -- the latter overrides an already resolved one... (╯°□°)╯︵ ┻━┻
+//            val params = createParams(state, defaultElements, transaction)
+            val params = createParams(state.copy(pool = state.pool + defaultElements + state.pool), defaultElements, transaction)
+
             val actions = createActions(commands, params)
             val effects = createEffects(commands, actions)
             emitter.onNext(effects)
@@ -154,18 +161,15 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
      */
     private fun createDefaultElements(
         commands: List<ConfigurationCommand<C>>
-    ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> {
-        val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext.Resolved<C>> = mutableMapOf()
+    ): Map<ConfigurationKey, ConfigurationContext<C>> {
+        val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext<C>> = mutableMapOf()
 
         commands.forEach { command ->
             if (command is ConfigurationCommand.Add<C>) {
-                defaultElements[command.key] =
-                    configurationKeyResolver.resolveAndAddIfNeeded(
-                        ConfigurationContext.Unresolved(
-                            ConfigurationContext.ActivationState.INACTIVE,
-                            command.configuration
-                        )
-                    )
+                defaultElements[command.key] = ConfigurationContext.Unresolved(
+                    ConfigurationContext.ActivationState.INACTIVE,
+                    command.configuration
+                )
             }
         }
 
@@ -174,10 +178,11 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
     private fun createParams(
         state: WorkingState<C>,
+        defaultElements: Map<ConfigurationKey, ConfigurationContext<C>>,
         command: Transaction<C>? = null
     ): ActionExecutionParams<C> =
         ActionExecutionParams(
-            resolver = { key -> configurationKeyResolver.resolve(state, key, null) },
+            resolver = { key -> configurationKeyResolver.resolve(state, key, defaultElements) },
             parentNode = parentNode,
             globalActivationLevel = when (command) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING

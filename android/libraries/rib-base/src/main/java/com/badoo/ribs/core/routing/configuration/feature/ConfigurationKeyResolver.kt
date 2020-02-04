@@ -23,9 +23,10 @@ internal class ConfigurationKeyResolver<C : Parcelable>(
     fun resolve(
         state: WorkingState<C>,
         key: ConfigurationKey,
-        defaultElement: ConfigurationContext.Unresolved<C>?
+        defaultElements: Map<ConfigurationKey, ConfigurationContext<C>>
     ): ConfigurationContext.Resolved<C> {
-        val item = state.pool[key] ?: defaultElement ?: error("Key $key was not found in pool: $state.pool")
+        if (println) println("Resolve: $key, exists: ${state.pool.containsKey(key)}, item: ${state.pool[key]}}")
+        val item = state.pool[key] ?: defaultElements[key] ?: error("Key $key was not found in pool: $state.pool")
 
         return resolveAndAddIfNeeded(item)
     }

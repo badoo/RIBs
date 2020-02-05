@@ -14,7 +14,7 @@ import com.badoo.ribs.example.rib.small.SmallView.ViewModel
 import io.reactivex.functions.Consumer
 
 class SmallInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     portal: Portal.OtherSide,
     router: Router<Configuration, *, Content, Nothing, SmallView>
 ) : Interactor<Configuration, Content, Nothing, SmallView>(

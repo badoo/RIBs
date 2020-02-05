@@ -19,7 +19,7 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): FooBarRouter =
         FooBarRouter(
             buildContext = buildContext
@@ -35,7 +35,7 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: FooBarRouter,
         permissionRequester: PermissionRequester
     ): FooBarInteractor =
@@ -56,7 +56,7 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,

@@ -17,7 +17,7 @@ abstract class Dialog<T : Any> private constructor(
     var message: String? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
-    private var ribFactory: ((BuildContext.Params) -> Node<*>)? = null
+    private var ribFactory: ((BuildContext.SystemInfo) -> Node<*>)? = null
     internal var rib: Node<*>? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
@@ -29,7 +29,7 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun ribFactory(ribFactory: (BuildContext.Params) -> Node<*>) {
+    fun ribFactory(ribFactory: (BuildContext.SystemInfo) -> Node<*>) {
         this.ribFactory = ribFactory
     }
 
@@ -73,7 +73,7 @@ abstract class Dialog<T : Any> private constructor(
 
     fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         ribFactory?.let { factory ->
-            val clientParams = BuildContext.Params(
+            val clientParams = BuildContext.SystemInfo(
                 /**
                  * RIBs inside dialogs behaved like Root nodes so far in that they were
                  * not added as a child of any other Node.

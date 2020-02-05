@@ -9,7 +9,7 @@ class FooBarNode(
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val router: FooBarRouter,
     interactor: FooBarInteractor,
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     viewPlugins: Set<ViewPlugin>
 ) : Node<FooBarView>(
     buildContext = buildContext,

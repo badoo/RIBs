@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 
 class BigNode(
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     viewFactory: ((ViewGroup) -> BigView?)?,
     private val router: BigRouter,
     private val interactor: BigInteractor

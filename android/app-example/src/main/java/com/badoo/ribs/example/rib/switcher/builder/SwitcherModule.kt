@@ -37,7 +37,7 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         component: SwitcherComponent,
         dialogLauncher: DialogLauncher,
         dialogToTestOverlay: DialogToTestOverlay
@@ -57,7 +57,7 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: SwitcherRouter,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherInteractor =
@@ -80,7 +80,7 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: Switcher.Customisation,
         viewDependency: SwitcherView.Dependency,
         router: SwitcherRouter,

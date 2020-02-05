@@ -2,6 +2,7 @@ package com.badoo.ribs.example.rib.portal_overlay_test.builder
 
 import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTest
@@ -15,13 +16,16 @@ class PortalOverlayTestBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(PortalOverlayTest::class)
     }
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): PortalOverlayTestNode =
+    override val rib: Rib =
+        object : PortalOverlayTest {}
+
+    override fun build(buildContext: BuildContext<Nothing?>): PortalOverlayTestNode =
         DaggerPortalOverlayTestComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(PortalOverlayTest.Customisation()),
-                buildContext = resolve(object : PortalOverlayTest {}, params)
+                buildContext = buildContext
             )
             .node()
 }

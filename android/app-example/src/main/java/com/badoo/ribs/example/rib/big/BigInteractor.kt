@@ -9,7 +9,7 @@ import com.badoo.ribs.example.rib.big.BigRouter.Configuration.Content
 import com.badoo.ribs.example.rib.big.BigRouter.Configuration.Overlay
 
 class BigInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, *, Content, Overlay, BigView>
 ) : Interactor<Configuration, Content, Overlay, BigView>(
     buildContext = buildContext,

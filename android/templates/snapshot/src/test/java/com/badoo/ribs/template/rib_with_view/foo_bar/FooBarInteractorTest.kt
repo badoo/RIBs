@@ -11,7 +11,7 @@ import org.junit.Test
 
 class FooBarInteractorTest {
 
-    private val buildContext: BuildContext.Resolved<Nothing?> = mock()
+    private val buildContext: BuildContext<Nothing?> = mock()
     private val input: ObservableSource<FooBar.Input> = mock()
     private val output: Consumer<FooBar.Output> = mock()
     private val feature: FooBarFeature = mock()

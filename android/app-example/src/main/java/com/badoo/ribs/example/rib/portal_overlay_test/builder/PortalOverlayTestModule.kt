@@ -17,7 +17,7 @@ internal object PortalOverlayTestModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: PortalOverlayTestComponent,
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): PortalOverlayTestRouter =
         PortalOverlayTestRouter(
             buildContext = buildContext
@@ -27,7 +27,7 @@ internal object PortalOverlayTestModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: PortalOverlayTestRouter
     ): PortalOverlayTestInteractor =
         PortalOverlayTestInteractor(
@@ -39,7 +39,7 @@ internal object PortalOverlayTestModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: PortalOverlayTest.Customisation,
         router: PortalOverlayTestRouter,
         interactor: PortalOverlayTestInteractor

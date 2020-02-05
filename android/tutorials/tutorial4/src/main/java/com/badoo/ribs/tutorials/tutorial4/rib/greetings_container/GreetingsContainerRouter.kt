@@ -10,7 +10,7 @@ import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.builder.HelloWorldBuil
 import kotlinx.android.parcel.Parcelize
 
 class GreetingsContainerRouter(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     private val helloWorldBuilder: HelloWorldBuilder
 ): Router<Configuration, Nothing, Configuration, Nothing, Nothing>(
     buildContext = buildContext,

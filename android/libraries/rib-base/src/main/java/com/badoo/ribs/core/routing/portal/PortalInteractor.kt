@@ -8,7 +8,7 @@ import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
 
 internal class PortalInteractor(
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     router: Router<Configuration, *, Content, Overlay, Nothing>
 ) : Interactor<Configuration, Content, Overlay, Nothing>(
     buildContext = buildContext,

@@ -29,12 +29,12 @@ import io.reactivex.disposables.Disposable
  * @param <V> the type of [RibView].
  **/
 abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>(
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     protected val router: Router<C, *, Content, Overlay, V>,
     private val disposables: Disposable?
 ) : Identifiable by buildContext.identifier {
 
-    private val savedInstanceState = buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildContext.systemInfo.savedInstanceState?.getBundle(BUNDLE_KEY)
 
     internal open fun onAttach(ribLifecycle: Lifecycle) {
         onAttach(ribLifecycle, savedInstanceState)

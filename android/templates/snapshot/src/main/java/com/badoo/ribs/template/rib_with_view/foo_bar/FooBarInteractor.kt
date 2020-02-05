@@ -22,7 +22,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, *, Content, Overlay, FooBarView>,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,

@@ -17,7 +17,7 @@ internal interface PortalOverlayTestComponent {
         fun create(
             dependency: PortalOverlayTest.Dependency,
             @BindsInstance customisation: PortalOverlayTest.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): PortalOverlayTestComponent
     }
 

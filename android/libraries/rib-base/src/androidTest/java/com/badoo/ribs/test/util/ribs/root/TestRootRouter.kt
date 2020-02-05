@@ -18,7 +18,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     private val builderPermanent1: (BuildContext.Params) -> Node<*>,
     private val builderPermanent2: (BuildContext.Params) -> Node<*>,
     private val builder3: (BuildContext.Params) -> Node<*>,

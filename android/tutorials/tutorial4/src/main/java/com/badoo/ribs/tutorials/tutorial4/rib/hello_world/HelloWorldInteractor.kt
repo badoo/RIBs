@@ -18,7 +18,7 @@ class HelloWorldInteractor(
     user: User,
     config: HelloWorld.Config,
     private val output: Consumer<HelloWorld.Output>,
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
     buildContext = buildContext,

@@ -22,7 +22,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,

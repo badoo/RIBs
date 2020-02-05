@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.lorem_ipsum.builder
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
@@ -16,13 +17,16 @@ class LoremIpsumBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(LoremIpsum::class)
     }
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): Node<LoremIpsumView> =
+    override val rib: Rib =
+        object : LoremIpsum {}
+
+    override fun build(buildContext: BuildContext<Nothing?>): Node<LoremIpsumView> =
         DaggerLoremIpsumComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(LoremIpsum.Customisation()),
-                buildContext = resolve(object : LoremIpsum {}, params)
+                buildContext = buildContext
             )
             .node()
 }

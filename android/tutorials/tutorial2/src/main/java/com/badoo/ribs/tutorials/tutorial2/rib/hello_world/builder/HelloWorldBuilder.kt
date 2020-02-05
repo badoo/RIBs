@@ -10,13 +10,13 @@ class HelloWorldBuilder(
     override val dependency: HelloWorld.Dependency
 ) : Builder<HelloWorld.Dependency, Nothing?, Node<HelloWorldView>>() {
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): Node<HelloWorldView> =
+    override fun build(buildContext: BuildContext<Nothing?>): Node<HelloWorldView> =
         DaggerHelloWorldComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = HelloWorld.Customisation(),
-                buildContext = resolve(object : HelloWorld {}, params)
+                buildContext = buildContext
             )
             .node()
 }

@@ -15,7 +15,8 @@
  */
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
+import com.badoo.ribs.core.BuildContext.ClientInfo
+import com.badoo.ribs.core.BuildContext.SystemInfo
 import java.util.UUID
 
 /**
@@ -32,30 +33,26 @@ import java.util.UUID
 abstract class Builder<D, P, N : Node<*>> {
     abstract val dependency: D
 
-    fun build(params: BuildContext.Params): N =
-        build(params.with())
+    fun build(systemInfo: SystemInfo, data: P? = null, tag: Any = Unit): N =
+        build(systemInfo, ClientInfo(tag = tag, data = data))
 
-    abstract fun build(params: BuildContext.ParamsWithData<P>): N
-
-    /**
-     * Helper method to create [BuildContext.Resolved] that is then passed to RIB components.
-     */
-    // TODO test
-    protected fun resolve(
-        rib: Rib,
-        buildContext: BuildContext.ParamsWithData<P>
-    ): BuildContext.Resolved<P> =
-            BuildContext.Resolved(
-                ancestryInfo = buildContext.ancestryInfo,
-                viewAttachMode = buildContext.viewAttachMode,
-                savedInstanceState = buildContext.savedInstanceState,
-                identifier = Rib.Identifier(
-                    rib = rib,
-                    uuid = buildContext.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID(),
-                    tag = buildContext.tag
-                ),
-                data = buildContext.data
+    fun build(systemInfo: SystemInfo, clientInfo: ClientInfo<P>): N {
+        val buildContext = BuildContext(
+            systemInfo = systemInfo,
+            clientInfo = clientInfo,
+            identifier = Rib.Identifier(
+                rib = rib,
+                uuid = systemInfo.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID
+                    ?: UUID.randomUUID(),
+                tag = clientInfo.tag
             )
+        )
+        return build(buildContext)
+    }
+
+    abstract val rib: Rib
+
+    protected abstract fun build(buildContext: BuildContext<P>): N
 }
 
 

@@ -19,7 +19,7 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): MenuRouter =
         MenuRouter(
             buildContext = buildContext
@@ -35,7 +35,7 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: MenuRouter,
         input: ObservableSource<Menu.Input>,
         output: Consumer<Menu.Output>,
@@ -53,7 +53,7 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: Menu.Customisation,
         router: MenuRouter,
         interactor: MenuInteractor

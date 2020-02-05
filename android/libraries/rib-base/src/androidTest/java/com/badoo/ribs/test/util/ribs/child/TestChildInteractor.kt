@@ -6,7 +6,7 @@ import com.badoo.ribs.test.util.ribs.child.TestChildRouter.Configuration
 import com.badoo.ribs.core.BuildContext
 
 class TestChildInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, TestChildView>
 ) : Interactor<Configuration, Configuration, Nothing, TestChildView>(
     buildContext = buildContext,

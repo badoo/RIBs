@@ -8,7 +8,7 @@ import com.badoo.ribs.example.rib.blocker.BlockerRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 
 class BlockerRouter(
-    buildContext: BuildContext.Resolved<Nothing?>
+    buildContext: BuildContext<Nothing?>
 ): Router<Configuration, Nothing, Configuration, Nothing, BlockerView>(
     buildContext = buildContext,
     initialConfiguration = Configuration.Default

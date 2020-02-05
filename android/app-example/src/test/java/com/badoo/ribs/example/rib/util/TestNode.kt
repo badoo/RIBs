@@ -4,14 +4,12 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.view.RibView
-import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
-    buildContext: BuildContext.Resolved<*> = mockBuildContext,
+    buildContext: BuildContext<*> = mockBuildContext,
     router: Router<*, *, *, *, V> = mock(),
     viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<*, *, *, V> = mock()

@@ -8,13 +8,13 @@ import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 
 open class AttachRibRoutingAction<V : RibView>(
-    private val builder: (params: BuildContext.Params) -> Node<*>
+    private val builder: (systemInfo: BuildContext.SystemInfo) -> Node<*>
 ) : RoutingAction<V> {
 
     override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         listOf(
             builder.invoke(
-                BuildContext.Params(
+                BuildContext.SystemInfo(
                     ancestryInfo = ancestryInfo,
                     viewAttachMode = AttachMode.PARENT,
                     savedInstanceState = bundles.firstOrNull()
@@ -23,7 +23,7 @@ open class AttachRibRoutingAction<V : RibView>(
         )
 
     companion object {
-        fun <V : RibView> attach(builder: (params: BuildContext.Params) -> Node<*>): RoutingAction<V> =
+        fun <V : RibView> attach(builder: (systemInfo: BuildContext.SystemInfo) -> Node<*>): RoutingAction<V> =
             AttachRibRoutingAction(builder)
     }
 }

@@ -7,7 +7,7 @@ import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorldRouter.Confi
 import com.badoo.ribs.core.BuildContext
 
 class HelloWorldInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
     buildContext = buildContext,

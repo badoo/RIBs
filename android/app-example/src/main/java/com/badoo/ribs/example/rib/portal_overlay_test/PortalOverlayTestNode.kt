@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 
 class PortalOverlayTestNode(
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     viewFactory: ((ViewGroup) -> PortalOverlayTestView?)?,
     router: PortalOverlayTestRouter,
     interactor: PortalOverlayTestInteractor

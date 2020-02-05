@@ -16,7 +16,7 @@ import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import kotlinx.android.parcel.Parcelize
 
 class DialogExampleRouter(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     private val dialogLauncher: DialogLauncher,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,

@@ -2,34 +2,28 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import com.badoo.ribs.core.AttachMode.PARENT
+import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
 import com.badoo.ribs.core.routing.portal.AncestryInfo
+import java.util.UUID
 
-sealed class BuildContext {
-    abstract val savedInstanceState: Bundle?
-    abstract val ancestryInfo: AncestryInfo
-    abstract val viewAttachMode: AttachMode
 
-    // TODO better name
-    data class Params(
-        override val ancestryInfo: AncestryInfo,
-        override val viewAttachMode: AttachMode = PARENT,
-        override val savedInstanceState: Bundle?
-    ) : BuildContext()
+data class BuildContext<T>(
+    val systemInfo: SystemInfo,
+    val clientInfo: ClientInfo<T>,
+    val identifier: Rib.Identifier = Rib.Identifier(
+        rib = object : Rib {},
+        uuid = systemInfo.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID(),
+        tag = clientInfo.tag
+    )
+) {
+    data class SystemInfo(
+        val ancestryInfo: AncestryInfo,
+        val viewAttachMode: AttachMode = PARENT,
+        val savedInstanceState: Bundle?
+    )
 
-    // TODO better name
-    data class ParamsWithData<T : Any?>(
-        override val ancestryInfo: AncestryInfo,
-        override val viewAttachMode: AttachMode,
-        override val savedInstanceState: Bundle?,
+    data class ClientInfo<T : Any?>(
         val tag: Any = Unit,
         val data: T? = null
-    ) : BuildContext()
-
-    data class Resolved<T : Any?>(
-        override val ancestryInfo: AncestryInfo,
-        override val viewAttachMode: AttachMode,
-        override val savedInstanceState: Bundle?,
-        val identifier: Rib.Identifier,
-        val data: T? = null
-    ) : BuildContext()
+    )
 }

@@ -45,7 +45,7 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         dialogLauncher: DialogLauncher,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
@@ -63,7 +63,7 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: DialogExampleRouter,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
@@ -81,7 +81,7 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: DialogExample.Customisation,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor

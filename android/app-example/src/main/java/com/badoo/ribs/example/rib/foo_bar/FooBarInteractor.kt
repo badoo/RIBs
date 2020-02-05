@@ -21,7 +21,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, FooBarView>,
     private val permissionRequester: PermissionRequester
 ) : Interactor<Configuration, Configuration, Nothing, FooBarView>(

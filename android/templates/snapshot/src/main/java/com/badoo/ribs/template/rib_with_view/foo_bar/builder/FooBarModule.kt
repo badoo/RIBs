@@ -22,7 +22,7 @@ internal object FooBarModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: FooBarComponent,
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): FooBarRouter =
         FooBarRouter(
             buildContext = buildContext
@@ -38,7 +38,7 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: FooBarRouter,
         input: ObservableSource<Input>,
         output: Consumer<Output>,
@@ -56,7 +56,7 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,

@@ -15,13 +15,13 @@ class FooBarBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): FooBarNode =
+    override fun build(buildContext: BuildContext<Nothing?>): FooBarNode =
         DaggerFooBarComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(FooBar.Customisation()),
-                buildContext = resolve(object : FooBar {}, params)
+                buildContext = buildContext
             )
             .node()
 }

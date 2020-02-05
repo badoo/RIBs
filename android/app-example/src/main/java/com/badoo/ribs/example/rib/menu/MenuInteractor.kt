@@ -17,7 +17,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MenuInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, MenuView>,
     private val input: ObservableSource<Menu.Input>,
     private val output: Consumer<Menu.Output>,

@@ -14,7 +14,7 @@ import com.badoo.ribs.example.rib.small.builder.SmallBuilder
 import kotlinx.android.parcel.Parcelize
 
 class BigRouter(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     private val smallBuilder: SmallBuilder
 ): Router<Configuration, Permanent, Content, Overlay, BigView>(
     buildContext = buildContext,

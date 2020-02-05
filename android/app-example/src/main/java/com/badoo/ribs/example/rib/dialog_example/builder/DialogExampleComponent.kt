@@ -19,7 +19,7 @@ internal interface DialogExampleComponent : LoremIpsum.Dependency {
         fun create(
             dependency: DialogExample.Dependency,
             @BindsInstance customisation: DialogExample.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): DialogExampleComponent
     }
 

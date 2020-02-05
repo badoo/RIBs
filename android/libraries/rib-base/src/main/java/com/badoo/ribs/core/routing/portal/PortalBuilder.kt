@@ -2,13 +2,17 @@ package com.badoo.ribs.core.routing.portal
 
 import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.Rib
 
 class PortalBuilder(
     override val dependency: Portal.Dependency
 ) : Builder<Portal.Dependency, Nothing?, PortalNode>() {
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): PortalNode {
-        val buildContext = resolve(object : Portal {}, params)
+    override val rib: Rib =
+        object : Portal {}
+
+    override fun build(buildContext: BuildContext<Nothing?>): PortalNode {
+        val buildContext = buildContext
 
         val router = PortalRouter(
             buildContext = buildContext

@@ -13,7 +13,7 @@ class SwitcherNode(
     viewFactory: ((ViewGroup) -> SwitcherView?)?,
     private val router: SwitcherRouter,
     interactor: SwitcherInteractor,
-    buildContext: BuildContext.Resolved<*>
+    buildContext: BuildContext<*>
 ) : Node<SwitcherView>(
     buildContext = buildContext,
     viewFactory = viewFactory,

@@ -7,7 +7,7 @@ import io.reactivex.functions.Consumer
 import com.badoo.ribs.core.BuildContext
 
 class GreetingsContainerInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<Configuration, Configuration, Nothing, Nothing>(

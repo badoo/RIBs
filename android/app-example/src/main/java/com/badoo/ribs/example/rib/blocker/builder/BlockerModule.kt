@@ -17,7 +17,7 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): BlockerRouter =
         BlockerRouter(
             buildContext = buildContext
@@ -28,7 +28,7 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: BlockerRouter,
         output: Consumer<Output>
     ): BlockerInteractor =
@@ -42,7 +42,7 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: Blocker.Customisation,
         router: BlockerRouter,
         interactor: BlockerInteractor

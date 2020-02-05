@@ -10,7 +10,7 @@ class HelloWorldNode(
     viewFactory: ((ViewGroup) -> HelloWorldView?)?,
     private val router: HelloWorldRouter,
     interactor: HelloWorldInteractor,
-    buildContext: BuildContext.Resolved<*>
+    buildContext: BuildContext<*>
 ) : Node<HelloWorldView>(
     buildContext = buildContext,
     viewFactory = viewFactory,

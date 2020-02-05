@@ -17,7 +17,7 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): HelloWorldRouter =
         HelloWorldRouter(
             buildContext = buildContext
@@ -27,7 +27,7 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: HelloWorldRouter,
         output: Consumer<Output>
     ): HelloWorldInteractor =
@@ -41,7 +41,7 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: HelloWorld.Customisation,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor

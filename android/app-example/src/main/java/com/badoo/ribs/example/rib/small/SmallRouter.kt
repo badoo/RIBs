@@ -14,7 +14,7 @@ import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.FullScreen
 import kotlinx.android.parcel.Parcelize
 
 class SmallRouter(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     private val bigBuilder: BigBuilder,
     private val portalOverlayTestBuilder: PortalOverlayTestBuilder
 ): Router<Configuration, Nothing, Content, Nothing, SmallView>(

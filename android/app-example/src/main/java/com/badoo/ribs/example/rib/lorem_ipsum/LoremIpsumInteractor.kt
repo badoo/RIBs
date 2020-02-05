@@ -11,7 +11,7 @@ import com.badoo.ribs.example.rib.lorem_ipsum.mapper.ViewEventToOutput
 import io.reactivex.functions.Consumer
 
 class LoremIpsumInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, LoremIpsumView>,
     private val output: Consumer<LoremIpsum.Output>
 ) : Interactor<Configuration, Configuration, Nothing, LoremIpsumView>(

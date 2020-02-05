@@ -20,7 +20,7 @@ internal object SmallModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: SmallComponent,
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): SmallRouter =
         SmallRouter(
             buildContext = buildContext,
@@ -32,7 +32,7 @@ internal object SmallModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: SmallRouter,
         portal: Portal.OtherSide
     ): SmallInteractor =
@@ -46,7 +46,7 @@ internal object SmallModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: Small.Customisation,
         router: SmallRouter,
         interactor: SmallInteractor

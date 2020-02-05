@@ -13,7 +13,7 @@ import com.badoo.ribs.example.rib.small.builder.SmallBuilder
 import kotlinx.android.parcel.Parcelize
 
 class HelloWorldRouter(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     private val smallBuilder: SmallBuilder
 ): Router<Configuration, Permanent, Content, Nothing, HelloWorldView>(
     buildContext = buildContext,

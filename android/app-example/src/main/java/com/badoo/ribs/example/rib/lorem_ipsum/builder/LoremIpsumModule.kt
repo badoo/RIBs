@@ -19,7 +19,7 @@ internal object LoremIpsumModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: LoremIpsumComponent,
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): LoremIpsumRouter =
         LoremIpsumRouter(
             buildContext = buildContext
@@ -30,7 +30,7 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: LoremIpsumRouter,
         output: Consumer<Output>
     ): LoremIpsumInteractor =
@@ -44,7 +44,7 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: LoremIpsum.Customisation,
         router: LoremIpsumRouter,
         interactor: LoremIpsumInteractor

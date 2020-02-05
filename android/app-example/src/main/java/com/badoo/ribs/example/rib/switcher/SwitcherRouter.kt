@@ -26,7 +26,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     private val fooBarBuilder: FooBarBuilder,
     private val helloWorldBuilder: HelloWorldBuilder,
     private val dialogExampleBuilder: DialogExampleBuilder,

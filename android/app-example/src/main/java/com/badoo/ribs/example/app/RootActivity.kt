@@ -46,7 +46,7 @@ class RootActivity : RibActivity() {
                     attach { buildSwitcherNode(portal, it) }
                 }
 
-                private fun buildSwitcherNode(portal: Portal.OtherSide, params: BuildContext.Params): SwitcherNode {
+                private fun buildSwitcherNode(portal: Portal.OtherSide, systemInfo: BuildContext.SystemInfo): SwitcherNode {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
                             override fun ribCustomisation(): RibCustomisationDirectory =
@@ -60,11 +60,11 @@ class RootActivity : RibActivity() {
                             override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
                             override fun portal(): Portal.OtherSide = portal
                         }
-                    ).build(params)
+                    ).build(systemInfo)
                 }
             }
         ).build(
-            BuildContext.Params(
+            BuildContext.SystemInfo(
                 ancestryInfo = AncestryInfo.Root,
                 savedInstanceState = savedInstanceState
             )

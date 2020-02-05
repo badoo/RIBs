@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
 import io.reactivex.Single
 
 class PortalNode internal constructor(
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     private val router: PortalRouter,
     interactor: PortalInteractor
 ) : Node<Nothing>(

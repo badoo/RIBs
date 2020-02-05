@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 import com.badoo.ribs.core.BuildContext
 
 class TestChildRouter(
-    buildContext: BuildContext.Resolved<Nothing?>
+    buildContext: BuildContext<Nothing?>
 ): Router<Configuration, Nothing, Configuration, Nothing, TestChildView>(
     buildContext = buildContext,
     initialConfiguration = Configuration.Default

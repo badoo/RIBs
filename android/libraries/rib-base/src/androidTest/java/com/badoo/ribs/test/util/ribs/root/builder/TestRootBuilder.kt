@@ -15,9 +15,9 @@ class TestRootBuilder(
     override val dependency: TestRoot.Dependency
 ) : Builder<TestRoot.Dependency, Nothing?, Node<TestRootView>>() {
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): Node<TestRootView> {
+    override fun build(buildContext: BuildContext<Nothing?>): Node<TestRootView> {
         return TestNode(
-            buildContext = resolve(object : TestRoot {}, params),
+            buildContext = buildContext
             viewFactory = object : ViewFactory<Nothing?, TestRootView> {
                 override fun invoke(deps: Nothing?): (ViewGroup) -> TestRootView = {
                     TestRootViewImpl(it.context)
@@ -25,7 +25,7 @@ class TestRootBuilder(
             },
             router = dependency.router(),
             interactor = TestRootInteractor(
-                buildContext = resolve(object : TestRoot {}, params),
+                buildContext = buildContext
                 router = dependency.router(),
                 viewLifecycleObserver = dependency.viewLifecycleObserver()
             )

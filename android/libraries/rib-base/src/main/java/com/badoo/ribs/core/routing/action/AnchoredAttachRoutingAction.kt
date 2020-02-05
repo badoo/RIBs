@@ -6,7 +6,7 @@ import com.badoo.ribs.core.view.RibView
 
 class AnchoredAttachRoutingAction<V : RibView>(
     private val anchor: Node<*>,
-    builder: (params: BuildContext.Params) -> Node<*>
+    builder: (systemInfo: BuildContext.SystemInfo) -> Node<*>
 ) : AttachRibRoutingAction<V>(
     builder = builder
 ) {
@@ -17,7 +17,7 @@ class AnchoredAttachRoutingAction<V : RibView>(
     companion object {
         fun <V : RibView> anchor(
             anchor: Node<*>,
-            builder: (params: BuildContext.Params) -> Node<*>): RoutingAction<V> =
+            builder: (systemInfo: BuildContext.SystemInfo) -> Node<*>): RoutingAction<V> =
                 AnchoredAttachRoutingAction(
                     anchor,
                     builder

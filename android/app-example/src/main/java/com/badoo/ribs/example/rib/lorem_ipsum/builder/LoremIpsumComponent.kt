@@ -18,7 +18,7 @@ internal interface LoremIpsumComponent {
         fun create(
             dependency: LoremIpsum.Dependency,
             @BindsInstance customisation: LoremIpsum.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): LoremIpsumComponent
     }
 

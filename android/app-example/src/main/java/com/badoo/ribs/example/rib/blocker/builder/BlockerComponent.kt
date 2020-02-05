@@ -18,7 +18,7 @@ internal interface BlockerComponent {
         fun create(
             dependency: Blocker.Dependency,
             @BindsInstance customisation: Blocker.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): BlockerComponent
     }
 

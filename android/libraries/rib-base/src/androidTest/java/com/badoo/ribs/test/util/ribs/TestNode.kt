@@ -8,7 +8,7 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 
 class TestNode<V: RibView>(
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     viewFactory: ViewFactory<Nothing?, V>,
     private val router: Router<*, *, *, *, V>,
     interactor: Interactor<*, *, *, V>

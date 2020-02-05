@@ -13,7 +13,7 @@ import com.badoo.ribs.core.view.RibView
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(
-    buildContext: BuildContext.Resolved<*>
+    buildContext: BuildContext<*>
 ): Router<Configuration, Nothing, Content, Overlay, Nothing>(
     buildContext = buildContext,
     initialConfiguration = Content.Default,

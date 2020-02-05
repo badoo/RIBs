@@ -18,7 +18,7 @@ internal object BigModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: BigComponent,
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): BigRouter =
         BigRouter(
             buildContext = buildContext,
@@ -29,7 +29,7 @@ internal object BigModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: BigRouter
     ): BigInteractor =
         BigInteractor(
@@ -41,7 +41,7 @@ internal object BigModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         customisation: Big.Customisation,
         router: BigRouter,
         interactor: BigInteractor

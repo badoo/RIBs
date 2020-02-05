@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 import com.badoo.ribs.core.BuildContext
 
 class HelloWorldRouter(
-    buildContext: BuildContext.Resolved<Nothing?>
+    buildContext: BuildContext<Nothing?>
 ): Router<Configuration, Nothing, Content, Nothing, HelloWorldView>(
     buildContext = buildContext,
     initialConfiguration = Content.Default

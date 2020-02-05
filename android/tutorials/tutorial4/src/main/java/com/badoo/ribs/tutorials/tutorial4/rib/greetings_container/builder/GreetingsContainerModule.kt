@@ -21,7 +21,7 @@ internal object GreetingsContainerModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: GreetingsContainerComponent,
-        buildContext: BuildContext.Resolved<Nothing?>
+        buildContext: BuildContext<Nothing?>
     ): GreetingsContainerRouter =
         GreetingsContainerRouter(
             buildContext = buildContext,
@@ -32,7 +32,7 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: GreetingsContainerRouter,
         output: Consumer<GreetingsContainer.Output>
     ): GreetingsContainerInteractor =
@@ -46,7 +46,7 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext.Resolved<Nothing?>,
+        buildContext: BuildContext<Nothing?>,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
     ) : Node<Nothing> = Node(

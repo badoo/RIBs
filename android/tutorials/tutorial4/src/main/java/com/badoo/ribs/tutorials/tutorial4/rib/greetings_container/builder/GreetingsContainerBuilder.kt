@@ -9,11 +9,11 @@ class GreetingsContainerBuilder(
     override val dependency: GreetingsContainer.Dependency
 ) : Builder<GreetingsContainer.Dependency, Nothing?, Node<Nothing>>() {
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): Node<Nothing> {
+    override fun build(buildContext: BuildContext<Nothing?>): Node<Nothing> {
         val component = DaggerGreetingsContainerComponent.factory()
             .create(
                 dependency = dependency,
-                buildContext = resolve(object : GreetingsContainer {}, params)
+                buildContext = buildContext
             )
 
         return component.node()

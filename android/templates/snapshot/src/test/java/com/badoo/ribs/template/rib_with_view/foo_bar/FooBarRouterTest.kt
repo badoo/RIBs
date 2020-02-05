@@ -12,7 +12,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class FooBarRouterTest {
 
-    private val buildContext: BuildContext.Resolved<Nothing?> = mock()
+    private val buildContext: BuildContext<Nothing?> = mock()
     private var router: FooBarRouter? = null
 
     @Before

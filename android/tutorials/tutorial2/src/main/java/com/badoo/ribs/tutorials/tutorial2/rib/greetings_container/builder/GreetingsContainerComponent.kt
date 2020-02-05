@@ -16,7 +16,7 @@ internal interface GreetingsContainerComponent {
     interface Factory {
         fun create(
             dependency: GreetingsContainer.Dependency,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): GreetingsContainerComponent
     }
 

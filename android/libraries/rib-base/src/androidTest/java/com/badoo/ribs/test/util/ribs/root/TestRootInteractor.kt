@@ -11,7 +11,7 @@ import io.reactivex.observers.TestObserver
 import com.badoo.ribs.core.BuildContext
 
 class TestRootInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Configuration.Permanent, Configuration.Content, Configuration.Overlay, TestRootView>,
     private val viewLifecycleObserver: TestObserver<Lifecycle.Event>
 ) : Interactor<Configuration, Configuration.Content, Configuration.Overlay, TestRootView>(

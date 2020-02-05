@@ -27,7 +27,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Permanent, Content, Nothing, HelloWorldView>,
     private val input: ObservableSource<HelloWorld.Input>,
     private val output: Consumer<HelloWorld.Output>,

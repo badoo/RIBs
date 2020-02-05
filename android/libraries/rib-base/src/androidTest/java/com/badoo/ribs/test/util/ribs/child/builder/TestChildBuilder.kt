@@ -3,7 +3,6 @@ package com.badoo.ribs.test.util.ribs.child.builder
 import com.badoo.ribs.core.BuildContext
 import android.view.ViewGroup
 import com.badoo.ribs.core.Builder
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildInteractor
@@ -16,9 +15,9 @@ class TestChildBuilder : Builder<Nothing?, Nothing?, TestNode<TestChildView>>() 
 
     override val dependency: Nothing? = null
 
-    override fun build(params: BuildContext.ParamsWithData<Nothing?>): TestNode<TestChildView> {
+    override fun build(buildContext: BuildContext<Nothing?>): TestNode<TestChildView> {
         val router = TestChildRouter(resolve(object: TestRoot { }, params))
-        val buildContext = resolve(object : Rib {}, params)
+        val buildContext = buildContext
 
         return TestNode(
             buildContext = buildContext,

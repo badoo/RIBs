@@ -28,7 +28,7 @@ internal interface SwitcherComponent :
         fun create(
             dependency: Switcher.Dependency,
             @BindsInstance customisation: Switcher.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): SwitcherComponent
     }
 

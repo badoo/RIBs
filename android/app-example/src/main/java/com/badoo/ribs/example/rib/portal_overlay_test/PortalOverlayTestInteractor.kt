@@ -8,7 +8,7 @@ import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestRouter.Co
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestRouter.Configuration.Overlay
 
 class PortalOverlayTestInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, *, Content, Overlay, PortalOverlayTestView>
 ) : Interactor<Configuration, Content, Overlay, PortalOverlayTestView>(
     buildContext = buildContext,

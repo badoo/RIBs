@@ -18,7 +18,7 @@ internal interface BigComponent : Small.Dependency {
         fun create(
             dependency: Big.Dependency,
             @BindsInstance customisation: Big.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): BigComponent
     }
 

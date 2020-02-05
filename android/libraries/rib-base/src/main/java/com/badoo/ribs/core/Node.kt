@@ -52,7 +52,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  **/
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
-    buildContext: BuildContext.Resolved<*>,
+    buildContext: BuildContext<*>,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>,
     private val interactor: Interactor<*, *, *, V>,
@@ -69,13 +69,13 @@ open class Node<V : RibView>(
         buildContext.identifier
 
     internal val ancestryInfo: AncestryInfo =
-        buildContext.ancestryInfo
+        buildContext.systemInfo.ancestryInfo
 
     internal open val viewAttachMode: AttachMode =
-        buildContext.viewAttachMode
+        buildContext.systemInfo.viewAttachMode
 
     val resolver: ConfigurationResolver<*, V> = router
-    private val savedInstanceState = buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildContext.systemInfo.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
     internal var viewLifecycleRegistry: LifecycleRegistry? = null

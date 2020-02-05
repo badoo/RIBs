@@ -20,7 +20,7 @@ internal interface SmallComponent :
     interface Factory {
         fun create(
             dependency: Small.Dependency,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>,
+            @BindsInstance buildContext: BuildContext<Nothing?>,
             @BindsInstance customisation: Small.Customisation
         ): SmallComponent
     }

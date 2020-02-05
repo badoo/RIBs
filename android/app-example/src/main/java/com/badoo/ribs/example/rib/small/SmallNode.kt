@@ -5,7 +5,7 @@ import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
 
 class SmallNode(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     viewFactory: ((ViewGroup) -> SmallView?)?,
     private val router: SmallRouter,
     private val interactor: SmallInteractor

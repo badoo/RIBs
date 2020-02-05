@@ -18,7 +18,7 @@ interface MenuComponent {
         fun create(
             dependency: Menu.Dependency,
             @BindsInstance customisation: Menu.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): MenuComponent
     }
 

@@ -18,7 +18,7 @@ internal interface HelloWorldComponent {
         fun create(
             dependency: HelloWorld.Dependency,
             @BindsInstance customisation: HelloWorld.Customisation,
-            @BindsInstance buildContext: BuildContext.Resolved<Nothing?>
+            @BindsInstance buildContext: BuildContext<Nothing?>
         ): HelloWorldComponent
     }
 

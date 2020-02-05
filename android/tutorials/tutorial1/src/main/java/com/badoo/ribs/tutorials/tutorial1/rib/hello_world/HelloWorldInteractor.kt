@@ -12,7 +12,7 @@ import io.reactivex.functions.Consumer
 import com.badoo.ribs.core.BuildContext
 
 class HelloWorldInteractor(
-    buildContext: BuildContext.Resolved<Nothing?>,
+    buildContext: BuildContext<Nothing?>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>,
     private val output: Consumer<HelloWorld.Output>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(

@@ -10,7 +10,7 @@ class HelloWorldBuilder(
     override val dependency: HelloWorld.Dependency
 ) : Builder<HelloWorld.Dependency>() {
 
-    fun build(savedInstanceState: Bundle?): Node<HelloWorldView> =
+    fun build(buildParams: BuildParams<Nothing?>): Node<HelloWorldView> =
         DaggerHelloWorldComponent
             .factory()
             .create(

@@ -10,7 +10,7 @@ class OptionSelectorBuilder(
     override val dependency: OptionSelector.Dependency
 ) : Builder<OptionSelector.Dependency>() {
 
-    fun build(savedInstanceState: Bundle?): Node<OptionSelectorView> =
+    fun build(buildParams: BuildParams<Nothing?>): Node<OptionSelectorView> =
         DaggerOptionSelectorComponent
             .factory()
             .create(

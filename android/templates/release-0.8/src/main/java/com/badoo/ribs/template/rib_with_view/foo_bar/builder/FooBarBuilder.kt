@@ -15,7 +15,7 @@ class FooBarBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 
-    fun build(savedInstanceState: Bundle?): FooBarNode =
+    fun build(buildParams: BuildParams<Nothing?>): FooBarNode =
         DaggerFooBarComponent
             .factory()
             .create(

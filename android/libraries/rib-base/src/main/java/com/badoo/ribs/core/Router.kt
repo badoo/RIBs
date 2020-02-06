@@ -128,8 +128,8 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun getNodes(configurationKey: ConfigurationKey) =
-        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes?.map { it.node }
+    internal fun getNodes(configurationKey: ConfigurationKey): List<Node<*>>? =
+        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
 
     fun popBackStack(): Boolean =
         if (backStackFeature.state.canPop) {

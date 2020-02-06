@@ -9,7 +9,7 @@ class GreetingsContainerBuilder(
     override val dependency: GreetingsContainer.Dependency
 ) : Builder<GreetingsContainer.Dependency>() {
 
-    fun build(savedInstanceState: Bundle?): Node<Nothing> {
+    fun build(buildParams: BuildParams<Nothing?>): Node<Nothing> {
         val component = DaggerGreetingsContainerComponent.factory()
             .create(
                 dependency = dependency,

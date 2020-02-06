@@ -107,7 +107,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         state: WorkingState<C>,
         transaction: Transaction.ListOfCommands<C>
     ): NewTransitionsExecution {
-        state.onGoingTransitions.forEach {
+        state.ongoingTransitions.forEach {
             when {
                 transaction.descriptor.isReverseOf(it.descriptor) -> {
                     it.reverse()

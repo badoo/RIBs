@@ -131,8 +131,8 @@ internal class ConfigurationFeature<C : Parcelable>(
             when (effect) {
                 is Effect.Global -> state.global(effect)
                 is Effect.Individual -> state.individual(effect)
-                is Effect.TransitionStarted -> state.copy(onGoingTransitions = state.onGoingTransitions + effect.transition)
-                is Effect.TransitionFinished -> state.copy(onGoingTransitions = state.onGoingTransitions - effect.transition)
+                is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
+                is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
             }
 
         private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =

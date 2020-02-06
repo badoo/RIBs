@@ -13,7 +13,6 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         android:layout_margin="16dp"
-        android:transitionName="bla"
         android:background="@color/colorAccent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

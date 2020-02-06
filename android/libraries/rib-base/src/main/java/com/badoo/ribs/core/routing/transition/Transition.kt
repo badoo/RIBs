@@ -15,26 +15,26 @@ interface Transition {
     companion object {
         fun multiple(vararg transitions: Collection<Transition?>) = object : Transition {
             override fun start() {
-                transitions.flatMap {
-                    it.map { it?.start() }
+                transitions.forEach {
+                    it.forEach { it?.start() }
                 }
             }
 
             override fun end() {
-                transitions.flatMap {
-                    it.map { it?.end() }
+                transitions.forEach {
+                    it.forEach { it?.end() }
                 }
             }
 
             override fun pause() {
-                transitions.flatMap {
-                    it.map { it?.pause() }
+                transitions.forEach {
+                    it.forEach { it?.pause() }
                 }
             }
 
             override fun reverse() {
-                transitions.flatMap {
-                    it.map { it?.reverse() }
+                transitions.forEach {
+                    it.forEach { it?.reverse() }
                 }
             }
         }

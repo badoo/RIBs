@@ -15,8 +15,7 @@ internal class RemoveAction<C : Parcelable>(
     private val params: ActionExecutionParams<C>
 ) : ReversibleAction<C>() {
 
-    object Factory :
-        ActionFactory {
+    object Factory : ActionFactory {
         override fun <C : Parcelable> create(
             key: ConfigurationKey,
             params: ActionExecutionParams<C>,

@@ -20,8 +20,7 @@ internal class NoOpAction<C : Parcelable>(
     override val transitionElements: List<TransitionElement<C>> =
         emptyList()
 
-    object Factory :
-        ActionFactory {
+    object Factory : ActionFactory {
         override fun <C : Parcelable> create(
             key: ConfigurationKey,
             params: ActionExecutionParams<C>,

@@ -21,8 +21,7 @@ internal class ActivateAction<C : Parcelable>(
     private val isBackStackOperation: Boolean
 ) : ReversibleAction<C>() {
 
-    object Factory:
-        ActionFactory {
+    object Factory: ActionFactory {
         override fun <C : Parcelable> create(
             key: ConfigurationKey,
             params: ActionExecutionParams<C>,

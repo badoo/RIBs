@@ -21,8 +21,7 @@ internal class DeactivateAction<C : Parcelable>(
     private val isBackStackOperation: Boolean
 ) : ReversibleAction<C>() {
 
-    object Factory:
-        ActionFactory {
+    object Factory: ActionFactory {
         override fun <C : Parcelable> create(key: ConfigurationKey, params: ActionExecutionParams<C>, isBackStackOperation: Boolean): Action<C> {
             val item = params.resolver.invoke(key)
             return DeactivateAction(item, params, isBackStackOperation)

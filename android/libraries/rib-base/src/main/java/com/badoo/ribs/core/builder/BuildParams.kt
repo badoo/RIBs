@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
 import java.util.UUID
 
 
-data class BuildParams<T>(
+class BuildParams<T> internal constructor(
     val data: T? = null,
     val buildContext: BuildContext,
     val identifier: Rib.Identifier = Rib.Identifier(
@@ -13,5 +13,4 @@ data class BuildParams<T>(
         uuid = buildContext.savedInstanceState?.getSerializable(KEY_UUID) as? UUID
             ?: UUID.randomUUID()
     )
-) {
-}
+)

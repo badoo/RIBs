@@ -30,7 +30,10 @@ import java.util.UUID
  * @param <N> type of [Node] this Builder is expected to build
  *
  */
-abstract class DataBuilder<D, P, N : Node<*>>  {
+abstract class DataBuilder<D, P, N : Node<*>>(
+    private val rib: Rib // This will be most probably removed later in favor of Node implementing the interface
+) {
+    abstract val dependency: D
 
     @JvmName("buildWithCompulsoryData")
     fun build(buildContext: BuildContext, data: P): N {
@@ -45,8 +48,6 @@ abstract class DataBuilder<D, P, N : Node<*>>  {
         )
         return build(buildParams)
     }
-
-    abstract val rib: Rib
 
     protected abstract fun build(buildParams: BuildParams<P>): N
 }

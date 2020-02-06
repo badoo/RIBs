@@ -13,7 +13,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootViewImpl
 
 class TestRootBuilder(
     override val dependency: TestRoot.Dependency
-) : Builder<TestRoot.Dependency, Node<TestRootView>>() {
+) : Builder<TestRoot.Dependency, Node<TestRootView>>(object : TestRoot {}) {
 
     override fun build(buildParams: BuildParams<Nothing?>): Node<TestRootView> {
         return TestNode(

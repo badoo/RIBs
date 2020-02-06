@@ -6,10 +6,7 @@ import com.badoo.ribs.core.Rib
 
 class PortalBuilder(
     override val dependency: Portal.Dependency
-) : Builder<Portal.Dependency, PortalNode>() {
-
-    override val rib: Rib =
-        object : Portal {}
+) : Builder<Portal.Dependency, PortalNode>(object : Portal {}) {
 
     override fun build(buildParams: BuildParams<Nothing?>): PortalNode {
         val buildContext = buildParams

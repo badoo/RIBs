@@ -3,6 +3,7 @@ package com.badoo.ribs.core
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
+import com.badoo.ribs.core.helper.testBuildParams
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.disposables.Disposable
@@ -20,7 +21,7 @@ class InteractorTest {
     @Before
     fun setUp() {
         interactor = TestInteractor(
-            buildParams = mock(),
+            buildParams = testBuildParams(),
             router = mock(),
             disposables = disposables
         )

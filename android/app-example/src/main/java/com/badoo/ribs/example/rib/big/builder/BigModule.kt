@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.big.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.big.Big
 import com.badoo.ribs.example.rib.big.BigInteractor
 import com.badoo.ribs.example.rib.big.BigNode

@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter.Configuration
 import kotlinx.android.parcel.Parcelize
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 
 class GreetingsContainerRouter(
     buildParams: BuildParams<Nothing?>

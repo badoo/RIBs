@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.dialog_example.builder
 
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.Builder
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault

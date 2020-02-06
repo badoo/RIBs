@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.helper
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.nhaarman.mockitokotlin2.mock

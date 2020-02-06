@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before

@@ -2,7 +2,7 @@ package com.badoo.ribs.example.rib.small
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.portal.Portal

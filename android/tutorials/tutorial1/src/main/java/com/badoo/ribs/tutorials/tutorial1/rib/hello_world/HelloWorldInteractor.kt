@@ -9,7 +9,7 @@ import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldRouter.Confi
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldRouter.Configuration.Content
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.mapper.ViewEventToOutput
 import io.reactivex.functions.Consumer
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 
 class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>,

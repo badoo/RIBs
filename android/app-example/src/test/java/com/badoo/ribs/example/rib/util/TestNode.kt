@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.util
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router

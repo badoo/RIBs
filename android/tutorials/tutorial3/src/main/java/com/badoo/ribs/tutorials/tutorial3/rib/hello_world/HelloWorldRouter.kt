@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorldRouter.Configuration.Content
 import kotlinx.android.parcel.Parcelize
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 
 class HelloWorldRouter(
     buildParams: BuildParams<Nothing?>

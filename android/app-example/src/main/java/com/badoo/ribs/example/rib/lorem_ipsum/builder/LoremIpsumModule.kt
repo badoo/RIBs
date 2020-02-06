@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum.Output

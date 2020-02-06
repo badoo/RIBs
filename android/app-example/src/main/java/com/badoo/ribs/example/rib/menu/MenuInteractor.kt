@@ -2,7 +2,7 @@ package com.badoo.ribs.example.rib.menu
 
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using

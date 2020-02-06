@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.foo_bar.FooBar

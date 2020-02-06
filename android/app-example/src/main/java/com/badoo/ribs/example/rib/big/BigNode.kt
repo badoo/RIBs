@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.big
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 

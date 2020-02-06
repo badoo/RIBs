@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.portal
 
-import com.badoo.ribs.core.BuildParams
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.Builder
 import com.badoo.ribs.core.Rib
 
 class PortalBuilder(

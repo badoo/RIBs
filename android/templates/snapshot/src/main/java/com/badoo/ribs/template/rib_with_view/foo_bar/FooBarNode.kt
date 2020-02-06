@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature

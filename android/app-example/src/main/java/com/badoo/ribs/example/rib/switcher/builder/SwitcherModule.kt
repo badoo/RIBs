@@ -1,7 +1,7 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.switcher.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder

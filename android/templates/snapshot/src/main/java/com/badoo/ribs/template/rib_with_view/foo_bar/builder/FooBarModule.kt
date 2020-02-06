@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Output

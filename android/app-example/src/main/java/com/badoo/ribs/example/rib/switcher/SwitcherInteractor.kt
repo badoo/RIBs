@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.core.Interactor

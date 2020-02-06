@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
-import com.badoo.ribs.core.BuildContext
-import com.badoo.ribs.core.BuildContext.Companion.root
+import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal

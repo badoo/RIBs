@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList")
 package com.badoo.ribs.example.rib.foo_bar.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.example.rib.foo_bar.FooBar

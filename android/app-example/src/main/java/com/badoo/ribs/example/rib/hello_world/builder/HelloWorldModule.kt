@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.hello_world.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorld.Input

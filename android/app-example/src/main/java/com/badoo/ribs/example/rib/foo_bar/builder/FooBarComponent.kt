@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.foo_bar.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.foo_bar.FooBar
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import dagger.BindsInstance

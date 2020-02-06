@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.small.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.example.rib.big.builder.BigBuilder
 import com.badoo.ribs.example.rib.portal_overlay_test.builder.PortalOverlayTestBuilder

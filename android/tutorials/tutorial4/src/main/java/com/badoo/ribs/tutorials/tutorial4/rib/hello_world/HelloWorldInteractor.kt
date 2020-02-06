@@ -12,7 +12,7 @@ import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.mapper.ViewEventToOutp
 import com.badoo.ribs.tutorials.tutorial4.util.Lexem
 import com.badoo.ribs.tutorials.tutorial4.util.User
 import io.reactivex.functions.Consumer
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 
 class HelloWorldInteractor(
     user: User,

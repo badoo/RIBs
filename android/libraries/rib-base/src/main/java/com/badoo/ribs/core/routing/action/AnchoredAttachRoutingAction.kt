@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 

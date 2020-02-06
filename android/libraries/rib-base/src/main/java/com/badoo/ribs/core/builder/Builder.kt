@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.badoo.ribs.core
+package com.badoo.ribs.core.builder
 
+import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import java.util.UUID
 
 /**

@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.example.rib.foo_bar.FooBarRouter.Configuration
 import kotlinx.android.parcel.Parcelize
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 
 class FooBarRouter(
     buildParams: BuildParams<Nothing?>

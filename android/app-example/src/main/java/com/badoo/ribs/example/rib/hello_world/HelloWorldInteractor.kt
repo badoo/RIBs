@@ -4,7 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.Lifecycle
 import android.content.Intent
 import android.os.Bundle
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using

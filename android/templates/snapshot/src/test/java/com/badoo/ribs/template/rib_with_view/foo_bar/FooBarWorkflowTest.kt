@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.rib_with_view.foo_bar.builder.FooBarBuilder

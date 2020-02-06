@@ -4,7 +4,7 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter.Configuration
 import io.reactivex.functions.Consumer
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 
 class GreetingsContainerInteractor(
     buildParams: BuildParams<Nothing?>,

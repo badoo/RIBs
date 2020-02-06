@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2

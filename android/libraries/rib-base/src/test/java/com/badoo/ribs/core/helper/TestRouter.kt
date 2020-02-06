@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.helper
 
 import android.os.Parcelable
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.nhaarman.mockitokotlin2.mock

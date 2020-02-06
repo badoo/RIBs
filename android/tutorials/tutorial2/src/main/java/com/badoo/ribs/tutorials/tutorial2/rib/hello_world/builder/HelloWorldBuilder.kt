@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.hello_world.builder
 
-import com.badoo.ribs.core.BuildParams
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorldView

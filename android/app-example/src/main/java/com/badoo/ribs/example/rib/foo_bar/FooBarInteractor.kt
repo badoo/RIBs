@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.foo_bar
 
 import android.Manifest
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using

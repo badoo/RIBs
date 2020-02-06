@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.blocker
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction

@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.portal
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
 import io.reactivex.Single

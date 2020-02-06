@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction

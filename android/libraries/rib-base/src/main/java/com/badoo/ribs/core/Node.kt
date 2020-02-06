@@ -35,6 +35,7 @@ import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.core.Rib.Identifier
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView

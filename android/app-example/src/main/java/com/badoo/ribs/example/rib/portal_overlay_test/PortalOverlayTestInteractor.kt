@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.portal_overlay_test
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestRouter.Configuration

@@ -1,6 +1,7 @@
-package com.badoo.ribs.core
+package com.badoo.ribs.core.builder
 
 import android.os.Bundle
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 
 class BuildContext internal constructor(

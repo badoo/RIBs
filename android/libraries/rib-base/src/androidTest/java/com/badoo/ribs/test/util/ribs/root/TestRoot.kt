@@ -3,7 +3,7 @@ package com.badoo.ribs.test.util.ribs.root
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.ribs.core.AttachMode
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.DialogLauncher

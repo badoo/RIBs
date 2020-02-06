@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.tutorials.tutorial2.R

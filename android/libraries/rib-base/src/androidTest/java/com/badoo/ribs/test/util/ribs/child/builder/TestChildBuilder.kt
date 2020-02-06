@@ -1,8 +1,8 @@
 package com.badoo.ribs.test.util.ribs.child.builder
 
-import com.badoo.ribs.core.BuildParams
+import com.badoo.ribs.core.builder.BuildParams
 import android.view.ViewGroup
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.Builder
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildInteractor

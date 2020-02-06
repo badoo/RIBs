@@ -2,7 +2,7 @@ package com.badoo.ribs.example.rib.dialog_example.builder
 
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
@@ -20,13 +20,13 @@ class DialogExampleBuilder(
     override val rib: Rib =
         object : DialogExample {}
 
-    override fun build(buildContext: BuildContext<Nothing?>): Node<DialogExampleView> =
+    override fun build(buildParams: BuildParams<Nothing?>): Node<DialogExampleView> =
         DaggerDialogExampleComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(DialogExample.Customisation()),
-                buildContext = buildContext
+                buildParams = buildParams
             )
             .node()
 }

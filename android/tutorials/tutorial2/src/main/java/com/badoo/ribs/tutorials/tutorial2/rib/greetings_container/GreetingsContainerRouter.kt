@@ -5,12 +5,12 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter.Configuration
 import kotlinx.android.parcel.Parcelize
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 
 class GreetingsContainerRouter(
-    buildContext: BuildContext<Nothing?>
+    buildParams: BuildParams<Nothing?>
 ): Router<Configuration, Nothing, Configuration, Nothing, Nothing>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {

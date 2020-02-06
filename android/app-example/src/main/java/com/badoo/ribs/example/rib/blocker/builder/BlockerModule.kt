@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.blocker.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.Blocker.Output
@@ -17,10 +17,10 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext<Nothing?>
+        buildParams: BuildParams<Nothing?>
     ): BlockerRouter =
         BlockerRouter(
-            buildContext = buildContext
+            buildParams = buildParams
         )
 
 
@@ -28,12 +28,12 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: BlockerRouter,
         output: Consumer<Output>
     ): BlockerInteractor =
         BlockerInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             output = output
         )
@@ -42,12 +42,12 @@ internal object BlockerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         customisation: Blocker.Customisation,
         router: BlockerRouter,
         interactor: BlockerInteractor
     ) : Node<BlockerView> = Node(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

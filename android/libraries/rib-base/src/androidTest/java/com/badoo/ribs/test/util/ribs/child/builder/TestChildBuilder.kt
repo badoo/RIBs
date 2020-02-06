@@ -1,6 +1,6 @@
 package com.badoo.ribs.test.util.ribs.child.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import android.view.ViewGroup
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.view.ViewFactory
@@ -15,12 +15,12 @@ class TestChildBuilder : Builder<Nothing?, Nothing?, TestNode<TestChildView>>() 
 
     override val dependency: Nothing? = null
 
-    override fun build(buildContext: BuildContext<Nothing?>): TestNode<TestChildView> {
+    override fun build(buildParams: BuildParams<Nothing?>): TestNode<TestChildView> {
         val router = TestChildRouter(resolve(object: TestRoot { }, params))
-        val buildContext = buildContext
+        val buildContext = buildParams
 
         return TestNode(
-            buildContext = buildContext,
+            buildParams = buildContext,
             viewFactory = object : ViewFactory<Nothing?, TestChildView> {
                 override fun invoke(deps: Nothing?): (ViewGroup) -> TestChildView = {
                     TestChildViewImpl(it.context)

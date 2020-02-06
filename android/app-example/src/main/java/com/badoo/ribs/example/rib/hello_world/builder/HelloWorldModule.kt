@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.hello_world.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorld.Input
@@ -22,10 +22,10 @@ internal object HelloWorldModule {
     @JvmStatic
     internal fun router(
         component: HelloWorldComponent,
-        buildContext: BuildContext<Nothing?>
+        buildParams: BuildParams<Nothing?>
     ): HelloWorldRouter =
         HelloWorldRouter(
-            buildContext = buildContext,
+            buildParams = buildParams,
             smallBuilder = SmallBuilder(component)
         )
 
@@ -40,7 +40,7 @@ internal object HelloWorldModule {
     @JvmStatic
     @SuppressWarnings("LongParameterList", "LongMethod")
     internal fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: HelloWorldRouter,
         input: ObservableSource<Input>,
         output: Consumer<Output>,
@@ -48,7 +48,7 @@ internal object HelloWorldModule {
         activityStarter: ActivityStarter
     ): HelloWorldInteractor =
         HelloWorldInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             input = input,
             output = output,
@@ -60,12 +60,12 @@ internal object HelloWorldModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         customisation: HelloWorld.Customisation,
         router: HelloWorldRouter,
         interactor: HelloWorldInteractor
     ) : HelloWorldNode = HelloWorldNode(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

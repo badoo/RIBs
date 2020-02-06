@@ -6,12 +6,12 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorldRouter.Configuration.Content
 import kotlinx.android.parcel.Parcelize
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 
 class HelloWorldRouter(
-    buildContext: BuildContext<Nothing?>
+    buildParams: BuildParams<Nothing?>
 ): Router<Configuration, Nothing, Content, Nothing, HelloWorldView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     initialConfiguration = Content.Default
 ) {
     sealed class Configuration : Parcelable {

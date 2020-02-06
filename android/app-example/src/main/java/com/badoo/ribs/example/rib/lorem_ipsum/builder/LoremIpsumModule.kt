@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum.Output
@@ -19,10 +19,10 @@ internal object LoremIpsumModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: LoremIpsumComponent,
-        buildContext: BuildContext<Nothing?>
+        buildParams: BuildParams<Nothing?>
     ): LoremIpsumRouter =
         LoremIpsumRouter(
-            buildContext = buildContext
+            buildParams = buildParams
         )
 
 
@@ -30,12 +30,12 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: LoremIpsumRouter,
         output: Consumer<Output>
     ): LoremIpsumInteractor =
         LoremIpsumInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             output = output
         )
@@ -44,12 +44,12 @@ internal object LoremIpsumModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         customisation: LoremIpsum.Customisation,
         router: LoremIpsumRouter,
         interactor: LoremIpsumInteractor
     ) : Node<LoremIpsumView> = Node(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

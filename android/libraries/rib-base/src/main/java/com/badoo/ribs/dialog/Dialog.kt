@@ -3,7 +3,7 @@ package com.badoo.ribs.dialog
 import android.os.Bundle
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
@@ -17,7 +17,7 @@ abstract class Dialog<T : Any> private constructor(
     var message: String? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
-    private var ribFactory: ((BuildContext.SystemInfo) -> Node<*>)? = null
+    private var ribFactory: ((BuildParams.SystemInfo) -> Node<*>)? = null
     internal var rib: Node<*>? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
@@ -29,7 +29,7 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun ribFactory(ribFactory: (BuildContext.SystemInfo) -> Node<*>) {
+    fun ribFactory(ribFactory: (BuildParams.SystemInfo) -> Node<*>) {
         this.ribFactory = ribFactory
     }
 
@@ -73,7 +73,7 @@ abstract class Dialog<T : Any> private constructor(
 
     fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         ribFactory?.let { factory ->
-            val clientParams = BuildContext.SystemInfo(
+            val clientParams = BuildParams.SystemInfo(
                 /**
                  * RIBs inside dialogs behaved like Root nodes so far in that they were
                  * not added as a child of any other Node.

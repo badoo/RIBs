@@ -6,7 +6,7 @@ import android.content.Intent
 import android.view.ViewGroup
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.customisation.CanProvidePortal
@@ -140,7 +140,7 @@ class MainScreenTest {
                 })
             }
         }).build(
-            BuildContext.Params(
+            BuildParams.Params(
                 ancestryInfo = AncestryInfo.Root,
                 savedInstanceState = null
             )

@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumView
@@ -18,7 +18,7 @@ internal interface LoremIpsumComponent {
         fun create(
             dependency: LoremIpsum.Dependency,
             @BindsInstance customisation: LoremIpsum.Customisation,
-            @BindsInstance buildContext: BuildContext<Nothing?>
+            @BindsInstance buildParams: BuildParams<Nothing?>
         ): LoremIpsumComponent
     }
 

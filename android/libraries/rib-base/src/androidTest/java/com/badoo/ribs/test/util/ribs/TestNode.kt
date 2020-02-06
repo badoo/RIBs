@@ -1,6 +1,6 @@
 package com.badoo.ribs.test.util.ribs
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
@@ -8,12 +8,12 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 
 class TestNode<V: RibView>(
-    buildContext: BuildContext<*>,
+    buildParams: BuildParams<*>,
     viewFactory: ViewFactory<Nothing?, V>,
     private val router: Router<*, *, *, *, V>,
     interactor: Interactor<*, *, *, V>
 ): Node<V>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     viewFactory = viewFactory(null),
     router = router,
     interactor = interactor

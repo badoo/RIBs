@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarNode
 import dagger.BindsInstance
@@ -17,7 +17,7 @@ internal interface FooBarComponent {
         fun create(
             dependency: FooBar.Dependency,
             @BindsInstance customisation: FooBar.Customisation,
-            @BindsInstance buildContext: BuildContext<Nothing?>
+            @BindsInstance buildParams: BuildParams<Nothing?>
         ): FooBarComponent
     }
 

@@ -15,7 +15,7 @@
  */
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.BuildContext.SystemInfo
+import com.badoo.ribs.core.BuildParams.SystemInfo
 import java.util.UUID
 
 /**
@@ -33,7 +33,7 @@ abstract class Builder<D, P, N : Node<*>> {
     abstract val dependency: D
 
     fun build(systemInfo: SystemInfo, data: P? = null): N {
-        val buildContext = BuildContext(
+        val buildContext = BuildParams(
             systemInfo = systemInfo,
             data = data,
             identifier = Rib.Identifier(
@@ -47,7 +47,7 @@ abstract class Builder<D, P, N : Node<*>> {
 
     abstract val rib: Rib
 
-    protected abstract fun build(buildContext: BuildContext<P>): N
+    protected abstract fun build(buildParams: BuildParams<P>): N
 }
 
 

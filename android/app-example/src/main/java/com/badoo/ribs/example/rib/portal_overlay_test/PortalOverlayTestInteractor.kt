@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.portal_overlay_test
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestRouter.Configuration
@@ -8,10 +8,10 @@ import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestRouter.Co
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestRouter.Configuration.Overlay
 
 class PortalOverlayTestInteractor(
-    buildContext: BuildContext<Nothing?>,
+    buildParams: BuildParams<Nothing?>,
     router: Router<Configuration, *, Content, Overlay, PortalOverlayTestView>
 ) : Interactor<Configuration, Content, Overlay, PortalOverlayTestView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     router = router,
     disposables = null
 )

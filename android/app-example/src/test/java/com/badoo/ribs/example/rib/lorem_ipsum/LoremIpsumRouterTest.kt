@@ -16,7 +16,7 @@ class LoremIpsumRouterTest {
     @Before
     fun setup() {
         router = LoremIpsumRouter(
-            buildContext = mock()
+            buildParams = mock()
         )
     }
 

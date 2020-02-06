@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.small
 
 import android.os.Parcelable
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.AnchoredAttachRoutingAction.Companion.anchor
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -14,11 +14,11 @@ import com.badoo.ribs.example.rib.small.SmallRouter.Configuration.FullScreen
 import kotlinx.android.parcel.Parcelize
 
 class SmallRouter(
-    buildContext: BuildContext<Nothing?>,
+    buildParams: BuildParams<Nothing?>,
     private val bigBuilder: BigBuilder,
     private val portalOverlayTestBuilder: PortalOverlayTestBuilder
 ): Router<Configuration, Nothing, Content, Nothing, SmallView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
 ) {

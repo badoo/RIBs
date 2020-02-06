@@ -4,13 +4,13 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial2.rib.hello_world.HelloWorldRouter.Configuration.Content
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 
 class HelloWorldInteractor(
-    buildContext: BuildContext<Nothing?>,
+    buildParams: BuildParams<Nothing?>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     router = router,
     disposables = null
 )

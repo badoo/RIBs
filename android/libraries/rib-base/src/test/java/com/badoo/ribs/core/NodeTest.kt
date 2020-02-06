@@ -80,11 +80,11 @@ class NodeTest {
     }
 
     private fun createNode(
-        buildContext: BuildContext<Nothing?> = testBuildContext(),
+        buildParams: BuildParams<Nothing?> = testBuildContext(),
         viewFactory: TestViewFactory? = this@NodeTest.viewFactory,
         interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView> = this@NodeTest.interactor
     ): Node<TestView> = Node(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = viewFactory,
         router = router,
         interactor = interactor,
@@ -567,13 +567,13 @@ class NodeTest {
 
     @Test
     fun `View state is saved and restored from bundle`() {
-        node = createNode(buildContext = testbuildContext.systemInfo.savedInstanceState = null))
+        node = createNode(buildParams = testbuildContext.systemInfo.savedInstanceState = null))
 
         val outState = Bundle()
         node.onSaveInstanceState(outState)
         val savedViewState = node.savedViewState
 
-        node = createNode(buildContext = testbuildContext.systemInfo.savedInstanceState = outState))
+        node = createNode(buildParams = testbuildContext.systemInfo.savedInstanceState = outState))
         assertEquals(savedViewState, node.savedViewState)
     }
 

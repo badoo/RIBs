@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.portal
 
 import android.os.Bundle
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -13,9 +13,9 @@ import com.badoo.ribs.core.view.RibView
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(
-    buildContext: BuildContext<*>
+    buildParams: BuildParams<*>
 ): Router<Configuration, Nothing, Content, Overlay, Nothing>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
 ), Portal.OtherSide {

@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.small.builder
 
 import com.badoo.ribs.core.Builder
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
@@ -19,13 +19,13 @@ class SmallBuilder(
     override val rib: Rib =
         object : Small {}
 
-    override fun build(buildContext: BuildContext<Nothing?>): SmallNode =
+    override fun build(buildParams: BuildParams<Nothing?>): SmallNode =
         DaggerSmallComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(Small.Customisation()),
-                buildContext = buildContext
+                buildParams = buildParams
             )
             .node()
 }

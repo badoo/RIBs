@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
@@ -13,9 +13,9 @@ class SwitcherNode(
     viewFactory: ((ViewGroup) -> SwitcherView?)?,
     private val router: SwitcherRouter,
     interactor: SwitcherInteractor,
-    buildContext: BuildContext<*>
+    buildParams: BuildParams<*>
 ) : Node<SwitcherView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor

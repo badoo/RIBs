@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.rib_with_view.foo_bar.builder.FooBarBuilder
@@ -22,7 +22,7 @@ class FooBarWorkflowTest {
             override fun fooBarOutput(): Consumer<FooBar.Output> = mock()
             override fun ribCustomisation(): RibCustomisationDirectory = mock()
         }).build(
-            BuildContext.Params(
+            BuildParams.Params(
                 ancestryInfo = AncestryInfo.Root,
                 savedInstanceState = null
             )

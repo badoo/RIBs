@@ -20,7 +20,7 @@ class InteractorTest {
     @Before
     fun setUp() {
         interactor = TestInteractor(
-            buildContext = mock(),
+            buildParams = mock(),
             router = mock(),
             disposables = disposables
         )

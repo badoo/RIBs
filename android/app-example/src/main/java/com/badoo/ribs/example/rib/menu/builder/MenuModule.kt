@@ -1,7 +1,7 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.menu.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuInteractor
@@ -19,10 +19,10 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext<Nothing?>
+        buildParams: BuildParams<Nothing?>
     ): MenuRouter =
         MenuRouter(
-            buildContext = buildContext
+            buildParams = buildParams
         )
 
     @MenuScope
@@ -35,14 +35,14 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: MenuRouter,
         input: ObservableSource<Menu.Input>,
         output: Consumer<Menu.Output>,
         feature: MenuFeature
     ): MenuInteractor =
         MenuInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             input = input,
             output = output,
@@ -53,12 +53,12 @@ internal object MenuModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         customisation: Menu.Customisation,
         router: MenuRouter,
         interactor: MenuInteractor
     ) : Node<MenuView> = Node(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.blocker.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.BlockerView
@@ -18,7 +18,7 @@ internal interface BlockerComponent {
         fun create(
             dependency: Blocker.Dependency,
             @BindsInstance customisation: Blocker.Customisation,
-            @BindsInstance buildContext: BuildContext<Nothing?>
+            @BindsInstance buildParams: BuildParams<Nothing?>
         ): BlockerComponent
     }
 

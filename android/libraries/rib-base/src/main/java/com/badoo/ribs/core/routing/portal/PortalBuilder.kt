@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.portal
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Rib
 
@@ -11,22 +11,22 @@ class PortalBuilder(
     override val rib: Rib =
         object : Portal {}
 
-    override fun build(buildContext: BuildContext<Nothing?>): PortalNode {
-        val buildContext = buildContext
+    override fun build(buildParams: BuildParams<Nothing?>): PortalNode {
+        val buildContext = buildParams
 
         val router = PortalRouter(
-            buildContext = buildContext
+            buildParams = buildContext
         )
 
         router.defaultRoutingAction = dependency.defaultRoutingAction().invoke(router)
 
         val interactor = PortalInteractor(
-            buildContext = buildContext,
+            buildParams = buildContext,
             router = router
         )
 
         return PortalNode(
-            buildContext = buildContext,
+            buildParams = buildContext,
             router = router,
             interactor = interactor
         )

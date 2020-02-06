@@ -17,7 +17,7 @@ class FooBarRouterTest {
   @Before
   fun setup() {
     router = FooBarRouter(
-      buildContext = mock()
+      buildParams = mock()
     )
   }
 

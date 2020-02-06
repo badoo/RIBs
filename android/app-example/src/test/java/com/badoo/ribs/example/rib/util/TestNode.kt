@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.util
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
@@ -9,12 +9,12 @@ import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
-    buildContext: BuildContext<*> = mockBuildContext,
+    buildParams: BuildParams<*> = mockBuildContext,
     router: Router<*, *, *, *, V> = mock(),
     viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<*, *, *, V> = mock()
 ) : Node<V>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor
@@ -34,6 +34,6 @@ class TestNode<V : RibView>(
     }
 
     companion object {
-        val mockBuildContext = mock<BuildContext.Resolved<Nothing?>> { on { identifier} doReturn mock() }
+        val mockBuildContext = mock<BuildParams.Resolved<Nothing?>> { on { identifier} doReturn mock() }
     }
 }

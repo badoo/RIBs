@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.blocker.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -20,13 +20,13 @@ class BlockerBuilder(
     override val rib: Rib =
         object : Blocker {}
 
-    override fun build(buildContext: BuildContext<Nothing?>): Node<BlockerView> =
+    override fun build(buildParams: BuildParams<Nothing?>): Node<BlockerView> =
         DaggerBlockerComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(Blocker.Customisation()),
-                buildContext = buildContext
+                buildParams = buildParams
             )
             .node()
 }

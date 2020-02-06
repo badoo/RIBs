@@ -3,7 +3,7 @@ package com.badoo.ribs.test.util.ribs.root
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
 import com.badoo.ribs.core.AttachMode
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.DialogLauncher
@@ -45,7 +45,7 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext.Params) -> TestNode<TestChildView> = {
+        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildParams.Params) -> TestNode<TestChildView> = {
             TestChildBuilder().build(it).also {
                 block.invoke(it)
             }
@@ -53,7 +53,7 @@ interface TestRoot : Rib {
 
         fun create(dialogLauncher: DialogLauncher, savedInstanceState: Bundle?): TestNode<TestRootView> {
             val router = TestRootRouter(
-                buildContext = BuildContext.Resolved(
+                buildParams = BuildParams.Resolved(
                     ancestryInfo = AncestryInfo.Root,
                     viewAttachMode = AttachMode.PARENT,
                     savedInstanceState = savedInstanceState,
@@ -80,7 +80,7 @@ interface TestRoot : Rib {
 
                 }
             ).build(
-                BuildContext.Params(
+                BuildParams.Params(
                     ancestryInfo = AncestryInfo.Root,
                     savedInstanceState = savedInstanceState
                 )

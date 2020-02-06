@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.foo_bar
 
 import android.Manifest
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
@@ -21,11 +21,11 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
-    buildContext: BuildContext<Nothing?>,
+    buildParams: BuildParams<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, FooBarView>,
     private val permissionRequester: PermissionRequester
 ) : Interactor<Configuration, Configuration, Nothing, FooBarView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     router = router,
     disposables = null
 ) {

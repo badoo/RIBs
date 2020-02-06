@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer
 import dagger.BindsInstance
@@ -16,7 +16,7 @@ internal interface GreetingsContainerComponent {
     interface Factory {
         fun create(
             dependency: GreetingsContainer.Dependency,
-            @BindsInstance buildContext: BuildContext<Nothing?>
+            @BindsInstance buildParams: BuildParams<Nothing?>
         ): GreetingsContainerComponent
     }
 

@@ -1,7 +1,7 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.switcher.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
@@ -37,13 +37,13 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         component: SwitcherComponent,
         dialogLauncher: DialogLauncher,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherRouter =
         SwitcherRouter(
-            buildContext = buildContext,
+            buildParams = buildParams,
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),
@@ -57,12 +57,12 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: SwitcherRouter,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherInteractor =
         SwitcherInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             dialogToTestOverlay = dialogToTestOverlay
         )
@@ -80,13 +80,13 @@ internal object SwitcherModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         customisation: Switcher.Customisation,
         viewDependency: SwitcherView.Dependency,
         router: SwitcherRouter,
         interactor: SwitcherInteractor
     ) : SwitcherNode = SwitcherNode(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(viewDependency),
         router = router,
         interactor = interactor

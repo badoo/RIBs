@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.portal_overlay_test
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -11,9 +11,9 @@ import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestRouter.Co
 import kotlinx.android.parcel.Parcelize
 
 class PortalOverlayTestRouter(
-    buildContext: BuildContext<Nothing?>
+    buildParams: BuildParams<Nothing?>
 ): Router<Configuration, Permanent, Content, Overlay, PortalOverlayTestView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     initialConfiguration = Content.Default,
     permanentParts = emptyList()
 ) {

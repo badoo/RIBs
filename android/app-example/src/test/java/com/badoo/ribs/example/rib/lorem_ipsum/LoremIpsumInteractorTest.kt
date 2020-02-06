@@ -15,7 +15,7 @@ class LoremIpsumInteractorTest {
     @Before
     fun setup() {
         interactor = LoremIpsumInteractor(
-            buildContext = mock(),
+            buildParams = mock(),
             router = router,
             output = output
         )

@@ -1,7 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Output
@@ -22,10 +22,10 @@ internal object FooBarModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: FooBarComponent,
-        buildContext: BuildContext<Nothing?>
+        buildParams: BuildParams<Nothing?>
     ): FooBarRouter =
         FooBarRouter(
-            buildContext = buildContext
+            buildParams = buildParams
         )
 
     @FooBarScope
@@ -38,14 +38,14 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: FooBarRouter,
         input: ObservableSource<Input>,
         output: Consumer<Output>,
         feature: FooBarFeature
     ): FooBarInteractor =
         FooBarInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             input = input,
             output = output,
@@ -56,7 +56,7 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,
@@ -64,7 +64,7 @@ internal object FooBarModule {
         output: Consumer<Output>,
         feature: FooBarFeature
     ) : FooBarNode = FooBarNode(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor,

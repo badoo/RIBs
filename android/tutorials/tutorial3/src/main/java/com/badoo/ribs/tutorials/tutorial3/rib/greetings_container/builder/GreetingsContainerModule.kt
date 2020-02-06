@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerInteractor
@@ -18,10 +18,10 @@ internal object GreetingsContainerModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: GreetingsContainerComponent,
-        buildContext: BuildContext<Nothing?>
+        buildParams: BuildParams<Nothing?>
     ): GreetingsContainerRouter =
         GreetingsContainerRouter(
-            buildContext = buildContext,
+            buildParams = buildParams,
             helloWorldBuilder = HelloWorldBuilder(component)
         )
 
@@ -29,12 +29,12 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         output: Consumer<GreetingsContainer.Output>
     ): GreetingsContainerInteractor =
         GreetingsContainerInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             output = output
         )
@@ -43,11 +43,11 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
     ) : Node<Nothing> = Node(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = null,
         router = router,
         interactor = interactor

@@ -19,7 +19,7 @@ import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
-    buildContext: BuildContext<*>,
+    buildParams: BuildParams<*>,
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList()
 ) : ConfigurationResolver<C, V> {
@@ -28,7 +28,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     private val binder = Binder()
-    private val savedInstanceState = buildContext.systemInfo.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildParams.systemInfo.savedInstanceState?.getBundle(BUNDLE_KEY)
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(this.savedInstanceState)
     private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var configurationFeature: ConfigurationFeature<C>

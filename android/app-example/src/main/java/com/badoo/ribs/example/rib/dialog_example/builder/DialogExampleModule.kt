@@ -1,7 +1,7 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.dialog_example.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
@@ -45,14 +45,14 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         dialogLauncher: DialogLauncher,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleRouter =
         DialogExampleRouter(
-            buildContext = buildContext,
+            buildParams = buildParams,
             dialogLauncher = dialogLauncher,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
@@ -63,14 +63,14 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         router: DialogExampleRouter,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleInteractor =
         DialogExampleInteractor(
-            buildContext = buildContext,
+            buildParams = buildParams,
             router = router,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
@@ -81,12 +81,12 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildContext: BuildContext<Nothing?>,
+        buildParams: BuildParams<Nothing?>,
         customisation: DialogExample.Customisation,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor
     ) : Node<DialogExampleView> = Node(
-        buildContext = buildContext,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

@@ -26,7 +26,7 @@ class PortalRouterTest {
         node1 = TestNode(router = TestRouter(routingActionForC2 = attach { node2 }))
 
         router = PortalRouter(
-            buildContext = testBuildContext()
+            buildParams = testBuildContext()
         ).apply {
             defaultRoutingAction = attach { node1 }
         }

@@ -7,7 +7,7 @@ import com.badoo.ribs.core.routing.portal.AncestryInfo
 import java.util.UUID
 
 
-data class BuildContext<T>(
+data class BuildParams<T>(
     val data: T? = null,
     val systemInfo: SystemInfo,
     val identifier: Rib.Identifier = Rib.Identifier(

@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.BuildContext.Params
+import com.badoo.ribs.core.BuildParams.Params
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
@@ -35,7 +35,7 @@ class SwitcherWorkflowTest {
         val node3 = Node<MenuView>(TestNode.mockBuildContext, mock(), mock(), mock(), mock())
 
         router = SwitcherRouter(
-            buildContext = mock(),
+            buildParams = mock(),
             fooBarBuilder = mock { on { build(any<Params>()) } doReturn fooBarNode },
             helloWorldBuilder = mock { on { build(any<Params>()) } doReturn helloWorldNode },
             dialogExampleBuilder = mock { on { build(any<Params>()) } doReturn node1 },
@@ -47,7 +47,7 @@ class SwitcherWorkflowTest {
         interactor = SwitcherInteractor(mock(), mock(), mock())
 
         workflow = SwitcherNode(
-            buildContext = mock(),
+            buildParams = mock(),
             viewFactory = mock(),
             router = router,
             interactor = interactor

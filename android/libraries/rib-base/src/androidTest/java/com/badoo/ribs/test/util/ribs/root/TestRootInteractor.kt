@@ -8,14 +8,14 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import io.reactivex.observers.TestObserver
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 
 class TestRootInteractor(
-    buildContext: BuildContext<Nothing?>,
+    buildParams: BuildParams<Nothing?>,
     router: Router<Configuration, Configuration.Permanent, Configuration.Content, Configuration.Overlay, TestRootView>,
     private val viewLifecycleObserver: TestObserver<Lifecycle.Event>
 ) : Interactor<Configuration, Configuration.Content, Configuration.Overlay, TestRootView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     router = router,
     disposables = null
 ) {

@@ -1,13 +1,13 @@
 package com.badoo.ribs.core.helper
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode2(
-    buildContext: BuildContext<*> = testBuildContext(),
+    buildParams: BuildParams<*> = testBuildContext(),
     viewFactory: ((ViewGroup) -> TestView?)? = mock()
 ) : TestNode(
-    buildContext = buildContext,
+    buildParams = buildParams,
     viewFactory = viewFactory
 )

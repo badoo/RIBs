@@ -9,14 +9,14 @@ import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldRouter.Confi
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldRouter.Configuration.Content
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.mapper.ViewEventToOutput
 import io.reactivex.functions.Consumer
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 
 class HelloWorldInteractor(
-    buildContext: BuildContext<Nothing?>,
+    buildParams: BuildParams<Nothing?>,
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>,
     private val output: Consumer<HelloWorld.Output>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
-    buildContext = buildContext,
+    buildParams = buildParams,
     router = router,
     disposables = null
 ) {

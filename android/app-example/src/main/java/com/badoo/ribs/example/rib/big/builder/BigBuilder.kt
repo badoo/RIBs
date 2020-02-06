@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.big.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.customisationsBranchFor
@@ -19,13 +19,13 @@ class BigBuilder(
     override val rib: Rib =
         object : Big {}
 
-    override fun build(buildContext: BuildContext<Nothing?>): BigNode =
+    override fun build(buildParams: BuildParams<Nothing?>): BigNode =
         DaggerBigComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(Big.Customisation()),
-                buildContext = buildContext
+                buildParams = buildParams
             )
             .node()
 }

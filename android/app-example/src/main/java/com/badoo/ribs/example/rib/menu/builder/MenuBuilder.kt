@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.menu.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -20,13 +20,13 @@ class MenuBuilder(
     override val rib: Rib =
         object : Menu {}
 
-    override fun build(buildContext: BuildContext<Nothing?>): Node<MenuView> =
+    override fun build(buildParams: BuildParams<Nothing?>): Node<MenuView> =
         DaggerMenuComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(Menu.Customisation()),
-                buildContext = buildContext
+                buildParams = buildParams
             )
             .node()
 }

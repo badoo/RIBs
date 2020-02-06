@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.hello_world.builder
 
-import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.small.Small
@@ -19,7 +19,7 @@ internal interface HelloWorldComponent : Small.Dependency {
         fun create(
             dependency: HelloWorld.Dependency,
             @BindsInstance customisation: HelloWorld.Customisation,
-            @BindsInstance buildContext: BuildContext<Nothing?>
+            @BindsInstance buildParams: BuildParams<Nothing?>
         ): HelloWorldComponent
     }
 

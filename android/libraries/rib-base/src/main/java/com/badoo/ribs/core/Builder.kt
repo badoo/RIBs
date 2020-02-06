@@ -32,16 +32,16 @@ abstract class Builder<D, P, N : Node<*>> {
     abstract val dependency: D
 
     fun build(buildContext: BuildContext, data: P? = null): N {
-        val buildContext = BuildParams(
-            buildContext = buildContext,
+        val buildParams = BuildParams(
             data = data,
+            buildContext = buildContext,
             identifier = Rib.Identifier(
                 rib = rib,
                 uuid = buildContext.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID
                     ?: UUID.randomUUID()
             )
         )
-        return build(buildContext)
+        return build(buildParams)
     }
 
     abstract val rib: Rib

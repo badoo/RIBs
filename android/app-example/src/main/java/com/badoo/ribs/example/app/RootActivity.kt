@@ -7,7 +7,7 @@ import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.BuildParams
-import com.badoo.ribs.core.BuildParams.SystemInfo.Companion.root
+import com.badoo.ribs.core.BuildParams.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
@@ -46,7 +46,7 @@ class RootActivity : RibActivity() {
                     attach { buildSwitcherNode(portal, it) }
                 }
 
-                private fun buildSwitcherNode(portal: Portal.OtherSide, systemInfo: BuildParams.SystemInfo): SwitcherNode {
+                private fun buildSwitcherNode(portal: Portal.OtherSide, buildContext: BuildParams.BuildContext): SwitcherNode {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
                             override fun ribCustomisation(): RibCustomisationDirectory =
@@ -60,7 +60,7 @@ class RootActivity : RibActivity() {
                             override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
                             override fun portal(): Portal.OtherSide = portal
                         }
-                    ).build(systemInfo)
+                    ).build(buildContext)
                 }
             }
         ).build(root(savedInstanceState)).also {

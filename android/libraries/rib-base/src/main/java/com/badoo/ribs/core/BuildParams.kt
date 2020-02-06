@@ -9,19 +9,19 @@ import java.util.UUID
 
 data class BuildParams<T>(
     val data: T? = null,
-    val systemInfo: SystemInfo,
+    val buildContext: BuildContext,
     val identifier: Rib.Identifier = Rib.Identifier(
         rib = object : Rib {},
-        uuid = systemInfo.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID()
+        uuid = buildContext.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID()
     )
 ) {
-    class SystemInfo internal constructor(
+    class BuildContext internal constructor(
         val ancestryInfo: AncestryInfo,
         val viewAttachMode: AttachMode = PARENT,
         val savedInstanceState: Bundle?
     ) {
         companion object {
-            fun root(savedInstanceState: Bundle?) = SystemInfo(
+            fun root(savedInstanceState: Bundle?) = BuildContext(
                 ancestryInfo = AncestryInfo.Root,
                 savedInstanceState = savedInstanceState
             )

@@ -69,13 +69,13 @@ open class Node<V : RibView>(
         buildParams.identifier
 
     internal val ancestryInfo: AncestryInfo =
-        buildParams.systemInfo.ancestryInfo
+        buildParams.buildContext.ancestryInfo
 
     internal open val viewAttachMode: AttachMode =
-        buildParams.systemInfo.viewAttachMode
+        buildParams.buildContext.viewAttachMode
 
     val resolver: ConfigurationResolver<*, V> = router
-    private val savedInstanceState = buildParams.systemInfo.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildParams.buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
     internal var viewLifecycleRegistry: LifecycleRegistry? = null

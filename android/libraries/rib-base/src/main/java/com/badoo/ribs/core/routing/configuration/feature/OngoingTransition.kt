@@ -18,7 +18,7 @@ internal class OngoingTransition<C : Parcelable>(
 ) {
     private val handler = Handler()
 
-    private val runnable = object : Runnable {
+    private val checkFinishedRunnable = object : Runnable {
         override fun run() {
             if (transitionElements.any { it.isPending() }) {
                 handler.post(this)
@@ -35,13 +35,13 @@ internal class OngoingTransition<C : Parcelable>(
                 this
             )
         )
-        runnable.run()
+        checkFinishedRunnable.run()
         transitionPair.exiting?.start()
         transitionPair.entering?.start()
     }
 
     private fun finish() {
-        handler.removeCallbacks(runnable)
+        handler.removeCallbacks(checkFinishedRunnable)
         actions.forEach { it.onFinish() }
         emitter.emitEffect(
             ConfigurationFeature.Effect.TransitionFinished(
@@ -54,7 +54,7 @@ internal class OngoingTransition<C : Parcelable>(
     fun jumpToEnd() {
         transitionPair.exiting?.end()
         transitionPair.entering?.end()
-        runnable.run()
+        checkFinishedRunnable.run()
     }
 
     fun reverse() {

@@ -11,7 +11,7 @@ import com.badoo.ribs.example.rib.blocker.BlockerView
 
 class BlockerBuilder(
     dependency: Blocker.Dependency
-) : Builder<Blocker.Dependency, Nothing?, Node<BlockerView>>() {
+) : Builder<Blocker.Dependency, Node<BlockerView>>() {
 
     override val dependency : Blocker.Dependency = object : Blocker.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Blocker::class)

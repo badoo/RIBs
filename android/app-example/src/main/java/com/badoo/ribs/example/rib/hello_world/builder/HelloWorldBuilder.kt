@@ -10,7 +10,7 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 
 class HelloWorldBuilder(
     dependency: HelloWorld.Dependency
-) : Builder<HelloWorld.Dependency, Nothing?, HelloWorldNode>() {
+) : Builder<HelloWorld.Dependency, HelloWorldNode>() {
 
     override val dependency : HelloWorld.Dependency = object : HelloWorld.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(HelloWorld::class)

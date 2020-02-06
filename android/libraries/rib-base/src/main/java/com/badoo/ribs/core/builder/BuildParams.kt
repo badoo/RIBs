@@ -6,7 +6,7 @@ import java.util.UUID
 
 
 class BuildParams<T> internal constructor(
-    val data: T? = null,
+    val data: T,
     val buildContext: BuildContext,
     val identifier: Rib.Identifier = Rib.Identifier(
         rib = object : Rib {},

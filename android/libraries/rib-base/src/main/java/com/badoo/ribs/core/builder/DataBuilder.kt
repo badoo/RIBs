@@ -16,6 +16,8 @@
 package com.badoo.ribs.core.builder
 
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
+import java.util.UUID
 
 /**
  * Responsible for building a [Node]. Parent [Router]s should pass in static dependencies via the
@@ -24,14 +26,29 @@ import com.badoo.ribs.core.Node
  * method that vends a node.
  *
  * @param <D> type of dependency required to build the interactor.
+ * @param <P> type of parameters that are only known build-time and not ahead (e.g. user id of another user to build the RIB for)
  * @param <N> type of [Node] this Builder is expected to build
  *
-</D> */
-abstract class Builder<D, N : Node<*>> :
-    DataBuilder<D, Nothing?, N>() {
+ */
+abstract class DataBuilder<D, P, N : Node<*>>  {
 
-    fun build(buildContext: BuildContext): N =
-        build(buildContext, null)
+    @JvmName("buildWithCompulsoryData")
+    fun build(buildContext: BuildContext, data: P): N {
+        val buildParams = BuildParams(
+            data = data,
+            buildContext = buildContext,
+            identifier = Rib.Identifier(
+                rib = rib,
+                uuid = buildContext.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID
+                    ?: UUID.randomUUID()
+            )
+        )
+        return build(buildParams)
+    }
+
+    abstract val rib: Rib
+
+    protected abstract fun build(buildParams: BuildParams<P>): N
 }
 
 

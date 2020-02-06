@@ -7,7 +7,7 @@ import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsConta
 
 class GreetingsContainerBuilder(
     override val dependency: GreetingsContainer.Dependency
-) : Builder<GreetingsContainer.Dependency, Nothing?, Node<Nothing>>() {
+) : Builder<GreetingsContainer.Dependency, Node<Nothing>>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Node<Nothing> {
         val component = DaggerGreetingsContainerComponent.factory()

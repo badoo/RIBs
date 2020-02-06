@@ -11,7 +11,7 @@ import com.badoo.ribs.example.rib.menu.MenuView
 
 class MenuBuilder(
     dependency: Menu.Dependency
-) : Builder<Menu.Dependency, Nothing?, Node<MenuView>>() {
+) : Builder<Menu.Dependency, Node<MenuView>>() {
 
     override val dependency : Menu.Dependency = object : Menu.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Menu::class)

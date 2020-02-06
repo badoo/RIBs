@@ -11,7 +11,7 @@ import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 
 class DialogExampleBuilder(
     dependency: DialogExample.Dependency
-) : Builder<DialogExample.Dependency, Nothing?, Node<DialogExampleView>>() {
+) : Builder<DialogExample.Dependency, Node<DialogExampleView>>() {
 
     override val dependency : DialogExample.Dependency = object : DialogExample.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(DialogExample::class)

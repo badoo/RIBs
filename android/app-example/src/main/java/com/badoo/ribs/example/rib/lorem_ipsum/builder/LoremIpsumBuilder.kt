@@ -11,7 +11,7 @@ import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumView
 
 class LoremIpsumBuilder(
     dependency: LoremIpsum.Dependency
-) : Builder<LoremIpsum.Dependency, Nothing?, Node<LoremIpsumView>>() {
+) : Builder<LoremIpsum.Dependency, Node<LoremIpsumView>>() {
 
     override val dependency : LoremIpsum.Dependency = object : LoremIpsum.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(LoremIpsum::class)

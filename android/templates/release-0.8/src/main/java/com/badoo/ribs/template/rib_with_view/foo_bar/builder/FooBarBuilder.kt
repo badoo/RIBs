@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.Builder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar

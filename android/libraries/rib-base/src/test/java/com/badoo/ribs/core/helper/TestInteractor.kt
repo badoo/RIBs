@@ -12,9 +12,8 @@ class TestInteractor(
     buildParams: BuildParams<Nothing?> = testBuildParams(),
     router: Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView> = mock(),
     disposables: Disposable? = null
-) : Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView>(
+) : Interactor<TestView>(
     buildParams = buildParams,
-    router = router,
     disposables = disposables
 ) {
 

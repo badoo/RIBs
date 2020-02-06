@@ -20,7 +20,7 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.ViewEventToWish
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-class FooBarInteractor(
+internal class FooBarInteractor(
     savedInstanceState: Bundle?,
     router: Router<Configuration, *, Content, Overlay, FooBarView>,
     private val input: ObservableSource<FooBar.Input>,

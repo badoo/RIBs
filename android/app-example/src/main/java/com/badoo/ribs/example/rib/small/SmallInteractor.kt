@@ -16,10 +16,9 @@ import io.reactivex.functions.Consumer
 class SmallInteractor(
     buildParams: BuildParams<Nothing?>,
     portal: Portal.OtherSide,
-    router: Router<Configuration, *, Content, Nothing, SmallView>
-) : Interactor<Configuration, Content, Nothing, SmallView>(
+    private val router: Router<Configuration, *, Content, Nothing, SmallView>
+) : Interactor<SmallView>(
     buildParams = buildParams,
-    router = router,
     disposables = null
 ) {
     override fun onViewCreated(view: SmallView, viewLifecycle: Lifecycle) {

@@ -1,6 +1,7 @@
 package com.badoo.ribs.dialog
 
 import android.os.Bundle
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
@@ -13,8 +14,8 @@ abstract class Dialog<T : Any> private constructor(
     factory: Dialog<T>.() -> Unit,
     private val events: PublishRelay<T>
 ) : ObservableSource<T> by events {
-    var title: String? = null
-    var message: String? = null
+    var title: Text? = null
+    var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
     private var ribFactory: ((BuildContext) -> Node<*>)? = null
@@ -48,20 +49,20 @@ abstract class Dialog<T : Any> private constructor(
             factory()
         }
 
-        fun positive(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+        fun positive(title: Text, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
             positive = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
-        fun negative(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+        fun negative(title: Text, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
             negative = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
-        fun neutral(title: String, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
+        fun neutral(title: Text, onClickEvent: T, closesDialogAutomatically: Boolean = true) {
             neutral = ButtonConfig(title, onClickEvent, closesDialogAutomatically)
         }
 
         data class ButtonConfig<T : Any>(
-            var title: String? = null,
+            var title: Text? = null,
             var onClickEvent: T? = null,
             var closesDialogAutomatically: Boolean = true
         )
@@ -74,30 +75,6 @@ abstract class Dialog<T : Any> private constructor(
     fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         ribFactory?.let { factory ->
             val clientParams = BuildContext(
-                /**
-                 * RIBs inside dialogs behaved like Root nodes so far in that they were
-                 * not added as a child of any other Node.
-                 * Using [AncestryInfo.Child.anchor] it's now also possible to change this,
-                 * and rather add the RIB inside the dialog to the parent, if removal is also guaranteed.
-                 * A benefit of this would be back press and lifecycle propagation.
-                 * Not entirely sure it is needed. To be reconsidered later.
-                 */
-                /**
-                 * RIBs inside dialogs behaved like Root nodes so far in that they were
-                 * not added as a child of any other Node.
-                 * Using [AncestryInfo.Child.anchor] it's now also possible to change this,
-                 * and rather add the RIB inside the dialog to the parent, if removal is also guaranteed.
-                 * A benefit of this would be back press and lifecycle propagation.
-                 * Not entirely sure it is needed. To be reconsidered later.
-                 */
-                /**
-                 * RIBs inside dialogs behaved like Root nodes so far in that they were
-                 * not added as a child of any other Node.
-                 * Using [AncestryInfo.Child.anchor] it's now also possible to change this,
-                 * and rather add the RIB inside the dialog to the parent, if removal is also guaranteed.
-                 * A benefit of this would be back press and lifecycle propagation.
-                 * Not entirely sure it is needed. To be reconsidered later.
-                 */
                 /**
                  * RIBs inside dialogs behaved like Root nodes so far in that they were
                  * not added as a child of any other Node.

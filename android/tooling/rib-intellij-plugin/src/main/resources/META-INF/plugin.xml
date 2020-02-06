@@ -12,6 +12,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <strong>0.8.4</strong><br/>
+      <ul>
+        <li>support for android studio 3.6+</li>
+      </ul>
       <strong>0.8.0</strong><br/>
       <ul>
         <li>androidx support</li>
@@ -54,8 +58,8 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <iconProvider implementation="com.badoo.ribs.plugin.icons.RIBIconProvider" order="first"/>
-        <fileBasedIndex implementation="com.badoo.ribs.plugin.index.RIBIndexer" />
+        <iconProvider implementation="com.badoo.ribs.plugin.icons.RibIconProvider" id="ribIcons" order="first"/>
+        <fileBasedIndex implementation="com.badoo.ribs.plugin.index.RibIndexer" />
     </extensions>
 
 </idea-plugin>

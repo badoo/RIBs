@@ -14,9 +14,8 @@ class TestRootInteractor(
     buildParams: BuildParams<Nothing?>,
     router: Router<Configuration, Configuration.Permanent, Configuration.Content, Configuration.Overlay, TestRootView>,
     private val viewLifecycleObserver: TestObserver<Lifecycle.Event>
-) : Interactor<Configuration, Configuration.Content, Configuration.Overlay, TestRootView>(
+) : Interactor<TestRootView>(
     buildParams = buildParams,
-    router = router,
     disposables = null
 ) {
 

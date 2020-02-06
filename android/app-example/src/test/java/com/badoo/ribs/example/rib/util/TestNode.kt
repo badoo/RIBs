@@ -12,7 +12,7 @@ class TestNode<V : RibView>(
     buildParams: BuildParams<*> = mockBuildContext,
     router: Router<*, *, *, *, V> = mock(),
     viewFactory: ((ViewGroup) -> V?)? = mock(),
-    interactor: Interactor<*, *, *, V> = mock()
+    interactor: Interactor<V> = mock()
 ) : Node<V>(
     buildParams = buildParams,
     viewFactory = viewFactory,

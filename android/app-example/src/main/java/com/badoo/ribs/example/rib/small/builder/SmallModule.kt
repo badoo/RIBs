@@ -4,7 +4,7 @@ package com.badoo.ribs.example.rib.small.builder
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.example.rib.big.builder.BigBuilder
-import com.badoo.ribs.example.rib.portal_overlay_test.builder.PortalOverlayTestBuilder
+import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTestBuilder
 import com.badoo.ribs.example.rib.small.Small
 import com.badoo.ribs.example.rib.small.SmallInteractor
 import com.badoo.ribs.example.rib.small.SmallNode

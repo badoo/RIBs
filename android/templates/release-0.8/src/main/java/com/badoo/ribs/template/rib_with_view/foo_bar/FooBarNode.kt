@@ -8,7 +8,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
-class FooBarNode(
+class FooBarNode internal constructor(
     savedInstanceState: Bundle?,
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val router: FooBarRouter,

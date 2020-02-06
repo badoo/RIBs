@@ -2,15 +2,11 @@ package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Router
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Content
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Overlay
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.rib_with_view.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.InputToWish
@@ -21,15 +17,14 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.ViewEventToWish
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-class FooBarInteractor(
+internal class FooBarInteractor(
     buildParams: BuildParams<Nothing?>,
-    router: Router<Configuration, *, Content, Overlay, FooBarView>,
+    private val router: FooBarRouter,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature
-) : Interactor<Configuration, Content, Overlay, FooBarView>(
+) : Interactor<FooBarView>(
     buildParams = buildParams,
-    router = router,
     disposables = feature
 ) {
 

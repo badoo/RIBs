@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.builder.BuildParams.Params
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
@@ -29,18 +29,18 @@ class SwitcherWorkflowTest {
     @Before
     fun setup() {
         val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), TestNode.mockBuildContext)
-        val fooBarNode = FooBarNode(mock(), mock(), mock(), TestNode.mockBuildContext, emptySet())
+        val fooBarNode = FooBarNode(mock(), mock(), TestNode.mockBuildContext, emptySet())
         val node1 = Node<DialogExampleView>(TestNode.mockBuildContext, mock(), mock(), mock(), mock())
         val node2 = Node<BlockerView>(TestNode.mockBuildContext, mock(), mock(), mock(), mock())
         val node3 = Node<MenuView>(TestNode.mockBuildContext, mock(), mock(), mock(), mock())
 
         router = SwitcherRouter(
             buildParams = mock(),
-            fooBarBuilder = mock { on { build(any<Params>()) } doReturn fooBarNode },
-            helloWorldBuilder = mock { on { build(any<Params>()) } doReturn helloWorldNode },
-            dialogExampleBuilder = mock { on { build(any<Params>()) } doReturn node1 },
-            blockerBuilder = mock { on { build(any<Params>()) } doReturn node2 },
-            menuBuilder = mock { on { build(any<Params>()) } doReturn node3 },
+            fooBarBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn fooBarNode },
+            helloWorldBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn helloWorldNode },
+            dialogExampleBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn node1 },
+            blockerBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn node2 },
+            menuBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn node3 },
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )

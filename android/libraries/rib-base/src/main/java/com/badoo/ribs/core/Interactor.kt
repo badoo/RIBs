@@ -17,7 +17,6 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import android.os.Parcelable
 import androidx.annotation.CallSuper
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.view.RibView
@@ -29,9 +28,8 @@ import io.reactivex.disposables.Disposable
  * @param <C> the type of Configuration this Interactor can expect to push to its [Router].
  * @param <V> the type of [RibView].
  **/
-abstract class Interactor<C : Parcelable, Content : C, Overlay : C, V : RibView>(
+abstract class Interactor<V : RibView>(
     buildParams: BuildParams<*>,
-    protected val router: Router<C, *, Content, Overlay, V>,
     private val disposables: Disposable?
 ) : Identifiable by buildParams.identifier {
 

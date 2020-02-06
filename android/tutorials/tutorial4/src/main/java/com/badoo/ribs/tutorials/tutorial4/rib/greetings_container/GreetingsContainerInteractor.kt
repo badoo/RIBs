@@ -8,11 +8,10 @@ import com.badoo.ribs.core.builder.BuildParams
 
 class GreetingsContainerInteractor(
     buildParams: BuildParams<Nothing?>,
-    router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
+    private val router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
-) : Interactor<Configuration, Configuration, Nothing, Nothing>(
+) : Interactor<Nothing>(
     buildParams = buildParams,
-    router = router,
     disposables = null
 ) {
 

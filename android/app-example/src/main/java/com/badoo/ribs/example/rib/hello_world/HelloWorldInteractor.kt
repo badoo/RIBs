@@ -1,10 +1,9 @@
 package com.badoo.ribs.example.rib.hello_world
 
 import android.app.Activity
-import androidx.lifecycle.Lifecycle
 import android.content.Intent
 import android.os.Bundle
-import com.badoo.ribs.core.builder.BuildParams
+import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
@@ -12,6 +11,7 @@ import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.app.OtherActivity
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.example.rib.hello_world.HelloWorldRouter.Configuration.Content
@@ -28,14 +28,13 @@ import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>,
-    router: Router<Configuration, Permanent, Content, Nothing, HelloWorldView>,
+    private val router: Router<Configuration, Permanent, Content, Nothing, HelloWorldView>,
     private val input: ObservableSource<HelloWorld.Input>,
     private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
+) : Interactor<HelloWorldView>(
     buildParams = buildParams,
-    router = router,
     disposables = feature
 ) {
     companion object {

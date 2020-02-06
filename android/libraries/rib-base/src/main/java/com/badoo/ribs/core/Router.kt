@@ -8,6 +8,12 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
@@ -97,6 +103,33 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     fun newRoot(configuration: Content) {
         backStackFeature.accept(NewRoot(configuration))
     }
+
+    internal fun add(configurationKey: ConfigurationKey, configuration: Content) {
+        configurationFeature.accept(
+            Add(configurationKey, configuration)
+        )
+    }
+
+    internal fun remove(configurationKey: ConfigurationKey) {
+        configurationFeature.accept(
+            Remove(configurationKey)
+        )
+    }
+
+    internal fun activate(configurationKey: ConfigurationKey) {
+        configurationFeature.accept(
+            Activate(configurationKey)
+        )
+    }
+
+    internal fun deactivate(configurationKey: ConfigurationKey) {
+        configurationFeature.accept(
+            Deactivate(configurationKey)
+        )
+    }
+
+    internal fun getNodes(configurationKey: ConfigurationKey) =
+        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes?.map { it.node }
 
     fun popBackStack(): Boolean =
         if (backStackFeature.state.canPop) {

@@ -14,6 +14,7 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.refactoring.PackageWrapper
 import com.intellij.refactoring.util.RefactoringUtil
 import org.jetbrains.android.facet.AndroidFacet
+import org.jetbrains.android.facet.ResourceFolderManager
 
 class SourceSetDirectoriesProvider(
     private val project: Project,
@@ -34,7 +35,7 @@ class SourceSetDirectoriesProvider(
         MAIN -> mainSourceDirectory
         TEST -> getAndroidArtifactDirectory(AndroidProject.ARTIFACT_UNIT_TEST, createIfNotFound)
         ANDROID_TEST -> getAndroidArtifactDirectory(AndroidProject.ARTIFACT_ANDROID_TEST, createIfNotFound)
-        RESOURCES -> androidFacet.allResourceDirectories
+        RESOURCES -> ResourceFolderManager.getInstance(androidFacet).folders
             .firstOrNull { !androidModel.isGenerated(it) }
             ?.toPsiDirectory(project)
             ?: throw IllegalStateException("Resources directory not found")

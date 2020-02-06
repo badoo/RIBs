@@ -18,7 +18,6 @@ configureAndroidLibrary(project)
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 
 androidExtensions {
     experimental = true
@@ -28,9 +27,9 @@ dependencies {
     api deps.uber.autodispose
     api deps.android.appCompat
 
-    kapt deps.apt.daggerCompiler
     implementation deps.apt.javaxInject
 
+    implementation deps.android.recyclerView
     implementation deps.external.kotlinStdlib
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid

@@ -12,7 +12,6 @@ import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.example.rib.menu.Menu.Output.MenuItemSelected
 import com.badoo.ribs.example.rib.menu.MenuView.Event.Select
-import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
 import com.badoo.ribs.example.rib.util.TestView
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
 import com.jakewharton.rxrelay2.PublishRelay

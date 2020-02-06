@@ -12,7 +12,7 @@ import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
-import com.badoo.ribs.example.rib.lorem_ipsum.builder.LoremIpsumBuilder
+import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsumBuilder
 import dagger.Provides
 import io.reactivex.functions.Consumer
 

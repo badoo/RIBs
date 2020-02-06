@@ -15,9 +15,16 @@ data class BuildContext<T>(
         uuid = systemInfo.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID()
     )
 ) {
-    data class SystemInfo(
+    class SystemInfo internal constructor(
         val ancestryInfo: AncestryInfo,
         val viewAttachMode: AttachMode = PARENT,
         val savedInstanceState: Bundle?
-    )
+    ) {
+        companion object {
+            fun root(savedInstanceState: Bundle?) = SystemInfo(
+                ancestryInfo = AncestryInfo.Root,
+                savedInstanceState = savedInstanceState
+            )
+        }
+    }
 }

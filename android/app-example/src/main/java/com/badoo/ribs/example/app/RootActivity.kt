@@ -7,6 +7,7 @@ import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildContext.SystemInfo.Companion.root
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.AncestryInfo
@@ -63,12 +64,7 @@ class RootActivity : RibActivity() {
                     ).build(systemInfo)
                 }
             }
-        ).build(
-            BuildContext.SystemInfo(
-                ancestryInfo = AncestryInfo.Root,
-                savedInstanceState = savedInstanceState
-            )
-        ).also {
+        ).build(root(savedInstanceState)).also {
             workflowRoot = it
         }
 

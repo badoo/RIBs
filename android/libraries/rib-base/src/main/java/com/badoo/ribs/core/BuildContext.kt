@@ -12,8 +12,7 @@ data class BuildContext<T>(
     val clientInfo: ClientInfo<T>,
     val identifier: Rib.Identifier = Rib.Identifier(
         rib = object : Rib {},
-        uuid = systemInfo.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID(),
-        tag = clientInfo.tag
+        uuid = systemInfo.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID()
     )
 ) {
     data class SystemInfo(
@@ -23,7 +22,6 @@ data class BuildContext<T>(
     )
 
     data class ClientInfo<T : Any?>(
-        val tag: Any = Unit,
         val data: T? = null
     )
 }

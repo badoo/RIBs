@@ -33,8 +33,8 @@ import java.util.UUID
 abstract class Builder<D, P, N : Node<*>> {
     abstract val dependency: D
 
-    fun build(systemInfo: SystemInfo, data: P? = null, tag: Any = Unit): N =
-        build(systemInfo, ClientInfo(tag = tag, data = data))
+    fun build(systemInfo: SystemInfo, data: P? = null): N =
+        build(systemInfo, ClientInfo(data = data))
 
     fun build(systemInfo: SystemInfo, clientInfo: ClientInfo<P>): N {
         val buildContext = BuildContext(
@@ -43,8 +43,7 @@ abstract class Builder<D, P, N : Node<*>> {
             identifier = Rib.Identifier(
                 rib = rib,
                 uuid = systemInfo.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID
-                    ?: UUID.randomUUID(),
-                tag = clientInfo.tag
+                    ?: UUID.randomUUID()
             )
         )
         return build(buildContext)

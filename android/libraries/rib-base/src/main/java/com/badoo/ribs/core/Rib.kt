@@ -6,8 +6,7 @@ interface Rib {
 
     data class Identifier(
         val rib: Rib,
-        val uuid: UUID,
-        val tag: Any? = null // can be set by client code to anything
+        val uuid: UUID
     ) : Identifiable {
 
         override val id: String

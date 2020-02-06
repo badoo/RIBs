@@ -109,7 +109,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     internal fun add(configurationKey: ConfigurationKey, configuration: Content) {
         configurationFeature.accept(
-            Transaction.from<C>(
+            Transaction.from(
                 Add(configurationKey, configuration)
             )
         )

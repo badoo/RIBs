@@ -2,8 +2,8 @@ package com.badoo.ribs.dialog
 
 import android.os.Bundle
 import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.BuildContext
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.BuildParams
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
@@ -17,7 +17,7 @@ abstract class Dialog<T : Any> private constructor(
     var message: String? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
-    private var ribFactory: ((BuildParams.BuildContext) -> Node<*>)? = null
+    private var ribFactory: ((BuildContext) -> Node<*>)? = null
     internal var rib: Node<*>? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
@@ -29,7 +29,7 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun ribFactory(ribFactory: (BuildParams.BuildContext) -> Node<*>) {
+    fun ribFactory(ribFactory: (BuildContext) -> Node<*>) {
         this.ribFactory = ribFactory
     }
 
@@ -73,7 +73,15 @@ abstract class Dialog<T : Any> private constructor(
 
     fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         ribFactory?.let { factory ->
-            val clientParams = BuildParams.BuildContext(
+            val clientParams = BuildContext(
+                /**
+                 * RIBs inside dialogs behaved like Root nodes so far in that they were
+                 * not added as a child of any other Node.
+                 * Using [AncestryInfo.Child.anchor] it's now also possible to change this,
+                 * and rather add the RIB inside the dialog to the parent, if removal is also guaranteed.
+                 * A benefit of this would be back press and lifecycle propagation.
+                 * Not entirely sure it is needed. To be reconsidered later.
+                 */
                 /**
                  * RIBs inside dialogs behaved like Root nodes so far in that they were
                  * not added as a child of any other Node.

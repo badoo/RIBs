@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
-import com.badoo.ribs.core.BuildParams
-import com.badoo.ribs.core.BuildParams.BuildContext.Companion.root
+import com.badoo.ribs.core.BuildContext
+import com.badoo.ribs.core.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
@@ -46,7 +46,7 @@ class RootActivity : RibActivity() {
                     attach { buildSwitcherNode(portal, it) }
                 }
 
-                private fun buildSwitcherNode(portal: Portal.OtherSide, buildContext: BuildParams.BuildContext): SwitcherNode {
+                private fun buildSwitcherNode(portal: Portal.OtherSide, buildContext: BuildContext): SwitcherNode {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
                             override fun ribCustomisation(): RibCustomisationDirectory =

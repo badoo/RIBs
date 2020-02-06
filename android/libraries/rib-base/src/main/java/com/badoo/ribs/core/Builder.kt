@@ -15,7 +15,6 @@
  */
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.BuildContext.ClientInfo
 import com.badoo.ribs.core.BuildContext.SystemInfo
 import java.util.UUID
 
@@ -33,13 +32,10 @@ import java.util.UUID
 abstract class Builder<D, P, N : Node<*>> {
     abstract val dependency: D
 
-    fun build(systemInfo: SystemInfo, data: P? = null): N =
-        build(systemInfo, ClientInfo(data = data))
-
-    fun build(systemInfo: SystemInfo, clientInfo: ClientInfo<P>): N {
+    fun build(systemInfo: SystemInfo, data: P? = null): N {
         val buildContext = BuildContext(
             systemInfo = systemInfo,
-            clientInfo = clientInfo,
+            data = data,
             identifier = Rib.Identifier(
                 rib = rib,
                 uuid = systemInfo.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID

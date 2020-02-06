@@ -8,8 +8,8 @@ import java.util.UUID
 
 
 data class BuildContext<T>(
+    val data: T? = null,
     val systemInfo: SystemInfo,
-    val clientInfo: ClientInfo<T>,
     val identifier: Rib.Identifier = Rib.Identifier(
         rib = object : Rib {},
         uuid = systemInfo.savedInstanceState?.getSerializable(KEY_UUID) as? UUID ?: UUID.randomUUID()
@@ -19,9 +19,5 @@ data class BuildContext<T>(
         val ancestryInfo: AncestryInfo,
         val viewAttachMode: AttachMode = PARENT,
         val savedInstanceState: Bundle?
-    )
-
-    data class ClientInfo<T : Any?>(
-        val data: T? = null
     )
 }

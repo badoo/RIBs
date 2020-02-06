@@ -5,7 +5,7 @@ import com.badoo.ribs.core.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode2(
-    buildParams: BuildParams<*> = testBuildContext(),
+    buildParams: BuildParams<*> = testBuildParams(),
     viewFactory: ((ViewGroup) -> TestView?)? = mock()
 ) : TestNode(
     buildParams = buildParams,

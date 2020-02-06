@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.portal
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.helper.testBuildContext
+import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Portal
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Default
@@ -26,7 +26,7 @@ class PortalRouterTest {
         node1 = TestNode(router = TestRouter(routingActionForC2 = attach { node2 }))
 
         router = PortalRouter(
-            buildParams = testBuildContext()
+            buildParams = testBuildParams()
         ).apply {
             defaultRoutingAction = attach { node1 }
         }

@@ -8,7 +8,7 @@ import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
-    buildParams: BuildParams<Nothing?> = testBuildContext(),
+    buildParams: BuildParams<Nothing?> = testBuildParams(),
     initialConfiguration: Configuration = Configuration.C1,
     permanentParts: List<Nothing> = emptyList(),
     private val routingActionForC1: RoutingAction<TestView> = mock(),

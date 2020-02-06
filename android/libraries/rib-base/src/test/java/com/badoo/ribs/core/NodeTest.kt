@@ -13,7 +13,7 @@ import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
-import com.badoo.ribs.core.helper.testBuildContext
+import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
@@ -80,7 +80,7 @@ class NodeTest {
     }
 
     private fun createNode(
-        buildParams: BuildParams<Nothing?> = testBuildContext(),
+        buildParams: BuildParams<Nothing?> = testBuildParams(),
         viewFactory: TestViewFactory? = this@NodeTest.viewFactory,
         interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView> = this@NodeTest.interactor
     ): Node<TestView> = Node(
@@ -97,9 +97,9 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(testBuildContext(object : RandomOtherNode1 {}), viewFactory = null)
-        child2 = TestNode(testBuildContext(object : RandomOtherNode2 {}), viewFactory = null)
-        child3 = TestNode(testBuildContext(object : RandomOtherNode3 {}), viewFactory = null)
+        child1 = TestNode(testBuildParams(object : RandomOtherNode1 {}), viewFactory = null)
+        child2 = TestNode(testBuildParams(object : RandomOtherNode2 {}), viewFactory = null)
+        child3 = TestNode(testBuildParams(object : RandomOtherNode3 {}), viewFactory = null)
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -366,7 +366,7 @@ class NodeTest {
     private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib.Identifier> = mutableListOf()): List<Node<*>> {
         if (identifiers.isEmpty()) {
             for (i in 0 until n) {
-                identifiers.add(testBuildContext().identifier)
+                identifiers.add(testBuildParams().identifier)
             }
         }
         val mocks = mutableListOf<Node<*>>()
@@ -394,9 +394,9 @@ class NodeTest {
 
     @Test
     fun `attachToView() results in children added to target defined by Router`() {
-        val id1 = testBuildContext(object : RandomOtherNode1 {}).identifier
-        val id2 = testBuildContext(object : RandomOtherNode2 {}).identifier
-        val id3 = testBuildContext(object : RandomOtherNode3 {}).identifier
+        val id1 = testBuildParams(object : RandomOtherNode1 {}).identifier
+        val id2 = testBuildParams(object : RandomOtherNode2 {}).identifier
+        val id3 = testBuildParams(object : RandomOtherNode3 {}).identifier
         val mockChildNodes = createAndAttachChildMocks(3, mutableListOf(id1, id2, id3))
         assertEquals(id1, mockChildNodes[0].identifier)
         assertEquals(id2, mockChildNodes[1].identifier)
@@ -567,13 +567,13 @@ class NodeTest {
 
     @Test
     fun `View state is saved and restored from bundle`() {
-        node = createNode(buildParams = testbuildContext.systemInfo.savedInstanceState = null))
+        node = createNode(testBuildParams(savedInstanceState = null))
 
         val outState = Bundle()
         node.onSaveInstanceState(outState)
         val savedViewState = node.savedViewState
 
-        node = createNode(buildParams = testbuildContext.systemInfo.savedInstanceState = outState))
+        node = createNode(testBuildParams(savedInstanceState = outState))
         assertEquals(savedViewState, node.savedViewState)
     }
 

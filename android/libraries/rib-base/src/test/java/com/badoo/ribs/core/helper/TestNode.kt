@@ -7,7 +7,7 @@ import com.badoo.ribs.core.Router
 import com.nhaarman.mockitokotlin2.mock
 
 open class TestNode(
-    buildParams: BuildParams<*> = testBuildContext(),
+    buildParams: BuildParams<*> = testBuildParams(),
     viewFactory: ((ViewGroup) -> TestView?)? = mock(),
     router: Router<*, *, *, *, TestView> = mock()
 ) : Node<TestView>(

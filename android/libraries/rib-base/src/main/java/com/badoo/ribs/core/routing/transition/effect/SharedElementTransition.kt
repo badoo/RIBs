@@ -20,8 +20,8 @@ import com.badoo.ribs.core.routing.transition.effect.SharedElementTransition.Rot
 interface SharedElementTransition {
     data class Params(
         val duration: Long = defaultDuration,
-        val exitingElement: (View) -> View?,
-        val enteringElement: (View) -> View?,
+        val findExitingElement: (View) -> View?,
+        val findEnteringElement: (View) -> View?,
         val translateXInterpolator: Interpolator = LinearInterpolator(),
         val translateYInterpolator: Interpolator = LinearInterpolator(),
         val scaleXInterpolator: Interpolator = LinearInterpolator(),
@@ -58,13 +58,13 @@ fun <T> List<TransitionElement<out T>>.sharedElementTransition(
         var enteringView: View? = null
 
         val exitElementForId = exit.find {
-            exitingView = transitionParam.exitingElement.invoke(it.view)
+            exitingView = transitionParam.findExitingElement.invoke(it.view)
             exitingView != null
         }
 
         if (exitElementForId != null) {
             val enteringElementForId = enter.find {
-                enteringView = transitionParam.enteringElement.invoke(it.view)
+                enteringView = transitionParam.findEnteringElement.invoke(it.view)
                 enteringView != null
             }
 

@@ -25,8 +25,8 @@ class SwitcherTransitionHandler(duration: Long): TransitionHandler.Multiple<Swit
             params = listOf(
                 SharedElementTransition.Params(
                     duration = duration,
-                    exitingElement = { it.findViewById(R.id.sharedElementSquare) },
-                    enteringElement = { it.findViewById(R.id.sharedElementSquare) },
+                    findExitingElement = { it.findViewById(R.id.sharedElementSquare) },
+                    findEnteringElement = { it.findViewById(R.id.sharedElementSquare) },
                     translateXInterpolator = OvershootInterpolator(),
                     translateYInterpolator = OvershootInterpolator(14f),
                     rotation = SharedElementTransition.RotationParams(0.75f * 360)

@@ -151,14 +151,7 @@ class RootActivity : RibActivity() {
                     // not sure what to do here yet
                 }
             }
-        ).build(
-            // You only ever need to supply this info manually at your root RIB
-            // All other children get it from the framework
-            BuildContext.Params(
-                ancestryInfo = AncestryInfo.Root,
-                savedInstanceState = savedInstanceState
-            )
-        )
+        ).build(BuildContext.root(savedInstanceState))
 }
 ```
 

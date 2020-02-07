@@ -9,7 +9,7 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarNode
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : Builder<FooBar.Dependency, Nothing?, FooBarNode>(object : FooBar {}) {
+) : Builder<FooBar.Dependency, FooBarNode>(object : FooBar {}) {
 
     override val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)

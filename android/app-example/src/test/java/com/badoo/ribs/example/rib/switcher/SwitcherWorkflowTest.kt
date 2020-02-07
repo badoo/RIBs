@@ -1,6 +1,5 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
@@ -36,11 +35,11 @@ class SwitcherWorkflowTest {
 
         router = SwitcherRouter(
             buildParams = mock(),
-            fooBarBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn fooBarNode },
-            helloWorldBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn helloWorldNode },
-            dialogExampleBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn node1 },
-            blockerBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn node2 },
-            menuBuilder = mock { on { build(any<BuildParams<*>>()) } doReturn node3 },
+            fooBarBuilder = mock { on { build(any()) } doReturn fooBarNode },
+            helloWorldBuilder = mock { on { build(any()) } doReturn helloWorldNode },
+            dialogExampleBuilder = mock { on { build(any()) } doReturn node1 },
+            blockerBuilder = mock { on { build(any()) } doReturn node2 },
+            menuBuilder = mock { on { build(any()) } doReturn node3 },
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )

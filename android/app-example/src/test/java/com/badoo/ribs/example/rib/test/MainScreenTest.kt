@@ -8,6 +8,7 @@ import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.RibCustomisationDirectory
@@ -139,12 +140,7 @@ class MainScreenTest {
                     }
                 })
             }
-        }).build(
-            BuildParams.Params(
-                ancestryInfo = AncestryInfo.Root,
-                savedInstanceState = null
-            )
-        )
+        }).build(root(savedInstanceState = null))
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
 

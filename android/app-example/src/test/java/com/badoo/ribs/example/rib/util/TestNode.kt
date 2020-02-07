@@ -6,6 +6,7 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.view.RibView
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
@@ -34,6 +35,6 @@ class TestNode<V : RibView>(
     }
 
     companion object {
-        val mockBuildContext = mock<BuildParams.Resolved<Nothing?>> { on { identifier} doReturn mock() }
+        val mockBuildContext = mock<BuildParams<Nothing?>> { on { identifier } doReturn mock() }
     }
 }

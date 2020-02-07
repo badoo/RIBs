@@ -82,7 +82,7 @@ class NodeTest {
     private fun createNode(
         buildParams: BuildParams<Nothing?> = testBuildParams(),
         viewFactory: TestViewFactory? = this@NodeTest.viewFactory,
-        interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView> = this@NodeTest.interactor
+        interactor: Interactor<TestView> = this@NodeTest.interactor
     ): Node<TestView> = Node(
         buildParams = buildParams,
         viewFactory = viewFactory,
@@ -649,7 +649,10 @@ class NodeTest {
         node = createNode(viewFactory = viewFactory)
         node.onResume()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.RESUMED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.RESUMED,
+            node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
+        )
 //        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry!!.currentState)
 //    }
 //
@@ -660,6 +663,7 @@ class NodeTest {
 //        node.attachToView(parentViewGroup)
 //        assertNull(node.viewLifecycleRegistry)
 //    }
+    }
 
     @Test
     fun `When current Node has a view, attachToView() adds view to parentViewGroup`() {

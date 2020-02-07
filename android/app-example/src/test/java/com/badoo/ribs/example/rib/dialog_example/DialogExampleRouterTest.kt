@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example
 
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -16,7 +17,7 @@ class DialogExampleRouterTest {
     @Before
     fun setup() {
         router = DialogExampleRouter(
-            buildParams = mock(),
+            buildParams = BuildParams.Empty(),
             dialogLauncher = mock(),
             simpleDialog = mock(),
             lazyDialog = mock(),

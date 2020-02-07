@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
@@ -37,10 +38,10 @@ import org.junit.Test
 class SwitcherRouterTest {
 
 
-    private val fooBarNode = FooBarNode(null, mock(), TestNode.mockBuildContext, emptySet())
+    private val fooBarNode = FooBarNode(null, mock(), BuildParams.Empty(), emptySet())
     private val fooBarBuilder = mock<FooBarBuilder> { on { build(any()) } doReturn fooBarNode }
 
-    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), TestNode.mockBuildContext)
+    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), BuildParams.Empty())
     private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(any()) } doReturn helloWorldNode }
 
     private val dialogExampleNode = TestNode<DialogExampleView>()
@@ -56,7 +57,7 @@ class SwitcherRouterTest {
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val router = SwitcherRouter(
-        mock(),
+        BuildParams.Empty(),
         fooBarBuilder,
         helloWorldBuilder,
         dialogExampleBuilder,

@@ -1,16 +1,15 @@
 package com.badoo.ribs.tutorials.tutorial4.app
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.portal.AncestryInfo
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.tutorials.tutorial4.R
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.builder.GreetingsContainerBuilder
 import com.badoo.ribs.tutorials.tutorial4.util.User
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.functions.Consumer
 
 /** The tutorial app's single activity */
@@ -39,10 +38,5 @@ class RootActivity : RibActivity() {
                         }
                     }
             }
-        ).build(
-            BuildParams.Params(
-                ancestryInfo = AncestryInfo.Root,
-                savedInstanceState = savedInstanceState
-            )
-        )
+        ).build(BuildContext.root(savedInstanceState = savedInstanceState))
 }

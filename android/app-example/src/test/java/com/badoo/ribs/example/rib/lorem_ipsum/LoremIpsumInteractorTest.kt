@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.lorem_ipsum
 
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.functions.Consumer
 import org.junit.After
@@ -14,7 +15,7 @@ class LoremIpsumInteractorTest {
     @Before
     fun setup() {
         interactor = LoremIpsumInteractor(
-            buildParams = mock(),
+            buildParams = BuildParams.Empty(),
             output = output
         )
     }

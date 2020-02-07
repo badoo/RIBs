@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.switcher
 
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
@@ -27,14 +28,14 @@ class SwitcherWorkflowTest {
 
     @Before
     fun setup() {
-        val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), TestNode.mockBuildContext)
-        val fooBarNode = FooBarNode(mock(), mock(), TestNode.mockBuildContext, emptySet())
-        val node1 = Node<DialogExampleView>(TestNode.mockBuildContext, mock(), mock(), mock(), mock())
-        val node2 = Node<BlockerView>(TestNode.mockBuildContext, mock(), mock(), mock(), mock())
-        val node3 = Node<MenuView>(TestNode.mockBuildContext, mock(), mock(), mock(), mock())
+        val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), BuildParams.Empty())
+        val fooBarNode = FooBarNode(mock(), mock(), BuildParams.Empty(), emptySet())
+        val node1 = Node<DialogExampleView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
+        val node2 = Node<BlockerView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
+        val node3 = Node<MenuView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
 
         router = SwitcherRouter(
-            buildParams = mock(),
+            buildParams = BuildParams.Empty(),
             fooBarBuilder = mock { on { build(any()) } doReturn fooBarNode },
             helloWorldBuilder = mock { on { build(any()) } doReturn helloWorldNode },
             dialogExampleBuilder = mock { on { build(any()) } doReturn node1 },
@@ -43,10 +44,10 @@ class SwitcherWorkflowTest {
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )
-        interactor = SwitcherInteractor(mock(), mock(), mock())
+        interactor = SwitcherInteractor(BuildParams.Empty(), mock(), mock())
 
         workflow = SwitcherNode(
-            buildParams = mock(),
+            buildParams = BuildParams.Empty(),
             viewFactory = mock(),
             router = router,
             interactor = interactor

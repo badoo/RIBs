@@ -21,7 +21,7 @@ class FooBarBuilder(
             .create(
                 dependency = dependency,
                 customisation = dependency.getOrDefault(FooBar.Customisation()),
-                buildContext = buildParams
+                buildParams = buildParams
             )
             .node()
 }

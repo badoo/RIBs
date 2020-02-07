@@ -13,7 +13,7 @@ class GreetingsContainerBuilder(
         val component = DaggerGreetingsContainerComponent.factory()
             .create(
                 dependency = dependency,
-                buildContext = buildParams
+                buildParams = buildParams
             )
 
         return component.node()

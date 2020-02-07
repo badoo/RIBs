@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.foo_bar
 
 import com.badoo.ribs.android.PermissionRequester
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -14,7 +15,7 @@ class FooBarInteractorTest {
     @Before
     fun setup() {
         interactor = FooBarInteractor(
-            buildParams = mock(),
+            buildParams = BuildParams.Empty(),
             permissionRequester = permissionRequester
         )
     }

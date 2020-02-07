@@ -16,7 +16,7 @@ class HelloWorldBuilder(
             .create(
                 dependency = dependency,
                 customisation = HelloWorld.Customisation(),
-                buildContext = buildParams
+                buildParams = buildParams
             )
             .node()
 }

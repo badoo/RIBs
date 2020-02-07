@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.option_selector.builder
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector.Output
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorInteractor
@@ -16,12 +16,12 @@ internal object OptionSelectorModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         output: Consumer<Output>,
         config: OptionSelector.Config
     ): OptionSelectorInteractor =
         OptionSelectorInteractor(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             output = output,
             options = config.options
         )
@@ -30,12 +30,11 @@ internal object OptionSelectorModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         customisation: OptionSelector.Customisation,
         interactor: OptionSelectorInteractor
     ) : Node<OptionSelectorView> = Node(
-        savedInstanceState = savedInstanceState,
-        identifier = object : OptionSelector {},
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory.invoke(null),
         router = null,
         interactor = interactor

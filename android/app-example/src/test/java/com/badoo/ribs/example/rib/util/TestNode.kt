@@ -6,11 +6,10 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.view.RibView
-import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
-    buildParams: BuildParams<*> = mockBuildContext,
+    buildParams: BuildParams<*> = BuildParams.Empty(),
     router: Router<*, *, *, *, V> = mock(),
     viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<V> = mock()
@@ -32,9 +31,5 @@ class TestNode<V : RibView>(
     override fun onDetach() {
         super.onDetach()
         isAttached = false
-    }
-
-    companion object {
-        val mockBuildContext = mock<BuildParams<Nothing?>> { on { identifier } doReturn mock() }
     }
 }

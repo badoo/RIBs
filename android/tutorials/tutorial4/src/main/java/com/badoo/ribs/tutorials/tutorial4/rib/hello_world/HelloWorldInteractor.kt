@@ -1,6 +1,5 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.hello_world
 
-import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using

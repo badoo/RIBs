@@ -1,6 +1,5 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.hello_world.builder
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld

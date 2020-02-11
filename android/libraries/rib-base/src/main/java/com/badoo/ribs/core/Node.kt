@@ -34,6 +34,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 //import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.Objects
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -134,8 +135,9 @@ open class Node<V : RibView>(
         isAttachedToView = true
 
         if (!isViewless) {
-            createView(parentViewGroup)
-            attachToParentViewGroup()
+            createView(parentViewGroup)?.let {
+                parentViewGroup.attach(it)
+            }
         }
 
         lifecycleManager.onCreateView()
@@ -146,11 +148,17 @@ open class Node<V : RibView>(
         viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }
     }
 
-    internal fun attachToParentViewGroup() {
-        view!!.let { view ->
-            parentViewGroup!!.addView(view.androidView)
-            view.androidView.restoreHierarchyState(savedViewState)
+    private fun createView(parentViewGroup: ViewGroup): V? {
+        if (view == null) {
+            view = viewFactory?.invoke(parentViewGroup)
         }
+
+        return view
+    }
+
+    private fun ViewGroup.attach(view: V) {
+        addView(view.androidView)
+        view.androidView.restoreHierarchyState(savedViewState)
     }
 
     internal fun createChildView(child: Node<*>) {
@@ -159,12 +167,6 @@ open class Node<V : RibView>(
                 // parentViewGroup is guaranteed to be non-null if and only if view is attached
                 (view?.getParentViewForChild(child) ?: parentViewGroup!!)
             )
-        }
-    }
-
-    private fun createView(parentViewGroup: ViewGroup) {
-        if (view == null) {
-            view = viewFactory?.invoke(parentViewGroup)
         }
     }
 

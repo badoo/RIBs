@@ -20,7 +20,6 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
 import io.reactivex.Observable.fromCallable
-import io.reactivex.ObservableEmitter
 
 /**
  * Executes [MultiConfigurationAction] / [SingleConfigurationAction] associated with the incoming
@@ -125,7 +124,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun beginTransitions(
         descriptor: TransitionDescriptor,
         transitionElements: List<TransitionElement<C>>,
-        emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>,
+        emitter: EffectEmitter<C>,
         actions: List<Action<C>>
     ) {
         requireNotNull(transitionHandler)

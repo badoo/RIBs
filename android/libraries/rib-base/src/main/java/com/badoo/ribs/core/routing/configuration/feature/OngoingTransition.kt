@@ -6,7 +6,6 @@ import com.badoo.ribs.core.routing.configuration.action.single.Action
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
-import io.reactivex.ObservableEmitter
 
 internal class OngoingTransition<C : Parcelable>(
     val descriptor: TransitionDescriptor,
@@ -14,7 +13,7 @@ internal class OngoingTransition<C : Parcelable>(
     private val transitionPair: TransitionPair,
     private val actions: List<Action<C>>,
     private val transitionElements: List<TransitionElement<C>>,
-    private val emitter: ObservableEmitter<List<ConfigurationFeature.Effect<C>>>
+    private val emitter: EffectEmitter<C>
 ) {
     private val handler = Handler()
 
@@ -63,7 +62,7 @@ internal class OngoingTransition<C : Parcelable>(
         actions.forEach { it.reverse() }
     }
 
-    private fun ObservableEmitter<List<ConfigurationFeature.Effect<C>>>.emitEffect(
+    private fun EffectEmitter<C>.emitEffect(
         effect: ConfigurationFeature.Effect<C>
     ) {
         onNext(

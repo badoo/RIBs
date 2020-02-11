@@ -28,9 +28,9 @@ import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     savedInstanceState: Bundle?,
-    private val transitionHandler: TransitionHandler<C>? = null,
     private val initialConfiguration: Content,
-    private val permanentParts: List<Permanent> = emptyList()
+    private val permanentParts: List<Permanent> = emptyList(),
+    private val transitionHandler: TransitionHandler<C>? = null
 ) : ConfigurationResolver<C, V> {
     companion object {
         internal const val BUNDLE_KEY = "Router"

@@ -130,6 +130,12 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         requireNotNull(transitionHandler)
         val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
 
+        /**
+         * Entering views at this point are created but will be measured / laid out the next frame.
+         * We need to base calculations in transition implementations based on their actual measurements,
+         * but without them appearing just yet to avoid flickering.
+         * Making them invisible, starting the transitions then making them visible achieves the above.
+         */
         enteringElements.visibility(View.INVISIBLE)
         handler.post {
             val transitionPair = transitionHandler.onTransition(transitionElements)

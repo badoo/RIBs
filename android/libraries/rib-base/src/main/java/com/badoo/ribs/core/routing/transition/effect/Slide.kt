@@ -57,7 +57,6 @@ fun <T> TransitionElement<out T>.slide(
     }
 
     val valueAnimator = ValueAnimator.ofFloat(startProgress, 1f)
-    val id = System.identityHashCode(valueAnimator)
     valueAnimator.interpolator = interpolator
     valueAnimator.duration = abs((1 - startProgress) * duration).toLong()
     valueAnimator.addUpdateListener { animation ->

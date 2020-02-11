@@ -7,12 +7,14 @@ import com.badoo.ribs.core.routing.transition.TransitionDirection.EXIT
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
 import com.badoo.ribs.core.routing.transition.effect.Gravity
+import com.badoo.ribs.core.routing.transition.effect.AnimationContainer
 import com.badoo.ribs.core.routing.transition.effect.slide
 import com.badoo.ribs.core.routing.transition.invoke
 
 
 open class Slider<T>(
     private val gravity: Gravity = Gravity.LEFT,
+    private val animationContainer: AnimationContainer = AnimationContainer.RootView,
     private val duration: Long = defaultDuration,
     private val interpolator: Interpolator = defaultInterpolator,
     private val condition: (TransitionElement<out T>) -> Boolean = { true }
@@ -24,10 +26,10 @@ open class Slider<T>(
 
         return TransitionPair(
             exiting = Transition.multiple(
-                exit { slide(gravity, duration, interpolator) }
+                exit { slide(gravity, animationContainer, duration, interpolator) }
             ),
             entering = Transition.multiple(
-                enter { slide(gravity.reverse(), duration, interpolator) }
+                enter { slide(gravity.reverse(), animationContainer, duration, interpolator) }
             )
         )
     }

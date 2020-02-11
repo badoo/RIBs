@@ -7,12 +7,14 @@ import com.badoo.ribs.core.routing.transition.TransitionDirection.EXIT
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
 import com.badoo.ribs.core.routing.transition.effect.Gravity
+import com.badoo.ribs.core.routing.transition.effect.AnimationContainer
 import com.badoo.ribs.core.routing.transition.effect.slide
 import com.badoo.ribs.core.routing.transition.invoke
 
 
 open class TabSwitcher<T>(
     private val tabsOrder: List<T>,
+    private val animationContainer: AnimationContainer = AnimationContainer.Parent,
     private val duration: Long = defaultDuration,
     private val interpolator: Interpolator = defaultInterpolator,
     private val condition: (TransitionElement<out T>) -> Boolean = { true }
@@ -29,10 +31,10 @@ open class TabSwitcher<T>(
 
         return TransitionPair(
             exiting = Transition.multiple(
-                exit { slide(gravity, duration, interpolator, false) }
+                exit { slide(gravity, animationContainer, duration, interpolator, false) }
             ),
             entering = Transition.multiple(
-                enter { slide(gravity.reverse(), duration, interpolator, false) }
+                enter { slide(gravity.reverse(), animationContainer, duration, interpolator, false) }
             )
 
         )

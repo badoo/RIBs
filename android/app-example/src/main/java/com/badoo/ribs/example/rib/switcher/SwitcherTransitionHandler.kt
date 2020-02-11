@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.switcher
 
 import android.view.animation.OvershootInterpolator
+import com.badoo.ribs.core.routing.transition.effect.AnimationContainer
 import com.badoo.ribs.core.routing.transition.effect.SharedElementTransition
 import com.badoo.ribs.core.routing.transition.handler.CrossFader
 import com.badoo.ribs.core.routing.transition.handler.SharedElements
@@ -13,6 +14,7 @@ class SwitcherTransitionHandler(duration: Long): TransitionHandler.Multiple<Swit
     listOf<TransitionHandler<SwitcherRouter.Configuration>>(
 
         TabSwitcher(
+            animationContainer = AnimationContainer.RootView,
             duration = duration,
             tabsOrder = listOf(
                 SwitcherRouter.Configuration.Content.Hello,

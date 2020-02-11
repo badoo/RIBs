@@ -57,23 +57,23 @@ fun <T> List<TransitionElement<out T>>.sharedElementTransition(
         var exitingView: View? = null
         var enteringView: View? = null
 
-        val exitElementForId = exit.find {
+        val exitingElement = exit.find {
             exitingView = transitionParam.findExitingElement.invoke(it.view)
             exitingView != null
         }
 
-        if (exitElementForId != null) {
-            val enteringElementForId = enter.find {
+        if (exitingElement != null) {
+            val enteringElement = enter.find {
                 enteringView = transitionParam.findEnteringElement.invoke(it.view)
                 enteringView != null
             }
 
-            if (enteringElementForId != null) {
+            if (enteringElement != null) {
                 transitions.add(
                     SharedElementTransitionInfo(
-                        exitingElement = exitElementForId,
+                        exitingElement = exitingElement,
                         exitingView = exitingView!!, // guaranteed by find clause
-                        enteringElement = enteringElementForId,
+                        enteringElement = enteringElement,
                         enteringView = enteringView!!, // guaranteed by find clause
                         params = transitionParam
                     )

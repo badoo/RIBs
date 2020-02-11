@@ -29,7 +29,7 @@ fun <T> TransitionElement<out T>.slide(
     val width: Float = (size.x.toFloat())
     val height: Float = (size.y.toFloat())
 
-    val _gravity = if (reverseOnBackStack && (isBackStackOperation xor (direction == TransitionDirection.Exit))) gravity.reverse() else gravity
+    val _gravity = if (reverseOnBackStack && (isBackStackOperation xor (direction == TransitionDirection.EXIT))) gravity.reverse() else gravity
 
     val evaluator = SingleProgressEvaluator()
     progressEvaluator.add(evaluator)
@@ -42,8 +42,8 @@ fun <T> TransitionElement<out T>.slide(
     }
 
     val (from, to) = when (direction) {
-        is TransitionDirection.Exit -> translation
-        is TransitionDirection.Enter -> translation.second to translation.first
+        TransitionDirection.EXIT -> translation
+        TransitionDirection.ENTER -> translation.second to translation.first
     }
 
     val update: (Float) -> Unit = when (_gravity) {

@@ -23,8 +23,8 @@ fun <T> TransitionElement<out T>.fade(
     progressEvaluator.add(evaluator)
 
     val (from, to) = when (direction) {
-        is TransitionDirection.Exit -> (if (view.alpha != 1.0f) view.alpha else 1f) to 0f
-        is TransitionDirection.Enter -> (if (view.alpha != 1.0f) view.alpha else 0f) to 1f
+        TransitionDirection.EXIT -> (if (view.alpha != 1.0f) view.alpha else 1f) to 0f
+        TransitionDirection.ENTER -> (if (view.alpha != 1.0f) view.alpha else 0f) to 1f
     }
 
     val valueAnimator = ValueAnimator.ofFloat(from, to)

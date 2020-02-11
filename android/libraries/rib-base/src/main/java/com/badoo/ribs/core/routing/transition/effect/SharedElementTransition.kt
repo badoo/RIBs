@@ -49,8 +49,8 @@ internal data class SharedElementTransitionInfo<T>(
 fun <T> List<TransitionElement<out T>>.sharedElementTransition(
     transitionParams: List<SharedElementTransition.Params>
 ): Transition {
-    val exit = filter { it.direction == TransitionDirection.Exit }
-    val enter = filter { it.direction == TransitionDirection.Enter }
+    val exit = filter { it.direction == TransitionDirection.EXIT }
+    val enter = filter { it.direction == TransitionDirection.ENTER }
     val transitions: MutableList<SharedElementTransitionInfo<T>> = mutableListOf()
 
     transitionParams.forEach { transitionParam ->

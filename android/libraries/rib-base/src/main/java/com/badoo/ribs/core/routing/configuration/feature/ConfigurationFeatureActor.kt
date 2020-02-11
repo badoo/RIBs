@@ -128,7 +128,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         actions: List<Action<C>>
     ) {
         requireNotNull(transitionHandler)
-        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.Enter }
+        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
 
         enteringElements.visibility(View.INVISIBLE)
         handler.post {
@@ -139,7 +139,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             //  enter and exit can be controlled separately) is better
             OngoingTransition(
                 descriptor = descriptor,
-                direction = TransitionDirection.Exit,
+                direction = TransitionDirection.EXIT,
                 transitionPair = transitionPair,
                 actions = actions,
                 transitionElements = transitionElements,

@@ -75,7 +75,7 @@ internal class ActivateAction<C : Parcelable>(
             it.node.view?.let { ribView ->
                 TransitionElement(
                     configuration = item.configuration,
-                    direction = TransitionDirection.Enter,
+                    direction = TransitionDirection.ENTER,
                     isBackStackOperation = isBackStackOperation,
                     parentViewGroup = params.parentNode.targetViewGroupForChild(it.node),
                     identifier = it.node.identifier,

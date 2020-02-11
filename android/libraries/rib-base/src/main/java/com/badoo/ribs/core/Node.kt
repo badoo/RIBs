@@ -34,7 +34,6 @@ import com.jakewharton.rxrelay2.PublishRelay
 //import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.util.Objects
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**

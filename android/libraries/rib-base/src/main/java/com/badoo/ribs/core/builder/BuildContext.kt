@@ -10,6 +10,9 @@ class BuildContext internal constructor(
     val savedInstanceState: Bundle?
 ) {
     companion object {
+        /**
+         * Only use this for actual roots at integration point and for testing in isolation.
+         */
         fun root(savedInstanceState: Bundle?) =
             BuildContext(
                 ancestryInfo = AncestryInfo.Root,

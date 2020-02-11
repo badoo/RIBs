@@ -29,7 +29,7 @@ internal class OngoingTransition<C : Parcelable>(
 
     fun start() {
         actions.forEach { it.onTransition() }
-        emitter.emitEffect(
+        emitter.onNext(
             ConfigurationFeature.Effect.TransitionStarted(
                 this
             )
@@ -42,7 +42,7 @@ internal class OngoingTransition<C : Parcelable>(
     private fun finish() {
         handler.removeCallbacks(checkFinishedRunnable)
         actions.forEach { it.onFinish() }
-        emitter.emitEffect(
+        emitter.onNext(
             ConfigurationFeature.Effect.TransitionFinished(
                 this
             )
@@ -60,15 +60,5 @@ internal class OngoingTransition<C : Parcelable>(
         transitionPair.exiting?.reverse()
         transitionPair.entering?.reverse()
         actions.forEach { it.reverse() }
-    }
-
-    private fun EffectEmitter<C>.emitEffect(
-        effect: ConfigurationFeature.Effect<C>
-    ) {
-        onNext(
-            listOf(
-                effect
-            )
-        )
     }
 }

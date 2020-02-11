@@ -70,7 +70,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         state: WorkingState<C>,
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
-        Observable.create<List<ConfigurationFeature.Effect<C>>> { emitter ->
+        Observable.create<ConfigurationFeature.Effect<C>> { emitter ->
             if (println) println("Begin transaction")
             if (println) println("Pool keys: ${state.pool.keys}")
             if (println) println("Pool: ${state.pool.filter { it.key is ConfigurationKey.Content }}")
@@ -88,8 +88,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
             val actions = createActions(commands, params)
             val effects = createEffects(commands, actions)
-            emitter.onNext(effects)
 
+            effects.forEach { emitter.onNext(it) }
             actions.forEach { it.onBeforeTransition() }
             val transitionElements = actions.flatMap { it.transitionElements }
 
@@ -100,7 +100,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             } else {
                 beginTransitions(transaction.descriptor, transitionElements, emitter, actions)
             }
-        }.flatMapIterable { it }
+        }
 
     private fun checkOngoingTransitions(
         state: WorkingState<C>,

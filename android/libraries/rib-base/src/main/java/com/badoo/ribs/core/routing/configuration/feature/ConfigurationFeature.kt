@@ -171,4 +171,11 @@ internal class ConfigurationFeature<C : Parcelable>(
             }
         }
     }
+
+    override fun dispose() {
+        super.dispose()
+        state.ongoingTransitions.forEach {
+            it.dispose()
+        }
+    }
 }

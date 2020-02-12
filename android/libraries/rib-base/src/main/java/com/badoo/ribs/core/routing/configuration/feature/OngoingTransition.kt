@@ -27,6 +27,10 @@ internal class OngoingTransition<C : Parcelable>(
         }
     }
 
+    fun dispose() {
+        handler.removeCallbacks(checkFinishedRunnable)
+    }
+
     fun start() {
         actions.forEach { it.onTransition() }
         emitter.onNext(

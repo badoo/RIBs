@@ -89,6 +89,8 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     fun onDetach() {
         binder.dispose()
+        backStackFeature.dispose()
+        configurationFeature.dispose()
     }
 
     fun replace(configuration: Content) {

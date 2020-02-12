@@ -14,6 +14,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.Action
+import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
@@ -169,11 +170,16 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext<C>> = mutableMapOf()
 
         commands.forEach { command ->
+            // TODO unify this with resolution for all other types if possible
             if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
                 defaultElements[command.key] = ConfigurationContext.Unresolved(
                     ConfigurationContext.ActivationState.INACTIVE,
                     command.configuration
-                ).resolve(configurationResolver, parentNode) { it }
+                ).resolve(configurationResolver, parentNode) {
+                    val action = AddAction(it, parentNode)
+                    action.onTransition()
+                    action.result
+                }
             }
         }
 

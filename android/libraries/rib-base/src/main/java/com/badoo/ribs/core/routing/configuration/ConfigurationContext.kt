@@ -5,7 +5,6 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.feature.println
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import kotlinx.android.parcel.Parcelize
 
@@ -97,7 +96,6 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             onResolution: (Resolved<C>) -> Resolved<C>
         ): Resolved<C> {
             bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
-            if (println) println("Building nodes")
             val routingAction = resolver.invoke(configuration)
             return onResolution.invoke(
                 Resolved(
@@ -151,7 +149,6 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             parentNode: Node<*>,
             onResolution: (Resolved<C>) -> Resolved<C>
         ): Resolved<C> {
-            if (println) println("Resolve not needed")
             return this
         }
 

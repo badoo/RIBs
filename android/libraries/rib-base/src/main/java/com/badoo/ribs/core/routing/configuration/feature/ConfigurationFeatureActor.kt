@@ -14,7 +14,6 @@ import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.Action
-import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
@@ -72,10 +71,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<ConfigurationFeature.Effect<C>> { emitter ->
-            if (println) println("Begin transaction")
-            if (println) println("Pool keys: ${state.pool.keys}")
-            if (println) println("Pool: ${state.pool.filter { it.key is ConfigurationKey.Content }}")
-            if (println) println()
             if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
                 emitter.onComplete()
                 return@create
@@ -83,8 +78,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
             val commands = transaction.commands
             val defaultElements = createDefaultElements(state, commands)
-            // FIXME state.pool + defaultElements -- the latter overrides an already resolved one... (╯°□°)╯︵ ┻━┻
-//            val params = createParams(state, defaultElements, transaction)
             val params = createParams(state.copy(pool = state.pool + defaultElements + state.pool), defaultElements, transaction)
 
             val actions = createActions(commands, params)

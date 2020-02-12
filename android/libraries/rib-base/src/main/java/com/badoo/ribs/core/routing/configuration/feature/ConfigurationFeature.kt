@@ -29,9 +29,6 @@ import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.fromIterable
 
-// FIXME don't commit
-var println = false
-
 private val timeCapsuleKey = ConfigurationFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
     (get<SavedState<C>>(timeCapsuleKey)
@@ -156,7 +153,6 @@ internal class ConfigurationFeature<C : Parcelable>(
 
             return when (effect.command) {
                 is Add -> {
-                    if (println) println("Adding to pool: $key to $updated")
                     copy(
                         pool = pool.plus(key to updated)
                     )

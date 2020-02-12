@@ -14,6 +14,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.Action
+import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
@@ -29,7 +30,7 @@ import io.reactivex.Observable.fromCallable
  * Updated elements are then passed on to the [ReducerImpl] in the respective [Effect]s
  */
 internal class ConfigurationFeatureActor<C : Parcelable>(
-    configurationResolver: (C) -> RoutingAction<*>,
+    private val configurationResolver: (C) -> RoutingAction<*>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
@@ -81,7 +82,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             }
 
             val commands = transaction.commands
-            val defaultElements = createDefaultElements(commands)
+            val defaultElements = createDefaultElements(state, commands)
             // FIXME state.pool + defaultElements -- the latter overrides an already resolved one... (╯°□°)╯︵ ┻━┻
 //            val params = createParams(state, defaultElements, transaction)
             val params = createParams(state.copy(pool = state.pool + defaultElements + state.pool), defaultElements, transaction)
@@ -165,16 +166,17 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
      * so that other [ConfigurationCommand]s that rely on their existence can function properly.
      */
     private fun createDefaultElements(
+        state: WorkingState<C>,
         commands: List<ConfigurationCommand<C>>
     ): Map<ConfigurationKey, ConfigurationContext<C>> {
         val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext<C>> = mutableMapOf()
 
         commands.forEach { command ->
-            if (command is ConfigurationCommand.Add<C>) {
+            if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
                 defaultElements[command.key] = ConfigurationContext.Unresolved(
                     ConfigurationContext.ActivationState.INACTIVE,
                     command.configuration
-                )
+                ).resolve(configurationResolver, parentNode) { it }
             }
         }
 

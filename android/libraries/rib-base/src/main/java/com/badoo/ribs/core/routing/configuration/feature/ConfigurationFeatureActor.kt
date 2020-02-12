@@ -78,7 +78,11 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
             val commands = transaction.commands
             val defaultElements = createDefaultElements(state, commands)
-            val params = createParams(state.copy(pool = state.pool + defaultElements + state.pool), defaultElements, transaction)
+            val params = createParams(
+                state = state.withDefaults(defaultElements),
+                defaultElements = defaultElements,
+                command = transaction
+            )
 
             val actions = createActions(commands, params)
             val effects = createEffects(commands, actions)

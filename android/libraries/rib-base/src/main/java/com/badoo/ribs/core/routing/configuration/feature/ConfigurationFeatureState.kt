@@ -53,3 +53,11 @@ internal data class WorkingState<C : Parcelable>(
             }.toMap()
         )
 }
+
+internal fun <C : Parcelable> WorkingState<C>.withDefaults(
+    defaults: Map<ConfigurationKey, ConfigurationContext<C>>
+) =
+    copy(
+        // Defaults should not overwrite existing elements
+        pool = pool + defaults + pool
+    )

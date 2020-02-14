@@ -5,6 +5,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
  * Represents an action that affects multiple configurations when executed.
@@ -18,7 +19,7 @@ internal interface MultiConfigurationAction<C : Parcelable> {
      * @return sub-pool of the updated elements
      */
     fun execute(
-        pool: Map<ConfigurationKey, ConfigurationContext<C>>,
+        state: WorkingState<C>,
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, Resolved<C>>
 

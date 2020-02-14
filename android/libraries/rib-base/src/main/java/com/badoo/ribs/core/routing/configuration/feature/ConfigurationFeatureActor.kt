@@ -52,10 +52,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         state: WorkingState<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         fromCallable {
-            transaction.action.execute(
-                pool = state.pool,
-                params = createParams(state, emptyMap(), transaction)
-            )
+            transaction.action.execute(state, createParams(state, emptyMap(), transaction))
         }.map { updated ->
             ConfigurationFeature.Effect.Global(
                 transaction,

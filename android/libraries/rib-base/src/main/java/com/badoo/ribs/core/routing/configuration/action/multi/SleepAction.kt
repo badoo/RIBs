@@ -8,6 +8,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
+import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
  * Calls [DeactivateAction] all elements with an [ActivationState] of [ACTIVE].
@@ -20,10 +21,11 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
      * @return the map of elements updated by [DeactivateAction]
      */
     override fun execute(
-        pool: Map<ConfigurationKey, ConfigurationContext<C>>,
+        state: WorkingState<C>,
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
-        pool.invokeOn(ACTIVE, params) { foundByFilter ->
+        state.pool.invokeOn(ACTIVE, params) { foundByFilter ->
+            state.ongoingTransitions.forEach { it.jumpToEnd() }
             val action = DeactivateAction(foundByFilter, params, false)
             action.onBeforeTransition()
             action.onTransition()

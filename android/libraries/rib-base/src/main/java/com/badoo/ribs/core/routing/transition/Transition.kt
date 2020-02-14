@@ -7,9 +7,7 @@ interface Transition {
     fun start()
 
     fun end()
-
-    fun pause()
-
+    
     fun reverse()
 
     companion object {
@@ -23,12 +21,6 @@ interface Transition {
             override fun end() {
                 transitions.forEach {
                     it.forEach { it?.end() }
-                }
-            }
-
-            override fun pause() {
-                transitions.forEach {
-                    it.forEach { it?.pause() }
                 }
             }
 
@@ -46,10 +38,6 @@ interface Transition {
 
             override fun end() {
                 valueAnimator.end()
-            }
-
-            override fun pause() {
-                valueAnimator.pause()
             }
 
             override fun reverse() {

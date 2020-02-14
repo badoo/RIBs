@@ -95,7 +95,11 @@ private object TestIdentifier : Rib
 
 private class TestRouter<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     initialConfig: Content
-) : Router<C, Permanent, Content, Overlay, V>(null, initialConfig) {
+) : Router<C, Permanent, Content, Overlay, V>(
+    savedInstanceState = null,
+    transitionHandler = null,
+    initialConfiguration = initialConfig
+) {
 
     var resolveConfiguration: (C) -> RoutingAction<V> = { RoutingAction.noop() }
 

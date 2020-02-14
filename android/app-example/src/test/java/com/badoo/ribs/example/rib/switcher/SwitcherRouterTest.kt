@@ -1,5 +1,7 @@
 package com.badoo.ribs.example.rib.switcher
 
+import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.action.DialogRoutingAction
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
@@ -10,24 +12,18 @@ import com.badoo.ribs.example.rib.foo_bar.FooBarView
 import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.menu.Menu
-import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs
-import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
-import com.badoo.ribs.example.rib.menu.Menu.MenuItem.HelloWorld
+import com.badoo.ribs.example.rib.menu.Menu.MenuItem
 import com.badoo.ribs.example.rib.menu.MenuBuilder
 import com.badoo.ribs.example.rib.menu.MenuView
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Blocker
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Foo
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content.Hello
-import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay.Dialog
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay
+import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Permanent
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -56,95 +52,138 @@ class SwitcherRouterTest {
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val router = SwitcherRouter(
-        null,
-        fooBarBuilder,
-        helloWorldBuilder,
-        dialogExampleBuilder,
-        blockerBuilder,
-        menuBuilder,
-        dialogLauncher,
-        dialogToTestOverlay
+        savedInstanceState = null,
+        transitionHandler = null,
+        fooBarBuilder = fooBarBuilder,
+        helloWorldBuilder = helloWorldBuilder,
+        dialogExampleBuilder = dialogExampleBuilder,
+        blockerBuilder = blockerBuilder,
+        menuBuilder = menuBuilder,
+        dialogLauncher = dialogLauncher,
+        dialogToTestOverlay = dialogToTestOverlay
     )
 
-    private val rootNode = TestNode(router)
-
     @Test
-    fun `attach - attaches menu and dialog example node`() {
-        router.onAttach()
-        router.onAttachView()
+    fun `Permanent_Menu configuration resolves to correct Node`() {
+        val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
 
-        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, dialogExampleNode)
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().node).isEqualTo(menuNode)
     }
 
     @Test
-    fun `attach - publishes select dialog menu item event`() {
+    fun `Permanent_Menu configuration resolves in Node with AttachMode PARENT`() {
+        val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
+
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+    }
+
+    @Test
+    fun `Content_Hello configuration resolves to correct Node`() {
+        val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
+
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().node).isEqualTo(helloWorldNode)
+    }
+
+    @Test
+    fun `Content_Hello configuration resolves in Node with AttachMode PARENT`() {
+        val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
+
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+    }
+
+    @Test
+    fun `Content_Hello configuration triggers menu update with correct MenuItem`() {
         val observer = router.menuUpdater.subscribeOnTestObserver()
+        val routingAction = router.resolveConfiguration(Content.Hello)
+        routingAction.execute()
 
-        router.onAttach()
-        router.onAttachView()
-
-        observer.assertValue(Menu.Input.SelectMenuItem(Dialogs))
+        observer.assertValue(Menu.Input.SelectMenuItem(MenuItem.HelloWorld))
     }
 
     @Test
-    fun `hello configuration - attaches hello world and menu nodes`() {
-        router.onAttach()
-        router.onAttachView()
+    fun `Content_Foo configuration resolves to correct Node`() {
+        val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
 
-        router.replace(Hello)
-
-        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, helloWorldNode)
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().node).isEqualTo(fooBarNode)
     }
 
     @Test
-    fun `hello configuration - publishes select hello world menu item event`() {
-        router.onAttach()
-        router.onAttachView()
+    fun `Content_Foo configuration resolves in Node with AttachMode PARENT`() {
+        val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
+
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+    }
+
+    @Test
+    fun `Content_Foo configuration triggers menu update with correct MenuItem`() {
         val observer = router.menuUpdater.subscribeOnTestObserver()
+        val routingAction = router.resolveConfiguration(Content.Foo)
+        routingAction.execute()
 
-        router.replace(Hello)
-
-        observer.assertValue(Menu.Input.SelectMenuItem(HelloWorld))
+        observer.assertValue(Menu.Input.SelectMenuItem(MenuItem.FooBar))
     }
 
     @Test
-    fun `foo configuration - attaches foo bar and menu nodes`() {
-        router.onAttach()
-        router.onAttachView()
+    fun `Content_DialogsExample configuration resolves to correct Node`() {
+        val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
 
-        router.replace(Foo)
-
-        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, fooBarNode)
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().node).isEqualTo(dialogExampleNode)
     }
 
     @Test
-    fun `foo configuration - publishes select foo bar menu item event`() {
-        router.onAttach()
-        router.onAttachView()
+    fun `Content_DialogsExample configuration resolves in Node with AttachMode PARENT`() {
+        val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
+
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+    }
+
+    @Test
+    fun `Content_DialogsExample configuration triggers menu update with correct MenuItem`() {
         val observer = router.menuUpdater.subscribeOnTestObserver()
+        val routingAction = router.resolveConfiguration(Content.DialogsExample)
+        routingAction.execute()
 
-        router.replace(Foo)
-
-        observer.assertValue(Menu.Input.SelectMenuItem(FooBar))
+        observer.assertValue(Menu.Input.SelectMenuItem(MenuItem.Dialogs))
     }
 
     @Test
-    fun `overlay dialog configuration - shows overlay dialog`() {
-        router.onAttach()
-        router.onAttachView()
+    fun `Content_Blocker configuration resolves to correct Node`() {
+        val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
 
-        router.pushOverlay(Dialog)
-
-        verify(dialogLauncher).show(eq(dialogToTestOverlay), any())
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().node).isEqualTo(blockerNode)
     }
 
     @Test
-    fun `blocker configuration - attaches blocker and menu nodes`() {
-        router.onAttach()
-        router.onAttachView()
+    fun `Content_Blocker configuration resolves in Node with AttachMode PARENT`() {
+        val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
+        val nodes = routingAction.buildNodes(emptyList())
 
-        router.replace(Blocker)
+        assertThat(nodes).hasSize(1)
+        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+    }
 
-        assertThat(rootNode.getChildren()).containsExactlyInAnyOrder(menuNode, blockerNode)
+    @Test
+    fun `Overlay_Dialog configuration resolves to DialogRoutingAction`() {
+        val routingAction = router.resolveConfiguration(Overlay.Dialog).apply { execute() }
+
+        assertThat(routingAction).isInstanceOf(DialogRoutingAction::class.java)
     }
 }

@@ -1,16 +1,17 @@
 package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommandCreator.diff
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 import io.reactivex.Observable
 import java.lang.Math.min
 
@@ -20,12 +21,16 @@ import java.lang.Math.min
  *
  * @see [ConfigurationCommandCreator.diff]
  */
-internal fun <C : Parcelable> BackStackFeature<C>.toCommands(): Observable<ConfigurationCommand<C>> =
+internal fun <C : Parcelable> BackStackFeature<C>.toCommands(): Observable<Transaction<C>> =
     Observable.wrap(this)
         .startWith(initialState) // Bootstrapper can overwrite it by the time we receive the first state emission here
         .buffer(2, 1)
-        .map { (previous, current) -> diff(previous.backStack, current.backStack) }
-        .flatMapIterable { it }
+        .map { (previous, current) ->
+            Transaction.ListOfCommands(
+                descriptor = TransitionDescriptor(from = previous, to = current),
+                commands = diff(previous.backStack, current.backStack)
+            )
+        }
 
 internal object ConfigurationCommandCreator {
 

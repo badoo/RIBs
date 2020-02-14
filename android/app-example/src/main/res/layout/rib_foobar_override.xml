@@ -8,6 +8,15 @@
     android:layout_height="match_parent"
     tools:context=".app.RootActivity">
 
+    <View
+        android:id="@+id/sharedElementSquare"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_margin="16dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:id="@+id/foobar_title"
         android:layout_width="wrap_content"

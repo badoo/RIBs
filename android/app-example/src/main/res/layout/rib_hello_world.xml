@@ -8,6 +8,17 @@
     android:layout_height="match_parent"
     tools:context=".app.RootActivity">
 
+    <View
+        android:id="@+id/sharedElementSquare"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:transitionName="bla"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@id/hello_title"
+        app:layout_constraintStart_toStartOf="@id/hello_title"
+        app:layout_constraintEnd_toEndOf="@id/hello_title" />
+
     <TextView
         android:id="@+id/hello_title"
         android:layout_width="wrap_content"

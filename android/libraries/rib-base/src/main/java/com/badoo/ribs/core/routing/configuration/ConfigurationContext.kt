@@ -148,8 +148,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             resolver: (C) -> RoutingAction<*>,
             parentNode: Node<*>,
             onResolution: (Resolved<C>) -> Resolved<C>
-        ): Resolved<C> =
-            this
+        ): Resolved<C> = this
 
         fun shrink() =
             Unresolved(

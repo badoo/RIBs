@@ -33,6 +33,7 @@ class SwitcherWorkflowTest {
 
         router = SwitcherRouter(
             savedInstanceState = null,
+            transitionHandler = null,
             fooBarBuilder = mock { on { build(null) } doReturn fooBarNode },
             helloWorldBuilder = mock { on { build(null) } doReturn helloWorldNode },
             dialogExampleBuilder = mock { on { build(null) } doReturn node1 },

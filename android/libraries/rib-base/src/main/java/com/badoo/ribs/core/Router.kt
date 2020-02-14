@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.SingleConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.Transaction
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
@@ -22,12 +23,14 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     savedInstanceState: Bundle?,
     private val initialConfiguration: Content,
-    private val permanentParts: List<Permanent> = emptyList()
+    private val permanentParts: List<Permanent> = emptyList(),
+    private val transitionHandler: TransitionHandler<C>? = null
 ) : ConfigurationResolver<C, V> {
     companion object {
         internal const val BUNDLE_KEY = "Router"
@@ -56,7 +59,8 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             initialConfigurations = permanentParts,
             timeCapsule = timeCapsule,
             resolver = this::resolveConfiguration,
-            parentNode = node
+            parentNode = node,
+            transitionHandler = transitionHandler
         )
     }
 
@@ -71,20 +75,22 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         // TODO add back support for this
     }
 
-    fun onAttach() {
+    internal fun onAttach() {
         binder.bind(backStackFeature.toCommands() to configurationFeature)
     }
 
-    fun onAttachView() {
+    internal fun onAttachView() {
         configurationFeature.accept(WakeUp())
     }
 
-    fun onDetachView() {
+    internal fun onDetachView() {
         configurationFeature.accept(Sleep())
     }
 
-    fun onDetach() {
+    internal fun onDetach() {
         binder.dispose()
+        backStackFeature.dispose()
+        configurationFeature.dispose()
     }
 
     fun replace(configuration: Content) {
@@ -105,25 +111,33 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     internal fun add(configurationKey: ConfigurationKey, configuration: Content) {
         configurationFeature.accept(
-            Add(configurationKey, configuration)
+            Transaction.from(
+                Add(configurationKey, configuration)
+            )
         )
     }
 
     internal fun remove(configurationKey: ConfigurationKey) {
         configurationFeature.accept(
-            Remove(configurationKey)
+            Transaction.from(
+                Remove(configurationKey)
+            )
         )
     }
 
     internal fun activate(configurationKey: ConfigurationKey) {
         configurationFeature.accept(
-            Activate(configurationKey)
+            Transaction.from(
+                Activate(configurationKey)
+            )
         )
     }
 
     internal fun deactivate(configurationKey: ConfigurationKey) {
         configurationFeature.accept(
-            Deactivate(configurationKey)
+            Transaction.from(
+                Deactivate(configurationKey)
+            )
         )
     }
 

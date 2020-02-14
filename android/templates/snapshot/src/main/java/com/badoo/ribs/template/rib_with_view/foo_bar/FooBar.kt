@@ -1,6 +1,7 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
@@ -19,7 +20,8 @@ interface FooBar : Rib {
     sealed class Output
 
     class Customisation(
-        val viewFactory: FooBarView.Factory = FooBarViewImpl.Factory()
+        val viewFactory: FooBarView.Factory = FooBarViewImpl.Factory(),
+        val transitionHandler: TransitionHandler<FooBarRouter.Configuration>? = null
     ) : RibCustomisation
 
     interface Workflow {

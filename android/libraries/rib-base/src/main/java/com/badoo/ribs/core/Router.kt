@@ -75,19 +75,19 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         // TODO add back support for this
     }
 
-    fun onAttach() {
+    internal fun onAttach() {
         binder.bind(backStackFeature.toCommands() to configurationFeature)
     }
 
-    fun onAttachView() {
+    internal fun onAttachView() {
         configurationFeature.accept(WakeUp())
     }
 
-    fun onDetachView() {
+    internal fun onDetachView() {
         configurationFeature.accept(Sleep())
     }
 
-    fun onDetach() {
+    internal fun onDetach() {
         binder.dispose()
         backStackFeature.dispose()
         configurationFeature.dispose()

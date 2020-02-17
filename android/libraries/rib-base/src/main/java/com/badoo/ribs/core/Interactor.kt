@@ -33,7 +33,7 @@ abstract class Interactor<V : RibView>(
     private val disposables: Disposable?
 ) : Identifiable by buildParams.identifier {
 
-    private val savedInstanceState = buildParams.buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
 
     internal open fun onAttach(ribLifecycle: Lifecycle) {
         onAttach(ribLifecycle, savedInstanceState)

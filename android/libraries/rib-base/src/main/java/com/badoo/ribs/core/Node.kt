@@ -72,7 +72,7 @@ open class Node<V : RibView>(
         buildParams.buildContext.viewAttachMode
 
     val resolver: ConfigurationResolver<*, V>? = router
-    private val savedInstanceState = buildParams.buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)
     internal var viewLifecycleRegistry: LifecycleRegistry? = null

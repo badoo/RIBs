@@ -38,7 +38,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     private val binder = Binder()
-    private val savedInstanceState = buildParams.buildContext.savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(this.savedInstanceState)
     private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var configurationFeature: ConfigurationFeature<C>

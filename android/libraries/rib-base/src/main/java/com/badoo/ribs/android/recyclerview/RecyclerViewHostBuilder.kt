@@ -13,7 +13,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
 
     @SuppressWarnings("LongMethod")
     override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHostNode<T> {
-        val timeCapsule = AndroidTimeCapsule(buildParams.buildContext.savedInstanceState)
+        val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
         val feature = RecyclerViewHostFeature(
             timeCapsule = timeCapsule,

@@ -413,28 +413,6 @@ class NodeTest {
         assertEquals(someViewGroup1, n1.parentViewGroup)
         assertEquals(someViewGroup2, n2.parentViewGroup)
         assertEquals(someViewGroup3, n3.parentViewGroup)
-
-//        val id1 = testBuildParams(object : RandomOtherNode1 {}).identifier
-//        val id2 = testBuildParams(object : RandomOtherNode2 {}).identifier
-//        val id3 = testBuildParams(object : RandomOtherNode3 {}).identifier
-//        val mockChildNodes = createAndAttachChildMocks(3, mutableListOf(id1, id2, id3))
-//        assertEquals(id1, mockChildNodes[0].identifier)
-//        assertEquals(id2, mockChildNodes[1].identifier)
-//        assertEquals(id3, mockChildNodes[2].identifier)
-//        whenever(view.getParentViewForChild(id1)).thenReturn(someViewGroup1)
-//        whenever(view.getParentViewForChild(id2)).thenReturn(someViewGroup2)
-//        whenever(view.getParentViewForChild(id3)).thenReturn(someViewGroup3)
-//
-//        node.attachToView(parentViewGroup)
-//
-//        mockChildNodes.forEach {
-//            node.attachChildView(it)
-//            verify(it, never()).attachToView(parentViewGroup)
-//        }
-//
-//        verify(mockChildNodes[0]).attachToView(someViewGroup1)
-//        verify(mockChildNodes[1]).attachToView(someViewGroup2)
-//        verify(mockChildNodes[2]).attachToView(someViewGroup3)
     }
 
     @Test

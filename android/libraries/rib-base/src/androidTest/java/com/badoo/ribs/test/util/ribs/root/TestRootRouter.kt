@@ -1,10 +1,9 @@
 package com.badoo.ribs.test.util.ribs.root
 
-import com.badoo.ribs.core.builder.BuildParams
 import android.os.Parcelable
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
@@ -20,11 +19,11 @@ import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
     buildParams: BuildParams<Nothing?>,
-    private val builderPermanent1: (BuildContext) -> Node<*>,
-    private val builderPermanent2: (BuildContext) -> Node<*>,
-    private val builder3: (BuildContext) -> Node<*>,
-    private val builder1: (BuildContext) -> Node<*>,
-    private val builder2: (BuildContext) -> Node<*>,
+    private val builderPermanent1: NodeFactory,
+    private val builderPermanent2: NodeFactory,
+    private val builder3: NodeFactory,
+    private val builder1: NodeFactory,
+    private val builder2: NodeFactory,
     private val dialogLauncher: DialogLauncher,
     permanentParts: List<Permanent>,
     initialConfiguration: Content

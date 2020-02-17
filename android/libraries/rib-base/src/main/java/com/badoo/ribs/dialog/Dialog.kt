@@ -5,6 +5,7 @@ import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
@@ -18,7 +19,7 @@ abstract class Dialog<T : Any> private constructor(
     var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
-    private var ribFactory: ((BuildContext) -> Node<*>)? = null
+    private var nodeFactory: NodeFactory? = null
     internal var rib: Node<*>? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
@@ -30,8 +31,8 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun ribFactory(ribFactory: (BuildContext) -> Node<*>) {
-        this.ribFactory = ribFactory
+    fun nodeFactory(nodeFactory: NodeFactory) {
+        this.nodeFactory = nodeFactory
     }
 
     fun buttons(factory: ButtonsConfig<T>.() -> Unit) {
@@ -73,7 +74,7 @@ abstract class Dialog<T : Any> private constructor(
     }
 
     fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
-        ribFactory?.let { factory ->
+        nodeFactory?.let { factory ->
             val clientParams = BuildContext(
                 /**
                  * RIBs inside dialogs behaved like Root nodes so far in that they were

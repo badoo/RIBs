@@ -33,8 +33,7 @@ import org.junit.Test
  * It may be helpful in case of complex routing logic
  */
 class SwitcherRouterTest {
-
-
+    
     private val fooBarNode = FooBarNode(null, mock(), BuildParams.Empty(), emptySet())
     private val fooBarBuilder = mock<FooBarBuilder> { on { build(any()) } doReturn fooBarNode }
 

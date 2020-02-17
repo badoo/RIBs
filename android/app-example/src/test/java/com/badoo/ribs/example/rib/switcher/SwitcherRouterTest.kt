@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.DialogRoutingAction
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
@@ -70,37 +70,19 @@ class SwitcherRouterTest {
     @Test
     fun `Permanent_Menu configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(menuNode)
-    }
-
-    @Test
-    fun `Permanent_Menu configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(menuNode)
     }
 
     @Test
     fun `Content_Hello configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(helloWorldNode)
-    }
-
-    @Test
-    fun `Content_Hello configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(helloWorldNode)
     }
 
     @Test
@@ -115,19 +97,10 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Foo configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(fooBarNode)
-    }
-
-    @Test
-    fun `Content_Foo configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(fooBarNode)
     }
 
     @Test
@@ -142,19 +115,10 @@ class SwitcherRouterTest {
     @Test
     fun `Content_DialogsExample configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(dialogExampleNode)
-    }
-
-    @Test
-    fun `Content_DialogsExample configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(dialogExampleNode)
     }
 
     @Test
@@ -169,19 +133,10 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Blocker configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(blockerNode)
-    }
-
-    @Test
-    fun `Content_Blocker configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(blockerNode)
     }
 
     @Test

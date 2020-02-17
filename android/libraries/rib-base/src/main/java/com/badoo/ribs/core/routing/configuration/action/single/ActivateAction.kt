@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
@@ -38,7 +39,7 @@ internal class ActivateAction<C : Parcelable>(
     override var transitionElements: List<TransitionElement<C>> =
         emptyList()
 
-    private var actionableNodes: List<Node.Descriptor> =
+    private var actionableNodes: List<Node<*>> =
         emptyList()
 
 
@@ -64,21 +65,21 @@ internal class ActivateAction<C : Parcelable>(
 
     private fun prepareTransition() {
         actionableNodes = item.nodes
-            .filter { it.viewAttachMode == Node.AttachMode.PARENT && !it.node.isAttachedToView }
+            .filter { it.viewAttachMode == AttachMode.PARENT && !it.isAttachedToView }
 
         actionableNodes.forEach {
-            params.parentNode.createChildView(it.node)
-            params.parentNode.attachChildView(it.node)
+            params.parentNode.createChildView(it)
+            params.parentNode.attachChildView(it)
         }
 
         transitionElements = actionableNodes.mapNotNull {
-            it.node.view?.let { ribView ->
+            it.view?.let { ribView ->
                 TransitionElement(
                     configuration = item.configuration,
                     direction = TransitionDirection.ENTER,
                     isBackStackOperation = isBackStackOperation,
-                    parentViewGroup = params.parentNode.targetViewGroupForChild(it.node),
-                    identifier = it.node.identifier,
+                    parentViewGroup = params.parentNode.targetViewGroupForChild(it),
+                    identifier = it.identifier,
                     view = ribView.androidView
                 )
             }
@@ -98,7 +99,7 @@ internal class ActivateAction<C : Parcelable>(
     override fun onFinish() {
         if (isReversed) {
             actionableNodes.forEach {
-                params.parentNode.detachChildView(it.node)
+                params.parentNode.detachChildView(it)
             }
         }
     }

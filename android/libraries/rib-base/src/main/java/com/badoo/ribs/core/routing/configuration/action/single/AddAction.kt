@@ -30,9 +30,9 @@ internal class AddAction<C : Parcelable>(
         }
     }
 
-    private fun Node<*>.detachNodes(nodes: List<Node.Descriptor>) {
+    private fun Node<*>.detachNodes(nodes: List<Node<*>>) {
         nodes.forEach {
-            detachChildNode(it.node)
+            detachChildNode(it)
         }
     }
 

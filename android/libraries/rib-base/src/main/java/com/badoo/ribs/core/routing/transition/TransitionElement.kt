@@ -12,7 +12,7 @@ open class TransitionElement<C>(
     val direction: TransitionDirection,
     val isBackStackOperation: Boolean,
     val parentViewGroup: ViewGroup,
-    val identifier: Rib,
+    val identifier: Rib.Identifier,
     val view: View,
     val progressEvaluator: MultiProgressEvaluator = MultiProgressEvaluator()
 ) : ProgressEvaluator by progressEvaluator

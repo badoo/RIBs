@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
@@ -32,17 +33,17 @@ internal class DeactivateAction<C : Parcelable>(
         emptyList()
 
     private val actionableNodes = item.nodes
-        .filter { it.viewAttachMode == Node.AttachMode.PARENT && it.node.isAttachedToView }
+        .filter { it.viewAttachMode == AttachMode.PARENT && it.isAttachedToView }
 
     override fun onBeforeTransition() {
         transitionElements = actionableNodes.mapNotNull {
-            it.node.view?.let { ribView ->
+            it.view?.let { ribView ->
                 TransitionElement(
                     configuration = item.configuration,
                     direction = TransitionDirection.EXIT,
                     isBackStackOperation = isBackStackOperation,
-                    parentViewGroup = params.parentNode.targetViewGroupForChild(it.node),
-                    identifier = it.node.identifier,
+                    parentViewGroup = params.parentNode.targetViewGroupForChild(it),
+                    identifier = it.identifier,
                     view = ribView.androidView
                 )
             }
@@ -53,13 +54,13 @@ internal class DeactivateAction<C : Parcelable>(
         if (isReversed) {
             item.routingAction.execute()
             actionableNodes.forEach {
-                it.node.markPendingViewDetach(false)
+                it.markPendingViewDetach(false)
             }
         } else {
             item.routingAction.cleanup()
             actionableNodes.forEach {
-                it.node.saveViewState()
-                it.node.markPendingViewDetach(true)
+                it.saveViewState()
+                it.markPendingViewDetach(true)
             }
         }
     }
@@ -67,7 +68,7 @@ internal class DeactivateAction<C : Parcelable>(
     override fun onFinish() {
         if (!isReversed) {
             actionableNodes.forEach {
-                params.parentNode.detachChildView(it.node)
+                params.parentNode.detachChildView(it)
             }
         }
     }

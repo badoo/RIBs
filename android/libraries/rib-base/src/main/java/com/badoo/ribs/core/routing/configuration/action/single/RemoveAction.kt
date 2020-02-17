@@ -35,11 +35,11 @@ internal class RemoveAction<C : Parcelable>(
     override fun onTransition() {
         if (isReversed) {
             item.nodes.forEach {
-                it.node.markPendingDetach(false)
+                it.markPendingDetach(false)
             }
         } else {
             item.nodes.forEach {
-                it.node.markPendingDetach(true)
+                it.markPendingDetach(true)
             }
         }
     }
@@ -47,8 +47,8 @@ internal class RemoveAction<C : Parcelable>(
     override fun onFinish() {
         if (!isReversed) {
             item.nodes.forEach {
-                params.parentNode.detachChildView(it.node)
-                params.parentNode.detachChildNode(it.node)
+                params.parentNode.detachChildView(it)
+                params.parentNode.detachChildNode(it)
             }
         }
     }

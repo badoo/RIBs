@@ -1,5 +1,6 @@
 package com.badoo.ribs.core
 
+// TODO consider if this is better as internal
 enum class AttachMode {
     /**
      * The node's view attach/detach is managed by its parent.

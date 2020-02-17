@@ -19,10 +19,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 
-private val buildParams = BuildParams(
-    data = null,
-    buildContext = BuildContext.root(savedInstanceState = null)
-)
+private val buildParams = BuildParams.Empty()
 
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<View>,

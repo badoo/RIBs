@@ -35,6 +35,7 @@ class SwitcherWorkflowTest {
         val node3 = Node<MenuView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
 
         router = SwitcherRouter(
+            transitionHandler = null,
             buildParams = BuildParams.Empty(),
             fooBarBuilder = mock { on { build(any()) } doReturn fooBarNode },
             helloWorldBuilder = mock { on { build(any()) } doReturn helloWorldNode },

@@ -34,7 +34,7 @@ import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
-import com.uber.rib.util.RibRefWatcher
+//import com.uber.rib.util.RibRefWatcher
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.concurrent.CopyOnWriteArrayList
@@ -48,8 +48,9 @@ open class Node<V : RibView>(
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>?,
     private val interactor: Interactor<V>,
-    private val viewPlugins: Set<ViewPlugin> = emptySet(),
-    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
+    private val viewPlugins: Set<ViewPlugin> = emptySet()
+//    ,
+//    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
     companion object {
@@ -96,6 +97,9 @@ open class Node<V : RibView>(
     internal var isAttachedToView: Boolean = false
         private set
 
+    private var isPendingViewDetach: Boolean = false
+    private var isPendingDetach: Boolean = false
+
     fun getChildren(): List<Node<*>> =
         children.toList()
 
@@ -116,7 +120,9 @@ open class Node<V : RibView>(
         isAttachedToView = true
 
         if (!isViewless) {
-            createView(parentViewGroup)
+            createView(parentViewGroup)?.let {
+                parentViewGroup.attach(it)
+            }
         }
 
         lifecycleManager.onCreateView()
@@ -127,11 +133,25 @@ open class Node<V : RibView>(
         viewPlugins.forEach { it.onAttachtoView(parentViewGroup) }
     }
 
-    private fun createView(parentViewGroup: ViewGroup) {
-        view = viewFactory?.invoke(parentViewGroup)
-        view!!.let { view ->
-            parentViewGroup.addView(view.androidView)
-            view.androidView.restoreHierarchyState(savedViewState)
+    private fun createView(parentViewGroup: ViewGroup): V? {
+        if (view == null) {
+            view = viewFactory?.invoke(parentViewGroup)
+        }
+
+        return view
+    }
+
+    private fun ViewGroup.attach(view: V) {
+        addView(view.androidView)
+        view.androidView.restoreHierarchyState(savedViewState)
+    }
+
+    internal fun createChildView(child: Node<*>) {
+        if (isAttachedToView) {
+            child.createView(
+                // parentViewGroup is guaranteed to be non-null if and only if view is attached
+                (view?.getParentViewForChild(child) ?: parentViewGroup!!)
+            )
         }
     }
 
@@ -151,6 +171,7 @@ open class Node<V : RibView>(
             view = null
             isAttachedToView = false
             this.parentViewGroup = null
+            isPendingViewDetach = false
         }
     }
 
@@ -172,6 +193,7 @@ open class Node<V : RibView>(
         }
 
         detachSignal.accept(Unit)
+        isPendingDetach = false
     }
 
     /**
@@ -182,9 +204,9 @@ open class Node<V : RibView>(
     @MainThread
     internal fun attachChildNode(child: Node<*>) {
         children.add(child)
-        ribRefWatcher.logBreadcrumb(
-            "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
-        )
+//        ribRefWatcher.logBreadcrumb(
+//            "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
+//        )
 
         lifecycleManager.onAttachChild(child)
         child.onAttach()
@@ -194,13 +216,16 @@ open class Node<V : RibView>(
     // FIXME internal + protected?
     fun attachChildView(child: Node<*>) {
         if (isAttachedToView) {
-            val target = when {
-                // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                isViewless -> parentViewGroup!!
-                else -> view!!.getParentViewForChild(child) ?: parentViewGroup!!
-            }
-
+            val target = targetViewGroupForChild(child)
             child.attachToView(target)
+        }
+    }
+
+    internal fun targetViewGroupForChild(child: Node<*>): ViewGroup {
+        return when {
+            // parentViewGroup is guaranteed to be non-null if and only if view is attached
+            isViewless -> parentViewGroup!!
+            else -> view!!.getParentViewForChild(child) ?: parentViewGroup!!
         }
     }
 
@@ -222,12 +247,20 @@ open class Node<V : RibView>(
     internal fun detachChildNode(childNode: Node<*>) {
         children.remove(childNode)
 
-        ribRefWatcher.watchDeletedObject(childNode)
-        ribRefWatcher.logBreadcrumb(
-            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
-        )
+//        ribRefWatcher.watchDeletedObject(childNode)
+//        ribRefWatcher.logBreadcrumb(
+//            "DETACHED", childNode.javaClass.simpleName, this.javaClass.simpleName
+//        )
 
         childNode.onDetach()
+    }
+
+    internal fun markPendingViewDetach(isPendingViewDetach: Boolean) {
+        this.isPendingViewDetach = isPendingViewDetach
+    }
+
+    internal fun markPendingDetach(isPendingDetach: Boolean) {
+        this.isPendingDetach = isPendingDetach
     }
 
     /**
@@ -269,7 +302,7 @@ open class Node<V : RibView>(
 
     @CallSuper
     open fun handleBackPress(): Boolean {
-        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
+//        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
         return router?.popOverlay() == true
             || delegateHandleBackPressToActiveChildren()
             || interactor.handleBackPress()
@@ -278,7 +311,7 @@ open class Node<V : RibView>(
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =
         children
-            .filter { it.isAttachedToView }
+            .filter { it.isAttachedToView && !(it.isPendingDetach || it.isPendingViewDetach ) }
             .any { it.handleBackPress() }
 
     internal fun saveViewState() {

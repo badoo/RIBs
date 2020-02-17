@@ -1,4 +1,4 @@
-@file:Suppress("LongParameterList")
+@file:Suppress("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.switcher.builder
 
 import com.badoo.ribs.core.builder.BuildParams
@@ -39,11 +39,13 @@ internal object SwitcherModule {
     internal fun router(
         buildParams: BuildParams<Nothing?>,
         component: SwitcherComponent,
+        customisation: Switcher.Customisation,
         dialogLauncher: DialogLauncher,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherRouter =
         SwitcherRouter(
             buildParams = buildParams,
+            transitionHandler = customisation.transitionHandler,
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),

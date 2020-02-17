@@ -13,6 +13,10 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.core.routing.portal.PortalBuilder
 import com.badoo.ribs.core.routing.portal.PortalNode
+import com.badoo.ribs.core.routing.portal.PortalRouter
+import com.badoo.ribs.core.routing.transition.handler.CrossFader
+import com.badoo.ribs.core.routing.transition.handler.Slider
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
@@ -45,6 +49,12 @@ class RootActivity : RibActivity() {
                 override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction<Nothing> = { portal ->
                     attach { buildSwitcherNode(portal, it) }
                 }
+
+                override fun transitionHandler(): TransitionHandler<PortalRouter.Configuration>? =
+                    TransitionHandler.multiple(
+                        Slider { it.configuration is PortalRouter.Configuration.Content },
+                        CrossFader { it.configuration is PortalRouter.Configuration.Overlay }
+                    )
 
                 private fun buildSwitcherNode(portal: Portal.OtherSide, buildContext: BuildContext): SwitcherNode {
                     return SwitcherBuilder(

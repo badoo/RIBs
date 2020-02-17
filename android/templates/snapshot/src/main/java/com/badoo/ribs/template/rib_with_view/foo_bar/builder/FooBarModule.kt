@@ -22,10 +22,12 @@ internal object FooBarModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: FooBarComponent,
-        buildParams: BuildParams<Nothing?>
+        buildParams: BuildParams<Nothing?>,
+        customisation: FooBar.Customisation
     ): FooBarRouter =
         FooBarRouter(
-            buildParams = buildParams
+            buildParams = buildParams,
+            transitionHandler = null // Add customisation.transitionHandler if you need it
         )
 
     @FooBarScope

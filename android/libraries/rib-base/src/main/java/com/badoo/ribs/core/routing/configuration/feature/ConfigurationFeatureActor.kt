@@ -69,11 +69,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<ConfigurationFeature.Effect<C>> { emitter ->
-            if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
-                emitter.onComplete()
-                return@create
-            }
-
             val commands = transaction.commands
             val defaultElements = createDefaultElements(state, commands)
             val params = createParams(
@@ -85,7 +80,14 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             val actions = createActions(commands, params)
             val effects = createEffects(commands, actions)
 
+            // Effects always need to be emitted, even if we abort afterwards. This is to ensure
+            // State reflects latest Configurations.
             effects.forEach { emitter.onNext(it) }
+            if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
+                emitter.onComplete()
+                return@create
+            }
+
             actions.forEach { it.onBeforeTransition() }
             val transitionElements = actions.flatMap { it.transitionElements }
 

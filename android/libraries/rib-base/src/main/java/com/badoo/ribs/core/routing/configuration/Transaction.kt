@@ -38,10 +38,10 @@ internal sealed class Transaction<C : Parcelable> {
     ) : Transaction<C>()
 
     companion object {
-        fun <C : Parcelable> from(command: ConfigurationCommand<out C>): Transaction<C> =
+        fun <C : Parcelable> from(vararg commands: ConfigurationCommand<out C>): Transaction<C> =
             ListOfCommands(
                 descriptor = TransitionDescriptor.None,
-                commands = listOf(command as ConfigurationCommand<C>)
+                commands = commands.toList() as List<ConfigurationCommand<C>>
             )
     }
 }

@@ -75,7 +75,8 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
                     element = input.element,
                     uuid = UUID.randomUUID(),
                     configurationKey = ConfigurationKey.Content(
-                        state.nextKey
+                        index = state.nextKey,
+                        uniquePayload = input.element
                     )
                 )
             )

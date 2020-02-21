@@ -161,12 +161,12 @@ class ConfigurationFeatureTest {
             Permanent(0) to Unresolved<Configuration>(SLEEPING, Permanent1, helperPermanent1.bundles),
             Permanent(1) to Unresolved<Configuration>(SLEEPING, Permanent2, helperPermanent2.bundles),
 
-            Content(0) to Unresolved<Configuration>(SLEEPING, ContentViewParented1, helperContentViewParented1.bundles),
-            Content(1) to Unresolved<Configuration>(SLEEPING, ContentViewParented2, helperContentViewParented2.bundles),
-            Content(2) to Unresolved<Configuration>(INACTIVE, ContentViewParented3, helperContentViewParented3.bundles),
+            Content(0, ContentViewParented1) to Unresolved<Configuration>(SLEEPING, ContentViewParented1, helperContentViewParented1.bundles),
+            Content(1, ContentViewParented2) to Unresolved<Configuration>(SLEEPING, ContentViewParented2, helperContentViewParented2.bundles),
+            Content(2, ContentViewParented3) to Unresolved<Configuration>(INACTIVE, ContentViewParented3, helperContentViewParented3.bundles),
 
-            Content(3) to Unresolved<Configuration>(SLEEPING, ContentExternal1, helperContentExternal1.bundles),
-            Content(4) to Unresolved<Configuration>(INACTIVE, ContentExternal2, helperContentExternal2.bundles)
+            Content(3, ContentExternal1) to Unresolved<Configuration>(SLEEPING, ContentExternal1, helperContentExternal1.bundles),
+            Content(4, ContentExternal2) to Unresolved<Configuration>(INACTIVE, ContentExternal2, helperContentExternal2.bundles)
         )
         emptyTimeCapsule = mock()
         restoredTimeCapsule = mock {
@@ -365,7 +365,9 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Add, Node factories are invoked`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1)
+        ))
         helperContentViewParented1.nodeFactories.forEach {
             verify(it).invoke()
         }
@@ -374,8 +376,10 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Add TWICE, Node factories are NOT invoked again`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(0, ContentViewParented1),  ContentViewParented1)
+        ))
         helperContentViewParented1.nodeFactories.forEach {
             verify(it, times(1)).invoke()
         }
@@ -393,7 +397,9 @@ class ConfigurationFeatureTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Add, Nodes that are created are attached with empty Bundles`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1)
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode).attachChildNode(it.node)
         }
@@ -411,8 +417,10 @@ class ConfigurationFeatureTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Add TWICE, Nodes are NOT added again`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(0, ContentViewParented1),  ContentViewParented1)
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode, times(1)).attachChildNode(it.node)
         }
@@ -421,14 +429,16 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Add, associated RoutingAction is resolved on demand`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        feature.accept(Transaction.from(Add(Content(0, ContentViewParented1),  ContentViewParented1)))
         verify(resolver).invoke(ContentViewParented1)
     }
 
     @Test
     fun `On Add, associated RoutingAction is not yet executed`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1)
+        ))
         verify(helperContentViewParented1.routingAction, never()).execute()
     }
     // endregion
@@ -437,16 +447,20 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Activate BEFORE WakeUp, associated RoutingAction is NOT yet executed`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         verify(helperContentViewParented1.routingAction, never()).execute()
     }
 
     @Test
     fun `On Activate BEFORE WakeUp, attachChildView() is NOT yet called on associated Nodes that are view-parented`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode, never()).attachChildView(it.node)
         }
@@ -455,8 +469,10 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Activate BEFORE WakeUp, associated RoutingAction is executed AUTOMATICALLY AFTER next WakeUp`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         feature.accept(WakeUp())
         verify(helperContentViewParented1.routingAction).execute()
     }
@@ -464,8 +480,10 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Activate BEFORE WakeUp, attachChildView() is called AUTOMATICALLY AFTER next WakeUp on associated Nodes that are view-parented`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         feature.accept(WakeUp())
         helperContentViewParented1.nodes.forEach {
             verify(parentNode).attachChildView(it.node)
@@ -476,8 +494,10 @@ class ConfigurationFeatureTest {
     fun `On Activate AFTER WakeUp, associated RoutingAction is executed`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         verify(helperContentViewParented1.routingAction).execute()
     }
 
@@ -485,8 +505,10 @@ class ConfigurationFeatureTest {
     fun `On Activate AFTER WakeUp, attachChildView() is called on associated Nodes that are view-parented`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode).attachChildView(it.node)
         }
@@ -496,8 +518,10 @@ class ConfigurationFeatureTest {
     fun `On Activate AFTER WakeUp, attachChildView() is NOT called on associated Nodes that are NOT view-parented`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentExternal1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentExternal1),  ContentExternal1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode, never()).attachChildView(it.node)
         }
@@ -507,9 +531,11 @@ class ConfigurationFeatureTest {
     fun `On Activate on ALREADY ACTIVE configuration, associated RoutingAction is NOT executed again`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
+        feature.accept(Transaction.from(Activate(Content(0, ContentViewParented1))))
         verify(helperContentViewParented1.routingAction, times(1)).execute()
     }
 
@@ -517,9 +543,11 @@ class ConfigurationFeatureTest {
     fun `On Activate on ALREADY ACTIVE configuration, attachChildView() is NOT called again`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Activate(Content(0, ContentViewParented1))
+        ))
+        feature.accept(Transaction.from(Activate(Content(0, ContentViewParented1))))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode, times(1)).attachChildView(it.node)
         }
@@ -530,8 +558,10 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Deactivate, cleanup() is called on associated RoutingAction`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Deactivate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Deactivate(Content(0, ContentViewParented1))
+        ))
         verify(helperContentViewParented1.routingAction).cleanup()
     }
 
@@ -547,8 +577,10 @@ class ConfigurationFeatureTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Deactivate, saveViewState() is called on associated Nodes`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Deactivate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Deactivate(Content(0, ContentViewParented1))
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(it.node).saveViewState()
         }
@@ -566,8 +598,10 @@ class ConfigurationFeatureTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Deactivate, detachChildView() is called on associated Nodes that are view-parented`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Deactivate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Deactivate(Content(0, ContentViewParented1))
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode).detachChildView(it.node)
         }
@@ -576,8 +610,10 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Deactivate, detachChildView() is NOT called on associated Nodes that are NOT view-parented`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentExternal1)))
-        feature.accept(Transaction.from(Deactivate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentExternal1),  ContentExternal1),
+            Deactivate(Content(0, ContentViewParented1))
+        ))
         helperContentViewParented1.nodes.forEach {
             verify(parentNode, never()).detachChildView(it.node)
         }
@@ -586,9 +622,11 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Deactivate, Node references are kept`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Deactivate(Content(0))))
-        val configurationContext = feature.state.pool[Content(0)]
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Deactivate(Content(0, ContentViewParented1))
+        ))
+        val configurationContext = feature.state.pool[Content(0, ContentViewParented1)]
         assertEquals(true, configurationContext is Resolved)
         assertEquals(helperContentViewParented1.nodes, (configurationContext as? Resolved)?.nodes)
     }
@@ -598,10 +636,12 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Remove, all of its Nodes are detached regardless of view-parenting mode`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(1), ContentExternal1)))
-        feature.accept(Transaction.from(Remove(Content(1))))
-        feature.accept(Transaction.from(Remove(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(1, ContentExternal1),  ContentExternal1),
+            Remove(Content(1, ContentExternal1)),
+            Remove(Content(0, ContentViewParented1))
+        ))
 
         helperContentExternal1.nodes.forEach {
             inOrder(parentNode) {
@@ -620,10 +660,12 @@ class ConfigurationFeatureTest {
     @Test
     fun `On Remove all added elements, only permanent parts are left in the pool`() {
         createEmptyFeature()
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(1), ContentExternal1)))
-        feature.accept(Transaction.from(Remove(Content(1))))
-        feature.accept(Transaction.from(Remove(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(1, ContentExternal1),  ContentExternal1),
+            Remove(Content(1, ContentExternal1)),
+            Remove(Content(0, ContentViewParented1))
+        ))
         val configurationsLeftInPool = feature.state.pool.map {
             it.value.configuration
         }
@@ -636,9 +678,11 @@ class ConfigurationFeatureTest {
     fun `On Sleep after WakeUp, cleanup() is called on associated RoutingAction`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(1), ContentExternal1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(1, ContentExternal1),  ContentExternal1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         clearInvocations(parentNode)
         feature.accept(Sleep())
 
@@ -658,9 +702,11 @@ class ConfigurationFeatureTest {
     fun `On Sleep after WakeUp, saveViewState() is called on every ACTIVE node`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(1), ContentExternal1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(1, ContentExternal1),  ContentExternal1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         clearInvocations(parentNode)
         feature.accept(Sleep())
 
@@ -682,9 +728,11 @@ class ConfigurationFeatureTest {
     fun `On Sleep after WakeUp, detachChildView() is called on every ACTIVE node that are view-parented`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(1), ContentExternal1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(1, ContentExternal1),  ContentExternal1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         clearInvocations(parentNode)
         feature.accept(Sleep())
 
@@ -699,9 +747,11 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after Sleep, execute() is called on associated RoutingAction`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(1), ContentExternal1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(1, ContentExternal1),  ContentExternal1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         feature.accept(Sleep())
         clearInvocations(helperContentViewParented1.routingAction)
         feature.accept(WakeUp())
@@ -713,9 +763,11 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after Sleep, attachChildView() is called on every ACTIVE node that are view-parented`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        feature.accept(Transaction.from(Add(Content(0), ContentViewParented1)))
-        feature.accept(Transaction.from(Add(Content(1), ContentExternal1)))
-        feature.accept(Transaction.from(Activate(Content(0))))
+        feature.accept(Transaction.from(
+            Add(Content(0, ContentViewParented1),  ContentViewParented1),
+            Add(Content(1, ContentExternal1),  ContentExternal1),
+            Activate(Content(0, ContentViewParented1))
+        ))
         feature.accept(Sleep())
         clearInvocations(parentNode)
         feature.accept(WakeUp())

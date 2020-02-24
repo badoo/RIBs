@@ -11,6 +11,7 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.SingleTop
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.hamcrest.Matchers.hasSize
@@ -235,6 +236,100 @@ class BackStackFeatureTest {
         val beforeReplace = backStackManager.state
         backStackManager.accept(NewRoot(C2))
         assertEquals(beforeReplace, backStackManager.state)
+    }
+
+    @Test
+    fun `Wish_SingleTop reactivates configuration if found in back stack (object)`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C3))
+        backStackManager.accept(Push(C4))
+        backStackManager.accept(Push(C5))
+        backStackManager.accept(SingleTop(C3))
+        val expected = listOf(
+            C1, C2, C3
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_SingleTop reactivates configuration if found in back stack (data class)`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C6(i = 1)))
+        backStackManager.accept(Push(C4))
+        backStackManager.accept(Push(C5))
+        backStackManager.accept(SingleTop(C6(i = 1)))
+        val expected = listOf(
+            C1, C2, C6(i = 1)
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_SingleTop reactivate goes back only until latest occurrence (object)`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C3))
+        backStackManager.accept(Push(C4))
+        backStackManager.accept(Push(C3))
+        backStackManager.accept(Push(C5))
+        backStackManager.accept(SingleTop(C3))
+        val expected = listOf(
+            C1, C2, C3, C4, C3
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_SingleTop reactivate goes back only until latest occurrence (data class)`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C6(i = 1)))
+        backStackManager.accept(Push(C4))
+        backStackManager.accept(Push(C6(i = 1)))
+        backStackManager.accept(Push(C5))
+        backStackManager.accept(SingleTop(C6(i = 1)))
+        val expected = listOf(
+            C1, C2, C6(i = 1), C4, C6(i = 1)
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_SingleTop replaces configuration if found in back stack with different parameters`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C6(i = 1)))
+        backStackManager.accept(Push(C4))
+        backStackManager.accept(Push(C5))
+        backStackManager.accept(SingleTop(C6(i = 2)))
+        val expected = listOf(
+            C1, C2, C6(i = 2)
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_SingleTop replaces goes back only until latest occurrence`() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C6(i = 1)))
+        backStackManager.accept(Push(C4))
+        backStackManager.accept(Push(C6(i = 1)))
+        backStackManager.accept(Push(C5))
+        backStackManager.accept(SingleTop(C6(i = 2)))
+        val expected = listOf(
+            C1, C2, C6(i = 1), C4, C6(i = 2)
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+    }
+
+    @Test
+    fun `Wish_SingleTop acts as Push if back stack doesn't contain new configuration `() {
+        backStackManager.accept(Push(C2))
+        backStackManager.accept(Push(C3))
+        backStackManager.accept(Push(C4))
+        backStackManager.accept(Push(C5))
+        backStackManager.accept(SingleTop(C6(i = 3)))
+        val expected = listOf(
+            C1, C2, C3, C4, C5, C6(i = 3)
+        )
+        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
     }
 
     @Test

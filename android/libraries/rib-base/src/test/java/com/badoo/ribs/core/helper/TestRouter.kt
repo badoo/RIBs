@@ -16,6 +16,7 @@ class TestRouter(
     private val routingActionForC3: RoutingAction<TestView> = mock(),
     private val routingActionForC4: RoutingAction<TestView> = mock(),
     private val routingActionForC5: RoutingAction<TestView> = mock(),
+    private val routingActionForC6: RoutingAction<TestView> = mock(),
     private val routingActionForO1: RoutingAction<TestView> = mock(),
     private val routingActionForO2: RoutingAction<TestView> = mock(),
     private val routingActionForO3: RoutingAction<TestView> = mock()
@@ -32,6 +33,7 @@ class TestRouter(
         @Parcelize object C3 : Configuration() { override fun toString(): String = "C3" }
         @Parcelize object C4 : Configuration() { override fun toString(): String = "C4" }
         @Parcelize object C5 : Configuration() { override fun toString(): String = "C5" }
+        @Parcelize data class C6(val i: Int) : Configuration() { override fun toString(): String = "C6" }
 
         // Overlay
         @Parcelize object O1 : Configuration() { override fun toString(): String = "O1" }
@@ -46,6 +48,7 @@ class TestRouter(
             is Configuration.C3 -> routingActionForC3
             is Configuration.C4 -> routingActionForC4
             is Configuration.C5 -> routingActionForC5
+            is Configuration.C6 -> routingActionForC6
             is Configuration.O1 -> routingActionForO1
             is Configuration.O2 -> routingActionForO2
             is Configuration.O3 -> routingActionForO3

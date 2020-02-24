@@ -21,6 +21,7 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.SingleTop
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
@@ -103,6 +104,10 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     fun pushOverlay(configuration: Overlay) {
         backStackFeature.accept(PushOverlay(configuration))
+    }
+
+    fun singleTop(configuration: Content) {
+        backStackFeature.accept(SingleTop(configuration))
     }
 
     fun newRoot(configuration: Content) {

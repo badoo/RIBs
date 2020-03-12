@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.transition
 
 import android.animation.ValueAnimator
+import com.badoo.ribs.core.routing.transition.effect.ReverseHolder
 
 interface Transition {
 
@@ -31,18 +32,20 @@ interface Transition {
             }
         }
 
-        fun from(valueAnimator: ValueAnimator) = object : Transition {
-            override fun start() {
-                valueAnimator.start()
-            }
+        fun from(valueAnimator: ValueAnimator, reverseHolder: ReverseHolder = ReverseHolder()) =
+            object : Transition {
+                override fun start() {
+                    valueAnimator.start()
+                }
 
-            override fun end() {
-                valueAnimator.end()
-            }
+                override fun end() {
+                    valueAnimator.end()
+                }
 
-            override fun reverse() {
-                valueAnimator.reverse()
+                override fun reverse() {
+                    valueAnimator.reverse()
+                    reverseHolder.isReversing = !reverseHolder.isReversing
+                }
             }
-        }
     }
 }

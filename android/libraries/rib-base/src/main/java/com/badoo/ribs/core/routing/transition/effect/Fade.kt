@@ -37,15 +37,14 @@ fun <T> TransitionElement<out T>.fade(
         evaluator.updateProgress(1.0f * (progress - from) / (to - from))
     }
 
+    val reverseHolder = ReverseHolder()
     valueAnimator.addListener(object : AnimatorListenerAdapter() {
         override fun onAnimationStart(animation: Animator?) {
-            super.onAnimationStart(animation)
             evaluator.start()
         }
 
-        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
-            super.onAnimationEnd(animation, isReverse)
-            if (isReverse) {
+        override fun onAnimationEnd(animation: Animator?) {
+            if (reverseHolder.isReversing) {
                 evaluator.reset()
             } else {
                 evaluator.markFinished()
@@ -53,5 +52,6 @@ fun <T> TransitionElement<out T>.fade(
         }
     })
 
-    return Transition.from(valueAnimator)
+    return Transition.from(valueAnimator, reverseHolder)
 }
+

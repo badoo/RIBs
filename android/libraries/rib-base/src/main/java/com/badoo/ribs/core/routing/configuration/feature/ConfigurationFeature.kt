@@ -77,6 +77,7 @@ internal class ConfigurationFeature<C : Parcelable>(
 
         data class Individual<C : Parcelable>(
             val command: ConfigurationCommand<C>,
+            val descriptor: TransitionDescriptor,
             val updatedElement: Resolved<C>
         ) : Effect<C>()
 
@@ -128,8 +129,13 @@ internal class ConfigurationFeature<C : Parcelable>(
             when (effect) {
                 is Effect.Global -> state.global(effect)
                 is Effect.Individual -> state.individual(effect)
-                is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
-                is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
+                is Effect.TransitionStarted -> state.copy(
+                    ongoingTransitions = state.ongoingTransitions + effect.transition
+                )
+                is Effect.TransitionFinished -> state.copy(
+                    pendingRemoval = state.pendingRemoval - effect.transition.descriptor,
+                    ongoingTransitions = state.ongoingTransitions - effect.transition
+                )
             }
 
         private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =
@@ -150,6 +156,7 @@ internal class ConfigurationFeature<C : Parcelable>(
         private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
             val key = effect.command.key
             val updated = effect.updatedElement
+            val descriptor = effect.descriptor
 
             return when (effect.command) {
                 is Add -> {
@@ -161,10 +168,19 @@ internal class ConfigurationFeature<C : Parcelable>(
                 is Deactivate -> copy(
                     pool = pool.minus(key).plus(key to updated)
                 )
-                is Remove -> copy(
-                    pool = pool.minus(key)
-                )
+                is Remove -> remove(descriptor, key)
             }
+        }
+
+        private fun WorkingState<C>.remove(descriptor: TransitionDescriptor, key: ConfigurationKey): WorkingState<C> {
+            val context = pool[key] ?: return this
+            val alreadyPending = pendingRemoval[descriptor] ?: mutableMapOf()
+            val updatedPending = alreadyPending + (key to context)
+
+            return copy(
+                pool = pool - key,
+                pendingRemoval = pendingRemoval + (descriptor to updatedPending)
+            )
         }
     }
 

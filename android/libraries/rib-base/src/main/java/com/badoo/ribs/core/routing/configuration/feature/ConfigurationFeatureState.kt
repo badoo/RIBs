@@ -35,6 +35,7 @@ internal data class SavedState<C : Parcelable>(
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
     val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf(),
+    val pendingRemoval: Map<TransitionDescriptor, Map<ConfigurationKey, ConfigurationContext<C>>> = mapOf(),
     val ongoingTransitions: List<OngoingTransition<C>> = emptyList()
 ) {
     /**

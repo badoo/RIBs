@@ -8,13 +8,15 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.Action
-import com.badoo.ribs.core.routing.configuration.action.single.AddAction
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeatureActor.NewTransitionsExecution.Abort
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeatureActor.NewTransitionsExecution.Continue
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
@@ -60,8 +62,9 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             )
         }
 
-    private enum class NewTransitionsExecution {
-        ABORT, CONTINUE
+    private sealed class NewTransitionsExecution {
+        data class Abort(val reversedTransition: TransitionDescriptor) : NewTransitionsExecution()
+        object Continue : NewTransitionsExecution()
     }
 
     private fun processTransaction(
@@ -70,7 +73,15 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create<ConfigurationFeature.Effect<C>> { emitter ->
             val commands = transaction.commands
-            val defaultElements = createDefaultElements(state, commands)
+            val executionResult = checkOngoingTransitions(state, transaction)
+
+            val reuseFrom =
+                when (executionResult) {
+                    is Abort -> state.pendingRemoval[executionResult.reversedTransition] ?: emptyMap()
+                    else -> emptyMap()
+                }
+
+            val defaultElements = createDefaultElements(state, reuseFrom, commands)
             val params = createParams(
                 state = state.withDefaults(defaultElements),
                 defaultElements = defaultElements,
@@ -78,12 +89,12 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             )
 
             val actions = createActions(commands, params)
-            val effects = createEffects(commands, actions)
+            val effects = transaction.createEffects(actions)
 
             // Effects always need to be emitted, even if we abort afterwards. This is to ensure
             // State reflects latest Configurations.
             effects.forEach { emitter.onNext(it) }
-            if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
+            if (executionResult is Abort) {
                 emitter.onComplete()
                 return@create
             }
@@ -108,7 +119,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             when {
                 transaction.descriptor.isReverseOf(it.descriptor) -> {
                     it.reverse()
-                    return NewTransitionsExecution.ABORT
+                    return Abort(it.descriptor)
                 }
                 transaction.descriptor.isContinuationOf(it.descriptor) -> {
                     it.jumpToEnd()
@@ -116,7 +127,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             }
         }
 
-        return NewTransitionsExecution.CONTINUE
+        return Continue
     }
 
     private fun beginTransitions(
@@ -164,9 +175,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
      */
     private fun createDefaultElements(
         state: WorkingState<C>,
+        reuseFrom: Map<ConfigurationKey, ConfigurationContext<C>>,
         commands: List<ConfigurationCommand<C>>
     ): Map<ConfigurationKey, ConfigurationContext<C>> {
-        val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext<C>> = mutableMapOf()
+        val defaultElements = reuseFrom.toMutableMap()
 
         commands.forEach { command ->
             // TODO unify this with resolution for all other types if possible
@@ -174,11 +186,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 defaultElements[command.key] = ConfigurationContext.Unresolved(
                     ConfigurationContext.ActivationState.INACTIVE,
                     command.configuration
-                ).resolve(configurationResolver, parentNode) {
-                    val action = AddAction(it, parentNode)
-                    action.onTransition()
-                    action.result
-                }
+                )
             }
         }
 
@@ -195,7 +203,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             parentNode = parentNode,
             globalActivationLevel = when (command) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING
-                is MultiConfigurationCommand.WakeUp -> ConfigurationContext.ActivationState.ACTIVE
+                is MultiConfigurationCommand.WakeUp -> ACTIVE
                 else -> state.activationLevel
             }
         )
@@ -207,11 +215,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         command.actionFactory.create(command.key, params, commands.isBackStackOperation(command.key))
     }
 
-    private fun createEffects(
-        commands: List<ConfigurationCommand<C>>,
+    private fun Transaction.ListOfCommands<C>.createEffects(
         actions: List<Action<C>>
     ): List<ConfigurationFeature.Effect<C>> =
         commands.mapIndexed { index, command ->
-            ConfigurationFeature.Effect.Individual(command, actions[index].result) as ConfigurationFeature.Effect<C>
+            ConfigurationFeature.Effect.Individual(command, descriptor, actions[index].result)
         }
 }

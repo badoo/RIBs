@@ -18,7 +18,9 @@ class HelloWorldRouter(
 ): Router<Configuration, Permanent, Content, Nothing, HelloWorldView>(
     savedInstanceState = savedInstanceState,
     initialConfiguration = Content.Default,
-    permanentParts = listOf(Permanent.Small)
+    permanentParts = listOf(
+//        Permanent.Small
+    )
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
@@ -31,7 +33,7 @@ class HelloWorldRouter(
 
     override fun resolveConfiguration(configuration: Configuration): RoutingAction<HelloWorldView> =
         when (configuration) {
-            Permanent.Small -> attach { smallBuilder.build(it) }
+            Permanent.Small -> noop() // attach { smallBuilder.build(it) }
             Content.Default -> noop()
     }
 }

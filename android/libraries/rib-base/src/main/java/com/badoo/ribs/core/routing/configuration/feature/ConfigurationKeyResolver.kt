@@ -25,7 +25,9 @@ internal class ConfigurationKeyResolver<C : Parcelable>(
         key: ConfigurationKey,
         defaultElements: Map<ConfigurationKey, ConfigurationContext<C>>
     ): ConfigurationContext.Resolved<C> {
-        val item = state.pool[key] ?: defaultElements[key] ?: error("Key $key was not found in pool: $state.pool")
+        val item = state.pool[key]
+            ?: defaultElements[key]
+            ?: error("Key $key was not found in pool: $state.pool")
 
         return resolveAndAddIfNeeded(item)
     }
@@ -46,8 +48,9 @@ internal class ConfigurationKeyResolver<C : Parcelable>(
              * [Add] is only called explicitly with direct back stack manipulation, but not on
              * state restoration.
              */
-            val action = AddAction(it, parentNode)
-            action.onTransition()
-            action.result
+//            val action = AddAction(it, parentNode)
+//            action.onTransition()
+//            action.result
+            it
         }
 }

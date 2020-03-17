@@ -70,15 +70,39 @@ internal class ConfigurationFeature<C : Parcelable>(
     }
 
     sealed class Effect<C : Parcelable> {
-        data class Global<C : Parcelable>(
-            val command: MultiConfigurationCommand<C>,
-            val updatedElements: Map<ConfigurationKey, Resolved<C>>
-        ) : Effect<C>()
+        sealed class Global<C : Parcelable>: Effect<C>() {
+            class WakeUp<C : Parcelable>: Global<C>()
+            class Sleep<C : Parcelable>: Global<C>()
+            class SaveInstanceState<C : Parcelable>(
+                val updatedElements: Map<ConfigurationKey, Resolved<C>>
+            ): Global<C>()
+        }
 
-        data class Individual<C : Parcelable>(
-            val command: ConfigurationCommand<C>,
-            val updatedElement: Resolved<C>
-        ) : Effect<C>()
+        sealed class Individual<C : Parcelable>: Effect<C>() {
+            abstract val key: ConfigurationKey
+            abstract val updatedElement: Resolved<C>
+
+            class Added<C : Parcelable>(
+                override val key: ConfigurationKey,
+                override val updatedElement: Resolved<C>
+            ) : Individual<C>()
+
+            class Removed<C : Parcelable>(
+                override val key: ConfigurationKey,
+                override val updatedElement: Resolved<C>
+            ) : Individual<C>()
+
+            class Activated<C : Parcelable>(
+                override val key: ConfigurationKey,
+                override val updatedElement: Resolved<C>
+            ) : Individual<C>()
+
+            class Deactivated<C : Parcelable>(
+                override val key: ConfigurationKey,
+                override val updatedElement: Resolved<C>
+            ) : Individual<C>()
+
+        }
 
         data class TransitionStarted<C : Parcelable>(
             val transition: OngoingTransition<C>
@@ -108,7 +132,7 @@ internal class ConfigurationFeature<C : Parcelable>(
                                 descriptor = TransitionDescriptor.None,
                                 commands = listOf(
                                     Add(key, configuration),
-                                    Activate(key)
+                                    Activate(key, configuration)
                                 )
                             )
                         }
@@ -133,36 +157,32 @@ internal class ConfigurationFeature<C : Parcelable>(
             }
 
         private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =
-            when (effect.command) {
-                is Sleep -> copy(
-                    activationLevel = SLEEPING,
-                    pool = pool + effect.updatedElements
+            when (effect) {
+                is Effect.Global.Sleep -> copy(
+                    activationLevel = SLEEPING
                 )
-                is WakeUp -> copy(
-                    activationLevel = ACTIVE,
-                    pool = pool + effect.updatedElements
+                is Effect.Global.WakeUp -> copy(
+                    activationLevel = ACTIVE
                 )
-                is SaveInstanceState -> copy(
+                is Effect.Global.SaveInstanceState -> copy(
                     pool = pool + effect.updatedElements
                 )
             }
 
         private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
-            val key = effect.command.key
+            val key = effect.key
             val updated = effect.updatedElement
 
-            return when (effect.command) {
-                is Add -> {
-                    copy(
+            return when (effect) {
+                is Effect.Individual.Added -> copy(
                         pool = pool.plus(key to updated)
                     )
-                }
-                is Activate,
-                is Deactivate -> copy(
-                    pool = pool.minus(key).plus(key to updated)
-                )
-                is Remove -> copy(
+                is Effect.Individual.Removed -> copy(
                     pool = pool.minus(key)
+                )
+                is Effect.Individual.Activated,
+                is Effect.Individual.Deactivated -> copy(
+                    pool = pool.minus(key).plus(key to updated)
                 )
             }
         }

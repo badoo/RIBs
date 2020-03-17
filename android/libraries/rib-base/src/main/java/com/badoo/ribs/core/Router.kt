@@ -110,35 +110,35 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     internal fun add(configurationKey: ConfigurationKey, configuration: Content) {
-        configurationFeature.accept(
-            Transaction.from(
-                Add(configurationKey, configuration)
-            )
-        )
+//        configurationFeature.accept(
+//            Transaction.from(
+//                Add(configurationKey, configuration)
+//            )
+//        )
     }
 
     internal fun remove(configurationKey: ConfigurationKey) {
-        configurationFeature.accept(
-            Transaction.from(
-                Remove(configurationKey)
-            )
-        )
+//        configurationFeature.accept(
+//            Transaction.from(
+//                Remove(configurationKey)
+//            )
+//        )
     }
 
     internal fun activate(configurationKey: ConfigurationKey) {
-        configurationFeature.accept(
-            Transaction.from(
-                Activate(configurationKey)
-            )
-        )
+//        configurationFeature.accept(
+//            Transaction.from(
+//                Activate(configurationKey)
+//            )
+//        )
     }
 
     internal fun deactivate(configurationKey: ConfigurationKey) {
-        configurationFeature.accept(
-            Transaction.from(
-                Deactivate(configurationKey)
-            )
-        )
+//        configurationFeature.accept(
+//            Transaction.from(
+//                Deactivate(configurationKey)
+//            )
+//        )
     }
 
     internal fun getNodes(configurationKey: ConfigurationKey) =

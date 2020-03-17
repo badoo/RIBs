@@ -2,7 +2,7 @@ package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Handler
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.action.single.Action
+import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
@@ -11,7 +11,7 @@ internal class OngoingTransition<C : Parcelable>(
     val descriptor: TransitionDescriptor,
     val direction: TransitionDirection,
     private val transitionPair: TransitionPair,
-    private val actions: List<Action<C>>,
+    private var actions: List<ReversibleAction<C>>,
     private val transitionElements: List<TransitionElement<C>>,
     private val emitter: EffectEmitter<C>
 ) {
@@ -63,6 +63,7 @@ internal class OngoingTransition<C : Parcelable>(
     fun reverse() {
         transitionPair.exiting?.reverse()
         transitionPair.entering?.reverse()
+        actions = actions.reversed()
         actions.forEach { it.reverse() }
     }
 }

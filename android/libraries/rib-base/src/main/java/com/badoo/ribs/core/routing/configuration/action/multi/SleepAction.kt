@@ -1,13 +1,11 @@
 package com.badoo.ribs.core.routing.configuration.action.multi
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
@@ -22,14 +20,24 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
      */
     override fun execute(
         state: WorkingState<C>,
-        params: ActionExecutionParams<C>
-    ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
-        state.pool.invokeOn(ACTIVE, params) { foundByFilter ->
+        params: TransactionExecutionParams<C>
+    ) {
+        state.pool.invokeOn(ACTIVE, params) { key, foundByFilter ->
             state.ongoingTransitions.forEach { it.jumpToEnd() }
-            val action = DeactivateAction(foundByFilter, params, false)
+            val action = DeactivateAction(
+                emitter = params.emitter,
+                item = foundByFilter,
+                key = key,
+                parentNode = params.parentNode,
+                actionableNodes = foundByFilter.nodes.map { it.node },
+                isBackStackOperation = false
+            )
             action.onBeforeTransition()
             action.onTransition()
             action.onFinish()
-            action.result.withActivationState(SLEEPING)
         }
+
+        params.emitter.onNext(Effect.Global.Sleep())
+        params.emitter.onComplete()
+    }
 }

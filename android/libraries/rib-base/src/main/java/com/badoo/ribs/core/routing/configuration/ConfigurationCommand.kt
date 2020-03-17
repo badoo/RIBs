@@ -7,8 +7,11 @@ import com.badoo.ribs.core.routing.configuration.action.single.ActionFactory
 import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
-import com.badoo.ribs.core.routing.configuration.action.single.NoOpAction
 import com.badoo.ribs.core.routing.configuration.action.single.RemoveAction
+import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
+import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionFactory
+import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionPair
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 
 /**
  * Represents a command to change one or more [ConfigurationContext] elements.
@@ -21,29 +24,62 @@ import com.badoo.ribs.core.routing.configuration.action.single.RemoveAction
  */
 internal sealed class ConfigurationCommand<C : Parcelable> {
     abstract val key: ConfigurationKey
-    abstract val actionFactory: ActionFactory
+    abstract val configuration: C
+    abstract val actionFactory: ReversibleActionFactory
 
-    data class Add<C : Parcelable>(override val key: ConfigurationKey, val configuration: C) : ConfigurationCommand<C>() {
-        /**
-         * No additional action here, as [AddAction] is executed automatically
-         * during [ConfigurationContext.Unresolved.resolve],
-         */
-        override val actionFactory: ActionFactory =
-            NoOpAction.Factory
+    data class Add<C : Parcelable>(
+        override val key: ConfigurationKey,
+        override val configuration: C
+    ) : ConfigurationCommand<C>() {
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                forwardActionFactory = AddAction.Factory,
+                reverseActionFactory = RemoveAction.Factory
+            )
     }
 
-    data class Activate<C : Parcelable>(override val key: ConfigurationKey) : ConfigurationCommand<C>() {
-        override val actionFactory: ActionFactory =
-            ActivateAction.Factory
+    data class Remove<C : Parcelable>(
+        override val key: ConfigurationKey,
+        override val configuration: C
+    ) : ConfigurationCommand<C>() {
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                forwardActionFactory = RemoveAction.Factory,
+                reverseActionFactory = AddAction.Factory
+            )
     }
 
-    data class Deactivate<C : Parcelable>(override val key: ConfigurationKey) : ConfigurationCommand<C>() {
-        override val actionFactory: ActionFactory =
-            DeactivateAction.Factory
+    data class Activate<C : Parcelable>(
+        override val key: ConfigurationKey,
+        override val configuration: C
+    ) : ConfigurationCommand<C>() {
+
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                nodeFilter = { it.viewAttachMode == Node.AttachMode.PARENT },
+                forwardActionFactory = ActivateAction.Factory,
+                reverseActionFactory = DeactivateAction.Factory
+            )
     }
 
-    data class Remove<C : Parcelable>(override val key: ConfigurationKey) : ConfigurationCommand<C>() {
-        override val actionFactory: ActionFactory =
-            RemoveAction.Factory
+    data class Deactivate<C : Parcelable>(
+        override val key: ConfigurationKey,
+        override val configuration: C
+    ) : ConfigurationCommand<C>() {
+
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                nodeFilter = { it.viewAttachMode == Node.AttachMode.PARENT },
+                forwardActionFactory = DeactivateAction.Factory,
+                reverseActionFactory = ActivateAction.Factory
+            )
     }
 }
+
+
+internal data class WhateverThisIs<C : Parcelable>(
+    val command: ConfigurationCommand<C>,
+    val action: ReversibleAction<C>,
+    val effect: ConfigurationFeature.Effect<C>, // TODO effect should have .reverse()
+    val reverseEffect: ConfigurationFeature.Effect<C>
+)

@@ -28,7 +28,7 @@ internal class ActivateAction<C : Parcelable>(
             isBackStackOperation: Boolean
         ): Action<C> {
             val item = params.resolver.invoke(key)
-            return ActivateAction(item, params, isBackStackOperation)
+            return ActivateAction(item.first, params, isBackStackOperation)
         }
     }
 

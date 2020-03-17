@@ -26,6 +26,6 @@ internal class NoOpAction<C : Parcelable>(
             params: ActionExecutionParams<C>,
             isBackStackOperation: Boolean
         ): Action<C> =
-            NoOpAction(params.resolver.invoke(key))
+            NoOpAction(params.resolver.invoke(key).first)
     }
 }

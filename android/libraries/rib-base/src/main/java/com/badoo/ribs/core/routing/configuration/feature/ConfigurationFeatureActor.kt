@@ -88,8 +88,9 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 command = transaction
             )
 
-            val actions = createActions(commands, params)
-            val effects = transaction.createEffects(actions)
+            val commandsWithActions = createActions(commands, params)
+            val effects = transaction.createEffects(commandsWithActions)
+            val actions = commandsWithActions.flatMap { it.second }
 
             // Effects always need to be emitted, even if we abort afterwards. This is to ensure
             // State reflects latest Configurations.
@@ -199,7 +200,17 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         command: Transaction<C>? = null
     ): ActionExecutionParams<C> =
         ActionExecutionParams(
-            resolver = { key -> configurationKeyResolver.resolve(state, key, defaultElements) },
+            resolver = object : (ConfigurationKey) -> Pair<ConfigurationContext.Resolved<C>, Action<C>?> {
+                val cached: MutableMap<ConfigurationKey, ConfigurationContext.Resolved<C>> =
+                    mutableMapOf()
+
+                override fun invoke(key: ConfigurationKey): Pair<ConfigurationContext.Resolved<C>, Action<C>?> =
+                    cached[key]?.let { it to null }
+                        ?: configurationKeyResolver.resolve(state, key, defaultElements)
+                            .also {
+                                cached[key] = it.first
+                            }
+            },
             parentNode = parentNode,
             globalActivationLevel = when (command) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING
@@ -211,14 +222,29 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun createActions(
         commands: List<ConfigurationCommand<C>>,
         params: ActionExecutionParams<C>
-    ): List<Action<C>> = commands.map { command ->
-        command.actionFactory.create(command.key, params, commands.isBackStackOperation(command.key))
+    ): List<Pair<ConfigurationCommand<C>, List<Action<C>>>> = commands.map { command ->
+        val (resolved, addAction) = params.resolver(command.key)
+
+        command to listOfNotNull(
+            addAction,
+            command.actionFactory.create(
+                command.key,
+                params.copy(resolver = { resolved to null }),
+                commands.isBackStackOperation(command.key)
+            )
+        )
     }
 
     private fun Transaction.ListOfCommands<C>.createEffects(
-        actions: List<Action<C>>
+        commands: List<Pair<ConfigurationCommand<C>, List<Action<C>>>>
     ): List<ConfigurationFeature.Effect<C>> =
-        commands.mapIndexed { index, command ->
-            ConfigurationFeature.Effect.Individual(command, descriptor, actions[index].result)
+        commands.flatMap { (command, actions) ->
+            actions.map {
+                ConfigurationFeature.Effect.Individual(
+                    command,
+                    descriptor,
+                    it.result
+                )
+            }
         }
 }

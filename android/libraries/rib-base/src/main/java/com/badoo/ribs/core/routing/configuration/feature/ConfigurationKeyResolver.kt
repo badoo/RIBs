@@ -5,6 +5,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.action.single.Action
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 
 internal class ConfigurationKeyResolver<C : Parcelable>(
@@ -24,30 +25,18 @@ internal class ConfigurationKeyResolver<C : Parcelable>(
         state: WorkingState<C>,
         key: ConfigurationKey,
         defaultElements: Map<ConfigurationKey, ConfigurationContext<C>>
-    ): ConfigurationContext.Resolved<C> {
+    ): Pair<ConfigurationContext.Resolved<C>, Action<C>?> {
         val item = state.pool[key] ?: defaultElements[key] ?: error("Key $key was not found in pool: $state.pool")
 
         return resolveAndAddIfNeeded(item)
     }
 
-    fun resolveAndAddIfNeeded(context: ConfigurationContext<C>): ConfigurationContext.Resolved<C> =
-        context.resolve(configurationResolver, parentNode) {
-            /**
-             * Resolution involves building the associated [Node]s, which need to be guaranteed
-             * to be added to the parentNode.
-             *
-             * Because of this, we need to make sure that [AddAction] is executed every time
-             * we resolve, even when no explicit [Add] command was asked.
-             *
-             * This is to cover cases e.g. when restoring from Bundle:
-             * we have a list of [Unresolved] elements that will be resolved on next command
-             * (e.g. [WakeUp] / [Activate]), by which time they will need to have been added.
-             *
-             * [Add] is only called explicitly with direct back stack manipulation, but not on
-             * state restoration.
-             */
-            val action = AddAction(it, parentNode)
-            action.onTransition()
-            action.result
+    fun resolveAndAddIfNeeded(context: ConfigurationContext<C>): Pair<ConfigurationContext.Resolved<C>, Action<C>?> {
+        var action: Action<C>? = null
+        val resolved = context.resolve(configurationResolver, parentNode) {
+            action = AddAction(it, parentNode)
+            it
         }
+        return resolved to action
+    }
 }

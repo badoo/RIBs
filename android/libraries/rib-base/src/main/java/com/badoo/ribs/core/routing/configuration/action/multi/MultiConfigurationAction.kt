@@ -5,6 +5,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.single.Action
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
@@ -29,7 +30,7 @@ internal interface MultiConfigurationAction<C : Parcelable> {
     fun Map<ConfigurationKey, ConfigurationContext<C>>.invokeOn(
         filterActivationState: ConfigurationContext.ActivationState,
         params: ActionExecutionParams<C>,
-        block: (Resolved<C>) -> Resolved<C>
+        block: (Pair<Resolved<C>, Action<C>?>) -> Resolved<C>
     ) : Map<ConfigurationKey, Resolved<C>> =
         this
             .filter { it.value.activationState == filterActivationState }

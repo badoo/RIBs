@@ -22,7 +22,7 @@ internal class RemoveAction<C : Parcelable>(
             isBackStackOperation: Boolean
         ): Action<C> {
             val item = params.resolver.invoke(key)
-            return RemoveAction(item, params)
+            return RemoveAction(item.first, params)
         }
     }
 

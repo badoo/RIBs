@@ -11,7 +11,7 @@ internal class OngoingTransition<C : Parcelable>(
     val descriptor: TransitionDescriptor,
     val direction: TransitionDirection,
     private val transitionPair: TransitionPair,
-    private val actions: List<Action<C>>,
+    private var actions: List<Action<C>>,
     private val transitionElements: List<TransitionElement<C>>,
     private val emitter: EffectEmitter<C>
 ) {
@@ -63,6 +63,7 @@ internal class OngoingTransition<C : Parcelable>(
     fun reverse() {
         transitionPair.exiting?.reverse()
         transitionPair.entering?.reverse()
+        actions = actions.reversed()
         actions.forEach { it.reverse() }
     }
 }

@@ -17,9 +17,7 @@ internal class AddAction<C : Parcelable>(
     }
 
     override fun onTransition() {
-        if (isReversed) {
-            parentNode.detachNodes(item.nodes)
-        } else {
+        if (!isReversed) {
             parentNode.attachNodes(item.nodes)
         }
     }
@@ -37,6 +35,9 @@ internal class AddAction<C : Parcelable>(
     }
 
     override fun onFinish() {
+        if (isReversed) {
+            parentNode.detachNodes(item.nodes)
+        }
     }
 
     override val result: Resolved<C> =

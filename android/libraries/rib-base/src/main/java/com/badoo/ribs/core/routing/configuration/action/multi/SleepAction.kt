@@ -24,7 +24,13 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
         state: WorkingState<C>,
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
-        state.pool.invokeOn(ACTIVE, params) { foundByFilter ->
+        state.pool.invokeOn(ACTIVE, params) { (foundByFilter, add) ->
+            if (add != null) {
+                add.onBeforeTransition()
+                add.onTransition()
+                add.onFinish()
+            }
+
             state.ongoingTransitions.forEach { it.jumpToEnd() }
             val action = DeactivateAction(foundByFilter, params, false)
             action.onBeforeTransition()

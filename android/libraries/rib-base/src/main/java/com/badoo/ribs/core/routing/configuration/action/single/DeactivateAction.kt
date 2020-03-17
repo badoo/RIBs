@@ -23,7 +23,7 @@ internal class DeactivateAction<C : Parcelable>(
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(key: ConfigurationKey, params: ActionExecutionParams<C>, isBackStackOperation: Boolean): Action<C> {
-            val item = params.resolver.invoke(key)
+            val item = params.resolver.invoke(key).first
             return DeactivateAction(item, params, isBackStackOperation)
         }
     }

@@ -23,7 +23,13 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
         state: WorkingState<C>,
         params: ActionExecutionParams<C>
     ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
-        state.pool.invokeOn(SLEEPING, params) { foundByFilter ->
+        state.pool.invokeOn(SLEEPING, params) { (foundByFilter, add) ->
+            if (add != null) {
+                add.onBeforeTransition()
+                add.onTransition()
+                add.onFinish()
+            }
+
             val action = ActivateAction(foundByFilter, params, false)
             action.onBeforeTransition()
             action.onTransition()

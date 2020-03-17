@@ -14,12 +14,12 @@ internal class AddAction<C : Parcelable>(
 ) : ReversibleAction<C>() {
 
     override fun onBeforeTransition() {
-    }
-
-    override fun onTransition() {
         if (!isReversed) {
             parentNode.attachNodes(item.nodes)
         }
+    }
+
+    override fun onTransition() {
     }
 
     private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>) {

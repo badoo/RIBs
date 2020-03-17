@@ -30,9 +30,6 @@ internal class RemoveAction<C : Parcelable>(
         emptyList()
 
     override fun onBeforeTransition() {
-    }
-
-    override fun onTransition() {
         if (isReversed) {
             item.nodes.forEach {
                 it.node.markPendingDetach(false)
@@ -42,6 +39,9 @@ internal class RemoveAction<C : Parcelable>(
                 it.node.markPendingDetach(true)
             }
         }
+    }
+
+    override fun onTransition() {
     }
 
     override fun onFinish() {

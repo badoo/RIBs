@@ -128,7 +128,7 @@ internal class ConfigurationFeature<C : Parcelable>(
                         .mapIndexed { index, configuration ->
                             val key = ConfigurationKey.Permanent(index)
 
-                            Transaction.ListOfCommands<C>(
+                            Transaction.ListOfCommands(
                                 descriptor = TransitionDescriptor.None,
                                 commands = listOf(
                                     Add(key, configuration),
@@ -137,7 +137,14 @@ internal class ConfigurationFeature<C : Parcelable>(
                             )
                         }
                 )
-                else -> empty()
+                else -> Observable.just(
+                    Transaction.ListOfCommands(
+                        descriptor = TransitionDescriptor.None,
+                        commands = initialState.pool.map {
+                            Add(it.key, it.value.configuration)
+                        }
+                    )
+                )
             }
     }
 

@@ -95,6 +95,9 @@ internal class ActivateAction<C : Parcelable>(
 //        if (canExecute) {
             item.routingAction.execute()
 //        }
+        emitter.onNext(
+            Effect.Individual.PendingDeactivateFalse(key)
+        )
     }
 
     override fun onFinish() {

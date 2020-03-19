@@ -47,6 +47,9 @@ internal class AddAction<C : Parcelable>(
     }
 
     override fun onTransition() {
+        emitter.onNext(
+            Effect.Individual.PendingRemovalFalse(key)
+        )
     }
 
     override fun onFinish() {

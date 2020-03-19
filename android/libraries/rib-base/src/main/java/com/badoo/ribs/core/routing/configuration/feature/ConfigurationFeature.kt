@@ -10,8 +10,6 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
@@ -19,14 +17,9 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.Transaction
-import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
-import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
-import io.reactivex.Observable.empty
 import io.reactivex.Observable.fromIterable
 
 private val timeCapsuleKey = ConfigurationFeature::class.java.name
@@ -80,28 +73,42 @@ internal class ConfigurationFeature<C : Parcelable>(
 
         sealed class Individual<C : Parcelable>: Effect<C>() {
             abstract val key: ConfigurationKey
-            abstract val updatedElement: Resolved<C>
 
             class Added<C : Parcelable>(
                 override val key: ConfigurationKey,
-                override val updatedElement: Resolved<C>
+                val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Removed<C : Parcelable>(
                 override val key: ConfigurationKey,
-                override val updatedElement: Resolved<C>
+                val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Activated<C : Parcelable>(
                 override val key: ConfigurationKey,
-                override val updatedElement: Resolved<C>
+                val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Deactivated<C : Parcelable>(
                 override val key: ConfigurationKey,
-                override val updatedElement: Resolved<C>
+                val updatedElement: Resolved<C>
             ) : Individual<C>()
 
+            class PendingDeactivateTrue<C : Parcelable>(
+                override val key: ConfigurationKey
+            ) : Individual<C>()
+
+            class PendingDeactivateFalse<C : Parcelable>(
+                override val key: ConfigurationKey
+            ) : Individual<C>()
+
+            class PendingRemovalTrue<C : Parcelable>(
+                override val key: ConfigurationKey
+            ) : Individual<C>()
+
+            class PendingRemovalFalse<C : Parcelable>(
+                override val key: ConfigurationKey
+            ) : Individual<C>()
         }
 
         data class TransitionStarted<C : Parcelable>(
@@ -178,18 +185,31 @@ internal class ConfigurationFeature<C : Parcelable>(
 
         private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
             val key = effect.key
-            val updated = effect.updatedElement
 
             return when (effect) {
                 is Effect.Individual.Added -> copy(
-                        pool = pool.plus(key to updated)
-                    )
+                    pool = pool.plus(key to effect.updatedElement)
+                )
                 is Effect.Individual.Removed -> copy(
                     pool = pool.minus(key)
                 )
-                is Effect.Individual.Activated,
+                is Effect.Individual.Activated -> copy(
+                    pool = pool.minus(key).plus(key to effect.updatedElement)
+                )
                 is Effect.Individual.Deactivated -> copy(
-                    pool = pool.minus(key).plus(key to updated)
+                    pool = pool.minus(key).plus(key to effect.updatedElement)
+                )
+                is Effect.Individual.PendingDeactivateTrue -> copy(
+                    pendingDeactivate = pendingDeactivate + effect.key
+                )
+                is Effect.Individual.PendingDeactivateFalse -> copy(
+                    pendingDeactivate = pendingDeactivate - effect.key
+                )
+                is Effect.Individual.PendingRemovalTrue -> copy(
+                    pendingRemoval = pendingRemoval + effect.key
+                )
+                is Effect.Individual.PendingRemovalFalse -> copy(
+                    pendingRemoval = pendingRemoval - effect.key
                 )
             }
         }

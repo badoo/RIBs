@@ -61,8 +61,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             }
     }
 
+    abstract fun withActivationState(activationState: ActivationState): ConfigurationContext<C>
     abstract fun sleep(): ConfigurationContext<C>
     abstract fun wakeUp(): ConfigurationContext<C>
+    abstract fun shrink(): Unresolved<C>
     abstract fun resolve(resolver: (C) -> RoutingAction<*>, parentNode: Node<*>): Resolved<C>
 
     /**
@@ -103,6 +105,9 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 )
         }
 
+        override fun shrink(): Unresolved<C> =
+            this
+
         private fun setAncestryInfo(
             descriptors: List<Node.Descriptor>,
             routingAction: RoutingAction<*>,
@@ -115,6 +120,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 )
             }
         }
+
+        override fun withActivationState(activationState: ActivationState) =
+            copy(
+                activationState = activationState
+            )
 
         override fun sleep(): Unresolved<C> = copy(
             activationState = activationState.sleep()
@@ -142,16 +152,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             parentNode: Node<*>
         ): Resolved<C> = this
 
-        fun shrink() =
+        override fun shrink(): Unresolved<C> =
             Unresolved(
                 activationState.sleep(),
                 configuration,
                 bundles
-            )
-
-        fun withActivationState(activationState: ActivationState) =
-            copy(
-                activationState = activationState
             )
 
         fun saveInstanceState() =
@@ -163,6 +168,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 }
             )
 
+        override fun withActivationState(activationState: ActivationState) =
+            copy(
+                activationState = activationState
+            )
 
         override fun sleep(): Resolved<C> =
             withActivationState(activationState.sleep())

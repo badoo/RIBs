@@ -63,6 +63,9 @@ internal class DeactivateAction<C : Parcelable>(
         actionableNodes.forEach {
             it.markPendingViewDetach(true)
         }
+        emitter.onNext(
+            Effect.Individual.PendingDeactivateTrue(key)
+        )
     }
 
     override fun onFinish() {

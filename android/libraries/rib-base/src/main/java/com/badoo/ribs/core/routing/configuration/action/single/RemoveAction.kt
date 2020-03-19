@@ -42,6 +42,9 @@ internal class RemoveAction<C : Parcelable>(
         item.nodes.forEach {
             it.node.markPendingDetach(true)
         }
+        emitter.onNext(
+            Effect.Individual.PendingRemovalTrue(key)
+        )
     }
 
     override fun onFinish() {

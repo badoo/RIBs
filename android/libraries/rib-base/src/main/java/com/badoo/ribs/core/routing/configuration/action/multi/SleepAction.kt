@@ -22,8 +22,8 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
         state: WorkingState<C>,
         params: TransactionExecutionParams<C>
     ) {
+        state.ongoingTransitions.forEach { it.jumpToEnd() }
         state.pool.invokeOn(ACTIVE, params) { key, foundByFilter ->
-            state.ongoingTransitions.forEach { it.jumpToEnd() }
             val action = DeactivateAction(
                 emitter = params.emitter,
                 item = foundByFilter,

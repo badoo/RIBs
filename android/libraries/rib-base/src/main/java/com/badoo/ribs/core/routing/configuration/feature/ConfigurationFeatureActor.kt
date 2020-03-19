@@ -154,8 +154,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun createDefaultElements(
         state: WorkingState<C>,
         commands: List<ConfigurationCommand<C>>
-    ): Map<ConfigurationKey, ConfigurationContext<C>> {
-        val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext<C>> = mutableMapOf()
+    ): Pool<C> {
+        val defaultElements: MutablePool<C> = mutablePoolOf()
 
         commands.forEach { command ->
             // TODO unify this with resolution for all other types if possible
@@ -173,10 +173,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun createParams(
         emitter: EffectEmitter<C>,
         state: WorkingState<C>,
-        defaultElements: Map<ConfigurationKey, ConfigurationContext<C>>,
+        defaultElements: Pool<C>,
         transaction: Transaction<C>? = null
     ): TransactionExecutionParams<C> {
-        val tempPool: MutableMap<ConfigurationKey, ConfigurationContext<C>> = state.pool.toMutableMap()
+        val tempPool: MutablePool<C> = state.pool.toMutablePool()
 
         return TransactionExecutionParams(
             emitter = emitter,

@@ -34,7 +34,7 @@ internal data class SavedState<C : Parcelable>(
  */
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
-    val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf(),
+    val pool: Pool<C> = poolOf(),
     val ongoingTransitions: List<OngoingTransition<C>> = emptyList()
 ) {
     /**
@@ -54,9 +54,7 @@ internal data class WorkingState<C : Parcelable>(
         )
 }
 
-internal fun <C : Parcelable> WorkingState<C>.withDefaults(
-    defaults: Map<ConfigurationKey, ConfigurationContext<C>>
-) =
+internal fun <C : Parcelable> WorkingState<C>.withDefaults(defaults: Pool<C>) =
     copy(
         // Defaults should not overwrite existing elements
         pool = pool + defaults + pool

@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
+import com.badoo.mvicore.extension.mapNotNull
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
@@ -25,18 +26,23 @@ import java.lang.Math.min
 internal fun <C : Parcelable> BackStackFeature<C>.toCommands(): Observable<Transaction<C>> =
     Observable.wrap(this)
         .startWith(
-            listOf(
-                BackStackFeatureState(backStack = emptyList()),
-                initialState // Bootstrapper can overwrite it by the time we receive the first state emission here
-            )
+            initialState // Bootstrapper can overwrite it by the time we receive the first state emission here
         )
         .buffer(2, 1)
-        .map { (previous, current) ->
-            Transaction.ListOfCommands(
-                descriptor = TransitionDescriptor(from = previous, to = current),
-                commands = diff(previous.backStack, current.backStack)
-            )
+        .flatMap { (previous, current) ->
+            val commands = diff(previous.backStack, current.backStack)
+
+            when {
+                commands.isNotEmpty() -> Observable.just(
+                    Transaction.ListOfCommands(
+                        descriptor = TransitionDescriptor(from = previous, to = current),
+                        commands = commands
+                    )
+                )
+                else -> Observable.empty()
+            }
         }
+
 
 internal object ConfigurationCommandCreator {
 

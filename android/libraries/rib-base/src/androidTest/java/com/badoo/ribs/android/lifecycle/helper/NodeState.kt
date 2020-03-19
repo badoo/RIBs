@@ -60,7 +60,7 @@ data class NodeState(
     }
 
     private fun viewDetachedToString(): String = when {
-        ribLifeCycleState == CREATED && viewLifeCycleState == DESTROYED -> "VIEW_DETACHED"
+        ribLifeCycleState == CREATED && (viewLifeCycleState == null || viewLifeCycleState == DESTROYED) -> "VIEW_DETACHED"
         else -> "VIEW_DETACHED [!INVALID!] (rib: $ribLifeCycleState / view: $viewLifeCycleState)"
     }
 

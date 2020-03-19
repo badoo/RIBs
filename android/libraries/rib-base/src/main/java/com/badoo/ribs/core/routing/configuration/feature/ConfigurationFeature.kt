@@ -140,9 +140,9 @@ internal class ConfigurationFeature<C : Parcelable>(
                 else -> Observable.just(
                     Transaction.ListOfCommands(
                         descriptor = TransitionDescriptor.None,
-                        commands = initialState.pool.map {
-                            Add(it.key, it.value.configuration)
-                        }
+                        commands = initialState.pool
+                            .filter { it.value.activationState == SLEEPING }
+                            .map { Add(it.key, it.value.configuration) }
                     )
                 )
             }

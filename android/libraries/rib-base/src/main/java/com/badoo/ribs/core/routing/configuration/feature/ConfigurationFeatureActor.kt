@@ -35,7 +35,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
 
     private val handler = Handler()
-    private val configurationKeyResolver = ConfigurationKeyResolver(configurationResolver, parentNode)
 
     override fun invoke(
         state: WorkingState<C>,
@@ -186,7 +185,11 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 if (lookup is ConfigurationContext.Resolved) {
                     lookup
                 } else {
-                    val resolved = configurationKeyResolver.resolve(state, key, defaultElements)
+                    val item = state.pool[key]
+                        ?: defaultElements[key]
+                        ?: error("Key $key was not found in pool: $state.pool")
+
+                    val resolved = item.resolve(configurationResolver, parentNode)
                     tempPool[key] = resolved
                     resolved
                 }

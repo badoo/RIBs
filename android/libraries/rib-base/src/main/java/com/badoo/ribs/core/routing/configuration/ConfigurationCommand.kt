@@ -24,12 +24,10 @@ import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
  */
 internal sealed class ConfigurationCommand<C : Parcelable> {
     abstract val key: ConfigurationKey<C>
-    abstract val configuration: C
     abstract val actionFactory: ReversibleActionFactory
 
     data class Add<C : Parcelable>(
-        override val key: ConfigurationKey<C>,
-        override val configuration: C
+        override val key: ConfigurationKey<C>
     ) : ConfigurationCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
@@ -39,8 +37,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
     }
 
     data class Remove<C : Parcelable>(
-        override val key: ConfigurationKey<C>,
-        override val configuration: C
+        override val key: ConfigurationKey<C>
     ) : ConfigurationCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
@@ -50,8 +47,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
     }
 
     data class Activate<C : Parcelable>(
-        override val key: ConfigurationKey<C>,
-        override val configuration: C
+        override val key: ConfigurationKey<C>
     ) : ConfigurationCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =
@@ -63,8 +59,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
     }
 
     data class Deactivate<C : Parcelable>(
-        override val key: ConfigurationKey<C>,
-        override val configuration: C
+        override val key: ConfigurationKey<C>
     ) : ConfigurationCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =

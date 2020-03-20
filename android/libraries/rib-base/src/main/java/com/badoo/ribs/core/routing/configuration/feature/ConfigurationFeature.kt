@@ -133,13 +133,13 @@ internal class ConfigurationFeature<C : Parcelable>(
                 initialState.pool.isEmpty() -> fromIterable(
                     initialConfigurations
                         .mapIndexed { index, configuration ->
-                            val key = ConfigurationKey.Permanent<C>(index)
+                            val key = ConfigurationKey.Permanent(index, configuration)
 
                             Transaction.ListOfCommands(
                                 descriptor = TransitionDescriptor.None,
                                 commands = listOf(
-                                    Add(key, configuration),
-                                    Activate(key, configuration)
+                                    Add(key),
+                                    Activate(key)
                                 )
                             )
                         }
@@ -149,7 +149,7 @@ internal class ConfigurationFeature<C : Parcelable>(
                         descriptor = TransitionDescriptor.None,
                         commands = initialState.pool
                             .filter { it.value.activationState == SLEEPING }
-                            .map { Add(it.key, it.value.configuration) }
+                            .map { Add(it.key) }
                     )
                 )
             }

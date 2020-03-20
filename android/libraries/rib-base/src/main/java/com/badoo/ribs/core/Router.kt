@@ -109,34 +109,34 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         backStackFeature.accept(NewRoot(configuration))
     }
 
-    internal fun add(configurationKey: ConfigurationKey<C>, configuration: Content) {
+    internal fun add(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
-                Add(configurationKey, configuration)
+                Add(configurationKey)
             )
         )
     }
 
-    internal fun remove(configurationKey: ConfigurationKey<C>, configuration: Content) {
+    internal fun remove(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
-                Remove(configurationKey, configuration)
+                Remove(configurationKey)
             )
         )
     }
 
-    internal fun activate(configurationKey: ConfigurationKey<C>, configuration: Content) {
+    internal fun activate(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
-                Activate(configurationKey, configuration)
+                Activate(configurationKey)
             )
         )
     }
 
-    internal fun deactivate(configurationKey: ConfigurationKey<C>, configuration: Content) {
+    internal fun deactivate(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
-                Deactivate(configurationKey, configuration)
+                Deactivate(configurationKey)
             )
         )
     }

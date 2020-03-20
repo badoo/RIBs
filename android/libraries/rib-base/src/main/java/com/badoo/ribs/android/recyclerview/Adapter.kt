@@ -48,7 +48,7 @@ internal class Adapter<T : Parcelable>(
 
     private fun eagerAdd(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
-            router.add(entry.configurationKey, Item(entry.uuid))
+            router.add(entry.configurationKey)
         }
     }
 
@@ -71,9 +71,9 @@ internal class Adapter<T : Parcelable>(
         val configurationKey = holder.configurationKey!! // at this point it should be bound
         val configuration = Item(holder.uuid!!)
         if (hostingStrategy == LAZY) {
-            router.add(configurationKey, configuration)
+            router.add(configurationKey)
         }
-        router.activate(configurationKey, configuration)
+        router.activate(configurationKey)
         router.getNodes(configurationKey)!!.forEach { childNode ->
             childNode.attachToView(holder.itemView as FrameLayout)
         }
@@ -84,7 +84,7 @@ internal class Adapter<T : Parcelable>(
         val configurationKey = holder.configurationKey!! // at this point it should be bound
         deactivate(configurationKey, holder.uuid!!)
         if (hostingStrategy == LAZY) {
-            router.remove(configurationKey, Item(holder.uuid!!))
+            router.remove(configurationKey)
         }
     }
 
@@ -95,7 +95,7 @@ internal class Adapter<T : Parcelable>(
     }
 
     private fun deactivate(configurationKey: ConfigurationKey<Configuration>, uuid: UUID) {
-        router.deactivate(configurationKey, Item(uuid))
+        router.deactivate(configurationKey)
         router.getNodes(configurationKey)!!.forEach { childNode ->
             childNode.detachFromView()
         }

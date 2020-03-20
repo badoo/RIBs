@@ -79,7 +79,7 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
                         uuid = uuid,
                         configurationKey = ConfigurationKey.Content(
                             index = state.nextKey,
-                            uniquePayload = Item(uuid)
+                            configuration = Item(uuid)
                         )
                     )
                 )

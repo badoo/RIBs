@@ -42,7 +42,7 @@ class ConnectorCommandCreatorTest {
         val newStack = backStack(C1)
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Add(Content(0, C1),  C1),
+            Add(Content(0, C1)),
             Activate(Content(0, C1))
         )
         assertEquals(expected, actual)
@@ -67,7 +67,7 @@ class ConnectorCommandCreatorTest {
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(0, C1)),
-            Add(Content(1, C2),  C2),
+            Add(Content(1, C2)),
             Activate(Content(1, C2))
         )
         assertEquals(expected, actual)
@@ -108,7 +108,7 @@ class ConnectorCommandCreatorTest {
             Deactivate(Content(1, C2)),
             Remove(Content(1, C2)),
             Remove(Content(0, C1)),
-            Add(Content(0, C2),  C2),
+            Add(Content(0, C2)),
             Activate(Content(0, C2))
         )
         assertEquals(expected, actual)
@@ -131,7 +131,7 @@ class ConnectorCommandCreatorTest {
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1, C2)),
             Remove(Content(1, C2)),
-            Add(Content(1, C3),  C3),
+            Add(Content(1, C3)),
             Activate(Content(1, C3))
         )
         assertEquals(expected, actual)
@@ -144,7 +144,7 @@ class ConnectorCommandCreatorTest {
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(1, C2)),
-            Add(Content(2, C3),  C3),
+            Add(Content(2, C3)),
             Activate(Content(2, C3))
         )
         assertEquals(expected, actual)
@@ -201,7 +201,7 @@ class ConnectorCommandCreatorTest {
             Remove(Content(2, C3)),
             Remove(Content(1, C2)),
             Remove(Content(0, C1)),
-            Add(Content(0, C5),  C5),
+            Add(Content(0, C5)),
             Activate(Content(0, C5))
         )
         assertEquals(expected, actual)
@@ -215,7 +215,7 @@ class ConnectorCommandCreatorTest {
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Deactivate(Content(2, C3)),
             Remove(Content(2, C3)),
-            Add(Content(2, C4),  C4),
+            Add(Content(2, C4)),
             Activate(Content(2, C4))
         )
         assertEquals(expected, actual)
@@ -230,8 +230,8 @@ class ConnectorCommandCreatorTest {
             Deactivate(Content(2, C3)),
             Remove(Content(2, C3)),
             Remove(Content(1, C2)),
-            Add(Content(1, C4),  C4),
-            Add(Content(2, C5),  C5),
+            Add(Content(1, C4)),
+            Add(Content(2, C5)),
             Activate(Content(2, C5))
         )
         assertEquals(expected, actual)
@@ -253,8 +253,7 @@ class ConnectorCommandCreatorTest {
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Add(
-                Overlay(Overlay.Key(Content(2, C3), 0, Configuration.O1)),
-                Configuration.O1
+                Overlay(Overlay.Key(Content(2, C3), 0, Configuration.O1))
             ),
             Activate(Overlay(Overlay.Key(Content(2, C3), 0, Configuration.O1)))
         )
@@ -276,13 +275,11 @@ class ConnectorCommandCreatorTest {
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Add(
-                Overlay(Overlay.Key(Content(2, C3), 0, Configuration.O1)),
-                Configuration.O1
+                Overlay(Overlay.Key(Content(2, C3), 0, Configuration.O1))
             ),
             Activate(Overlay(Overlay.Key(Content(2, C3), 0, Configuration.O1))),
             Add(
-                Overlay(Overlay.Key(Content(2, C3), 1 ,Configuration.O2)),
-                Configuration.O2
+                Overlay(Overlay.Key(Content(2, C3), 1 ,Configuration.O2))
             ),
             Activate(Overlay(Overlay.Key(Content(2, C3), 1 ,Configuration.O2)))
         )
@@ -304,8 +301,7 @@ class ConnectorCommandCreatorTest {
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
             Add(
-                Overlay(Overlay.Key(Content(2, C3), 1, Configuration.O2)),
-                Configuration.O2
+                Overlay(Overlay.Key(Content(2, C3), 1, Configuration.O2))
             ),
             Activate(Overlay(Overlay.Key(Content(2, C3), 1, Configuration.O2)))
         )

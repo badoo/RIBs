@@ -28,8 +28,6 @@ class FooBarBuilder(
             interactor,
             savedInstanceState,
             viewPlugins
-        ).also {
-            println("RIBs debug -- FooBarBuilder - build(): $it")
-        }
+        )
     }
 }

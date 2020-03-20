@@ -37,13 +37,13 @@ class SwitcherInteractor(
         override fun accept(output: Menu.Output) = when (output) {
             is Menu.Output.MenuItemSelected -> when (output.menuItem) {
                 Menu.MenuItem.FooBar -> {
-                    router.replace(Content.Foo)
+                    router.push(Content.Foo)
                 }
                 Menu.MenuItem.HelloWorld -> {
-                    router.replace(Content.Hello)
+                    router.push(Content.Hello)
                 }
                 Menu.MenuItem.Dialogs -> {
-                    router.replace(Content.DialogsExample)
+                    router.push(Content.DialogsExample)
                 }
             }
         }

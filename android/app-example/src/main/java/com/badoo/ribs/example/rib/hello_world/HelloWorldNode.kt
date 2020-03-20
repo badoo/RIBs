@@ -15,7 +15,7 @@ class HelloWorldNode(
     savedInstanceState = savedInstanceState,
     identifier = object : HelloWorld {},
     viewFactory = viewFactory,
-    router = null,
+    router = router,
     interactor = interactor
 ), HelloWorld.Workflow {
 

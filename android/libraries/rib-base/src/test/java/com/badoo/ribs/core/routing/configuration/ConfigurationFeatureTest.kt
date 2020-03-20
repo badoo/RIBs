@@ -315,8 +315,11 @@ class ConfigurationFeatureTest {
         helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it.node) }
         helperContentViewParented1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
         helperContentViewParented2.nodes.forEach { verify(parentNode).attachChildView(it.node) }
-        // External should not be attached:
-        helperContentExternal1.nodes.forEach { verify(parentNode, never()).attachChildView(it.node) }
+        helperContentExternal1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
+
+        // As these were INACTIVE and shouldn't be reactivated after WakeUp
+        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildView(it.node) }
+        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildView(it.node) }
     }
 
     @Test

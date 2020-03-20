@@ -67,47 +67,47 @@ internal class ConfigurationFeature<C : Parcelable>(
             class WakeUp<C : Parcelable>: Global<C>()
             class Sleep<C : Parcelable>: Global<C>()
             class SaveInstanceState<C : Parcelable>(
-                val updatedElements: Map<ConfigurationKey, Resolved<C>>
+                val updatedElements: Map<ConfigurationKey<C>, Resolved<C>>
             ): Global<C>()
         }
 
         sealed class Individual<C : Parcelable>: Effect<C>() {
-            abstract val key: ConfigurationKey
+            abstract val key: ConfigurationKey<C>
 
             class Added<C : Parcelable>(
-                override val key: ConfigurationKey,
+                override val key: ConfigurationKey<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Removed<C : Parcelable>(
-                override val key: ConfigurationKey,
+                override val key: ConfigurationKey<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Activated<C : Parcelable>(
-                override val key: ConfigurationKey,
+                override val key: ConfigurationKey<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Deactivated<C : Parcelable>(
-                override val key: ConfigurationKey,
+                override val key: ConfigurationKey<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class PendingDeactivateTrue<C : Parcelable>(
-                override val key: ConfigurationKey
+                override val key: ConfigurationKey<C>
             ) : Individual<C>()
 
             class PendingDeactivateFalse<C : Parcelable>(
-                override val key: ConfigurationKey
+                override val key: ConfigurationKey<C>
             ) : Individual<C>()
 
             class PendingRemovalTrue<C : Parcelable>(
-                override val key: ConfigurationKey
+                override val key: ConfigurationKey<C>
             ) : Individual<C>()
 
             class PendingRemovalFalse<C : Parcelable>(
-                override val key: ConfigurationKey
+                override val key: ConfigurationKey<C>
             ) : Individual<C>()
         }
 
@@ -133,7 +133,7 @@ internal class ConfigurationFeature<C : Parcelable>(
                 initialState.pool.isEmpty() -> fromIterable(
                     initialConfigurations
                         .mapIndexed { index, configuration ->
-                            val key = ConfigurationKey.Permanent(index)
+                            val key = ConfigurationKey.Permanent<C>(index)
 
                             Transaction.ListOfCommands(
                                 descriptor = TransitionDescriptor.None,

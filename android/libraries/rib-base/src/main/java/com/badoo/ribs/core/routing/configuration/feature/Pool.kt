@@ -4,9 +4,9 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 
-internal typealias Pool<C> = Map<ConfigurationKey, ConfigurationContext<C>>
+internal typealias Pool<C> = Map<ConfigurationKey<C>, ConfigurationContext<C>>
 
-internal typealias MutablePool<C> = MutableMap<ConfigurationKey, ConfigurationContext<C>>
+internal typealias MutablePool<C> = MutableMap<ConfigurationKey<C>, ConfigurationContext<C>>
 
 internal fun <C : Parcelable> poolOf(): Pool<C> = mapOf()
 

@@ -14,7 +14,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 internal data class SavedState<C : Parcelable>(
-    val pool: Map<ConfigurationKey, Unresolved<C>>
+    val pool: Map<ConfigurationKey<C>, Unresolved<C>>
 ) : Parcelable {
 
     /**
@@ -36,8 +36,8 @@ internal data class SavedState<C : Parcelable>(
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
     val pool: Pool<C> = poolOf(),
-    val pendingDeactivate: Set<ConfigurationKey> = setOf(),
-    val pendingRemoval: Set<ConfigurationKey> = setOf(),
+    val pendingDeactivate: Set<ConfigurationKey<C>> = setOf(),
+    val pendingRemoval: Set<ConfigurationKey<C>> = setOf(),
     val ongoingTransitions: List<OngoingTransition<C>> = emptyList()
 ) {
     /**

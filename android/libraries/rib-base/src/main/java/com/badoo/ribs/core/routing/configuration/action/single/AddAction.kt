@@ -14,7 +14,7 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class AddAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: ConfigurationKey,
+    private val key: ConfigurationKey<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>
 ) : Action<C> {

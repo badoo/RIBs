@@ -29,19 +29,19 @@ import kotlinx.android.parcel.Parcelize
  * @see ConfigurationFeature.ActorImpl.resolve
  *
  */
-sealed class ConfigurationKey : Parcelable {
+sealed class ConfigurationKey<C : Parcelable> : Parcelable {
 
     @Parcelize
-    data class Permanent(val index: Int) : ConfigurationKey()
+    class Permanent<C : Parcelable>(val index: Int) : ConfigurationKey<C>()
 
     @Parcelize
-    data class Content(val index: Int, val uniquePayload: Parcelable) : ConfigurationKey()
+    class Content<C : Parcelable>(val index: Int, val uniquePayload: C) : ConfigurationKey<C>()
 
     @Parcelize
-    data class Overlay(val key: Key) : ConfigurationKey() {
+    class Overlay<C : Parcelable>(val key: Key<C>) : ConfigurationKey<C>() {
 
         @Parcelize
-        data class Key(val contentKey: Content, val index: Int, val uniquePayload: Parcelable) : Parcelable
+        class Key<C : Parcelable>(val contentKey: Content<C>, val index: Int, val uniquePayload: C) : Parcelable
     }
 
 

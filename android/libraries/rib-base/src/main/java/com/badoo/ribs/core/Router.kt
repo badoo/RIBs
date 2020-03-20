@@ -109,7 +109,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         backStackFeature.accept(NewRoot(configuration))
     }
 
-    internal fun add(configurationKey: ConfigurationKey, configuration: Content) {
+    internal fun add(configurationKey: ConfigurationKey<C>, configuration: Content) {
         configurationFeature.accept(
             Transaction.from(
                 Add(configurationKey, configuration)
@@ -117,7 +117,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun remove(configurationKey: ConfigurationKey, configuration: Content) {
+    internal fun remove(configurationKey: ConfigurationKey<C>, configuration: Content) {
         configurationFeature.accept(
             Transaction.from(
                 Remove(configurationKey, configuration)
@@ -125,7 +125,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun activate(configurationKey: ConfigurationKey, configuration: Content) {
+    internal fun activate(configurationKey: ConfigurationKey<C>, configuration: Content) {
         configurationFeature.accept(
             Transaction.from(
                 Activate(configurationKey, configuration)
@@ -133,7 +133,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun deactivate(configurationKey: ConfigurationKey, configuration: Content) {
+    internal fun deactivate(configurationKey: ConfigurationKey<C>, configuration: Content) {
         configurationFeature.accept(
             Transaction.from(
                 Deactivate(configurationKey, configuration)
@@ -141,7 +141,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun getNodes(configurationKey: ConfigurationKey) =
+    internal fun getNodes(configurationKey: ConfigurationKey<C>) =
         (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes?.map { it.node }
 
     fun popBackStack(): Boolean =

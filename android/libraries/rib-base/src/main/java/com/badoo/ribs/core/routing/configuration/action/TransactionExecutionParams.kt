@@ -16,7 +16,7 @@ import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
  */
 internal data class TransactionExecutionParams<C : Parcelable>(
     val emitter: EffectEmitter<C>,
-    val resolver: (ConfigurationKey) -> ConfigurationContext.Resolved<C>,
+    val resolver: (ConfigurationKey<C>) -> ConfigurationContext.Resolved<C>,
     val parentNode: Node<*>,
     val globalActivationLevel: ConfigurationContext.ActivationState
 )
@@ -25,7 +25,7 @@ internal data class TransactionExecutionParams<C : Parcelable>(
 internal data class ActionExecutionParams<C : Parcelable>(
     val transactionExecutionParams: TransactionExecutionParams<C>,
     val command: ConfigurationCommand<C>,
-    val key: ConfigurationKey,
+    val key: ConfigurationKey<C>,
     val isBackStackOperation: Boolean
 ) {
     val item: ConfigurationContext.Resolved<C> by lazy {

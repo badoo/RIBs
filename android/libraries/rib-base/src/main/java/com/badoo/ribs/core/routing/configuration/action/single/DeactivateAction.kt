@@ -19,7 +19,7 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class DeactivateAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: ConfigurationKey,
+    private val key: ConfigurationKey<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
     private val actionableNodes: List<Node<*>>,

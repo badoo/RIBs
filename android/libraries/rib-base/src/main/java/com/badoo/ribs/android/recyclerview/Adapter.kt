@@ -9,6 +9,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGE
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
+import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content.Item
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import io.reactivex.functions.Consumer
@@ -23,7 +24,7 @@ internal class Adapter<T : Parcelable>(
     Consumer<RecyclerViewHostFeature.State<T>> {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var configurationKey: ConfigurationKey? = null
+        var configurationKey: ConfigurationKey<Configuration>? = null
         var uuid: UUID? = null
     }
 
@@ -93,7 +94,7 @@ internal class Adapter<T : Parcelable>(
         }
     }
 
-    private fun deactivate(configurationKey: ConfigurationKey, uuid: UUID) {
+    private fun deactivate(configurationKey: ConfigurationKey<Configuration>, uuid: UUID) {
         router.deactivate(configurationKey, Item(uuid))
         router.getNodes(configurationKey)!!.forEach { childNode ->
             childNode.detachFromView()

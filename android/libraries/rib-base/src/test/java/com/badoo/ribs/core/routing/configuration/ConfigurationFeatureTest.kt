@@ -58,7 +58,7 @@ class ConfigurationFeatureTest {
 
     private lateinit var emptyTimeCapsule: TimeCapsule<SavedState<Configuration>>
     private lateinit var restoredTimeCapsule: TimeCapsule<SavedState<Configuration>>
-    private lateinit var poolInTimeCapsule: Map<ConfigurationKey, Unresolved<Configuration>>
+    private lateinit var poolInTimeCapsule: Map<ConfigurationKey<Configuration>, Unresolved<Configuration>>
 
     private lateinit var feature: ConfigurationFeature<Configuration>
     private lateinit var resolver: (Configuration) -> RoutingAction<*>
@@ -158,15 +158,15 @@ class ConfigurationFeatureTest {
         }
 
         poolInTimeCapsule = mapOf(
-            Permanent(0) to Unresolved<Configuration>(SLEEPING, Permanent1, helperPermanent1.bundles),
-            Permanent(1) to Unresolved<Configuration>(SLEEPING, Permanent2, helperPermanent2.bundles),
+            Permanent(0, Permanent1 as Configuration)  to Unresolved<Configuration>(SLEEPING, Permanent1, helperPermanent1.bundles),
+            Permanent(1, Permanent2 as Configuration) to Unresolved<Configuration>(SLEEPING, Permanent2, helperPermanent2.bundles),
 
-            Content(0, ContentViewParented1) to Unresolved<Configuration>(SLEEPING, ContentViewParented1, helperContentViewParented1.bundles),
-            Content(1, ContentViewParented2) to Unresolved<Configuration>(SLEEPING, ContentViewParented2, helperContentViewParented2.bundles),
-            Content(2, ContentViewParented3) to Unresolved<Configuration>(INACTIVE, ContentViewParented3, helperContentViewParented3.bundles),
+            Content(0, ContentViewParented1 as Configuration) to Unresolved<Configuration>(SLEEPING, ContentViewParented1, helperContentViewParented1.bundles),
+            Content(1, ContentViewParented2 as Configuration) to Unresolved<Configuration>(SLEEPING, ContentViewParented2, helperContentViewParented2.bundles),
+            Content(2, ContentViewParented3 as Configuration) to Unresolved<Configuration>(INACTIVE, ContentViewParented3, helperContentViewParented3.bundles),
 
-            Content(3, ContentExternal1) to Unresolved<Configuration>(SLEEPING, ContentExternal1, helperContentExternal1.bundles),
-            Content(4, ContentExternal2) to Unresolved<Configuration>(INACTIVE, ContentExternal2, helperContentExternal2.bundles)
+            Content(3, ContentExternal1 as Configuration) to Unresolved<Configuration>(SLEEPING, ContentExternal1, helperContentExternal1.bundles),
+            Content(4, ContentExternal2 as Configuration) to Unresolved<Configuration>(INACTIVE, ContentExternal2, helperContentExternal2.bundles)
         )
         emptyTimeCapsule = mock()
         restoredTimeCapsule = mock {
@@ -626,7 +626,7 @@ class ConfigurationFeatureTest {
             Add(Content(0, ContentViewParented1)),
             Deactivate(Content(0, ContentViewParented1))
         ))
-        val configurationContext = feature.state.pool[Content(0, ContentViewParented1)]
+        val configurationContext = feature.state.pool[Content(0, ContentViewParented1 as Configuration)]
         assertEquals(true, configurationContext is Resolved)
         assertEquals(helperContentViewParented1.nodes, (configurationContext as? Resolved)?.nodes)
     }
@@ -637,10 +637,10 @@ class ConfigurationFeatureTest {
     fun `On Remove, all of its Nodes are detached regardless of view-parenting mode`() {
         createEmptyFeature()
         feature.accept(Transaction.from(
-            Add(Content(0, ContentViewParented1)),
+            Add(Content(0, ContentViewParented1 as Configuration)),
             Add(Content(1, ContentExternal1)),
             Remove(Content(1, ContentExternal1)),
-            Remove(Content(0, ContentViewParented1))
+            Remove(Content(0, ContentViewParented1 as Configuration))
         ))
 
         helperContentExternal1.nodes.forEach {
@@ -661,10 +661,10 @@ class ConfigurationFeatureTest {
     fun `On Remove all added elements, only permanent parts are left in the pool`() {
         createEmptyFeature()
         feature.accept(Transaction.from(
-            Add(Content(0, ContentViewParented1)),
+            Add(Content(0, ContentViewParented1 as Configuration)),
             Add(Content(1, ContentExternal1)),
             Remove(Content(1, ContentExternal1)),
-            Remove(Content(0, ContentViewParented1))
+            Remove(Content(0, ContentViewParented1 as Configuration))
         ))
         val configurationsLeftInPool = feature.state.pool.map {
             it.value.configuration
@@ -679,9 +679,9 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(WakeUp())
         feature.accept(Transaction.from(
-            Add(Content(0, ContentViewParented1)),
+            Add(Content(0, ContentViewParented1 as Configuration)),
             Add(Content(1, ContentExternal1)),
-            Activate(Content(0, ContentViewParented1))
+            Activate(Content(0, ContentViewParented1 as Configuration))
         ))
         clearInvocations(parentNode)
         feature.accept(Sleep())
@@ -703,9 +703,9 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(WakeUp())
         feature.accept(Transaction.from(
-            Add(Content(0, ContentViewParented1)),
+            Add(Content(0, ContentViewParented1 as Configuration)),
             Add(Content(1, ContentExternal1)),
-            Activate(Content(0, ContentViewParented1))
+            Activate(Content(0, ContentViewParented1 as Configuration))
         ))
         clearInvocations(parentNode)
         feature.accept(Sleep())
@@ -729,9 +729,9 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(WakeUp())
         feature.accept(Transaction.from(
-            Add(Content(0, ContentViewParented1)),
+            Add(Content(0, ContentViewParented1 as Configuration)),
             Add(Content(1, ContentExternal1)),
-            Activate(Content(0, ContentViewParented1))
+            Activate(Content(0, ContentViewParented1 as Configuration))
         ))
         clearInvocations(parentNode)
         feature.accept(Sleep())
@@ -748,9 +748,9 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(WakeUp())
         feature.accept(Transaction.from(
-            Add(Content(0, ContentViewParented1)),
+            Add(Content(0, ContentViewParented1 as Configuration)),
             Add(Content(1, ContentExternal1)),
-            Activate(Content(0, ContentViewParented1))
+            Activate(Content(0, ContentViewParented1 as Configuration))
         ))
         feature.accept(Sleep())
         clearInvocations(helperContentViewParented1.routingAction)
@@ -764,9 +764,9 @@ class ConfigurationFeatureTest {
         createEmptyFeature()
         feature.accept(WakeUp())
         feature.accept(Transaction.from(
-            Add(Content(0, ContentViewParented1)),
+            Add(Content(0, ContentViewParented1 as Configuration)),
             Add(Content(1, ContentExternal1)),
-            Activate(Content(0, ContentViewParented1))
+            Activate(Content(0, ContentViewParented1 as Configuration))
         ))
         feature.accept(Sleep())
         clearInvocations(parentNode)

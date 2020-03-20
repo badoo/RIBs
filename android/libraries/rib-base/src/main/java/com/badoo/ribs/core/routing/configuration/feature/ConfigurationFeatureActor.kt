@@ -9,7 +9,6 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
@@ -182,13 +181,9 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             emitter = emitter,
             resolver = { key ->
                 val lookup = tempPool[key]
-                if (lookup is ConfigurationContext.Resolved) {
-                    lookup
-                } else {
-                    val item = state.pool[key]
-                        ?: defaultElements[key]
-                        ?: error("Key $key was not found in pool: $state.pool")
-
+                if (lookup is ConfigurationContext.Resolved) lookup
+                else {
+                    val item = state.pool[key] ?: defaultElements[key] ?: error("Key $key was not found in pool: $state.pool")
                     val resolved = item.resolve(configurationResolver, parentNode)
                     tempPool[key] = resolved
                     resolved

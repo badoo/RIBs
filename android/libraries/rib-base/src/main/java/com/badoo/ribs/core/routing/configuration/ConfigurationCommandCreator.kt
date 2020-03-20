@@ -5,41 +5,12 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommandCreator.diff
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
-import io.reactivex.Observable
 import java.lang.Math.min
-
-/**
- * Takes the state emissions from [BackStackFeature], and translates them to a stream of
- * [ConfigurationCommand]s.
- *
- * @see [ConfigurationCommandCreator.diff]
- */
-internal fun <C : Parcelable> BackStackFeature<C>.toCommands(): Observable<Transaction<C>> =
-    Observable.wrap(this)
-        .startWith(
-            initialState // Bootstrapper can overwrite it by the time we receive the first state emission here
-        )
-        .buffer(2, 1)
-        .flatMap { (previous, current) ->
-            val commands = diff(previous.backStack, current.backStack)
-
-            when {
-                commands.isNotEmpty() -> Observable.just(
-                    Transaction.ListOfCommands(
-                        descriptor = TransitionDescriptor(from = previous, to = current),
-                        commands = commands
-                    )
-                )
-                else -> Observable.empty()
-            }
-        }
 
 
 internal object ConfigurationCommandCreator {
@@ -122,7 +93,6 @@ internal object ConfigurationCommandCreator {
             }
             .flatten()
             .reversed()
-
     }
 
     private fun <C : Parcelable> List<BackStackElement<C>>.addFrom(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
@@ -153,16 +123,14 @@ internal object ConfigurationCommandCreator {
         }
 
     private fun <C : Parcelable> BackStackElement<C>.addAllOverlays(content: Content<C>): List<ConfigurationCommand<C>> =
-        overlays
-            .mapIndexed { overlayIndex, overlayConfiguration ->
-                Add(Overlay(Key(content, overlayIndex, overlayConfiguration)))
-            }
+        overlays.mapIndexed { overlayIndex, overlayConfiguration ->
+            Add(Overlay(Key(content, overlayIndex, overlayConfiguration)))
+        }
 
     private fun <C : Parcelable> BackStackElement<C>.activateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
-        overlays
-            .mapIndexed { overlayIndex, overlayConfiguration ->
-                Activate<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
-            }
+        overlays.mapIndexed { overlayIndex, overlayConfiguration ->
+            Activate<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
+        }
 
     private fun <C : Parcelable> BackStackElement<C>.deactivateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
         overlays

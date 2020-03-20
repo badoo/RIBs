@@ -2,10 +2,11 @@ package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.*
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import kotlinx.android.parcel.Parcelize
 

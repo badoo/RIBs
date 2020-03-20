@@ -8,10 +8,8 @@ import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.RemoveAction
-import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionFactory
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionPair
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 
 /**
  * Represents a command to change one or more [ConfigurationContext] elements.
@@ -70,11 +68,3 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
             )
     }
 }
-
-
-internal data class WhateverThisIs<C : Parcelable>(
-    val command: ConfigurationCommand<C>,
-    val action: ReversibleAction<C>,
-    val effect: ConfigurationFeature.Effect<C>, // TODO effect should have .reverse()
-    val reverseEffect: ConfigurationFeature.Effect<C>
-)

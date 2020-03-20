@@ -51,23 +51,20 @@ internal class ActivateAction<C : Parcelable>(
         emptyList()
 
     override fun onBeforeTransition() {
-        canExecute = when {
-            // If there's no view available (i.e. globalActivationLevel == SLEEPING) we must not execute
-            // routing actions or try to attach view. That will be done on next WakeUp. For now, let's
-            // just mark the element to the same value.
-            globalActivationLevel != ACTIVE -> false
-            // Don't execute activation twice
-            item.activationState == ACTIVE -> false
-            else -> true
+        val environmentActivated = globalActivationLevel == ACTIVE
+        val itemAlreadyActivated = item.activationState == ACTIVE
+        canExecute = environmentActivated && !itemAlreadyActivated
+
+        // The least we can do is to mark correct state, this is regardless of executing transitions
+        if (!itemAlreadyActivated) {
+            emitter.onNext(
+                Effect.Individual.Activated(key, item.copy(activationState = globalActivationLevel))
+            )
         }
 
         if (canExecute) {
             prepareTransition()
         }
-
-        emitter.onNext(
-            Effect.Individual.Activated(key, item.copy(activationState = globalActivationLevel))
-        )
     }
 
     private fun prepareTransition() {

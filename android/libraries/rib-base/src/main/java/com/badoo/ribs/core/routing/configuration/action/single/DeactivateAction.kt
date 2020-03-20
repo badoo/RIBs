@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
@@ -23,7 +24,8 @@ internal class DeactivateAction<C : Parcelable>(
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
     private val actionableNodes: List<Node<*>>,
-    private val isBackStackOperation: Boolean
+    private val isBackStackOperation: Boolean,
+    private val targetActivationState: ActivationState = INACTIVE
 ) : Action<C> {
 
     object Factory: ActionFactory {
@@ -81,7 +83,7 @@ internal class DeactivateAction<C : Parcelable>(
             }
 
             emitter.onNext(
-                Effect.Individual.Deactivated(key, item.copy(activationState = INACTIVE))
+                Effect.Individual.Deactivated(key, item.copy(activationState = targetActivationState))
             )
         }
     }

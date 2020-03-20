@@ -10,7 +10,6 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration
-import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content.Item
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import io.reactivex.functions.Consumer
 import java.util.UUID
@@ -69,7 +68,6 @@ internal class Adapter<T : Parcelable>(
     override fun onViewAttachedToWindow(holder: ViewHolder) {
         super.onViewAttachedToWindow(holder)
         val configurationKey = holder.configurationKey!! // at this point it should be bound
-        val configuration = Item(holder.uuid!!)
         if (hostingStrategy == LAZY) {
             router.add(configurationKey)
         }
@@ -82,7 +80,7 @@ internal class Adapter<T : Parcelable>(
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
         val configurationKey = holder.configurationKey!! // at this point it should be bound
-        deactivate(configurationKey, holder.uuid!!)
+        deactivate(configurationKey)
         if (hostingStrategy == LAZY) {
             router.remove(configurationKey)
         }
@@ -90,11 +88,11 @@ internal class Adapter<T : Parcelable>(
 
     internal fun onDestroy() {
         items.forEach {
-            deactivate(it.configurationKey, it.uuid)
+            deactivate(it.configurationKey)
         }
     }
 
-    private fun deactivate(configurationKey: ConfigurationKey<Configuration>, uuid: UUID) {
+    private fun deactivate(configurationKey: ConfigurationKey<Configuration>) {
         router.deactivate(configurationKey)
         router.getNodes(configurationKey)!!.forEach { childNode ->
             childNode.detachFromView()

@@ -157,7 +157,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         val defaultElements: MutablePool<C> = mutablePoolOf()
 
         commands.forEach { command ->
-            // TODO unify this with resolution for all other types if possible
             if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
                 defaultElements[command.key] = ConfigurationContext.Unresolved(
                     activationState = ConfigurationContext.ActivationState.INACTIVE,

@@ -5,7 +5,8 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
 
 internal interface Action<C : Parcelable> {
     fun onBeforeTransition()
-    fun onTransition()
-    fun onFinish()
+    fun onTransition(forceExecute: Boolean = false)
+    fun onFinish(forceExecute: Boolean = false)
+    val canExecute: Boolean
     val transitionElements: List<TransitionElement<C>>
 }

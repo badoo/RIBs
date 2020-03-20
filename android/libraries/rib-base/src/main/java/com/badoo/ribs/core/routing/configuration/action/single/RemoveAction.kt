@@ -32,13 +32,16 @@ internal class RemoveAction<C : Parcelable>(
             )
     }
 
+    override var canExecute: Boolean =
+        true
+
     override var transitionElements: List<TransitionElement<C>> =
         emptyList()
 
     override fun onBeforeTransition() {
     }
 
-    override fun onTransition() {
+    override fun onTransition(forceExecute: Boolean) {
         item.nodes.forEach {
             it.node.markPendingDetach(true)
         }
@@ -47,7 +50,7 @@ internal class RemoveAction<C : Parcelable>(
         )
     }
 
-    override fun onFinish() {
+    override fun onFinish(forceExecute: Boolean) {
         item.nodes.forEach {
             params.transactionExecutionParams.parentNode.detachChildView(it.node)
             params.transactionExecutionParams.parentNode.detachChildNode(it.node)

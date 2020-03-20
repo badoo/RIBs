@@ -44,7 +44,7 @@ internal class ActivateAction<C : Parcelable>(
             )
     }
 
-    private var canExecute: Boolean =
+    override var canExecute: Boolean =
         false
 
     override var transitionElements: List<TransitionElement<C>> =
@@ -90,16 +90,16 @@ internal class ActivateAction<C : Parcelable>(
         }
     }
 
-    override fun onTransition() {
-        // TODO this check should only be skipped if REVERSED
-//        if (canExecute) {
+    override fun onTransition(forceExecute: Boolean) {
+        if (canExecute || forceExecute) {
             item.routingAction.execute()
-//        }
-        emitter.onNext(
-            Effect.Individual.PendingDeactivateFalse(key)
-        )
+
+            emitter.onNext(
+                Effect.Individual.PendingDeactivateFalse(key)
+            )
+        }
     }
 
-    override fun onFinish() {
+    override fun onFinish(forceExecute: Boolean) {
     }
 }

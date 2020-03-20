@@ -39,6 +39,13 @@ internal data class ReversibleActionPair<T : Parcelable>(
 
     private var direction: Direction = FORWARD
 
+    override val canExecute: Boolean
+        get() = forwardAction.canExecute
+
+    private val forceExecute: Boolean
+        // If forwardAction is doing its thing, reverseAction should also disregard its own canExecute flag
+        get() = direction == REVERSED && forwardAction.canExecute
+
     private val activeAction: Action<T>
         get() = when (direction) {
             FORWARD -> forwardAction
@@ -47,7 +54,7 @@ internal data class ReversibleActionPair<T : Parcelable>(
 
     override fun reverse() {
         direction = direction.reverse()
-        onTransition()
+        onTransition(forceExecute)
     }
 
     override fun onBeforeTransition() {
@@ -60,11 +67,11 @@ internal data class ReversibleActionPair<T : Parcelable>(
         // It will be reversed in the derived ValueAnimator, not here
         get() = forwardAction.transitionElements
 
-    override fun onTransition() {
-        activeAction.onTransition()
+    override fun onTransition(forceExecute: Boolean) {
+        activeAction.onTransition(forceExecute || this.forceExecute)
     }
 
-    override fun onFinish() {
-        activeAction.onFinish()
+    override fun onFinish(forceExecute: Boolean) {
+        activeAction.onFinish(forceExecute || this.forceExecute)
     }
 }

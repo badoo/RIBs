@@ -33,6 +33,9 @@ internal class AddAction<C : Parcelable>(
         }
     }
 
+    override var canExecute: Boolean =
+        true
+
     override fun onBeforeTransition() {
         parentNode.attachNodes(item.nodes)
         emitter.onNext(
@@ -46,13 +49,13 @@ internal class AddAction<C : Parcelable>(
         }
     }
 
-    override fun onTransition() {
+    override fun onTransition(forceExecute: Boolean) {
         emitter.onNext(
             Effect.Individual.PendingRemovalFalse(key)
         )
     }
 
-    override fun onFinish() {
+    override fun onFinish(forceExecute: Boolean) {
     }
 
     override val transitionElements: List<TransitionElement<C>> =

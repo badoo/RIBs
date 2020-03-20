@@ -40,6 +40,9 @@ internal class DeactivateAction<C : Parcelable>(
         )
     }
 
+    override var canExecute: Boolean =
+        true
+
     override var transitionElements: List<TransitionElement<C>> =
         emptyList()
 
@@ -58,24 +61,28 @@ internal class DeactivateAction<C : Parcelable>(
         }
     }
 
-    override fun onTransition() {
-        item.routingAction.cleanup()
-        actionableNodes.forEach {
-            it.markPendingViewDetach(true)
+    override fun onTransition(forceExecute: Boolean) {
+        if (canExecute || forceExecute) {
+            item.routingAction.cleanup()
+            actionableNodes.forEach {
+                it.markPendingViewDetach(true)
+            }
+            emitter.onNext(
+                Effect.Individual.PendingDeactivateTrue(key)
+            )
         }
-        emitter.onNext(
-            Effect.Individual.PendingDeactivateTrue(key)
-        )
     }
 
-    override fun onFinish() {
-        actionableNodes.forEach {
-            it.saveViewState()
-            parentNode.detachChildView(it)
-        }
+    override fun onFinish(forceExecute: Boolean) {
+        if (canExecute || forceExecute) {
+            actionableNodes.forEach {
+                it.saveViewState()
+                parentNode.detachChildView(it)
+            }
 
-        emitter.onNext(
-            Effect.Individual.Deactivated(key, item.copy(activationState = INACTIVE))
-        )
+            emitter.onNext(
+                Effect.Individual.Deactivated(key, item.copy(activationState = INACTIVE))
+            )
+        }
     }
 }

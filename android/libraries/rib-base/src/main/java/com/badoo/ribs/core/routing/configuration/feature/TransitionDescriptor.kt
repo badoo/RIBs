@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
-data class TransitionDescriptor(
+internal data class TransitionDescriptor(
     val from: Any?,
     val to: Any?
 ) {
@@ -9,6 +9,12 @@ data class TransitionDescriptor(
 
     fun isContinuationOf(other: TransitionDescriptor) =
         from == other.to && to != other.from
+
+    fun reverse(): TransitionDescriptor =
+        TransitionDescriptor(
+            from = to,
+            to = from
+        )
 
     companion object {
         val None =

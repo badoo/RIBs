@@ -8,7 +8,7 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
 
 internal class OngoingTransition<C : Parcelable>(
-    val descriptor: TransitionDescriptor,
+    descriptor: TransitionDescriptor,
     val direction: TransitionDirection,
     private val transitionPair: TransitionPair,
     private var actions: List<ReversibleAction<C>>,
@@ -16,6 +16,8 @@ internal class OngoingTransition<C : Parcelable>(
     private val emitter: EffectEmitter<C>
 ) {
     private val handler = Handler()
+    var descriptor = descriptor
+        private set
 
     private val checkFinishedRunnable = object : Runnable {
         override fun run() {
@@ -63,6 +65,7 @@ internal class OngoingTransition<C : Parcelable>(
     fun reverse() {
         transitionPair.exiting?.reverse()
         transitionPair.entering?.reverse()
+        descriptor = descriptor.reverse()
         actions = actions.reversed()
         actions.forEach { it.reverse() }
     }

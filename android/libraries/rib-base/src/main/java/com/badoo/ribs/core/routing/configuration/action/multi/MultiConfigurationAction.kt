@@ -24,7 +24,7 @@ internal interface MultiConfigurationAction<C : Parcelable> {
     /**
      * Invokes [block] on all [ConfigurationContext.Resolved] elements that are in the provided [filterActivationState]
      */
-    fun Pool<C>.invokeOn(
+    fun Pool<C>.filterByActivationState(
         filterActivationState: ConfigurationContext.ActivationState,
         params: TransactionExecutionParams<C>,
         block: (ConfigurationKey<C>, Resolved<C>) -> Unit

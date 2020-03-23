@@ -22,7 +22,7 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
         state: WorkingState<C>,
         params: TransactionExecutionParams<C>
     ) {
-        state.pool.invokeOn(SLEEPING, params) { key, foundByFilter ->
+        state.pool.filterByActivationState(SLEEPING, params) { key, foundByFilter ->
             val action = ActivateAction(
                 emitter = params.emitter,
                 item = foundByFilter,

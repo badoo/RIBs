@@ -13,6 +13,7 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.SingleTop
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
@@ -58,6 +59,7 @@ internal class BackStackFeature<C : Parcelable>(
         data class Replace<C : Parcelable>(val configuration: C) : Operation<C>()
         data class Push<C : Parcelable>(val configuration: C) : Operation<C>()
         data class PushOverlay<C : Parcelable>(val configuration: C) : Operation<C>()
+        data class SingleTop<C : Parcelable>(val configuration: C) : Operation<C>()
         data class NewRoot<C : Parcelable>(val configuration: C) : Operation<C>()
         class Pop<C : Parcelable> : Operation<C>()
     }
@@ -86,6 +88,17 @@ internal class BackStackFeature<C : Parcelable>(
 
         data class PushOverlay<C : Parcelable>(
             override val oldState: BackStackFeatureState<C>,
+            val configuration: C
+        ) : Effect<C>()
+
+        data class SingleTopReactivate<C : Parcelable>(
+            override val oldState: BackStackFeatureState<C>,
+            val position: Int
+        ) : Effect<C>()
+
+        data class SingleTopReplace<C : Parcelable>(
+            override val oldState: BackStackFeatureState<C>,
+            val position: Int,
             val configuration: C
         ) : Effect<C>()
 
@@ -138,6 +151,30 @@ internal class BackStackFeature<C : Parcelable>(
                     else -> empty()
                 }
 
+                is SingleTop -> {
+                    val targetClass = op.configuration.javaClass
+                    val lastIndexOfSameClass = state.backStack.indexOfLast {
+                        targetClass.isInstance(it.configuration)
+                    }
+
+                    if (lastIndexOfSameClass == -1) {
+                        just(Effect.Push(state, op.configuration))
+                    } else {
+                        if (state.backStack[lastIndexOfSameClass] == op.configuration) {
+                            just(Effect.SingleTopReactivate(
+                                oldState = state,
+                                position = lastIndexOfSameClass
+                            ))
+                        } else {
+                            just(Effect.SingleTopReplace(
+                                oldState = state,
+                                position = lastIndexOfSameClass,
+                                configuration = op.configuration
+                            ))
+                        }
+                    }
+                }
+
                 is NewRoot -> when {
                     state.backStack.size != 1 || state.backStack.first().configuration != op.configuration ->
                         just(Effect.NewRoot(state, op.configuration))
@@ -176,6 +213,12 @@ internal class BackStackFeature<C : Parcelable>(
                         overlays = backStack.last().overlays + effect.configuration
                     )
                 )
+            )
+            is Effect.SingleTopReactivate -> copy (
+                backStack = backStack.dropLast(backStack.size - effect.position - 1)
+            )
+            is Effect.SingleTopReplace -> copy (
+                backStack = backStack.dropLast(backStack.size - effect.position) + BackStackElement(effect.configuration)
             )
             is Effect.PopOverlay -> copy(
                 backStack = backStack.replaceLastWith(

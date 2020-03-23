@@ -9,18 +9,16 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.action.single.Action
-import com.badoo.ribs.core.routing.configuration.action.single.AddAction
+import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
 import com.badoo.ribs.core.routing.configuration.isBackStackOperation
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
-import io.reactivex.Observable.fromCallable
 
 /**
  * Executes [MultiConfigurationAction] / [SingleConfigurationAction] associated with the incoming
@@ -36,7 +34,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
 
     private val handler = Handler()
-    private val configurationKeyResolver = ConfigurationKeyResolver(configurationResolver, parentNode)
 
     override fun invoke(
         state: WorkingState<C>,
@@ -51,13 +48,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: MultiConfigurationCommand<C>,
         state: WorkingState<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
-        fromCallable {
-            transaction.action.execute(state, createParams(state, emptyMap(), transaction))
-        }.map { updated ->
-            ConfigurationFeature.Effect.Global(
-                transaction,
-                updated
-            )
+        Observable.create { emitter ->
+            transaction.action.execute(state, createParams(emitter, state, emptyMap(), transaction))
         }
 
     private enum class NewTransitionsExecution {
@@ -68,26 +60,22 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         state: WorkingState<C>,
         transaction: Transaction.ListOfCommands<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
-        Observable.create<ConfigurationFeature.Effect<C>> { emitter ->
+        Observable.create { emitter ->
             val commands = transaction.commands
             val defaultElements = createDefaultElements(state, commands)
             val params = createParams(
+                emitter = emitter,
                 state = state.withDefaults(defaultElements),
                 defaultElements = defaultElements,
-                command = transaction
+                transaction = transaction
             )
 
-            val actions = createActions(commands, params)
-            val effects = createEffects(commands, actions)
-
-            // Effects always need to be emitted, even if we abort afterwards. This is to ensure
-            // State reflects latest Configurations.
-            effects.forEach { emitter.onNext(it) }
             if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
                 emitter.onComplete()
                 return@create
             }
 
+            val actions = createActions(commands, params)
             actions.forEach { it.onBeforeTransition() }
             val transitionElements = actions.flatMap { it.transitionElements }
 
@@ -123,7 +111,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         descriptor: TransitionDescriptor,
         transitionElements: List<TransitionElement<C>>,
         emitter: EffectEmitter<C>,
-        actions: List<Action<C>>
+        actions: List<ReversibleAction<C>>
     ) {
         requireNotNull(transitionHandler)
         val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
@@ -165,20 +153,15 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun createDefaultElements(
         state: WorkingState<C>,
         commands: List<ConfigurationCommand<C>>
-    ): Map<ConfigurationKey, ConfigurationContext<C>> {
-        val defaultElements: MutableMap<ConfigurationKey, ConfigurationContext<C>> = mutableMapOf()
+    ): Pool<C> {
+        val defaultElements: MutablePool<C> = mutablePoolOf()
 
         commands.forEach { command ->
-            // TODO unify this with resolution for all other types if possible
             if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
                 defaultElements[command.key] = ConfigurationContext.Unresolved(
-                    ConfigurationContext.ActivationState.INACTIVE,
-                    command.configuration
-                ).resolve(configurationResolver, parentNode) {
-                    val action = AddAction(it, parentNode)
-                    action.onTransition()
-                    action.result
-                }
+                    activationState = ConfigurationContext.ActivationState.INACTIVE,
+                    configuration = command.key.configuration
+                )
             }
         }
 
@@ -186,32 +169,45 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     }
 
     private fun createParams(
+        emitter: EffectEmitter<C>,
         state: WorkingState<C>,
-        defaultElements: Map<ConfigurationKey, ConfigurationContext<C>>,
-        command: Transaction<C>? = null
-    ): ActionExecutionParams<C> =
-        ActionExecutionParams(
-            resolver = { key -> configurationKeyResolver.resolve(state, key, defaultElements) },
+        defaultElements: Pool<C>,
+        transaction: Transaction<C>? = null
+    ): TransactionExecutionParams<C> {
+        val tempPool: MutablePool<C> = state.pool.toMutablePool()
+
+        return TransactionExecutionParams(
+            emitter = emitter,
+            resolver = { key ->
+                val lookup = tempPool[key]
+                if (lookup is ConfigurationContext.Resolved) lookup
+                else {
+                    val item = state.pool[key] ?: defaultElements[key] ?: error("Key $key was not found in pool: $state.pool")
+                    val resolved = item.resolve(configurationResolver, parentNode)
+                    tempPool[key] = resolved
+                    resolved
+                }
+            },
             parentNode = parentNode,
-            globalActivationLevel = when (command) {
+            globalActivationLevel = when (transaction) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING
                 is MultiConfigurationCommand.WakeUp -> ConfigurationContext.ActivationState.ACTIVE
                 else -> state.activationLevel
             }
         )
+    }
 
     private fun createActions(
         commands: List<ConfigurationCommand<C>>,
-        params: ActionExecutionParams<C>
-    ): List<Action<C>> = commands.map { command ->
-        command.actionFactory.create(command.key, params, commands.isBackStackOperation(command.key))
+        params: TransactionExecutionParams<C>
+    ): List<ReversibleAction<C>> = commands.map { command ->
+        command.actionFactory.create(
+            ActionExecutionParams(
+                transactionExecutionParams = params,
+                command = command,
+                key = command.key,
+                isBackStackOperation = commands.isBackStackOperation(command.key)
+            )
+        )
     }
-
-    private fun createEffects(
-        commands: List<ConfigurationCommand<C>>,
-        actions: List<Action<C>>
-    ): List<ConfigurationFeature.Effect<C>> =
-        commands.mapIndexed { index, command ->
-            ConfigurationFeature.Effect.Individual(command, actions[index].result) as ConfigurationFeature.Effect<C>
-        }
 }

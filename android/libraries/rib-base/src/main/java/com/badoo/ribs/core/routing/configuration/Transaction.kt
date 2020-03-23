@@ -46,5 +46,5 @@ internal sealed class Transaction<C : Parcelable> {
     }
 }
 
-internal fun List<ConfigurationCommand<*>>.isBackStackOperation(key: ConfigurationKey): Boolean =
+internal fun <C : Parcelable> List<ConfigurationCommand<C>>.isBackStackOperation(key: ConfigurationKey<C>): Boolean =
     none { it.key == key && (it is Add || it is Remove) }

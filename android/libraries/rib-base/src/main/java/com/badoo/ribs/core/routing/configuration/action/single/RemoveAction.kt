@@ -5,26 +5,35 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Removes [Node]s from their parent, resulting in the end of their lifecycles.
  */
 internal class RemoveAction<C : Parcelable>(
+    private val emitter: EffectEmitter<C>,
+    private val key: ConfigurationKey<C>,
     private var item: Resolved<C>,
     private val params: ActionExecutionParams<C>
-) : ReversibleAction<C>() {
+) : Action<C> {
 
-    object Factory : ActionFactory {
+    object Factory: ActionFactory {
         override fun <C : Parcelable> create(
-            key: ConfigurationKey,
             params: ActionExecutionParams<C>,
-            isBackStackOperation: Boolean
-        ): Action<C> {
-            val item = params.resolver.invoke(key)
-            return RemoveAction(item, params)
-        }
+            actionableNodes: List<Node<*>>
+        ): Action<C> =
+            RemoveAction(
+                emitter = params.transactionExecutionParams.emitter,
+                key = params.key,
+                item = params.item,
+                params = params
+            )
     }
+
+    override var canExecute: Boolean =
+        true
 
     override var transitionElements: List<TransitionElement<C>> =
         emptyList()
@@ -32,27 +41,23 @@ internal class RemoveAction<C : Parcelable>(
     override fun onBeforeTransition() {
     }
 
-    override fun onTransition() {
-        if (isReversed) {
-            item.nodes.forEach {
-                it.node.markPendingDetach(false)
-            }
-        } else {
-            item.nodes.forEach {
-                it.node.markPendingDetach(true)
-            }
+    override fun onTransition(forceExecute: Boolean) {
+        item.nodes.forEach {
+            it.node.markPendingDetach(true)
         }
+        emitter.onNext(
+            Effect.Individual.PendingRemovalTrue(key)
+        )
     }
 
-    override fun onFinish() {
-        if (!isReversed) {
-            item.nodes.forEach {
-                params.parentNode.detachChildView(it.node)
-                params.parentNode.detachChildNode(it.node)
-            }
+    override fun onFinish(forceExecute: Boolean) {
+        item.nodes.forEach {
+            params.transactionExecutionParams.parentNode.detachChildView(it.node)
+            params.transactionExecutionParams.parentNode.detachChildNode(it.node)
         }
-    }
 
-    override val result: Resolved<C> =
-        item
+        emitter.onNext(
+            Effect.Individual.Removed(key, item)
+        )
+    }
 }

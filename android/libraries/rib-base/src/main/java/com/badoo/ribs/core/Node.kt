@@ -245,9 +245,7 @@ open class Node<V : RibView>(
 
     // FIXME internal + protected?
     fun detachChildView(child: Node<*>) {
-        parentViewGroup?.let {
             child.detachFromView()
-        }
     }
 
     /**

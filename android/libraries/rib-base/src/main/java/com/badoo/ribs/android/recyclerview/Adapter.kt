@@ -9,7 +9,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGE
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
-import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content.Item
+import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import io.reactivex.functions.Consumer
 import java.util.UUID
@@ -23,7 +23,7 @@ internal class Adapter<T : Parcelable>(
     Consumer<RecyclerViewHostFeature.State<T>> {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var configurationKey: ConfigurationKey? = null
+        var configurationKey: ConfigurationKey<Configuration>? = null
         var uuid: UUID? = null
     }
 
@@ -47,7 +47,7 @@ internal class Adapter<T : Parcelable>(
 
     private fun eagerAdd(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
-            router.add(entry.configurationKey, Item(entry.uuid))
+            router.add(entry.configurationKey)
         }
     }
 
@@ -69,7 +69,7 @@ internal class Adapter<T : Parcelable>(
         super.onViewAttachedToWindow(holder)
         val configurationKey = holder.configurationKey!! // at this point it should be bound
         if (hostingStrategy == LAZY) {
-            router.add(configurationKey, Item(holder.uuid!!))
+            router.add(configurationKey)
         }
         router.activate(configurationKey)
         router.getNodes(configurationKey)!!.forEach { childNode ->
@@ -92,7 +92,7 @@ internal class Adapter<T : Parcelable>(
         }
     }
 
-    private fun deactivate(configurationKey: ConfigurationKey) {
+    private fun deactivate(configurationKey: ConfigurationKey<Configuration>) {
         router.deactivate(configurationKey)
         router.getNodes(configurationKey)!!.forEach { childNode ->
             childNode.detachFromView()

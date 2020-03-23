@@ -6,6 +6,8 @@ import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 import kotlinx.android.parcel.Parcelize
 
 /**
+ * TODO reword to reflect new changes that configuration moved from ConfigurationCommand to here
+ *
  * Represents a complex key to refer to a configuration, so that elements with different types
  * do not overwrite each other with the same index in the pool.
  *
@@ -29,19 +31,24 @@ import kotlinx.android.parcel.Parcelize
  * @see ConfigurationFeature.ActorImpl.resolve
  *
  */
-sealed class ConfigurationKey : Parcelable {
+sealed class ConfigurationKey<C : Parcelable> : Parcelable {
+
+    abstract val configuration: C
 
     @Parcelize
-    data class Permanent(val index: Int) : ConfigurationKey()
+    data class Permanent<C : Parcelable>(val index: Int, override val configuration: C) : ConfigurationKey<C>()
 
     @Parcelize
-    data class Content(val index: Int, val uniquePayload: Parcelable) : ConfigurationKey()
+    data class Content<C : Parcelable>(val index: Int, override val configuration: C) : ConfigurationKey<C>()
 
     @Parcelize
-    data class Overlay(val key: Key) : ConfigurationKey() {
+    data class Overlay<C : Parcelable>(val key: Key<C>) : ConfigurationKey<C>() {
+
+        override val configuration: C
+            get() = key.configuration
 
         @Parcelize
-        data class Key(val contentKey: Content, val index: Int, val uniquePayload: Parcelable) : Parcelable
+        data class Key<C : Parcelable>(val contentKey: Content<C>, val index: Int, val configuration: C) : Parcelable
     }
 
 

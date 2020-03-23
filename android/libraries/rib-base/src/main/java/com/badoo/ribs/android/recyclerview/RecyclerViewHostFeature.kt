@@ -7,6 +7,7 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ReducerFeature
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State
+import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content.Item
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
@@ -44,7 +45,7 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
         data class Entry<T : Parcelable>(
             val element: T,
             val uuid: UUID = UUID.randomUUID(),
-            val configurationKey: ConfigurationKey
+            val configurationKey: ConfigurationKey<RecyclerViewHostRouter.Configuration>
         ) : Parcelable
     }
 
@@ -68,18 +69,21 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
      */
     class ReducerImpl<T : Parcelable> : Reducer<State<T>, Input<T>> {
         override fun invoke(state: State<T>, input: Input<T>): State<T> = when (input) {
-            is Input.Add -> state.copy(
-                lastCommand = input,
-                nextKey = state.nextKey + 1,
-                items = state.items + State.Entry(
-                    element = input.element,
-                    uuid = UUID.randomUUID(),
-                    configurationKey = ConfigurationKey.Content(
-                        index = state.nextKey,
-                        uniquePayload = input.element
+            is Input.Add -> {
+                val uuid = UUID.randomUUID()
+                state.copy(
+                    lastCommand = input,
+                    nextKey = state.nextKey + 1,
+                    items = state.items + State.Entry<T>(
+                        element = input.element,
+                        uuid = uuid,
+                        configurationKey = ConfigurationKey.Content(
+                            index = state.nextKey,
+                            configuration = Item(uuid)
+                        )
                     )
                 )
-            )
+            }
         }
     }
 }

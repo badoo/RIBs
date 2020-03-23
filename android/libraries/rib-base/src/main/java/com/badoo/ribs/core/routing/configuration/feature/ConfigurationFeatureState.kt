@@ -50,14 +50,14 @@ internal data class WorkingState<C : Parcelable>(
             pool.filter { !pendingRemoval.contains(it.key) }
                 .map { entry ->
                     val original = entry.value
-                    val detachRespected = when {
+                    val pendingDeactivateApplied = when {
                         !pendingDeactivate.contains(entry.key) -> original
                         else -> original.withActivationState(
                             activationState = INACTIVE
                         )
                     }
 
-                    entry.key to detachRespected.shrink()
+                    entry.key to pendingDeactivateApplied.shrink()
                 }
                 .toMap()
         )

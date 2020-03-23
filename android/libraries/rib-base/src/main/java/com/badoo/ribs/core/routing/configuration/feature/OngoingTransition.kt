@@ -57,7 +57,7 @@ internal class OngoingTransition<C : Parcelable>(
     fun jumpToEnd() {
         transitionPair.exiting?.end()
         transitionPair.entering?.end()
-        checkFinishedRunnable.run()
+        finish()
     }
 
     fun reverse() {

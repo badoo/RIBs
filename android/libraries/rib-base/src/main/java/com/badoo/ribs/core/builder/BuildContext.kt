@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.portal.AncestryInfo
 
 class BuildContext internal constructor(
     val ancestryInfo: AncestryInfo,
-    val viewAttachMode: AttachMode = AttachMode.PARENT,
+    val attachMode: AttachMode = AttachMode.PARENT,
     val savedInstanceState: Bundle?
 ) {
     companion object {

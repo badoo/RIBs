@@ -13,12 +13,12 @@ internal data class ReversibleActionPair<T : Parcelable>(
 ) : ReversibleAction<T> {
 
     class Factory(
-        private val nodeFilter: (Node.Descriptor) -> Boolean = { true },
+        private val nodeFilter: (Node<*>) -> Boolean = { true },
         private val forwardActionFactory: ActionFactory,
         private val reverseActionFactory: ActionFactory
     ) : ReversibleActionFactory {
         override fun <C : Parcelable> create(params: ActionExecutionParams<C>): ReversibleAction<C> {
-            val nodes = params.item.nodes.filter(nodeFilter).map { it.node }
+            val nodes = params.item.nodes.filter(nodeFilter)
 
             return ReversibleActionPair(
                 forwardAction = forwardActionFactory.create(params, nodes),

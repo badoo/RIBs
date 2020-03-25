@@ -15,7 +15,7 @@ fun testBuildParams(
     data = null,
     buildContext = BuildContext(
         ancestryInfo = AncestryInfo.Root,
-        viewAttachMode = AttachMode.PARENT,
+        attachMode = AttachMode.PARENT,
         savedInstanceState = savedInstanceState
     ),
     identifier = Rib.Identifier(

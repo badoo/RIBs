@@ -21,7 +21,6 @@ import org.junit.Test
 class ConfigurationContextTest {
 
     private val nodes: List<Node<*>> = listOf(mock(), mock())
-    private val nothingElseToDo = { resolved: Resolved<Parcelable> -> resolved }
 
     // Default
     private val defaultRoutingAction = mock<RoutingAction<*>> {
@@ -95,22 +94,14 @@ class ConfigurationContextTest {
     @Test
     fun `Unresolved resolve() resolves expected RoutingAction`() {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
-        val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(defaultRoutingAction, resolved.routingAction)
-// TODO from merge conflict
-//        val resolved = unresolved.resolve(resolver, mock())
-//        assertEquals(routingAction, resolved.routingAction)
     }
 
     @Test
     fun `Unresolved resolve() passes AncestryInfo & Bundles to RoutingAction with parent as default anchor `() {
         val parentNode = mock<Node<*>>()
         verifyBuildNodesCalled(defaultResolver, defaultRoutingAction, parentNode, parentNode)
-// TODO from merge conflict
-//    fun `Unresolved resolve() builds expected Nodes`() {
-//        val unresolved = Unresolved<Parcelable>(mock(), mock())
-//        val resolved = unresolved.resolve(resolver, mock())
-//        assertEquals(nodeDescriptors, resolved.nodes)
     }
 
     @Test
@@ -127,7 +118,7 @@ class ConfigurationContextTest {
     ) {
         val bundles = emptyList<Bundle>()
         val unresolved = Unresolved<Parcelable>(mock(), mock())
-        val resolved = unresolved.resolve(resolver, parentNode, nothingElseToDo)
+        val resolved = unresolved.resolve(resolver, parentNode)
         val expectedAncestryInfo = AncestryInfo.Child(expectedParent, resolved.configuration)
 
         verify(routingAction).buildNodes(
@@ -139,43 +130,9 @@ class ConfigurationContextTest {
     @Test
     fun `Unresolved resolve() stores built Nodes returned by RoutingAction buildNodes()`() {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
-        val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(nodes, resolved.nodes)
     }
-
-// TODO from merge conflict
-//    @Test
-//    fun `Unresolved resolve() sets AncestryInfo on built Nodes with parent as default anchor `() {
-//        val configuration = mock<Parcelable>()
-//        val unresolved = Unresolved(mock(), configuration)
-//        val targetResolver = resolver
-//        val parentNode = mock<Node<*>>()
-//        val resolved = unresolved.resolve(targetResolver, parentNode)
-//        resolved.nodes.forEach {
-//            val expected = AncestryInfo.Child(
-//                parentNode,
-//                configuration
-//            )
-//
-//            verify(it.node).ancestryInfo = expected
-//        }
-//    }
-//
-//    @Test
-//    fun `Unresolved resolve() sets AncestryInfo on built Nodes with expected anchor `() {
-//        val configuration = mock<Parcelable>()
-//        val unresolved = Unresolved(mock(), configuration)
-//        val targetResolver = resolverWithAnchor
-//        val resolved = unresolved.resolve(targetResolver, mock())
-//        resolved.nodes.forEach {
-//            val expected = AncestryInfo.Child(
-//                mockAnchor,
-//                configuration
-//            )
-//
-//            verify(it.node).ancestryInfo = expected
-//        }
-//    }
 
     @Test
     fun `Resolved sleep() keeps INACTIVE`() {

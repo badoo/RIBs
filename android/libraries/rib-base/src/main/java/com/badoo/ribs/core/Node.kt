@@ -68,8 +68,8 @@ open class Node<V : RibView>(
     internal val ancestryInfo: AncestryInfo =
         buildParams.buildContext.ancestryInfo
 
-    internal open val viewAttachMode: AttachMode =
-        buildParams.buildContext.viewAttachMode
+    internal open val attachMode: AttachMode =
+        buildParams.buildContext.attachMode
 
     val resolver: ConfigurationResolver<*, V>? = router
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)

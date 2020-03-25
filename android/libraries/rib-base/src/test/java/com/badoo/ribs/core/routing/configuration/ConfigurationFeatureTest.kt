@@ -82,7 +82,7 @@ class ConfigurationFeatureTest {
             fun create(configuration: Configuration, nbNodes: Int, viewAttachMode: AttachMode): ConfigurationTestHelper {
                 val nodes = MutableList(nbNodes) { i ->
                     mock<Node<*>> {
-                        on { this.viewAttachMode } doReturn viewAttachMode
+                        on { this.attachMode } doReturn viewAttachMode
                         on { toString() } doReturn "Node #$i of $configuration"
                     }
                 }
@@ -314,10 +314,10 @@ class ConfigurationFeatureTest {
         helperPermanent2.nodes.forEach { verify(parentNode).attachChildView(it) }
         helperContentViewParented1.nodes.forEach { verify(parentNode).attachChildView(it) }
         helperContentViewParented2.nodes.forEach { verify(parentNode).attachChildView(it) }
-        helperContentExternal1.nodes.forEach { verify(parentNode).attachChildView(it.node) }
+        helperContentExternal1.nodes.forEach { verify(parentNode).attachChildView(it) }
 
         // As these were INACTIVE and shouldn't be reactivated after WakeUp
-        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildView(it.node) }
+        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildView(it) }
         helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildView(it) }
     }
 

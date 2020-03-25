@@ -17,7 +17,7 @@ open class AddToRecyclerViewRoutingAction<V : RibView>(
             nodeFactory.invoke(
                 BuildContext(
                     ancestryInfo = ancestryInfo,
-                    viewAttachMode = AttachMode.EXTERNAL,
+                    attachMode = AttachMode.EXTERNAL,
                     savedInstanceState = bundles.firstOrNull()
                 )
             )

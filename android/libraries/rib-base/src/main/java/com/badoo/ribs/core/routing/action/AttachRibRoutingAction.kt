@@ -17,7 +17,7 @@ open class AttachRibRoutingAction<V : RibView>(
             nodeFactory.invoke(
                 BuildContext(
                     ancestryInfo = ancestryInfo,
-                    viewAttachMode = AttachMode.PARENT,
+                    attachMode = AttachMode.PARENT,
                     savedInstanceState = bundles.firstOrNull()
                 )
             )

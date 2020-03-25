@@ -85,7 +85,7 @@ abstract class Dialog<T : Any> private constructor(
                  * Not entirely sure it is needed. To be reconsidered later.
                  */
                 ancestryInfo = ancestryInfo,
-                viewAttachMode = AttachMode.EXTERNAL,
+                attachMode = AttachMode.EXTERNAL,
                 savedInstanceState = bundles.firstOrNull()
             )
 

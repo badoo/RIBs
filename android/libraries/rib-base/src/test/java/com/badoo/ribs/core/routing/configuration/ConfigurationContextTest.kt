@@ -65,14 +65,14 @@ class ConfigurationContextTest {
     @Test
     fun `Unresolved resolve() keeps INACTIVE`() {
         val unresolved = Unresolved<Parcelable>(INACTIVE, mock())
-        val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(INACTIVE, resolved.activationState)
     }
 
     @Test
     fun `Unresolved resolve() keeps SLEEPING`() {
         val unresolved = Unresolved<Parcelable>(SLEEPING, mock())
-        val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(SLEEPING, resolved.activationState)
     }
 
@@ -80,7 +80,7 @@ class ConfigurationContextTest {
     fun `Unresolved resolve() keeps configuration`() {
         val configuration = mock<Parcelable>()
         val unresolved = Unresolved(mock(), configuration)
-        val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(configuration, resolved.configuration)
     }
 
@@ -88,7 +88,7 @@ class ConfigurationContextTest {
     fun `Unresolved resolve() keeps bundles`() {
         val bundles = listOf(mock<Bundle>())
         val unresolved = Unresolved<Parcelable>(mock(), mock(), bundles)
-        val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(bundles, resolved.bundles)
     }
 
@@ -97,12 +97,20 @@ class ConfigurationContextTest {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
         val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
         assertEquals(defaultRoutingAction, resolved.routingAction)
+// TODO from merge conflict
+//        val resolved = unresolved.resolve(resolver, mock())
+//        assertEquals(routingAction, resolved.routingAction)
     }
 
     @Test
     fun `Unresolved resolve() passes AncestryInfo & Bundles to RoutingAction with parent as default anchor `() {
         val parentNode = mock<Node<*>>()
         verifyBuildNodesCalled(defaultResolver, defaultRoutingAction, parentNode, parentNode)
+// TODO from merge conflict
+//    fun `Unresolved resolve() builds expected Nodes`() {
+//        val unresolved = Unresolved<Parcelable>(mock(), mock())
+//        val resolved = unresolved.resolve(resolver, mock())
+//        assertEquals(nodeDescriptors, resolved.nodes)
     }
 
     @Test
@@ -134,6 +142,40 @@ class ConfigurationContextTest {
         val resolved = unresolved.resolve(defaultResolver, mock(), nothingElseToDo)
         assertEquals(nodes, resolved.nodes)
     }
+
+// TODO from merge conflict
+//    @Test
+//    fun `Unresolved resolve() sets AncestryInfo on built Nodes with parent as default anchor `() {
+//        val configuration = mock<Parcelable>()
+//        val unresolved = Unresolved(mock(), configuration)
+//        val targetResolver = resolver
+//        val parentNode = mock<Node<*>>()
+//        val resolved = unresolved.resolve(targetResolver, parentNode)
+//        resolved.nodes.forEach {
+//            val expected = AncestryInfo.Child(
+//                parentNode,
+//                configuration
+//            )
+//
+//            verify(it.node).ancestryInfo = expected
+//        }
+//    }
+//
+//    @Test
+//    fun `Unresolved resolve() sets AncestryInfo on built Nodes with expected anchor `() {
+//        val configuration = mock<Parcelable>()
+//        val unresolved = Unresolved(mock(), configuration)
+//        val targetResolver = resolverWithAnchor
+//        val resolved = unresolved.resolve(targetResolver, mock())
+//        resolved.nodes.forEach {
+//            val expected = AncestryInfo.Child(
+//                mockAnchor,
+//                configuration
+//            )
+//
+//            verify(it.node).ancestryInfo = expected
+//        }
+//    }
 
     @Test
     fun `Resolved sleep() keeps INACTIVE`() {

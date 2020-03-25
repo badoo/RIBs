@@ -3,8 +3,8 @@ package com.badoo.ribs.core.routing.configuration.action.multi
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
@@ -23,12 +23,15 @@ internal class SaveInstanceStateAction<C : Parcelable> : MultiConfigurationActio
      */
     override fun execute(
         state: WorkingState<C>,
-        params: ActionExecutionParams<C>
-    ): Map<ConfigurationKey, Resolved<C>> {
-        return state.pool
+        params: TransactionExecutionParams<C>
+    ) {
+        val updatedElements = state.pool
             .filterValues { it is Resolved<C> }
             .mapValues { (_, value) ->
                 (value as Resolved<C>).saveInstanceState()
             }
+
+        params.emitter.onNext(Effect.Global.SaveInstanceState(updatedElements = updatedElements))
+        params.emitter.onComplete()
     }
 }

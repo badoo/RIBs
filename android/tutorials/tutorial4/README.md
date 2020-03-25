@@ -130,18 +130,18 @@ Let's use this input - add it to the constructor of our `Interactor` inside `Hel
 @Provides
 @JvmStatic
 internal fun interactor(
+    savedInstanceState: Bundle?,
     user: User,
     config: HelloWorld.Config,
     input: ObservableSource<HelloWorld.Input>, // add this
-    output: Consumer<HelloWorld.Output>,
-    router: HelloWorldRouter
+    output: Consumer<HelloWorld.Output>
 ): HelloWorldInteractor =
     HelloWorldInteractor(
+        savedInstanceState = savedInstanceState,
         user = user,
         config = config,
         input = input, // add this
-        output = output,
-        router = router
+        output = output
     )
 ```
 
@@ -153,8 +153,7 @@ class HelloWorldInteractor(
     private val user: User,
     private val config: HelloWorld.Config,
     private val input: ObservableSource<HelloWorld.Input>, // add this
-    private val output: Consumer<HelloWorld.Output>,
-    router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
+    private val output: Consumer<HelloWorld.Output>
 )
 ```
 
@@ -183,9 +182,9 @@ And in `HelloWorldViewImpl`:
 
 ```kotlin
 override fun accept(vm: ViewModel) {
-    title.text = vm.titleText.resolve(context)
-    welcome.text = vm.welcomeText.resolve(context)
-    button.text = vm.buttonText.resolve(context) // add this
+    title.text = vm.titleText.resolve(androidView.context)
+    welcome.text = vm.welcomeText.resolve(androidView.context)
+    button.text = vm.buttonText.resolve(androidView.context) // add this
 }
 ```
 

@@ -38,13 +38,13 @@ internal sealed class Transaction<C : Parcelable> {
     ) : Transaction<C>()
 
     companion object {
-        fun <C : Parcelable> from(command: ConfigurationCommand<out C>): Transaction<C> =
+        fun <C : Parcelable> from(vararg commands: ConfigurationCommand<out C>): Transaction<C> =
             ListOfCommands(
                 descriptor = TransitionDescriptor.None,
-                commands = listOf(command as ConfigurationCommand<C>)
+                commands = commands.toList() as List<ConfigurationCommand<C>>
             )
     }
 }
 
-internal fun List<ConfigurationCommand<*>>.isBackStackOperation(key: ConfigurationKey): Boolean =
+internal fun <C : Parcelable> List<ConfigurationCommand<C>>.isBackStackOperation(key: ConfigurationKey<C>): Boolean =
     none { it.key == key && (it is Add || it is Remove) }

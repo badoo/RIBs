@@ -12,10 +12,10 @@ import androidx.annotation.CheckResult
 import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.effect.SharedElementTransition.RotationParams
 import com.badoo.ribs.core.routing.transition.handler.defaultDuration
 import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
 import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator
-import com.badoo.ribs.core.routing.transition.effect.SharedElementTransition.RotationParams
 
 interface SharedElementTransition {
     data class Params(
@@ -119,6 +119,7 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(): Transition {
     fun Float.scaleY(): Float = params.scaleYInterpolator.getInterpolation(this)
     fun RotationParams.rotation(progress: Float): Float = degrees * interpolator.getInterpolation(progress)
 
+    val reverseHolder = ReverseHolder()
     val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
         duration = params.duration
 
@@ -138,10 +139,10 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(): Transition {
                 enteringView.visibility = View.INVISIBLE
             }
 
-            override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
-                super.onAnimationEnd(animation, isReverse)
+            override fun onAnimationEnd(animation: Animator?) {
+                super.onAnimationEnd(animation)
                 rootView.removeView(exitingView)
-                if (isReverse) {
+                if (reverseHolder.isReversing) {
                     originalParent.addView(exitingView, originalParentIdx, originalLayoutParams)
                     exitingView.translationX = originalTX
                     exitingView.translationY = originalTY
@@ -165,5 +166,5 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(): Transition {
         }
     }
 
-    return Transition.from(valueAnimator)
+    return Transition.from(valueAnimator, reverseHolder)
 }

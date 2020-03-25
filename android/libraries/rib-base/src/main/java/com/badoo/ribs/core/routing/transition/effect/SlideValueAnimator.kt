@@ -16,7 +16,8 @@ internal fun <T> TransitionElement<out T>.slideValueAnimator(
     endValues: EndValues,
     interpolator: Interpolator,
     duration: Long,
-    evaluator: SingleProgressEvaluator
+    evaluator: SingleProgressEvaluator,
+    reverseHolder: ReverseHolder
 ): ValueAnimator {
     val startProgress = when (gravity) {
         Gravity.LEFT, Gravity.RIGHT -> view.translationX / endValues.difference
@@ -27,7 +28,7 @@ internal fun <T> TransitionElement<out T>.slideValueAnimator(
     valueAnimator.interpolator = interpolator
     valueAnimator.duration = abs((1 - startProgress) * duration).toLong()
     valueAnimator.addUpdateListener(slideUpdateListener(gravity, endValues, evaluator))
-    valueAnimator.addListener(slideStartEndNotifier(evaluator))
+    valueAnimator.addListener(slideStartEndNotifier(evaluator, reverseHolder))
 
     return valueAnimator
 }
@@ -50,7 +51,8 @@ private  fun <T> TransitionElement<out T>.slideUpdateListener(
 }
 
 private  fun slideStartEndNotifier(
-    evaluator: SingleProgressEvaluator
+    evaluator: SingleProgressEvaluator,
+    reverseHolder: ReverseHolder
 ): AnimatorListenerAdapter = object : AnimatorListenerAdapter() {
 
     override fun onAnimationStart(animation: Animator?) {
@@ -58,9 +60,9 @@ private  fun slideStartEndNotifier(
         evaluator.start()
     }
 
-    override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
-        super.onAnimationEnd(animation, isReverse)
-        if (isReverse) {
+    override fun onAnimationEnd(animation: Animator?) {
+        super.onAnimationEnd(animation)
+        if (reverseHolder.isReversing) {
             evaluator.reset()
         } else {
             evaluator.markFinished()

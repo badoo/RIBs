@@ -22,6 +22,7 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.SingleTop
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
@@ -106,19 +107,23 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         backStackFeature.accept(PushOverlay(configuration))
     }
 
+    fun singleTop(configuration: Content) {
+        backStackFeature.accept(SingleTop(configuration))
+    }
+
     fun newRoot(configuration: Content) {
         backStackFeature.accept(NewRoot(configuration))
     }
 
-    internal fun add(configurationKey: ConfigurationKey, configuration: Content) {
+    internal fun add(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
-                Add(configurationKey, configuration)
+                Add(configurationKey)
             )
         )
     }
 
-    internal fun remove(configurationKey: ConfigurationKey) {
+    internal fun remove(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
                 Remove(configurationKey)
@@ -126,7 +131,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun activate(configurationKey: ConfigurationKey) {
+    internal fun activate(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
                 Activate(configurationKey)
@@ -134,7 +139,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun deactivate(configurationKey: ConfigurationKey) {
+    internal fun deactivate(configurationKey: ConfigurationKey<C>) {
         configurationFeature.accept(
             Transaction.from(
                 Deactivate(configurationKey)
@@ -142,7 +147,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
-    internal fun getNodes(configurationKey: ConfigurationKey): List<Node<*>>? =
+    internal fun getNodes(configurationKey: ConfigurationKey<C>): List<Node<*>>? =
         (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
 
     fun popBackStack(): Boolean =

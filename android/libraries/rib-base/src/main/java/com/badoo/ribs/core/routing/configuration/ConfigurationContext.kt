@@ -61,13 +61,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             }
     }
 
+    abstract fun withActivationState(activationState: ActivationState): ConfigurationContext<C>
     abstract fun sleep(): ConfigurationContext<C>
     abstract fun wakeUp(): ConfigurationContext<C>
-    abstract fun resolve(
-        resolver: (C) -> RoutingAction<*>,
-        parentNode: Node<*>,
-        onResolution: (Resolved<C>) -> Resolved<C>
-    ): Resolved<C>
+    abstract fun shrink(): Unresolved<C>
+    abstract fun resolve(resolver: (C) -> RoutingAction<*>, parentNode: Node<*>): Resolved<C>
 
     /**
      * Represents [ConfigurationContext] that is persistable in a [android.os.Bundle],
@@ -92,21 +90,21 @@ internal sealed class ConfigurationContext<C : Parcelable> {
          */
         override fun resolve(
             resolver: (C) -> RoutingAction<*>,
-            parentNode: Node<*>,
-            onResolution: (Resolved<C>) -> Resolved<C>
+            parentNode: Node<*>
         ): Resolved<C> {
             bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
             val routingAction = resolver.invoke(configuration)
-            return onResolution.invoke(
-                Resolved(
+            return Resolved(
                     activationState = activationState,
                     configuration = configuration,
                     bundles = bundles,
                     routingAction = routingAction,
                     nodes = buildNodes(routingAction, parentNode)
                 )
-            )
         }
+
+        override fun shrink(): Unresolved<C> =
+            this
 
         private fun buildNodes(routingAction: RoutingAction<*>, parentNode: Node<*>): List<Node<*>> =
             routingAction.buildNodes(
@@ -115,6 +113,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     creatorConfiguration = configuration
                 ),
                 bundles = bundles
+            )
+
+        override fun withActivationState(activationState: ActivationState) =
+            copy(
+                activationState = activationState
             )
 
         override fun sleep(): Unresolved<C> = copy(
@@ -140,20 +143,14 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
         override fun resolve(
             resolver: (C) -> RoutingAction<*>,
-            parentNode: Node<*>,
-            onResolution: (Resolved<C>) -> Resolved<C>
+            parentNode: Node<*>
         ): Resolved<C> = this
 
-        fun shrink() =
+        override fun shrink(): Unresolved<C> =
             Unresolved(
                 activationState.sleep(),
                 configuration,
                 bundles
-            )
-
-        fun withActivationState(activationState: ActivationState) =
-            copy(
-                activationState = activationState
             )
 
         fun saveInstanceState() =
@@ -165,6 +162,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 }
             )
 
+        override fun withActivationState(activationState: ActivationState) =
+            copy(
+                activationState = activationState
+            )
 
         override fun sleep(): Resolved<C> =
             withActivationState(activationState.sleep())

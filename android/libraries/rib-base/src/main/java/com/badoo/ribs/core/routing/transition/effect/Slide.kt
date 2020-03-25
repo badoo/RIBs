@@ -28,8 +28,10 @@ fun <T> TransitionElement<out T>.slide(
             TransitionDirection.ENTER -> it.reverse()
         }
     }
+    val reverseHolder = ReverseHolder()
 
     return Transition.from(
-        slideValueAnimator(actualGravity, endValues, interpolator, duration, evaluator)
+        slideValueAnimator(actualGravity, endValues, interpolator, duration, evaluator, reverseHolder),
+        reverseHolder
     )
 }

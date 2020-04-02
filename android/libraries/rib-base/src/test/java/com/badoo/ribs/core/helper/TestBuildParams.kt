@@ -12,7 +12,7 @@ fun testBuildParams(
     rib: Rib = object : TestPublicRibInterface {},
     savedInstanceState: Bundle? = null
 ) = BuildParams<Nothing?>(
-    data = null,
+    payload = null,
     buildContext = BuildContext(
         ancestryInfo = AncestryInfo.Root,
         attachMode = AttachMode.PARENT,

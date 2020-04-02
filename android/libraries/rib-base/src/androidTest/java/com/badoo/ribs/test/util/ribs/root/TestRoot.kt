@@ -2,11 +2,9 @@ package com.badoo.ribs.test.util.ribs.root
 
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
-import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
@@ -55,7 +53,7 @@ interface TestRoot : Rib {
         fun create(dialogLauncher: DialogLauncher, savedInstanceState: Bundle?): TestNode<TestRootView> {
             val router = TestRootRouter(
                 buildParams = BuildParams(
-                    data = null,
+                    payload = null,
                     buildContext = BuildContext.root(savedInstanceState),
                     identifier = Rib.Identifier(
                         rib = object : TestRoot {},

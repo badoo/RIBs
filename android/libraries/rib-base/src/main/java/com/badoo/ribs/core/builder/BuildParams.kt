@@ -7,7 +7,7 @@ import java.util.UUID
 
 
 class BuildParams<T>(
-    val data: T,
+    val payload: T,
     val buildContext: BuildContext,
     val identifier: Rib.Identifier = Rib.Identifier(
         rib = object : Rib {},
@@ -24,7 +24,7 @@ class BuildParams<T>(
          * will be considered Roots.
          */
         fun Empty() = BuildParams(
-            data = null,
+            payload = null,
             buildContext = BuildContext.root(null)
         )
     }

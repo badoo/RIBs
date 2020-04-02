@@ -38,7 +38,7 @@ abstract class DataBuilder<D, P, N : Node<*>>(
     @JvmName("buildWithCompulsoryData")
     fun build(buildContext: BuildContext, data: P): N {
         val buildParams = BuildParams(
-            data = data,
+            payload = data,
             buildContext = buildContext,
             identifier = Rib.Identifier(
                 rib = rib,

@@ -3,7 +3,7 @@ package com.badoo.ribs.test.util.ribs.child.builder
 import android.view.ViewGroup
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildInteractor
@@ -11,7 +11,7 @@ import com.badoo.ribs.test.util.ribs.child.TestChildRouter
 import com.badoo.ribs.test.util.ribs.child.TestChildView
 import com.badoo.ribs.test.util.ribs.child.TestChildViewImpl
 
-class TestChildBuilder : Builder<Nothing?, TestNode<TestChildView>>(
+class TestChildBuilder : SimpleBuilder<Nothing?, TestNode<TestChildView>>(
     rib = object : Rib {}
 ) {
 

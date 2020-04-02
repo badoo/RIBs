@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.menu
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
@@ -9,7 +9,7 @@ import com.badoo.ribs.example.rib.menu.feature.MenuFeature
 
 class MenuBuilder(
     dependency: Menu.Dependency
-) : Builder<Menu.Dependency, Node<MenuView>>(
+) : SimpleBuilder<Menu.Dependency, Node<MenuView>>(
     rib = object : Menu {}
 ) {
 

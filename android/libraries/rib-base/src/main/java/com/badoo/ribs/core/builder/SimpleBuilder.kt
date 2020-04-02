@@ -28,7 +28,7 @@ import com.badoo.ribs.core.Rib
  * @param <N> type of [Node] this Builder is expected to build
  *
 </D> */
-abstract class Builder<D, N : Node<*>>(
+abstract class SimpleBuilders<D, N : Node<*>>(
     rib: Rib
 ) : DataBuilder<D, Nothing?, N>(
     rib = rib

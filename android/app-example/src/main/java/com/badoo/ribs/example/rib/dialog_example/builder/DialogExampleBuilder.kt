@@ -2,7 +2,7 @@ package com.badoo.ribs.example.rib.dialog_example.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
@@ -10,7 +10,7 @@ import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 
 class DialogExampleBuilder(
     dependency: DialogExample.Dependency
-) : Builder<DialogExample.Dependency, Node<DialogExampleView>>(object : DialogExample {}) {
+) : SimpleBuilder<DialogExample.Dependency, Node<DialogExampleView>>(object : DialogExample {}) {
 
     override val dependency : DialogExample.Dependency = object : DialogExample.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(DialogExample::class)

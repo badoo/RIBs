@@ -3,11 +3,11 @@ package com.badoo.ribs.android.recyclerview
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 
 class RecyclerViewHostBuilder<T : Parcelable>(
     override val dependency: RecyclerViewHost.Dependency<T>
-) : Builder<RecyclerViewHost.Dependency<T>, RecyclerViewHostNode<T>>(
+) : SimpleBuilder<RecyclerViewHost.Dependency<T>, RecyclerViewHostNode<T>>(
     rib = object : RecyclerViewHost {}
 ) {
 

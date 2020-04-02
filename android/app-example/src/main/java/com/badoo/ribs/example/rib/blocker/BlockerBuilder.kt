@@ -1,14 +1,14 @@
 package com.badoo.ribs.example.rib.blocker
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 
 class BlockerBuilder(
     dependency: Blocker.Dependency
-) : Builder<Blocker.Dependency, Node<BlockerView>>(
+) : SimpleBuilder<Blocker.Dependency, Node<BlockerView>>(
     rib = object : Blocker {}
 ) {
 

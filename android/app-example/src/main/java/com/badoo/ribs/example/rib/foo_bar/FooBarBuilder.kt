@@ -1,14 +1,14 @@
 package com.badoo.ribs.example.rib.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.example.rib.foo_bar.viewplugin.ParentLongClickListener
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : Builder<FooBar.Dependency, FooBarNode>(
+) : SimpleBuilder<FooBar.Dependency, FooBarNode>(
     rib = object : FooBar {}
 ) {
 

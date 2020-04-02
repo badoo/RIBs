@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.rib.hello_world
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.customisationsBranchFor
@@ -12,7 +12,7 @@ import com.badoo.ribs.example.rib.small.builder.SmallBuilder
 
 class HelloWorldBuilder(
     dependency: HelloWorld.Dependency
-) : Builder<HelloWorld.Dependency, HelloWorldNode>(
+) : SimpleBuilder<HelloWorld.Dependency, HelloWorldNode>(
     rib = object : HelloWorld {}
 ) {
 

@@ -2,13 +2,13 @@ package com.badoo.ribs.example.rib.lorem_ipsum
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 
 class LoremIpsumBuilder(
     dependency: LoremIpsum.Dependency
-) : Builder<LoremIpsum.Dependency, Node<LoremIpsumView>>(
+) : SimpleBuilder<LoremIpsum.Dependency, Node<LoremIpsumView>>(
     rib = object : LoremIpsum {}
 ) {
 

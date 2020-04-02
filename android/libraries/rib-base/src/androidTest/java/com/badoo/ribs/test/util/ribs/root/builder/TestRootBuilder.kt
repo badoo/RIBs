@@ -2,7 +2,7 @@ package com.badoo.ribs.test.util.ribs.root.builder
 
 import com.badoo.ribs.core.builder.BuildParams
 import android.view.ViewGroup
-import com.badoo.ribs.core.builder.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
@@ -13,7 +13,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootViewImpl
 
 class TestRootBuilder(
     override val dependency: TestRoot.Dependency
-) : Builder<TestRoot.Dependency, Node<TestRootView>>(object : TestRoot {}) {
+) : SimpleBuilder<TestRoot.Dependency, Node<TestRootView>>(object : TestRoot {}) {
 
     override fun build(buildParams: BuildParams<Nothing?>): Node<TestRootView> {
         return TestNode(

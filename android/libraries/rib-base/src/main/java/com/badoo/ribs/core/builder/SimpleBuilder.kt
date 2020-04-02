@@ -30,7 +30,7 @@ import com.badoo.ribs.core.Rib
 </D> */
 abstract class SimpleBuilders<D, N : Node<*>>(
     rib: Rib
-) : DataBuilder<D, Nothing?, N>(
+) : Builder<D, Nothing?, N>(
     rib = rib
 ) {
 

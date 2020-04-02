@@ -9,7 +9,7 @@ import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
 class FooBarNode internal constructor(
-    buildParams: BuildParams<Nothing?>,
+    buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,

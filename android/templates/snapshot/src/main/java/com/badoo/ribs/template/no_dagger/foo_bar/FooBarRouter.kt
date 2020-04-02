@@ -12,7 +12,7 @@ import com.badoo.ribs.template.no_dagger.foo_bar.FooBarRouter.Configuration.Perm
 import kotlinx.android.parcel.Parcelize
 
 class FooBarRouter(
-    buildParams: BuildParams<Nothing?>,
+    buildParams: BuildParams<*>,
     transitionHandler: TransitionHandler<Configuration>? = null
 ): Router<Configuration, Permanent, Content, Overlay, FooBarView>(
     buildParams = buildParams,

@@ -18,7 +18,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 internal class FooBarInteractor(
-    buildParams: BuildParams<Nothing?>,
+    buildParams: BuildParams<*>,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature

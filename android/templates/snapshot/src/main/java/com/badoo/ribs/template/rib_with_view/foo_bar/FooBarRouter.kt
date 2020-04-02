@@ -12,7 +12,7 @@ import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.
 import kotlinx.android.parcel.Parcelize
 
 class FooBarRouter(
-    buildParams: BuildParams<Nothing?>,
+    buildParams: BuildParams<*>,
     transitionHandler: TransitionHandler<Configuration>? = null
 ): Router<Configuration, Permanent, Content, Overlay, FooBarView>(
     buildParams = buildParams,

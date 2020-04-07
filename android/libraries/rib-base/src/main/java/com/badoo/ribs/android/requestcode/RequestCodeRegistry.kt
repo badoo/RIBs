@@ -2,10 +2,11 @@ package com.badoo.ribs.android.requestcode
 
 import android.os.Bundle
 import java.util.HashMap
+import kotlin.math.pow
 
 class RequestCodeRegistry constructor(
     initialState: Bundle?,
-    nbLowerBitsForIds: Int = 4
+    private val nbLowerBitsForIds: Int = 4
 ) {
     internal val requestCodes: HashMap<Int, String> =
         (initialState?.getSerializable(KEY_REQUEST_CODE_REGISTRY) as? HashMap<Int, String>) ?: hashMapOf()
@@ -45,7 +46,7 @@ class RequestCodeRegistry constructor(
     private fun ensureCodeIsCorrect(code: Int) {
         if (code < 1 || code != code and maskLowerBits) {
             throw RequestCodeDoesntFitInMask(
-                "Requestcode '$code' does not fit requirements. Try 0 < code < ${Math.pow(2.0, maskLowerBits.toDouble())}"
+                "Requestcode '$code' does not fit requirements. Allowed min: 1, max: ${2.0.pow(nbLowerBitsForIds).toInt() - 1}"
             )
         }
     }

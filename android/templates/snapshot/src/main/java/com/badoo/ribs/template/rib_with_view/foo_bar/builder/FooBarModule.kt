@@ -41,16 +41,15 @@ internal object FooBarModule {
     @JvmStatic
     internal fun interactor(
         savedInstanceState: Bundle?,
+        dependency: FooBar.Dependency,
         router: FooBarRouter,
-        input: ObservableSource<Input>,
-        output: Consumer<Output>,
         feature: FooBarFeature
     ): FooBarInteractor =
         FooBarInteractor(
             savedInstanceState = savedInstanceState,
             router = router,
-            input = input,
-            output = output,
+            input = dependency.fooBarInput(),
+            output = dependency.fooBarOutput(),
             feature = feature
         )
 
@@ -62,16 +61,15 @@ internal object FooBarModule {
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,
-        input: ObservableSource<Input>,
-        output: Consumer<Output>,
+        dependency: FooBar.Dependency,
         feature: FooBarFeature
     ) : FooBarNode = FooBarNode(
         savedInstanceState = savedInstanceState,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor,
-        input = input,
-        output = output,
+        input = dependency.fooBarInput(),
+        output = dependency.fooBarOutput(),
         feature = feature
     )
 }

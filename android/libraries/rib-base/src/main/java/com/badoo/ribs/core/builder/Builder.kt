@@ -36,9 +36,9 @@ abstract class Builder<D, P, N : Node<*>>(
     abstract val dependency: D // TODO remove this along with <D>. make it local to client code
 
     @JvmName("buildWithCompulsoryData")
-    fun build(buildContext: BuildContext, data: P): N {
+    fun build(buildContext: BuildContext, payload: P): N {
         val buildParams = BuildParams(
-            payload = data,
+            payload = payload,
             buildContext = buildContext,
             identifier = Rib.Identifier(
                 rib = rib,

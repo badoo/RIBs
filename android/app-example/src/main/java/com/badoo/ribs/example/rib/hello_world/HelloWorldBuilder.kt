@@ -12,11 +12,11 @@ import com.badoo.ribs.example.rib.small.builder.SmallBuilder
 
 class HelloWorldBuilder(
     dependency: HelloWorld.Dependency
-) : SimpleBuilder<HelloWorld.Dependency, HelloWorldNode>(
+) : SimpleBuilder<HelloWorldNode>(
     rib = object : HelloWorld {}
 ) {
 
-    override val dependency : HelloWorld.Dependency = object : HelloWorld.Dependency by dependency {
+    private val dependency : HelloWorld.Dependency = object : HelloWorld.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(HelloWorld::class)
     }
 

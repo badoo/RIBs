@@ -7,8 +7,8 @@ import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView
 
 class OptionSelectorBuilder(
-    override val dependency: OptionSelector.Dependency
-) : SimpleBuilder<OptionSelector.Dependency, Node<OptionSelectorView>>(
+    private val dependency: OptionSelector.Dependency
+) : SimpleBuilder<Node<OptionSelectorView>>(
     rib = object : OptionSelector {}
 ) {
 

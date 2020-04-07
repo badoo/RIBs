@@ -8,11 +8,11 @@ import com.badoo.ribs.customisation.getOrDefault
 
 class BlockerBuilder(
     dependency: Blocker.Dependency
-) : SimpleBuilder<Blocker.Dependency, Node<BlockerView>>(
+) : SimpleBuilder<Node<BlockerView>>(
     rib = object : Blocker {}
 ) {
 
-    override val dependency : Blocker.Dependency = object : Blocker.Dependency by dependency {
+    private val dependency : Blocker.Dependency = object : Blocker.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Blocker::class)
     }
 

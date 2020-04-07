@@ -6,8 +6,8 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
 
 class RecyclerViewHostBuilder<T : Parcelable>(
-    override val dependency: RecyclerViewHost.Dependency<T>
-) : SimpleBuilder<RecyclerViewHost.Dependency<T>, RecyclerViewHostNode<T>>(
+    private val dependency: RecyclerViewHost.Dependency<T>
+) : SimpleBuilder<RecyclerViewHostNode<T>>(
     rib = object : RecyclerViewHost {}
 ) {
 

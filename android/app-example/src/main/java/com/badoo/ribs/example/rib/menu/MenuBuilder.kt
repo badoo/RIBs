@@ -9,11 +9,11 @@ import com.badoo.ribs.example.rib.menu.feature.MenuFeature
 
 class MenuBuilder(
     dependency: Menu.Dependency
-) : SimpleBuilder<Menu.Dependency, Node<MenuView>>(
+) : SimpleBuilder<Node<MenuView>>(
     rib = object : Menu {}
 ) {
 
-    override val dependency : Menu.Dependency = object : Menu.Dependency by dependency {
+    private val dependency : Menu.Dependency = object : Menu.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Menu::class)
     }
 

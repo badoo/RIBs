@@ -17,7 +17,8 @@ import com.badoo.ribs.core.view.RibView
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     savedInstanceState: Bundle?,
     private val initialConfiguration: Content,
-    private val permanentParts: List<Permanent> = emptyList()
+    private val permanentParts: List<Permanent> = emptyList(),
+    private val transitionHandler: TransitionHandler<C>? = null
 ) : ConfigurationResolver<C, V> {
     companion object {
         internal const val BUNDLE_KEY = "Router"
@@ -46,7 +47,8 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             initialConfigurations = permanentParts,
             timeCapsule = timeCapsule,
             resolver = this::resolveConfiguration,
-            parentNode = node
+            parentNode = node,
+            transitionHandler = transitionHandler
         )
     }
 
@@ -61,25 +63,91 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         // TODO add back support for this
     }
 
-    fun onAttach() {
+    internal fun onAttach() {
         binder.bind(backStackFeature.toCommands() to configurationFeature)
     }
 
-    fun onAttachView() {
+    internal fun onAttachView() {
         configurationFeature.accept(WakeUp())
     }
 
-    fun onDetachView() {
+    internal fun onDetachView() {
         configurationFeature.accept(Sleep())
     }
 
-    fun onDetach() {
+    internal fun onDetach() {
         binder.dispose()
+        backStackFeature.dispose()
+        configurationFeature.dispose()
     }
 
     fun acceptOperation(backStackOperation: BackStackOperation<C>) {
         backStackFeature.accept(BackStackFeature.Operation.ExtendedOperation(backStackOperation))
     }
+
+    fun push(configuration: Content) {
+        backStackFeature.accept(Push(configuration))
+    }
+
+    fun pushOverlay(configuration: Overlay) {
+        backStackFeature.accept(PushOverlay(configuration))
+    }
+
+    fun newRoot(configuration: Content) {
+        backStackFeature.accept(NewRoot(configuration))
+    }
+
+    fun popBackStack(): Boolean =
+        if (backStackFeature.state.canPop) {
+            backStackFeature.accept(Pop())
+            true
+        } else {
+            false
+        }
+
+    fun singleTop(configuration: Content) {
+        backStackFeature.accept(SingleTop(configuration))
+    }
+
+    fun newRoot(configuration: Content) {
+        backStackFeature.accept(NewRoot(configuration))
+    }
+
+    internal fun add(configurationKey: ConfigurationKey<C>) {
+        configurationFeature.accept(
+            Transaction.from(
+                Add(configurationKey)
+            )
+        )
+    }
+
+    internal fun remove(configurationKey: ConfigurationKey<C>) {
+        configurationFeature.accept(
+            Transaction.from(
+                Remove(configurationKey)
+            )
+        )
+    }
+
+    internal fun activate(configurationKey: ConfigurationKey<C>) {
+        configurationFeature.accept(
+            Transaction.from(
+                Activate(configurationKey)
+            )
+        )
+    }
+
+    internal fun deactivate(configurationKey: ConfigurationKey<C>) {
+        configurationFeature.accept(
+            Transaction.from(
+                Deactivate(configurationKey)
+            )
+        )
+    }
+
+    internal fun getNodes(configurationKey: ConfigurationKey<C>) =
+        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes?.map { it.node }
+
 
     internal fun acceptBackStack(acceptWish: BackStackFeature<C>.() -> Unit) {
         backStackFeature.acceptWish()

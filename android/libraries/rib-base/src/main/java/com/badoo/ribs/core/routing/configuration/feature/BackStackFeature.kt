@@ -8,9 +8,12 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.ExtendedOperation
-import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
-import com.badoo.ribs.core.routing.configuration.feature.operation.NewRoot
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.SingleTop
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
@@ -54,6 +57,7 @@ internal class BackStackFeature<C : Parcelable>(
      */
     sealed class Operation<C : Parcelable> {
         data class ExtendedOperation<C : Parcelable>(val backStackOperation: BackStackOperation<C>) : Operation<C>()
+        data class SingleTop<C : Parcelable>(val configuration: C) : Operation<C>()
     }
 
     /**
@@ -65,6 +69,17 @@ internal class BackStackFeature<C : Parcelable>(
 
         data class ExtendOperationApplied<C : Parcelable>(
             override val oldState: BackStackFeatureState<C>,
+            val configuration: C
+        ) : Effect<C>()
+
+        data class SingleTopReactivate<C : Parcelable>(
+            override val oldState: BackStackFeatureState<C>,
+            val position: Int
+        ) : Effect<C>()
+
+        data class SingleTopReplace<C : Parcelable>(
+            override val oldState: BackStackFeatureState<C>,
+            val position: Int,
             val backStackOperation: BackStackOperation<C>
         ) : Effect<C>()
     }
@@ -90,6 +105,30 @@ internal class BackStackFeature<C : Parcelable>(
         @SuppressWarnings("LongMethod")
         override fun invoke(state: BackStackFeatureState<C>, op: Operation<C>): Observable<out Effect<C>> =
             when (op) {
+                is SingleTop -> {
+                    val targetClass = op.configuration.javaClass
+                    val lastIndexOfSameClass = state.backStack.indexOfLast {
+                        targetClass.isInstance(it.configuration)
+                    }
+
+                    if (lastIndexOfSameClass == -1) {
+                        just(Effect.Push(state, op.configuration))
+                    } else {
+                        if (state.backStack[lastIndexOfSameClass] == op.configuration) {
+                            just(Effect.SingleTopReactivate(
+                                oldState = state,
+                                position = lastIndexOfSameClass
+                            ))
+                        } else {
+                            just(Effect.SingleTopReplace(
+                                oldState = state,
+                                position = lastIndexOfSameClass,
+                                configuration = op.configuration
+                            ))
+                        }
+                    }
+                }
+
                 is ExtendedOperation -> when {
                     op.backStackOperation.isApplicable(state.backStack) -> just(Effect.ExtendOperationApplied(state, op.backStackOperation))
                     else -> empty()
@@ -106,6 +145,12 @@ internal class BackStackFeature<C : Parcelable>(
             state.apply(effect)
 
         private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C> = when (effect) {
+            is Effect.SingleTopReactivate -> copy (
+                backStack = backStack.dropLast(backStack.size - effect.position - 1)
+            )
+            is Effect.SingleTopReplace -> copy (
+                backStack = backStack.dropLast(backStack.size - effect.position) + BackStackElement(effect.configuration)
+            )
             is Effect.ExtendOperationApplied -> copy(
                 backStack = effect.backStackOperation.modifyStack(backStack)
             )

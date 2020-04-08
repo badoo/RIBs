@@ -4,7 +4,9 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import kotlinx.android.parcel.Parcelize
 
@@ -13,7 +15,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 internal data class SavedState<C : Parcelable>(
-    val pool: Map<ConfigurationKey, ConfigurationContext.Unresolved<C>>
+    val pool: Map<ConfigurationKey<C>, Unresolved<C>>
 ) : Parcelable {
 
     /**
@@ -34,7 +36,10 @@ internal data class SavedState<C : Parcelable>(
  */
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
-    val pool: Map<ConfigurationKey, ConfigurationContext<C>> = mapOf()
+    val pool: Pool<C> = poolOf(),
+    val pendingDeactivate: Set<ConfigurationKey<C>> = setOf(),
+    val pendingRemoval: Set<ConfigurationKey<C>> = setOf(),
+    val ongoingTransitions: List<OngoingTransition<C>> = emptyList()
 ) {
     /**
      * Converts the [WorkingState] to [SavedState] by shrinking all
@@ -42,13 +47,24 @@ internal data class WorkingState<C : Parcelable>(
      */
     fun toSavedState(): SavedState<C> =
         SavedState(
-            pool.map {
-                it.key to when (val entry = it.value) {
-                    is ConfigurationContext.Unresolved -> entry
-                    is ConfigurationContext.Resolved -> entry.shrink()
-                }.copy(
-                    activationState = it.value.activationState.sleep()
-                )
-            }.toMap()
+            pool.filter { !pendingRemoval.contains(it.key) }
+                .map { entry ->
+                    val original = entry.value
+                    val pendingDeactivateApplied = when {
+                        !pendingDeactivate.contains(entry.key) -> original
+                        else -> original.withActivationState(
+                            activationState = INACTIVE
+                        )
+                    }
+
+                    entry.key to pendingDeactivateApplied.shrink()
+                }
+                .toMap()
         )
 }
+
+internal fun <C : Parcelable> WorkingState<C>.withDefaults(defaults: Pool<C>) =
+    copy(
+        // Defaults should not overwrite existing elements
+        pool = pool + defaults + pool
+    )

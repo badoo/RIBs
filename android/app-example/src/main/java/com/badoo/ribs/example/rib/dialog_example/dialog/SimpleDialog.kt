@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example.dialog
 
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.dialog.Dialog.Event.Negative
@@ -9,12 +10,12 @@ import com.badoo.ribs.dialog.Dialog.Event.Positive
 
 class SimpleDialog : Dialog<Dialog.Event>({
     // Inject (Smart)Resources in constructor to resolve texts if needed
-    title = "Simple dialog"
-    message = "Lorem ipsum dolor sit amet"
+    title = Text.Plain("Simple dialog")
+    message = Text.Plain("Lorem ipsum dolor sit amet")
     buttons {
-        positive("Yay!", Positive)
-        negative("No way", Negative)
-        neutral("Meh?", Neutral)
+        positive(Text.Plain("Yay!"), Positive)
+        negative(Text.Plain("No way"), Negative)
+        neutral(Text.Plain("Meh?"), Neutral)
     }
 
     cancellationPolicy = Cancellable(

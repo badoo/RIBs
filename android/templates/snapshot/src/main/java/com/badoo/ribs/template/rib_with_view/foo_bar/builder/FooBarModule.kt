@@ -22,10 +22,12 @@ internal object FooBarModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: FooBarComponent,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
+        customisation: FooBar.Customisation
     ): FooBarRouter =
         FooBarRouter(
-            savedInstanceState = savedInstanceState
+            savedInstanceState = savedInstanceState,
+            transitionHandler = null // Add customisation.transitionHandler if you need it
         )
 
     @FooBarScope

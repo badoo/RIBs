@@ -1,17 +1,17 @@
-@file:Suppress("LongParameterList")
+@file:Suppress("LongParameterList", "LongMethod")
 package com.badoo.ribs.example.rib.switcher.builder
 
 import android.os.Bundle
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.Blocker
-import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
+import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBar
-import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
+import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
-import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
+import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
-import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
+import com.badoo.ribs.example.rib.menu.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.Switcher
 import com.badoo.ribs.example.rib.switcher.SwitcherInteractor
 import com.badoo.ribs.example.rib.switcher.SwitcherNode
@@ -39,11 +39,13 @@ internal object SwitcherModule {
     internal fun router(
         savedInstanceState: Bundle?,
         component: SwitcherComponent,
+        customisation: Switcher.Customisation,
         dialogLauncher: DialogLauncher,
         dialogToTestOverlay: DialogToTestOverlay
     ): SwitcherRouter =
         SwitcherRouter(
             savedInstanceState = savedInstanceState,
+            transitionHandler = customisation.transitionHandler,
             fooBarBuilder = FooBarBuilder(component),
             helloWorldBuilder = HelloWorldBuilder(component),
             dialogExampleBuilder = DialogExampleBuilder(component),

@@ -3,16 +3,13 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.configuration.action.single.ActionFactory
 import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.AddAction
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
-import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
-import com.badoo.ribs.core.routing.configuration.action.multi.SaveInstanceStateAction
-import com.badoo.ribs.core.routing.configuration.action.single.NoOpAction
 import com.badoo.ribs.core.routing.configuration.action.single.RemoveAction
-import com.badoo.ribs.core.routing.configuration.action.single.SingleConfigurationAction
-import com.badoo.ribs.core.routing.configuration.action.multi.SleepAction
-import com.badoo.ribs.core.routing.configuration.action.multi.WakeUpAction
+import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionFactory
+import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionPair
 
 /**
  * Represents a command to change one or more [ConfigurationContext] elements.
@@ -21,57 +18,53 @@ import com.badoo.ribs.core.routing.configuration.action.multi.WakeUpAction
  * command needs to be executed on on a logical level.
  *
  * Associated actions that need to be executed (resulting in [RoutingAction] and
- * [Node] manipulations) are to be found in the associated [MultiConfigurationAction] or
- * [SingleConfigurationAction] implementations.
+ * [Node] manipulations) are to be found in the associated Actions created by [ActionFactory].
  */
 internal sealed class ConfigurationCommand<C : Parcelable> {
+    abstract val key: ConfigurationKey<C>
+    abstract val actionFactory: ReversibleActionFactory
 
-    sealed class MultiConfigurationCommand<C : Parcelable> : ConfigurationCommand<C>() {
-
-        abstract val action: MultiConfigurationAction<C>
-
-        class Sleep<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction<C> =
-                SleepAction()
-        }
-
-        class WakeUp<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction<C> =
-                WakeUpAction()
-        }
-
-        class SaveInstanceState<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction<C> =
-                SaveInstanceStateAction()
-        }
+    data class Add<C : Parcelable>(
+        override val key: ConfigurationKey<C>
+    ) : ConfigurationCommand<C>() {
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                forwardActionFactory = AddAction.Factory,
+                reverseActionFactory = RemoveAction.Factory
+            )
     }
 
-    sealed class SingleConfigurationCommand<C : Parcelable> : ConfigurationCommand<C>() {
-        abstract val key: ConfigurationKey
-        abstract val action: SingleConfigurationAction
+    data class Remove<C : Parcelable>(
+        override val key: ConfigurationKey<C>
+    ) : ConfigurationCommand<C>() {
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                forwardActionFactory = RemoveAction.Factory,
+                reverseActionFactory = AddAction.Factory
+            )
+    }
 
-        data class Add<C : Parcelable>(override val key: ConfigurationKey, val configuration: C) : SingleConfigurationCommand<C>() {
-            /**
-             * No additional action here, as [AddAction] is executed automatically
-             * during [ConfigurationContext.Unresolved.resolve],
-             */
-            override val action: SingleConfigurationAction =
-                NoOpAction
-        }
+    data class Activate<C : Parcelable>(
+        override val key: ConfigurationKey<C>
+    ) : ConfigurationCommand<C>() {
 
-        data class Activate<C : Parcelable>(override val key: ConfigurationKey) : SingleConfigurationCommand<C>() {
-            override val action: SingleConfigurationAction =
-                ActivateAction
-        }
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                nodeFilter = { it.viewAttachMode == Node.AttachMode.PARENT },
+                forwardActionFactory = ActivateAction.Factory,
+                reverseActionFactory = DeactivateAction.Factory
+            )
+    }
 
-        data class Deactivate<C : Parcelable>(override val key: ConfigurationKey) : SingleConfigurationCommand<C>() {
-            override val action: SingleConfigurationAction =
-                DeactivateAction
-        }
+    data class Deactivate<C : Parcelable>(
+        override val key: ConfigurationKey<C>
+    ) : ConfigurationCommand<C>() {
 
-        data class Remove<C : Parcelable>(override val key: ConfigurationKey) : SingleConfigurationCommand<C>() {
-            override val action: SingleConfigurationAction =
-                RemoveAction
-        }
+        override val actionFactory: ReversibleActionFactory =
+            ReversibleActionPair.Factory(
+                nodeFilter = { it.viewAttachMode == Node.AttachMode.PARENT },
+                forwardActionFactory = DeactivateAction.Factory,
+                reverseActionFactory = ActivateAction.Factory
+            )
     }
 }

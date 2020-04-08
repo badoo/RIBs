@@ -11,8 +11,8 @@ interface HelloWorldView : RibView,
     }
 
     data class ViewModel(
-        val titleText: Lexem,
-        val welcomeText: Lexem
+        val titleText: Text,
+        val welcomeText: Text
     )
 }
 ```
@@ -67,11 +67,29 @@ class HelloWorldInteractor(
     
     private val initialViewModel =
         HelloWorldView.ViewModel(
-            titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+            titleText = Text.Resource(R.string.hello_world_title, user.name()),
             welcomeText = config.welcomeMessage
         )
 }
 ```
+
+### HelloWorld
+```kotlin
+interface HelloWorld : Rib {
+
+    interface Dependency {
+        fun user(): User
+        fun config(): Config
+    }
+
+    data class Config {
+        val welcomeMessage: Text
+    }
+
+    // remainder the same
+}
+```
+
 ### HelloWorldModule
 ```kotlin
 @dagger.Module

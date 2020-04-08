@@ -1,12 +1,12 @@
 package com.badoo.ribs.core.routing.configuration.action.multi
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Global
+import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
  * Calls [ActivateAction] all elements with an [ActivationState] of [SLEEPING].
@@ -19,11 +19,25 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
      * @return the map of elements updated by [ActivateAction]
      */
     override fun execute(
-        pool: Map<ConfigurationKey, ConfigurationContext<C>>,
-        params: ActionExecutionParams<C>
-    ): Map<ConfigurationKey, ConfigurationContext.Resolved<C>> =
-        pool.invokeOn(SLEEPING, params) { foundByFilter ->
-            ActivateAction
-                .execute(foundByFilter, params)
+        state: WorkingState<C>,
+        params: TransactionExecutionParams<C>
+    ) {
+        state.pool.filterByActivationState(SLEEPING, params) { key, foundByFilter ->
+            val action = ActivateAction(
+                emitter = params.emitter,
+                item = foundByFilter,
+                key = key,
+                parentNode = params.parentNode,
+                actionableNodes = foundByFilter.nodes.map { it.node },
+                isBackStackOperation = false,
+                globalActivationLevel = params.globalActivationLevel
+            )
+            action.onBeforeTransition()
+            action.onTransition()
+            action.onFinish()
         }
+
+        params.emitter.onNext(Global.WakeUp())
+        params.emitter.onComplete()
+    }
 }

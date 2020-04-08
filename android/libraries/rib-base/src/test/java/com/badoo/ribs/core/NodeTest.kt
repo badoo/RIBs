@@ -56,7 +56,7 @@ class NodeTest {
     private lateinit var someViewGroup3: ViewGroup
     private lateinit var viewFactory: TestViewFactory
     private lateinit var router: Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>
-    private lateinit var interactor: Interactor<TestRouter.Configuration, TestRouter.Configuration, Nothing, TestView>
+    private lateinit var interactor: Interactor<TestView>
     private lateinit var child1: TestNode
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode
@@ -407,26 +407,21 @@ class NodeTest {
     }
 
     @Test
-    fun `attachToView() results in children added to target defined by Router`() {
-        val n1 = object : RandomOtherNode1 {}
-        val n2 = object : RandomOtherNode2 {}
-        val n3 = object : RandomOtherNode3 {}
-        val mocks = createAndAttachChildMocks(3, mutableListOf(n1, n2, n3))
+    fun `attachToView() results in children added to target defined by View`() {
+        val n1 = TestNode(identifier = object : RandomOtherNode1 {})
+        val n2 = TestNode(identifier = object : RandomOtherNode2 {})
+        val n3 = TestNode(identifier = object : RandomOtherNode3 {})
+        val testNodes = listOf(n1, n2, n3)
 
         whenever(view.getParentViewForChild(n1)).thenReturn(someViewGroup1)
         whenever(view.getParentViewForChild(n2)).thenReturn(someViewGroup2)
         whenever(view.getParentViewForChild(n3)).thenReturn(someViewGroup3)
 
         node.attachToView(parentViewGroup)
-
-        mocks.forEach {
-            node.attachChildView(it)
-            verify(it, never()).attachToView(parentViewGroup)
-        }
-
-        verify(mocks[0]).attachToView(someViewGroup1)
-        verify(mocks[1]).attachToView(someViewGroup2)
-        verify(mocks[2]).attachToView(someViewGroup3)
+        testNodes.forEach { node.attachChildView(it) }
+        assertEquals(someViewGroup1, n1.parentViewGroup)
+        assertEquals(someViewGroup2, n2.parentViewGroup)
+        assertEquals(someViewGroup3, n3.parentViewGroup)
     }
 
     @Test

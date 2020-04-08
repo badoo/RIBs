@@ -8,15 +8,16 @@ import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.compo
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.dialog.DialogLauncher
-import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
+import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
-import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
+import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
+import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem
-import com.badoo.ribs.example.rib.menu.builder.MenuBuilder
+import com.badoo.ribs.example.rib.menu.MenuBuilder
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay
@@ -27,6 +28,7 @@ import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter(
     savedInstanceState: Bundle?,
+    transitionHandler: TransitionHandler<Configuration>? = null,
     private val fooBarBuilder: FooBarBuilder,
     private val helloWorldBuilder: HelloWorldBuilder,
     private val dialogExampleBuilder: DialogExampleBuilder,
@@ -36,7 +38,8 @@ class SwitcherRouter(
     private val dialogToTestOverlay: DialogToTestOverlay
 ): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
     savedInstanceState = savedInstanceState,
-    initialConfiguration = Content.DialogsExample,
+    transitionHandler = transitionHandler,
+    initialConfiguration = Content.Foo,
     permanentParts = listOf(
         Permanent.Menu
     )

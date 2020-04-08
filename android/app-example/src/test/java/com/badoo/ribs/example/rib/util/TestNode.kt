@@ -12,7 +12,7 @@ class TestNode<V : RibView>(
     router: Router<*, *, *, *, V> = mock(),
     identifier: Rib = object : Rib {},
     viewFactory: ((ViewGroup) -> V?)? = mock(),
-    interactor: Interactor<*, *, *, V> = mock()
+    interactor: Interactor<V> = mock()
 ) : Node<V>(
     savedInstanceState = null,
     identifier = identifier,

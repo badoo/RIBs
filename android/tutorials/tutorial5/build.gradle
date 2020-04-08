@@ -1,0 +1,68 @@
+configureAndroidApp(project)
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.badoo.ribs.tutorials.tutorial5"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+
+dependencies {
+    implementation deps.external.kotlinStdlib
+
+    kapt deps.apt.daggerCompiler
+    compileOnly deps.apt.javax
+
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.design
+    implementation deps.android.percent
+
+    implementation project(":libraries:rib-android")
+
+    implementation deps.external.dagger
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
+    implementation deps.external.rxrelay2
+    implementation deps.external.rxandroid2
+
+    testImplementation deps.external.roboelectricBase
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockitoKotlin
+    testImplementation deps.test.assertj
+    testImplementation project(":libraries:rib-base-test")
+
+    debugImplementation project(":libraries:rib-base-test-activity")
+    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
+}
+
+repositories {
+    mavenCentral()
+}

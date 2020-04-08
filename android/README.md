@@ -52,7 +52,7 @@ Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions
 
 #### Addressing key issues
 - Tree structure is saved / restored automatically
-- Reduced boilerplate code for `Router` by using routing actions
+- Reduced boilerplate code for `Router` by using routing actions and declarative routing
 - Added back stack for routing with back stack operations (push, pop, replace, etc.)
 - Back stack is saved / restored automatically
 - Separated `View` lifecycle from logical `Node` lifecycle, which adds many new interesting possibilities (e.g. RIBs with business logic still alive in back stack, RIBs hosted in an AlertDialog)

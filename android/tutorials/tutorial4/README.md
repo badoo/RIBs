@@ -103,7 +103,7 @@ interface HelloWorld : Rib {
 
     // add this
     sealed class Input {
-        data class UpdateButtonText(val text: Lexem): Input()
+        data class UpdateButtonText(val text: Text): Input()
     }
 
     sealed class Output {
@@ -130,18 +130,18 @@ Let's use this input - add it to the constructor of our `Interactor` inside `Hel
 @Provides
 @JvmStatic
 internal fun interactor(
+    savedInstanceState: Bundle?,
     user: User,
     config: HelloWorld.Config,
     input: ObservableSource<HelloWorld.Input>, // add this
-    output: Consumer<HelloWorld.Output>,
-    router: HelloWorldRouter
+    output: Consumer<HelloWorld.Output>
 ): HelloWorldInteractor =
     HelloWorldInteractor(
+        savedInstanceState = savedInstanceState,
         user = user,
         config = config,
         input = input, // add this
-        output = output,
-        router = router
+        output = output
     )
 ```
 
@@ -153,8 +153,7 @@ class HelloWorldInteractor(
     private val user: User,
     private val config: HelloWorld.Config,
     private val input: ObservableSource<HelloWorld.Input>, // add this
-    private val output: Consumer<HelloWorld.Output>,
-    router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
+    private val output: Consumer<HelloWorld.Output>
 )
 ```
 
@@ -172,9 +171,9 @@ interface HelloWorldView : RibView,
     }
 
     data class ViewModel(
-        val titleText: Lexem,
-        val welcomeText: Lexem,
-        val buttonText: Lexem // add this
+        val titleText: Text,
+        val welcomeText: Text,
+        val buttonText: Text // add this
     )
 }
 ```
@@ -183,9 +182,9 @@ And in `HelloWorldViewImpl`:
 
 ```kotlin
 override fun accept(vm: ViewModel) {
-    title.text = vm.titleText.resolve(context)
-    welcome.text = vm.welcomeText.resolve(context)
-    button.text = vm.buttonText.resolve(context) // add this
+    title.text = vm.titleText.resolve(androidView.context)
+    welcome.text = vm.welcomeText.resolve(androidView.context)
+    button.text = vm.buttonText.resolve(androidView.context) // add this
 }
 ```
 
@@ -196,9 +195,9 @@ We can easily modify the initial one by adding the last line:
 ```kotlin
 view.accept(
     HelloWorldView.ViewModel(
-        titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+        titleText = Text.Resource(R.string.hello_world_title, user.name()),
         welcomeText = config.welcomeMessage,
-        buttonText = Lexem.Resource(R.string.hello_world_button_text)
+        buttonText = Text.Resource(R.string.hello_world_button_text)
     )
 )
 ```
@@ -225,14 +224,14 @@ viewLifecycle.startStop {
 Create `InputToViewModel` in the `mapper` package:
 
 ```kotlin
-package com.badoo.ribs.tutorials.tutorial5.rib.hello_world.mapper
+package com.badoo.ribs.tutorials.tutorial4.rib.hello_world.mapper
 
-import com.badoo.ribs.tutorials.tutorial5.R
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Input.UpdateButtonText
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.ViewModel
-import com.badoo.ribs.tutorials.tutorial5.util.Lexem
-import com.badoo.ribs.tutorials.tutorial5.util.User
+import com.badoo.ribs.android.Text
+import com.badoo.ribs.tutorials.tutorial4.R
+import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld
+import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld.Input.UpdateButtonText
+import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorldView.ViewModel
+import com.badoo.ribs.tutorials.tutorial4.util.User
 
 class InputToViewModel(
     private val user: User,
@@ -242,7 +241,7 @@ class InputToViewModel(
     override fun invoke(input: HelloWorld.Input): ViewModel? =
         when (input) {
             is UpdateButtonText -> ViewModel(
-                titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+                titleText = Text.Resource(R.string.hello_world_title, user.name()),
                 welcomeText = config.welcomeMessage,
                 buttonText = input.text // using the incoming data
             )
@@ -272,9 +271,9 @@ Two things worth mentioning here:
     private fun setInitialViewModel(view: HelloWorldView) {
         view.accept(
             HelloWorldView.ViewModel(
-                titleText = Lexem.Resource(R.string.hello_world_title, user.name()),
+                titleText = Text.Resource(R.string.hello_world_title, user.name()),
                 welcomeText = config.welcomeMessage,
-                buttonText = Lexem.Resource(R.string.hello_world_button_text)
+                buttonText = Text.Resource(R.string.hello_world_button_text)
             )
         )
     }
@@ -314,7 +313,7 @@ class GreetingsContainerInteractor(
         super.onAttach(ribLifecycle, savedInstanceState)
         helloWorldInputSource.accept(
             HelloWorld.Input.UpdateButtonText(
-                Lexem.Text("Woo hoo!")
+                Text.Plain("Woo hoo!")
             )
         )
     }
@@ -365,6 +364,6 @@ Congratulations! You can advance to the next one.
 - When satisfying `Output` and `Input` dependencies, we **always** want to do that directly in the parent:
     - By satisfying these dependencies, we create a connection between the place where we satisfy them and the RIB in question.
     - Having a certain RIB as a child is an implementation detail of the parent, that should be kept hidden to maintain flexibility.
-    - If we were to bubble up the dependency to a higher level level, we would expose this implementation detail. We would create a connection between the outside world and the implementation detail, making the immediate parent lose its ability to easily change it. This should be avoided at all costs.
+    - If we were to bubble up the dependency to a higher level, we would expose this implementation detail. We would create a connection between the outside world and the implementation detail, making the immediate parent lose its ability to easily change it. This should be avoided at all costs.
     - If the parent cannot handle an `Output` message directly, it can transform it to its own `Output` type, keeping the implementation detail hidden.
 

@@ -3,8 +3,9 @@ package com.badoo.ribs.core.routing.configuration.action.multi
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 
 /**
  * Calls saveInstanceState() on all Nodes associated with Resolved configurations in the pool
@@ -21,13 +22,16 @@ internal class SaveInstanceStateAction<C : Parcelable> : MultiConfigurationActio
      * @return the map of found elements with updated bundles
      */
     override fun execute(
-        pool: Map<ConfigurationKey, ConfigurationContext<C>>,
-        params: ActionExecutionParams<C>
-    ): Map<ConfigurationKey, Resolved<C>> {
-        return pool
+        state: WorkingState<C>,
+        params: TransactionExecutionParams<C>
+    ) {
+        val updatedElements = state.pool
             .filterValues { it is Resolved<C> }
             .mapValues { (_, value) ->
                 (value as Resolved<C>).saveInstanceState()
             }
+
+        params.emitter.onNext(Effect.Global.SaveInstanceState(updatedElements = updatedElements))
+        params.emitter.onComplete()
     }
 }

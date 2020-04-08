@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.dialog_example
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
+import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.operation.popBackStack
@@ -25,13 +26,12 @@ import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor(
     savedInstanceState: Bundle?,
-    router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
+    private val router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-) : Interactor<Configuration, Content, Overlay, DialogExampleView>(
+) : Interactor<DialogExampleView>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = null
 ) {
 
@@ -63,10 +63,10 @@ class DialogExampleInteractor(
 
     private fun initLazyDialog() {
         with(lazyDialog) {
-            title = "Lazy dialog title"
-            message = "Lazy dialog message"
+            title = Text.Plain("Lazy dialog title")
+            message = Text.Plain("Lazy dialog message")
             buttons {
-                neutral("Lazy neutral button", Dialog.Event.Neutral)
+                neutral(Text.Plain("Lazy neutral button"), Dialog.Event.Neutral)
             }
             cancellationPolicy = Cancellable(
                 event = Dialog.Event.Cancelled,

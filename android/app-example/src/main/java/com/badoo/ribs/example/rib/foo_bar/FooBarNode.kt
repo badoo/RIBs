@@ -7,7 +7,6 @@ import com.badoo.ribs.core.view.ViewPlugin
 
 class FooBarNode(
     viewFactory: ((ViewGroup) -> FooBarView?)?,
-    private val router: FooBarRouter,
     interactor: FooBarInteractor,
     savedInstanceState: Bundle?,
     viewPlugins: Set<ViewPlugin>
@@ -15,7 +14,7 @@ class FooBarNode(
     savedInstanceState = savedInstanceState,
     identifier = object : FooBar {},
     viewFactory = viewFactory,
-    router = router,
+    router = null,
     interactor = interactor,
     viewPlugins = viewPlugins
 ), FooBar.Workflow {

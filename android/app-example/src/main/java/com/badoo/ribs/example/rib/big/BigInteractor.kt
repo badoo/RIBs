@@ -1,19 +1,14 @@
 package com.badoo.ribs.example.rib.big
 
-import androidx.lifecycle.Lifecycle
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Router
-import com.badoo.ribs.example.rib.big.BigRouter.Configuration
-import com.badoo.ribs.example.rib.big.BigRouter.Configuration.Content
-import com.badoo.ribs.example.rib.big.BigRouter.Configuration.Overlay
 
 class BigInteractor(
-    savedInstanceState: Bundle?,
-    router: Router<Configuration, *, Content, Overlay, BigView>
-) : Interactor<Configuration, Content, Overlay, BigView>(
+    private val router: BigRouter,
+    savedInstanceState: Bundle?
+) : Interactor<BigView>(
     savedInstanceState = savedInstanceState,
-    router = router,
     disposables = null
 ) {
 

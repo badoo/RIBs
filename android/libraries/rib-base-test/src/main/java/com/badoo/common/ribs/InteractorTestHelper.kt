@@ -18,7 +18,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 
 class InteractorTestHelper<View : RibView>(
-    val interactor: Interactor<*, *, *, View>,
+    val interactor: Interactor<View>,
     val viewFactory: ((ViewGroup) -> View?)? = null,
     router: Router<*, *, *, *, View>? = null
 ) {
@@ -72,7 +72,7 @@ class InteractorTestHelper<View : RibView>(
 
     companion object {
         inline fun <reified View, ViewEvent> create(
-            interactor: Interactor<*, *, *, View>,
+            interactor: Interactor<View>,
             viewEventRelay: Relay<ViewEvent>,
             router: Router<*, *, *, *, View>? = null
         ): InteractorTestHelper<View> where View : RibView, View : ObservableSource<ViewEvent> {
@@ -95,7 +95,11 @@ private object TestIdentifier : Rib
 
 private class TestRouter<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     initialConfig: Content
-) : Router<C, Permanent, Content, Overlay, V>(null, initialConfig) {
+) : Router<C, Permanent, Content, Overlay, V>(
+    savedInstanceState = null,
+    transitionHandler = null,
+    initialConfiguration = initialConfig
+) {
 
     var resolveConfiguration: (C) -> RoutingAction<V> = { RoutingAction.noop() }
 

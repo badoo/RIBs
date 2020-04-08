@@ -3,25 +3,44 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Attaches [Node]s to a parentNode without their views
  */
-internal object AddAction : ResolvedSingleConfigurationAction() {
+internal class AddAction<C : Parcelable>(
+    private val emitter: EffectEmitter<C>,
+    private val key: ConfigurationKey<C>,
+    private var item: Resolved<C>,
+    private val parentNode: Node<*>
+) : Action<C> {
 
-    override fun <C : Parcelable> execute(item: Resolved<C>, params: ActionExecutionParams<C>): Resolved<C> {
-        val (_, parentNode, _) = params
-        return execute(item, parentNode)
+    object Factory: ActionFactory {
+        override fun <C : Parcelable> create(
+            params: ActionExecutionParams<C>,
+            actionableNodes: List<Node<*>>
+        ): Action<C> {
+            return AddAction(
+                emitter = params.transactionExecutionParams.emitter,
+                key = params.key,
+                item = params.item,
+                parentNode = params.transactionExecutionParams.parentNode
+            )
+        }
     }
 
-    /**
-     * Convenience method so that Add can be called only with only the knowledge of parentNode too
-     */
-    fun <C : Parcelable> execute(item: Resolved<C>, parentNode: Node<*>): Resolved<C> {
-        parentNode.attachNodes(item.nodes)
+    override var canExecute: Boolean =
+        true
 
-        return item
+    override fun onBeforeTransition() {
+        parentNode.attachNodes(item.nodes)
+        emitter.onNext(
+            Effect.Individual.Added(key, item)
+        )
     }
 
     private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>) {
@@ -29,4 +48,16 @@ internal object AddAction : ResolvedSingleConfigurationAction() {
             attachChildNode(it.node)
         }
     }
+
+    override fun onTransition(forceExecute: Boolean) {
+        emitter.onNext(
+            Effect.Individual.PendingRemovalFalse(key)
+        )
+    }
+
+    override fun onFinish(forceExecute: Boolean) {
+    }
+
+    override val transitionElements: List<TransitionElement<C>> =
+        emptyList()
 }

@@ -10,7 +10,6 @@ interface RoutingAction<V : RibView> {
         emptyList()
 
     fun execute() {
-
     }
 
     fun cleanup() {

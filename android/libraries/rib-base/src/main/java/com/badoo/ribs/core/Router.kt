@@ -4,14 +4,22 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.SaveInstanceState
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.Transaction
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.toCommands
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
@@ -83,34 +91,6 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     fun acceptOperation(backStackOperation: BackStackOperation<C>) {
         backStackFeature.accept(BackStackFeature.Operation.ExtendedOperation(backStackOperation))
-    }
-
-    fun push(configuration: Content) {
-        backStackFeature.accept(Push(configuration))
-    }
-
-    fun pushOverlay(configuration: Overlay) {
-        backStackFeature.accept(PushOverlay(configuration))
-    }
-
-    fun newRoot(configuration: Content) {
-        backStackFeature.accept(NewRoot(configuration))
-    }
-
-    fun popBackStack(): Boolean =
-        if (backStackFeature.state.canPop) {
-            backStackFeature.accept(Pop())
-            true
-        } else {
-            false
-        }
-
-    fun singleTop(configuration: Content) {
-        backStackFeature.accept(SingleTop(configuration))
-    }
-
-    fun newRoot(configuration: Content) {
-        backStackFeature.accept(NewRoot(configuration))
     }
 
     internal fun add(configurationKey: ConfigurationKey<C>) {

@@ -1,6 +1,7 @@
 package com.badoo.ribs.android.lifecycle
 
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
+import com.badoo.ribs.core.routing.configuration.feature.operation.popBackStack
 import com.badoo.ribs.test.util.runOnMainSync
 
 class PushTwoPopOneStopBetweenPushesTest : PushTwoPopOneStopTest() {

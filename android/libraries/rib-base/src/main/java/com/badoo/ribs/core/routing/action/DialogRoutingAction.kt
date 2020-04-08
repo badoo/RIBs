@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Node.AttachMode
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.configuration.feature.operation.popBackStack
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher

@@ -1,5 +1,7 @@
 package com.badoo.ribs.example.rib.switcher
 
+import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
+import com.badoo.ribs.core.routing.configuration.feature.operation.replace
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.blocker.builder.BlockerBuilder
@@ -8,7 +10,6 @@ import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBarView
 import com.badoo.ribs.example.rib.foo_bar.builder.FooBarBuilder
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
-import com.badoo.ribs.example.rib.hello_world.HelloWorldView
 import com.badoo.ribs.example.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.Dialogs

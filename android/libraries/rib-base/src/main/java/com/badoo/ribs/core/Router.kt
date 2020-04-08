@@ -9,12 +9,8 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfi
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.view.RibView
 
@@ -81,35 +77,11 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         binder.dispose()
     }
 
-    fun replace(configuration: Content) {
-        backStackFeature.accept(Replace(configuration))
+    fun acceptOperation(backStackOperation: BackStackOperation<C>) {
+        backStackFeature.accept(BackStackFeature.Operation.ExtendedOperation(backStackOperation))
     }
 
-    fun push(configuration: Content) {
-        backStackFeature.accept(Push(configuration))
+    internal fun acceptBackStack(acceptWish: BackStackFeature<C>.() -> Unit) {
+        backStackFeature.acceptWish()
     }
-
-    fun pushOverlay(configuration: Overlay) {
-        backStackFeature.accept(PushOverlay(configuration))
-    }
-
-    fun newRoot(configuration: Content) {
-        backStackFeature.accept(NewRoot(configuration))
-    }
-
-    fun popBackStack(): Boolean =
-        if (backStackFeature.state.canPop) {
-            backStackFeature.accept(Pop())
-            true
-        } else {
-            false
-        }
-
-    fun popOverlay(): Boolean =
-        if (backStackFeature.state.canPopOverlay) {
-            backStackFeature.accept(Pop())
-            true
-        } else {
-            false
-        }
 }

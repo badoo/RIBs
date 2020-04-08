@@ -8,11 +8,9 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.ExtendedOperation
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
+import com.badoo.ribs.core.routing.configuration.feature.operation.NewRoot
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
@@ -35,7 +33,7 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
 internal class BackStackFeature<C : Parcelable>(
     initialConfiguration: C,
     timeCapsule: TimeCapsule<BackStackFeatureState<C>>
-): ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
+) : ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
     initialState = timeCapsule.initialState(),
     bootstrapper = BootstrapperImpl(
         timeCapsule.initialState(),
@@ -55,11 +53,7 @@ internal class BackStackFeature<C : Parcelable>(
      * The set of back stack operations this [BackStackFeature] supports.
      */
     sealed class Operation<C : Parcelable> {
-        data class Replace<C : Parcelable>(val configuration: C) : Operation<C>()
-        data class Push<C : Parcelable>(val configuration: C) : Operation<C>()
-        data class PushOverlay<C : Parcelable>(val configuration: C) : Operation<C>()
-        data class NewRoot<C : Parcelable>(val configuration: C) : Operation<C>()
-        class Pop<C : Parcelable> : Operation<C>()
+        data class ExtendedOperation<C : Parcelable>(val backStackOperation: BackStackOperation<C>) : Operation<C>()
     }
 
     /**
@@ -69,32 +63,9 @@ internal class BackStackFeature<C : Parcelable>(
         // Consider adding oldState to NewsPublisher
         abstract val oldState: BackStackFeatureState<C>
 
-        data class NewRoot<C : Parcelable>(
+        data class ExtendOperationApplied<C : Parcelable>(
             override val oldState: BackStackFeatureState<C>,
-            val configuration: C
-        ) : Effect<C>()
-
-        data class Replace<C : Parcelable>(
-            override val oldState: BackStackFeatureState<C>,
-            val configuration: C
-        ) : Effect<C>()
-
-        data class Push<C : Parcelable>(
-            override val oldState: BackStackFeatureState<C>,
-            val configuration: C
-        ) : Effect<C>()
-
-        data class PushOverlay<C : Parcelable>(
-            override val oldState: BackStackFeatureState<C>,
-            val configuration: C
-        ) : Effect<C>()
-
-        data class PopOverlay<C : Parcelable>(
-            override val oldState: BackStackFeatureState<C>
-        ) : Effect<C>()
-
-        data class PopContent<C : Parcelable>(
-            override val oldState: BackStackFeatureState<C>
+            val backStackOperation: BackStackOperation<C>
         ) : Effect<C>()
     }
 
@@ -119,34 +90,8 @@ internal class BackStackFeature<C : Parcelable>(
         @SuppressWarnings("LongMethod")
         override fun invoke(state: BackStackFeatureState<C>, op: Operation<C>): Observable<out Effect<C>> =
             when (op) {
-                is Replace -> when {
-                    op.configuration != state.current?.configuration -> {
-                        just(Effect.Replace(state, op.configuration))
-                    }
-                    else -> empty()
-                }
-
-                is Push -> when {
-                    op.configuration != state.current?.configuration ->
-                        just(Effect.Push(state, op.configuration))
-                    else -> empty()
-                }
-
-                is PushOverlay -> when {
-                    state.backStack.isNotEmpty() && op.configuration != state.currentOverlay ->
-                        just(Effect.PushOverlay(state, op.configuration))
-                    else -> empty()
-                }
-
-                is NewRoot -> when {
-                    state.backStack.size != 1 || state.backStack.first().configuration != op.configuration ->
-                        just(Effect.NewRoot(state, op.configuration))
-                    else -> empty()
-                }
-
-                is Pop -> when {
-                    state.canPopOverlay -> just(Effect.PopOverlay(state))
-                    state.canPopContent -> just(Effect.PopContent(state))
+                is ExtendedOperation -> when {
+                    op.backStackOperation.isApplicable(state.backStack) -> just(Effect.ExtendOperationApplied(state, op.backStackOperation))
                     else -> empty()
                 }
             }
@@ -160,36 +105,10 @@ internal class BackStackFeature<C : Parcelable>(
         override fun invoke(state: BackStackFeatureState<C>, effect: Effect<C>): BackStackFeatureState<C> =
             state.apply(effect)
 
-        private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C>  = when (effect) {
-            is Effect.NewRoot -> copy(
-                backStack = listOf(BackStackElement(effect.configuration))
-            )
-            is Effect.Replace -> copy(
-                backStack = backStack.dropLast(1) + BackStackElement(effect.configuration)
-            )
-            is Effect.Push -> copy(
-                backStack = backStack + BackStackElement(effect.configuration)
-            )
-            is Effect.PushOverlay -> copy(
-                backStack = backStack.replaceLastWith(
-                    backStack.last().copy(
-                        overlays = backStack.last().overlays + effect.configuration
-                    )
-                )
-            )
-            is Effect.PopOverlay -> copy(
-                backStack = backStack.replaceLastWith(
-                    backStack.last().copy(
-                        overlays = backStack.last().overlays.dropLast(1)
-                    )
-                )
-            )
-            is Effect.PopContent -> copy(
-                backStack = backStack.dropLast(1)
+        private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C> = when (effect) {
+            is Effect.ExtendOperationApplied -> copy(
+                backStack = effect.backStackOperation.modifyStack(backStack)
             )
         }
-
-        private fun List<BackStackElement<C>>.replaceLastWith(replacement: BackStackElement<C>): List<BackStackElement<C>> =
-            toMutableList().apply { set(lastIndex, replacement) }
     }
 }

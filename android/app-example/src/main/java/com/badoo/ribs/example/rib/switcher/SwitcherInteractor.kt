@@ -5,6 +5,9 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.configuration.feature.operation.popBackStack
+import com.badoo.ribs.core.routing.configuration.feature.operation.push
+import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.example.rib.blocker.Blocker
 import com.badoo.ribs.example.rib.menu.Menu

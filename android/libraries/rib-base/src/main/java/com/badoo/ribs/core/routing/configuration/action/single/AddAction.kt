@@ -43,9 +43,9 @@ internal class AddAction<C : Parcelable>(
         )
     }
 
-    private fun Node<*>.attachNodes(nodes: List<Node.Descriptor>) {
+    private fun Node<*>.attachNodes(nodes: List<Node<*>>) {
         nodes.forEach {
-            attachChildNode(it.node)
+            attachChildNode(it)
         }
     }
 

@@ -1,23 +1,22 @@
 package com.badoo.ribs.template.leaf.foo_bar
 
-import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
 class FooBarNode internal constructor(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature,
     private val interactor: FooBarInteractor
 ) : Node<FooBarView>(
-    savedInstanceState = savedInstanceState,
-    identifier = object : FooBar {},
+    buildParams = buildParams,
     viewFactory = viewFactory,
     router = null,
     interactor = interactor

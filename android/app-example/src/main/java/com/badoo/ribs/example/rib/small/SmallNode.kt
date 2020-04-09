@@ -1,17 +1,16 @@
 package com.badoo.ribs.example.rib.small
 
-import android.os.Bundle
 import android.view.ViewGroup
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 
 class SmallNode(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<Nothing?>,
     viewFactory: ((ViewGroup) -> SmallView?)?,
     private val router: SmallRouter,
     private val interactor: SmallInteractor
 ) : Node<SmallView>(
-    savedInstanceState = savedInstanceState,
-    identifier = object : Small {},
+    buildParams = buildParams,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor

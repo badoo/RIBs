@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.small.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.big.Big
 import com.badoo.ribs.example.rib.portal_overlay_test.PortalOverlayTest
 import com.badoo.ribs.example.rib.small.Small
@@ -20,8 +20,8 @@ internal interface SmallComponent :
     interface Factory {
         fun create(
             dependency: Small.Dependency,
-            @BindsInstance customisation: Small.Customisation,
-            @BindsInstance savedInstanceState: Bundle?
+            @BindsInstance buildParams: BuildParams<Nothing?>,
+            @BindsInstance customisation: Small.Customisation
         ): SmallComponent
     }
 

@@ -1,43 +1,45 @@
 package com.badoo.ribs.template.leaf.foo_bar
 
-import android.os.Bundle
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : Builder<FooBar.Dependency>() {
+) : SimpleBuilder<FooBar.Dependency, FooBarNode>(
+    rib = object : FooBar {}
+) {
 
     override val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 
-    fun build(savedInstanceState: Bundle?): FooBarNode {
+    override fun build(buildParams: BuildParams<Nothing?>): FooBarNode {
         val customisation = dependency.getOrDefault(FooBar.Customisation())
         val feature = FooBarFeature()
-        val interactor = createInteractor(savedInstanceState, dependency, feature)
+        val interactor = createInteractor(buildParams, dependency, feature)
 
         return FooBarNode(
-            savedInstanceState,
-            customisation.viewFactory(null),
-            dependency.fooBarInput(),
-            dependency.fooBarOutput(),
-            feature,
-            interactor
+            buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null),
+            input = dependency.fooBarInput(),
+            output = dependency.fooBarOutput(),
+            feature = feature,
+            interactor = interactor
         )
     }
 
     private fun createInteractor(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         dependency: FooBar.Dependency,
         feature: FooBarFeature
     ) =
         FooBarInteractor(
-            savedInstanceState,
-            dependency.fooBarInput(),
-            dependency.fooBarOutput(),
-            feature
+            buildParams = buildParams,
+            input = dependency.fooBarInput(),
+            output = dependency.fooBarOutput(),
+            feature = feature
         )
 }

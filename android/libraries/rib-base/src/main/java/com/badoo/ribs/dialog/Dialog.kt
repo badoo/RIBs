@@ -2,7 +2,11 @@ package com.badoo.ribs.dialog
 
 import android.os.Bundle
 import com.badoo.ribs.android.Text
+import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.NodeFactory
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
@@ -15,7 +19,7 @@ abstract class Dialog<T : Any> private constructor(
     var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
-    private var ribFactory: ((Bundle?) -> Node<*>)? = null
+    private var nodeFactory: NodeFactory? = null
     internal var rib: Node<*>? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
@@ -27,8 +31,8 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun ribFactory(ribFactory: (Bundle?) -> Node<*>) {
-        this.ribFactory = ribFactory
+    fun nodeFactory(nodeFactory: NodeFactory) {
+        this.nodeFactory = nodeFactory
     }
 
     fun buttons(factory: ButtonsConfig<T>.() -> Unit) {
@@ -69,10 +73,24 @@ abstract class Dialog<T : Any> private constructor(
         events.accept(event)
     }
 
-    fun buildNodes(bundles: List<Bundle?>): List<Node<*>> =
-        ribFactory?.let { factory ->
+    fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
+        nodeFactory?.let { factory ->
+            val clientParams = BuildContext(
+                /**
+                 * RIBs inside dialogs behaved like Root nodes so far in that they were
+                 * not added as a child of any other Node.
+                 * Using [AncestryInfo.Child.anchor] it's now also possible to change this,
+                 * and rather add the RIB inside the dialog to the parent, if removal is also guaranteed.
+                 * A benefit of this would be back press and lifecycle propagation.
+                 * Not entirely sure it is needed. To be reconsidered later.
+                 */
+                ancestryInfo = ancestryInfo,
+                attachMode = AttachMode.EXTERNAL,
+                savedInstanceState = bundles.firstOrNull()
+            )
+
             listOf(
-                factory.invoke(bundles.firstOrNull()).also {
+                factory.invoke(clientParams).also {
                     rib = it
                 }
             )

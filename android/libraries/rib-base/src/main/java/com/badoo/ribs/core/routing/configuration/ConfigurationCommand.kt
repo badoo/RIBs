@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.action.single.ActionFactory
@@ -50,7 +51,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
-                nodeFilter = { it.viewAttachMode == Node.AttachMode.PARENT },
+                nodeFilter = { it.attachMode == AttachMode.PARENT },
                 forwardActionFactory = ActivateAction.Factory,
                 reverseActionFactory = DeactivateAction.Factory
             )
@@ -62,7 +63,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
-                nodeFilter = { it.viewAttachMode == Node.AttachMode.PARENT },
+                nodeFilter = { it.attachMode == AttachMode.PARENT },
                 forwardActionFactory = DeactivateAction.Factory,
                 reverseActionFactory = ActivateAction.Factory
             )

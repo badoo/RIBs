@@ -10,6 +10,7 @@ import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.example.R
@@ -36,7 +37,7 @@ class HelloWorldTestDeferred {
             override fun helloWorldOutput(): Consumer<HelloWorld.Output> = Consumer {}
             override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
             override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
-        }).build(savedInstanceState)
+        }).build(root(savedInstanceState))
 
     @Test
     fun testTextDisplayed() {

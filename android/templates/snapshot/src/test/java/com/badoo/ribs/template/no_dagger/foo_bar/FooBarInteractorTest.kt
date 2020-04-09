@@ -1,5 +1,6 @@
 package com.badoo.ribs.template.no_dagger.foo_bar
 
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.no_dagger.foo_bar.feature.FooBarFeature
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.ObservableSource
@@ -19,7 +20,7 @@ class FooBarInteractorTest {
     @Before
     fun setup() {
         interactor = FooBarInteractor(
-            savedInstanceState = null,
+            buildParams = BuildParams.Empty(),
             input = input,
             output = output,
             feature = feature,

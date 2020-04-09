@@ -1,30 +1,34 @@
 package com.badoo.ribs.test.util.ribs.child.builder
 
-import android.os.Bundle
 import android.view.ViewGroup
+import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildInteractor
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter
 import com.badoo.ribs.test.util.ribs.child.TestChildView
 import com.badoo.ribs.test.util.ribs.child.TestChildViewImpl
-import com.badoo.ribs.test.util.ribs.root.TestRoot
 
-class TestChildBuilder {
+class TestChildBuilder : SimpleBuilder<Nothing?, TestNode<TestChildView>>(
+    rib = object : Rib {}
+) {
 
-    fun build(savedInstanceState: Bundle?): TestNode<TestChildView> {
-        val router = TestChildRouter(savedInstanceState)
+    override val dependency: Nothing? = null
+
+    override fun build(buildParams: BuildParams<Nothing?>): TestNode<TestChildView> {
+        val router = TestChildRouter(BuildParams.Empty())
 
         return TestNode(
-            savedInstanceState = savedInstanceState,
-            identifier = object: TestRoot { },
+            buildParams = buildParams,
             viewFactory = object : ViewFactory<Nothing?, TestChildView> {
                 override fun invoke(deps: Nothing?): (ViewGroup) -> TestChildView = {
                     TestChildViewImpl(it.context)
                 }
             },
             router = router,
-            interactor = TestChildInteractor(savedInstanceState, router)
+            interactor = TestChildInteractor(buildParams)
         )
     }
 }

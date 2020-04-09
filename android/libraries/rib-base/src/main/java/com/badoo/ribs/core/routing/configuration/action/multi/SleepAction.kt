@@ -30,7 +30,7 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
                 item = configurationContext,
                 key = key,
                 parentNode = params.parentNode,
-                actionableNodes = configurationContext.nodes.map { it.node },
+                actionableNodes = configurationContext.nodes,
                 isBackStackOperation = false,
                 targetActivationState = SLEEPING
             )

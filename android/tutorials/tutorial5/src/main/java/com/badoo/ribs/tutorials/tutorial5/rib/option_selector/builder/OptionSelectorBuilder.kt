@@ -1,20 +1,22 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.option_selector.builder
 
-import android.os.Bundle
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView
 
 class OptionSelectorBuilder(
     override val dependency: OptionSelector.Dependency
-) : Builder<OptionSelector.Dependency>() {
+) : SimpleBuilder<OptionSelector.Dependency, Node<OptionSelectorView>>(
+    rib = object : OptionSelector {}
+) {
 
-    fun build(savedInstanceState: Bundle?): Node<OptionSelectorView> =
+    override fun build(buildParams: BuildParams<Nothing?>): Node<OptionSelectorView> =
         DaggerOptionSelectorComponent
             .factory()
             .create(
-                savedInstanceState = savedInstanceState,
+                buildParams = buildParams,
                 dependency = dependency,
                 customisation = OptionSelector.Customisation()
             )

@@ -18,6 +18,9 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
+import com.badoo.ribs.core.routing.configuration.feature.operation.PopBackStackOperation
+import com.badoo.ribs.core.routing.configuration.feature.operation.canPop
+import com.badoo.ribs.core.routing.configuration.feature.operation.canPopOverlay
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.view.RibView
@@ -125,11 +128,22 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         )
     }
 
+    fun popBackStack(): Boolean =
+        if (backStackFeature.state.backStack.canPop) {
+            acceptOperation(PopBackStackOperation())
+            true
+        } else {
+            false
+        }
+
+    fun popOverlay(): Boolean =
+        if (backStackFeature.state.backStack.canPopOverlay) {
+            acceptOperation(PopBackStackOperation())
+            true
+        } else {
+            false
+        }
+
     internal fun getNodes(configurationKey: ConfigurationKey<C>) =
         (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes?.map { it.node }
-
-
-    internal fun acceptBackStack(acceptWish: BackStackFeature<C>.() -> Unit) {
-        backStackFeature.acceptWish()
-    }
 }

@@ -25,8 +25,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
-import com.badoo.ribs.core.routing.configuration.feature.operation.popBackStack
-import com.badoo.ribs.core.routing.configuration.feature.operation.popOverlay
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewPlugin

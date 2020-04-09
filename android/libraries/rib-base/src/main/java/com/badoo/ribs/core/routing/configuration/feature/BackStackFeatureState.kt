@@ -10,18 +10,6 @@ internal data class BackStackFeatureState<C : Parcelable>(
 
     val current: BackStackElement<C>?
         get() = backStack.lastOrNull()
-
-    val currentOverlay: C?
-        get() = current?.overlays?.lastOrNull()
-
-    val canPopOverlay: Boolean
-        get() = backStack.lastOrNull()?.overlays?.isNotEmpty() == true
-
-    val canPopContent: Boolean
-        get() = backStack.size > 1
-
-    val canPop: Boolean
-        get() = canPopContent || canPopOverlay
 }
 
 @Parcelize

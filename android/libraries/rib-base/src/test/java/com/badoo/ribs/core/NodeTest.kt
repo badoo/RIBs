@@ -1,4 +1,3 @@
-
 package com.badoo.ribs.core
 
 import android.os.Bundle
@@ -15,8 +14,6 @@ import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.operation.popBackStack
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
@@ -116,7 +113,6 @@ class NodeTest {
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
-
 
     private fun attachToViewAlongWithChildren() {
         node.attachToView(parentViewGroup)
@@ -309,9 +305,6 @@ class NodeTest {
         whenever(interactor.handleBackPress()).thenReturn(false)
 
         node.handleBackPress()
-
-        whenever(router.acceptBackStack(any())).thenAnswer { (it.arguments.first() as BackStackFeature<*>.() -> Unit).invoke(mock()) }
-
         verify(router).popBackStack()
     }
 

@@ -7,15 +7,14 @@ import dagger.BindsInstance
 
 @FooBarScope
 @dagger.Component(
-    modules = [FooBarModule::class],
-    dependencies = [FooBar.Dependency::class]
+    modules = [FooBarModule::class]
 )
 internal interface FooBarComponent {
 
     @dagger.Component.Factory
     interface Factory {
         fun create(
-            dependency: FooBar.Dependency,
+            @BindsInstance dependency: FooBar.Dependency,
             @BindsInstance customisation: FooBar.Customisation,
             @BindsInstance buildParams: BuildParams<Nothing?>
         ): FooBarComponent

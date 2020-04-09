@@ -36,8 +36,8 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildParams: BuildParams<Nothing?>,
         dependency: FooBar.Dependency,
+        buildParams: BuildParams<Nothing?>,
         router: FooBarRouter,
         feature: FooBarFeature
     ): FooBarInteractor =
@@ -53,11 +53,11 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
+        dependency: FooBar.Dependency,
         buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,
-        dependency: FooBar.Dependency,
         feature: FooBarFeature
     ) : FooBarNode = FooBarNode(
         buildParams = buildParams,

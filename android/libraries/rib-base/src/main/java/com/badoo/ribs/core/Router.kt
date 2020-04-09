@@ -147,7 +147,4 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         } else {
             false
         }
-
-    internal fun getNodes(configurationKey: ConfigurationKey<C>) =
-        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes?.map { it.node }
 }

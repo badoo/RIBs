@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.rib.switcher
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.core.Interactor
@@ -19,11 +19,11 @@ import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import io.reactivex.functions.Consumer
 
 class SwitcherInteractor(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<Nothing?>,
     private val router: Router<Configuration, Permanent, Content, Overlay, SwitcherView>,
     private val dialogToTestOverlay: DialogToTestOverlay
 ) : Interactor<SwitcherView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = null
 ) {
 

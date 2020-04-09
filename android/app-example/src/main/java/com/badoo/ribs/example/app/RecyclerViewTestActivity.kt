@@ -18,6 +18,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
@@ -126,5 +127,5 @@ class RecyclerViewTestActivity : RibActivity() {
                         FrameLayout.LayoutParams.WRAP_CONTENT
                     )
             }
-        ).build(savedInstanceState)
+        ).build(BuildContext.root(savedInstanceState))
 }

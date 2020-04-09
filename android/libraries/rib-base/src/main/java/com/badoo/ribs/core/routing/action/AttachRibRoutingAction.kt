@@ -1,23 +1,30 @@
 package com.badoo.ribs.core.routing.action
 
 import android.os.Bundle
+import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.NodeFactory
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 
 open class AttachRibRoutingAction<V : RibView>(
-    private val builder: (savedInstanceState: Bundle?) -> Node<*>
+    private val nodeFactory: NodeFactory
 ) : RoutingAction<V> {
 
-    override fun buildNodes(bundles: List<Bundle?>): List<Node.Descriptor> =
+    override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         listOf(
-            Node.Descriptor(
-                node = builder.invoke(bundles.firstOrNull()),
-                viewAttachMode = Node.AttachMode.PARENT
+            nodeFactory.invoke(
+                BuildContext(
+                    ancestryInfo = ancestryInfo,
+                    attachMode = AttachMode.PARENT,
+                    savedInstanceState = bundles.firstOrNull()
+                )
             )
         )
 
     companion object {
-        fun <V : RibView> attach(builder: (savedInstanceState: Bundle?) -> Node<*>): RoutingAction<V> =
-            AttachRibRoutingAction(builder)
+        fun <V : RibView> attach(nodeFactory: NodeFactory): RoutingAction<V> =
+            AttachRibRoutingAction(nodeFactory)
     }
 }

@@ -1,14 +1,14 @@
 package com.badoo.ribs.core.helper
 
-import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
-    savedInstanceState: Bundle? = null,
+    buildParams: BuildParams<Nothing?> = testBuildParams(),
     initialConfiguration: Configuration = Configuration.C1,
     permanentParts: List<Nothing> = emptyList(),
     private val routingActionForC1: RoutingAction<TestView> = mock(),
@@ -21,7 +21,7 @@ class TestRouter(
     private val routingActionForO2: RoutingAction<TestView> = mock(),
     private val routingActionForO3: RoutingAction<TestView> = mock()
 ) : Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     initialConfiguration = initialConfiguration,
     permanentParts = permanentParts
 ) {

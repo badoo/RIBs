@@ -1,12 +1,12 @@
 package com.badoo.ribs.android.recyclerview
 
-import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration.Content.Default
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.core.view.RibView
@@ -14,11 +14,11 @@ import kotlinx.android.parcel.Parcelize
 import java.util.UUID
 
 internal class RecyclerViewHostRouter<T : Parcelable>(
-    savedInstanceState: Bundle? = null,
+    buildParams: BuildParams<Nothing?>,
     private val feature: RecyclerViewHostFeature<T>,
     private val ribResolver: RecyclerViewRibResolver<T>
 ): Router<Configuration, Nothing, Content, Nothing, RibView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     initialConfiguration = Default,
     permanentParts = emptyList()
 ) {

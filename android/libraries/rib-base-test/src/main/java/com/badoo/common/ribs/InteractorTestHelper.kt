@@ -7,6 +7,7 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.Relay
@@ -16,6 +17,8 @@ import kotlinx.android.parcel.Parcelize
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
+
+private val buildParams = BuildParams.Empty()
 
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<View>,
@@ -27,8 +30,7 @@ class InteractorTestHelper<View : RibView>(
 
     var nodeCreator: () -> Node<View> = {
         Node(
-            savedInstanceState = null,
-            identifier = TestIdentifier,
+            buildParams = buildParams,
             viewFactory = viewFactory,
             router = this.router,
             interactor = interactor
@@ -96,7 +98,7 @@ private object TestIdentifier : Rib
 private class TestRouter<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     initialConfig: Content
 ) : Router<C, Permanent, Content, Overlay, V>(
-    savedInstanceState = null,
+    buildParams = buildParams,
     transitionHandler = null,
     initialConfiguration = initialConfig
 ) {

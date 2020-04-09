@@ -1,12 +1,11 @@
 package com.badoo.ribs.test.util.ribs
 
-import android.os.Bundle
-import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.dialog.Dialog
 
 
 class TestRibDialog(
-    builder: (Bundle?) -> Node<*>
+    nodeFactory: NodeFactory
 ) : Dialog<Dialog.Event>({
-    ribFactory(builder)
+    nodeFactory(nodeFactory = nodeFactory)
 })

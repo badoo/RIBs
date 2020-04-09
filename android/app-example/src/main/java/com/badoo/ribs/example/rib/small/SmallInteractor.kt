@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.small
 
-import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.portal.Portal
@@ -14,11 +14,11 @@ import com.badoo.ribs.example.rib.small.SmallView.ViewModel
 import io.reactivex.functions.Consumer
 
 class SmallInteractor(
+    buildParams: BuildParams<Nothing?>,
     portal: Portal.OtherSide,
-    savedInstanceState: Bundle?,
     private val router: Router<Configuration, *, Content, Nothing, SmallView>
 ) : Interactor<SmallView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = null
 ) {
     override fun onViewCreated(view: SmallView, viewLifecycle: Lifecycle) {

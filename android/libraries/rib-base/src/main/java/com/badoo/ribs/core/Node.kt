@@ -24,6 +24,9 @@ import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import com.badoo.ribs.core.Rib.Identifier
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
@@ -41,8 +44,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  **/
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
-    savedInstanceState: Bundle?,
-    open val identifier: Rib,
+    buildParams: BuildParams<*>,
     private val viewFactory: ((ViewGroup) -> V?)?,
     private val router: Router<*, *, *, *, V>?,
     private val interactor: Interactor<V>,
@@ -51,44 +53,29 @@ open class Node<V : RibView>(
 //    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
 ) : LifecycleOwner {
 
-    enum class AttachMode {
-        /**
-         * The node's view attach/detach is managed by its parent.
-         */
-        PARENT,
-
-        /**
-         * The node's view is somewhere else in the view tree, and it should not be managed
-         *  by its parent.
-         *
-         * Examples can be: the child's view is hosted in a dialog, or added to some other
-         *  generic host node.
-         */
-        EXTERNAL
-    }
-
-    data class Descriptor(
-        val node: Node<*>,
-        val viewAttachMode: AttachMode
-    )
-
     companion object {
         internal const val BUNDLE_KEY = "Node"
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
-    /**
-     * FIXME the proper solution is to set this in constructor (pack it with savedInstanceState)
-     * If left like this, it's not guaranteed to be set correctly, and can lead to problems
-     * Proposed solution would mean passing Root only at integration point, Child is used automatically
-     * by building mechanism.
-     * Also PortalRouter.Configuration.Portal can then work directly with a @Parcelize AncestryInfo,
-     * which is not currently possible.
-     */
-    var ancestryInfo: AncestryInfo = AncestryInfo.Root
-    val resolver: ConfigurationResolver<*, V>? = router
-    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
+    open val identifier: Rib.Identifier =
+        buildParams.identifier
 
+    /**
+     * TODO PortalRouter.Configuration.Portal can then work directly with a @Parcelize AncestryInfo,
+     *  which was not possible until now.
+     */
+    internal val ancestryInfo: AncestryInfo =
+        buildParams.buildContext.ancestryInfo
+
+    internal open val attachMode: AttachMode =
+        buildParams.buildContext.attachMode
+
+    val resolver: ConfigurationResolver<*, V>? = router
+    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
+    internal val externalLifecycleRegistry = LifecycleRegistry(this)
+    internal val ribLifecycleRegistry = LifecycleRegistry(this)
+    internal var viewLifecycleRegistry: LifecycleRegistry? = null
     val detachSignal = BehaviorRelay.create<Unit>()
 
     val tag: String = this::class.java.name
@@ -104,7 +91,8 @@ open class Node<V : RibView>(
     internal open var view: V? = null
     internal var parentViewGroup: ViewGroup? = null
 
-    internal open var savedViewState: SparseArray<Parcelable> = SparseArray()
+    internal open var savedViewState: SparseArray<Parcelable> =
+        savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
 
     internal var isAttachedToView: Boolean = false
         private set
@@ -121,8 +109,6 @@ open class Node<V : RibView>(
 
     @CallSuper
     open fun onAttach() {
-        savedViewState = savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
-
         lifecycleManager.onCreateRib()
         router?.onAttach()
         interactor.onAttach(lifecycleManager.ribLifecycle.lifecycle)
@@ -333,6 +319,7 @@ open class Node<V : RibView>(
     }
 
     open fun onSaveInstanceState(outState: Bundle) {
+        outState.putSerializable(Identifier.KEY_UUID, identifier.uuid)
         router?.onSaveInstanceState(outState)
         interactor.onSaveInstanceState(outState)
         saveViewState()

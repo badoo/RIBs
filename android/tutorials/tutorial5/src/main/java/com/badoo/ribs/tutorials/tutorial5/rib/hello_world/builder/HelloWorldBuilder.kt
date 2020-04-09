@@ -1,22 +1,24 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.hello_world.builder
 
-import android.os.Bundle
-import com.badoo.ribs.core.Builder
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView
 
 class HelloWorldBuilder(
     override val dependency: HelloWorld.Dependency
-) : Builder<HelloWorld.Dependency>() {
+) : SimpleBuilder<HelloWorld.Dependency, Node<HelloWorldView>>(
+    rib = object : HelloWorld {}
+) {
 
-    fun build(savedInstanceState: Bundle?): Node<HelloWorldView> =
+    override fun build(buildParams: BuildParams<Nothing?>): Node<HelloWorldView> =
         DaggerHelloWorldComponent
             .factory()
             .create(
                 dependency = dependency,
                 customisation = HelloWorld.Customisation(),
-                savedInstanceState = savedInstanceState
+                buildParams = buildParams
             )
             .node()
 }

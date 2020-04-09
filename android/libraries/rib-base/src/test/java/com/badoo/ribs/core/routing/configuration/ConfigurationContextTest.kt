@@ -21,17 +21,19 @@ import org.junit.Test
 class ConfigurationContextTest {
 
     private val nodes: List<Node<*>> = listOf(mock(), mock())
-    private val nodeDescriptors: List<Node.Descriptor> = nodes.map { Node.Descriptor(it, mock()) }
-    private val routingAction = mock<RoutingAction<*>> {
-        on { buildNodes(anyOrNull()) } doReturn nodeDescriptors
+
+    // Default
+    private val defaultRoutingAction = mock<RoutingAction<*>> {
+        on { buildNodes(any(), anyOrNull()) } doReturn nodes
     }
-    private val resolver = mock<(Parcelable) -> RoutingAction<*>> {
-        on { invoke(any()) } doReturn routingAction
+    private val defaultResolver = mock<(Parcelable) -> RoutingAction<*>> {
+        on { invoke(any()) } doReturn defaultRoutingAction
     }
 
+    // With Anchor
     private val mockAnchor: Node<*> = mock()
     private val routingActionWithAnchor = mock<RoutingAction<*>> {
-        on { buildNodes(anyOrNull()) } doReturn nodeDescriptors
+        on { buildNodes(any(), anyOrNull()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }
     private val resolverWithAnchor = mock<(Parcelable) -> RoutingAction<*>> {
@@ -62,14 +64,14 @@ class ConfigurationContextTest {
     @Test
     fun `Unresolved resolve() keeps INACTIVE`() {
         val unresolved = Unresolved<Parcelable>(INACTIVE, mock())
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(INACTIVE, resolved.activationState)
     }
 
     @Test
     fun `Unresolved resolve() keeps SLEEPING`() {
         val unresolved = Unresolved<Parcelable>(SLEEPING, mock())
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(SLEEPING, resolved.activationState)
     }
 
@@ -77,7 +79,7 @@ class ConfigurationContextTest {
     fun `Unresolved resolve() keeps configuration`() {
         val configuration = mock<Parcelable>()
         val unresolved = Unresolved(mock(), configuration)
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(configuration, resolved.configuration)
     }
 
@@ -85,55 +87,51 @@ class ConfigurationContextTest {
     fun `Unresolved resolve() keeps bundles`() {
         val bundles = listOf(mock<Bundle>())
         val unresolved = Unresolved<Parcelable>(mock(), mock(), bundles)
-        val resolved = unresolved.resolve(resolver, mock())
+        val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(bundles, resolved.bundles)
     }
 
     @Test
     fun `Unresolved resolve() resolves expected RoutingAction`() {
         val unresolved = Unresolved<Parcelable>(mock(), mock())
-        val resolved = unresolved.resolve(resolver, mock())
-        assertEquals(routingAction, resolved.routingAction)
+        val resolved = unresolved.resolve(defaultResolver, mock())
+        assertEquals(defaultRoutingAction, resolved.routingAction)
     }
 
     @Test
-    fun `Unresolved resolve() builds expected Nodes`() {
-        val unresolved = Unresolved<Parcelable>(mock(), mock())
-        val resolved = unresolved.resolve(resolver, mock())
-        assertEquals(nodeDescriptors, resolved.nodes)
-    }
-
-    @Test
-    fun `Unresolved resolve() sets AncestryInfo on built Nodes with parent as default anchor `() {
-        val configuration = mock<Parcelable>()
-        val unresolved = Unresolved(mock(), configuration)
-        val targetResolver = resolver
+    fun `Unresolved resolve() passes AncestryInfo & Bundles to RoutingAction with parent as default anchor `() {
         val parentNode = mock<Node<*>>()
-        val resolved = unresolved.resolve(targetResolver, parentNode)
-        resolved.nodes.forEach {
-            val expected = AncestryInfo.Child(
-                parentNode,
-                configuration
-            )
-
-            verify(it.node).ancestryInfo = expected
-        }
+        verifyBuildNodesCalled(defaultResolver, defaultRoutingAction, parentNode, parentNode)
     }
 
     @Test
-    fun `Unresolved resolve() sets AncestryInfo on built Nodes with expected anchor `() {
-        val configuration = mock<Parcelable>()
-        val unresolved = Unresolved(mock(), configuration)
-        val targetResolver = resolverWithAnchor
-        val resolved = unresolved.resolve(targetResolver, mock())
-        resolved.nodes.forEach {
-            val expected = AncestryInfo.Child(
-                mockAnchor,
-                configuration
-            )
+    fun `Unresolved resolve() passes AncestryInfo & Bundles to RoutingAction with expected anchor`() {
+        val parentNode = mock<Node<*>>()
+        verifyBuildNodesCalled(resolverWithAnchor, routingActionWithAnchor, mockAnchor, parentNode)
+    }
 
-            verify(it.node).ancestryInfo = expected
-        }
+    private fun verifyBuildNodesCalled(
+        resolver: (Parcelable) -> RoutingAction<*>,
+        routingAction: RoutingAction<*>,
+        expectedParent: Node<*>,
+        parentNode: Node<*>
+    ) {
+        val bundles = emptyList<Bundle>()
+        val unresolved = Unresolved<Parcelable>(mock(), mock())
+        val resolved = unresolved.resolve(resolver, parentNode)
+        val expectedAncestryInfo = AncestryInfo.Child(expectedParent, resolved.configuration)
+
+        verify(routingAction).buildNodes(
+            expectedAncestryInfo,
+            bundles
+        )
+    }
+
+    @Test
+    fun `Unresolved resolve() stores built Nodes returned by RoutingAction buildNodes()`() {
+        val unresolved = Unresolved<Parcelable>(mock(), mock())
+        val resolved = unresolved.resolve(defaultResolver, mock())
+        assertEquals(nodes, resolved.nodes)
     }
 
     @Test
@@ -218,7 +216,7 @@ class ConfigurationContextTest {
     @Test
     fun `Resolved saveInstanceState() sets correct bundles`() {
         val bundles = mock<List<Bundle>>()
-        val resolved = Resolved<Parcelable>(ACTIVE, mock(), bundles, mock(), nodeDescriptors)
+        val resolved = Resolved<Parcelable>(ACTIVE, mock(), bundles, mock(), nodes)
         val afterInvocation = resolved.saveInstanceState()
 
         afterInvocation.bundles.forEachIndexed { i, bundle ->

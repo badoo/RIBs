@@ -6,6 +6,7 @@ import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay
@@ -31,7 +32,7 @@ class SwitcherInteractorTest {
     @Before
     fun setup() {
         switcherInteractor = SwitcherInteractor(
-            savedInstanceState = null,
+            buildParams = BuildParams.Empty(),
             router = router,
             dialogToTestOverlay = dialogToTestOverlay
         )

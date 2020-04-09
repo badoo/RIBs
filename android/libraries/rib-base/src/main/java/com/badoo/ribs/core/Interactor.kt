@@ -16,11 +16,11 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
-import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
+import androidx.annotation.CallSuper
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable
-import java.util.UUID
 
 /**
  * The base implementation for all [Interactor]s.
@@ -29,17 +29,11 @@ import java.util.UUID
  * @param <V> the type of [RibView].
  **/
 abstract class Interactor<V : RibView>(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<*>,
     private val disposables: Disposable?
-) : Identifiable {
+) : Identifiable by buildParams.identifier {
 
-    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
-
-    internal var tag = this.savedInstanceState?.getString(KEY_TAG) ?: "${this::class.java.name}.${UUID.randomUUID()}"
-        private set
-
-    override val id: String
-        get() = tag
+    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
 
     internal open fun onAttach(ribLifecycle: Lifecycle) {
         onAttach(ribLifecycle, savedInstanceState)
@@ -68,10 +62,9 @@ abstract class Interactor<V : RibView>(
     open fun handleBackPress(): Boolean =
         false
 
-    @CallSuper
+    @CallSuper // FIXME cleanup / remove
     open fun onSaveInstanceState(outState: Bundle) {
         val bundle = Bundle()
-        bundle.putString(KEY_TAG, tag)
         outState.putBundle(BUNDLE_KEY, bundle)
     }
 

@@ -1,8 +1,8 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container
 
-import android.os.Bundle
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer.Output.GreetingsSaid
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
@@ -13,11 +13,11 @@ import com.jakewharton.rxrelay2.Relay
 import io.reactivex.functions.Consumer
 
 class GreetingsContainerInteractor(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<Nothing?>,
     router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<Nothing>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = null
 ) {
     internal val helloWorldInputSource: Relay<HelloWorld.Input> = PublishRelay.create()

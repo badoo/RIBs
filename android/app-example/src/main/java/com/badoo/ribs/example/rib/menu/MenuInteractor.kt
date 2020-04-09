@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.menu
 
 import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
@@ -14,12 +15,12 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MenuInteractor(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<Nothing?>,
     private val input: ObservableSource<Menu.Input>,
     private val output: Consumer<Menu.Output>,
     private val feature: MenuFeature
 ) : Interactor<MenuView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = feature
 ) {
 

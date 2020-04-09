@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
@@ -26,7 +27,7 @@ import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.view.RibView
 
 abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<*>,
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList(),
     private val transitionHandler: TransitionHandler<C>? = null
@@ -36,7 +37,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     private val binder = Binder()
-    private val savedInstanceState = savedInstanceState?.getBundle(BUNDLE_KEY)
+    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(this.savedInstanceState)
     private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var configurationFeature: ConfigurationFeature<C>
@@ -127,6 +128,9 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
             )
         )
     }
+
+    internal fun getNodes(configurationKey: ConfigurationKey<C>): List<Node<*>>? =
+        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
 
     fun popBackStack(): Boolean =
         if (backStackFeature.state.backStack.canPop) {

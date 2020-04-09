@@ -43,7 +43,7 @@ internal class RemoveAction<C : Parcelable>(
 
     override fun onTransition(forceExecute: Boolean) {
         item.nodes.forEach {
-            it.node.markPendingDetach(true)
+            it.markPendingDetach(true)
         }
         emitter.onNext(
             Effect.Individual.PendingRemovalTrue(key)
@@ -52,8 +52,8 @@ internal class RemoveAction<C : Parcelable>(
 
     override fun onFinish(forceExecute: Boolean) {
         item.nodes.forEach {
-            params.transactionExecutionParams.parentNode.detachChildView(it.node)
-            params.transactionExecutionParams.parentNode.detachChildNode(it.node)
+            params.transactionExecutionParams.parentNode.detachChildView(it)
+            params.transactionExecutionParams.parentNode.detachChildNode(it)
         }
 
         emitter.onNext(

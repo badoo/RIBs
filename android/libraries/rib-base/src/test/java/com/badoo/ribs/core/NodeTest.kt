@@ -2,18 +2,18 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
-import com.badoo.ribs.core.helper.TestPublicRibInterface
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
+import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
@@ -73,33 +73,22 @@ class NodeTest {
         router = mock()
         interactor = mock()
         viewPlugins = setOf(mock(), mock())
-
-        node = createNodeWithView()
+        node = createNode(viewFactory = viewFactory)
 
         addChildren()
     }
 
-    private fun createNodeWithView(): Node<TestView> {
-        return Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
-            viewFactory = viewFactory,
-            router = router,
-            interactor = interactor,
-            viewPlugins = viewPlugins
-        )
-    }
-
-    private fun createNodeWithoutView(): Node<TestView> {
-        return Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
-            viewFactory = null,
-            router = router,
-            interactor = interactor,
-            viewPlugins = viewPlugins
-        )
-    }
+    private fun createNode(
+        buildParams: BuildParams<Nothing?> = testBuildParams(),
+        viewFactory: TestViewFactory? = this@NodeTest.viewFactory,
+        interactor: Interactor<TestView> = this@NodeTest.interactor
+    ): Node<TestView> = Node(
+        buildParams = buildParams,
+        viewFactory = viewFactory,
+        router = router,
+        interactor = interactor,
+        viewPlugins = viewPlugins
+    )
 
     @After
     fun tearDown() {
@@ -107,9 +96,9 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode1 {}, viewFactory = null)
-        child2 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode2 {}, viewFactory = null)
-        child3 = TestNode(savedInstanceState = null, identifier = object : RandomOtherNode3 {}, viewFactory = null)
+        child1 = TestNode(testBuildParams(object : RandomOtherNode1 {}), viewFactory = null)
+        child2 = TestNode(testBuildParams(object : RandomOtherNode2 {}), viewFactory = null)
+        child3 = TestNode(testBuildParams(object : RandomOtherNode3 {}), viewFactory = null)
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -371,14 +360,17 @@ class NodeTest {
         }
     }
 
-    private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib> = mutableListOf()): List<Node<*>> {
+    private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib.Identifier> = mutableListOf()): List<Node<*>> {
         if (identifiers.isEmpty()) {
             for (i in 0 until n) {
-                identifiers.add(object : Rib {})
+                identifiers.add(testBuildParams().identifier)
             }
         }
         val mocks = mutableListOf<Node<*>>()
         for (i in 0 until n) {
+//            val mockNode = mock<Node<*>>()
+//            whenever(mockNode.identifier).thenReturn(identifiers[i])
+//            mocks.add(mockNode)
             mocks.add(
                 mock {
                     on { identifier }.thenReturn(identifiers[i])
@@ -424,8 +416,6 @@ class NodeTest {
     fun `attachChildNode() does not imply attachToView when Android view system is not available`() {
         val childViewFactory = mock<TestViewFactory>()
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = childViewFactory
         )
         node.attachChildNode(child)
@@ -443,8 +433,6 @@ class NodeTest {
         // by default it's not started, should be on INITIALIZED
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -457,13 +445,9 @@ class NodeTest {
         // by default it's not started, should be on INITIALIZED
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -477,8 +461,6 @@ class NodeTest {
         node.onStop()
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -491,13 +473,9 @@ class NodeTest {
         node.onStop()
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -511,8 +489,6 @@ class NodeTest {
         node.onStart()
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -525,13 +501,9 @@ class NodeTest {
         node.onStart()
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -545,8 +517,6 @@ class NodeTest {
         node.onResume()
 
         val child = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         node.attachChildNode(child)
@@ -559,13 +529,9 @@ class NodeTest {
         node.onResume()
 
         val directChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         val grandChild = TestNode(
-            savedInstanceState = null,
-            identifier = mock(),
             viewFactory = mock<TestViewFactory>()
         )
         directChild.attachChildNode(grandChild)
@@ -583,6 +549,13 @@ class NodeTest {
     }
 
     @Test
+    fun `Tag is saved to bundle`() {
+        val outState = Bundle()
+        node.onSaveInstanceState(outState)
+        assertEquals(node.identifier.uuid, outState.getSerializable(Rib.Identifier.KEY_UUID))
+    }
+
+    @Test
     fun `View state saved to bundle`() {
         val outState = Bundle()
         node.savedViewState = mock()
@@ -594,21 +567,14 @@ class NodeTest {
     }
 
     @Test
-    fun `View state is restored from bundle`() {
-        val savedInstanceState = mock<Bundle>()
-        val nodeSavedInstanceState = mock<Bundle>()
-        val savedViewState = SparseArray<Parcelable>()
-        whenever(savedInstanceState.getBundle(BUNDLE_KEY)).thenReturn(nodeSavedInstanceState)
-        whenever(nodeSavedInstanceState.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)).thenReturn(savedViewState)
+    fun `View state is saved and restored from bundle`() {
+        node = createNode(testBuildParams(savedInstanceState = null))
 
-        node = Node(
-            savedInstanceState = savedInstanceState,
-            identifier = object : TestPublicRibInterface {},
-            viewFactory = viewFactory,
-            router = router,
-            interactor = interactor
-        )
-        node.onAttach()
+        val outState = Bundle()
+        node.onSaveInstanceState(outState)
+        val savedViewState = node.savedViewState
+
+        node = createNode(testBuildParams(savedInstanceState = outState))
         assertEquals(savedViewState, node.savedViewState)
     }
 
@@ -647,7 +613,7 @@ class NodeTest {
 
     @Test
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when STARTED, view is in state STARTED`() {
-        node = createNodeWithView()
+        node = createNode(viewFactory = viewFactory)
         node.onStart()
         node.attachToView(parentViewGroup)
         assertEquals(Lifecycle.State.STARTED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
@@ -655,10 +621,23 @@ class NodeTest {
 
     @Test
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when RESUMED, view is in state RESUMED`() {
-        node = createNodeWithView()
+        node = createNode(viewFactory = viewFactory)
         node.onResume()
         node.attachToView(parentViewGroup)
-        assertEquals(Lifecycle.State.RESUMED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.RESUMED,
+            node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
+        )
+//        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry!!.currentState)
+//    }
+//
+//    @Test
+//    fun `attachToView() + viewless = doesn't have view lifecycle`() {
+//        node = createNode(viewFactory = null)
+//        node.onResume()
+//        node.attachToView(parentViewGroup)
+//        assertNull(node.viewLifecycleRegistry)
+//    }
     }
 
     @Test
@@ -687,11 +666,7 @@ class NodeTest {
             trigger.accept(Unit)
         }
 
-        node = Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
-            viewFactory = viewFactory,
-            router = router,
+        node = createNode(
             interactor = TestInteractor(
                 onViewCreated = onViewCreated
             )
@@ -705,28 +680,14 @@ class NodeTest {
 
     @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
-        node = Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
-            viewFactory = null,
-            router = router,
-            interactor = interactor
-        )
-
+        node = createNode(viewFactory = null)
         node.attachToView(parentViewGroup)
         verify(parentViewGroup, never()).addView(anyOrNull())
     }
 
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
-        node = Node(
-            savedInstanceState = null,
-            identifier = object : TestPublicRibInterface {},
-            viewFactory = null,
-            router = router,
-            interactor = interactor
-        )
-
+        node = createNode(viewFactory = null)
         node.attachToView(parentViewGroup)
         verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
     }
@@ -793,7 +754,7 @@ class NodeTest {
     fun `waitForChildAttached emits expected child immediately if it's already attached`() {
         val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = TestObserver<TestNode2>()
-        val testChildNode = TestNode2(object : Rib {})
+        val testChildNode = TestNode2()
 
         node.attachChildNode(testChildNode)
         workflow.subscribe(testObserver)

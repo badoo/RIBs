@@ -99,27 +99,21 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                     configuration = configuration,
                     bundles = bundles,
                     routingAction = routingAction,
-                    nodes = routingAction.buildNodes(bundles).also {
-                        setAncestryInfo(it, routingAction, parentNode)
-                    }
+                    nodes = buildNodes(routingAction, parentNode)
                 )
         }
 
         override fun shrink(): Unresolved<C> =
             this
 
-        private fun setAncestryInfo(
-            descriptors: List<Node.Descriptor>,
-            routingAction: RoutingAction<*>,
-            parentNode: Node<*>
-        ) {
-            descriptors.forEach {
-                it.node.ancestryInfo = AncestryInfo.Child(
+        private fun buildNodes(routingAction: RoutingAction<*>, parentNode: Node<*>): List<Node<*>> =
+            routingAction.buildNodes(
+                ancestryInfo = AncestryInfo.Child(
                     anchor = routingAction.anchor() ?: parentNode,
                     creatorConfiguration = configuration
-                )
-            }
-        }
+                ),
+                bundles = bundles
+            )
 
         override fun withActivationState(activationState: ActivationState) =
             copy(
@@ -144,7 +138,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override val configuration: C,
         var bundles: List<Bundle>,
         val routingAction: RoutingAction<*>,
-        val nodes: List<Node.Descriptor>
+        val nodes: List<Node<*>>
     ) : ConfigurationContext<C>() {
 
         override fun resolve(
@@ -161,9 +155,9 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
         fun saveInstanceState() =
             copy(
-                bundles = nodes.map { nodeDescriptor ->
+                bundles = nodes.map { node ->
                     Bundle().also {
-                        nodeDescriptor.node.onSaveInstanceState(it)
+                        node.onSaveInstanceState(it)
                     }
                 }
             )

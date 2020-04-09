@@ -1,17 +1,17 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container
 
-import android.os.Bundle
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainerRouter.Configuration
 import io.reactivex.functions.Consumer
+import com.badoo.ribs.core.builder.BuildParams
 
 class GreetingsContainerInteractor(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<Nothing?>,
     private val router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<Nothing>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = null
 ) {
 

@@ -1,14 +1,15 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.DialogRoutingAction
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
-import com.badoo.ribs.example.rib.foo_bar.FooBarView
+import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import com.badoo.ribs.example.rib.hello_world.HelloWorldBuilder
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.menu.Menu
@@ -21,7 +22,7 @@ import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Permanen
 import com.badoo.ribs.example.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.example.rib.util.TestNode
 import com.badoo.ribs.example.rib.util.subscribeOnTestObserver
-import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
@@ -32,27 +33,27 @@ import org.junit.Test
  * It may be helpful in case of complex routing logic
  */
 class SwitcherRouterTest {
+    
+    private val fooBarNode = FooBarNode(null, mock(), BuildParams.Empty(), emptySet())
+    private val fooBarBuilder = mock<FooBarBuilder> { on { build(any()) } doReturn fooBarNode }
 
-    private val fooBarNode = TestNode<FooBarView>()
-    private val fooBarBuilder = mock<FooBarBuilder> { on { build(anyOrNull()) } doReturn fooBarNode }
-
-    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), mock())
-    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(anyOrNull()) } doReturn helloWorldNode }
+    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), BuildParams.Empty())
+    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(any()) } doReturn helloWorldNode }
 
     private val dialogExampleNode = TestNode<DialogExampleView>()
-    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(anyOrNull()) } doReturn dialogExampleNode }
+    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(any()) } doReturn dialogExampleNode }
 
     private val blockerNode = TestNode<BlockerView>()
-    private val blockerBuilder = mock<BlockerBuilder> { on { build(anyOrNull()) } doReturn blockerNode }
+    private val blockerBuilder = mock<BlockerBuilder> { on { build(any()) } doReturn blockerNode }
 
     private val menuNode = TestNode<MenuView>()
-    private val menuBuilder = mock<MenuBuilder> { on { build(anyOrNull()) } doReturn menuNode }
+    private val menuBuilder = mock<MenuBuilder> { on { build(any()) } doReturn menuNode }
 
     private val dialogLauncher: DialogLauncher = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val router = SwitcherRouter(
-        savedInstanceState = null,
+        BuildParams.Empty(),
         transitionHandler = null,
         fooBarBuilder = fooBarBuilder,
         helloWorldBuilder = helloWorldBuilder,
@@ -63,40 +64,24 @@ class SwitcherRouterTest {
         dialogToTestOverlay = dialogToTestOverlay
     )
 
+    private val rootNode = TestNode(router = router)
+
     @Test
     fun `Permanent_Menu configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(menuNode)
-    }
-
-    @Test
-    fun `Permanent_Menu configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(menuNode)
     }
 
     @Test
     fun `Content_Hello configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(helloWorldNode)
-    }
-
-    @Test
-    fun `Content_Hello configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(helloWorldNode)
     }
 
     @Test
@@ -111,19 +96,10 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Foo configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(fooBarNode)
-    }
-
-    @Test
-    fun `Content_Foo configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(fooBarNode)
     }
 
     @Test
@@ -138,19 +114,10 @@ class SwitcherRouterTest {
     @Test
     fun `Content_DialogsExample configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(dialogExampleNode)
-    }
-
-    @Test
-    fun `Content_DialogsExample configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(dialogExampleNode)
     }
 
     @Test
@@ -165,19 +132,10 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Blocker configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
+        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
 
         assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().node).isEqualTo(blockerNode)
-    }
-
-    @Test
-    fun `Content_Blocker configuration resolves in Node with AttachMode PARENT`() {
-        val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
-        val nodes = routingAction.buildNodes(emptyList())
-
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first().viewAttachMode).isEqualTo(Node.AttachMode.PARENT)
+        assertThat(nodes.first()).isEqualTo(blockerNode)
     }
 
     @Test

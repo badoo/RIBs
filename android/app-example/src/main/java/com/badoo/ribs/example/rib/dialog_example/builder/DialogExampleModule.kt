@@ -1,7 +1,7 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.example.rib.dialog_example.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
@@ -45,14 +45,14 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun router(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         dialogLauncher: DialogLauncher,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleRouter =
         DialogExampleRouter(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             dialogLauncher = dialogLauncher,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
@@ -63,14 +63,14 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         router: DialogExampleRouter,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleInteractor =
         DialogExampleInteractor(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             router = router,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
@@ -81,13 +81,12 @@ internal object DialogExampleModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         customisation: DialogExample.Customisation,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor
     ) : Node<DialogExampleView> = Node(
-        savedInstanceState = savedInstanceState,
-        identifier = object : DialogExample {},
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor

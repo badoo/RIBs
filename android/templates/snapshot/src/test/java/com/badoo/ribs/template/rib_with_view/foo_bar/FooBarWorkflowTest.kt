@@ -1,5 +1,8 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.rib_with_view.foo_bar.builder.FooBarBuilder
 import com.nhaarman.mockitokotlin2.mock
@@ -19,7 +22,7 @@ class FooBarWorkflowTest {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = mock()
             override fun fooBarOutput(): Consumer<FooBar.Output> = mock()
             override fun ribCustomisation(): RibCustomisationDirectory = mock()
-        }).build(null).also {
+        }).build(root(savedInstanceState = null)).also {
             it.onAttach()
         }
     }

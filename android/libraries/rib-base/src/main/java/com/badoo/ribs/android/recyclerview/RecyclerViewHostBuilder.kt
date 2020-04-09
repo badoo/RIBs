@@ -1,17 +1,19 @@
 package com.badoo.ribs.android.recyclerview
 
-import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.SimpleBuilder
 
 class RecyclerViewHostBuilder<T : Parcelable>(
     override val dependency: RecyclerViewHost.Dependency<T>
-) : Builder<RecyclerViewHost.Dependency<T>>() {
+) : SimpleBuilder<RecyclerViewHost.Dependency<T>, RecyclerViewHostNode<T>>(
+    rib = object : RecyclerViewHost {}
+) {
 
     @SuppressWarnings("LongMethod")
-    fun build(savedInstanceState: Bundle? = null): RecyclerViewHostNode<T> {
-        val timeCapsule = AndroidTimeCapsule(savedInstanceState)
+    override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHostNode<T> {
+        val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
         val feature = RecyclerViewHostFeature(
             timeCapsule = timeCapsule,
@@ -19,7 +21,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
         )
 
         val router = RecyclerViewHostRouter(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             feature = feature,
             ribResolver = dependency.resolver()
         )
@@ -32,14 +34,14 @@ class RecyclerViewHostBuilder<T : Parcelable>(
         )
 
         val interactor = RecyclerViewHostInteractor(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             input = dependency.recyclerViewHostInput(),
             feature = feature,
             adapter = adapter
         )
 
         return RecyclerViewHostNode(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             router = router,
             interactor = interactor,
             viewDeps =  object : RecyclerViewHostView.Dependency {

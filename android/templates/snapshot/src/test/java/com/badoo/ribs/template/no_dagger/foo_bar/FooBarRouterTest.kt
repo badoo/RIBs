@@ -1,5 +1,6 @@
 package com.badoo.ribs.template.no_dagger.foo_bar
 
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -17,7 +18,7 @@ class FooBarRouterTest {
     @Before
     fun setup() {
         router = FooBarRouter(
-            savedInstanceState = null
+            buildParams = BuildParams.Empty()
         )
     }
 

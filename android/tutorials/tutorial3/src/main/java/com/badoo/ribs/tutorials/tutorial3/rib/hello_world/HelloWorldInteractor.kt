@@ -1,13 +1,13 @@
 package com.badoo.ribs.tutorials.tutorial3.rib.hello_world
 
-import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.builder.BuildParams
 
 class HelloWorldInteractor(
-    savedInstanceState: Bundle?
+    buildParams: BuildParams<Nothing?>
 ) : Interactor<HelloWorldView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = null
 ) {
 

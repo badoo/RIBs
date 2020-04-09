@@ -1,17 +1,13 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Output
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarInteractor
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarNode
 import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter
 import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature
 import dagger.Provides
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 @dagger.Module
 internal object FooBarModule {
@@ -22,11 +18,11 @@ internal object FooBarModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: FooBarComponent,
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation
     ): FooBarRouter =
         FooBarRouter(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             transitionHandler = null // Add customisation.transitionHandler if you need it
         )
 
@@ -40,17 +36,16 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        dependency: FooBar.Dependency,
+        buildParams: BuildParams<Nothing?>,
         router: FooBarRouter,
-        input: ObservableSource<Input>,
-        output: Consumer<Output>,
         feature: FooBarFeature
     ): FooBarInteractor =
         FooBarInteractor(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             router = router,
-            input = input,
-            output = output,
+            input = dependency.fooBarInput(),
+            output = dependency.fooBarOutput(),
             feature = feature
         )
 
@@ -58,20 +53,19 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        dependency: FooBar.Dependency,
+        buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
         interactor: FooBarInteractor,
-        input: ObservableSource<Input>,
-        output: Consumer<Output>,
         feature: FooBarFeature
     ) : FooBarNode = FooBarNode(
-        savedInstanceState = savedInstanceState,
+        buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor,
-        input = input,
-        output = output,
+        input = dependency.fooBarInput(),
+        output = dependency.fooBarOutput(),
         feature = feature
     )
 }

@@ -1,21 +1,20 @@
 package com.badoo.ribs.example.rib.util
 
 import android.view.ViewGroup
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
+    buildParams: BuildParams<*> = BuildParams.Empty(),
     router: Router<*, *, *, *, V> = mock(),
-    identifier: Rib = object : Rib {},
     viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<V> = mock()
 ) : Node<V>(
-    savedInstanceState = null,
-    identifier = identifier,
+    buildParams = buildParams,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor

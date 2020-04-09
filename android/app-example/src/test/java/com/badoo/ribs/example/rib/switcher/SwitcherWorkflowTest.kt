@@ -2,6 +2,7 @@ package com.badoo.ribs.example.rib.switcher
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
@@ -9,6 +10,8 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
+import com.badoo.ribs.example.rib.util.TestNode
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.observers.TestObserver
@@ -26,30 +29,30 @@ class SwitcherWorkflowTest {
 
     @Before
     fun setup() {
-        val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), null)
-        val fooBarNode = FooBarNode(mock(), mock(), null, emptySet())
-        val node1 = Node<DialogExampleView>(null, mock(), mock(), mock(), mock())
-        val node2 = Node<BlockerView>(null, mock(), mock(), mock(), mock())
-        val node3 = Node<MenuView>(null, mock(), mock(), mock(), mock())
+        val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), BuildParams.Empty())
+        val fooBarNode = FooBarNode(mock(), mock(), BuildParams.Empty(), emptySet())
+        val node1 = Node<DialogExampleView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
+        val node2 = Node<BlockerView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
+        val node3 = Node<MenuView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
 
         router = SwitcherRouter(
-            savedInstanceState = null,
             transitionHandler = null,
-            fooBarBuilder = mock { on { build(null) } doReturn fooBarNode },
-            helloWorldBuilder = mock { on { build(null) } doReturn helloWorldNode },
-            dialogExampleBuilder = mock { on { build(null) } doReturn node1 },
-            blockerBuilder = mock { on { build(null) } doReturn node2 },
-            menuBuilder = mock { on { build(null) } doReturn node3 },
+            buildParams = BuildParams.Empty(),
+            fooBarBuilder = mock { on { build(any()) } doReturn fooBarNode },
+            helloWorldBuilder = mock { on { build(any()) } doReturn helloWorldNode },
+            dialogExampleBuilder = mock { on { build(any()) } doReturn node1 },
+            blockerBuilder = mock { on { build(any()) } doReturn node2 },
+            menuBuilder = mock { on { build(any()) } doReturn node3 },
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )
-        interactor = SwitcherInteractor(null, mock(), mock())
+        interactor = SwitcherInteractor(BuildParams.Empty(), mock(), mock())
 
         workflow = SwitcherNode(
+            buildParams = BuildParams.Empty(),
             viewFactory = mock(),
             router = router,
-            interactor = interactor,
-            savedInstanceState = null
+            interactor = interactor
         ).also { it.onAttach() }
     }
 

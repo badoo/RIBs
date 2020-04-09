@@ -10,7 +10,7 @@ class RibDialog(
     loremIpsumBuilder: LoremIpsumBuilder
 ) : Dialog<Dialog.Event>({
         title = Text.Plain("A title if you wish")
-        ribFactory {
+        nodeFactory {
             loremIpsumBuilder.build(it)
         }
         buttons {

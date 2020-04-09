@@ -1,11 +1,11 @@
 package com.badoo.ribs.example.rib.portal_overlay_test
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 
 class PortalOverlayTestInteractor(
-    savedInstanceState: Bundle?
+    buildParams: BuildParams<Nothing?>
 ) : Interactor<PortalOverlayTestView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = null
 )

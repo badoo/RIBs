@@ -1,11 +1,11 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.hello_world
 
-import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Config
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Input
@@ -21,9 +21,9 @@ class HelloWorldInteractor(
     private val config: Config,
     private val input: ObservableSource<Input>,
     private val output: Consumer<Output>,
-    savedInstanceState: Bundle?
+    buildParams: BuildParams<Nothing?>
 ) : Interactor<HelloWorldView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     disposables = null
 ) {
 

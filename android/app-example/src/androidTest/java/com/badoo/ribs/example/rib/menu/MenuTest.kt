@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
@@ -77,7 +78,7 @@ class MenuTest {
         MenuBuilder(object : Menu.Dependency, CanProvideRibCustomisation by ribTestActivity {
             override fun menuInput(): ObservableSource<Menu.Input> = menuInput
             override fun menuOutput(): Consumer<Menu.Output> = menuOutput
-        }).build(savedInstanceState)
+        }).build(root(savedInstanceState))
 
     private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
         subscribe(this)

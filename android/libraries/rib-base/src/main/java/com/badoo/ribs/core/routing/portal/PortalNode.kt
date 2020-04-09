@@ -1,17 +1,16 @@
 package com.badoo.ribs.core.routing.portal
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
 import io.reactivex.Single
 
 class PortalNode internal constructor(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<*>,
     private val router: PortalRouter,
     interactor: PortalInteractor
 ) : Node<Nothing>(
-    savedInstanceState = savedInstanceState,
-    identifier = object : Portal {},
+    buildParams = buildParams,
     viewFactory = null,
     router = router,
     interactor = interactor

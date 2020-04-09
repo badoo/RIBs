@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay
@@ -29,7 +30,7 @@ class SwitcherInteractorTest {
     @Before
     fun setup() {
         switcherInteractor = SwitcherInteractor(
-            savedInstanceState = null,
+            buildParams = BuildParams.Empty(),
             router = router,
             dialogToTestOverlay = dialogToTestOverlay
         )

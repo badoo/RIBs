@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial4.R
@@ -21,10 +21,10 @@ internal object GreetingsContainerModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: GreetingsContainerComponent,
-        savedInstanceState: Bundle?
+        buildParams: BuildParams<Nothing?>
     ): GreetingsContainerRouter =
         GreetingsContainerRouter(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             helloWorldBuilder = HelloWorldBuilder(component)
         )
 
@@ -32,12 +32,12 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         output: Consumer<GreetingsContainer.Output>
     ): GreetingsContainerInteractor =
         GreetingsContainerInteractor(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             router = router,
             output = output
         )
@@ -46,12 +46,11 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
     ) : Node<Nothing> = Node(
-        savedInstanceState = savedInstanceState,
-        identifier = object : GreetingsContainer {},
+        buildParams = buildParams,
         viewFactory = null,
         router = router,
         interactor = interactor

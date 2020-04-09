@@ -13,18 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.badoo.ribs.core
+package com.badoo.ribs.core.builder
+
+import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 
 /**
- * Responsible for building a node. Parent routers should pass in static dependencies via the
+ * Responsible for building a [Node]. Parent [Router]s should pass in static dependencies via the
  * dependency passed in via the constructor. For dynamic dependencies (things that are fetched
- * asynchronously - or created dyanmically in the parent), they should be passed in via a build
+ * asynchronously - or created dynamically in the parent), they should be passed in via a build
  * method that vends a node.
  *
  * @param <D> type of dependency required to build the interactor.
+ * @param <N> type of [Node] this Builder is expected to build
+ *
 </D> */
-abstract class Builder<D> {
-    abstract val dependency: D
+abstract class SimpleBuilder<D, N : Node<*>>(
+    rib: Rib
+) : Builder<D, Nothing?, N>(
+    rib = rib
+) {
+
+    fun build(buildContext: BuildContext): N =
+        build(buildContext, null)
 }
 
 

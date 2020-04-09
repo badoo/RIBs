@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.rib.dialog_example
 
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -13,7 +14,7 @@ class DialogExampleInteractorTest {
     @Before
     fun setup() {
         interactor = DialogExampleInteractor(
-            savedInstanceState = null,
+            buildParams = BuildParams.Empty(),
             router = router,
             simpleDialog = mock(),
             lazyDialog = mock(),

@@ -1,6 +1,5 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.builder
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer
@@ -10,6 +9,7 @@ import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
 import com.badoo.ribs.android.Text
+import com.badoo.ribs.core.builder.BuildParams
 import dagger.Provides
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -23,10 +23,10 @@ internal object GreetingsContainerModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: GreetingsContainerComponent,
-        savedInstanceState: Bundle?
+        buildParams: BuildParams<Nothing?>
     ): GreetingsContainerRouter =
         GreetingsContainerRouter(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             helloWorldBuilder = HelloWorldBuilder(component)
         )
 
@@ -34,12 +34,12 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         output: Consumer<GreetingsContainer.Output>
     ): GreetingsContainerInteractor =
         GreetingsContainerInteractor(
-            savedInstanceState = savedInstanceState,
+            buildParams = buildParams,
             router = router,
             output = output
         )
@@ -61,12 +61,11 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun node(
-        savedInstanceState: Bundle?,
+        buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
     ) : Node<Nothing> = Node(
-        savedInstanceState = savedInstanceState,
-        identifier = object : GreetingsContainer {},
+        buildParams = buildParams,
         viewFactory = null,
         router = router,
         interactor = interactor

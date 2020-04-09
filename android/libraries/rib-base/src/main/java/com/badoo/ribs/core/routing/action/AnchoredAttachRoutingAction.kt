@@ -1,26 +1,24 @@
 package com.badoo.ribs.core.routing.action
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.view.RibView
 
 class AnchoredAttachRoutingAction<V : RibView>(
     private val anchor: Node<*>,
-    builder: (Bundle?) -> Node<*>
+    nodeFactory: NodeFactory
 ) : AttachRibRoutingAction<V>(
-    builder = builder
+    nodeFactory = nodeFactory
 ) {
 
     override fun anchor(): Node<*>? =
         anchor
 
     companion object {
-        fun <V : RibView> anchor(
-            anchor: Node<*>,
-            builder: (Bundle?) -> Node<*>): RoutingAction<V> =
-            AnchoredAttachRoutingAction(
-                anchor,
-                builder
-            )
+        fun <V : RibView> anchor(anchor: Node<*>, nodeFactory: NodeFactory): RoutingAction<V> =
+                AnchoredAttachRoutingAction(
+                    anchor = anchor,
+                    nodeFactory = nodeFactory
+                )
     }
 }

@@ -1,19 +1,19 @@
 package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder
 
-import android.os.Bundle
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainer
 
 class GreetingsContainerBuilder(
     override val dependency: GreetingsContainer.Dependency
-) : Builder<GreetingsContainer.Dependency>() {
+) : SimpleBuilder<GreetingsContainer.Dependency, Node<Nothing>>(object : GreetingsContainer {}) {
 
-    fun build(savedInstanceState: Bundle?): Node<Nothing> {
+    override fun build(buildParams: BuildParams<Nothing?>): Node<Nothing> {
         val component = DaggerGreetingsContainerComponent.factory()
             .create(
                 dependency = dependency,
-                savedInstanceState = savedInstanceState
+                buildParams = buildParams
             )
 
         return component.node()

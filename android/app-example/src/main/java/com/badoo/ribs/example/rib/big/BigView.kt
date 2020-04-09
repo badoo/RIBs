@@ -54,7 +54,7 @@ class BigViewImpl private constructor(
     }
 
     override fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        when (child.identifier) {
+        when (child.identifier.rib) {
             is Small -> smallContainer
             else -> null
         }

@@ -2,6 +2,7 @@ package com.badoo.ribs.core.routing.action
 
 import android.os.Bundle
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 
 class CompositeRoutingAction< V : RibView>(
@@ -10,10 +11,11 @@ class CompositeRoutingAction< V : RibView>(
 
     constructor(routingActions: List<RoutingAction<V>>) : this(*routingActions.toTypedArray())
 
-    override fun buildNodes(bundles: List<Bundle?>): List<Node.Descriptor> =
+    override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node<*>> =
         routingActions.mapIndexed { index, routingAction ->
             routingAction.buildNodes(
-                bundles.getOrNull(index)?.let { listOf(it) } ?: emptyList()
+                ancestryInfo = ancestryInfo,
+                bundles = bundles.getOrNull(index)?.let { listOf(it) } ?: emptyList()
             )
         }.flatten()
 

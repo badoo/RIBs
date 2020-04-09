@@ -1,24 +1,23 @@
 package com.badoo.ribs.test.util.ribs.root.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import android.view.ViewGroup
-import com.badoo.ribs.core.Builder
+import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
-import com.badoo.ribs.test.util.ribs.child.TestChildView
-import com.badoo.ribs.test.util.ribs.child.TestChildViewImpl
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootInteractor
 import com.badoo.ribs.test.util.ribs.root.TestRootView
 import com.badoo.ribs.test.util.ribs.root.TestRootViewImpl
 
-class TestRootBuilder(override val dependency: TestRoot.Dependency) : Builder<TestRoot.Dependency>() {
+class TestRootBuilder(
+    override val dependency: TestRoot.Dependency
+) : SimpleBuilder<TestRoot.Dependency, Node<TestRootView>>(object : TestRoot {}) {
 
-    fun build(savedInstanceState: Bundle?): Node<TestRootView> {
+    override fun build(buildParams: BuildParams<Nothing?>): Node<TestRootView> {
         return TestNode(
-            savedInstanceState = savedInstanceState,
-            identifier = object: TestRoot { },
+            buildParams = buildParams,
             viewFactory = object : ViewFactory<Nothing?, TestRootView> {
                 override fun invoke(deps: Nothing?): (ViewGroup) -> TestRootView = {
                     TestRootViewImpl(it.context)
@@ -26,8 +25,7 @@ class TestRootBuilder(override val dependency: TestRoot.Dependency) : Builder<Te
             },
             router = dependency.router(),
             interactor = TestRootInteractor(
-                savedInstanceState = savedInstanceState,
-                router = dependency.router(),
+                buildParams = buildParams,
                 viewLifecycleObserver = dependency.viewLifecycleObserver()
             )
         )

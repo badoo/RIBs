@@ -2,7 +2,9 @@ package com.badoo.ribs.test.util.ribs.root
 
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
@@ -11,6 +13,7 @@ import com.badoo.ribs.test.util.ribs.child.builder.TestChildBuilder
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import io.reactivex.observers.TestObserver
+import java.util.UUID
 
 interface TestRoot : Rib {
 
@@ -41,7 +44,7 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (Bundle?) -> TestNode<TestChildView> = {
+        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> TestNode<TestChildView> = {
             TestChildBuilder().build(it).also {
                 block.invoke(it)
             }
@@ -49,7 +52,14 @@ interface TestRoot : Rib {
 
         fun create(dialogLauncher: DialogLauncher, savedInstanceState: Bundle?): TestNode<TestRootView> {
             val router = TestRootRouter(
-                savedInstanceState = savedInstanceState,
+                buildParams = BuildParams(
+                    payload = null,
+                    buildContext = BuildContext.root(savedInstanceState),
+                    identifier = Rib.Identifier(
+                        rib = object : TestRoot {},
+                        uuid = UUID.randomUUID()
+                    )
+                ),
                 builderPermanent1 = builder { permanentNode1 = it },
                 builderPermanent2 = builder { permanentNode2 = it },
                 builder1 = builder { childNode1 = it },
@@ -67,7 +77,9 @@ interface TestRoot : Rib {
                     override fun router() = router
 
                 }
-            ).build(savedInstanceState) as TestNode<TestRootView>
+            ).build(
+                BuildContext.root(savedInstanceState)
+            ) as TestNode<TestRootView>
             rootNode = node
             return node
         }

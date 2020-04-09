@@ -7,6 +7,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.app.AppRibCustomisations
@@ -23,7 +24,7 @@ class LoremIpsumTest {
         LoremIpsumBuilder(object : LoremIpsum.Dependency {
             override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
             override fun loremIpsumOutput(): Consumer<LoremIpsum.Output> = Consumer {}
-        }).build(savedInstanceState)
+        }).build(root(savedInstanceState))
 
     @Test
     fun testTextDisplayed() {

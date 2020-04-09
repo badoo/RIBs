@@ -72,7 +72,7 @@ class SwitcherViewImpl private constructor(
     }
 
     override fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        when (child.identifier) {
+        when (child.identifier.rib) {
             is Menu -> menuContainer
 //            is Blocker -> blockerContainer
             else -> contentContainer

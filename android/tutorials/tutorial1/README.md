@@ -128,7 +128,7 @@ class HelloWorldBuilder(dependency: HelloWorld.Dependency) {
     
     /* remainder omitted */
     
-    fun build(savedInstanceState: Bundle?): Node<HelloWorldView> {
+    fun build(buildContext: BuildContext.Params): Node<HelloWorldView> {
         /* remainder omitted */
     }
 }
@@ -151,7 +151,7 @@ class RootActivity : RibActivity() {
                     // not sure what to do here yet
                 }
             }
-        ).build(savedInstanceState)
+        ).build(BuildContext.root(savedInstanceState))
 }
 ```
 
@@ -175,7 +175,14 @@ override fun createRib(savedInstanceState: Bundle?): Node<*> =
                     Snackbar.make(rootViewGroup, "Hello world!", Snackbar.LENGTH_SHORT).show()
                 }
             }
-        ).build(savedInstanceState)
+        ).build(
+            // You only ever need to supply this info manually at your root RIB
+            // All other children get it from the framework
+            BuildContext.Params(
+                ancestryInfo = AncestryInfo.Root,
+                savedInstanceState = savedInstanceState
+            )
+        )
 ```
 
 Build and deploy the app, and pressing the button this is what we should see:

@@ -5,12 +5,12 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter.Configuration
 import kotlinx.android.parcel.Parcelize
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 
 class TestChildRouter(
-    savedInstanceState: Bundle?
+    buildParams: BuildParams<Nothing?>
 ): Router<Configuration, Nothing, Configuration, Nothing, TestChildView>(
-    savedInstanceState = savedInstanceState,
+    buildParams = buildParams,
     initialConfiguration = Configuration.Default
 ) {
     sealed class Configuration : Parcelable {

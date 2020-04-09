@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.builder
 
-import android.os.Bundle
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldView
@@ -18,7 +18,7 @@ internal interface HelloWorldComponent {
         fun create(
             dependency: HelloWorld.Dependency,
             @BindsInstance customisation: HelloWorld.Customisation,
-            @BindsInstance savedInstanceState: Bundle?
+            @BindsInstance buildParams: BuildParams<Nothing?>
         ): HelloWorldComponent
     }
 

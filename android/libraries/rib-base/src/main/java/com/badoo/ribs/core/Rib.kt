@@ -1,3 +1,19 @@
 package com.badoo.ribs.core
 
-interface Rib
+import java.util.UUID
+
+interface Rib {
+
+    data class Identifier(
+        val rib: Rib,
+        val uuid: UUID
+    ) : Identifiable {
+
+        override val id: String
+            get() = uuid.toString()
+
+        companion object {
+            internal const val KEY_UUID = "rib.uuid"
+        }
+    }
+}

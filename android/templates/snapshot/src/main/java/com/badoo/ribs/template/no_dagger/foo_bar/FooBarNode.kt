@@ -1,15 +1,15 @@
 package com.badoo.ribs.template.no_dagger.foo_bar
 
-import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.no_dagger.foo_bar.feature.FooBarFeature
 import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
 class FooBarNode internal constructor(
-    savedInstanceState: Bundle?,
+    buildParams: BuildParams<Nothing?>,
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val router: FooBarRouter,
     private val input: ObservableSource<FooBar.Input>,
@@ -17,8 +17,7 @@ class FooBarNode internal constructor(
     private val feature: FooBarFeature,
     private val interactor: FooBarInteractor
 ) : Node<FooBarView>(
-    savedInstanceState = savedInstanceState,
-    identifier = object : FooBar {},
+    buildParams = buildParams,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor

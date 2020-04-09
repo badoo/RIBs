@@ -31,9 +31,9 @@ data class SingleTopBackStackOperation<C : Parcelable>(
     }
 }
 
-fun <C : Parcelable, Overlay : C> Router<C, *, *, Overlay, *>.singleTop(configuration: Overlay) {
-    acceptOperation(PushOverlayBackStackOperation(configuration))
+fun <C : Parcelable> Router<C, *, *, *, *>.singleTop(configuration: C) {
+    acceptOperation(SingleTopBackStackOperation(configuration))
 }
 
-internal fun <C : Parcelable> SignleTop(configuration: C) =
-    BackStackFeature.Operation.ExtendedOperation(PushOverlayBackStackOperation(configuration))
+internal fun <C : Parcelable> SingleTop(configuration: C) =
+    BackStackFeature.Operation.ExtendedOperation(SingleTopBackStackOperation(configuration))

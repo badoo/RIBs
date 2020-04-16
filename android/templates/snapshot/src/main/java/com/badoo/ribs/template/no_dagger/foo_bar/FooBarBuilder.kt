@@ -19,21 +19,22 @@ class FooBarBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): FooBarNode {
         val customisation = dependency.getOrDefault(FooBar.Customisation())
         val feature = FooBarFeature()
-        val router = FooBarRouter(buildParams, customisation.transitionHandler)
-        val interactor = createInteractor(buildParams, router, dependency, feature)
+        val router = router(buildParams, customisation)
+        val interactor = interactor(buildParams, router, dependency, feature)
 
-        return FooBarNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            router = router,
-            input = dependency.fooBarInput(),
-            output = dependency.fooBarOutput(),
-            feature = feature,
-            interactor = interactor
-        )
+        return node(buildParams, customisation, router, feature, interactor)
     }
 
-    private fun createInteractor(
+    private fun router(
+        buildParams: BuildParams<Nothing?>,
+        customisation: FooBar.Customisation
+    ) =
+        FooBarRouter(
+            buildParams = buildParams,
+            transitionHandler = customisation.transitionHandler
+        )
+
+    private fun interactor(
         buildParams: BuildParams<Nothing?>,
         router: FooBarRouter,
         dependency: FooBar.Dependency,
@@ -46,4 +47,22 @@ class FooBarBuilder(
             output = dependency.fooBarOutput(),
             feature = feature
         )
+
+    private fun node(
+        buildParams: BuildParams<Nothing?>,
+        customisation: FooBar.Customisation,
+        router: FooBarRouter,
+        feature: FooBarFeature,
+        interactor: FooBarInteractor
+    ): FooBarNode {
+        return FooBarNode(
+            buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null),
+            router = router,
+            input = dependency.fooBarInput(),
+            output = dependency.fooBarOutput(),
+            feature = feature,
+            interactor = interactor
+        )
+    }
 }

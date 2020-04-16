@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate

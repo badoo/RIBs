@@ -4,16 +4,12 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.feature.FooBarFeature
-import io.reactivex.ObservableSource
 import io.reactivex.Single
-import io.reactivex.functions.Consumer
 
 class FooBarNode internal constructor(
     buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val router: FooBarRouter,
-    private val input: ObservableSource<FooBar.Input>,
-    private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature,
     private val interactor: FooBarInteractor
 ) : Node<FooBarView>(
@@ -26,7 +22,6 @@ class FooBarNode internal constructor(
     /**
      * TODO:
      *  - use router / input / output / feature for FooBar.Workflow method implementations
-     *  - remove them from constructor if they are not needed (don't forget to remove in FooBarModule, too)
      *  - keep in mind that in most cases you probably don't need to use interactor reference directly
      *      - its lifecycle methods are not accessible publicly (and it's good this way)
      *      - its internal consumers are usually reacting to children, and then it's better to

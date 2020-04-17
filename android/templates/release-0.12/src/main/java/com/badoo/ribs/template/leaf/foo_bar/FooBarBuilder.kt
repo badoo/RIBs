@@ -18,20 +18,16 @@ class FooBarBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): FooBarNode {
         val customisation = dependency.getOrDefault(FooBar.Customisation())
-        val feature = FooBarFeature()
-        val interactor = createInteractor(buildParams, dependency, feature)
+        val feature = feature()
+        val interactor = interactor(buildParams, dependency, feature)
 
-        return FooBarNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            input = dependency.fooBarInput(),
-            output = dependency.fooBarOutput(),
-            feature = feature,
-            interactor = interactor
-        )
+        return node(buildParams, customisation, interactor)
     }
 
-    private fun createInteractor(
+    private fun feature() =
+        FooBarFeature()
+
+    private fun interactor(
         buildParams: BuildParams<*>,
         dependency: FooBar.Dependency,
         feature: FooBarFeature
@@ -41,5 +37,16 @@ class FooBarBuilder(
             input = dependency.fooBarInput(),
             output = dependency.fooBarOutput(),
             feature = feature
+        )
+
+    private fun node(
+        buildParams: BuildParams<Nothing?>,
+        customisation: FooBar.Customisation,
+        interactor: FooBarInteractor
+    ) =
+        FooBarNode(
+            buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null),
+            interactor = interactor
         )
 }

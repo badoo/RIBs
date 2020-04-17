@@ -3,13 +3,15 @@ package com.badoo.ribs.template.node.foo_bar
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import io.reactivex.Single
 
 class FooBarNode internal constructor(
     buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> FooBarView?)?,
     private val router: FooBarRouter,
-    private val interactor: FooBarInteractor
+    private val interactor: FooBarInteractor,
+    private val feature: FooBarFeature
 ) : Node<FooBarView>(
     buildParams = buildParams,
     viewFactory = viewFactory,

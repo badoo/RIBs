@@ -19,24 +19,28 @@ class FooBarBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): FooBarNode {
         val customisation = dependency.getOrDefault(FooBar.Customisation())
         val router = router(buildParams, customisation)
-        val feature = FooBarFeature()
-        val interactor = interactor(buildParams, router, dependency, feature)
+        val feature = feature()
+        val interactor = interactor(dependency, buildParams, router, feature)
 
-        return node(buildParams, customisation, router, interactor)
+        return node(buildParams, customisation, router, interactor, feature)
     }
+
+    private fun feature() =
+        FooBarFeature()
 
     private fun router(
         buildParams: BuildParams<*>,
         customisation: FooBar.Customisation
-    ) = FooBarRouter(
+    ) =
+        FooBarRouter(
             buildParams = buildParams,
             transitionHandler = customisation.transitionHandler
         )
 
     private fun interactor(
+        dependency: FooBar.Dependency,
         buildParams: BuildParams<*>,
         router: FooBarRouter,
-        dependency: FooBar.Dependency,
         feature: FooBarFeature
     ) = FooBarInteractor(
             buildParams = buildParams,
@@ -50,13 +54,13 @@ class FooBarBuilder(
         buildParams: BuildParams<*>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
-        interactor: FooBarInteractor
-    ): FooBarNode {
-        return FooBarNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            router = router,
-            interactor = interactor
-        )
-    }
+        interactor: FooBarInteractor,
+        feature: FooBarFeature
+    ) = FooBarNode(
+        buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
+        router = router,
+        interactor = interactor,
+        feature = feature
+    )
 }

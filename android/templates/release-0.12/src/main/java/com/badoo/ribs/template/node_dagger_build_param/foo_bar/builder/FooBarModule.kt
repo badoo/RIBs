@@ -54,7 +54,6 @@ internal object FooBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        dependency: FooBar.Dependency,
         buildParams: BuildParams<Params>,
         customisation: FooBar.Customisation,
         router: FooBarRouter,
@@ -65,8 +64,6 @@ internal object FooBarModule {
         viewFactory = customisation.viewFactory(null),
         router = router,
         interactor = interactor,
-        input = dependency.fooBarInput(),
-        output = dependency.fooBarOutput(),
         feature = feature
     )
 }

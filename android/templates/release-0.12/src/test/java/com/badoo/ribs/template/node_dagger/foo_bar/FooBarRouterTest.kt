@@ -1,5 +1,6 @@
 package com.badoo.ribs.template.node_dagger.foo_bar
 
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -11,13 +12,13 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class FooBarRouterTest {
 
-    private var interactor: FooBarInteractor = mock()
+    private val buildParams: BuildParams<Nothing?> = mock()
     private var router: FooBarRouter? = null
 
     @Before
     fun setup() {
         router = FooBarRouter(
-            savedInstanceState = null
+            buildParams = buildParams
         )
     }
 

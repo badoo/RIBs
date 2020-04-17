@@ -1,9 +1,9 @@
-package com.badoo.ribs.template.rib_with_view.foo_bar
+package com.badoo.ribs.template.node_dagger.foo_bar
 
 import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature
+import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
 import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.Consumer

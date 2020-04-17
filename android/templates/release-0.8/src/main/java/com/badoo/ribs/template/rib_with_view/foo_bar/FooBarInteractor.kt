@@ -1,4 +1,4 @@
-package com.badoo.ribs.template.rib_with_view.foo_bar
+package com.badoo.ribs.template.node_dagger.foo_bar
 
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
@@ -7,16 +7,16 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Content
-import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Overlay
-import com.badoo.ribs.template.rib_with_view.foo_bar.analytics.FooBarAnalytics
-import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature
-import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.InputToWish
-import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.NewsToOutput
-import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.StateToViewModel
-import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.ViewEventToAnalyticsEvent
-import com.badoo.ribs.template.rib_with_view.foo_bar.mapper.ViewEventToWish
+import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter.Configuration
+import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter.Configuration.Content
+import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter.Configuration.Overlay
+import com.badoo.ribs.template.node_dagger.foo_bar.analytics.FooBarAnalytics
+import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
+import com.badoo.ribs.template.node_dagger.foo_bar.mapper.InputToWish
+import com.badoo.ribs.template.node_dagger.foo_bar.mapper.NewsToOutput
+import com.badoo.ribs.template.node_dagger.foo_bar.mapper.StateToViewModel
+import com.badoo.ribs.template.node_dagger.foo_bar.mapper.ViewEventToAnalyticsEvent
+import com.badoo.ribs.template.node_dagger.foo_bar.mapper.ViewEventToWish
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 

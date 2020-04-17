@@ -1,4 +1,4 @@
-package com.badoo.ribs.template.rib_with_view.foo_bar
+package com.badoo.ribs.template.node_dagger.foo_bar
 
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation

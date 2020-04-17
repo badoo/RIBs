@@ -1,3 +1,5 @@
+@file:SuppressWarnings("LongParameterList")
+
 package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams

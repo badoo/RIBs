@@ -117,7 +117,7 @@ open class GenerateTemplatesTask : DefaultTask() {
 
     private fun File.isFileInPackage(javaPackage: String, baseDirectory: File): Boolean {
         val relativePath = baseDirectory.toPath().relativize(this.toPath()).toString()
-        val packagePath = javaPackage.replace('.', File.separatorChar)
+        val packagePath = javaPackage.replace('.', File.separatorChar) + File.separatorChar
         return relativePath.startsWith(packagePath)
     }
 }

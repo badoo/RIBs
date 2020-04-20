@@ -94,7 +94,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     }
 
     fun acceptOperation(backStackOperation: BackStackOperation<C>) {
-        backStackFeature.accept(BackStackFeature.Operation.ExtendedOperation(backStackOperation))
+        backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
     }
 
     internal fun add(configurationKey: ConfigurationKey<C>) {

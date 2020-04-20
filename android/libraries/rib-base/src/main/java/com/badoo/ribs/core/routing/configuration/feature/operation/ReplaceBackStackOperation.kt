@@ -8,10 +8,10 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operat
 data class ReplaceBackStackOperation<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
-    override fun isApplicable(backStack: List<BackStackElement<C>>): Boolean =
+    override fun isApplicable(backStack: BackStack<C>): Boolean =
         configuration != backStack.lastOrNull()?.configuration
 
-    override fun modifyStack(backStack: List<BackStackElement<C>>): List<BackStackElement<C>> =
+    override fun invoke(backStack: BackStack<C>): BackStack<C> =
         backStack.dropLast(1) + BackStackElement(configuration)
 }
 
@@ -20,4 +20,4 @@ fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.replace(configurat
 }
 
 internal fun <C : Parcelable> Replace(configuration: C) =
-    Operation.ExtendedOperation(ReplaceBackStackOperation(configuration))
+    Operation(ReplaceBackStackOperation(configuration))

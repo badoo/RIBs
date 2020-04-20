@@ -8,7 +8,6 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.ExtendedOperation
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.feature.operation.NewRoot
 import io.reactivex.Observable
@@ -50,11 +49,9 @@ internal class BackStackFeature<C : Parcelable>(
     }
 
     /**
-     * The set of back stack operations this [BackStackFeature] supports.
+     * The back stack operation this [BackStackFeature] supports.
      */
-    sealed class Operation<C : Parcelable> {
-        data class ExtendedOperation<C : Parcelable>(val backStackOperation: BackStackOperation<C>) : Operation<C>()
-    }
+    data class Operation<C : Parcelable>(val backStackOperation: BackStackOperation<C>)
 
     /**
      * The set of back stack operations affecting the state.
@@ -89,11 +86,10 @@ internal class BackStackFeature<C : Parcelable>(
     class ActorImpl<C : Parcelable> : Actor<BackStackFeatureState<C>, Operation<C>, Effect<C>> {
         @SuppressWarnings("LongMethod")
         override fun invoke(state: BackStackFeatureState<C>, op: Operation<C>): Observable<out Effect<C>> =
-            when (op) {
-                is ExtendedOperation -> when {
-                    op.backStackOperation.isApplicable(state.backStack) -> just(Effect.ExtendOperationApplied(state, op.backStackOperation))
-                    else -> empty()
-                }
+            if (op.backStackOperation.isApplicable(state.backStack)) {
+                just(Effect.ExtendOperationApplied(state, op.backStackOperation))
+            } else {
+                empty()
             }
     }
 
@@ -107,7 +103,7 @@ internal class BackStackFeature<C : Parcelable>(
 
         private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C> = when (effect) {
             is Effect.ExtendOperationApplied -> copy(
-                backStack = effect.backStackOperation.modifyStack(backStack)
+                backStack = effect.backStackOperation(backStack)
             )
         }
     }

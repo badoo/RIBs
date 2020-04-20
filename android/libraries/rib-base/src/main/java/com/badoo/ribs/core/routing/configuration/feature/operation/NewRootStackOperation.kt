@@ -3,21 +3,21 @@ package com.badoo.ribs.core.routing.configuration.feature.operation
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 
-data class NewRootBackStackOperation<C : Parcelable>(
+data class NewRootStackOperation<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
-    override fun isApplicable(backStack: List<BackStackElement<C>>): Boolean =
+    override fun isApplicable(backStack: BackStack<C>): Boolean =
         backStack.size != 1 || backStack.first().configuration != configuration
 
-    override fun modifyStack(backStack: List<BackStackElement<C>>): List<BackStackElement<C>> =
+    override fun invoke(backStack: BackStack<C>): BackStack<C> =
         listOf(BackStackElement(configuration))
 }
 
 fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.newRoot(configuration: Content) {
-    acceptOperation(NewRootBackStackOperation(configuration))
+    acceptOperation(NewRootStackOperation(configuration))
 }
 
 internal fun <C : Parcelable> NewRoot(configuration: C) =
-    Operation.ExtendedOperation(NewRootBackStackOperation(configuration))
+    BackStackFeature.Operation(NewRootStackOperation(configuration))

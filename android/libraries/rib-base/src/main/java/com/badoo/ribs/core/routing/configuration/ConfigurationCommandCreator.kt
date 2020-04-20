@@ -10,6 +10,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import java.lang.Math.min
 
 
@@ -21,8 +22,8 @@ internal object ConfigurationCommandCreator {
      * a list of [ConfigurationCommand]s that represent getting from the old state to the new one.
      */
     fun <C : Parcelable> diff(
-        oldStack: List<BackStackElement<C>>,
-        newStack: List<BackStackElement<C>>
+        oldStack: BackStack<C>,
+        newStack: BackStack<C>
     ): List<ConfigurationCommand<C>> =
         when (newStack) {
             oldStack -> emptyList()
@@ -57,7 +58,7 @@ internal object ConfigurationCommandCreator {
         return idx
     }
 
-    private fun <C : Parcelable> List<BackStackElement<C>>.deactivateIfNeeded(other: List<BackStackElement<C>>): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> BackStack<C>.deactivateIfNeeded(other: BackStack<C>): List<ConfigurationCommand<C>> =
         when {
             contentListHasChanged(other) && isNotEmpty() -> {
                 val configuration = last().configuration
@@ -73,10 +74,10 @@ internal object ConfigurationCommandCreator {
     /**
      * A comparison between two lists that doesn't care about overlay differences, only the direct elements
      */
-    private fun <C : Parcelable> List<BackStackElement<C>>.contentListHasChanged(other: List<BackStackElement<C>>) =
+    private fun <C : Parcelable> BackStack<C>.contentListHasChanged(other: BackStack<C>) =
         map { it.configuration } != other.map { it.configuration }
 
-    private fun <C : Parcelable> List<BackStackElement<C>>.removeUntil(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
+    private fun <C : Parcelable> BackStack<C>.removeUntil(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
         val offset = targetIdxExclusive + 1
         return subList(offset, size)
             .mapIndexed { contentIndex, backStackElement ->
@@ -95,7 +96,7 @@ internal object ConfigurationCommandCreator {
             .reversed()
     }
 
-    private fun <C : Parcelable> List<BackStackElement<C>>.addFrom(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
+    private fun <C : Parcelable> BackStack<C>.addFrom(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
         val offset = targetIdxExclusive + 1
         return subList(offset, size)
             .mapIndexed { contentIndex, backStackElement ->
@@ -108,7 +109,7 @@ internal object ConfigurationCommandCreator {
             .flatten()
     }
 
-    private fun <C : Parcelable> List<BackStackElement<C>>.activateIfNeeded(other: List<BackStackElement<C>>): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> BackStack<C>.activateIfNeeded(other: BackStack<C>): List<ConfigurationCommand<C>> =
         when {
             isNotEmpty() && contentListHasChanged(other) -> {
                 val commands = mutableListOf<ConfigurationCommand<C>>()
@@ -146,7 +147,7 @@ internal object ConfigurationCommandCreator {
             }
             .reversed()
 
-    private fun <C : Parcelable> List<BackStackElement<C>>.overlayDiff(oldStack: List<BackStackElement<C>>): List<ConfigurationCommand<C>> {
+    private fun <C : Parcelable> BackStack<C>.overlayDiff(oldStack: BackStack<C>): List<ConfigurationCommand<C>> {
         val commands = mutableListOf<ConfigurationCommand<C>>()
 
         forEachIndexed { index, newElement ->

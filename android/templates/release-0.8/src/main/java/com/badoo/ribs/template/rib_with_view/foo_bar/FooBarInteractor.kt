@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.rib_with_view.foo_bar
 
-import androidx.lifecycle.Lifecycle
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using

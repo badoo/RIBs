@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 
-data class PushOverlayBackStackOperation<C : Parcelable>(
+data class PushOverlay<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
     override fun isApplicable(backStack: BackStack<C>): Boolean =
@@ -29,8 +29,8 @@ data class PushOverlayBackStackOperation<C : Parcelable>(
 }
 
 fun <C : Parcelable, Overlay : C> Router<C, *, *, Overlay, *>.pushOverlay(configuration: Overlay) {
-    acceptOperation(PushOverlayBackStackOperation(configuration))
+    acceptOperation(PushOverlay(configuration))
 }
 
-internal fun <C : Parcelable> PushOverlay(configuration: C) =
-    Operation(PushOverlayBackStackOperation(configuration))
+internal fun <C : Parcelable> pushOverlay(configuration: C) =
+    Operation(PushOverlay(configuration))

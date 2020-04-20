@@ -5,19 +5,22 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 
-data class ReplaceBackStackOperation<C : Parcelable>(
+data class Push<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
     override fun isApplicable(backStack: BackStack<C>): Boolean =
-        configuration != backStack.lastOrNull()?.configuration
+        configuration != backStack.current?.configuration
 
     override fun invoke(backStack: BackStack<C>): BackStack<C> =
-        backStack.dropLast(1) + BackStackElement(configuration)
+        backStack + BackStackElement(configuration)
+
+    private val BackStack<C>.current: BackStackElement<C>?
+        get() = this.lastOrNull()
 }
 
-fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.replace(configuration: Content) {
-    acceptOperation(ReplaceBackStackOperation(configuration))
+fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.push(configuration: Content) {
+    acceptOperation(Push(configuration))
 }
 
-internal fun <C : Parcelable> Replace(configuration: C) =
-    Operation(ReplaceBackStackOperation(configuration))
+internal fun <C : Parcelable> push(configuration: C) =
+    Operation(Push(configuration))

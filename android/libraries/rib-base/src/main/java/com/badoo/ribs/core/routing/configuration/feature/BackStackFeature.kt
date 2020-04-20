@@ -9,7 +9,7 @@ import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
-import com.badoo.ribs.core.routing.configuration.feature.operation.NewRoot
+import com.badoo.ribs.core.routing.configuration.feature.operation.newRoot
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
@@ -67,14 +67,14 @@ internal class BackStackFeature<C : Parcelable>(
     }
 
     /**
-     * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
+     * Automatically sets [initialConfiguration] as [newRoot] when initialising the [BackStackFeature]
      */
     class BootstrapperImpl<C : Parcelable>(
         private val state: BackStackFeatureState<C>,
         private val initialConfiguration: C
     ) : Bootstrapper<Operation<C>> {
         override fun invoke(): Observable<Operation<C>> = when {
-            state.backStack.isEmpty() -> just(NewRoot(initialConfiguration))
+            state.backStack.isEmpty() -> just(newRoot(initialConfiguration))
             else -> empty()
         }
     }

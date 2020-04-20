@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 
-data class SingleTopBackStackOperation<C : Parcelable>(
+data class SingleTop<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
     override fun isApplicable(backStack: BackStack<C>): Boolean =
@@ -19,7 +19,7 @@ data class SingleTopBackStackOperation<C : Parcelable>(
 
         val operation: BackStackOperation<C> =
             if (lastIndexOfSameClass == -1) {
-                PushBackStackOperation(configuration)
+                Push(configuration)
             } else {
                 if (backStack[lastIndexOfSameClass] == configuration) {
                     SingleTopReactivateBackStackOperation(configuration, lastIndexOfSameClass)
@@ -57,8 +57,8 @@ data class SingleTopBackStackOperation<C : Parcelable>(
 }
 
 fun <C : Parcelable> Router<C, *, *, *, *>.singleTop(configuration: C) {
-    acceptOperation(SingleTopBackStackOperation(configuration))
+    acceptOperation(SingleTop(configuration))
 }
 
-internal fun <C : Parcelable> SingleTop(configuration: C) =
-    Operation(SingleTopBackStackOperation(configuration))
+internal fun <C : Parcelable> singleTop(configuration: C) =
+    Operation(SingleTop(configuration))

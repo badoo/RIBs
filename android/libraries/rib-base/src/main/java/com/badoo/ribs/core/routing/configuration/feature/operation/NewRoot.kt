@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 
-data class NewRootStackOperation<C : Parcelable>(
+data class NewRoot<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
     override fun isApplicable(backStack: BackStack<C>): Boolean =
@@ -16,8 +16,8 @@ data class NewRootStackOperation<C : Parcelable>(
 }
 
 fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.newRoot(configuration: Content) {
-    acceptOperation(NewRootStackOperation(configuration))
+    acceptOperation(NewRoot(configuration))
 }
 
-internal fun <C : Parcelable> NewRoot(configuration: C) =
-    BackStackFeature.Operation(NewRootStackOperation(configuration))
+internal fun <C : Parcelable> newRoot(configuration: C) =
+    BackStackFeature.Operation(NewRoot(configuration))

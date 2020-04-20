@@ -19,7 +19,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
-import com.badoo.ribs.core.routing.configuration.feature.operation.PopBackStackOperation
+import com.badoo.ribs.core.routing.configuration.feature.operation.Pop
 import com.badoo.ribs.core.routing.configuration.feature.operation.canPop
 import com.badoo.ribs.core.routing.configuration.feature.operation.canPopOverlay
 import com.badoo.ribs.core.routing.configuration.toCommands
@@ -134,7 +134,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     fun popBackStack(): Boolean =
         if (backStackFeature.state.backStack.canPop) {
-            acceptOperation(PopBackStackOperation())
+            acceptOperation(Pop())
             true
         } else {
             false
@@ -142,7 +142,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
 
     fun popOverlay(): Boolean =
         if (backStackFeature.state.backStack.canPopOverlay) {
-            acceptOperation(PopBackStackOperation())
+            acceptOperation(Pop())
             true
         } else {
             false

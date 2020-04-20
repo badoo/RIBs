@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 
-class PopBackStackOperation<C : Parcelable> : BackStackOperation<C> {
+class Pop<C : Parcelable> : BackStackOperation<C> {
 
     override fun invoke(backStack: BackStack<C>): BackStack<C> =
         when {
@@ -38,5 +38,5 @@ internal val <C : Parcelable> BackStack<C>.canPop: Boolean
 internal val <C : Parcelable> BackStack<C>.canPopOverlay: Boolean
     get() = lastOrNull()?.overlays?.isNotEmpty() == true
 
-internal fun <C : Parcelable> Pop() =
-    Operation(PopBackStackOperation<C>())
+internal fun <C : Parcelable> pop() =
+    Operation(Pop<C>())

@@ -10,13 +10,13 @@ import com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder.FooBarBui
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : Builder<FooBar.Dependency, Params, FooBarNode>(object : FooBar {}) {
+) : Builder<Params, FooBarNode>(object : FooBar {}) {
 
     data class Params(
         val someField: Int
     )
 
-    override val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
+    private val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 

@@ -60,7 +60,7 @@ internal class BackStackFeature<C : Parcelable>(
         // Consider adding oldState to NewsPublisher
         abstract val oldState: BackStackFeatureState<C>
 
-        data class ExtendOperationApplied<C : Parcelable>(
+        data class Applied<C : Parcelable>(
             override val oldState: BackStackFeatureState<C>,
             val backStackOperation: BackStackOperation<C>
         ) : Effect<C>()
@@ -87,7 +87,7 @@ internal class BackStackFeature<C : Parcelable>(
         @SuppressWarnings("LongMethod")
         override fun invoke(state: BackStackFeatureState<C>, op: Operation<C>): Observable<out Effect<C>> =
             if (op.backStackOperation.isApplicable(state.backStack)) {
-                just(Effect.ExtendOperationApplied(state, op.backStackOperation))
+                just(Effect.Applied(state, op.backStackOperation))
             } else {
                 empty()
             }
@@ -102,7 +102,7 @@ internal class BackStackFeature<C : Parcelable>(
             state.apply(effect)
 
         private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C> = when (effect) {
-            is Effect.ExtendOperationApplied -> copy(
+            is Effect.Applied -> copy(
                 backStack = effect.backStackOperation(backStack)
             )
         }

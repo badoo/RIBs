@@ -1,11 +1,11 @@
-package com.badoo.ribs.template.node_dagger.foo_bar.builder
+package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
 import android.os.Bundle
 import com.badoo.ribs.core.Builder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarNode
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarNode
 
 class FooBarBuilder(
     dependency: FooBar.Dependency

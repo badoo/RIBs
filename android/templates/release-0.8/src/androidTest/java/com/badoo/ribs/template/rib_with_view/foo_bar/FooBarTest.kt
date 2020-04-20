@@ -1,10 +1,10 @@
-package com.badoo.ribs.template.node_dagger.foo_bar
+package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import android.os.Bundle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.customisation.RibCustomisationDirectory
-import com.badoo.ribs.template.node_dagger.foo_bar.builder.FooBarBuilder
+import com.badoo.ribs.template.rib_with_view.foo_bar.builder.FooBarBuilder
 import io.reactivex.Observable.empty
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

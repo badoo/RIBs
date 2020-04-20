@@ -1,14 +1,14 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
-package com.badoo.ribs.template.node_dagger.foo_bar.builder
+package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
 import android.os.Bundle
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBar.Input
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBar.Output
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarInteractor
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarNode
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter
-import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Input
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBar.Output
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarInteractor
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarNode
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter
+import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature
 import dagger.Provides
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

@@ -1,4 +1,4 @@
-package com.badoo.ribs.template.node_dagger.foo_bar.builder
+package com.badoo.ribs.template.rib_with_view.foo_bar.builder
 
 import javax.inject.Scope
 

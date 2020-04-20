@@ -1,14 +1,14 @@
-package com.badoo.ribs.template.node_dagger.foo_bar.feature
+package com.badoo.ribs.template.rib_with_view.foo_bar.feature
 
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.NewsPublisher
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.feature.ActorReducerFeature
-import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature.Effect
-import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature.News
-import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature.State
-import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature.Wish
+import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature.Effect
+import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature.News
+import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature.State
+import com.badoo.ribs.template.rib_with_view.foo_bar.feature.FooBarFeature.Wish
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 

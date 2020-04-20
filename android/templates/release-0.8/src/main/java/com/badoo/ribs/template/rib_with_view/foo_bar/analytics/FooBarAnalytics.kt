@@ -1,6 +1,6 @@
-package com.badoo.ribs.template.node_dagger.foo_bar.analytics
+package com.badoo.ribs.template.rib_with_view.foo_bar.analytics
 
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView
 import io.reactivex.functions.Consumer
 
 internal object FooBarAnalytics : Consumer<FooBarAnalytics.Event> {

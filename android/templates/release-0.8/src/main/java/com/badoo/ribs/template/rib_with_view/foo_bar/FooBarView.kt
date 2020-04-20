@@ -1,4 +1,4 @@
-package com.badoo.ribs.template.node_dagger.foo_bar
+package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -6,8 +6,8 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.template.R
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView.Event
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView.ViewModel
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView.Event
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

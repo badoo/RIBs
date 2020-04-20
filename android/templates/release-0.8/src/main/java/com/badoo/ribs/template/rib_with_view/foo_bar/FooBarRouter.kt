@@ -1,13 +1,13 @@
-package com.badoo.ribs.template.node_dagger.foo_bar
+package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter.Configuration
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter.Configuration.Content
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter.Configuration.Overlay
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarRouter.Configuration.Permanent
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Content
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Overlay
+import com.badoo.ribs.template.rib_with_view.foo_bar.FooBarRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
 internal class FooBarRouter(

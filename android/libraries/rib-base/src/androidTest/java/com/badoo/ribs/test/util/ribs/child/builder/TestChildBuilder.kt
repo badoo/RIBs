@@ -11,7 +11,7 @@ import com.badoo.ribs.test.util.ribs.child.TestChildRouter
 import com.badoo.ribs.test.util.ribs.child.TestChildView
 import com.badoo.ribs.test.util.ribs.child.TestChildViewImpl
 
-class TestChildBuilder : SimpleBuilder<Nothing?, TestNode<TestChildView>>(
+class TestChildBuilder : SimpleBuilder<TestNode<TestChildView>>(
     rib = object : Rib {}
 ) {
 

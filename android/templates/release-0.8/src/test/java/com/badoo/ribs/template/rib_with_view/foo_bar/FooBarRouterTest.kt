@@ -1,4 +1,4 @@
-package com.badoo.ribs.template.node_dagger.foo_bar
+package com.badoo.ribs.template.rib_with_view.foo_bar
 
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After

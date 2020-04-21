@@ -5,23 +5,16 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
-import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
-import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
-import com.badoo.ribs.core.helper.TestRouter.Configuration.C6
-import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
-import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
-import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeatureState
-import com.badoo.ribs.core.routing.configuration.feature.operation.newRoot
-import com.badoo.ribs.core.routing.configuration.feature.operation.pop
-import com.badoo.ribs.core.routing.configuration.feature.operation.push
-import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
-import com.badoo.ribs.core.routing.configuration.feature.operation.replace
-import com.badoo.ribs.core.routing.configuration.feature.operation.singleTop
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
+import com.badoo.ribs.core.routing.configuration.feature.operation.asBackStackElements
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -37,7 +30,7 @@ class BackStackFeatureTest {
     private lateinit var timeCapsuleEmpty: TimeCapsule<BackStackFeatureState<Configuration>>
     private lateinit var timeCapsuleWithContent: TimeCapsule<BackStackFeatureState<Configuration>>
     private lateinit var backstackInTimeCapsule: List<BackStackElement<Configuration>>
-    private lateinit var backStackManager: BackStackFeature<Configuration>
+    private lateinit var backStackFeature: BackStackFeature<Configuration>
 
     @Before
     fun setUp() {
@@ -56,7 +49,7 @@ class BackStackFeatureTest {
     }
 
     private fun setupBackStackManager(timeCapsule: TimeCapsule<BackStackFeatureState<Configuration>>) {
-        backStackManager = BackStackFeature(
+        backStackFeature = BackStackFeature(
             initialConfiguration,
             timeCapsule
         )
@@ -64,369 +57,57 @@ class BackStackFeatureTest {
 
     @Test
     fun `Initial back stack contains only one element`() {
-        assertThat(backStackManager.state.backStack, hasSize(1))
+        assertThat(backStackFeature.state.backStack, hasSize(1))
     }
 
     @Test
     fun `Initial state matches initial configuration`() {
-        assertEquals(initialConfiguration, backStackManager.state.current!!.configuration)
+        assertEquals(initialConfiguration, backStackFeature.state.current!!.configuration)
     }
 
     @Test
     fun `After state restoration back stack matches the one in the time capsule`() {
         setupBackStackManager(timeCapsuleWithContent)
-        assertEquals(backstackInTimeCapsule, backStackManager.state.backStack)
+        assertEquals(backstackInTimeCapsule, backStackFeature.state.backStack)
     }
 
     @Test
     fun `Back stack state's current() references last item`() {
         setupBackStackManager(timeCapsuleWithContent)
-        assertEquals(backstackInTimeCapsule.last(), backStackManager.state.current)
+        assertEquals(backstackInTimeCapsule.last(), backStackFeature.state.current)
     }
 
     @Test
-    fun `Wish_Push once results in the back stack size growing by one`() {
-        backStackManager.accept(push(C4))
-        assertEquals(2, backStackManager.state.backStack.size)
+    fun `update state when operation is acceptable`() {
+        val newBackStack = listOf(C2, C3).asBackStackElements()
+        val backStackOperation = backStackOperation { newBackStack }
+
+        backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
+
+        assertEquals(newBackStack, backStackFeature.state.backStack)
     }
 
     @Test
-    fun `Wish_Push once adds the expected new element to the end of the back stack`() {
-        backStackManager.accept(push(C4))
-        assertEquals(C4, backStackManager.state.current!!.configuration)
-    }
-
-    @Test
-    fun `Wish_Push same elements multiple times has no effect after first`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C2))
-        val expected = listOf(
-            initialConfiguration,
-            C2
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_Push multiple different elements results in expected backstack content`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C5))
-        val expected = listOf(
-            initialConfiguration,
-            C2,
-            C3,
-            C4,
-            C5
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_PushOverlay does not grow the back stack size`() {
-        backStackManager.accept(pushOverlay(O1))
-        assertEquals(1, backStackManager.state.backStack.size)
-    }
-
-    @Test
-    fun `Wish_PushOverlay adds a new element to the overlay list of the last back stack element`() {
-        backStackManager.accept(pushOverlay(O1))
-        assertEquals(1, backStackManager.state.backStack.last().overlays.size)
-    }
-
-    @Test
-    fun `Wish_PushOverlay adds the expected configuration to the overlay list of the last back stack element`() {
-        backStackManager.accept(pushOverlay(O1))
-        assertEquals(O1, backStackManager.state.backStack.last().overlays.last())
-    }
-
-    @Test
-    fun `Wish_PushOverlay multiple times with same elements has no effect after the first`() {
-        backStackManager.accept(pushOverlay(O1))
-        backStackManager.accept(pushOverlay(O1))
-        backStackManager.accept(pushOverlay(O1))
-        assertEquals(listOf(O1), backStackManager.state.backStack.last().overlays)
-    }
-
-    @Test
-    fun `Wish_PushOverlay multiple times with different elements adds all new ones to the overlay list of the last back stack element`() {
-        backStackManager.accept(pushOverlay(O1))
-        backStackManager.accept(pushOverlay(O2))
-        assertEquals(2, backStackManager.state.backStack.last().overlays.size)
-    }
-
-    @Test
-    fun `Wish_PushOverlay multiple times adds the expected elements to the overlay list of the last back stack element`() {
-        backStackManager.accept(pushOverlay(O1))
-        backStackManager.accept(pushOverlay(O2))
-        val expected = listOf(
-            O1,
-            O2
-        )
-        assertEquals(expected, backStackManager.state.backStack.last().overlays)
-    }
-
-    @Test
-    fun `Wish_Replace does not change back stack size`() {
-        // initial size: 1
-        backStackManager.accept(push(C2)) // should increase to 2
-        backStackManager.accept(push(C3)) // should increase to 3
-        backStackManager.accept(replace(C4)) // should keep 3
-        assertEquals(3, backStackManager.state.backStack.size)
-    }
-
-    @Test
-    fun `Wish_Replace puts the correct configuration at the end of the back stack`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(replace(C4))
-        assertEquals(C4, backStackManager.state.current!!.configuration)
-    }
-
-    @Test
-    fun `Wish_Replace same configuration as current has no effect`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(pushOverlay(O1))
-        val beforeReplace = backStackManager.state
-        backStackManager.accept(replace(C2))
-        assertEquals(beforeReplace, backStackManager.state)
-    }
-
-    @Test
-    fun `Wish_Replace consecutively results in expected backstack content`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(replace(C4))
-        backStackManager.accept(replace(C5))
-        val expected = listOf(
-            initialConfiguration,
-            C2,
-            C5
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_NewRoot results in new back stack with only one element`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(newRoot(C4))
-        assertEquals(1, backStackManager.state.backStack.size)
-    }
-
-    @Test
-    fun `Wish_NewRoot puts the correct configuration at the end of the back stack`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(newRoot(C4))
-        assertEquals(C4, backStackManager.state.current!!.configuration)
-    }
-
-    @Test
-    fun `Wish_NewRoot consecutively results in expected backstack content`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(newRoot(C4))
-        backStackManager.accept(newRoot(C5))
-        val expected = listOf(
-            C5
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_NewRoot same configuration as current has no effect`() {
-        backStackManager.accept(newRoot(C2))
-        backStackManager.accept(pushOverlay(O1))
-        val beforeReplace = backStackManager.state
-        backStackManager.accept(newRoot(C2))
-        assertEquals(beforeReplace, backStackManager.state)
-    }
-
-    @Test
-    fun `Wish_SingleTop reactivates configuration if found in back stack (object)`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C5))
-        backStackManager.accept(singleTop(C3))
-        val expected = listOf(
-            C1, C2, C3
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_SingleTop reactivates configuration if found in back stack (data class)`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C6(i = 1)))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C5))
-        backStackManager.accept(singleTop(C6(i = 1)))
-        val expected = listOf(
-            C1, C2, C6(i = 1)
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_SingleTop reactivate goes back only until latest occurrence (object)`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(push(C5))
-        backStackManager.accept(singleTop(C3))
-        val expected = listOf(
-            C1, C2, C3, C4, C3
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_SingleTop reactivate goes back only until latest occurrence (data class)`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C6(i = 1)))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C6(i = 1)))
-        backStackManager.accept(push(C5))
-        backStackManager.accept(singleTop(C6(i = 1)))
-        val expected = listOf(
-            C1, C2, C6(i = 1), C4, C6(i = 1)
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_SingleTop replaces configuration if found in back stack with different parameters`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C6(i = 1)))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C5))
-        backStackManager.accept(singleTop(C6(i = 2)))
-        val expected = listOf(
-            C1, C2, C6(i = 2)
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_SingleTop replaces goes back only until latest occurrence`() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C6(i = 1)))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C6(i = 1)))
-        backStackManager.accept(push(C5))
-        backStackManager.accept(singleTop(C6(i = 2)))
-        val expected = listOf(
-            C1, C2, C6(i = 1), C4, C6(i = 2)
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_SingleTop acts as Push if back stack doesn't contain new configuration `() {
-        backStackManager.accept(push(C2))
-        backStackManager.accept(push(C3))
-        backStackManager.accept(push(C4))
-        backStackManager.accept(push(C5))
-        backStackManager.accept(singleTop(C6(i = 3)))
-        val expected = listOf(
-            C1, C2, C3, C4, C5, C6(i = 3)
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_Pop does not change back stack if there's only one entry`() {
-        val lastElementBeforePop = backStackManager.state.current
-        backStackManager.accept(pop())
-        assertEquals(lastElementBeforePop, backStackManager.state.current)
-    }
-
-    @Test
-    fun `Wish_Pop reduces size of back stack if there's more than one entry`() {
-        // initial size: 1
-        backStackManager.accept(push(C2)) // should increase size to: 2
-        backStackManager.accept(push(C3)) // should increase size to: 3
-        backStackManager.accept(push(C4)) // should increase size to: 4
-        backStackManager.accept(pop())
-        assertEquals(3, backStackManager.state.backStack.size)
-    }
-
-    @Test
-    fun `Wish_Pop results in expected new back stack`() {
-        // initial size: 1
-        backStackManager.accept(push(C2)) // should increase size to: 2
-        backStackManager.accept(push(C3)) // should increase size to: 3
-        backStackManager.accept(push(C4)) // should increase size to: 4
-        backStackManager.accept(pop())
-        val expected = listOf(
-            initialConfiguration,
-            C2,
-            C3
-        )
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
-    }
-
-    @Test
-    fun `Wish_Pop doesn't pop content if there are overlays`() {
-        // initial size: 1
-        backStackManager.accept(push(C2)) // should increase size to: 2
-        backStackManager.accept(push(C3)) // should increase size to: 3
-        backStackManager.accept(push(C4)) // should increase size to: 4
-        backStackManager.accept(pushOverlay(O1)) // should keep size at: 4 + 1 overlay
-        backStackManager.accept(pushOverlay(O2)) // should keep size at: 4 + 2 overlays
-        backStackManager.accept(pop()) // should keep size at: 4 + 1 overlay
-
-        assertEquals(4, backStackManager.state.backStack.size)
-    }
-
-    @Test
-    fun `Wish_Pop keeps expected configurations if there are overlays`() {
-        // initial size: 1
-        backStackManager.accept(push(C2)) // should increase size to: 2
-        backStackManager.accept(push(C3)) // should increase size to: 3
-        backStackManager.accept(push(C4)) // should increase size to: 4
-        backStackManager.accept(pushOverlay(O1)) // should keep size at: 4 + 1 overlay
-        backStackManager.accept(pushOverlay(O2)) // should keep size at: 4 + 2 overlays
-        backStackManager.accept(pop()) // should keep size at: 4 + 1 overlay
-
-        val expected = listOf(
-            initialConfiguration,
-            C2,
-            C3,
-            C4
+    fun `stay with previous state when operation is not acceptable`() {
+        val newBackStack = listOf(C2, C3).asBackStackElements()
+        val oldBackStack = backStackFeature.state.backStack
+        val backStackOperation = backStackOperation(
+            isApplicable = { false },
+            backStackOperation = { newBackStack }
         )
 
-        assertEquals(expected, backStackManager.state.backStack.map { it.configuration })
+        backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
+
+        assertEquals(oldBackStack, backStackFeature.state.backStack)
     }
 
-    @Test
-    fun `Wish_Pop results in popping Overlay if there's at least one on the current element`() {
-        backStackManager.accept(pushOverlay(O1))
-        backStackManager.accept(pushOverlay(O2))
-        backStackManager.accept(pushOverlay(O3))
-        backStackManager.accept(pop())
-
-        assertEquals(2, backStackManager.state.backStack.last().overlays.size)
-    }
-
-    @Test
-    fun `Wish_Pop results in expected Overlays`() {
-        backStackManager.accept(pushOverlay(O1))
-        backStackManager.accept(pushOverlay(O2))
-        backStackManager.accept(pushOverlay(O3))
-        backStackManager.accept(pop())
-
-        val expectedOverlays = listOf(
-            O1,
-            O2
-        )
-
-        assertEquals(expectedOverlays, backStackManager.state.backStack.last().overlays)
-    }
+    @Suppress("UNCHECKED_CAST")
+    private fun backStackOperation(
+        isApplicable: (BackStack<Configuration>) -> Boolean = { true },
+        backStackOperation: (BackStack<Configuration>) -> BackStack<Configuration> = { it }
+    ): BackStackOperation<Configuration> =
+        mock<BackStackOperation<Configuration>>().apply {
+            whenever(this.isApplicable(any())).thenAnswer { isApplicable(it.arguments[0] as BackStack<Configuration>) }
+            whenever(this.invoke(any())).thenAnswer { backStackOperation(it.arguments[0] as BackStack<Configuration>) }
+        }
 }

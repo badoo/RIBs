@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.configuration.feature.operation
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 
 data class Push<C : Parcelable>(
     private val configuration: C
@@ -21,6 +20,3 @@ data class Push<C : Parcelable>(
 fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.push(configuration: Content) {
     acceptOperation(Push(configuration))
 }
-
-internal fun <C : Parcelable> push(configuration: C) =
-    Operation(Push(configuration))

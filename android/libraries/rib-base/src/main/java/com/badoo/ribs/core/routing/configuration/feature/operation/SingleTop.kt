@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.configuration.feature.operation
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 
 data class SingleTop<C : Parcelable>(
     private val configuration: C
@@ -17,39 +16,32 @@ data class SingleTop<C : Parcelable>(
             targetClass.isInstance(it.configuration)
         }
 
-        val operation: BackStackOperation<C> =
+        val operation: (BackStack<C>) -> BackStack<C> =
             if (lastIndexOfSameClass == -1) {
                 Push(configuration)
             } else {
                 if (backStack[lastIndexOfSameClass] == configuration) {
-                    SingleTopReactivateBackStackOperation(configuration, lastIndexOfSameClass)
+                    SingleTopReactivateBackStackOperation(lastIndexOfSameClass)
                 } else {
                     SingleTopReplaceBackStackOperation(configuration, lastIndexOfSameClass)
                 }
             }
 
-        return operation(backStack)
+        return operation.invoke(backStack)
     }
 
-    private data class SingleTopReactivateBackStackOperation<C : Parcelable>(
-        private val configuration: C,
+    private class SingleTopReactivateBackStackOperation<C : Parcelable>(
         private val position: Int
-    ) : BackStackOperation<C> {
-
-        override fun isApplicable(backStack: BackStack<C>): Boolean =
-            position != -1 && backStack[position] == configuration
+    ) : (BackStack<C>) -> BackStack<C> {
 
         override fun invoke(backStack: BackStack<C>): BackStack<C> =
             backStack.dropLast(backStack.size - position - 1)
     }
 
-    private data class SingleTopReplaceBackStackOperation<C : Parcelable>(
+    private class SingleTopReplaceBackStackOperation<C : Parcelable>(
         private val configuration: C,
         private val position: Int
-    ) : BackStackOperation<C> {
-
-        override fun isApplicable(backStack: BackStack<C>): Boolean =
-            position != -1 && backStack[position] != configuration
+    ) : (BackStack<C>) -> BackStack<C> {
 
         override fun invoke(backStack: BackStack<C>): BackStack<C> =
             backStack.dropLast(backStack.size - position) + BackStackElement(configuration)
@@ -59,6 +51,3 @@ data class SingleTop<C : Parcelable>(
 fun <C : Parcelable> Router<C, *, *, *, *>.singleTop(configuration: C) {
     acceptOperation(SingleTop(configuration))
 }
-
-internal fun <C : Parcelable> singleTop(configuration: C) =
-    Operation(SingleTop(configuration))

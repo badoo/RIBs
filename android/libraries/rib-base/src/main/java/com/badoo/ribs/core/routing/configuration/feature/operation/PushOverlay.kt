@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.configuration.feature.operation
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 
 data class PushOverlay<C : Parcelable>(
     private val configuration: C
@@ -31,6 +30,3 @@ data class PushOverlay<C : Parcelable>(
 fun <C : Parcelable, Overlay : C> Router<C, *, *, Overlay, *>.pushOverlay(configuration: Overlay) {
     acceptOperation(PushOverlay(configuration))
 }
-
-internal fun <C : Parcelable> pushOverlay(configuration: C) =
-    Operation(PushOverlay(configuration))

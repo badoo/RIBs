@@ -199,7 +199,7 @@ open class Node<V : RibView>(
     /**
      * Attaches a child node to this node.
      *
-     * @param childNode the [Node] to be attached.
+     * @param child the [Node] to be attached.
      */
     @MainThread
     internal fun attachChildNode(child: Node<*>) {

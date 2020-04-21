@@ -6,6 +6,7 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter.Configuration

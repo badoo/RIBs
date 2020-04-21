@@ -1,27 +1,16 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 internal data class BackStackFeatureState<C : Parcelable>(
-    val backStack: List<BackStackElement<C>> = emptyList()
+    val backStack: BackStack<C> = emptyList()
 ) : Parcelable {
 
     val current: BackStackElement<C>?
         get() = backStack.lastOrNull()
-
-    val currentOverlay: C?
-        get() = current?.overlays?.lastOrNull()
-
-    val canPopOverlay: Boolean
-        get() = backStack.lastOrNull()?.overlays?.isNotEmpty() == true
-
-    val canPopContent: Boolean
-        get() = backStack.size > 1
-
-    val canPop: Boolean
-        get() = canPopContent || canPopOverlay
 }
 
 @Parcelize

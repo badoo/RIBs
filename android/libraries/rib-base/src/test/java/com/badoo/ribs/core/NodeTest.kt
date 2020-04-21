@@ -1,4 +1,3 @@
-
 package com.badoo.ribs.core
 
 import android.os.Bundle
@@ -103,7 +102,6 @@ class NodeTest {
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
-
 
     private fun attachToViewAlongWithChildren() {
         node.attachToView(parentViewGroup)
@@ -296,7 +294,6 @@ class NodeTest {
         whenever(interactor.handleBackPress()).thenReturn(false)
 
         node.handleBackPress()
-
         verify(router).popBackStack()
     }
 

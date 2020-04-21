@@ -1,6 +1,7 @@
 package com.badoo.ribs.example.rib.switcher
 
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView

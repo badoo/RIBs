@@ -17,13 +17,11 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.NewRoot
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Pop
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Push
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.PushOverlay
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.Replace
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation.SingleTop
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
+import com.badoo.ribs.core.routing.configuration.feature.operation.Pop
+import com.badoo.ribs.core.routing.configuration.feature.operation.canPop
+import com.badoo.ribs.core.routing.configuration.feature.operation.canPopOverlay
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.view.RibView
@@ -95,24 +93,8 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         configurationFeature.dispose()
     }
 
-    fun replace(configuration: Content) {
-        backStackFeature.accept(Replace(configuration))
-    }
-
-    fun push(configuration: Content) {
-        backStackFeature.accept(Push(configuration))
-    }
-
-    fun pushOverlay(configuration: Overlay) {
-        backStackFeature.accept(PushOverlay(configuration))
-    }
-
-    fun singleTop(configuration: Content) {
-        backStackFeature.accept(SingleTop(configuration))
-    }
-
-    fun newRoot(configuration: Content) {
-        backStackFeature.accept(NewRoot(configuration))
+    fun acceptOperation(backStackOperation: BackStackOperation<C>) {
+        backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
     }
 
     internal fun add(configurationKey: ConfigurationKey<C>) {
@@ -151,16 +133,16 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
 
     fun popBackStack(): Boolean =
-        if (backStackFeature.state.canPop) {
-            backStackFeature.accept(Pop())
+        if (backStackFeature.state.backStack.canPop) {
+            acceptOperation(Pop())
             true
         } else {
             false
         }
 
     fun popOverlay(): Boolean =
-        if (backStackFeature.state.canPopOverlay) {
-            backStackFeature.accept(Pop())
+        if (backStackFeature.state.backStack.canPopOverlay) {
+            acceptOperation(Pop())
             true
         } else {
             false

@@ -3,6 +3,7 @@ package com.badoo.ribs.core
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn

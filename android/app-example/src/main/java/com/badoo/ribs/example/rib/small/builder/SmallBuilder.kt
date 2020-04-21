@@ -9,9 +9,9 @@ import com.badoo.ribs.example.rib.small.SmallNode
 
 class SmallBuilder(
     dependency: Small.Dependency
-) : SimpleBuilder<Small.Dependency, SmallNode>(object : Small {}) {
+) : SimpleBuilder<SmallNode>(object : Small {}) {
 
-    override val dependency : Small.Dependency = object : Small.Dependency by dependency {
+    private val dependency : Small.Dependency = object : Small.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Small::class)
     }
 

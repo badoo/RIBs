@@ -30,10 +30,9 @@ import java.util.UUID
  * @param <N> type of [Node] this Builder is expected to build
  *
  */
-abstract class Builder<D, P, N : Node<*>>(
+abstract class Builder<P, N : Node<*>>(
     private val rib: Rib // This will be most probably removed later in favor of Node implementing the interface
 ) {
-    abstract val dependency: D // TODO remove this along with <D>. make it local to client code
 
     fun build(buildContext: BuildContext, payload: P): N {
         val buildParams = BuildParams(

@@ -7,8 +7,8 @@ import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView
 
 class HelloWorldBuilder(
-    override val dependency: HelloWorld.Dependency
-) : SimpleBuilder<HelloWorld.Dependency, Node<HelloWorldView>>(
+    private val dependency: HelloWorld.Dependency
+) : SimpleBuilder<Node<HelloWorldView>>(
     rib = object : HelloWorld {}
 ) {
 

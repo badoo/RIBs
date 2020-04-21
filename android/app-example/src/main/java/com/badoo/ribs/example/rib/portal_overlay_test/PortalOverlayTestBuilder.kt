@@ -7,9 +7,9 @@ import com.badoo.ribs.customisation.getOrDefault
 
 class PortalOverlayTestBuilder(
     dependency: PortalOverlayTest.Dependency
-) : SimpleBuilder<PortalOverlayTest.Dependency, PortalOverlayTestNode>(object : PortalOverlayTest {}) {
+) : SimpleBuilder<PortalOverlayTestNode>(object : PortalOverlayTest {}) {
 
-    override val dependency : PortalOverlayTest.Dependency = object : PortalOverlayTest.Dependency by dependency {
+    private val dependency : PortalOverlayTest.Dependency = object : PortalOverlayTest.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(PortalOverlayTest::class)
     }
 

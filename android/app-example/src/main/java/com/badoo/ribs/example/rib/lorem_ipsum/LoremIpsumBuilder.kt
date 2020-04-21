@@ -8,11 +8,11 @@ import com.badoo.ribs.customisation.getOrDefault
 
 class LoremIpsumBuilder(
     dependency: LoremIpsum.Dependency
-) : SimpleBuilder<LoremIpsum.Dependency, Node<LoremIpsumView>>(
+) : SimpleBuilder<Node<LoremIpsumView>>(
     rib = object : LoremIpsum {}
 ) {
 
-    override val dependency : LoremIpsum.Dependency = object : LoremIpsum.Dependency by dependency {
+    private val dependency : LoremIpsum.Dependency = object : LoremIpsum.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(LoremIpsum::class)
     }
 

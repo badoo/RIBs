@@ -6,8 +6,8 @@ import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer
 
 class GreetingsContainerBuilder(
-    override val dependency: GreetingsContainer.Dependency
-) : SimpleBuilder<GreetingsContainer.Dependency, Node<Nothing>>(
+    private val dependency: GreetingsContainer.Dependency
+) : SimpleBuilder<Node<Nothing>>(
     rib = object : GreetingsContainer {}
 ) {
 

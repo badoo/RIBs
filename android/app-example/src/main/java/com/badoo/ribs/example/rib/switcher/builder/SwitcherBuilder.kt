@@ -9,8 +9,8 @@ import com.badoo.ribs.example.rib.switcher.SwitcherNode
 
 class SwitcherBuilder(
     dependency: Switcher.Dependency
-) : SimpleBuilder<Switcher.Dependency, SwitcherNode>(object : Switcher {}) {
-    override val dependency : Switcher.Dependency = object : Switcher.Dependency by dependency {
+) : SimpleBuilder<SwitcherNode>(object : Switcher {}) {
+    private val dependency : Switcher.Dependency = object : Switcher.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Switcher::class)
     }
 

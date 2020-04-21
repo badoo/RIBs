@@ -10,11 +10,11 @@ import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : SimpleBuilder<FooBar.Dependency, FooBarNode>(
+) : SimpleBuilder<FooBarNode>(
     rib = object : FooBar {}
 ) {
 
-    override val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
+    private val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 

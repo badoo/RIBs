@@ -11,11 +11,11 @@ import com.badoo.ribs.test.util.ribs.child.TestChildRouter
 import com.badoo.ribs.test.util.ribs.child.TestChildView
 import com.badoo.ribs.test.util.ribs.child.TestChildViewImpl
 
-class TestChildBuilder : SimpleBuilder<Nothing?, TestNode<TestChildView>>(
+class TestChildBuilder : SimpleBuilder<TestNode<TestChildView>>(
     rib = object : Rib {}
 ) {
 
-    override val dependency: Nothing? = null
+    private val dependency: Nothing? = null
 
     override fun build(buildParams: BuildParams<Nothing?>): TestNode<TestChildView> {
         val router = TestChildRouter(BuildParams.Empty())

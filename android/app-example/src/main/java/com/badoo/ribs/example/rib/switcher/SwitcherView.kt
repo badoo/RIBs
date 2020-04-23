@@ -9,6 +9,7 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.menu.Menu
+import com.badoo.ribs.example.rib.menu.MenuNode
 import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.SwitcherView.ViewModel
 import com.badoo.ribs.example.util.CoffeeMachine
@@ -72,8 +73,8 @@ class SwitcherViewImpl private constructor(
     }
 
     override fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        when (child.identifier.rib) {
-            is Menu -> menuContainer
+        when (child) {
+            is MenuNode -> menuContainer
 //            is Blocker -> blockerContainer
             else -> contentContainer
         }

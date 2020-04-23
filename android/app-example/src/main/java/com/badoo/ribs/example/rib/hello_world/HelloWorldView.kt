@@ -11,6 +11,7 @@ import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.example.rib.small.Small
+import com.badoo.ribs.example.rib.small.SmallNode
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -60,8 +61,8 @@ class HelloWorldViewImpl private constructor(
     }
 
     override fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        when (child.identifier.rib) {
-            is Small -> smallContainer
+        when (child) {
+            is SmallNode -> smallContainer
             else -> null
         }
 }

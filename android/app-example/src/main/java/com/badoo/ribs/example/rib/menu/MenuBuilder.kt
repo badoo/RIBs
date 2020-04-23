@@ -9,7 +9,7 @@ import com.badoo.ribs.example.rib.menu.feature.MenuFeature
 
 class MenuBuilder(
     dependency: Menu.Dependency
-) : SimpleBuilder<Node<MenuView>>(
+) : SimpleBuilder<MenuNode>(
     rib = object : Menu {}
 ) {
 
@@ -17,7 +17,7 @@ class MenuBuilder(
         override fun ribCustomisation() = dependency.customisationsBranchFor(Menu::class)
     }
 
-    override fun build(buildParams: BuildParams<Nothing?>): Node<MenuView> {
+    override fun build(buildParams: BuildParams<Nothing?>): MenuNode {
         val customisation = dependency.getOrDefault(Menu.Customisation())
         val feature = MenuFeature()
         val interactor = MenuInteractor(
@@ -27,10 +27,9 @@ class MenuBuilder(
             feature = feature
         )
 
-        return Node(
+        return MenuNode(
             buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            router = null,
+            customisation = customisation,
             interactor = interactor
         )
     }

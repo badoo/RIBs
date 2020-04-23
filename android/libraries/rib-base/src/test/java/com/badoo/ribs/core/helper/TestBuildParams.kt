@@ -19,7 +19,6 @@ fun testBuildParams(
         savedInstanceState = savedInstanceState
     ),
     identifier = Rib.Identifier(
-        rib = rib,
         uuid = UUID.randomUUID()
     )
 )

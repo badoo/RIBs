@@ -30,16 +30,13 @@ import java.util.UUID
  * @param <N> type of [Node] this Builder is expected to build
  *
  */
-abstract class Builder<P, N : Node<*>>(
-    private val rib: Rib // This will be most probably removed later in favor of Node implementing the interface
-) {
+abstract class Builder<P, N : Node<*>>() {
 
     fun build(buildContext: BuildContext, payload: P): N {
         val buildParams = BuildParams(
             payload = payload,
             buildContext = buildContext,
             identifier = Rib.Identifier(
-                rib = rib,
                 uuid = buildContext.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID
                     ?: UUID.randomUUID()
             )

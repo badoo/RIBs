@@ -10,7 +10,7 @@ import com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder.FooBarBui
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : Builder<Params, FooBarNode>(object : FooBar {}) {
+) : Builder<Params, FooBarNode>() {
 
     data class Params(
         val someField: Int

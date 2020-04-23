@@ -56,7 +56,6 @@ interface TestRoot : Rib {
                     payload = null,
                     buildContext = BuildContext.root(savedInstanceState),
                     identifier = Rib.Identifier(
-                        rib = object : TestRoot {},
                         uuid = UUID.randomUUID()
                     )
                 ),

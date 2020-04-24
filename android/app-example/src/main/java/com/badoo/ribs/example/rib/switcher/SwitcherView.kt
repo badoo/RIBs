@@ -8,7 +8,6 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.MenuNode
 import com.badoo.ribs.example.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.example.rib.switcher.SwitcherView.ViewModel

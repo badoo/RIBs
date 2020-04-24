@@ -2,7 +2,6 @@ package com.badoo.ribs.example.rib.menu
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.example.rib.menu.feature.MenuFeature

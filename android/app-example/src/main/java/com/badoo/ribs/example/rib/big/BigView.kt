@@ -10,7 +10,6 @@ import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.big.BigView.Event
 import com.badoo.ribs.example.rib.big.BigView.ViewModel
-import com.badoo.ribs.example.rib.small.Small
 import com.badoo.ribs.example.rib.small.SmallNode
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource

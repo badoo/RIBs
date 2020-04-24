@@ -8,9 +8,7 @@ import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView
 
 class OptionSelectorBuilder(
     private val dependency: OptionSelector.Dependency
-) : SimpleBuilder<Node<OptionSelectorView>>(
-    rib = object : OptionSelector {}
-) {
+) : SimpleBuilder<Node<OptionSelectorView>>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Node<OptionSelectorView> =
         DaggerOptionSelectorComponent

@@ -16,7 +16,6 @@ import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem
 import com.badoo.ribs.example.rib.menu.MenuBuilder
 import com.badoo.ribs.example.rib.menu.MenuNode
-import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Permanent

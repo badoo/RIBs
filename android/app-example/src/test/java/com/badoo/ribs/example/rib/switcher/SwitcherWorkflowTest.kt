@@ -9,9 +9,7 @@ import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.menu.MenuNode
-import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
-import com.badoo.ribs.example.rib.util.TestNode
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock

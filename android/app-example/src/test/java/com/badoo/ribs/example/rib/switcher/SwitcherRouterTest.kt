@@ -15,6 +15,7 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.menu.Menu
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem
 import com.badoo.ribs.example.rib.menu.MenuBuilder
+import com.badoo.ribs.example.rib.menu.MenuNode
 import com.badoo.ribs.example.rib.menu.MenuView
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Overlay
@@ -46,7 +47,7 @@ class SwitcherRouterTest {
     private val blockerNode = TestNode<BlockerView>()
     private val blockerBuilder = mock<BlockerBuilder> { on { build(any()) } doReturn blockerNode }
 
-    private val menuNode = TestNode<MenuView>()
+    private val menuNode = MenuNode(BuildParams.Empty(), mock(), mock())
     private val menuBuilder = mock<MenuBuilder> { on { build(any()) } doReturn menuNode }
 
     private val dialogLauncher: DialogLauncher = mock()

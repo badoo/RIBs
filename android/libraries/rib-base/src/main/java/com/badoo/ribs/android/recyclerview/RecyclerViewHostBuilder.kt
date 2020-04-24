@@ -7,9 +7,7 @@ import com.badoo.ribs.core.builder.SimpleBuilder
 
 class RecyclerViewHostBuilder<T : Parcelable>(
     private val dependency: RecyclerViewHost.Dependency<T>
-) : SimpleBuilder<RecyclerViewHostNode<T>>(
-    rib = object : RecyclerViewHost {}
-) {
+) : SimpleBuilder<RecyclerViewHostNode<T>>() {
 
     @SuppressWarnings("LongMethod")
     override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHostNode<T> {

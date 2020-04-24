@@ -8,9 +8,8 @@ import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
-import com.badoo.ribs.example.rib.menu.MenuView
+import com.badoo.ribs.example.rib.menu.MenuNode
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
-import com.badoo.ribs.example.rib.util.TestNode
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -33,7 +32,7 @@ class SwitcherWorkflowTest {
         val fooBarNode = FooBarNode(mock(), mock(), BuildParams.Empty(), emptySet())
         val node1 = Node<DialogExampleView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
         val node2 = Node<BlockerView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
-        val node3 = Node<MenuView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
+        val node3 = MenuNode(BuildParams.Empty(), mock(), mock())
 
         router = SwitcherRouter(
             transitionHandler = null,

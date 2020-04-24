@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.hello_world
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -10,7 +10,7 @@ import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.example.rib.hello_world.HelloWorldView.ViewModel
-import com.badoo.ribs.example.rib.small.Small
+import com.badoo.ribs.example.rib.small.SmallNode
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -60,8 +60,8 @@ class HelloWorldViewImpl private constructor(
     }
 
     override fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        when (child.identifier.rib) {
-            is Small -> smallContainer
+        when (child) {
+            is SmallNode -> smallContainer
             else -> null
         }
 }

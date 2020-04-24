@@ -10,7 +10,6 @@ class BuildParams<T>(
     val payload: T,
     val buildContext: BuildContext,
     val identifier: Rib.Identifier = Rib.Identifier(
-        rib = object : Rib {},
         uuid = buildContext.savedInstanceState?.getSerializable(KEY_UUID) as? UUID
             ?: UUID.randomUUID()
     )

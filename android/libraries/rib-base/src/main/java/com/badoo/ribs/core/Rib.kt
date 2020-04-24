@@ -5,7 +5,6 @@ import java.util.UUID
 interface Rib {
 
     data class Identifier(
-        val rib: Rib,
         val uuid: UUID
     ) : Identifiable {
 

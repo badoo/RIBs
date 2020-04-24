@@ -10,7 +10,7 @@ import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.big.BigView.Event
 import com.badoo.ribs.example.rib.big.BigView.ViewModel
-import com.badoo.ribs.example.rib.small.Small
+import com.badoo.ribs.example.rib.small.SmallNode
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -54,8 +54,8 @@ class BigViewImpl private constructor(
     }
 
     override fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        when (child.identifier.rib) {
-            is Small -> smallContainer
+        when (child) {
+            is SmallNode -> smallContainer
             else -> null
         }
 }

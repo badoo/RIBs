@@ -8,9 +8,7 @@ import com.badoo.ribs.example.rib.menu.feature.MenuFeature
 
 class MenuBuilder(
     dependency: Menu.Dependency
-) : SimpleBuilder<MenuNode>(
-    rib = object : Menu {}
-) {
+) : SimpleBuilder<MenuNode>() {
 
     private val dependency : Menu.Dependency = object : Menu.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Menu::class)

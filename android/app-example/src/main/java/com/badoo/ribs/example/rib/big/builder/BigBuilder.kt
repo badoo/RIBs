@@ -9,7 +9,7 @@ import com.badoo.ribs.example.rib.big.BigNode
 
 class BigBuilder(
     dependency: Big.Dependency
-) : SimpleBuilder<BigNode>(object : Big {}) {
+) : SimpleBuilder<BigNode>() {
 
     private val dependency : Big.Dependency = object : Big.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Big::class)

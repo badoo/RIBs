@@ -8,7 +8,7 @@ import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.HelloWorldView
 
 class HelloWorldBuilder(
     private val dependency: HelloWorld.Dependency
-) : SimpleBuilder<Node<HelloWorldView>>(object : HelloWorld {}) {
+) : SimpleBuilder<Node<HelloWorldView>>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Node<HelloWorldView> =
         DaggerHelloWorldComponent

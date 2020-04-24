@@ -5,7 +5,7 @@ import com.badoo.ribs.core.builder.SimpleBuilder
 
 class PortalBuilder(
     private val dependency: Portal.Dependency
-) : SimpleBuilder<PortalNode>(object : Portal {}) {
+) : SimpleBuilder<PortalNode>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): PortalNode {
         val router = PortalRouter(

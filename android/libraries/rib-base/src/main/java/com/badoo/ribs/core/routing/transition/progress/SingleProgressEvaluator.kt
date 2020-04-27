@@ -34,7 +34,7 @@ class SingleProgressEvaluator : ProgressEvaluator {
             is Progress.InProgress -> state.progress = progress
             else -> if (progress != 1f && progress != 0f) {
                 RIBs.errorHandler.handleNonFatalError(
-                    "progress $progress is not applicable to $state"
+                    "Progress $progress is not applicable to $state"
                 )
             }
         }

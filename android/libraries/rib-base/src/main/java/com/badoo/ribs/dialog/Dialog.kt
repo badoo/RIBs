@@ -73,9 +73,9 @@ abstract class Dialog<T : Any> private constructor(
         events.accept(event)
     }
 
-    fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
+    fun buildNodes(buildContext: BuildContext): List<Node<*>> =
         nodeFactory?.let { factory ->
-            val clientParams = BuildContext(
+            val clientParams = buildContext.copy(
                 /**
                  * RIBs inside dialogs behaved like Root nodes so far in that they were
                  * not added as a child of any other Node.
@@ -84,9 +84,7 @@ abstract class Dialog<T : Any> private constructor(
                  * A benefit of this would be back press and lifecycle propagation.
                  * Not entirely sure it is needed. To be reconsidered later.
                  */
-                ancestryInfo = ancestryInfo,
-                attachMode = AttachMode.EXTERNAL,
-                savedInstanceState = bundles.firstOrNull()
+                attachMode = AttachMode.EXTERNAL
             )
 
             listOf(

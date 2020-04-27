@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.portal.AncestryInfo
@@ -108,11 +109,15 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
         private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> =
             routingAction.buildNodes(
-                ancestryInfo = AncestryInfo.Child(
-                    anchor = routingAction.anchor() ?: parentNode,
-                    creatorConfiguration = configuration
-                ),
-                bundles = bundles
+                buildContexts = bundles.map {
+                    BuildContext(
+                        ancestryInfo = AncestryInfo.Child(
+                            anchor = routingAction.anchor() ?: parentNode,
+                            creatorConfiguration = configuration
+                        ),
+                        savedInstanceState = it
+                    )
+                }
             )
 
         override fun withActivationState(activationState: ActivationState) =

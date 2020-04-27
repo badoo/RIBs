@@ -26,6 +26,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.core.Rib.Identifier
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
@@ -61,15 +62,18 @@ open class Node<V : RibView>(
     open val identifier: Rib.Identifier =
         buildParams.identifier
 
+    internal val buildContext: BuildContext =
+        buildParams.buildContext
+
     /**
      * TODO PortalRouter.Configuration.Portal can then work directly with a @Parcelize AncestryInfo,
      *  which was not possible until now.
      */
     internal val ancestryInfo: AncestryInfo =
-        buildParams.buildContext.ancestryInfo
+        buildContext.ancestryInfo
 
     internal open val attachMode: AttachMode =
-        buildParams.buildContext.attachMode
+        buildContext.attachMode
 
     val resolver: ConfigurationResolver<out Parcelable>? = router
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)

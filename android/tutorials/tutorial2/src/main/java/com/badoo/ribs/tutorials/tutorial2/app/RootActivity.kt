@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.tutorials.tutorial2.R
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.builder.GreetingsContainerBuilder
@@ -34,5 +35,9 @@ class RootActivity : RibActivity() {
                         }
                     }
             }
-        ).build(BuildContext.root(savedInstanceState = savedInstanceState))
+        ).build(
+            buildContext = root(
+                savedInstanceState = savedInstanceState
+            )
+        )
 }

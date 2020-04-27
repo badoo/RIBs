@@ -1,7 +1,7 @@
 package com.badoo.ribs.util
 
-import androidx.annotation.VisibleForTesting
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
 
 object RIBs {
@@ -46,7 +46,7 @@ object RIBs {
          * @param errorMessage an error message that describes the error.
          * @param throwable an optional throwable.
          */
-        fun handleNonFatalError(errorMessage: String, throwable: Throwable?)
+        fun handleNonFatalError(errorMessage: String, throwable: Throwable? = null)
 
         /**
          * Called when there is a non-fatal warning in the RIB framework. Consumers should route this
@@ -59,7 +59,7 @@ object RIBs {
          * @param warningMessage an error message that describes the error.
          * @param throwable an optional throwable.
          */
-        fun handleNonFatalWarning(warningMessage: String, throwable: Throwable?)
+        fun handleNonFatalWarning(warningMessage: String, throwable: Throwable? = null)
 
         /**
          * Called when there is a message that should be logged for debugging. Consumers should route

@@ -1,5 +1,7 @@
 package com.badoo.ribs.core.routing.transition.progress
 
+import com.badoo.ribs.util.RIBs
+
 
 class SingleProgressEvaluator : ProgressEvaluator {
 
@@ -31,7 +33,9 @@ class SingleProgressEvaluator : ProgressEvaluator {
         when (val state = state) {
             is Progress.InProgress -> state.progress = progress
             else -> if (progress != 1f && progress != 0f) {
-                throw IllegalStateException("Not in progress anymore")
+                RIBs.errorHandler.handleNonFatalError(
+                    "Progress $progress is not applicable to $state"
+                )
             }
         }
     }

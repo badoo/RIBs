@@ -65,7 +65,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     abstract fun sleep(): ConfigurationContext<C>
     abstract fun wakeUp(): ConfigurationContext<C>
     abstract fun shrink(): Unresolved<C>
-    abstract fun resolve(resolver: (C) -> RoutingAction<*>, parentNode: Node<*>): Resolved<C>
+    abstract fun resolve(resolver: (C) -> RoutingAction, parentNode: Node<*>): Resolved<C>
 
     /**
      * Represents [ConfigurationContext] that is persistable in a [android.os.Bundle],
@@ -89,7 +89,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
          * Resolves and sets the associated [RoutingAction], builds associated [Node]s
          */
         override fun resolve(
-            resolver: (C) -> RoutingAction<*>,
+            resolver: (C) -> RoutingAction,
             parentNode: Node<*>
         ): Resolved<C> {
             bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
@@ -106,7 +106,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override fun shrink(): Unresolved<C> =
             this
 
-        private fun buildNodes(routingAction: RoutingAction<*>, parentNode: Node<*>): List<Node<*>> =
+        private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> =
             routingAction.buildNodes(
                 ancestryInfo = AncestryInfo.Child(
                     anchor = routingAction.anchor() ?: parentNode,
@@ -137,12 +137,12 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override val activationState: ActivationState,
         override val configuration: C,
         var bundles: List<Bundle>,
-        val routingAction: RoutingAction<*>,
+        val routingAction: RoutingAction,
         val nodes: List<Node<*>>
     ) : ConfigurationContext<C>() {
 
         override fun resolve(
-            resolver: (C) -> RoutingAction<*>,
+            resolver: (C) -> RoutingAction,
             parentNode: Node<*>
         ): Resolved<C> = this
 

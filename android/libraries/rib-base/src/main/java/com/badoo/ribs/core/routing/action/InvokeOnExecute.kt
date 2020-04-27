@@ -1,17 +1,15 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.view.RibView
-
-class InvokeOnExecute< V : RibView>(
+class InvokeOnExecute(
     private val onInvoke: () -> Unit
-) : RoutingAction<V> {
+) : RoutingAction {
 
     override fun execute() {
         onInvoke()
     }
 
     companion object {
-        fun < V : RibView> execute(onInvoke: () -> Unit): RoutingAction<V> =
+        fun execute(onInvoke: () -> Unit): RoutingAction =
             InvokeOnExecute(onInvoke)
     }
 }

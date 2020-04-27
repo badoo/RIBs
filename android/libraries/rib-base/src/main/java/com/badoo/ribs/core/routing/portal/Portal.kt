@@ -16,7 +16,7 @@ interface Portal : Rib {
     }
 
     interface Dependency {
-        fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction<Nothing>
+        fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction
         fun transitionHandler(): TransitionHandler<PortalRouter.Configuration>? = null
     }
 

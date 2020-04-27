@@ -1,17 +1,15 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.view.RibView
-
-class InvokeOnCleanup< V : RibView>(
+class InvokeOnCleanup(
     private val f: () -> Unit
-) : RoutingAction<V> {
+) : RoutingAction {
 
     override fun cleanup() {
         f()
     }
 
     companion object {
-        fun < V : RibView> cleanup(onLeave: () -> Unit): RoutingAction<V> =
+        fun cleanup(onLeave: () -> Unit): RoutingAction =
             InvokeOnCleanup(onLeave)
     }
 }

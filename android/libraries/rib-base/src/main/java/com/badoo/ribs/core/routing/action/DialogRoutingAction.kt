@@ -4,15 +4,14 @@ import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.routing.portal.AncestryInfo
-import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 
-class DialogRoutingAction<V : RibView, Event : Any>(
+class DialogRoutingAction<Event : Any>(
     private val router: Router<*, *, *, *, *>,
     private val dialogLauncher: DialogLauncher,
     private val dialog: Dialog<Event>
-) : RoutingAction<V> {
+) : RoutingAction {
 
     override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node<*>> =
         dialog.buildNodes(ancestryInfo, bundles)
@@ -28,11 +27,11 @@ class DialogRoutingAction<V : RibView, Event : Any>(
     }
 
     companion object {
-        fun <V : RibView> showDialog(
+        fun showDialog(
             router: Router<*, *, *, *, *>,
             dialogLauncher: DialogLauncher,
             dialog: Dialog<*>
-        ): RoutingAction<V> =
+        ): RoutingAction =
             DialogRoutingAction(router, dialogLauncher, dialog)
     }
 }

@@ -54,7 +54,7 @@ class TestRootRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<TestRootView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
         when (configuration) {
             Permanent.Permanent1 -> attach(builderPermanent1)
             Permanent.Permanent2 -> attach(builderPermanent2)

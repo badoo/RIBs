@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.switcher
 
-import com.badoo.ribs.core.builder.BuildParams
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
@@ -61,7 +61,7 @@ class SwitcherRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<SwitcherView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
         when (configuration) {
             is Permanent.Menu -> attach { menuBuilder.build(it) }
             is Content.Hello -> composite(

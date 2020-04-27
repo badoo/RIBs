@@ -20,11 +20,11 @@ import org.robolectric.RobolectricTestRunner
 class RouterTest {
 
     private lateinit var router: TestRouter
-    private lateinit var routingActionForC1: RoutingAction<TestView>
-    private lateinit var routingActionForC2: RoutingAction<TestView>
-    private lateinit var routingActionForC3: RoutingAction<TestView>
-    private lateinit var routingActionForC4: RoutingAction<TestView>
-    private lateinit var routingActionForC5: RoutingAction<TestView>
+    private lateinit var routingActionForC1: RoutingAction
+    private lateinit var routingActionForC2: RoutingAction
+    private lateinit var routingActionForC3: RoutingAction
+    private lateinit var routingActionForC4: RoutingAction
+    private lateinit var routingActionForC5: RoutingAction
     private lateinit var node: Node<TestView>
     private lateinit var childNodeC2_1: Node<*>
     private lateinit var childNodeC2_2: Node<*>

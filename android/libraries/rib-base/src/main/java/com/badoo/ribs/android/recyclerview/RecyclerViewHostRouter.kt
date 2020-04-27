@@ -29,13 +29,13 @@ internal class RecyclerViewHostRouter<T : Parcelable>(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<RibView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
         when (configuration) {
             is Default -> noop()
             is Content.Item -> resolve(configuration.uuid)
         }
 
-    fun resolve(uuid: UUID): RoutingAction<RibView> {
+    fun resolve(uuid: UUID): RoutingAction {
         val entry = feature.state.items.find { it.uuid == uuid }!!
         val element = entry.element
         return ribResolver.resolve(element)

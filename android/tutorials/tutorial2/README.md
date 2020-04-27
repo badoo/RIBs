@@ -67,7 +67,7 @@ Once we defined our possible configurations, we need to say *what* should happen
 This is done by implementing the `resolveConfiguration` method in the `Router`:
 
 ```kotlin
-abstract fun resolveConfiguration(configuration: C): RoutingAction<V>
+abstract fun resolveConfiguration(configuration: C): RoutingAction
 ```
 
 The library offers implementations of the `RoutingAction` interface, which should cover all cases you encounter.
@@ -90,7 +90,7 @@ class GreetingsContainerRouter(
         @Parcelize object Default : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
         RoutingAction.noop()
 }
 ```
@@ -117,7 +117,7 @@ import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attac
 
 /* ... */
 
-override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
+override fun resolveConfiguration(configuration: Configuration): RoutingAction =
     when (configuration) {
         is Configuration.HelloWorld -> attach { TODO() }
     }
@@ -148,7 +148,7 @@ class GreetingsContainerRouter(
 We'll care about how to pass it here just in a moment, but first let's finish our job here, and replace the `TODO()` block in our `attach` block:
 
 ```kotlin
-override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
+override fun resolveConfiguration(configuration: Configuration): RoutingAction =
     when (configuration) {
         is Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
     }

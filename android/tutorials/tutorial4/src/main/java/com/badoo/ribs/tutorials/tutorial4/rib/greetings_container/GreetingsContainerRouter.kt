@@ -20,7 +20,7 @@ class GreetingsContainerRouter(
         @Parcelize object HelloWorld : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<Nothing> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
         when (configuration) {
             is Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
         }

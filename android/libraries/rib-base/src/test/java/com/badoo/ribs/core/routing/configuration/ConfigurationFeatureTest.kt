@@ -3,11 +3,9 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.element.TimeCapsule
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
@@ -25,6 +23,8 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Config
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.Permanent2
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Permanent
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
+import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.SavedState
 import com.nhaarman.mockitokotlin2.anyOrNull
@@ -60,7 +60,7 @@ class ConfigurationFeatureTest {
     private lateinit var poolInTimeCapsule: Map<ConfigurationKey<Configuration>, Unresolved<Configuration>>
 
     private lateinit var feature: ConfigurationFeature<Configuration>
-    private lateinit var resolver: (Configuration) -> RoutingAction<*>
+    private lateinit var resolver: (Configuration) -> RoutingAction
     private lateinit var parentNode: Node<*>
 
     private lateinit var helperPermanent1: ConfigurationTestHelper
@@ -76,7 +76,7 @@ class ConfigurationFeatureTest {
         val nodes: List<Node<*>>,
         val bundles: List<Bundle>,
         val nodeFactories: List<() -> Node<*>>,
-        val routingAction: RoutingAction<*>
+        val routingAction: RoutingAction
     ) {
         companion object {
             fun create(configuration: Configuration, nbNodes: Int, viewAttachMode: AttachMode): ConfigurationTestHelper {
@@ -88,7 +88,7 @@ class ConfigurationFeatureTest {
                 }
                 val bundles = MutableList(nbNodes) { mock<Bundle>() }
                 val factories = nodes.toFactory()
-                val routingAction: RoutingAction<*> = factories.toRoutingAction()
+                val routingAction: RoutingAction = factories.toRoutingAction()
 
                 return ConfigurationTestHelper(
                     configuration = configuration,
@@ -106,7 +106,7 @@ class ConfigurationFeatureTest {
                     }
                 }
 
-            private fun List<() -> Node<*>>.toRoutingAction(): RoutingAction<*> =
+            private fun List<() -> Node<*>>.toRoutingAction(): RoutingAction =
                 mock {
                     on { buildNodes(anyOrNull(), anyOrNull()) } doAnswer {
                         this@toRoutingAction.map {

@@ -6,11 +6,10 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.routing.portal.AncestryInfo
-import com.badoo.ribs.core.view.RibView
 
-open class AddToRecyclerViewRoutingAction<V : RibView>(
+open class AddToRecyclerViewRoutingAction(
     private val nodeFactory: NodeFactory
-) : RoutingAction<V> {
+) : RoutingAction {
 
     override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         listOf(
@@ -24,7 +23,7 @@ open class AddToRecyclerViewRoutingAction<V : RibView>(
         )
 
     companion object {
-        fun <V : RibView> recyclerView(nodeFactory: NodeFactory): RoutingAction<V> =
+        fun recyclerView(nodeFactory: NodeFactory): RoutingAction =
             AddToRecyclerViewRoutingAction(nodeFactory)
     }
 }

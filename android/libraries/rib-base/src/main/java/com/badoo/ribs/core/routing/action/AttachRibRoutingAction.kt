@@ -2,15 +2,14 @@ package com.badoo.ribs.core.routing.action
 
 import android.os.Bundle
 import com.badoo.ribs.core.AttachMode
-import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.routing.portal.AncestryInfo
-import com.badoo.ribs.core.view.RibView
 
-open class AttachRibRoutingAction<V : RibView>(
+open class AttachRibRoutingAction(
     private val nodeFactory: NodeFactory
-) : RoutingAction<V> {
+) : RoutingAction {
 
     override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
         listOf(
@@ -24,7 +23,7 @@ open class AttachRibRoutingAction<V : RibView>(
         )
 
     companion object {
-        fun <V : RibView> attach(nodeFactory: NodeFactory): RoutingAction<V> =
+        fun attach(nodeFactory: NodeFactory): RoutingAction =
             AttachRibRoutingAction(nodeFactory)
     }
 }

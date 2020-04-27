@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.hello_world
 
-import com.badoo.ribs.core.builder.BuildParams
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
@@ -29,7 +29,7 @@ class HelloWorldRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<HelloWorldView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
         when (configuration) {
             Permanent.Small -> attach { smallBuilder.build(it) }
             Content.Default -> noop()

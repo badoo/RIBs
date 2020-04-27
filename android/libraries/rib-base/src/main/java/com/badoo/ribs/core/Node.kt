@@ -71,7 +71,7 @@ open class Node<V : RibView>(
     internal open val attachMode: AttachMode =
         buildParams.buildContext.attachMode
 
-    val resolver: ConfigurationResolver<*, V>? = router
+    val resolver: ConfigurationResolver<out Parcelable>? = router
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     internal val ribLifecycleRegistry = LifecycleRegistry(this)

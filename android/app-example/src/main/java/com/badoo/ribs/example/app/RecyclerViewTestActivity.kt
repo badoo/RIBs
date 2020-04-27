@@ -22,7 +22,6 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
-import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
@@ -95,7 +94,7 @@ class RecyclerViewTestActivity : RibActivity() {
     )
 
     private val ribResolver = object : RecyclerViewRibResolver<Item> {
-        override fun resolve(element: Item): RoutingAction<RibView> =
+        override fun resolve(element: Item): RoutingAction =
             when (element) {
                 Item.LoremIpsumItem -> recyclerView { loremIpsumBuilder.build(it) }
                 Item.FooBarItem -> recyclerView { fooBarBuilder.build(it) }

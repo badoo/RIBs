@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.small
 
 import android.os.Parcelable
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.AnchoredAttachRoutingAction.Companion.anchor
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
@@ -32,7 +32,7 @@ class SmallRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction<SmallView> =
+    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
         when (configuration) {
             Content.Default -> noop()
             FullScreen.ShowBig -> anchor(node) { bigBuilder.build(it) }

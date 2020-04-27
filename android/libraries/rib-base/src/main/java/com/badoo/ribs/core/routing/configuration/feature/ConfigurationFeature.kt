@@ -45,7 +45,7 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
 internal class ConfigurationFeature<C : Parcelable>(
     initialConfigurations: List<C>,
     timeCapsule: TimeCapsule<SavedState<C>>,
-    resolver: (C) -> RoutingAction<*>,
+    resolver: (C) -> RoutingAction,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
 ) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(

@@ -28,7 +28,7 @@ import io.reactivex.Observable
  * Updated elements are then passed on to the [ReducerImpl] in the respective [Effect]s
  */
 internal class ConfigurationFeatureActor<C : Parcelable>(
-    private val configurationResolver: (C) -> RoutingAction<*>,
+    private val configurationResolver: (C) -> RoutingAction,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {

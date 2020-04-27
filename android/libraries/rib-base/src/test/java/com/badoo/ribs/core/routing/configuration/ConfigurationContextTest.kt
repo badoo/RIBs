@@ -23,20 +23,20 @@ class ConfigurationContextTest {
     private val nodes: List<Node<*>> = listOf(mock(), mock())
 
     // Default
-    private val defaultRoutingAction = mock<RoutingAction<*>> {
+    private val defaultRoutingAction = mock<RoutingAction> {
         on { buildNodes(any(), anyOrNull()) } doReturn nodes
     }
-    private val defaultResolver = mock<(Parcelable) -> RoutingAction<*>> {
+    private val defaultResolver = mock<(Parcelable) -> RoutingAction> {
         on { invoke(any()) } doReturn defaultRoutingAction
     }
 
     // With Anchor
     private val mockAnchor: Node<*> = mock()
-    private val routingActionWithAnchor = mock<RoutingAction<*>> {
+    private val routingActionWithAnchor = mock<RoutingAction> {
         on { buildNodes(any(), anyOrNull()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }
-    private val resolverWithAnchor = mock<(Parcelable) -> RoutingAction<*>> {
+    private val resolverWithAnchor = mock<(Parcelable) -> RoutingAction> {
         on { invoke(any()) } doReturn routingActionWithAnchor
     }
 
@@ -111,8 +111,8 @@ class ConfigurationContextTest {
     }
 
     private fun verifyBuildNodesCalled(
-        resolver: (Parcelable) -> RoutingAction<*>,
-        routingAction: RoutingAction<*>,
+        resolver: (Parcelable) -> RoutingAction,
+        routingAction: RoutingAction,
         expectedParent: Node<*>,
         parentNode: Node<*>
     ) {

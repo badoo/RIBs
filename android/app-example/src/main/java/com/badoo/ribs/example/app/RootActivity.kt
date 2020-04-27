@@ -46,7 +46,7 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?): PortalNode =
         PortalBuilder(
             object : Portal.Dependency {
-                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction<Nothing> = { portal ->
+                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction = { portal ->
                     attach { buildSwitcherNode(portal, it) }
                 }
 

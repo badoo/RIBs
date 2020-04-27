@@ -31,7 +31,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private val initialConfiguration: Content,
     private val permanentParts: List<Permanent> = emptyList(),
     private val transitionHandler: TransitionHandler<C>? = null
-) : ConfigurationResolver<C, V> {
+) : ConfigurationResolver<C> {
     companion object {
         internal const val BUNDLE_KEY = "Router"
     }

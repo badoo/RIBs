@@ -103,9 +103,9 @@ private class TestRouter<C : Parcelable, Permanent : C, Content : C, Overlay : C
     initialConfiguration = initialConfig
 ) {
 
-    var resolveConfiguration: (C) -> RoutingAction<V> = { RoutingAction.noop() }
+    var resolveConfiguration: (C) -> RoutingAction = { RoutingAction.noop() }
 
-    override fun resolveConfiguration(configuration: C): RoutingAction<V> =
+    override fun resolveConfiguration(configuration: C): RoutingAction =
         resolveConfiguration.invoke(configuration)
 
     companion object {

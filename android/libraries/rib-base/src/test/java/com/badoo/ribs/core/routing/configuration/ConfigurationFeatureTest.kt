@@ -27,7 +27,6 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.SavedState
-import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn
@@ -42,6 +41,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyList
 
 class ConfigurationFeatureTest {
 
@@ -108,7 +108,7 @@ class ConfigurationFeatureTest {
 
             private fun List<() -> Node<*>>.toRoutingAction(): RoutingAction =
                 mock {
-                    on { buildNodes(anyOrNull(), anyOrNull()) } doAnswer {
+                    on { buildNodes(anyList()) } doAnswer {
                         this@toRoutingAction.map {
                             factory -> factory.invoke()
                         }

@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.switcher
 
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.DialogRoutingAction
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
@@ -69,7 +69,7 @@ class SwitcherRouterTest {
     @Test
     fun `Permanent_Menu configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
-        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
+        val nodes = routingAction.buildNodes(listOf(root(null)))
 
         assertThat(nodes).hasSize(1)
         assertThat(nodes.first()).isEqualTo(menuNode)
@@ -78,7 +78,7 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Hello configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
-        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
+        val nodes = routingAction.buildNodes(listOf(root(null)))
 
         assertThat(nodes).hasSize(1)
         assertThat(nodes.first()).isEqualTo(helloWorldNode)
@@ -96,7 +96,7 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Foo configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
-        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
+        val nodes = routingAction.buildNodes(listOf(root(null)))
 
         assertThat(nodes).hasSize(1)
         assertThat(nodes.first()).isEqualTo(fooBarNode)
@@ -114,7 +114,7 @@ class SwitcherRouterTest {
     @Test
     fun `Content_DialogsExample configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
-        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
+        val nodes = routingAction.buildNodes(listOf(root(null)))
 
         assertThat(nodes).hasSize(1)
         assertThat(nodes.first()).isEqualTo(dialogExampleNode)
@@ -132,7 +132,7 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Blocker configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
-        val nodes = routingAction.buildNodes(AncestryInfo.Root, emptyList())
+        val nodes = routingAction.buildNodes(listOf(root(null)))
 
         assertThat(nodes).hasSize(1)
         assertThat(nodes.first()).isEqualTo(blockerNode)

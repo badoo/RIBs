@@ -107,18 +107,29 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override fun shrink(): Unresolved<C> =
             this
 
-        private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> =
-            routingAction.buildNodes(
-                buildContexts = bundles.map {
-                    BuildContext(
-                        ancestryInfo = AncestryInfo.Child(
-                            anchor = routingAction.anchor() ?: parentNode,
-                            creatorConfiguration = configuration
-                        ),
-                        savedInstanceState = it
-                    )
-                }
+        private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> {
+            val template = createBuildContext(routingAction, parentNode)
+            val buildContexts = MutableList(routingAction.nbNodesToBuild) {
+                template.copy(
+                    savedInstanceState = bundles.getOrNull(it)
+                )
+            }
+
+            return routingAction.buildNodes(
+                buildContexts = buildContexts
             )
+        }
+
+        private fun createBuildContext(
+            routingAction: RoutingAction,
+            parentNode: Node<*>
+        ): BuildContext = BuildContext(
+            ancestryInfo = AncestryInfo.Child(
+                anchor = routingAction.anchor() ?: parentNode,
+                creatorConfiguration = configuration
+            ),
+            savedInstanceState = null
+        )
 
         override fun withActivationState(activationState: ActivationState) =
             copy(

@@ -3,6 +3,8 @@ package com.badoo.ribs.core.routing.portal
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Portal
@@ -44,7 +46,7 @@ class PortalRouterTest {
             )
         )
 
-        val builtNodes = remoteRoutingAction.buildNodes(AncestryInfo.Root, emptyList())
+        val builtNodes = remoteRoutingAction.buildNodes(listOf(root(null)))
         assertEquals(listOf(node3), builtNodes)
     }
 }

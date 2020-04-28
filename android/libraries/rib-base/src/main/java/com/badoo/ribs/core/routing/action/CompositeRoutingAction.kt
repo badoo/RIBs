@@ -2,12 +2,12 @@ package com.badoo.ribs.core.routing.action
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 
 class CompositeRoutingAction(
     private vararg val routingActions: RoutingAction
 ) : RoutingAction {
+
+    override val nbNodesToBuild: Int = routingActions.asList().fold(0) { acc, r -> acc + r.nbNodesToBuild }
 
     constructor(routingActions: List<RoutingAction>) : this(*routingActions.toTypedArray())
 

@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
@@ -11,7 +12,6 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -24,7 +24,8 @@ class ConfigurationContextTest {
 
     // Default
     private val defaultRoutingAction = mock<RoutingAction> {
-        on { buildNodes(any(), anyOrNull()) } doReturn nodes
+        on { nbNodesToBuild } doReturn 1
+        on { buildNodes(any()) } doReturn nodes
     }
     private val defaultResolver = mock<(Parcelable) -> RoutingAction> {
         on { invoke(any()) } doReturn defaultRoutingAction
@@ -33,7 +34,8 @@ class ConfigurationContextTest {
     // With Anchor
     private val mockAnchor: Node<*> = mock()
     private val routingActionWithAnchor = mock<RoutingAction> {
-        on { buildNodes(any(), anyOrNull()) } doReturn nodes
+        on { nbNodesToBuild } doReturn 1
+        on { buildNodes(any()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }
     private val resolverWithAnchor = mock<(Parcelable) -> RoutingAction> {
@@ -99,13 +101,13 @@ class ConfigurationContextTest {
     }
 
     @Test
-    fun `Unresolved resolve() passes AncestryInfo & Bundles to RoutingAction with parent as default anchor `() {
+    fun `Unresolved resolve() calls RoutingAction with parent as default anchor `() {
         val parentNode = mock<Node<*>>()
         verifyBuildNodesCalled(defaultResolver, defaultRoutingAction, parentNode, parentNode)
     }
 
     @Test
-    fun `Unresolved resolve() passes AncestryInfo & Bundles to RoutingAction with expected anchor`() {
+    fun `Unresolved resolve() calls RoutingAction with expected anchor`() {
         val parentNode = mock<Node<*>>()
         verifyBuildNodesCalled(resolverWithAnchor, routingActionWithAnchor, mockAnchor, parentNode)
     }
@@ -122,8 +124,12 @@ class ConfigurationContextTest {
         val expectedAncestryInfo = AncestryInfo.Child(expectedParent, resolved.configuration)
 
         verify(routingAction).buildNodes(
-            expectedAncestryInfo,
-            bundles
+            listOf(
+                BuildContext(
+                    ancestryInfo = expectedAncestryInfo,
+                    savedInstanceState = null
+                )
+            )
         )
     }
 

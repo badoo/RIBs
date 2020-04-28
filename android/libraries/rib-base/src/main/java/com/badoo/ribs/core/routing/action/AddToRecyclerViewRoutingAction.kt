@@ -9,10 +9,12 @@ open class AddToRecyclerViewRoutingAction(
     private val nodeFactory: NodeFactory
 ) : RoutingAction {
 
+    override val nbNodesToBuild: Int = 1
+
     override fun buildNodes(buildContexts: List<BuildContext>): List<Node<*>> =
         listOf(
             nodeFactory.invoke(
-                buildContext.copy(
+                buildContexts.first().copy(
                     attachMode = AttachMode.EXTERNAL
                 )
             )

@@ -2,6 +2,7 @@ package com.badoo.ribs.core.routing.configuration
 
 import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -12,6 +13,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -20,11 +22,15 @@ import org.junit.Test
 
 class ConfigurationContextTest {
 
+    companion object {
+        private const val NB_EXPECTED_NODES = 3
+    }
+
     private val nodes: List<Node<*>> = listOf(mock(), mock())
 
     // Default
     private val defaultRoutingAction = mock<RoutingAction> {
-        on { nbNodesToBuild } doReturn 1
+        on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn nodes
     }
     private val defaultResolver = mock<(Parcelable) -> RoutingAction> {
@@ -34,7 +40,7 @@ class ConfigurationContextTest {
     // With Anchor
     private val mockAnchor: Node<*> = mock()
     private val routingActionWithAnchor = mock<RoutingAction> {
-        on { nbNodesToBuild } doReturn 1
+        on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }
@@ -103,34 +109,73 @@ class ConfigurationContextTest {
     @Test
     fun `Unresolved resolve() calls RoutingAction with parent as default anchor `() {
         val parentNode = mock<Node<*>>()
-        verifyBuildNodesCalled(defaultResolver, defaultRoutingAction, parentNode, parentNode)
+        verifyBuildNodesCalledCorrectly(
+            defaultResolver,
+            defaultRoutingAction,
+            parentNode,
+            parentNode,
+            NB_EXPECTED_NODES,
+            emptyList<Bundle>()
+        )
     }
 
     @Test
     fun `Unresolved resolve() calls RoutingAction with expected anchor`() {
         val parentNode = mock<Node<*>>()
-        verifyBuildNodesCalled(resolverWithAnchor, routingActionWithAnchor, mockAnchor, parentNode)
+        verifyBuildNodesCalledCorrectly(
+            resolverWithAnchor,
+            routingActionWithAnchor,
+            mockAnchor,
+            parentNode,
+            NB_EXPECTED_NODES,
+            emptyList<Bundle>()
+        )
     }
 
-    private fun verifyBuildNodesCalled(
+    @Test
+    fun `Unresolved resolve() calls RoutingAction with proper Bundles if there's any`() {
+        val parentNode = mock<Node<*>>()
+        verifyBuildNodesCalledCorrectly(
+            defaultResolver,
+            defaultRoutingAction,
+            parentNode,
+            parentNode,
+            NB_EXPECTED_NODES,
+            MutableList(NB_EXPECTED_NODES) { mock<Bundle>() }
+        )
+    }
+
+
+    private fun verifyBuildNodesCalledCorrectly(
         resolver: (Parcelable) -> RoutingAction,
         routingAction: RoutingAction,
         expectedParent: Node<*>,
-        parentNode: Node<*>
+        parentNode: Node<*>,
+        nbExpectedNodes: Int,
+        bundles: List<Bundle>
     ) {
-        val bundles = emptyList<Bundle>()
-        val unresolved = Unresolved<Parcelable>(mock(), mock())
+        assertEquals("Expected empty list of bundles or exactly $nbExpectedNodes, actual: ${bundles.size}",
+            true, bundles.isEmpty() || bundles.size == nbExpectedNodes
+        )
+
+        val unresolved = Unresolved<Parcelable>(mock(), mock(), bundles)
         val resolved = unresolved.resolve(resolver, parentNode)
         val expectedAncestryInfo = AncestryInfo.Child(expectedParent, resolved.configuration)
 
-        verify(routingAction).buildNodes(
-            listOf(
-                BuildContext(
-                    ancestryInfo = expectedAncestryInfo,
-                    savedInstanceState = null
-                )
-            )
-        )
+        argumentCaptor<List<BuildContext>>().apply {
+            verify(routingAction).buildNodes(capture())
+            val list = firstValue
+            assertEquals(nbExpectedNodes, list.size)
+
+            list.forEachIndexed { idx, buildContext ->
+                assertEquals(expectedAncestryInfo, buildContext.ancestryInfo)
+                assertEquals(AttachMode.PARENT, buildContext.attachMode)
+
+                if (bundles.isNotEmpty()) {
+                    assertEquals(bundles[idx], buildContext.savedInstanceState)
+                }
+            }
+        }
     }
 
     @Test

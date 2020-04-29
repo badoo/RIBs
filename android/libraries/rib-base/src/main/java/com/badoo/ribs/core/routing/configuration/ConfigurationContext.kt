@@ -109,7 +109,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
         private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> {
             val template = createBuildContext(routingAction, parentNode)
-            val buildContexts = MutableList(routingAction.nbNodesToBuild) {
+            val buildContexts = List(routingAction.nbNodesToBuild) {
                 template.copy(
                     savedInstanceState = bundles.getOrNull(it)
                 )

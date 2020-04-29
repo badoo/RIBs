@@ -30,25 +30,20 @@ class SwitcherWorkflowTest {
 
     @Before
     fun setup() {
-
-        fun <N> withBuilder(
-                builder: (BuildContext) -> N
-        ): (InvocationOnMock) -> N = { answer -> builder(answer.getArgument(0)) }
-
         val helloWorldNodeBuilder = { buildContext: BuildContext ->
-            HelloWorldNode(mock(), mock(), mock(), BuildParams.EmptyChild(buildContext))
+            HelloWorldNode(mock(), mock(), mock(), buildContext.toBuildParams())
         }
         val fooBarNodeBuilder = { buildContext: BuildContext ->
-            FooBarNode(mock(), mock(), BuildParams.EmptyChild(buildContext), emptySet())
+            FooBarNode(mock(), mock(), buildContext.toBuildParams(), emptySet())
         }
         val node1Builder = { buildContext: BuildContext ->
-            Node<DialogExampleView>(BuildParams.EmptyChild(buildContext), mock(), mock(), mock(), mock())
+            Node<DialogExampleView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
         }
         val node2Builder = { buildContext: BuildContext ->
-            Node<BlockerView>(BuildParams.EmptyChild(buildContext), mock(), mock(), mock(), mock())
+            Node<BlockerView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
         }
         val node3Builder = { buildContext: BuildContext ->
-            MenuNode(BuildParams.EmptyChild(buildContext), mock(), mock())
+            MenuNode(buildContext.toBuildParams(), mock(), mock())
         }
 
         router = SwitcherRouter(
@@ -71,6 +66,16 @@ class SwitcherWorkflowTest {
             interactor = interactor
         ).also { it.onAttach() }
     }
+    
+    private fun <N> withBuilder(
+            builder: (BuildContext) -> N
+    ): (InvocationOnMock) -> N = { answer -> builder(answer.getArgument(0)) }
+
+    private fun BuildContext.toBuildParams(): BuildParams<Nothing?> =
+        BuildParams(
+            payload = null,
+            buildContext = this
+        )
 
     @Test
     fun `attachHelloWorld`() {

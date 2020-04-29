@@ -26,14 +26,5 @@ class BuildParams<T>(
             payload = null,
             buildContext = BuildContext.root(null)
         )
-
-        /**
-         * Only for testing purposes. Don't use this in production code, otherwise all your Nodes
-         * will be considered children.
-         */
-        fun EmptyChild(buildContext: BuildContext) = BuildParams(
-            payload = null,
-            buildContext = buildContext
-        )
     }
 }

@@ -7,6 +7,7 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.portal.AncestryInfo
+import com.badoo.ribs.util.RIBs
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -108,6 +109,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             this
 
         private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> {
+            if (bundles.isNotEmpty() && bundles.size != routingAction.nbNodesToBuild) {
+                RIBs.errorHandler.handleNonFatalError(
+                    "Bundles size ${bundles.size} don't match expected nodes count ${routingAction.nbNodesToBuild}"
+                )
+            }
             val template = createBuildContext(routingAction, parentNode)
             val buildContexts = List(routingAction.nbNodesToBuild) {
                 template.copy(

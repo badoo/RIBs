@@ -1,12 +1,10 @@
 package com.badoo.ribs.dialog
 
-import android.os.Bundle
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.NodeFactory
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource

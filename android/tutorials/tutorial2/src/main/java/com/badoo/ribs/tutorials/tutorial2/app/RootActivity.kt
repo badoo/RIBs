@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.tutorials.tutorial2.R
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer

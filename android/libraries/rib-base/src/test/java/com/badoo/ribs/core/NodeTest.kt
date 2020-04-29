@@ -20,14 +20,7 @@ import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.isA
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
@@ -824,7 +817,7 @@ class NodeTest {
     }
 
     @Test
-    fun `When a child node has a root BuildContext, attachToView() invokes error handler`() {
+    fun `When a child node has a root BuildContext, attachChildNode() invokes error handler`() {
         node = createNode(viewFactory = null)
         node.attachToView(parentViewGroup)
 
@@ -835,5 +828,20 @@ class NodeTest {
         node.attachChildNode(root1)
 
         verify(errorHandler).handleNonFatalError(any(), isA<RootNodeAttachedAsChildException>())
+    }
+
+    @Test
+    fun `When a child node has a child BuildContext, attachChildNode() does not invoke any error`() {
+        node = createNode(viewFactory = null)
+        node.attachToView(parentViewGroup)
+
+        val errorHandler = mock<RIBs.ErrorHandler>()
+        RIBs.clearErrorHandler()
+        RIBs.errorHandler = errorHandler
+
+        node.attachChildNode(child1)
+
+        verify(errorHandler, never()).handleNonFatalError(any(), isA<RootNodeAttachedAsChildException>())
+        verifyNoMoreInteractions(errorHandler)
     }
 }

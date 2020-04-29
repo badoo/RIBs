@@ -9,6 +9,7 @@ import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
+import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
@@ -79,7 +80,7 @@ class NodeTest {
         interactor = mock()
         viewPlugins = setOf(mock(), mock())
         node = createNode(viewFactory = viewFactory)
-        childAncestry = AncestryInfo.Child(node, TestRouter.Configuration.C1)
+        childAncestry = AncestryInfo.Child(node, AnyConfiguration)
 
         addChildren()
         root1 = TestNode(
@@ -479,7 +480,7 @@ class NodeTest {
                 buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         val grandChildAncestryInfo: AncestryInfo =
-                AncestryInfo.Child(directChild, TestRouter.Configuration.C1)
+                AncestryInfo.Child(directChild, AnyConfiguration)
         val grandChild = TestNode(
                 viewFactory = mock<TestViewFactory>(),
                 buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
@@ -512,7 +513,7 @@ class NodeTest {
             buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         val grandChildAncestryInfo: AncestryInfo =
-                AncestryInfo.Child(directChild, TestRouter.Configuration.C1)
+                AncestryInfo.Child(directChild, AnyConfiguration)
         val grandChild = TestNode(
             viewFactory = mock<TestViewFactory>(),
             buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
@@ -576,7 +577,7 @@ class NodeTest {
             buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         val grandChildAncestryInfo: AncestryInfo =
-                AncestryInfo.Child(directChild, TestRouter.Configuration.C1)
+                AncestryInfo.Child(directChild, AnyConfiguration)
         val grandChild = TestNode(
                 viewFactory = mock<TestViewFactory>(),
                 buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)

@@ -1,7 +1,10 @@
 package com.badoo.ribs.core
 
 import androidx.lifecycle.Lifecycle.State.RESUMED
+import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestNode
+import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals
@@ -41,7 +44,9 @@ class LifecycleManagerTest {
 
     @Test
     fun `onAttachChild() lifecycle inheritance is recursive`() {
-        val grandChild: Node<*> = TestNode()
+        val grandChildAncestryInfo = AncestryInfo.Child(child1, AnyConfiguration)
+        val grandChild: Node<*> =
+                TestNode(buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo))
         child1.attachChildNode(grandChild)
 
         val expected = RESUMED

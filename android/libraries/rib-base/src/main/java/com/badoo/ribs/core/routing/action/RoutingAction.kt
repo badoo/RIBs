@@ -1,12 +1,16 @@
 package com.badoo.ribs.core.routing.action
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.portal.AncestryInfo
+import com.badoo.ribs.core.builder.BuildContext
 
 interface RoutingAction {
 
-    fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node<*>> =
+    val nbNodesToBuild: Int
+
+    /**
+     * Guaranteed by framework to receive a list of nbNodesToBuild elements
+     */
+    fun buildNodes(buildContexts: List<BuildContext>): List<Node<*>> =
         emptyList()
 
     fun execute() {
@@ -19,8 +23,9 @@ interface RoutingAction {
         null
 
     companion object {
-        fun noop(): RoutingAction = object :
-            RoutingAction {}
+        fun noop(): RoutingAction = object : RoutingAction {
+            override val nbNodesToBuild: Int = 0
+        }
     }
 }
 

@@ -3,9 +3,11 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.portal.AncestryInfo
+import com.badoo.ribs.util.RIBs
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -106,14 +108,34 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override fun shrink(): Unresolved<C> =
             this
 
-        private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> =
-            routingAction.buildNodes(
-                ancestryInfo = AncestryInfo.Child(
-                    anchor = routingAction.anchor() ?: parentNode,
-                    creatorConfiguration = configuration
-                ),
-                bundles = bundles
+        private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> {
+            if (bundles.isNotEmpty() && bundles.size != routingAction.nbNodesToBuild) {
+                RIBs.errorHandler.handleNonFatalError(
+                    "Bundles size ${bundles.size} don't match expected nodes count ${routingAction.nbNodesToBuild}"
+                )
+            }
+            val template = createBuildContext(routingAction, parentNode)
+            val buildContexts = List(routingAction.nbNodesToBuild) {
+                template.copy(
+                    savedInstanceState = bundles.getOrNull(it)
+                )
+            }
+
+            return routingAction.buildNodes(
+                buildContexts = buildContexts
             )
+        }
+
+        private fun createBuildContext(
+            routingAction: RoutingAction,
+            parentNode: Node<*>
+        ): BuildContext = BuildContext(
+            ancestryInfo = AncestryInfo.Child(
+                anchor = routingAction.anchor() ?: parentNode,
+                creatorConfiguration = configuration
+            ),
+            savedInstanceState = null
+        )
 
         override fun withActivationState(activationState: ActivationState) =
             copy(

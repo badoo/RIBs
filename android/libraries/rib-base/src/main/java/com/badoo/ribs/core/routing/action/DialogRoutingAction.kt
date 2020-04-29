@@ -1,9 +1,8 @@
 package com.badoo.ribs.core.routing.action
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.routing.portal.AncestryInfo
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 
@@ -13,8 +12,10 @@ class DialogRoutingAction<Event : Any>(
     private val dialog: Dialog<Event>
 ) : RoutingAction {
 
-    override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node<*>> =
-        dialog.buildNodes(ancestryInfo, bundles)
+    override val nbNodesToBuild: Int = 1
+
+    override fun buildNodes(buildContexts: List<BuildContext>) : List<Node<*>> =
+        dialog.buildNodes(buildContexts.first())
 
     override fun execute() {
         dialogLauncher.show(dialog, onClose = {

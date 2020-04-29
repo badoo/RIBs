@@ -1,20 +1,20 @@
 package com.badoo.ribs.core.routing.action
 
-import android.os.Bundle
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.portal.AncestryInfo
+import com.badoo.ribs.core.builder.BuildContext
 
 class CompositeRoutingAction(
     private vararg val routingActions: RoutingAction
 ) : RoutingAction {
 
+    override val nbNodesToBuild: Int = routingActions.fold(0) { acc, r -> acc + r.nbNodesToBuild }
+
     constructor(routingActions: List<RoutingAction>) : this(*routingActions.toTypedArray())
 
-    override fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>) : List<Node<*>> =
+    override fun buildNodes(buildContexts: List<BuildContext>) : List<Node<*>> =
         routingActions.mapIndexed { index, routingAction ->
             routingAction.buildNodes(
-                ancestryInfo = ancestryInfo,
-                bundles = bundles.getOrNull(index)?.let { listOf(it) } ?: emptyList()
+                buildContexts = listOfNotNull(buildContexts.getOrNull(index))
             )
         }.flatten()
 

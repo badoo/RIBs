@@ -1,12 +1,10 @@
 package com.badoo.ribs.dialog
 
-import android.os.Bundle
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.NodeFactory
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
@@ -73,9 +71,9 @@ abstract class Dialog<T : Any> private constructor(
         events.accept(event)
     }
 
-    fun buildNodes(ancestryInfo: AncestryInfo, bundles: List<Bundle?>): List<Node<*>> =
+    fun buildNodes(buildContext: BuildContext): List<Node<*>> =
         nodeFactory?.let { factory ->
-            val clientParams = BuildContext(
+            val clientParams = buildContext.copy(
                 /**
                  * RIBs inside dialogs behaved like Root nodes so far in that they were
                  * not added as a child of any other Node.
@@ -84,9 +82,7 @@ abstract class Dialog<T : Any> private constructor(
                  * A benefit of this would be back press and lifecycle propagation.
                  * Not entirely sure it is needed. To be reconsidered later.
                  */
-                ancestryInfo = ancestryInfo,
-                attachMode = AttachMode.EXTERNAL,
-                savedInstanceState = bundles.firstOrNull()
+                attachMode = AttachMode.EXTERNAL
             )
 
             listOf(

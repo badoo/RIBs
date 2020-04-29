@@ -4,6 +4,8 @@ class InvokeOnExecute(
     private val onInvoke: () -> Unit
 ) : RoutingAction {
 
+    override val nbNodesToBuild: Int = 0
+
     override fun execute() {
         onInvoke()
     }

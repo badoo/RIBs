@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 
-class BuildContext internal constructor(
+data class BuildContext internal constructor(
     val ancestryInfo: AncestryInfo,
     val attachMode: AttachMode = AttachMode.PARENT,
     val savedInstanceState: Bundle?

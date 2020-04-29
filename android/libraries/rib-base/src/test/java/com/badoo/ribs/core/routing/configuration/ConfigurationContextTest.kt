@@ -93,7 +93,7 @@ class ConfigurationContextTest {
 
     @Test
     fun `Unresolved resolve() keeps bundles`() {
-        val bundles = listOf(mock<Bundle>())
+        val bundles = List(NB_EXPECTED_NODES) { mock<Bundle>() }
         val unresolved = Unresolved<Parcelable>(mock(), mock(), bundles)
         val resolved = unresolved.resolve(defaultResolver, mock())
         assertEquals(bundles, resolved.bundles)

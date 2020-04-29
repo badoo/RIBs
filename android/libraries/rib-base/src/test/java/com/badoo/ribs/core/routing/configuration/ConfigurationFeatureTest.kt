@@ -88,7 +88,7 @@ class ConfigurationFeatureTest {
                 }
                 val bundles = MutableList(nbNodes) { mock<Bundle>() }
                 val factories = nodes.toFactory()
-                val routingAction: RoutingAction = factories.toRoutingAction()
+                val routingAction: RoutingAction = factories.toRoutingAction(nbNodes)
 
                 return ConfigurationTestHelper(
                     configuration = configuration,
@@ -106,8 +106,9 @@ class ConfigurationFeatureTest {
                     }
                 }
 
-            private fun List<() -> Node<*>>.toRoutingAction(): RoutingAction =
+            private fun List<() -> Node<*>>.toRoutingAction(nbNodes: Int): RoutingAction =
                 mock {
+                    on { nbNodesToBuild } doReturn nbNodes
                     on { buildNodes(anyList()) } doAnswer {
                         this@toRoutingAction.map {
                             factory -> factory.invoke()

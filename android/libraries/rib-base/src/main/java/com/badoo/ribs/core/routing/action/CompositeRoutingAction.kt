@@ -14,7 +14,7 @@ class CompositeRoutingAction(
     override fun buildNodes(buildContexts: List<BuildContext>) : List<Node<*>> =
         routingActions.mapIndexed { index, routingAction ->
             routingAction.buildNodes(
-                buildContexts = buildContexts.getOrNull(index)?.let { listOf(it) } ?: emptyList()
+                buildContexts = listOfNotNull(buildContexts.getOrNull(index))
             )
         }.flatten()
 

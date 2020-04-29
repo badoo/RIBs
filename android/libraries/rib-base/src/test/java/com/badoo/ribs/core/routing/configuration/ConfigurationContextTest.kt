@@ -141,7 +141,7 @@ class ConfigurationContextTest {
             parentNode,
             parentNode,
             NB_EXPECTED_NODES,
-            MutableList(NB_EXPECTED_NODES) { mock<Bundle>() }
+            List(NB_EXPECTED_NODES) { mock<Bundle>() }
         )
     }
 
@@ -154,9 +154,9 @@ class ConfigurationContextTest {
         nbExpectedNodes: Int,
         bundles: List<Bundle>
     ) {
-        assertEquals("Expected empty list of bundles or exactly $nbExpectedNodes, actual: ${bundles.size}",
-            true, bundles.isEmpty() || bundles.size == nbExpectedNodes
-        )
+        assert(bundles.isEmpty() || bundles.size == nbExpectedNodes) {
+            "Expected empty list of bundles or exactly $nbExpectedNodes, actual: ${bundles.size}"
+        }
 
         val unresolved = Unresolved<Parcelable>(mock(), mock(), bundles)
         val resolved = unresolved.resolve(resolver, parentNode)

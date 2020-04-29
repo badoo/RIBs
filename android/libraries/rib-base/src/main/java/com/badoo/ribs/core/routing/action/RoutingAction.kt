@@ -23,8 +23,7 @@ interface RoutingAction {
         null
 
     companion object {
-        fun noop(): RoutingAction = object :
-            RoutingAction {
+        fun noop(): RoutingAction = object : RoutingAction {
             override val nbNodesToBuild: Int = 0
         }
     }

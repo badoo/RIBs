@@ -8,23 +8,19 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
+import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.isA
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
@@ -42,6 +38,7 @@ class NodeTest {
     interface RandomOtherNode1 : Rib
     interface RandomOtherNode2 : Rib
     interface RandomOtherNode3 : Rib
+    interface RandomRootNode : Rib
 
     interface TestViewFactory : (ViewGroup) -> TestView
 
@@ -58,8 +55,10 @@ class NodeTest {
     private lateinit var child1: TestNode
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode
+    private lateinit var root1: TestNode
     private lateinit var allChildren: List<Node<*>>
     private lateinit var viewPlugins: Set<ViewPlugin>
+    private lateinit var childAncestry: AncestryInfo
 
     @Before
     fun setUp() {
@@ -74,8 +73,13 @@ class NodeTest {
         interactor = mock()
         viewPlugins = setOf(mock(), mock())
         node = createNode(viewFactory = viewFactory)
+        childAncestry = AncestryInfo.Child(node, AnyConfiguration)
 
         addChildren()
+        root1 = TestNode(
+            buildParams = testBuildParams(object : RandomRootNode {}),
+            viewFactory = null
+        )
     }
 
     private fun createNode(
@@ -96,9 +100,27 @@ class NodeTest {
     }
 
     private fun addChildren() {
-        child1 = TestNode(testBuildParams(object : RandomOtherNode1 {}), viewFactory = null)
-        child2 = TestNode(testBuildParams(object : RandomOtherNode2 {}), viewFactory = null)
-        child3 = TestNode(testBuildParams(object : RandomOtherNode3 {}), viewFactory = null)
+        child1 = TestNode(
+            buildParams = testBuildParams(
+                rib = object : RandomOtherNode1 {},
+                ancestryInfo = childAncestry
+            ),
+            viewFactory = null
+        )
+        child2 = TestNode(
+            buildParams = testBuildParams(
+                rib = object : RandomOtherNode2 {},
+                ancestryInfo = childAncestry
+            ),
+            viewFactory = null
+        )
+        child3 = TestNode(
+            buildParams = testBuildParams(
+                rib = object : RandomOtherNode3 {},
+                ancestryInfo = childAncestry
+            ),
+            viewFactory = null
+        )
         allChildren = listOf(child1, child2, child3)
         node.children.addAll(allChildren)
     }
@@ -416,7 +438,8 @@ class NodeTest {
     fun `attachChildNode() does not imply attachToView when Android view system is not available`() {
         val childViewFactory = mock<TestViewFactory>()
         val child = TestNode(
-            viewFactory = childViewFactory
+            viewFactory = childViewFactory,
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         node.attachChildNode(child)
         verify(childViewFactory, never()).invoke(parentViewGroup)
@@ -433,7 +456,8 @@ class NodeTest {
         // by default it's not started, should be on INITIALIZED
 
         val child = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         node.attachChildNode(child)
 
@@ -445,10 +469,14 @@ class NodeTest {
         // by default it's not started, should be on INITIALIZED
 
         val directChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+                viewFactory = mock<TestViewFactory>(),
+                buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
+        val grandChildAncestryInfo: AncestryInfo =
+                AncestryInfo.Child(directChild, AnyConfiguration)
         val grandChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+                viewFactory = mock<TestViewFactory>(),
+                buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
         )
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
@@ -461,7 +489,8 @@ class NodeTest {
         node.onStop()
 
         val child = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         node.attachChildNode(child)
 
@@ -473,10 +502,14 @@ class NodeTest {
         node.onStop()
 
         val directChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
+        val grandChildAncestryInfo: AncestryInfo =
+                AncestryInfo.Child(directChild, AnyConfiguration)
         val grandChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
         )
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
@@ -489,7 +522,8 @@ class NodeTest {
         node.onStart()
 
         val child = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         node.attachChildNode(child)
 
@@ -501,10 +535,12 @@ class NodeTest {
         node.onStart()
 
         val directChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         val grandChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
@@ -517,7 +553,8 @@ class NodeTest {
         node.onResume()
 
         val child = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         node.attachChildNode(child)
 
@@ -529,10 +566,14 @@ class NodeTest {
         node.onResume()
 
         val directChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
+        val grandChildAncestryInfo: AncestryInfo =
+                AncestryInfo.Child(directChild, AnyConfiguration)
         val grandChild = TestNode(
-            viewFactory = mock<TestViewFactory>()
+                viewFactory = mock<TestViewFactory>(),
+                buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
         )
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
@@ -754,7 +795,7 @@ class NodeTest {
     fun `waitForChildAttached emits expected child immediately if it's already attached`() {
         val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = TestObserver<TestNode2>()
-        val testChildNode = TestNode2()
+        val testChildNode = TestNode2(buildParams = testBuildParams(ancestryInfo = childAncestry))
 
         node.attachChildNode(testChildNode)
         workflow.subscribe(testObserver)
@@ -773,5 +814,34 @@ class NodeTest {
 
         testObserver.assertNoValues()
         testObserver.assertNotComplete()
+    }
+
+    @Test
+    fun `When a child node has a root BuildContext, attachChildNode() invokes error handler`() {
+        node = createNode(viewFactory = null)
+        node.attachToView(parentViewGroup)
+
+        val errorHandler = mock<RIBs.ErrorHandler>()
+        RIBs.clearErrorHandler()
+        RIBs.errorHandler = errorHandler
+
+        node.attachChildNode(root1)
+
+        verify(errorHandler).handleNonFatalError(any(), isA<RootNodeAttachedAsChildException>())
+    }
+
+    @Test
+    fun `When a child node has a child BuildContext, attachChildNode() does not invoke any error`() {
+        node = createNode(viewFactory = null)
+        node.attachToView(parentViewGroup)
+
+        val errorHandler = mock<RIBs.ErrorHandler>()
+        RIBs.clearErrorHandler()
+        RIBs.errorHandler = errorHandler
+
+        node.attachChildNode(child1)
+
+        verify(errorHandler, never()).handleNonFatalError(any(), isA<RootNodeAttachedAsChildException>())
+        verifyNoMoreInteractions(errorHandler)
     }
 }

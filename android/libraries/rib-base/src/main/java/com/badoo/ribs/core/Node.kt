@@ -28,6 +28,7 @@ import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
@@ -207,6 +208,7 @@ open class Node<V : RibView>(
      */
     @MainThread
     internal fun attachChildNode(child: Node<*>) {
+        verifyNotRoot(child)
         children.add(child)
 //        ribRefWatcher.logBreadcrumb(
 //            "ATTACHED", child.javaClass.simpleName, this.javaClass.simpleName
@@ -215,6 +217,16 @@ open class Node<V : RibView>(
         lifecycleManager.onAttachChild(child)
         child.onAttach()
         childrenAttachesRelay.accept(child)
+    }
+
+    private fun verifyNotRoot(child: Node<*>) {
+        if (child.ancestryInfo is AncestryInfo.Root) {
+            val message = "A node that is attached as a child should not have a root BuildContext."
+            RIBs.errorHandler.handleNonFatalError(
+                errorMessage = message,
+                throwable = RootNodeAttachedAsChildException(message = "$message. RIB: $this")
+            )
+        }
     }
 
     // FIXME internal + protected?

@@ -1,8 +1,9 @@
 package com.badoo.ribs.example.rib.switcher
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.configuration.feature.operation.push
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.example.rib.blocker.BlockerView
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
@@ -11,12 +12,13 @@ import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.example.rib.menu.MenuNode
 import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration.Content
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.invocation.InvocationOnMock
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -28,20 +30,30 @@ class SwitcherWorkflowTest {
 
     @Before
     fun setup() {
-        val helloWorldNode = HelloWorldNode(mock(), mock(), mock(), BuildParams.Empty())
-        val fooBarNode = FooBarNode(mock(), mock(), BuildParams.Empty(), emptySet())
-        val node1 = Node<DialogExampleView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
-        val node2 = Node<BlockerView>(BuildParams.Empty(), mock(), mock(), mock(), mock())
-        val node3 = MenuNode(BuildParams.Empty(), mock(), mock())
+        val helloWorldNodeBuilder = { buildContext: BuildContext ->
+            HelloWorldNode(mock(), mock(), mock(), buildContext.toBuildParams())
+        }
+        val fooBarNodeBuilder = { buildContext: BuildContext ->
+            FooBarNode(mock(), mock(), buildContext.toBuildParams(), emptySet())
+        }
+        val node1Builder = { buildContext: BuildContext ->
+            Node<DialogExampleView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
+        }
+        val node2Builder = { buildContext: BuildContext ->
+            Node<BlockerView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
+        }
+        val node3Builder = { buildContext: BuildContext ->
+            MenuNode(buildContext.toBuildParams(), mock(), mock())
+        }
 
         router = SwitcherRouter(
             transitionHandler = null,
             buildParams = BuildParams.Empty(),
-            fooBarBuilder = mock { on { build(any()) } doReturn fooBarNode },
-            helloWorldBuilder = mock { on { build(any()) } doReturn helloWorldNode },
-            dialogExampleBuilder = mock { on { build(any()) } doReturn node1 },
-            blockerBuilder = mock { on { build(any()) } doReturn node2 },
-            menuBuilder = mock { on { build(any()) } doReturn node3 },
+            fooBarBuilder = mock { on { build(any()) } doAnswer(withBuilder(fooBarNodeBuilder)) },
+            helloWorldBuilder = mock { on { build(any()) } doAnswer(withBuilder(helloWorldNodeBuilder)) },
+            dialogExampleBuilder = mock { on { build(any()) } doAnswer(withBuilder(node1Builder)) },
+            blockerBuilder = mock { on { build(any()) } doAnswer(withBuilder(node2Builder)) },
+            menuBuilder = mock { on { build(any()) } doAnswer(withBuilder(node3Builder)) },
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )
@@ -54,6 +66,16 @@ class SwitcherWorkflowTest {
             interactor = interactor
         ).also { it.onAttach() }
     }
+    
+    private fun <N> withBuilder(
+            builder: (BuildContext) -> N
+    ): (InvocationOnMock) -> N = { answer -> builder(answer.getArgument(0)) }
+
+    private fun BuildContext.toBuildParams(): BuildParams<Nothing?> =
+        BuildParams(
+            payload = null,
+            buildContext = this
+        )
 
     @Test
     fun `attachHelloWorld`() {

@@ -16,6 +16,7 @@
 package com.badoo.ribs.core.builder
 
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 
 /**
  * Responsible for building a [Node]. Parent [Router]s should pass in static dependencies via the
@@ -27,9 +28,9 @@ import com.badoo.ribs.core.Node
  * @param <N> type of [Node] this Builder is expected to build
  *
 </D> */
-abstract class SimpleBuilder<N : Node<*>> : Builder<Nothing?, N>() {
+abstract class SimpleBuilder<T : Rib<*>> : Builder<Nothing?, T>() {
 
-    fun build(buildContext: BuildContext): N =
+    fun build(buildContext: BuildContext): T =
         build(buildContext, null)
 }
 

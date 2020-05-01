@@ -3,7 +3,7 @@ package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container
 import com.badoo.ribs.core.Rib
 import io.reactivex.functions.Consumer
 
-interface GreetingsContainer : Rib {
+interface GreetingsContainer : Rib<GreetingsContainerView> {
 
     interface Dependency {
         fun greetingsContainerOutput(): Consumer<Output>

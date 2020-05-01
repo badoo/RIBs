@@ -1,8 +1,8 @@
 package com.badoo.ribs.dialog
 
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
 import android.widget.FrameLayout
+import androidx.appcompat.app.AlertDialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 
@@ -40,12 +40,12 @@ private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
         setView(object : FrameLayout(context) {
             override fun onAttachedToWindow() {
                 super.onAttachedToWindow()
-                it.attachToView(this)
+                it.node.attachToView(this)
             }
 
             override fun onDetachedFromWindow() {
                 super.onDetachedFromWindow()
-                it.detachFromView()
+                it.node.detachFromView()
             }
         })
     }

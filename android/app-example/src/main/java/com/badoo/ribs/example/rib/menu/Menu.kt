@@ -8,7 +8,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 import kotlinx.android.parcel.Parcelize
 
-interface Menu : Rib {
+interface Menu : Rib<MenuView> {
 
     interface Dependency : CanProvideRibCustomisation {
         fun menuInput(): ObservableSource<Input>

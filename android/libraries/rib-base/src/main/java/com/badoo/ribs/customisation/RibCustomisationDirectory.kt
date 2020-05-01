@@ -7,9 +7,9 @@ interface RibCustomisationDirectory {
 
     val parent: RibCustomisationDirectory?
 
-    fun <T : Rib> getSubDirectory(key: KClass<T>) : RibCustomisationDirectory?
+    fun <T : Rib<*>> getSubDirectory(key: KClass<T>) : RibCustomisationDirectory?
 
-    fun <T : Rib> getSubDirectoryOrSelf(key: KClass<T>) : RibCustomisationDirectory =
+    fun <T : Rib<*>> getSubDirectoryOrSelf(key: KClass<T>) : RibCustomisationDirectory =
         getSubDirectory(key) ?: this
 
     fun <T : RibCustomisation> get(key: KClass<T>) : T?

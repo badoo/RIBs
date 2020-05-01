@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -26,12 +27,17 @@ class ConfigurationContextTest {
         private const val NB_EXPECTED_NODES = 3
     }
 
-    private val nodes: List<Node<*>> = listOf(mock(), mock())
+    private val nodes: List<Node<Nothing>> = listOf(mock(), mock())
+    private val ribs: List<Rib<*>> = nodes.map {
+        object : Rib<Nothing> {
+            override val node: Node<Nothing> = it
+        }
+    }
 
     // Default
     private val defaultRoutingAction = mock<RoutingAction> {
         on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
-        on { buildNodes(any()) } doReturn nodes
+        on { buildNodes(any()) } doReturn ribs
     }
     private val defaultResolver = mock<(Parcelable) -> RoutingAction> {
         on { invoke(any()) } doReturn defaultRoutingAction

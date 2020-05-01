@@ -5,7 +5,7 @@ import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 
-interface Small : Rib {
+interface Small : Rib<SmallView> {
 
     interface Dependency :
         CanProvideRibCustomisation,
@@ -15,5 +15,5 @@ interface Small : Rib {
         val viewFactory: SmallView.Factory = SmallViewImpl.Factory()
     ) : RibCustomisation
 
-    interface Workflow
+    // Workflow
 }

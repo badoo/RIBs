@@ -6,13 +6,14 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.view.RibView
 import io.reactivex.ObservableSource
 import kotlinx.android.parcel.Parcelize
 
 /**
  * Considered experimental. Handle with care.
  */
-interface RecyclerViewHost : Rib {
+interface RecyclerViewHost<T : Parcelable>: Rib<RibView> {
 
     interface Dependency<T : Parcelable> {
         fun hostingStrategy(): HostingStrategy

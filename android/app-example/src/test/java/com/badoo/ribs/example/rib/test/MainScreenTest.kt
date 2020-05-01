@@ -55,14 +55,14 @@ class MainScreenTest {
     private val fooBarView = TestFooBarView()
     private val helloWorldView = TestHelloWorldView()
 
-    private val rootRib: Node<SwitcherView> = buildRootRib()
+    private val rootRib: Switcher = buildRootRib()
 
     @Before
     fun setUp() {
-        rootRib.onAttach()
-        rootRib.attachToView(mock())
-        rootRib.onStart()
-        rootRib.onResume()
+        rootRib.node.onAttach()
+        rootRib.node.attachToView(mock())
+        rootRib.node.onStart()
+        rootRib.node.onResume()
 
         dependencies
             .activityStarter

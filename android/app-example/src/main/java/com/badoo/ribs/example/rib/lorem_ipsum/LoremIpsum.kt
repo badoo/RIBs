@@ -5,7 +5,7 @@ import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.functions.Consumer
 
-interface LoremIpsum : Rib {
+interface LoremIpsum : Rib<LoremIpsumView> {
 
     interface Dependency : CanProvideRibCustomisation {
         fun loremIpsumOutput(): Consumer<Output>

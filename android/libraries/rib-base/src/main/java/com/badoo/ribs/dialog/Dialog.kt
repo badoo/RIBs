@@ -2,8 +2,8 @@ package com.badoo.ribs.dialog
 
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
@@ -18,7 +18,7 @@ abstract class Dialog<T : Any> private constructor(
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
     private var nodeFactory: NodeFactory? = null
-    internal var rib: Node<*>? = null
+    internal var rib: Rib<*>? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
         factory,
@@ -71,7 +71,7 @@ abstract class Dialog<T : Any> private constructor(
         events.accept(event)
     }
 
-    fun buildNodes(buildContext: BuildContext): List<Node<*>> =
+    fun buildNodes(buildContext: BuildContext): List<Rib<*>> =
         nodeFactory?.let { factory ->
             val clientParams = buildContext.copy(
                 /**

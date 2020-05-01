@@ -3,7 +3,7 @@ package com.badoo.ribs.tutorials.tutorial1.rib.hello_world
 import com.badoo.ribs.core.Rib
 import io.reactivex.functions.Consumer
 
-interface HelloWorld : Rib {
+interface HelloWorld : Rib<HelloWorldView> {
 
     interface Dependency {
         fun helloWorldOutput(): Consumer<Output>

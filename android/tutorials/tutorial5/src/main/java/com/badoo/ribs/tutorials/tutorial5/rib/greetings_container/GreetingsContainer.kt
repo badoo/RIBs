@@ -5,7 +5,7 @@ import com.badoo.ribs.android.Text
 import com.badoo.ribs.tutorials.tutorial5.util.User
 import io.reactivex.functions.Consumer
 
-interface GreetingsContainer : Rib {
+interface GreetingsContainer : Rib<GreetingsContainerView> {
 
     interface Dependency {
         fun user(): User

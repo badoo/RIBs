@@ -19,7 +19,8 @@ class RecyclerViewHostNode<T : Parcelable> internal constructor(
     viewFactory = { RecyclerViewHostViewImpl.Factory().invoke(viewDeps).invoke(it) },
     router = router,
     interactor = interactor
-) {
+), RecyclerViewHost<T> {
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         timeCapsule.saveState(outState)

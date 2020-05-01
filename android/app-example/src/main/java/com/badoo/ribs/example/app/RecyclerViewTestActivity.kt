@@ -16,7 +16,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGE
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
-import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
@@ -111,7 +111,7 @@ class RecyclerViewTestActivity : RibActivity() {
         Input.Add(Item.Switcher)
     )
 
-    override fun createRib(savedInstanceState: Bundle?): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Rib<*> =
         RecyclerViewHostBuilder(
             object : RecyclerViewHost.Dependency<Item> {
                 override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = EAGER

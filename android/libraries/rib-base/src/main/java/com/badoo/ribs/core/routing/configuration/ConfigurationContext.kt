@@ -123,7 +123,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
             return routingAction.buildNodes(
                 buildContexts = buildContexts
-            )
+            ).map { it.node }
         }
 
         private fun createBuildContext(

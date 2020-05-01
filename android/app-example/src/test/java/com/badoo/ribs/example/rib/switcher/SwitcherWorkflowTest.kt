@@ -24,7 +24,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class SwitcherWorkflowTest {
 
-    private lateinit var workflow: Switcher.Workflow
+    private lateinit var workflow: Switcher
     private lateinit var router: SwitcherRouter
     private lateinit var interactor: SwitcherInteractor
 
@@ -79,7 +79,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `attachHelloWorld`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.attachHelloWorld().subscribe(testObserver)
 
@@ -89,7 +89,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `testCrash`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.testCrash().subscribe(testObserver)
 
@@ -98,7 +98,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is already attached`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         router.push(Content.Hello)
         workflow.waitForHelloWorld().subscribe(testObserver)
@@ -109,7 +109,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is attached after`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.waitForHelloWorld().subscribe(testObserver)
         router.push(Content.Hello)
@@ -120,7 +120,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is not attached`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.waitForHelloWorld().subscribe(testObserver)
 
@@ -130,7 +130,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `doSomethingAndStayOnThisNode`() {
-        val testObserver = TestObserver<Switcher.Workflow>()
+        val testObserver = TestObserver<Switcher>()
 
         workflow.doSomethingAndStayOnThisNode().subscribe(testObserver)
 

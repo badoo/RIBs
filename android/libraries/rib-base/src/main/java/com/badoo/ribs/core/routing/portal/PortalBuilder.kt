@@ -5,9 +5,9 @@ import com.badoo.ribs.core.builder.SimpleBuilder
 
 class PortalBuilder(
     private val dependency: Portal.Dependency
-) : SimpleBuilder<PortalNode>() {
+) : SimpleBuilder<Portal>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): PortalNode {
+    override fun build(buildParams: BuildParams<Nothing?>): Portal {
         val router = PortalRouter(
             buildParams = buildParams,
             transitionHandler = dependency.transitionHandler()

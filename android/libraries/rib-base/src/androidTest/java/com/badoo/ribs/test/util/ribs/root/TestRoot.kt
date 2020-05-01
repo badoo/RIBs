@@ -15,7 +15,7 @@ import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import io.reactivex.observers.TestObserver
 import java.util.UUID
 
-interface TestRoot : Rib {
+interface TestRoot : Rib<TestRootView> {
 
     interface Dependency {
         fun viewLifecycleObserver(): TestObserver<Lifecycle.Event>
@@ -44,7 +44,7 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> TestNode<TestChildView> = {
+        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> Test<TestChildView> = {
             TestChildBuilder().build(it).also {
                 block.invoke(it)
             }
@@ -59,11 +59,11 @@ interface TestRoot : Rib {
                         uuid = UUID.randomUUID()
                     )
                 ),
-                builderPermanent1 = builder { permanentNode1 = it },
-                builderPermanent2 = builder { permanentNode2 = it },
-                builder1 = builder { childNode1 = it },
-                builder2 = builder { childNode2 = it },
-                builder3 = builder { childNode3 = it },
+                builderPermanent1 = builder { permanent1 = it },
+                builderPermanent2 = builder { permanent2 = it },
+                builder1 = builder { child1 = it },
+                builder2 = builder { child2 = it },
+                builder3 = builder { child3 = it },
                 initialConfiguration = initialConfiguration,
                 permanentParts = permanentParts,
                 dialogLauncher = dialogLauncher

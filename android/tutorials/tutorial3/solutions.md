@@ -75,7 +75,7 @@ class HelloWorldInteractor(
 
 ### HelloWorld
 ```kotlin
-interface HelloWorld : Rib {
+interface HelloWorld : Rib<HelloWorldView> {
 
     interface Dependency {
         fun user(): User
@@ -115,7 +115,7 @@ internal object HelloWorldModule {
 
 ### GreetingsContainer
 ```kotlin
-interface GreetingsContainer : Rib {
+interface GreetingsContainer : Rib<GreetingsContainerView> {
 
     interface Dependency {
         fun user(): User

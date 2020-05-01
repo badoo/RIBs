@@ -11,7 +11,7 @@ import org.junit.Test
 
 class FooBarWorkflowTest {
 
-    private lateinit var workflow: FooBar.Workflow
+    private lateinit var workflow: FooBar
 
     @Before
     fun setup() {
@@ -20,7 +20,7 @@ class FooBarWorkflowTest {
             override fun fooBarOutput(): Consumer<FooBar.Output> = mock()
             override fun ribCustomisation(): RibCustomisationDirectory = mock()
         }).build(BuildContext.root(savedInstanceState = null)).also {
-            it.onAttach()
+            it.node.onAttach()
         }
     }
 
@@ -44,7 +44,7 @@ class FooBarWorkflowTest {
      */
     @Test
     fun `attach child workflow step is fulfillable`() {
-        // val testObserver = TestObserver<Child.Workflow>()
+        // val testObserver = TestObserver<Child>()
 
         // workflow.attachChild1().subscribe(testObserver)
 

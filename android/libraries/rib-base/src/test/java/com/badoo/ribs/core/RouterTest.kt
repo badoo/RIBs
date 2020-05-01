@@ -4,8 +4,8 @@ import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
+import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -36,7 +36,10 @@ class RouterTest {
         childNodeC2_1 = mock()
         childNodeC2_2 = mock()
 
-        routingActionForC2 = mock { on { buildNodes(any())} doReturn listOf(childNodeC2_1, childNodeC2_2) }
+        routingActionForC2 = mock { on { buildNodes(any())} doReturn listOf(
+            childNodeC2_1.toRib(),
+            childNodeC2_2.toRib())
+        }
         routingActionForC1 = mock()
         routingActionForC3 = mock()
         routingActionForC4 = mock()
@@ -57,6 +60,10 @@ class RouterTest {
 
         node = mock(defaultAnswer = Answers.RETURNS_MOCKS)
         router.init(node)
+    }
+
+    private fun <T : RibView> Node<T>.toRib(): Rib<T> = object : Rib<T> {
+        override val node: Node<T> = this@toRib
     }
 
     @Test

@@ -5,17 +5,16 @@ import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBarNode
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : SimpleBuilder<FooBarNode>() {
+) : SimpleBuilder<FooBar>() {
 
     private val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 
-    override fun build(buildParams: BuildParams<Nothing?>): FooBarNode =
+    override fun build(buildParams: BuildParams<Nothing?>): FooBar =
         DaggerFooBarComponent
             .factory()
             .create(

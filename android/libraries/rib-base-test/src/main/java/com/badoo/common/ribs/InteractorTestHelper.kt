@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.RoutingAction
@@ -92,8 +91,6 @@ inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView w
             this@subscribedView.subscribe(observer)
         }
     }
-
-private object TestIdentifier : Rib
 
 private class TestRouter<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
     initialConfig: Content

@@ -4,7 +4,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 
-interface PortalOverlayTest : Rib {
+interface PortalOverlayTest : Rib<PortalOverlayTestView> {
 
     interface Dependency : CanProvideRibCustomisation
 

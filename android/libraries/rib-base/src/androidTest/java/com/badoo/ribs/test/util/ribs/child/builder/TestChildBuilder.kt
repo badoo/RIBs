@@ -14,7 +14,7 @@ class TestChildBuilder : SimpleBuilder<TestNode<TestChildView>>() {
 
     private val dependency: Nothing? = null
 
-    override fun build(buildParams: BuildParams<Nothing?>): TestNode<TestChildView> {
+    override fun build(buildParams: BuildParams<Nothing?>): Test<TestChildView> {
         val router = TestChildRouter(BuildParams.Empty())
 
         return TestNode(

@@ -93,7 +93,7 @@ Let's say we want to update the text on the button from outside of the RIB.
 To expose this functionality, let's add an `Input` to `HelloWorld`:
 
 ```kotlin
-interface HelloWorld : Rib<HelloWorldView> {
+interface HelloWorld : Rib {
 
     interface Dependency {
         fun helloWorldInput(): ObservableSource<Input> // add this

@@ -9,7 +9,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
-interface HelloWorld : Rib<HelloWorldView> {
+interface HelloWorld : Rib {
 
     interface Dependency :
         CanProvideActivityStarter,

@@ -14,7 +14,7 @@ class DialogRoutingAction<Event : Any>(
 
     override val nbNodesToBuild: Int = 1
 
-    override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib<*>> =
+    override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib> =
         dialog.buildNodes(buildContexts.first())
 
     override fun execute() {

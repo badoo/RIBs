@@ -11,7 +11,7 @@ class CompositeRoutingAction(
 
     constructor(routingActions: List<RoutingAction>) : this(*routingActions.toTypedArray())
 
-    override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib<*>> =
+    override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib> =
         routingActions.mapIndexed { index, routingAction ->
             routingAction.buildNodes(
                 buildContexts = listOfNotNull(buildContexts.getOrNull(index))

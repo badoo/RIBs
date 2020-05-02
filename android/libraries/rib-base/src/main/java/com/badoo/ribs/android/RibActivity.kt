@@ -35,7 +35,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         )
     }
 
-    protected open lateinit var root: Rib<*>
+    protected open lateinit var root: Rib
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +65,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     abstract val rootViewGroup: ViewGroup
 
-    abstract fun createRib(savedInstanceState: Bundle?): Rib<*>
+    abstract fun createRib(savedInstanceState: Bundle?): Rib
 
     override fun onStart() {
         super.onStart()

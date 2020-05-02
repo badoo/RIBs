@@ -5,7 +5,7 @@ import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.functions.Consumer
 
-interface Blocker : Rib<BlockerView> {
+interface Blocker : Rib {
 
     interface Dependency : CanProvideRibCustomisation {
         fun blockerOutput(): Consumer<Output>

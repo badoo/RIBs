@@ -1,11 +1,10 @@
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.view.RibView
 import java.util.UUID
 
-interface Rib<V : RibView> {
+interface Rib {
 
-    val node: Node<V>
+    val node: Node<*>
 
     data class Identifier(
         val uuid: UUID

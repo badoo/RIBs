@@ -5,7 +5,7 @@ import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 
-interface Small : Rib<SmallView> {
+interface Small : Rib {
 
     interface Dependency :
         CanProvideRibCustomisation,

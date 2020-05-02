@@ -5,7 +5,7 @@ import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.android.Text
 import io.reactivex.functions.Consumer
 
-interface OptionSelector : Rib<OptionSelectorView> {
+interface OptionSelector : Rib {
 
     interface Dependency {
         fun moreOptionsOutput(): Consumer<Output>

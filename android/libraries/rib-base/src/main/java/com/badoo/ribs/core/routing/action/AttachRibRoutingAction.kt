@@ -10,7 +10,7 @@ open class AttachRibRoutingAction(
 
     override val nbNodesToBuild: Int = 1
 
-    override fun buildNodes(buildContexts: List<BuildContext>): List<Rib<*>> =
+    override fun buildNodes(buildContexts: List<BuildContext>): List<Rib> =
         listOf(
             nodeFactory.invoke(
                 buildContexts.first()

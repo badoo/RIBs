@@ -30,7 +30,7 @@ import java.util.UUID
  * @param <N> type of [Node] this Builder is expected to build
  *
  */
-abstract class Builder<P, T : Rib<*>> {
+abstract class Builder<P, T : Rib> {
 
     fun build(buildContext: BuildContext, payload: P): T {
         val buildParams = BuildParams(

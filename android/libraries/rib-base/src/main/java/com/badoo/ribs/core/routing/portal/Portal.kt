@@ -7,7 +7,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Single
 
-interface Portal : Rib<Nothing> {
+interface Portal : Rib {
 
     interface OtherSide {
         fun showContent(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable)
@@ -20,6 +20,6 @@ interface Portal : Rib<Nothing> {
     }
 
     // Workflow
-    fun showDefault(): Single<Rib<*>>
-    fun showInPortal(ancestryInfo: AncestryInfo): Single<Rib<*>>
+    fun showDefault(): Single<Rib>
+    fun showInPortal(ancestryInfo: AncestryInfo): Single<Rib>
 }

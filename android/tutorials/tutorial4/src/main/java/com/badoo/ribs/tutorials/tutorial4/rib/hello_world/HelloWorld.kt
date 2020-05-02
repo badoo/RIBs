@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.tutorials.tutorial4.util.User
 import io.reactivex.functions.Consumer
 
-interface HelloWorld : Rib<HelloWorldView> {
+interface HelloWorld : Rib {
 
     interface Dependency {
         fun user(): User

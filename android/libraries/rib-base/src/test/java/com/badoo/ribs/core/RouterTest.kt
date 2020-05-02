@@ -62,7 +62,7 @@ class RouterTest {
         router.init(node)
     }
 
-    private fun <T : RibView> Node<T>.toRib(): Rib<T> = object : Rib<T> {
+    private fun <T : RibView> Node<T>.toRib(): Rib = object : Rib {
         override val node: Node<T> = this@toRib
     }
 

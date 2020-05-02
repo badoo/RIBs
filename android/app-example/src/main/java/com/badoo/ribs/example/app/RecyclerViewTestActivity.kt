@@ -111,7 +111,7 @@ class RecyclerViewTestActivity : RibActivity() {
         Input.Add(Item.Switcher)
     )
 
-    override fun createRib(savedInstanceState: Bundle?): Rib<*> =
+    override fun createRib(savedInstanceState: Bundle?): Rib =
         RecyclerViewHostBuilder(
             object : RecyclerViewHost.Dependency<Item> {
                 override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = EAGER

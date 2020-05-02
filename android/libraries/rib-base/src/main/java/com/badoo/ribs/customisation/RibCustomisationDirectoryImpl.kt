@@ -33,11 +33,11 @@ open class RibCustomisationDirectoryImpl(
     override fun <T : RibCustomisation> getRecursively(key: KClass<T>): T? =
        get(key) ?: parent?.get(key)
 
-    override fun <T : Rib<*>> putSubDirectory(key: KClass<T>, value: RibCustomisationDirectory) {
+    override fun <T : Rib> putSubDirectory(key: KClass<T>, value: RibCustomisationDirectory) {
         map[key] = value
     }
 
-    override fun <T : Rib<*>> getSubDirectory(key: KClass<T>): RibCustomisationDirectory?=
+    override fun <T : Rib> getSubDirectory(key: KClass<T>): RibCustomisationDirectory?=
         map[key] as? RibCustomisationDirectory
 
 

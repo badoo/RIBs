@@ -53,15 +53,15 @@ open class Node<V : RibView>(
     private val viewPlugins: Set<ViewPlugin> = emptySet()
 //    ,
 //    private val ribRefWatcher: RibRefWatcher = RibRefWatcher.getInstance()
-) : Rib<V>, LifecycleOwner {
+) : Rib, LifecycleOwner {
 
     companion object {
         internal const val BUNDLE_KEY = "Node"
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
-    override val node: Node<V> = this
-    
+    override val node: Node<*> = this
+
     open val identifier: Rib.Identifier =
         buildParams.identifier
 

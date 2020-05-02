@@ -18,7 +18,7 @@ abstract class Dialog<T : Any> private constructor(
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
     private var nodeFactory: NodeFactory? = null
-    internal var rib: Rib<*>? = null
+    internal var rib: Rib? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
         factory,
@@ -71,7 +71,7 @@ abstract class Dialog<T : Any> private constructor(
         events.accept(event)
     }
 
-    fun buildNodes(buildContext: BuildContext): List<Rib<*>> =
+    fun buildNodes(buildContext: BuildContext): List<Rib> =
         nodeFactory?.let { factory ->
             val clientParams = buildContext.copy(
                 /**

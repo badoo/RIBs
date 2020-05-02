@@ -7,7 +7,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 
-interface FooBar : Rib<FooBarView> {
+interface FooBar : Rib {
 
     interface Dependency : CanProvideRibCustomisation {
         fun fooBarInput(): ObservableSource<Input>

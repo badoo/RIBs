@@ -15,7 +15,7 @@ import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import io.reactivex.observers.TestObserver
 import java.util.UUID
 
-interface TestRoot : Rib<TestRootView> {
+interface TestRoot : Rib {
 
     interface Dependency {
         fun viewLifecycleObserver(): TestObserver<Lifecycle.Event>

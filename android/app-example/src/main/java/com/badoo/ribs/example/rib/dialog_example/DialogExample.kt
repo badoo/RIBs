@@ -5,7 +5,7 @@ import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 
-interface DialogExample : Rib<DialogExampleView> {
+interface DialogExample : Rib {
 
     interface Dependency : CanProvideDialogLauncher, CanProvideRibCustomisation
 

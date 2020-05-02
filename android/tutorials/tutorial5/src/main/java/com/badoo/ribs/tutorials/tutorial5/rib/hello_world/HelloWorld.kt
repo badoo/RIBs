@@ -6,7 +6,7 @@ import com.badoo.ribs.tutorials.tutorial5.util.User
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-interface HelloWorld : Rib<HelloWorldView> {
+interface HelloWorld : Rib {
 
     interface Dependency {
         fun helloWorldInput(): ObservableSource<Input>

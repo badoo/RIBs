@@ -11,7 +11,7 @@ interface RoutingAction {
     /**
      * Guaranteed by framework to receive a list of nbNodesToBuild elements
      */
-    fun buildNodes(buildContexts: List<BuildContext>): List<Rib<*>> =
+    fun buildNodes(buildContexts: List<BuildContext>): List<Rib> =
         emptyList()
 
     fun execute() {

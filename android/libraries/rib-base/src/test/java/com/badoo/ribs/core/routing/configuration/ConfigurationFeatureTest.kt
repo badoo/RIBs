@@ -76,7 +76,7 @@ class ConfigurationFeatureTest {
         val configuration: Configuration,
         val nodes: List<Node<Nothing>>,
         val bundles: List<Bundle>,
-        val nodeFactories: List<() -> Rib<Nothing>>,
+        val nodeFactories: List<() -> Rib>,
         val routingAction: RoutingAction
     ) {
         companion object {
@@ -100,16 +100,16 @@ class ConfigurationFeatureTest {
                 )
             }
 
-            private fun List<Node<Nothing>>.toFactory(): List<() -> Rib<Nothing>> =
+            private fun List<Node<Nothing>>.toFactory(): List<() -> Rib> =
                 map { node ->
-                    mock<() -> Rib<Nothing>> {
-                        on { invoke() } doReturn object : Rib<Nothing> {
+                    mock<() -> Rib> {
+                        on { invoke() } doReturn object : Rib {
                             override val node = node
                         }
                     }
                 }
 
-            private fun List<() -> Rib<*>>.toRoutingAction(nbNodes: Int): RoutingAction =
+            private fun List<() -> Rib>.toRoutingAction(nbNodes: Int): RoutingAction =
                 mock {
                     on { nbNodesToBuild } doReturn nbNodes
                     on { buildNodes(anyList()) } doAnswer {

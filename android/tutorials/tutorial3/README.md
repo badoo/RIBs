@@ -117,7 +117,7 @@ Alright, now instead of manually fixing this, let's try and make this a dependen
 Let's head to `HelloWorld`, the main interface of the RIB, which doesn't have any dependencies now:
 
 ```kotlin
-interface HelloWorld : Rib<HelloWorldView> {
+interface HelloWorld : Rib {
 
     interface Dependency    
     
@@ -128,7 +128,7 @@ interface HelloWorld : Rib<HelloWorldView> {
 Change it so that it looks like:
 
 ```kotlin
-interface HelloWorld : Rib<HelloWorldView> {
+interface HelloWorld : Rib {
 
     interface Dependency {
         fun config(): Config
@@ -282,7 +282,7 @@ Really, just a one-liner.
 Try it:
 
 ```kotlin
-interface GreetingsContainer : Rib<GreetingsContainerView> {
+interface GreetingsContainer : Rib {
 
     interface Dependency {
         // Add this, and you are done on this level - Dagger will provide

@@ -4,7 +4,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.tutorials.tutorial4.util.User
 import io.reactivex.functions.Consumer
 
-interface GreetingsContainer : Rib<GreetingsContainerView> {
+interface GreetingsContainer : Rib {
 
     interface Dependency {
         fun user(): User

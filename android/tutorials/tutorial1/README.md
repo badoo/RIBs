@@ -32,7 +32,7 @@ In Badoo RIBs, this main interface always has the name of the RIB itself without
 An example of such a public interface typically looks like:
 ```kotlin
 
-interface ExampleRib : Rib<ExampleRibView> {
+interface ExampleRib : Rib {
 
     interface Dependency : Rib.Dependency {
         fun exampleRibInput(): ObservableSource<Input>
@@ -81,7 +81,7 @@ Enough theory, let's get down to the practical details, and check out `HelloWorl
 ```kotlin
 package com.badoo.ribs.tutorials.tutorial1.rib.hello_world
 
-interface HelloWorld : Rib<HelloWorldView> {
+interface HelloWorld : Rib {
 
     interface Dependency {
         fun helloWorldOutput(): Consumer<Output>

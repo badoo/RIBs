@@ -18,12 +18,12 @@ class PortalNode internal constructor(
     interactor = interactor
 ), Portal {
 
-    override fun showDefault(): Single<Rib<*>> =
+    override fun showDefault(): Single<Rib> =
         attachWorkflow {
             router.push(Content.Default)
         }
 
-    override fun showInPortal(ancestryInfo: AncestryInfo): Single<Rib<*>> =
+    override fun showInPortal(ancestryInfo: AncestryInfo): Single<Rib> =
         attachWorkflow {
             router.push(Content.Portal(ancestryInfo.configurationChain))
         }

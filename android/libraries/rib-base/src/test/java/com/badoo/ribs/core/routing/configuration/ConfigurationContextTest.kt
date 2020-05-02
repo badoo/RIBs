@@ -28,8 +28,8 @@ class ConfigurationContextTest {
     }
 
     private val nodes: List<Node<Nothing>> = listOf(mock(), mock())
-    private val ribs: List<Rib<*>> = nodes.map {
-        object : Rib<Nothing> {
+    private val ribs: List<Rib> = nodes.map {
+        object : Rib {
             override val node: Node<Nothing> = it
         }
     }

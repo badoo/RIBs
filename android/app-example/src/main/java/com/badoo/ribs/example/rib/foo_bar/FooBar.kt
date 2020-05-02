@@ -7,7 +7,7 @@ import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-interface FooBar : Rib<FooBarView> {
+interface FooBar : Rib {
 
     interface Dependency : CanProvidePermissionRequester, CanProvideRibCustomisation {
         fun foobarInput(): ObservableSource<Input>

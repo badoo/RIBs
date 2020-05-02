@@ -13,7 +13,7 @@ import com.badoo.ribs.example.rib.switcher.SwitcherRouter.Configuration
 import com.badoo.ribs.example.util.CoffeeMachine
 import io.reactivex.Single
 
-interface Switcher : Rib<SwitcherView> {
+interface Switcher : Rib {
 
     interface Dependency :
         CanProvideActivityStarter,

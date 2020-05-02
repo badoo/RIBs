@@ -6,7 +6,6 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.view.RibView
 import io.reactivex.ObservableSource
 import kotlinx.android.parcel.Parcelize
 

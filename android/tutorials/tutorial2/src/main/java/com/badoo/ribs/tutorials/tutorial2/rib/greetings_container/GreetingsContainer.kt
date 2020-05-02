@@ -1,7 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.view.RibView
 import io.reactivex.functions.Consumer
 
 interface GreetingsContainer : Rib {

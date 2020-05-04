@@ -5,7 +5,7 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.example.rib.blocker.BlockerView
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleNode
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
@@ -36,13 +36,13 @@ class SwitcherWorkflowTest {
         val fooBarNodeBuilder = { buildContext: BuildContext ->
             FooBarNode(mock(), mock(), buildContext.toBuildParams(), emptySet())
         }
-        val node1Builder = { buildContext: BuildContext ->
-            Node<DialogExampleView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
+        val dialogExampleBuilder = { buildContext: BuildContext ->
+            DialogExampleNode(buildContext.toBuildParams(), mock(), mock(), mock())
         }
-        val node2Builder = { buildContext: BuildContext ->
+        val blockerBuilder = { buildContext: BuildContext ->
             Node<BlockerView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
         }
-        val node3Builder = { buildContext: BuildContext ->
+        val menuBuilder = { buildContext: BuildContext ->
             MenuNode(buildContext.toBuildParams(), mock(), mock())
         }
 
@@ -51,9 +51,9 @@ class SwitcherWorkflowTest {
             buildParams = BuildParams.Empty(),
             fooBarBuilder = mock { on { build(any()) } doAnswer(withBuilder(fooBarNodeBuilder)) },
             helloWorldBuilder = mock { on { build(any()) } doAnswer(withBuilder(helloWorldNodeBuilder)) },
-            dialogExampleBuilder = mock { on { build(any()) } doAnswer(withBuilder(node1Builder)) },
-            blockerBuilder = mock { on { build(any()) } doAnswer(withBuilder(node2Builder)) },
-            menuBuilder = mock { on { build(any()) } doAnswer(withBuilder(node3Builder)) },
+            dialogExampleBuilder = mock { on { build(any()) } doAnswer(withBuilder(dialogExampleBuilder)) },
+            blockerBuilder = mock { on { build(any()) } doAnswer(withBuilder(blockerBuilder)) },
+            menuBuilder = mock { on { build(any()) } doAnswer(withBuilder(menuBuilder)) },
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )
@@ -66,7 +66,7 @@ class SwitcherWorkflowTest {
             interactor = interactor
         ).also { it.onAttach() }
     }
-    
+
     private fun <N> withBuilder(
             builder: (BuildContext) -> N
     ): (InvocationOnMock) -> N = { answer -> builder(answer.getArgument(0)) }

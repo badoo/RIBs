@@ -13,6 +13,7 @@ import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(
@@ -73,7 +74,8 @@ class PortalRouter(
                         // TODO for maximum correctness, original List<> should also contain Bundles,
                         //  as that might change how dependencies are built (right now there's no case for this,
                         //  but can be in the future).
-                        savedInstanceState = null
+                        savedInstanceState = null,
+                        customisations = RibCustomisationDirectoryImpl()
                     )
                 )
             )

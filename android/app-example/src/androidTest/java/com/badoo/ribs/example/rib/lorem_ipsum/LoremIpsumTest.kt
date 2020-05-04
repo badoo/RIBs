@@ -8,9 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.app.AppRibCustomisations
 import io.reactivex.functions.Consumer
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +20,6 @@ class LoremIpsumTest {
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         LoremIpsumBuilder(object : LoremIpsum.Dependency {
-            override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
             override fun loremIpsumOutput(): Consumer<LoremIpsum.Output> = Consumer {}
         }).build(root(savedInstanceState))
 

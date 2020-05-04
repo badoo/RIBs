@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.action.DialogRoutingAction
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.blocker.BlockerBuilder
 import com.badoo.ribs.example.rib.blocker.BlockerView
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleNode
 import com.badoo.ribs.example.rib.dialog_example.builder.DialogExampleBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBarBuilder
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
@@ -40,7 +40,7 @@ class SwitcherRouterTest {
     private val helloWorldNode = HelloWorldNode(null, mock(), mock(), BuildParams.Empty())
     private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(any()) } doReturn helloWorldNode }
 
-    private val dialogExampleNode = TestNode<DialogExampleView>()
+    private val dialogExampleNode = DialogExampleNode(BuildParams.Empty(), null, mock(), mock())
     private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(any()) } doReturn dialogExampleNode }
 
     private val blockerNode = TestNode<BlockerView>()

@@ -2,12 +2,11 @@
 package com.badoo.ribs.example.rib.dialog_example.builder
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleInteractor
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleNode
 import com.badoo.ribs.example.rib.dialog_example.DialogExampleRouter
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
 import com.badoo.ribs.example.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.example.rib.dialog_example.dialog.SimpleDialog
@@ -85,7 +84,7 @@ internal object DialogExampleModule {
         customisation: DialogExample.Customisation,
         router: DialogExampleRouter,
         interactor: DialogExampleInteractor
-    ) : Node<DialogExampleView> = Node(
+    ) : DialogExampleNode = DialogExampleNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         router = router,

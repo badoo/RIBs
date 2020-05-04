@@ -40,8 +40,15 @@ open class RibCustomisationDirectoryImpl(
     override fun <T : Rib> getSubDirectory(key: KClass<T>): RibCustomisationDirectory?=
         map[key] as? RibCustomisationDirectory
 
+    override fun <T : Rib> getSubDirectoryOrSelf(key: KClass<T>): RibCustomisationDirectory {
+        val subDir = map.keys.firstOrNull {
+            it is KClass<*> && it.java.isAssignableFrom(key.java)
+        }
 
-    operator fun KClass<*>.invoke(block: RibCustomisationDirectoryImpl.() -> Unit) {
+        return map[subDir] as? RibCustomisationDirectory ?: this
+    }
+
+    operator fun KClass<out Rib>.invoke(block: RibCustomisationDirectoryImpl.() -> Unit) {
         if (map.containsKey(this)) {
             // TODO warning for accidental override?
         }

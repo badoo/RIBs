@@ -5,9 +5,6 @@ import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.customisation.CanProvidePortal
-import com.badoo.ribs.customisation.CanProvideRibCustomisation
-import com.badoo.ribs.customisation.RibCustomisationDirectory
-import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.dialog.DialogLauncher
 import com.nhaarman.mockitokotlin2.mock
@@ -16,13 +13,11 @@ class TestDefaultDependencies :
     CanProvideActivityStarter,
     CanProvidePermissionRequester,
     CanProvideDialogLauncher,
-    CanProvideRibCustomisation,
     CanProvidePortal {
 
     val permissionRequester = TestPermissionRequester()
     val activityStarter = TestActivityStarter()
 
-    override fun ribCustomisation(): RibCustomisationDirectory = RibCustomisationDirectoryImpl()
     override fun permissionRequester() = permissionRequester
     override fun activityStarter(): ActivityStarter = activityStarter
     override fun dialogLauncher(): DialogLauncher = mock()

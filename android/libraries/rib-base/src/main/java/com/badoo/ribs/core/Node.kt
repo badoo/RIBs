@@ -60,7 +60,8 @@ open class Node<V : RibView>(
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
-    override val node: Node<*> = this
+    override val node: Node<*>
+        get() = this
 
     open val identifier: Rib.Identifier =
         buildParams.identifier

@@ -7,6 +7,7 @@ import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
@@ -37,6 +38,6 @@ class RibTestActivity : RibActivity(),
     }
 
     companion object {
-        var ribFactory: ((RibTestActivity, Bundle?) -> Node<*>)? = null
+        var ribFactory: ((RibTestActivity, Bundle?) -> Rib)? = null
     }
 }

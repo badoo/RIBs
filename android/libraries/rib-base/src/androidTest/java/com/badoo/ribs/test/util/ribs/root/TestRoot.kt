@@ -44,7 +44,7 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> Test<TestChildView> = {
+        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> TestNode<TestChildView> = {
             TestChildBuilder().build(it).also {
                 block.invoke(it)
             }
@@ -59,11 +59,11 @@ interface TestRoot : Rib {
                         uuid = UUID.randomUUID()
                     )
                 ),
-                builderPermanent1 = builder { permanent1 = it },
-                builderPermanent2 = builder { permanent2 = it },
-                builder1 = builder { child1 = it },
-                builder2 = builder { child2 = it },
-                builder3 = builder { child3 = it },
+                builderPermanent1 = builder { permanentNode1 = it },
+                builderPermanent2 = builder { permanentNode1 = it },
+                builder1 = builder { childNode1 = it },
+                builder2 = builder { childNode2 = it },
+                builder3 = builder { childNode3 = it },
                 initialConfiguration = initialConfiguration,
                 permanentParts = permanentParts,
                 dialogLauncher = dialogLauncher

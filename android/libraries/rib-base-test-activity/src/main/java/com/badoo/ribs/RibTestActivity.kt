@@ -6,7 +6,6 @@ import com.badoo.common.rib.test.activity.R
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.android.RibActivity
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
@@ -29,7 +28,7 @@ class RibTestActivity : RibActivity(),
     override val rootViewGroup: ViewGroup
         get() = findViewById(android.R.id.content)
 
-    override fun createRib(savedInstanceState: Bundle?): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Rib =
         ribFactory!!(this, savedInstanceState)
 
     override fun onCreate(savedInstanceState: Bundle?) {

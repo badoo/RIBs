@@ -1,7 +1,6 @@
 package com.badoo.ribs.template.node_dagger.foo_bar
 
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.node_dagger.foo_bar.builder.FooBarBuilder
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.ObservableSource
@@ -19,7 +18,6 @@ class FooBarWorkflowTest {
         workflow = FooBarBuilder(object : FooBar.Dependency {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = mock()
             override fun fooBarOutput(): Consumer<FooBar.Output> = mock()
-            override fun ribCustomisation(): RibCustomisationDirectory = mock()
         }).build(root(savedInstanceState = null)).also {
             it.node.onAttach()
         }

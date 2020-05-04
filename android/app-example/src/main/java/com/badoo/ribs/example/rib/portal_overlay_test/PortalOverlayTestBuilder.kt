@@ -2,19 +2,13 @@ package com.badoo.ribs.example.rib.portal_overlay_test
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
-import com.badoo.ribs.customisation.customisationsBranchFor
-import com.badoo.ribs.customisation.getOrDefault
 
 class PortalOverlayTestBuilder(
-    dependency: PortalOverlayTest.Dependency
+    private val dependency: PortalOverlayTest.Dependency
 ) : SimpleBuilder<PortalOverlayTest>() {
 
-    private val dependency : PortalOverlayTest.Dependency = object : PortalOverlayTest.Dependency by dependency {
-        override fun ribCustomisation() = dependency.customisationsBranchFor(PortalOverlayTest::class)
-    }
-
     override fun build(buildParams: BuildParams<Nothing?>): PortalOverlayTest {
-        val customisation = dependency.getOrDefault(PortalOverlayTest.Customisation())
+        val customisation = buildParams.getOrDefault(PortalOverlayTest.Customisation())
         val interactor = PortalOverlayTestInteractor(buildParams)
 
         return PortalOverlayTestNode(

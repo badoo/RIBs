@@ -1,13 +1,7 @@
 package com.badoo.ribs.example.rib.menu
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.core.routing.portal.AncestryInfo
-import com.badoo.ribs.customisation.CanProvideRibCustomisation
-import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.example.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.example.rib.menu.Menu.MenuItem.FooBar
@@ -36,11 +30,23 @@ import org.junit.Test
 class MenuRibTest {
 
     private val menuView = TestMenuView()
-
     private val menuInput: Relay<Menu.Input> = PublishRelay.create<Menu.Input>()
     private val menuOutput: Relay<Menu.Output> = PublishRelay.create<Menu.Output>()
 
-    private val rib: Menu = buildRib()
+    /**
+     * Customise viewFactory to return test view
+     */
+    private val customisation = RibCustomisationDirectoryImpl().apply {
+        put(Menu.Customisation::class, mock {
+            on { viewFactory } doReturn object : MenuView.Factory {
+                override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+                    menuView
+                }
+            }
+        })
+    }
+
+    private val rib: Menu = buildRib(customisation)
 
     @Before
     fun setUp() {
@@ -78,21 +84,11 @@ class MenuRibTest {
         assertThat(viewModelObserver.values()).last().isEqualTo(MenuView.ViewModel(FooBar))
     }
 
-    private fun buildRib() =
-        MenuBuilder(object : Menu.Dependency, CanProvideRibCustomisation {
-            override fun ribCustomisation(): RibCustomisationDirectory = RibCustomisationDirectoryImpl().apply {
-                put(Menu.Customisation::class, mock {
-                    on { viewFactory } doReturn object : MenuView.Factory {
-                        override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
-                            menuView
-                        }
-                    }
-                })
-            }
-
+    private fun buildRib(customisation: RibCustomisationDirectoryImpl) =
+        MenuBuilder(object : Menu.Dependency {
             override fun menuInput(): ObservableSource<Menu.Input> = menuInput
             override fun menuOutput(): Consumer<Menu.Output> = menuOutput
-        }).build(root(savedInstanceState = null))
+        }).build(root(savedInstanceState = null, customisations = customisation))
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
 }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
 import com.badoo.ribs.template.node_dagger.foo_bar.builder.FooBarBuilder
 import io.reactivex.Observable.empty
@@ -22,7 +21,6 @@ class FooBarTest {
         FooBarBuilder(object : FooBar.Dependency {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = empty()
             override fun fooBarOutput(): Consumer<FooBar.Output> = Consumer {}
-            override fun ribCustomisation(): RibCustomisationDirectory = TODO()
         }).build(root(savedInstanceState))
 
     @Test

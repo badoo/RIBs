@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.element.TimeCapsule
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -83,6 +84,7 @@ class ConfigurationFeatureTest {
             fun create(configuration: Configuration, nbNodes: Int, viewAttachMode: AttachMode): ConfigurationTestHelper {
                 val nodes = MutableList(nbNodes) { i ->
                     mock<Node<Nothing>> {
+                        on { this.buildContext } doReturn BuildContext.root(null)
                         on { this.attachMode } doReturn viewAttachMode
                         on { toString() } doReturn "Node #$i of $configuration"
                     }
@@ -177,7 +179,9 @@ class ConfigurationFeatureTest {
                 pool = poolInTimeCapsule
             )
         }
-        parentNode = mock()
+        parentNode = mock {
+            on { this.buildContext } doReturn BuildContext.root(null)
+        }
     }
 
     private val permanentParts = listOf(

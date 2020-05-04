@@ -60,7 +60,7 @@ interface TestRoot : Rib {
                     )
                 ),
                 builderPermanent1 = builder { permanentNode1 = it },
-                builderPermanent2 = builder { permanentNode1 = it },
+                builderPermanent2 = builder { permanentNode2 = it },
                 builder1 = builder { childNode1 = it },
                 builder2 = builder { childNode2 = it },
                 builder3 = builder { childNode3 = it },

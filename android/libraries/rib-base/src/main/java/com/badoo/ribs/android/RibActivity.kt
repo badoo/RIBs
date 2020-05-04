@@ -2,11 +2,11 @@ package com.badoo.ribs.android
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import android.view.ViewGroup
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
-import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.dialog.toAlertDialog
@@ -35,15 +35,15 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         )
     }
 
-    protected open lateinit var rootNode: Node<*>
+    protected open lateinit var root: Rib
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
-        rootNode = createRib(savedInstanceState).apply {
-            onAttach()
-            attachToView(rootViewGroup)
+        root = createRib(savedInstanceState).apply {
+            node.onAttach()
+            node.attachToView(rootViewGroup)
         }
 
         if (intent?.action == Intent.ACTION_VIEW) {
@@ -65,48 +65,48 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     abstract val rootViewGroup: ViewGroup
 
-    abstract fun createRib(savedInstanceState: Bundle?): Node<*>
+    abstract fun createRib(savedInstanceState: Bundle?): Rib
 
     override fun onStart() {
         super.onStart()
-        rootNode.onStart()
+        root.node.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        rootNode.onStop()
+        root.node.onStop()
     }
 
     override fun onPause() {
         super.onPause()
-        rootNode.onPause()
+        root.node.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        rootNode.onResume()
+        root.node.onResume()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        rootNode.onSaveInstanceState(outState)
+        root.node.onSaveInstanceState(outState)
         requestCodeRegistry.onSaveInstanceState(outState)
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        rootNode.onLowMemory()
+        root.node.onLowMemory()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         dialogs.values.forEach { it.dismiss() }
-        rootNode.detachFromView()
-        rootNode.onDetach()
+        root.node.detachFromView()
+        root.node.onDetach()
     }
 
     override fun onBackPressed() {
-        if (!rootNode.handleBackPress()) {
+        if (!root.node.handleBackPress()) {
             super.onBackPressed()
         }
     }

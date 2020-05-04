@@ -9,7 +9,6 @@ import com.badoo.ribs.core.routing.portal.AncestryInfo
 import java.util.UUID
 
 fun testBuildParams(
-    rib: Rib = object : TestPublicRibInterface {},
     savedInstanceState: Bundle? = null,
     ancestryInfo: AncestryInfo? = null
 ) = BuildParams<Nothing?>(

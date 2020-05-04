@@ -7,10 +7,10 @@ import com.badoo.ribs.core.builder.SimpleBuilder
 
 class RecyclerViewHostBuilder<T : Parcelable>(
     private val dependency: RecyclerViewHost.Dependency<T>
-) : SimpleBuilder<RecyclerViewHostNode<T>>() {
+) : SimpleBuilder<RecyclerViewHost<T>>() {
 
     @SuppressWarnings("LongMethod")
-    override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHostNode<T> {
+    override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHost<T> {
         val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
         val feature = RecyclerViewHostFeature(

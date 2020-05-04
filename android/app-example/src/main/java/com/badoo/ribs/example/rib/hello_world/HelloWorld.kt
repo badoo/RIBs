@@ -27,7 +27,6 @@ interface HelloWorld : Rib {
         val viewFactory: HelloWorldView.Factory = HelloWorldViewImpl.Factory()
     ) : RibCustomisation
 
-    interface Workflow {
-        fun somethingSomethingDarkSide(): Single<HelloWorld.Workflow>
-    }
+    // Workflow
+    fun somethingSomethingDarkSide(): Single<HelloWorld>
 }

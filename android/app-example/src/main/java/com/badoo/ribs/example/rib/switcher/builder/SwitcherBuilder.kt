@@ -5,16 +5,15 @@ import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.example.rib.switcher.Switcher
-import com.badoo.ribs.example.rib.switcher.SwitcherNode
 
 class SwitcherBuilder(
     dependency: Switcher.Dependency
-) : SimpleBuilder<SwitcherNode>() {
+) : SimpleBuilder<Switcher>() {
     private val dependency : Switcher.Dependency = object : Switcher.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(Switcher::class)
     }
 
-    override fun build(buildParams: BuildParams<Nothing?>): SwitcherNode =
+    override fun build(buildParams: BuildParams<Nothing?>): Switcher =
         DaggerSwitcherComponent
             .factory()
             .create(

@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.big
 
-import com.badoo.ribs.core.builder.BuildParams
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 
 class BigNode(
     buildParams: BuildParams<*>,
@@ -14,4 +14,4 @@ class BigNode(
     viewFactory = viewFactory,
     router = router,
     interactor = interactor
-), Big.Workflow
+), Big

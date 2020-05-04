@@ -3,6 +3,7 @@ package com.badoo.ribs.example.rib.menu
 import android.view.ViewGroup
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.customisation.CanProvideRibCustomisation
@@ -39,14 +40,14 @@ class MenuRibTest {
     private val menuInput: Relay<Menu.Input> = PublishRelay.create<Menu.Input>()
     private val menuOutput: Relay<Menu.Output> = PublishRelay.create<Menu.Output>()
 
-    private val rib: Node<MenuView> = buildRib()
+    private val rib: Menu = buildRib()
 
     @Before
     fun setUp() {
-        rib.onAttach()
-        rib.attachToView(mock())
-        rib.onStart()
-        rib.onResume()
+        rib.node.onAttach()
+        rib.node.attachToView(mock())
+        rib.node.onStart()
+        rib.node.onResume()
     }
 
     @Test

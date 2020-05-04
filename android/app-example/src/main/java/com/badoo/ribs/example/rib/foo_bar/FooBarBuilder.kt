@@ -8,13 +8,13 @@ import com.badoo.ribs.example.rib.foo_bar.viewplugin.ParentLongClickListener
 
 class FooBarBuilder(
     dependency: FooBar.Dependency
-) : SimpleBuilder<FooBarNode>() {
+) : SimpleBuilder<FooBar>() {
 
     private val dependency : FooBar.Dependency = object : FooBar.Dependency by dependency {
         override fun ribCustomisation() = dependency.customisationsBranchFor(FooBar::class)
     }
 
-    override fun build(buildParams: BuildParams<Nothing?>): FooBarNode {
+    override fun build(buildParams: BuildParams<Nothing?>): FooBar {
         val customisation = dependency.getOrDefault(FooBar.Customisation())
         val interactor = FooBarInteractor(
             buildParams = buildParams,

@@ -24,12 +24,11 @@ interface FooBar : Rib {
         val transitionHandler: TransitionHandler<FooBarRouter.Configuration>? = null
     ) : RibCustomisation
 
-    interface Workflow {
-        // todo: do not delete - rename, and add more
-        // todo: expose all meaningful operations
-        fun businessLogicOperation(): Single<FooBar.Workflow>
+    // Workflow
+    // todo: do not delete - rename, and add more
+    // todo: expose all meaningful operations
+    fun businessLogicOperation(): Single<FooBar>
 
-        // todo: expose all possible children (even permanent parts), or remove if there's none
-        // fun attachChild1(): Single<Child.Workflow>
-    }
+    // todo: expose all possible children (even permanent parts), or remove if there's none
+    // fun attachChild1(): Single<Child>
 }

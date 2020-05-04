@@ -15,5 +15,5 @@ interface Small : Rib {
         val viewFactory: SmallView.Factory = SmallViewImpl.Factory()
     ) : RibCustomisation
 
-    interface Workflow
+    // Workflow
 }

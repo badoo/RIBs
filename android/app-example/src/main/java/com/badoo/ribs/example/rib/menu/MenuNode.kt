@@ -13,4 +13,4 @@ class MenuNode(
     viewFactory = viewFactory,
     router = null,
     interactor = interactor
-)
+), Menu

@@ -12,17 +12,14 @@ import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attac
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.core.routing.portal.PortalBuilder
-import com.badoo.ribs.core.routing.portal.PortalNode
 import com.badoo.ribs.core.routing.portal.PortalRouter
 import com.badoo.ribs.core.routing.transition.handler.CrossFader
 import com.badoo.ribs.core.routing.transition.handler.Slider
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.switcher.Switcher
-import com.badoo.ribs.example.rib.switcher.SwitcherNode
 import com.badoo.ribs.example.rib.switcher.builder.SwitcherBuilder
 import com.badoo.ribs.example.util.CoffeeMachine
 import com.badoo.ribs.example.util.StupidCoffeeMachine
@@ -41,9 +38,9 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    private lateinit var workflowRoot: Portal.Workflow
+    private lateinit var workflowRoot: Portal
 
-    override fun createRib(savedInstanceState: Bundle?): PortalNode =
+    override fun createRib(savedInstanceState: Bundle?): Portal =
         PortalBuilder(
             object : Portal.Dependency {
                 override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction = { portal ->
@@ -56,12 +53,9 @@ class RootActivity : RibActivity() {
                         CrossFader { it.configuration is PortalRouter.Configuration.Overlay }
                     )
 
-                private fun buildSwitcherNode(portal: Portal.OtherSide, buildContext: BuildContext): SwitcherNode {
+                private fun buildSwitcherNode(portal: Portal.OtherSide, buildContext: BuildContext): Switcher {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
-                            override fun ribCustomisation(): RibCustomisationDirectory =
-                                AppRibCustomisations
-
                             override fun activityStarter(): ActivityStarter = activityStarter
                             override fun permissionRequester(): PermissionRequester =
                                 permissionRequester
@@ -73,7 +67,7 @@ class RootActivity : RibActivity() {
                     ).build(buildContext)
                 }
             }
-        ).build(root(savedInstanceState)).also {
+        ).build(root(savedInstanceState, AppRibCustomisations)).also {
             workflowRoot = it
         }
 
@@ -108,7 +102,7 @@ class RootActivity : RibActivity() {
                 .flatMap { it.somethingSomethingDarkSide() }
                 .toObservable(),
 
-            BiFunction<Switcher.Workflow, HelloWorld.Workflow, Unit> { _, _ -> Unit }
+            BiFunction<Switcher, HelloWorld, Unit> { _, _ -> Unit }
         )
 
     private fun executeTestCrash(): Observable<*> =
@@ -120,5 +114,5 @@ class RootActivity : RibActivity() {
     private fun switcher() =
         Single
             .just(workflowRoot)
-            .flatMap { it.showDefault() as Single<Switcher.Workflow> }
+            .flatMap { it.showDefault() as Single<Switcher> }
 }

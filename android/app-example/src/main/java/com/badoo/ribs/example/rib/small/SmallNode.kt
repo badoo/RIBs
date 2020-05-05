@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.small
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 
 class SmallNode(
     buildParams: BuildParams<Nothing?>,
@@ -14,6 +14,6 @@ class SmallNode(
     viewFactory = viewFactory,
     router = router,
     interactor = interactor
-), Small.Workflow {
+), Small {
 
 }

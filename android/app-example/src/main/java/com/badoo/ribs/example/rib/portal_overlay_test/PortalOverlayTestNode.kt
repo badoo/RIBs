@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.rib.portal_overlay_test
 
-import com.badoo.ribs.core.builder.BuildParams
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 
 class PortalOverlayTestNode(
     buildParams: BuildParams<*>,
@@ -13,6 +13,6 @@ class PortalOverlayTestNode(
     viewFactory = viewFactory,
     router = null,
     interactor = interactor
-) {
+), PortalOverlayTest {
 
 }

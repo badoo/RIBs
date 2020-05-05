@@ -1,9 +1,8 @@
 package com.badoo.ribs.example.rib.dialog_example.builder
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.rib.dialog_example.DialogExample
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleNode
 import com.badoo.ribs.example.rib.lorem_ipsum.LoremIpsum
 import dagger.BindsInstance
 
@@ -23,5 +22,5 @@ internal interface DialogExampleComponent : LoremIpsum.Dependency {
         ): DialogExampleComponent
     }
 
-    fun node(): Node<DialogExampleView>
+    fun node(): DialogExampleNode
 }

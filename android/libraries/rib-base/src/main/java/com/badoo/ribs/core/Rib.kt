@@ -4,6 +4,8 @@ import java.util.UUID
 
 interface Rib {
 
+    val node: Node<*>
+
     data class Identifier(
         val uuid: UUID
     ) : Identifiable {

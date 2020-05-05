@@ -1,7 +1,6 @@
 package com.badoo.ribs.template.node_dagger_build_param.foo_bar
 
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder.FooBarBuilder
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.ObservableSource
@@ -12,19 +11,18 @@ import org.junit.Test
 
 class FooBarWorkflowTest {
 
-    private lateinit var workflow: FooBar.Workflow
+    private lateinit var workflow: FooBar
 
     @Before
     fun setup() {
         workflow = FooBarBuilder(object : FooBar.Dependency {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = mock()
             override fun fooBarOutput(): Consumer<FooBar.Output> = mock()
-            override fun ribCustomisation(): RibCustomisationDirectory = mock()
         }).build(
             buildContext = root(savedInstanceState = null),
             payload = FooBarBuilder.Params(someField = 3)
         ).also {
-            it.onAttach()
+            it.node.onAttach()
         }
     }
 
@@ -48,7 +46,7 @@ class FooBarWorkflowTest {
      */
     @Test
     fun `attach child workflow step is fulfillable`() {
-        // val testObserver = TestObserver<Child.Workflow>()
+        // val testObserver = TestObserver<Child>()
 
         // workflow.attachChild1().subscribe(testObserver)
 

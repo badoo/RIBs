@@ -13,6 +13,7 @@ import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(
@@ -73,7 +74,8 @@ class PortalRouter(
                         // TODO for maximum correctness, original List<> should also contain Bundles,
                         //  as that might change how dependencies are built (right now there's no case for this,
                         //  but can be in the future).
-                        savedInstanceState = null
+                        savedInstanceState = null,
+                        customisations = RibCustomisationDirectoryImpl()
                     )
                 )
             )
@@ -81,7 +83,7 @@ class PortalRouter(
             // TODO having 0 nodes is an impossible scenario, but having more than 1 can be valid.
             //  Solution is again to store Node identifiers & Bundles that help picking the correct one.
             val node = nodes.first()
-            targetRouter = node.resolver as ConfigurationResolver<Parcelable>
+            targetRouter = node.node.resolver as ConfigurationResolver<Parcelable>
             routingAction = targetRouter.resolveConfiguration(element)
         }
 

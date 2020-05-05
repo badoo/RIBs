@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.dialog.Dialog
@@ -14,7 +14,7 @@ class DialogRoutingAction<Event : Any>(
 
     override val nbNodesToBuild: Int = 1
 
-    override fun buildNodes(buildContexts: List<BuildContext>) : List<Node<*>> =
+    override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib> =
         dialog.buildNodes(buildContexts.first())
 
     override fun execute() {

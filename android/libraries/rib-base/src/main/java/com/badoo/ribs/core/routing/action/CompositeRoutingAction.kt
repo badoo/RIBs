@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.action
 
-import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 
 class CompositeRoutingAction(
@@ -11,7 +11,7 @@ class CompositeRoutingAction(
 
     constructor(routingActions: List<RoutingAction>) : this(*routingActions.toTypedArray())
 
-    override fun buildNodes(buildContexts: List<BuildContext>) : List<Node<*>> =
+    override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib> =
         routingActions.mapIndexed { index, routingAction ->
             routingAction.buildNodes(
                 buildContexts = listOfNotNull(buildContexts.getOrNull(index))

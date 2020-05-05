@@ -3,8 +3,10 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.element.TimeCapsule
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
@@ -61,7 +63,7 @@ class ConfigurationFeatureTest {
 
     private lateinit var feature: ConfigurationFeature<Configuration>
     private lateinit var resolver: (Configuration) -> RoutingAction
-    private lateinit var parentNode: Node<*>
+    private lateinit var parentNode: Node<Nothing>
 
     private lateinit var helperPermanent1: ConfigurationTestHelper
     private lateinit var helperPermanent2: ConfigurationTestHelper
@@ -73,15 +75,16 @@ class ConfigurationFeatureTest {
 
     data class ConfigurationTestHelper(
         val configuration: Configuration,
-        val nodes: List<Node<*>>,
+        val nodes: List<Node<Nothing>>,
         val bundles: List<Bundle>,
-        val nodeFactories: List<() -> Node<*>>,
+        val nodeFactories: List<() -> Rib>,
         val routingAction: RoutingAction
     ) {
         companion object {
             fun create(configuration: Configuration, nbNodes: Int, viewAttachMode: AttachMode): ConfigurationTestHelper {
                 val nodes = MutableList(nbNodes) { i ->
-                    mock<Node<*>> {
+                    mock<Node<Nothing>> {
+                        on { this.buildContext } doReturn BuildContext.root(null)
                         on { this.attachMode } doReturn viewAttachMode
                         on { toString() } doReturn "Node #$i of $configuration"
                     }
@@ -99,14 +102,16 @@ class ConfigurationFeatureTest {
                 )
             }
 
-            private fun List<Node<*>>.toFactory(): List<() -> Node<*>> =
+            private fun List<Node<Nothing>>.toFactory(): List<() -> Rib> =
                 map { node ->
-                    mock<() -> Node<*>> {
-                        on { invoke() } doReturn node
+                    mock<() -> Rib> {
+                        on { invoke() } doReturn object : Rib {
+                            override val node = node
+                        }
                     }
                 }
 
-            private fun List<() -> Node<*>>.toRoutingAction(nbNodes: Int): RoutingAction =
+            private fun List<() -> Rib>.toRoutingAction(nbNodes: Int): RoutingAction =
                 mock {
                     on { nbNodesToBuild } doReturn nbNodes
                     on { buildNodes(anyList()) } doAnswer {
@@ -174,7 +179,9 @@ class ConfigurationFeatureTest {
                 pool = poolInTimeCapsule
             )
         }
-        parentNode = mock()
+        parentNode = mock {
+            on { this.buildContext } doReturn BuildContext.root(null)
+        }
     }
 
     private val permanentParts = listOf(

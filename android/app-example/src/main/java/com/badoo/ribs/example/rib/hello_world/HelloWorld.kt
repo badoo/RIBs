@@ -3,7 +3,6 @@ package com.badoo.ribs.example.rib.hello_world
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvidePortal
-import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import io.reactivex.ObservableSource
 import io.reactivex.Single
@@ -13,7 +12,6 @@ interface HelloWorld : Rib {
 
     interface Dependency :
         CanProvideActivityStarter,
-        CanProvideRibCustomisation,
         CanProvidePortal {
         fun helloWorldInput(): ObservableSource<Input>
         fun helloWorldOutput(): Consumer<Output>
@@ -27,7 +25,6 @@ interface HelloWorld : Rib {
         val viewFactory: HelloWorldView.Factory = HelloWorldViewImpl.Factory()
     ) : RibCustomisation
 
-    interface Workflow {
-        fun somethingSomethingDarkSide(): Single<HelloWorld.Workflow>
-    }
+    // Workflow
+    fun somethingSomethingDarkSide(): Single<HelloWorld>
 }

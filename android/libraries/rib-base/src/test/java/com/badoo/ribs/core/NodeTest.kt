@@ -35,11 +35,6 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class NodeTest {
 
-    interface RandomOtherNode1 : Rib
-    interface RandomOtherNode2 : Rib
-    interface RandomOtherNode3 : Rib
-    interface RandomRootNode : Rib
-
     interface TestViewFactory : (ViewGroup) -> TestView
 
     private lateinit var node: Node<TestView>
@@ -77,7 +72,7 @@ class NodeTest {
 
         addChildren()
         root1 = TestNode(
-            buildParams = testBuildParams(object : RandomRootNode {}),
+            buildParams = testBuildParams(),
             viewFactory = null
         )
     }
@@ -102,21 +97,18 @@ class NodeTest {
     private fun addChildren() {
         child1 = TestNode(
             buildParams = testBuildParams(
-                rib = object : RandomOtherNode1 {},
                 ancestryInfo = childAncestry
             ),
             viewFactory = null
         )
         child2 = TestNode(
             buildParams = testBuildParams(
-                rib = object : RandomOtherNode2 {},
                 ancestryInfo = childAncestry
             ),
             viewFactory = null
         )
         child3 = TestNode(
             buildParams = testBuildParams(
-                rib = object : RandomOtherNode3 {},
                 ancestryInfo = childAncestry
             ),
             viewFactory = null
@@ -418,9 +410,9 @@ class NodeTest {
 
     @Test
     fun `attachToView() results in children added to target defined by View`() {
-        val n1 = TestNode(identifier = object : RandomOtherNode1 {})
-        val n2 = TestNode(identifier = object : RandomOtherNode2 {})
-        val n3 = TestNode(identifier = object : RandomOtherNode3 {})
+        val n1 = TestNode() // identifier = object : RandomOtherNode1 {}
+        val n2 = TestNode() // identifier = object : RandomOtherNode2 {}
+        val n3 = TestNode() // identifier = object : RandomOtherNode3 {}
         val testNodes = listOf(n1, n2, n3)
 
         whenever(view.getParentViewForChild(n1)).thenReturn(someViewGroup1)

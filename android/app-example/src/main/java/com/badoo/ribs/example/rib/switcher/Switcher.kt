@@ -5,7 +5,6 @@ import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.customisation.CanProvidePortal
-import com.badoo.ribs.customisation.CanProvideRibCustomisation
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
@@ -19,7 +18,6 @@ interface Switcher : Rib {
         CanProvideActivityStarter,
         CanProvidePermissionRequester,
         CanProvideDialogLauncher,
-        CanProvideRibCustomisation,
         CanProvidePortal {
 
         fun coffeeMachine(): CoffeeMachine
@@ -30,10 +28,9 @@ interface Switcher : Rib {
         val transitionHandler: TransitionHandler<Configuration> = SwitcherTransitionHandler(duration = 2000)
     ) : RibCustomisation
 
-    interface Workflow {
-        fun attachHelloWorld(): Single<HelloWorld.Workflow>
-        fun testCrash(): Single<HelloWorld.Workflow>
-        fun waitForHelloWorld(): Single<HelloWorld.Workflow>
-        fun doSomethingAndStayOnThisNode(): Single<Switcher.Workflow>
-    }
+    // Workflow
+    fun attachHelloWorld(): Single<HelloWorld>
+    fun testCrash(): Single<HelloWorld>
+    fun waitForHelloWorld(): Single<HelloWorld>
+    fun doSomethingAndStayOnThisNode(): Single<Switcher>
 }

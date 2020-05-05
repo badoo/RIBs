@@ -123,7 +123,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
 
             return routingAction.buildNodes(
                 buildContexts = buildContexts
-            )
+            ).map { it.node }
         }
 
         private fun createBuildContext(
@@ -134,7 +134,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
                 anchor = routingAction.anchor() ?: parentNode,
                 creatorConfiguration = configuration
             ),
-            savedInstanceState = null
+            savedInstanceState = null,
+            customisations = parentNode.buildContext.customisations.getSubDirectoryOrSelf(
+                parentNode::class
+            )
         )
 
         override fun withActivationState(activationState: ActivationState) =

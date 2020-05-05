@@ -1,17 +1,17 @@
-package com.badoo.ribs.example.rib.big
+package com.badoo.ribs.example.rib.dialog_example
 
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 
-class BigNode(
+class DialogExampleNode(
     buildParams: BuildParams<*>,
-    viewFactory: ((ViewGroup) -> BigView?)?,
-    private val router: BigRouter,
-    private val interactor: BigInteractor
-) : Node<BigView>(
+    viewFactory: ((ViewGroup) -> DialogExampleView?)?,
+    router: DialogExampleRouter,
+    interactor: DialogExampleInteractor
+) : Node<DialogExampleView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     router = router,
     interactor = interactor
-), Big
+), DialogExample

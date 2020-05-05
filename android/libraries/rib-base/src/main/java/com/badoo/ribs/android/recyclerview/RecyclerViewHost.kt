@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 /**
  * Considered experimental. Handle with care.
  */
-interface RecyclerViewHost : Rib {
+interface RecyclerViewHost<T : Parcelable>: Rib {
 
     interface Dependency<T : Parcelable> {
         fun hostingStrategy(): HostingStrategy

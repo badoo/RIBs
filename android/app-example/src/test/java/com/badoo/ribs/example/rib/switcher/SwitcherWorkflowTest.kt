@@ -5,7 +5,7 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.example.rib.blocker.BlockerView
-import com.badoo.ribs.example.rib.dialog_example.DialogExampleView
+import com.badoo.ribs.example.rib.dialog_example.DialogExampleNode
 import com.badoo.ribs.example.rib.foo_bar.FooBarNode
 import com.badoo.ribs.example.rib.hello_world.HelloWorld
 import com.badoo.ribs.example.rib.hello_world.HelloWorldNode
@@ -24,7 +24,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class SwitcherWorkflowTest {
 
-    private lateinit var workflow: Switcher.Workflow
+    private lateinit var workflow: Switcher
     private lateinit var router: SwitcherRouter
     private lateinit var interactor: SwitcherInteractor
 
@@ -36,13 +36,13 @@ class SwitcherWorkflowTest {
         val fooBarNodeBuilder = { buildContext: BuildContext ->
             FooBarNode(mock(), mock(), buildContext.toBuildParams(), emptySet())
         }
-        val node1Builder = { buildContext: BuildContext ->
-            Node<DialogExampleView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
+        val dialogExampleBuilder = { buildContext: BuildContext ->
+            DialogExampleNode(buildContext.toBuildParams(), mock(), mock(), mock())
         }
-        val node2Builder = { buildContext: BuildContext ->
+        val blockerBuilder = { buildContext: BuildContext ->
             Node<BlockerView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
         }
-        val node3Builder = { buildContext: BuildContext ->
+        val menuBuilder = { buildContext: BuildContext ->
             MenuNode(buildContext.toBuildParams(), mock(), mock())
         }
 
@@ -51,9 +51,9 @@ class SwitcherWorkflowTest {
             buildParams = BuildParams.Empty(),
             fooBarBuilder = mock { on { build(any()) } doAnswer(withBuilder(fooBarNodeBuilder)) },
             helloWorldBuilder = mock { on { build(any()) } doAnswer(withBuilder(helloWorldNodeBuilder)) },
-            dialogExampleBuilder = mock { on { build(any()) } doAnswer(withBuilder(node1Builder)) },
-            blockerBuilder = mock { on { build(any()) } doAnswer(withBuilder(node2Builder)) },
-            menuBuilder = mock { on { build(any()) } doAnswer(withBuilder(node3Builder)) },
+            dialogExampleBuilder = mock { on { build(any()) } doAnswer(withBuilder(dialogExampleBuilder)) },
+            blockerBuilder = mock { on { build(any()) } doAnswer(withBuilder(blockerBuilder)) },
+            menuBuilder = mock { on { build(any()) } doAnswer(withBuilder(menuBuilder)) },
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )
@@ -66,7 +66,7 @@ class SwitcherWorkflowTest {
             interactor = interactor
         ).also { it.onAttach() }
     }
-    
+
     private fun <N> withBuilder(
             builder: (BuildContext) -> N
     ): (InvocationOnMock) -> N = { answer -> builder(answer.getArgument(0)) }
@@ -79,7 +79,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `attachHelloWorld`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.attachHelloWorld().subscribe(testObserver)
 
@@ -89,7 +89,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `testCrash`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.testCrash().subscribe(testObserver)
 
@@ -98,7 +98,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is already attached`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         router.push(Content.Hello)
         workflow.waitForHelloWorld().subscribe(testObserver)
@@ -109,7 +109,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is attached after`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.waitForHelloWorld().subscribe(testObserver)
         router.push(Content.Hello)
@@ -120,7 +120,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `waitForHelloWorld - hello is not attached`() {
-        val testObserver = TestObserver<HelloWorld.Workflow>()
+        val testObserver = TestObserver<HelloWorld>()
 
         workflow.waitForHelloWorld().subscribe(testObserver)
 
@@ -130,7 +130,7 @@ class SwitcherWorkflowTest {
 
     @Test
     fun `doSomethingAndStayOnThisNode`() {
-        val testObserver = TestObserver<Switcher.Workflow>()
+        val testObserver = TestObserver<Switcher>()
 
         workflow.doSomethingAndStayOnThisNode().subscribe(testObserver)
 

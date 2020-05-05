@@ -16,13 +16,12 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGE
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
-import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.portal.Portal
-import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.rib.foo_bar.FooBar
@@ -60,12 +59,10 @@ class RecyclerViewTestActivity : RibActivity() {
         override fun foobarInput(): ObservableSource<FooBar.Input> = Observable.empty()
         override fun foobarOutput(): Consumer<FooBar.Output> = Consumer {}
         override fun permissionRequester(): PermissionRequester = this@RecyclerViewTestActivity.permissionRequester
-        override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
     })
 
     private val loremIpsumBuilder = LoremIpsumBuilder(object : LoremIpsum.Dependency {
         override fun loremIpsumOutput(): Consumer<LoremIpsum.Output> = Consumer { }
-        override fun ribCustomisation(): RibCustomisationDirectory = AppRibCustomisations
     })
 
     private val noopPortal = object : Portal.OtherSide {
@@ -80,9 +77,6 @@ class RecyclerViewTestActivity : RibActivity() {
 
     private val switcherBuilder = SwitcherBuilder(
         object : Switcher.Dependency {
-            override fun ribCustomisation(): RibCustomisationDirectory =
-                AppRibCustomisations
-
             override fun activityStarter(): ActivityStarter = activityStarter
             override fun permissionRequester(): PermissionRequester =
                 permissionRequester
@@ -111,7 +105,7 @@ class RecyclerViewTestActivity : RibActivity() {
         Input.Add(Item.Switcher)
     )
 
-    override fun createRib(savedInstanceState: Bundle?): Node<*> =
+    override fun createRib(savedInstanceState: Bundle?): Rib =
         RecyclerViewHostBuilder(
             object : RecyclerViewHost.Dependency<Item> {
                 override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = EAGER
@@ -126,5 +120,5 @@ class RecyclerViewTestActivity : RibActivity() {
                         FrameLayout.LayoutParams.WRAP_CONTENT
                     )
             }
-        ).build(BuildContext.root(savedInstanceState))
+        ).build(root(savedInstanceState))
 }

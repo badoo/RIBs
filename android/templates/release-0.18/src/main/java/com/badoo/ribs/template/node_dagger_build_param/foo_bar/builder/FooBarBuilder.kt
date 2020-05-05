@@ -5,7 +5,6 @@ import com.badoo.ribs.core.builder.Builder
 import com.badoo.ribs.customisation.customisationsBranchFor
 import com.badoo.ribs.customisation.getOrDefault
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.FooBar
-import com.badoo.ribs.template.node_dagger_build_param.foo_bar.FooBarNode
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder.FooBarBuilder.Params
 
 class FooBarBuilder(

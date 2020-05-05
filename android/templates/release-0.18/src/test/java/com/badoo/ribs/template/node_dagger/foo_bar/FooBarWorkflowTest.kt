@@ -12,7 +12,7 @@ import org.junit.Test
 
 class FooBarWorkflowTest {
 
-    private lateinit var workflow: FooBar.Workflow
+    private lateinit var workflow: FooBar
 
     @Before
     fun setup() {
@@ -21,7 +21,7 @@ class FooBarWorkflowTest {
             override fun fooBarOutput(): Consumer<FooBar.Output> = mock()
             override fun ribCustomisation(): RibCustomisationDirectory = mock()
         }).build(root(savedInstanceState = null)).also {
-            it.onAttach()
+            it.node.onAttach()
         }
     }
 

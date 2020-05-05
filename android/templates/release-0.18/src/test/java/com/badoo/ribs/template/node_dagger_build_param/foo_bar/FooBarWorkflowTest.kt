@@ -12,7 +12,7 @@ import org.junit.Test
 
 class FooBarWorkflowTest {
 
-    private lateinit var workflow: FooBar.Workflow
+    private lateinit var workflow: FooBar
 
     @Before
     fun setup() {
@@ -24,7 +24,7 @@ class FooBarWorkflowTest {
             buildContext = root(savedInstanceState = null),
             payload = FooBarBuilder.Params(someField = 3)
         ).also {
-            it.onAttach()
+            it.node.onAttach()
         }
     }
 

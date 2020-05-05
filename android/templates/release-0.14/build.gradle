@@ -1,0 +1,8 @@
+apply from: file('../common-template.gradle')
+
+dependencies {
+    final String version = '0.14.2'
+    implementation "com.github.badoo.RIBs:rib-android:$version"
+    debugImplementation "com.github.badoo.RIBs:rib-base-test-activity:$version"
+    androidTestImplementation "com.github.badoo.RIBs:rib-base-test:$version"
+}

@@ -12,21 +12,44 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      <strong>0.12.0</strong><br/>
+      <strong>0.19</strong><br/>
       <ul>
-        <li>templates for BuildContext + BuildParams</li>
+        <li>Moved customisation fetching mechanism from Builder client code to framework</li>
       </ul>
+
+      <strong>0.18</strong><br/>
+      <ul>
+        <li>Node as implementation of main interface</li>
+      </ul>
+
+      <strong>0.15</strong><br/>
+      <ul>
+        <li>Removed <V> from RoutingAction</li>
+      </ul>
+
+      <strong>0.13</strong><br/>
+      <ul>
+        <li>Removed <D> from Builder signature</li>
+      </ul>
+
+      <strong>0.12</strong><br/>
+      <ul>
+        <li>Templates for BuildContext + BuildParams</li>
+      </ul>
+
       <strong>0.8.4</strong><br/>
       <ul>
-        <li>support for android studio 3.6+</li>
+        <li>Support for android studio 3.6+</li>
       </ul>
+
       <strong>0.8.0</strong><br/>
       <ul>
-        <li>androidx support</li>
+        <li>Support for androidx</li>
       </ul>
-      <strong>0.5.0</strong><br/>
+
+      <strong>0.5</strong><br/>
       <ul>
-        <li>workflows</li>
+        <li>Workflows</li>
       </ul>
     ]]>
 

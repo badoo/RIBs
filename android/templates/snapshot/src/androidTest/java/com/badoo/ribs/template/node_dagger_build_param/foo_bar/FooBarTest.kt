@@ -4,8 +4,7 @@ import android.os.Bundle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
-import com.badoo.ribs.template.node_dagger.foo_bar.builder.FooBarBuilder
+import com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder.FooBarBuilder
 import io.reactivex.Observable.empty
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -21,7 +20,11 @@ class FooBarTest {
         FooBarBuilder(object : FooBar.Dependency {
             override fun fooBarInput(): ObservableSource<FooBar.Input> = empty()
             override fun fooBarOutput(): Consumer<FooBar.Output> = Consumer {}
-        }).build(root(savedInstanceState))
+        }).build(
+            buildContext = root(savedInstanceState),
+            payload = FooBarBuilder.Params(0)
+        )
+
 
     @Test
     fun testTextDisplayed() {

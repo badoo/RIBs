@@ -1,4 +1,4 @@
-include ':app-example'
+include ':sandbox'
 include ':templates:snapshot'
 include ':templates:release-0.8'
 include ':templates:release-0.12'

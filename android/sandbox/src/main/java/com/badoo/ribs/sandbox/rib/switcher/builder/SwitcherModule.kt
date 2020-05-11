@@ -93,7 +93,8 @@ internal object SwitcherModule {
         plugins = listOfNotNull(
             interactor,
             router
-        )
+        ),
+        router = router
     )
 
     @SwitcherScope

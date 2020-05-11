@@ -14,7 +14,8 @@ import io.reactivex.Single
 class SwitcherNode(
     buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> SwitcherView?)?,
-    plugins: List<Plugin>
+    plugins: List<Plugin>,
+    private val router: SwitcherRouter
 ) : Node<SwitcherView>(
     buildParams = buildParams,
     viewFactory = viewFactory,

@@ -8,7 +8,7 @@ import com.badoo.ribs.core.plugin.Plugin
 class DialogExampleNode(
     buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> DialogExampleView?)?,
-    plugins: List<Plugin>
+    plugins: List<Plugin> = emptyList()
 ) : Node<DialogExampleView>(
     buildParams = buildParams,
     viewFactory = viewFactory,

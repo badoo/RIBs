@@ -10,7 +10,7 @@ import io.reactivex.Single
 class HelloWorldNode(
     viewFactory: ((ViewGroup) -> HelloWorldView?)?,
     buildParams: BuildParams<*>,
-    plugins: List<Plugin>
+    plugins: List<Plugin> = emptyList()
 ) : Node<HelloWorldView>(
     buildParams = buildParams,
     viewFactory = viewFactory,

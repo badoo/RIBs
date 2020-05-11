@@ -10,7 +10,8 @@ import io.reactivex.Single
 
 class PortalNode internal constructor(
     buildParams: BuildParams<*>,
-    plugins: List<Plugin>
+    plugins: List<Plugin>,
+    private val router: PortalRouter
 ) : Node<Nothing>(
     buildParams = buildParams,
     viewFactory = null,

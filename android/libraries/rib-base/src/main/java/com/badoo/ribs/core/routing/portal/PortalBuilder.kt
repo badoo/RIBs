@@ -25,7 +25,8 @@ class PortalBuilder(
             plugins = listOf(
                 interactor,
                 router
-            )
+            ),
+            router = router
         )
     }
 }

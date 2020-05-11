@@ -355,9 +355,6 @@ open class Node<V : RibView>(
     override fun getLifecycle(): Lifecycle =
         lifecycleManager.lifecycle
 
-    override fun toString(): String =
-        identifier.toString()
-
     /**
      * Executes an action and remains on the same hierarchical level
      *

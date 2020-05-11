@@ -31,8 +31,7 @@ class InteractorTestHelper<View : RibView>(
         Node(
             buildParams = buildParams,
             viewFactory = viewFactory,
-            router = this.router,
-            interactor = interactor
+            plugins = listOf(this.router, interactor)
         )
     }
 

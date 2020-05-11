@@ -45,7 +45,7 @@ class HelloWorldInteractor(
         ViewModel("My id: " + id.replace("${HelloWorldInteractor::class.java.name}.", ""))
     )
 
-    override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
+    override fun onAttach(ribLifecycle: Lifecycle) {
         ribLifecycle.createDestroy {
             bind(feature.news to output using NewsToOutput)
             bind(input to feature using InputToWish)

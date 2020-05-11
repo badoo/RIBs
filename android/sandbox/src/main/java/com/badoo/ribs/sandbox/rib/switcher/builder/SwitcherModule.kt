@@ -85,13 +85,15 @@ internal object SwitcherModule {
         buildParams: BuildParams<Nothing?>,
         customisation: Switcher.Customisation,
         viewDependency: SwitcherView.Dependency,
-        router: SwitcherRouter,
-        interactor: SwitcherInteractor
-    ) : SwitcherNode = SwitcherNode(
+        interactor: SwitcherInteractor,
+        router: SwitcherRouter
+    ): SwitcherNode = SwitcherNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(viewDependency),
-        router = router,
-        interactor = interactor
+        plugins = listOfNotNull(
+            interactor,
+            router
+        )
     )
 
     @SwitcherScope

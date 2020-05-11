@@ -11,6 +11,5 @@ class MenuNode(
 ): Node<MenuView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
-    router = null,
-    interactor = interactor
+    plugins = listOf(interactor)
 ), Menu

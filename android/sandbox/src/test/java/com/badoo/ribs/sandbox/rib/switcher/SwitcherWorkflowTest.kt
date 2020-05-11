@@ -62,8 +62,7 @@ class SwitcherWorkflowTest {
         workflow = SwitcherNode(
             buildParams = BuildParams.Empty(),
             viewFactory = mock(),
-            router = router,
-            interactor = interactor
+            plugins = listOf(interactor, router)
         ).also { it.onAttach() }
     }
 

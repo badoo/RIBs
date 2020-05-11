@@ -49,7 +49,6 @@ internal object GreetingsContainerModule {
     ) : Node<Nothing> = Node(
         buildParams = buildParams,
         viewFactory = null,
-        router = router,
-        interactor = interactor
+        plugins = listOf(interactor, router)
     )
 }

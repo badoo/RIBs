@@ -15,12 +15,12 @@
  */
 package com.badoo.ribs.core
 
-import android.os.Bundle
-import androidx.lifecycle.Lifecycle
-import androidx.annotation.CallSuper
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.plugin.BackPressHandler
+import com.badoo.ribs.core.plugin.NodeAware
+import com.badoo.ribs.core.plugin.RibLifecycleAware
+import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.view.RibView
-import io.reactivex.disposables.Disposable
 
 /**
  * The base implementation for all [Interactor]s.
@@ -31,16 +31,17 @@ import io.reactivex.disposables.Disposable
 abstract class Interactor<V : RibView>(
     buildParams: BuildParams<*>,
     private val disposables: Disposable?
-) : Identifiable by buildParams.identifier {
+) : Identifiable by buildParams.identifier,
+    NodeAware,
+    BackPressHandler,
+    RibLifecycleAware,
+    ViewAware<V> {
 
-    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
+    protected lateinit var node: Node<*>
+        private set
 
-    internal open fun onAttach(ribLifecycle: Lifecycle) {
-        onAttach(ribLifecycle, savedInstanceState)
-    }
-
-    protected open fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
-        // TODO remove this method
+    override fun init(node: Node<*>) {
+        this.node = node
     }
 
     internal fun onDetach() {

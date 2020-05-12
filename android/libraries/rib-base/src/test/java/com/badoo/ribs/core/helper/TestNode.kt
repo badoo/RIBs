@@ -13,8 +13,7 @@ open class TestNode(
 ) : Node<TestView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
-    router = router,
-    interactor = mock()
+    plugins = listOf(router)
 ) {
     var handleBackPress: Boolean =
         false

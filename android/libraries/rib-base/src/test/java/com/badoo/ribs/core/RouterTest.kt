@@ -73,7 +73,7 @@ class RouterTest {
 
     @Test
     fun `Save instance state call reaches child nodes`() {
-        router.onAttach()
+        router.onAttach(mock())
         router.onSaveInstanceState(mock())
         verify(childNodeC2_1).onSaveInstanceState(any())
         verify(childNodeC2_2).onSaveInstanceState(any())
@@ -81,7 +81,7 @@ class RouterTest {
 
     @Test
     fun `Pushing another configuration after initial is possible`() {
-        router.onAttach()
+        router.onAttach(mock())
         router.push(TestRouter.Configuration.C5)
     }
 }

@@ -36,7 +36,6 @@ internal object OptionSelectorModule {
     ) : Node<OptionSelectorView> = Node(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory.invoke(null),
-        router = null,
-        interactor = interactor
+        plugins = listOf(interactor)
     )
 }

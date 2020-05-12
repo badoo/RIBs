@@ -17,7 +17,6 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
-import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware

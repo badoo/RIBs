@@ -27,6 +27,7 @@ import io.reactivex.Observable
  *
  * Updated elements are then passed on to the [ReducerImpl] in the respective [Effect]s
  */
+@SuppressWarnings("LargeClass") // TODO extract
 internal class ConfigurationFeatureActor<C : Parcelable>(
     private val configurationResolver: (C) -> RoutingAction,
     private val parentNode: Node<*>,

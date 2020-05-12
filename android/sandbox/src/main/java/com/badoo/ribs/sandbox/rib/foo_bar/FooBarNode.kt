@@ -6,8 +6,8 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 
 class FooBarNode(
-    viewFactory: ((ViewGroup) -> FooBarView?)?,
     buildParams: BuildParams<*>,
+    viewFactory: ((ViewGroup) -> FooBarView?)?,
     plugins: List<Plugin> = emptyList()
 ) : Node<FooBarView>(
     buildParams = buildParams,

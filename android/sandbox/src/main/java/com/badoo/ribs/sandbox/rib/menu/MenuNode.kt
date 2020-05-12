@@ -8,7 +8,7 @@ import com.badoo.ribs.core.plugin.Plugin
 class MenuNode(
     buildParams: BuildParams<Nothing?>,
     viewFactory: (ViewGroup) -> MenuView,
-    plugins: List<Plugin>
+    plugins: List<Plugin> = emptyList()
 ): Node<MenuView>(
     buildParams = buildParams,
     viewFactory = viewFactory,

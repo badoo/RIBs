@@ -8,8 +8,8 @@ import com.badoo.ribs.core.plugin.Plugin
 import io.reactivex.Single
 
 class HelloWorldNode(
-    viewFactory: ((ViewGroup) -> HelloWorldView?)?,
     buildParams: BuildParams<*>,
+    viewFactory: ((ViewGroup) -> HelloWorldView?)?,
     plugins: List<Plugin> = emptyList()
 ) : Node<HelloWorldView>(
     buildParams = buildParams,

@@ -25,8 +25,8 @@ class HelloWorldBuilder(
         )
 
         return HelloWorldNode(
-            viewFactory = customisation.viewFactory(null),
             buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null),
             plugins =  listOf(
                 interactor,
                 router

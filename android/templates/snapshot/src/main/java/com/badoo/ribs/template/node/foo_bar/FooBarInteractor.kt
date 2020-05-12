@@ -1,6 +1,5 @@
 package com.badoo.ribs.template.node.foo_bar
 
-import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
@@ -28,7 +27,7 @@ internal class FooBarInteractor(
     disposables = feature
 ) {
 
-    override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
+    override fun onAttach(ribLifecycle: Lifecycle) {
         ribLifecycle.createDestroy {
             bind(feature.news to output using NewsToOutput)
             bind(input to feature using InputToWish)

@@ -56,14 +56,11 @@ internal object FooBarModule {
     internal fun node(
         buildParams: BuildParams<Params>,
         customisation: FooBar.Customisation,
-        router: FooBarRouter,
         interactor: FooBarInteractor,
-        feature: FooBarFeature
+        router: FooBarRouter
     ) : FooBarNode = FooBarNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
-        router = router,
-        interactor = interactor,
-        feature = feature
+        plugins = listOf(interactor, router)
     )
 }

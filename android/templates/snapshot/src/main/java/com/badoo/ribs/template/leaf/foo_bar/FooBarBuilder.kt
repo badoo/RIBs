@@ -39,6 +39,6 @@ class FooBarBuilder(
         FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            interactor = interactor
+            plugins = listOf(interactor)
         )
 }

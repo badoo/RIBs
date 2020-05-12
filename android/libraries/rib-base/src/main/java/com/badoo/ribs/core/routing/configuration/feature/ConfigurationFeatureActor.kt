@@ -182,7 +182,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 val lookup = tempPool[key]
                 if (lookup is ConfigurationContext.Resolved) lookup
                 else {
-                    val item = state.pool[key] ?: defaultElements[key] ?: error("Key $key was not found in pool: $state.pool")
+                    val item = state.pool[key] ?: defaultElements[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
                     val resolved = item.resolve(configurationResolver, parentNode)
                     tempPool[key] = resolved
                     resolved
@@ -201,13 +201,19 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         commands: List<ConfigurationCommand<C>>,
         params: TransactionExecutionParams<C>
     ): List<ReversibleAction<C>> = commands.map { command ->
-        command.actionFactory.create(
-            ActionExecutionParams(
-                transactionExecutionParams = params,
-                command = command,
-                key = command.key,
-                isBackStackOperation = commands.isBackStackOperation(command.key)
+        try {
+            command.actionFactory.create(
+                ActionExecutionParams(
+                    transactionExecutionParams = params,
+                    command = command,
+                    key = command.key,
+                    isBackStackOperation = commands.isBackStackOperation(command.key)
+                )
             )
-        )
+        } catch (e: KeyNotFoundInPoolException) {
+            throw CommandExecutionException(
+                "Could not execute command: ${command::class.java}", e
+            )
+        }
     }
 }

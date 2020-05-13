@@ -89,8 +89,6 @@ open class Node<V : RibView>(
 
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
-    internal val ribLifecycleRegistry = LifecycleRegistry(this)
-    internal var viewLifecycleRegistry: LifecycleRegistry? = null
     val detachSignal = BehaviorRelay.create<Unit>()
 
     val tag: String = this::class.java.name

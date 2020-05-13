@@ -31,28 +31,4 @@ class NodePluginSubtreeChangeAwareTest : NodePluginTest() {
             verify(it).onDetachChildNode(eq(childNode))
         }
     }
-
-    @Test
-    fun `SubtreeChangeAware plugins receive onAttachChildView()`() {
-        val (node, plugins) = testPlugins<SubtreeChangeAware>()
-
-        // TODO test should express this as an expectation:
-        node.attachToView(parentViewGroup)
-        node.attachChildView(childNode)
-
-        plugins.forEach {
-            verify(it).onAttachChildView(eq(childNode))
-        }
-    }
-
-    @Test
-    fun `SubtreeChangeAware plugins receive onDetachChildView()`() {
-        val (node, plugins) = testPlugins<SubtreeChangeAware>()
-
-        node.detachChildView(childNode)
-
-        plugins.forEach {
-            verify(it).onDetachChildView(eq(childNode))
-        }
-    }
 }

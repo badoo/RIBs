@@ -29,11 +29,13 @@ interface RibLifecycleAware : Plugin {
 interface SubtreeChangeAware : Plugin {
     fun onAttachChildNode(child: Node<*>) {}
 
+    fun onDetachChildNode(child: Node<*>) {}
+}
+
+interface SubtreeViewChangeAware : Plugin {
     fun onAttachChildView(child: Node<*>) {}
 
     fun onDetachChildView(child: Node<*>) {}
-
-    fun onDetachChildNode(child: Node<*>) {}
 }
 
 interface AndroidLifecycleAware : Plugin {

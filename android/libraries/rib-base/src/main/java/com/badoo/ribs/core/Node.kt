@@ -35,7 +35,9 @@ import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
+import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.routing.portal.AncestryInfo
@@ -238,7 +240,7 @@ open class Node<V : RibView>(
         if (isAttachedToView) {
             val target = targetViewGroupForChild(child)
             child.attachToView(target)
-            plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onAttachChildView(child) }
+            plugins.filterIsInstance<SubtreeViewChangeAware>().forEach { it.onAttachChildView(child) }
         }
     }
 
@@ -253,7 +255,7 @@ open class Node<V : RibView>(
     // FIXME internal + protected?
     fun detachChildView(child: Node<*>) {
         child.detachFromView()
-        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChildView(child) }
+        plugins.filterIsInstance<SubtreeViewChangeAware>().forEach { it.onDetachChildView(child) }
     }
 
     /**
@@ -337,7 +339,7 @@ open class Node<V : RibView>(
 
     open fun onSaveInstanceState(outState: Bundle) {
         outState.putSerializable(Identifier.KEY_UUID, identifier.uuid)
-        plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onSaveInstanceState(outState) }
+        plugins.filterIsInstance<SavesInstanceState>().forEach { it.onSaveInstanceState(outState) }
         saveViewState()
 
         val bundle = Bundle()

@@ -5,13 +5,11 @@ import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.helper.AnyConfiguration
-import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestRouter
@@ -22,7 +20,15 @@ import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.isA
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
@@ -68,7 +74,6 @@ class NodeTest {
         viewFactory = mock { on { invoke(parentViewGroup) } doReturn view }
         router = mock()
         interactor = mock()
-//        plugins = listOf(mock(), mock())
         node = createNode(viewFactory = viewFactory)
         childAncestry = AncestryInfo.Child(node, AnyConfiguration)
 
@@ -124,13 +129,6 @@ class NodeTest {
         node.attachChildView(child3)
     }
 
-    // FIXME add verifications for all plugins / methods
-
-//    @Test
-//    fun `Router's node initialised after Node init`() {
-//        verify(router).init(node)
-//    }
-
     @Test
     fun `onDetach() verifies view has been detached`() {
         val errorHandler = mock<RIBs.ErrorHandler>()
@@ -161,32 +159,6 @@ class NodeTest {
         node.onSaveInstanceState(mock())
         verify(androidView).saveHierarchyState(node.savedViewState)
     }
-
-//    @Test
-//    fun `onSaveInstanceState() is forwarded to Router`() {
-//        node.onSaveInstanceState(mock())
-//        verify(router).onSaveInstanceState(any())
-//    }
-//
-//    @Test
-//    fun `Router's bundle from onSaveInstanceState() call is put inside original bundle`() {
-//        val bundle: Bundle = mock()
-//        node.onSaveInstanceState(bundle)
-//        verify(router).onSaveInstanceState(bundle)
-//    }
-
-//    @Test
-//    fun `onSaveInstanceState() is forwarded to Interactor`() {
-//        node.onSaveInstanceState(mock())
-//        verify(interactor).onSaveInstanceState(any())
-//    }
-
-//    @Test
-//    fun `Interactor's bundle from onSaveInstanceState call is put inside original bundle`() {
-//        val bundle: Bundle = mock()
-//        node.onSaveInstanceState(bundle)
-//        verify(interactor).onSaveInstanceState(bundle)
-//    }
 
     @Test
     fun `onStart() is forwarded to all children`() {
@@ -252,42 +224,6 @@ class NodeTest {
         assertEquals(true, child2.handleBackPressInvoked)
         assertEquals(false, child3.handleBackPressInvoked)
     }
-
-//    @Test
-//    fun `Back press handling is forwarded to Interactor if no children handled it`() {
-//        attachToViewAlongWithChildren()
-//        child1.handleBackPress = false
-//        child2.handleBackPress = false
-//        child3.handleBackPress = false
-//
-//        node.handleBackPress()
-//
-//        verify(interactor).handleBackPressAfterDownstream()
-//    }
-
-    @Test
-    fun `Back press handling is not forwarded to Interactor if any children handled it`() {
-        attachToViewAlongWithChildren()
-        child1.handleBackPress = false
-        child2.handleBackPress = true
-        child3.handleBackPress = false
-
-        node.handleBackPress()
-
-        verify(interactor, never()).handleBackPressAfterDownstream()
-    }
-
-//    @Test
-//    fun `Router back stack popping is invoked if none of the children nor the Interactor handled back press`() {
-//        attachToViewAlongWithChildren()
-//        child1.handleBackPress = false
-//        child2.handleBackPress = false
-//        child3.handleBackPress = false
-//        whenever(interactor.handleBackPressAfterDownstream()).thenReturn(false)
-//
-//        node.handleBackPress()
-//        verify(router).popBackStack()
-//    }
 
     @Test
     fun `Router back stack popping is not invoked if any of the children handled back press`() {
@@ -616,30 +552,12 @@ class NodeTest {
             Lifecycle.State.RESUMED,
             node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
         )
-//        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry!!.currentState)
-//    }
-//
-//    @Test
-//    fun `attachToView() + viewless = doesn't have view lifecycle`() {
-//        node = createNode(viewFactory = null)
-//        node.onResume()
-//        node.attachToView(parentViewGroup)
-//        assertNull(node.viewLifecycleRegistry)
-//    }
     }
 
     @Test
     fun `When current Node has a view, attachToView() adds view to parentViewGroup`() {
         node.attachToView(parentViewGroup)
         verify(parentViewGroup).addView(view.androidView)
-    }
-
-    @Test // FIXME
-    fun `When current Node has a view, attachToView() notifies viewAwarePlugins of view creation when external lifecycle goes above INITIALIZED`() {
-//        node.onStart()
-//        node.onStop()
-//        node.attachToView(parentViewGroup)
-//        verify(viewAwarePlugins).onViewCreated(node.lifecycleManager.viewLifecycle!!.lifecycle, view)
     }
 
     @Test

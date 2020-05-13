@@ -1,8 +1,6 @@
 package com.badoo.ribs.core
 
-import android.os.Bundle
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -52,18 +50,6 @@ class NodePluginAndroidLifecycleAwareTest : NodePluginTest() {
 
         plugins.forEach {
             verify(it).onResume()
-        }
-    }
-
-    @Test
-    fun `AndroidLifecycleAware plugins receive onSaveInstanceState()`() {
-        val (node, plugins) = testPlugins<AndroidLifecycleAware>()
-        val bundle = mock<Bundle>()
-
-        node.onSaveInstanceState(bundle)
-
-        plugins.forEach {
-            verify(it).onSaveInstanceState(bundle)
         }
     }
 }

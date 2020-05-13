@@ -15,10 +15,9 @@
  */
 package com.badoo.ribs.core
 
-import android.os.Bundle
-import androidx.annotation.CallSuper
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.BackPressHandler
+import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.RibLifecycleAware
 import com.badoo.ribs.core.plugin.ViewAware
@@ -28,7 +27,6 @@ import io.reactivex.disposables.Disposable
 /**
  * The base implementation for all [Interactor]s.
  *
- * @param <C> the type of Configuration this Interactor can expect to push to its [Router].
  * @param <V> the type of [RibView].
  **/
 abstract class Interactor<V : RibView>(
@@ -38,6 +36,7 @@ abstract class Interactor<V : RibView>(
     NodeAware,
     BackPressHandler,
     RibLifecycleAware,
+    SavesInstanceState,
     ViewAware<V> {
 
     protected lateinit var node: Node<*>
@@ -58,15 +57,4 @@ abstract class Interactor<V : RibView>(
      */
     open fun handleBackPress(): Boolean =
         false
-
-    @CallSuper // FIXME cleanup / remove
-    open fun onSaveInstanceState(outState: Bundle) {
-        val bundle = Bundle()
-        outState.putBundle(BUNDLE_KEY, bundle)
-    }
-
-    companion object {
-        internal const val BUNDLE_KEY = "Interactor"
-        internal const val KEY_TAG = "interactor.tag"
-    }
 }

@@ -7,14 +7,14 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.plugin.BackPressHandler
+import com.badoo.ribs.core.plugin.NodeAware
+import com.badoo.ribs.core.plugin.RibLifecycleAware
+import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
-import com.badoo.ribs.core.plugin.AndroidLifecycleAware
-import com.badoo.ribs.core.plugin.BackPressHandler
-import com.badoo.ribs.core.plugin.NodeAware
-import com.badoo.ribs.core.plugin.RibLifecycleAware
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
@@ -39,7 +39,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private val transitionHandler: TransitionHandler<C>? = null
 ) : NodeAware,
     RibLifecycleAware,
-    AndroidLifecycleAware,
+    SavesInstanceState,
     BackPressHandler,
     ConfigurationResolver<C> {
 

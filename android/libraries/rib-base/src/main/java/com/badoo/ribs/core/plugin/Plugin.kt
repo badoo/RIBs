@@ -44,7 +44,9 @@ interface AndroidLifecycleAware : Plugin {
     fun onResume() {}
 
     fun onPause() {}
+}
 
+interface SavesInstanceState : Plugin {
     fun onSaveInstanceState(outState: Bundle) {}
 }
 

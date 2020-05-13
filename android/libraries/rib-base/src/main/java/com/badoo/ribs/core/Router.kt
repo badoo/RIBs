@@ -9,7 +9,7 @@ import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware
-import com.badoo.ribs.core.plugin.RibLifecycleAware
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
@@ -38,7 +38,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private val permanentParts: List<Permanent> = emptyList(),
     private val transitionHandler: TransitionHandler<C>? = null
 ) : NodeAware,
-    RibLifecycleAware,
+    NodeLifecycleAware,
     SavesInstanceState,
     BackPressHandler,
     ConfigurationResolver<C> {

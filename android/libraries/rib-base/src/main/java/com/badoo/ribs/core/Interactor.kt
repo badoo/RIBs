@@ -19,7 +19,7 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.NodeAware
-import com.badoo.ribs.core.plugin.RibLifecycleAware
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable
@@ -35,7 +35,7 @@ abstract class Interactor<V : RibView>(
 ) : Identifiable by buildParams.identifier,
     NodeAware,
     BackPressHandler,
-    RibLifecycleAware,
+    NodeLifecycleAware,
     SavesInstanceState,
     ViewAware<V> {
 

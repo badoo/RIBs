@@ -16,7 +16,7 @@ interface ViewAware<V : RibView> : Plugin {
     fun onViewCreated(view: V, viewLifecycle: Lifecycle) {}
 }
 
-interface RibLifecycleAware : Plugin {
+interface NodeLifecycleAware : Plugin {
     fun onAttach(ribLifecycle: Lifecycle) {}
 
     fun onAttachToView(parentViewGroup: ViewGroup) {}

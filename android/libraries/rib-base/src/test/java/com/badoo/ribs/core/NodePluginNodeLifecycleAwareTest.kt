@@ -1,6 +1,6 @@
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.plugin.RibLifecycleAware
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
@@ -8,11 +8,11 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class NodePluginRibLifecycleAwareTest : NodePluginTest() {
+class NodePluginNodeLifecycleAwareTest : NodePluginTest() {
 
     @Test
-    fun `RibLifecycleAware plugins receive onAttach()`() {
-        val (node, plugins) = testPlugins<RibLifecycleAware>()
+    fun `NodeLifecycleAware plugins receive onAttach()`() {
+        val (node, plugins) = testPlugins<NodeLifecycleAware>()
 
         node.onAttach()
 
@@ -22,8 +22,8 @@ class NodePluginRibLifecycleAwareTest : NodePluginTest() {
     }
 
     @Test
-    fun `RibLifecycleAware plugins receive onDetach()`() {
-        val (node, plugins) = testPlugins<RibLifecycleAware>()
+    fun `NodeLifecycleAware plugins receive onDetach()`() {
+        val (node, plugins) = testPlugins<NodeLifecycleAware>()
 
         node.onDetach()
 
@@ -33,8 +33,8 @@ class NodePluginRibLifecycleAwareTest : NodePluginTest() {
     }
 
     @Test
-    fun `RibLifecycleAware plugins receive onAttachToView()`() {
-        val (node, plugins) = testPlugins<RibLifecycleAware>()
+    fun `NodeLifecycleAware plugins receive onAttachToView()`() {
+        val (node, plugins) = testPlugins<NodeLifecycleAware>()
 
         node.attachToView(parentViewGroup)
 
@@ -44,8 +44,8 @@ class NodePluginRibLifecycleAwareTest : NodePluginTest() {
     }
 
     @Test
-    fun `RibLifecycleAware plugins receive onDetachFromView()`() {
-        val (node, plugins) = testPlugins<RibLifecycleAware>()
+    fun `NodeLifecycleAware plugins receive onDetachFromView()`() {
+        val (node, plugins) = testPlugins<NodeLifecycleAware>()
 
         node.attachToView(parentViewGroup)
         node.detachFromView()

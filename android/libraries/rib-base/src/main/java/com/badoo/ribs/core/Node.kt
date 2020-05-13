@@ -30,7 +30,7 @@ import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
-import com.badoo.ribs.core.plugin.RibLifecycleAware
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
 import com.badoo.ribs.core.plugin.NodeAware
@@ -125,7 +125,7 @@ open class Node<V : RibView>(
     @CallSuper
     open fun onAttach() {
         lifecycleManager.onCreateRib()
-        plugins.filterIsInstance<RibLifecycleAware>().forEach { it.onAttach(lifecycleManager.ribLifecycle.lifecycle) }
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach(lifecycleManager.ribLifecycle.lifecycle) }
     }
 
     fun attachToView(parentViewGroup: ViewGroup) {
@@ -145,7 +145,7 @@ open class Node<V : RibView>(
                 it.onViewCreated(view, lifecycleManager.viewLifecycle!!.lifecycle)
             }
         }
-        plugins.filterIsInstance<RibLifecycleAware>().forEach { it.onAttachToView(parentViewGroup) }
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttachToView(parentViewGroup) }
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? {
@@ -172,7 +172,7 @@ open class Node<V : RibView>(
 
     fun detachFromView() {
         if (isAttachedToView) {
-            plugins.filterIsInstance<RibLifecycleAware>().forEach { it.onDetachFromView(parentViewGroup!!) }
+            plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDetachFromView(parentViewGroup!!) }
             lifecycleManager.onDestroyView()
 
             if (!isViewless) {
@@ -196,7 +196,7 @@ open class Node<V : RibView>(
         }
 
         lifecycleManager.onDestroyRib()
-        plugins.filterIsInstance<RibLifecycleAware>().forEach { it.onDetach() }
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDetach() }
 
         for (child in children) {
             detachChildNode(child)

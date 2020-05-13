@@ -23,8 +23,8 @@ class MenuInteractor(
     disposables = feature
 ) {
 
-    override fun onAttach(ribLifecycle: Lifecycle) {
-        ribLifecycle.createDestroy {
+    override fun onAttach(nodeLifecycle: Lifecycle) {
+        nodeLifecycle.createDestroy {
             bind(input to feature using InputToState)
         }
     }

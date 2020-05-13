@@ -12,14 +12,14 @@ interface NodeAware : Plugin {
     fun init(node: Node<*>) {}
 }
 
-interface ViewAware<V : RibView> : Plugin {
-    fun onViewCreated(view: V, viewLifecycle: Lifecycle) {}
-}
-
 interface NodeLifecycleAware : Plugin {
-    fun onAttach(ribLifecycle: Lifecycle) {}
+    fun onAttach(nodeLifecycle: Lifecycle) {}
 
     fun onDetach() {}
+}
+
+interface ViewAware<V : RibView> : Plugin {
+    fun onViewCreated(view: V, viewLifecycle: Lifecycle) {}
 }
 
 interface ViewLifecycleAware : Plugin {

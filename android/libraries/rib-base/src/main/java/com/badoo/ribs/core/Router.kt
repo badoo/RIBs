@@ -84,7 +84,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
         outState.putBundle(BUNDLE_KEY, bundle)
     }
 
-    override fun onAttach(ribLifecycle: Lifecycle) {
+    override fun onAttach(nodeLifecycle: Lifecycle) {
         binder.bind(backStackFeature.toCommands() to configurationFeature)
     }
 

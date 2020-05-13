@@ -26,8 +26,8 @@ internal class FooBarInteractor(
     disposables = feature
 ) {
 
-    override fun onAttach(ribLifecycle: Lifecycle) {
-        ribLifecycle.createDestroy {
+    override fun onAttach(nodeLifecycle: Lifecycle) {
+        nodeLifecycle.createDestroy {
             bind(feature.news to output using NewsToOutput)
             bind(input to feature using InputToWish)
         }

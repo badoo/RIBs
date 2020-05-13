@@ -285,40 +285,35 @@ open class Node<V : RibView>(
     }
 
     /**
-     * To be called only from the hosting environment (Activity, Fragment, etc.)
-     *
-     * For internal usage call onStart() with proper inner lifecycle registry directly
+     * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onStart() {
         lifecycleManager.onStartExternal()
-
+        plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onStart() }
     }
 
     /**
-     * To be called only from the hosting environment (Activity, Fragment, etc.)
-     *
-     * For internal usage call onStop() with proper inner lifecycle registry directly
+     * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onStop() {
         lifecycleManager.onStopExternal()
+        plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onStop() }
     }
 
     /**
-     * To be called only from the hosting environment (Activity, Fragment, etc.)
-     *
-     * For internal usage call onResume() with proper inner lifecycle registry directly
+     * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onResume() {
         lifecycleManager.onResumeExternal()
+        plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onResume() }
     }
 
     /**
-     * To be called only from the hosting environment (Activity, Fragment, etc.)
-     *
-     * For internal usage call onPause() with proper inner lifecycle registry directly
+     * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onPause() {
         lifecycleManager.onPauseExternal()
+        plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onPause() }
     }
 
     @CallSuper

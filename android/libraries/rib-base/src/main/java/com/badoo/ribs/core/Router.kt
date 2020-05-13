@@ -11,6 +11,7 @@ import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
+import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
@@ -39,6 +40,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private val transitionHandler: TransitionHandler<C>? = null
 ) : NodeAware,
     NodeLifecycleAware,
+    ViewLifecycleAware,
     SavesInstanceState,
     BackPressHandler,
     ConfigurationResolver<C> {

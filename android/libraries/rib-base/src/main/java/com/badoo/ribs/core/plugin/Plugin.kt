@@ -19,11 +19,13 @@ interface ViewAware<V : RibView> : Plugin {
 interface NodeLifecycleAware : Plugin {
     fun onAttach(ribLifecycle: Lifecycle) {}
 
+    fun onDetach() {}
+}
+
+interface ViewLifecycleAware : Plugin {
     fun onAttachToView(parentViewGroup: ViewGroup) {}
 
     fun onDetachFromView(parentViewGroup: ViewGroup) {}
-
-    fun onDetach() {}
 }
 
 interface SubtreeChangeAware : Plugin {

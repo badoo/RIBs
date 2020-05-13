@@ -30,16 +30,17 @@ import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
-import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
 import com.badoo.ribs.core.plugin.NodeAware
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
 import com.badoo.ribs.core.plugin.ViewAware
+import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.util.RIBs
@@ -145,7 +146,7 @@ open class Node<V : RibView>(
                 it.onViewCreated(view, lifecycleManager.viewLifecycle!!.lifecycle)
             }
         }
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttachToView(parentViewGroup) }
+        plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onAttachToView(parentViewGroup) }
     }
 
     private fun createView(parentViewGroup: ViewGroup): V? {
@@ -172,7 +173,7 @@ open class Node<V : RibView>(
 
     fun detachFromView() {
         if (isAttachedToView) {
-            plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDetachFromView(parentViewGroup!!) }
+            plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onDetachFromView(parentViewGroup!!) }
             lifecycleManager.onDestroyView()
 
             if (!isViewless) {

@@ -21,6 +21,13 @@ open class TestNode(
     var handleBackPressInvoked: Boolean =
         false
 
+    fun makeActiveBackPressHandler(isActive: Boolean) {
+        attachToView(mock())
+        handleBackPress = isActive
+        markPendingDetach(!isActive)
+        markPendingViewDetach(!isActive)
+    }
+
     override fun handleBackPress(): Boolean =
         handleBackPress.also {
             handleBackPressInvoked = true

@@ -34,19 +34,19 @@ import org.junit.Test
  */
 class SwitcherRouterTest {
     
-    private val fooBarNode = FooBarNode(null, mock(), BuildParams.Empty(), emptySet())
+    private val fooBarNode = FooBarNode(BuildParams.Empty(), null)
     private val fooBarBuilder = mock<FooBarBuilder> { on { build(any()) } doReturn fooBarNode }
 
-    private val helloWorldNode = HelloWorldNode(null, mock(), mock(), BuildParams.Empty())
+    private val helloWorldNode = HelloWorldNode(BuildParams.Empty(), null)
     private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(any()) } doReturn helloWorldNode }
 
-    private val dialogExampleNode = DialogExampleNode(BuildParams.Empty(), null, mock(), mock())
+    private val dialogExampleNode = DialogExampleNode(BuildParams.Empty(), null)
     private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(any()) } doReturn dialogExampleNode }
 
     private val blockerNode = TestNode<BlockerView>()
     private val blockerBuilder = mock<BlockerBuilder> { on { build(any()) } doReturn blockerNode }
 
-    private val menuNode = MenuNode(BuildParams.Empty(), mock(), mock())
+    private val menuNode = MenuNode(BuildParams.Empty(), mock())
     private val menuBuilder = mock<MenuBuilder> { on { build(any()) } doReturn menuNode }
 
     private val dialogLauncher: DialogLauncher = mock()

@@ -10,17 +10,25 @@ import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.helper.AnyConfiguration
-import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.routing.portal.AncestryInfo
-import com.badoo.ribs.core.view.ViewPlugin
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.isA
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
@@ -52,7 +60,7 @@ class NodeTest {
     private lateinit var child3: TestNode
     private lateinit var root1: TestNode
     private lateinit var allChildren: List<Node<*>>
-    private lateinit var viewPlugins: Set<ViewPlugin>
+    private lateinit var plugins: List<Plugin>
     private lateinit var childAncestry: AncestryInfo
 
     @Before
@@ -66,7 +74,6 @@ class NodeTest {
         viewFactory = mock { on { invoke(parentViewGroup) } doReturn view }
         router = mock()
         interactor = mock()
-        viewPlugins = setOf(mock(), mock())
         node = createNode(viewFactory = viewFactory)
         childAncestry = AncestryInfo.Child(node, AnyConfiguration)
 
@@ -80,13 +87,11 @@ class NodeTest {
     private fun createNode(
         buildParams: BuildParams<Nothing?> = testBuildParams(),
         viewFactory: TestViewFactory? = this@NodeTest.viewFactory,
-        interactor: Interactor<TestView> = this@NodeTest.interactor
+        plugins: List<Plugin> = emptyList()
     ): Node<TestView> = Node(
         buildParams = buildParams,
         viewFactory = viewFactory,
-        router = router,
-        interactor = interactor,
-        viewPlugins = viewPlugins
+        plugins = plugins
     )
 
     @After
@@ -125,35 +130,6 @@ class NodeTest {
     }
 
     @Test
-    fun `Router's node initialised after Node init`() {
-        verify(router).init(node)
-    }
-
-    @Test
-    fun `onAttach() notifies Router`() {
-        node.onAttach()
-        verify(router).onAttach()
-    }
-
-    @Test
-    fun `onAttach() notifies Interactor`() {
-        node.onAttach()
-        verify(interactor).onAttach(node.lifecycleManager.ribLifecycle.lifecycle)
-    }
-
-    @Test
-    fun `onDetach() notifies Router`() {
-        node.onDetach()
-        verify(router).onDetach()
-    }
-
-    @Test
-    fun `onDetach() notifies Interactor`() {
-        node.onDetach()
-        verify(interactor).onDetach()
-    }
-
-    @Test
     fun `onDetach() verifies view has been detached`() {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
@@ -182,32 +158,6 @@ class NodeTest {
         node.view = view
         node.onSaveInstanceState(mock())
         verify(androidView).saveHierarchyState(node.savedViewState)
-    }
-
-    @Test
-    fun `onSaveInstanceState() is forwarded to Router`() {
-        node.onSaveInstanceState(mock())
-        verify(router).onSaveInstanceState(any())
-    }
-
-    @Test
-    fun `Router's bundle from onSaveInstanceState() call is put inside original bundle`() {
-        val bundle: Bundle = mock()
-        node.onSaveInstanceState(bundle)
-        verify(router).onSaveInstanceState(bundle)
-    }
-
-    @Test
-    fun `onSaveInstanceState() is forwarded to Interactor`() {
-        node.onSaveInstanceState(mock())
-        verify(interactor).onSaveInstanceState(any())
-    }
-
-    @Test
-    fun `Interactor's bundle from onSaveInstanceState call is put inside original bundle`() {
-        val bundle: Bundle = mock()
-        node.onSaveInstanceState(bundle)
-        verify(interactor).onSaveInstanceState(bundle)
     }
 
     @Test
@@ -276,48 +226,12 @@ class NodeTest {
     }
 
     @Test
-    fun `Back press handling is forwarded to Interactor if no children handled it`() {
-        attachToViewAlongWithChildren()
-        child1.handleBackPress = false
-        child2.handleBackPress = false
-        child3.handleBackPress = false
-
-        node.handleBackPress()
-
-        verify(interactor).handleBackPress()
-    }
-
-    @Test
-    fun `Back press handling is not forwarded to Interactor if any children handled it`() {
-        attachToViewAlongWithChildren()
-        child1.handleBackPress = false
-        child2.handleBackPress = true
-        child3.handleBackPress = false
-
-        node.handleBackPress()
-
-        verify(interactor, never()).handleBackPress()
-    }
-
-    @Test
-    fun `Router back stack popping is invoked if none of the children nor the Interactor handled back press`() {
-        attachToViewAlongWithChildren()
-        child1.handleBackPress = false
-        child2.handleBackPress = false
-        child3.handleBackPress = false
-        whenever(interactor.handleBackPress()).thenReturn(false)
-
-        node.handleBackPress()
-        verify(router).popBackStack()
-    }
-
-    @Test
     fun `Router back stack popping is not invoked if any of the children handled back press`() {
         attachToViewAlongWithChildren()
         child1.handleBackPress = false
         child2.handleBackPress = true
         child3.handleBackPress = false
-        whenever(interactor.handleBackPress()).thenReturn(false)
+        whenever(interactor.handleBackPressAfterDownstream()).thenReturn(false)
 
         node.handleBackPress()
 
@@ -326,7 +240,7 @@ class NodeTest {
 
     @Test
     fun `Router back stack popping is not invoked if Interactor handled back press`() {
-        whenever(interactor.handleBackPress()).thenReturn(true)
+        whenever(interactor.handleBackPressAfterDownstream()).thenReturn(true)
 
         node.handleBackPress()
 
@@ -349,29 +263,6 @@ class NodeTest {
         node.attachToView(parentViewGroup)
         node.detachFromView()
         assertEquals(false, node.isAttachedToView)
-    }
-
-    @Test
-    fun `attachToView() forwards call to Router`() {
-        node.attachToView(parentViewGroup)
-        verify(router).onAttachView()
-    }
-
-    @Test
-    fun `attachToView() notifies all ViewPlugins`() {
-        node.attachToView(parentViewGroup)
-        viewPlugins.forEach {
-            verify(it).onAttachtoView(parentViewGroup)
-        }
-    }
-
-    @Test
-    fun `detachFromView() notifies all ViewPlugins`() {
-        node.attachToView(parentViewGroup)
-        node.detachFromView()
-        viewPlugins.forEach {
-            verify(it).onDetachFromView(parentViewGroup)
-        }
     }
 
     private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib.Identifier> = mutableListOf()): List<Node<*>> {
@@ -661,16 +552,6 @@ class NodeTest {
             Lifecycle.State.RESUMED,
             node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
         )
-//        assertEquals(Lifecycle.State.RESUMED, node.viewLifecycleRegistry!!.currentState)
-//    }
-//
-//    @Test
-//    fun `attachToView() + viewless = doesn't have view lifecycle`() {
-//        node = createNode(viewFactory = null)
-//        node.onResume()
-//        node.attachToView(parentViewGroup)
-//        assertNull(node.viewLifecycleRegistry)
-//    }
     }
 
     @Test
@@ -680,31 +561,20 @@ class NodeTest {
     }
 
     @Test
-    fun `When current Node has a view, attachToView() notifies Interactor of view creation when external lifecycle goes above INITIALIZED`() {
-        node.onStart()
-        node.onStop()
-        node.attachToView(parentViewGroup)
-        verify(interactor).onViewCreated(node.lifecycleManager.viewLifecycle!!.lifecycle, view)
-    }
-
-    @Test
     fun `By the time onViewCreated is called, passed in lifecycle is ready for bindings`() {
         val trigger: PublishRelay<Unit> = PublishRelay.create()
         val receiver: Consumer<Unit> = mock()
-        val onViewCreated: (TestView, Lifecycle) -> Unit = { _, viewLifecycle ->
-            viewLifecycle.createDestroy {
-                bind(trigger to receiver)
-            }
+        val viewAware: ViewAware<TestView> = object : ViewAware<TestView> {
+            override fun onViewCreated(view: TestView, viewLifecycle: Lifecycle) {
+                viewLifecycle.createDestroy {
+                    bind(trigger to receiver)
+                }
 
-            trigger.accept(Unit)
+                trigger.accept(Unit)
+            }
         }
 
-        node = createNode(
-            interactor = TestInteractor(
-                onViewCreated = onViewCreated
-            )
-        )
-
+        node = createNode(plugins = listOf(viewAware))
         node.onStart()
         node.onStop()
         node.attachToView(parentViewGroup)

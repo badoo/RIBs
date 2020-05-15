@@ -18,8 +18,9 @@ class LoremIpsumBuilder(
         return Node(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            router = null,
-            interactor = interactor
+            plugins = listOf(
+                interactor
+            )
         )
     }
 }

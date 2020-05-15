@@ -2,8 +2,6 @@ package com.badoo.ribs.sandbox.rib.hello_world
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
-import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
@@ -12,6 +10,7 @@ import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Content
@@ -45,8 +44,8 @@ class HelloWorldInteractor(
         ViewModel("My id: " + id.replace("${HelloWorldInteractor::class.java.name}.", ""))
     )
 
-    override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
-        ribLifecycle.createDestroy {
+    override fun onAttach(nodeLifecycle: Lifecycle) {
+        nodeLifecycle.createDestroy {
             bind(feature.news to output using NewsToOutput)
             bind(input to feature using InputToWish)
         }

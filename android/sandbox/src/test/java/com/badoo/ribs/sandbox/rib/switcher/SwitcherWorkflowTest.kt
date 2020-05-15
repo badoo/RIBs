@@ -31,19 +31,19 @@ class SwitcherWorkflowTest {
     @Before
     fun setup() {
         val helloWorldNodeBuilder = { buildContext: BuildContext ->
-            HelloWorldNode(mock(), mock(), mock(), buildContext.toBuildParams())
+            HelloWorldNode(buildContext.toBuildParams(), mock())
         }
         val fooBarNodeBuilder = { buildContext: BuildContext ->
-            FooBarNode(mock(), mock(), buildContext.toBuildParams(), emptySet())
+            FooBarNode(buildContext.toBuildParams(), mock())
         }
         val dialogExampleBuilder = { buildContext: BuildContext ->
-            DialogExampleNode(buildContext.toBuildParams(), mock(), mock(), mock())
+            DialogExampleNode(buildContext.toBuildParams(), mock())
         }
         val blockerBuilder = { buildContext: BuildContext ->
-            Node<BlockerView>(buildContext.toBuildParams(), mock(), mock(), mock(), mock())
+            Node<BlockerView>(buildContext.toBuildParams(), mock())
         }
         val menuBuilder = { buildContext: BuildContext ->
-            MenuNode(buildContext.toBuildParams(), mock(), mock())
+            MenuNode(buildContext.toBuildParams(), mock())
         }
 
         router = SwitcherRouter(
@@ -57,18 +57,18 @@ class SwitcherWorkflowTest {
             dialogLauncher = mock(),
             dialogToTestOverlay = mock()
         )
-        interactor = SwitcherInteractor(BuildParams.Empty(), mock(), mock())
+        interactor = SwitcherInteractor(BuildParams.Empty(), router, mock())
 
         workflow = SwitcherNode(
             buildParams = BuildParams.Empty(),
             viewFactory = mock(),
-            router = router,
-            interactor = interactor
+            plugins = listOf(interactor, router),
+            router = router
         ).also { it.onAttach() }
     }
 
     private fun <N> withBuilder(
-            builder: (BuildContext) -> N
+        builder: (BuildContext) -> N
     ): (InvocationOnMock) -> N = { answer -> builder(answer.getArgument(0)) }
 
     private fun BuildContext.toBuildParams(): BuildParams<Nothing?> =

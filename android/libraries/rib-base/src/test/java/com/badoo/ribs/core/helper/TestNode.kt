@@ -13,14 +13,20 @@ open class TestNode(
 ) : Node<TestView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
-    router = router,
-    interactor = mock()
+    plugins = listOf(router)
 ) {
     var handleBackPress: Boolean =
         false
 
     var handleBackPressInvoked: Boolean =
         false
+
+    fun makeActiveBackPressHandler(isActive: Boolean) {
+        attachToView(mock())
+        handleBackPress = isActive
+        markPendingDetach(!isActive)
+        markPendingViewDetach(!isActive)
+    }
 
     override fun handleBackPress(): Boolean =
         handleBackPress.also {

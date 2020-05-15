@@ -30,7 +30,6 @@ internal object HelloWorldModule {
     ) : Node<HelloWorldView> = Node(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
-        router = null,
-        interactor = interactor
+        plugins = listOf(interactor)
     )
 }

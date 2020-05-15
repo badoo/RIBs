@@ -87,8 +87,10 @@ internal object DialogExampleModule {
     ) : DialogExampleNode = DialogExampleNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
-        router = router,
-        interactor = interactor
+        plugins =  listOf(
+            interactor,
+            router
+        )
     )
 
     @DialogExampleScope

@@ -19,8 +19,8 @@ internal class RecyclerViewHostInteractor<T : Parcelable>(
     disposables = feature
 ) {
 
-    override fun onAttach(ribLifecycle: Lifecycle) {
-        ribLifecycle.createDestroy {
+    override fun onAttach(nodeLifecycle: Lifecycle) {
+        nodeLifecycle.createDestroy {
             bind(feature to adapter) // TODO consider viewLifecycle
             bind(input to feature)
         }

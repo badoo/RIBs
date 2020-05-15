@@ -16,8 +16,7 @@ class TestNode<V : RibView>(
 ) : Node<V>(
     buildParams = buildParams,
     viewFactory = viewFactory,
-    router = router,
-    interactor = interactor
+    plugins = listOf(interactor, router)
 ) {
 
     var isAttached: Boolean = false

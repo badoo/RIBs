@@ -40,8 +40,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
 
         return RecyclerViewHostNode(
             buildParams = buildParams,
-            router = router,
-            interactor = interactor,
+            plugins = listOf(router, interactor),
             viewDeps =  object : RecyclerViewHostView.Dependency {
                 override fun adapter(): Adapter<*> = adapter
                 override fun recyclerViewFactory(): RecyclerViewFactory = dependency.recyclerViewFactory()

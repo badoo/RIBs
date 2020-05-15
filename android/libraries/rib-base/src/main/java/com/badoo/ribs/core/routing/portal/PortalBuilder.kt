@@ -22,8 +22,11 @@ class PortalBuilder(
 
         return PortalNode(
             buildParams = buildParams,
-            router = router,
-            interactor = interactor
+            plugins = listOf(
+                interactor,
+                router
+            ),
+            router = router
         )
     }
 }

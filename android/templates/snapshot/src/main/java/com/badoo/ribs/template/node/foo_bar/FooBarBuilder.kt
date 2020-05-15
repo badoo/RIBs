@@ -16,7 +16,7 @@ class FooBarBuilder(
         val feature = feature()
         val interactor = interactor(dependency, buildParams, router, feature)
 
-        return node(buildParams, customisation, router, interactor, feature)
+        return node(buildParams, customisation, interactor, router)
     }
 
     private fun feature() =
@@ -47,14 +47,11 @@ class FooBarBuilder(
     private fun node(
         buildParams: BuildParams<*>,
         customisation: FooBar.Customisation,
-        router: FooBarRouter,
         interactor: FooBarInteractor,
-        feature: FooBarFeature
+        router: FooBarRouter
     ) = FooBarNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
-        router = router,
-        interactor = interactor,
-        feature = feature
+        plugins = listOf(interactor, router)
     )
 }

@@ -1,12 +1,11 @@
 package com.badoo.ribs.sandbox.rib.menu
 
-import android.os.Bundle
-import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.sandbox.rib.menu.feature.MenuFeature
 import com.badoo.ribs.sandbox.rib.menu.mapper.InputToState
 import com.badoo.ribs.sandbox.rib.menu.mapper.StateToViewModel
@@ -24,8 +23,8 @@ class MenuInteractor(
     disposables = feature
 ) {
 
-    override fun onAttach(ribLifecycle: Lifecycle, savedInstanceState: Bundle?) {
-        ribLifecycle.createDestroy {
+    override fun onAttach(nodeLifecycle: Lifecycle) {
+        nodeLifecycle.createDestroy {
             bind(input to feature using InputToState)
         }
     }

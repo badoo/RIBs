@@ -7,9 +7,10 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
+import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
+import com.badoo.ribs.core.plugin.SubtreeBackPressHandler.Priority
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
@@ -42,7 +43,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     NodeLifecycleAware,
     ViewLifecycleAware,
     SavesInstanceState,
-    BackPressHandler,
+    SubtreeBackPressHandler,
     ConfigurationResolver<C> {
 
     companion object {
@@ -142,16 +143,23 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     internal fun getNodes(configurationKey: ConfigurationKey<C>): List<Node<*>>? =
         (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
 
-    fun popBackStack(): Boolean =
-        if (backStackFeature.state.backStack.canPop) {
+    override fun handleBackPress(priority: Priority): Boolean =
+        when (priority) {
+            Priority.FIRST -> popOverlay()
+            Priority.FALLBACK -> popBackStack()
+            else -> false
+        }
+
+    fun popOverlay(): Boolean =
+        if (backStackFeature.state.backStack.canPopOverlay) {
             acceptOperation(Pop())
             true
         } else {
             false
         }
 
-    fun popOverlay(): Boolean =
-        if (backStackFeature.state.backStack.canPopOverlay) {
+    fun popBackStack(): Boolean =
+        if (backStackFeature.state.backStack.canPop) {
             acceptOperation(Pop())
             true
         } else {

@@ -10,7 +10,6 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import com.badoo.ribs.core.plugin.SubtreeBackPressHandler.Priority
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
@@ -143,12 +142,11 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     internal fun getNodes(configurationKey: ConfigurationKey<C>): List<Node<*>>? =
         (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
 
-    override fun handleBackPress(priority: Priority): Boolean =
-        when (priority) {
-            Priority.FIRST -> popOverlay()
-            Priority.FALLBACK -> popBackStack()
-            else -> false
-        }
+    override fun handleBackPressFirst(): Boolean =
+        popOverlay()
+
+    override fun handleBackPressFallback(): Boolean =
+        popBackStack()
 
     fun popOverlay(): Boolean =
         if (backStackFeature.state.backStack.canPopOverlay) {

@@ -13,23 +13,21 @@ import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before
 
 open class NodePluginTest {
-    protected lateinit var node: Node<TestView>
     protected lateinit var view: TestView
     protected lateinit var androidView: ViewGroup
     protected lateinit var parentViewGroup: ViewGroup
     protected lateinit var viewFactory: TestViewFactory
-    protected lateinit var childNode: TestNode
 
     interface TestViewFactory : (ViewGroup) -> TestView
 
     @Before
-    fun setUp() {
+    open fun setUp() {
         parentViewGroup = mock()
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
         viewFactory = mock { on { invoke(parentViewGroup) } doReturn view }
-        node = createNode(viewFactory = viewFactory)
-        childNode = createChildNode(parent = node)
+//        node = createNode(viewFactory = viewFactory)
+//        childNode = createChildNode(parent = node)
     }
 
     protected inline fun <reified T : Plugin> testPlugins(nbPlugins: Int = 3): Pair<Node<TestView>, List<T>> =

@@ -31,17 +31,12 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
+import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.plugin.PriorityBackPressHandler
-import com.badoo.ribs.core.plugin.PriorityBackPressHandler.Priority.HIGH
-import com.badoo.ribs.core.plugin.PriorityBackPressHandler.Priority.LOW
-import com.badoo.ribs.core.plugin.PriorityBackPressHandler.Priority.NORMAL
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import com.badoo.ribs.core.plugin.SubtreeBackPressHandler.Priority.FALLBACK
-import com.badoo.ribs.core.plugin.SubtreeBackPressHandler.Priority.FIRST
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
@@ -328,14 +323,12 @@ open class Node<V : RibView>(
     @CallSuper
     open fun handleBackPress(): Boolean {
         val subtreeHandlers = plugins.filterIsInstance<SubtreeBackPressHandler>()
-        val handlers = plugins.filterIsInstance<PriorityBackPressHandler>()
+        val handlers = plugins.filterIsInstance<BackPressHandler>()
 
-        return subtreeHandlers.any { it.handleBackPress(FIRST) }
+        return subtreeHandlers.any { it.handleBackPressFirst() }
             || delegateHandleBackPressToActiveChildren()
-            || handlers.any { it.handleBackPress(HIGH) }
-            || handlers.any { it.handleBackPress(NORMAL) }
-            || handlers.any { it.handleBackPress(LOW) }
-            || subtreeHandlers.any { it.handleBackPress(FALLBACK) }
+            || handlers.any { it.handleBackPress() }
+            || subtreeHandlers.any { it.handleBackPressFallback() }
     }
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =

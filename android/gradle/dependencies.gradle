@@ -44,6 +44,8 @@ def versions = [
     androidxRecyclerViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
     androidxTestVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/test
     androidxTestUiAutoVersion:'2.2.0',
+    retrofitVersion: '2.8.1',
+    okhttp: '3.14.7',
 ]
 
 def apt = [
@@ -127,6 +129,14 @@ def uber = [
     rave: "com.uber:rave:${versions.rave}",
 ]
 
+def retrofit = [
+        retrofit: "com.squareup.retrofit2:retrofit:${versions.retrofitVersion}",
+        rxjavaAdapter: "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofitVersion}",
+        moshiConverter: "com.squareup.retrofit2:converter-moshi:${versions.retrofitVersion}",
+        okhttp: "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+        okhttpLoggingInterceptor : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+]
+
 ext.deps = [
     "apt": apt,
     "build": build,
@@ -136,4 +146,5 @@ ext.deps = [
     "androidTest": androidTest,
     "versions": versions,
     "uber": uber,
+    "retrofit": retrofit,
 ]

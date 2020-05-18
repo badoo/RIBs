@@ -4,9 +4,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 def getAccessToken() {
+    def systemEnvKey = System.getenv('ACCESS_KEY')
+
     def props = new Properties()
-    file("local.properties").withInputStream { props.load(it) }
-    return props.getProperty("accesskey") ?: ""
+    def propsFile = file("local.properties")
+    if (propsFile.exists()) {
+        propsFile.withInputStream { props.load(it) }
+    }
+    def localPropsKey = props.getProperty("accesskey")
+
+    return localPropsKey ?: systemEnvKey ?: ""
 }
 
 android {

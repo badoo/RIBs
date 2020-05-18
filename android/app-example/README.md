@@ -4,4 +4,4 @@ Example app is an Unsplash client
 
 ## Set up
 
-To build app you need set `accesskey` property in your api.properties file
+To build app you need set `accesskey` property in your local.properties file

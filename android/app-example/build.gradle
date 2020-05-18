@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 
 def getAccessToken() {
     def props = new Properties()
-    file("api.properties").withInputStream { props.load(it) }
+    file("local.properties").withInputStream { props.load(it) }
     return props.getProperty("accesskey") ?: ""
 }
 

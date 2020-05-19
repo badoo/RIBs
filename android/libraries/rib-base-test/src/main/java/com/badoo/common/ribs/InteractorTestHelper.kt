@@ -20,7 +20,7 @@ import org.mockito.Mockito.`when` as whenever
 private val buildParams = BuildParams.Empty()
 
 class InteractorTestHelper<View : RibView>(
-    val interactor: Interactor<View>,
+    val interactor: Interactor<*, View>,
     val viewFactory: ((ViewGroup) -> View?)? = null,
     router: Router<*, *, *, *, View>? = null
 ) {
@@ -72,7 +72,7 @@ class InteractorTestHelper<View : RibView>(
 
     companion object {
         inline fun <reified View, ViewEvent> create(
-            interactor: Interactor<View>,
+            interactor: Interactor<*, View>,
             viewEventRelay: Relay<ViewEvent>,
             router: Router<*, *, *, *, View>? = null
         ): InteractorTestHelper<View> where View : RibView, View : ObservableSource<ViewEvent> {

@@ -4,17 +4,20 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.plugin.Plugin
 import com.nhaarman.mockitokotlin2.mock
 
 open class TestNode(
     buildParams: BuildParams<*> = testBuildParams(),
     viewFactory: ((ViewGroup) -> TestView?)? = TestViewFactory(),
-    router: Router<*, *, *, *, TestView> = mock()
+    router: Router<*, *, *, *, TestView> = mock(),
+    plugins: List<Plugin> = emptyList()
 ) : Node<TestView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
-    plugins = listOf(router)
-) {
+    plugins = plugins + listOf(router)
+), TestRib {
+
     var handleBackPress: Boolean =
         false
 

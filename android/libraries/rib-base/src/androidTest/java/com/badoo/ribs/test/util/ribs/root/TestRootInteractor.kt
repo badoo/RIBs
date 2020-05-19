@@ -11,7 +11,7 @@ import io.reactivex.observers.TestObserver
 class TestRootInteractor(
     buildParams: BuildParams<Nothing?>,
     private val viewLifecycleObserver: TestObserver<Lifecycle.Event>
-) : Interactor<TestRootView>(
+) : Interactor<TestRoot, TestRootView>(
     buildParams = buildParams,
     disposables = null
 ) {

@@ -13,7 +13,6 @@ import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherConnections
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay

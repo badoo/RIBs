@@ -3,29 +3,23 @@ package com.badoo.ribs.sandbox.rib.switcher
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import com.badoo.common.ribs.InteractorTestHelper
-import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherConnections
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Answers
 
 class SwitcherInteractorTest {
 
-    private val connections: SwitcherConnections = mock(defaultAnswer = Answers.RETURNS_DEEP_STUBS)
     private val router: SwitcherRouter = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
     private val viewEventRelay = PublishRelay.create<Event>()
@@ -37,7 +31,6 @@ class SwitcherInteractorTest {
     fun setup() {
         switcherInteractor = SwitcherInteractor(
             buildParams = BuildParams.Empty(),
-            connections = connections,
             router = router,
             dialogToTestOverlay = dialogToTestOverlay
         )

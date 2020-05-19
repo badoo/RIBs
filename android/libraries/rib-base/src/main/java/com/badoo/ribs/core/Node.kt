@@ -36,6 +36,7 @@ import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.SavesInstanceState
+import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
@@ -321,10 +322,13 @@ open class Node<V : RibView>(
 
     @CallSuper
     open fun handleBackPress(): Boolean {
-//        ribRefWatcher.logBreadcrumb("BACKPRESS", null, null)
-        return plugins.filterIsInstance<BackPressHandler>().any { it.handleBackPressBeforeDownstream() }
+        val subtreeHandlers = plugins.filterIsInstance<SubtreeBackPressHandler>()
+        val handlers = plugins.filterIsInstance<BackPressHandler>()
+
+        return subtreeHandlers.any { it.handleBackPressFirst() }
             || delegateHandleBackPressToActiveChildren()
-            || plugins.filterIsInstance<BackPressHandler>().any { it.handleBackPressAfterDownstream() }
+            || handlers.any { it.handleBackPress() }
+            || subtreeHandlers.any { it.handleBackPressFallback() }
     }
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =

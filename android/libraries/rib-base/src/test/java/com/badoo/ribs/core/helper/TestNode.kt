@@ -1,10 +1,10 @@
 package com.badoo.ribs.core.helper
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.builder.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 
 open class TestNode(
@@ -24,9 +24,8 @@ open class TestNode(
     var handleBackPressInvoked: Boolean =
         false
 
-    fun makeActiveBackPressHandler(isActive: Boolean) {
+    fun makeActive(isActive: Boolean) {
         attachToView(mock())
-        handleBackPress = isActive
         markPendingDetach(!isActive)
         markPendingViewDetach(!isActive)
     }

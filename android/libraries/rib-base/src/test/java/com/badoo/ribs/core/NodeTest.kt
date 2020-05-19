@@ -61,7 +61,6 @@ class NodeTest {
     private lateinit var child3: TestNode
     private lateinit var root1: TestNode
     private lateinit var allChildren: List<Node<*>>
-    private lateinit var plugins: List<Plugin>
     private lateinit var childAncestry: AncestryInfo
 
     @Before
@@ -224,28 +223,6 @@ class NodeTest {
         assertEquals(true, child1.handleBackPressInvoked)
         assertEquals(true, child2.handleBackPressInvoked)
         assertEquals(false, child3.handleBackPressInvoked)
-    }
-
-    @Test
-    fun `Router back stack popping is not invoked if any of the children handled back press`() {
-        attachToViewAlongWithChildren()
-        child1.handleBackPress = false
-        child2.handleBackPress = true
-        child3.handleBackPress = false
-        whenever(interactor.handleBackPressAfterDownstream()).thenReturn(false)
-
-        node.handleBackPress()
-
-        verify(router, never()).popBackStack()
-    }
-
-    @Test
-    fun `Router back stack popping is not invoked if Interactor handled back press`() {
-        whenever(interactor.handleBackPressAfterDownstream()).thenReturn(true)
-
-        node.handleBackPress()
-
-        verify(router, never()).popBackStack()
     }
 
     @Test

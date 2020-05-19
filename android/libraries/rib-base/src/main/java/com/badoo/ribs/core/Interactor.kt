@@ -46,12 +46,4 @@ abstract class Interactor<R : Rib, V : RibView>(
     override fun onDetach() {
         disposables?.dispose()
     }
-
-    /**
-     * Handle an activity back press.
-     *
-     * @return TRUE if the interactor handled the back press and no further action is necessary.
-     */
-    open fun handleBackPress(): Boolean =
-        false
 }

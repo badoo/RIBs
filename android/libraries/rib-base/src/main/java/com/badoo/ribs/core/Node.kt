@@ -30,8 +30,8 @@ import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
-import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
+import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.Plugin
@@ -57,7 +57,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 open class Node<V : RibView>(
     val buildParams: BuildParams<*>,
     private val viewFactory: ((ViewGroup) -> V?)?,
-    val plugins: List<Plugin> = emptyList()
+    private val plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
 
     companion object {
@@ -264,7 +264,7 @@ open class Node<V : RibView>(
      * this API should ever keep a reference to the detached child, leak canary will enforce
      * that it gets garbage collected.
      *
-     * @param childNode the [Node] to be detached.
+     * @param child the [Node] to be detached.
      */
     @MainThread
     internal fun detachChildNode(child: Node<*>) {
@@ -355,8 +355,11 @@ open class Node<V : RibView>(
     override fun getLifecycle(): Lifecycle =
         lifecycleManager.lifecycle
 
+    fun <P> plugin(pClass: Class<P>): P? =
+        plugins.filterIsInstance(pClass).firstOrNull()
+
     inline fun <reified P> plugin(): P? =
-        plugins.filterIsInstance<P>().firstOrNull()
+        plugin(P::class.java)
 
     inline fun <reified P> pluginUp(): P? {
         var found: P?

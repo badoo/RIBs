@@ -11,7 +11,7 @@ class TestNode<V: RibView>(
     buildParams: BuildParams<*>,
     viewFactory: ViewFactory<Nothing?, V>,
     private val router: Router<*, *, *, *, V>,
-    interactor: Interactor<V>
+    interactor: Interactor<*, V>
 ): Node<V>(
     buildParams = buildParams,
     viewFactory = viewFactory(null),

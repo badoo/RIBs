@@ -21,7 +21,6 @@ import io.reactivex.functions.Consumer
 
 internal class SwitcherInteractor(
     buildParams: BuildParams<Nothing?>,
-    private val connections: SwitcherConnections,
     private val router: SwitcherRouter,
     private val dialogToTestOverlay: DialogToTestOverlay
 ) : Interactor<Switcher, SwitcherView>(

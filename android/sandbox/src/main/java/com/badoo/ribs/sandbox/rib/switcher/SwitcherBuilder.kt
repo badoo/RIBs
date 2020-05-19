@@ -54,7 +54,6 @@ class SwitcherBuilder(
         SwitcherInteractor(
             buildParams = buildParams,
             router = router,
-            connections = children,
             dialogToTestOverlay = dialogToTestOverlay
         )
 }

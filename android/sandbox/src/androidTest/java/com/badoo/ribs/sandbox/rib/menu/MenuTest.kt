@@ -24,9 +24,9 @@ class MenuTest {
     @get:Rule
     val ribsRule = RibsRule(this::buildRib)
 
-    private val menu = MenuElement()
+    private lateinit var rib: Menu
 
-    private val connector = Menu.Connector()
+    private val menu = MenuElement()
 
     @Test
     fun initialState_noSelectedElements() {
@@ -49,7 +49,7 @@ class MenuTest {
 
     @Test
     fun itemClick_producesSelectOutput() {
-        val observer = connector.output.subscribeOnTestObserver()
+        val observer = rib.output.subscribeOnTestObserver()
 
         menu.fooItem.click()
 
@@ -66,13 +66,14 @@ class MenuTest {
     }
 
     private fun acceptInput(input: Menu.Input) = runOnUiThread {
-        connector.input.accept(input)
+        rib.input.accept(input)
     }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         MenuBuilder(object : Menu.Dependency {
-            override fun menuConnector(): Menu.Connector = connector
-        }).build(root(savedInstanceState))
+        }).build(root(savedInstanceState)).also {
+            rib = it
+        }
 
     private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
         subscribe(this)

@@ -12,12 +12,15 @@ class FooBarTest {
     @get:Rule
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
-    private val connector = FooBar.Connector()
+    // TODO use rib for interactions based on it implementing Connectable<Input, Output>
+    lateinit var rib: FooBar
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-        FooBarBuilder(object : FooBar.Dependency {
-            override fun fooBarConnector(): FooBar.Connector = connector
-        }).build(root(savedInstanceState))
+        FooBarBuilder(
+            object : FooBar.Dependency {}
+        ).build(root(savedInstanceState)).also {
+            rib = it
+        }
 
     @Test
     fun testTextDisplayed() {

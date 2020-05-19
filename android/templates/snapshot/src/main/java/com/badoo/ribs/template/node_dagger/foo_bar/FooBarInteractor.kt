@@ -22,7 +22,7 @@ internal class FooBarInteractor(
     private val input: ObservableSource<FooBar.Input>,
     private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature
-) : Interactor<FooBarView>(
+) : Interactor<FooBar, FooBarView>(
     buildParams = buildParams,
     disposables = feature
 ) {

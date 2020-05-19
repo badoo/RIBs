@@ -13,23 +13,19 @@ import com.badoo.ribs.template.leaf.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.leaf.foo_bar.mapper.StateToViewModel
 import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToWish
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
-    private val input: ObservableSource<FooBar.Input>,
-    private val output: Consumer<FooBar.Output>,
     private val feature: FooBarFeature
-) : Interactor<FooBarView>(
+) : Interactor<FooBar, FooBarView>(
     buildParams = buildParams,
     disposables = feature
 ) {
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
-            bind(feature.news to output using NewsToOutput)
-            bind(input to feature using InputToWish)
+            bind(feature.news to rib.output using NewsToOutput)
+            bind(rib.input to feature using InputToWish)
         }
     }
 

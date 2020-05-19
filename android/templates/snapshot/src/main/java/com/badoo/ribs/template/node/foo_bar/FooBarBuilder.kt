@@ -5,16 +5,19 @@ package com.badoo.ribs.template.node.foo_bar
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarConnections
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
 
 class FooBarBuilder(
     private val dependency: FooBar.Dependency
 ) : SimpleBuilder<FooBar>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): FooBar {
+        val connections = FooBarConnections(dependency)
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
-        val router = router(buildParams, customisation)
+        val router = router(buildParams, connections, customisation)
         val feature = feature()
-        val interactor = interactor(dependency, buildParams, router, feature)
+        val interactor = interactor(buildParams, router, feature)
 
         return node(buildParams, customisation, interactor, router)
     }
@@ -24,25 +27,24 @@ class FooBarBuilder(
 
     private fun router(
         buildParams: BuildParams<*>,
+        connections: FooBarConnections,
         customisation: FooBar.Customisation
     ) =
         FooBarRouter(
             buildParams = buildParams,
+            connections = connections,
             transitionHandler = customisation.transitionHandler
         )
 
     private fun interactor(
-        dependency: FooBar.Dependency,
         buildParams: BuildParams<*>,
         router: FooBarRouter,
         feature: FooBarFeature
     ) = FooBarInteractor(
-            buildParams = buildParams,
-            router = router,
-            input = dependency.fooBarInput(),
-            output = dependency.fooBarOutput(),
-            feature = feature
-        )
+        buildParams = buildParams,
+        feature = feature,
+        router = router
+    )
 
     private fun node(
         buildParams: BuildParams<*>,

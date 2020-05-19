@@ -1,17 +1,15 @@
 package com.badoo.ribs.template.leaf.foo_bar
 
+import com.badoo.ribs.clienthelper.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.RibCustomisation
-import io.reactivex.ObservableSource
+import com.badoo.ribs.template.leaf.foo_bar.FooBar.Input
+import com.badoo.ribs.template.leaf.foo_bar.FooBar.Output
 import io.reactivex.Single
-import io.reactivex.functions.Consumer
 
-interface FooBar : Rib {
+interface FooBar : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
-        fun fooBarInput(): ObservableSource<Input>
-        fun fooBarOutput(): Consumer<Output>
-    }
+    interface Dependency
 
     sealed class Input
 

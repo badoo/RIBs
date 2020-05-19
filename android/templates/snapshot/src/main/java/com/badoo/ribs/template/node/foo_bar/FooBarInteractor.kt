@@ -5,6 +5,7 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.node.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
@@ -13,24 +14,21 @@ import com.badoo.ribs.template.node.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.node.foo_bar.mapper.StateToViewModel
 import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToWish
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
-    private val router: FooBarRouter,
-    private val input: ObservableSource<FooBar.Input>,
-    private val output: Consumer<FooBar.Output>,
-    private val feature: FooBarFeature
-) : Interactor<FooBarView>(
+    private val feature: FooBarFeature,
+    private val router: FooBarRouter
+) : Interactor<FooBar, FooBarView>(
     buildParams = buildParams,
     disposables = feature
 ) {
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
-            bind(feature.news to output using NewsToOutput)
-            bind(input to feature using InputToWish)
+            bind(feature.news to rib.output using NewsToOutput)
+            bind(rib.input to feature using InputToWish)
         }
     }
 
@@ -40,5 +38,22 @@ internal class FooBarInteractor(
             bind(view to feature using ViewEventToWish)
             bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
         }
+    }
+
+    override fun onChildCreated(child: Node<*>) {
+        /**
+         * TODO bind children here and delete this comment block.
+         *
+         *  At this point children haven't set their own bindings yet,
+         *  so it's safe to setup listening to their output before they start emitting.
+         *
+         *  On the other hand, they're not ready to receive inputs yet. Usually this is alright.
+         *  If it's a requirement though, create those bindings in [onAttachChild]
+         */
+        // child.lifecycle.createDestroy {
+            // when (child) {
+                // is Child1 -> bind(child.output to someConsumer)
+            // }
+        // }
     }
 }

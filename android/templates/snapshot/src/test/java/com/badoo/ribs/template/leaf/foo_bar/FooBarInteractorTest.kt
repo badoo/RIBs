@@ -11,8 +11,6 @@ import org.junit.Test
 
 class FooBarInteractorTest {
 
-    private val input: ObservableSource<FooBar.Input> = mock()
-    private val output: Consumer<FooBar.Output> = mock()
     private val feature: FooBarFeature = mock()
     private lateinit var interactor: FooBarInteractor
 
@@ -20,8 +18,6 @@ class FooBarInteractorTest {
     fun setup() {
         interactor = FooBarInteractor(
             buildParams = BuildParams.Empty(),
-            input = input,
-            output = output,
             feature = feature
         )
     }

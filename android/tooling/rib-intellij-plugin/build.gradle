@@ -479,6 +479,22 @@ templates {
             sourceValue = "FooBar"
         }
     }
+
+    template {
+        id = 'leaf_view_only_snapshot'
+        name = '[SNAPSHOT] Leaf node (view only)'
+
+        fromProject = project(':templates:snapshot')
+        sourcePackage = 'com.badoo.ribs.template.leaf_view_only'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
 }
 
 dependencies {

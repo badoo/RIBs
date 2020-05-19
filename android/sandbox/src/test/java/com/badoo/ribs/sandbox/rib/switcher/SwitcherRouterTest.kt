@@ -4,84 +4,66 @@ import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.DialogRoutingAction
 import com.badoo.ribs.dialog.DialogLauncher
-import com.badoo.ribs.sandbox.rib.blocker.BlockerBuilder
-import com.badoo.ribs.sandbox.rib.blocker.BlockerView
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleNode
-import com.badoo.ribs.sandbox.rib.dialog_example.builder.DialogExampleBuilder
-import com.badoo.ribs.sandbox.rib.foo_bar.FooBarBuilder
-import com.badoo.ribs.sandbox.rib.foo_bar.FooBarNode
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldBuilder
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldNode
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
-import com.badoo.ribs.sandbox.rib.menu.MenuBuilder
-import com.badoo.ribs.sandbox.rib.menu.MenuNode
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherRouter.Configuration.Content
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherRouter.Configuration.Overlay
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherRouter.Configuration.Permanent
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
-import com.badoo.ribs.sandbox.rib.util.TestNode
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherConnections
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
 import com.badoo.ribs.sandbox.rib.util.subscribeOnTestObserver
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
 import org.junit.Test
+import org.mockito.Answers
 
 /**
  * Unit tests that check only router
  * It may be helpful in case of complex routing logic
  */
 class SwitcherRouterTest {
-    
-    private val fooBarNode = FooBarNode(BuildParams.Empty(), null)
-    private val fooBarBuilder = mock<FooBarBuilder> { on { build(any()) } doReturn fooBarNode }
 
-    private val helloWorldNode = HelloWorldNode(BuildParams.Empty(), null)
-    private val helloWorldBuilder = mock<HelloWorldBuilder> { on { build(any()) } doReturn helloWorldNode }
-
-    private val dialogExampleNode = DialogExampleNode(BuildParams.Empty(), null)
-    private val dialogExampleBuilder = mock<DialogExampleBuilder> { on { build(any()) } doReturn dialogExampleNode }
-
-    private val blockerNode = TestNode<BlockerView>()
-    private val blockerBuilder = mock<BlockerBuilder> { on { build(any()) } doReturn blockerNode }
-
-    private val menuNode = MenuNode(BuildParams.Empty(), mock())
-    private val menuBuilder = mock<MenuBuilder> { on { build(any()) } doReturn menuNode }
-
+    private val connections: SwitcherConnections = mock(defaultAnswer = Answers.RETURNS_DEEP_STUBS)
     private val dialogLauncher: DialogLauncher = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
-    private val router = SwitcherRouter(
-        BuildParams.Empty(),
-        transitionHandler = null,
-        fooBarBuilder = fooBarBuilder,
-        helloWorldBuilder = helloWorldBuilder,
-        dialogExampleBuilder = dialogExampleBuilder,
-        blockerBuilder = blockerBuilder,
-        menuBuilder = menuBuilder,
-        dialogLauncher = dialogLauncher,
-        dialogToTestOverlay = dialogToTestOverlay
-    )
+    private val router =
+        SwitcherRouter(
+            BuildParams.Empty(),
+            transitionHandler = null,
+            connections = connections,
+            dialogLauncher = dialogLauncher,
+            dialogToTestOverlay = dialogToTestOverlay
+        )
 
-    private val rootNode = TestNode(router = router)
+    @Before
+    fun setUp() {
+        whenever(connections.menu.build(any())).thenReturn(mock())
+        whenever(connections.helloWorld.build(any())).thenReturn(mock())
+        whenever(connections.fooBar.build(any())).thenReturn(mock())
+        whenever(connections.dialogExample.build(any())).thenReturn(mock())
+        whenever(connections.blocker.build(any())).thenReturn(mock())
+    }
 
     @Test
     fun `Permanent_Menu configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Permanent.Menu).apply { execute() }
-        val nodes = routingAction.buildNodes(listOf(root(null)))
+        routingAction.buildNodes(listOf(root(null)))
 
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first()).isEqualTo(menuNode)
+        verify(connections.menu).build(any())
     }
 
     @Test
     fun `Content_Hello configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Hello).apply { execute() }
-        val nodes = routingAction.buildNodes(listOf(root(null)))
+        routingAction.buildNodes(listOf(root(null)))
 
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first()).isEqualTo(helloWorldNode)
+        verify(connections.helloWorld).build(any())
     }
 
     @Test
@@ -96,10 +78,9 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Foo configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Foo).apply { execute() }
-        val nodes = routingAction.buildNodes(listOf(root(null)))
+        routingAction.buildNodes(listOf(root(null)))
 
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first()).isEqualTo(fooBarNode)
+        verify(connections.fooBar).build(any())
     }
 
     @Test
@@ -114,10 +95,9 @@ class SwitcherRouterTest {
     @Test
     fun `Content_DialogsExample configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.DialogsExample).apply { execute() }
-        val nodes = routingAction.buildNodes(listOf(root(null)))
+        routingAction.buildNodes(listOf(root(null)))
 
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first()).isEqualTo(dialogExampleNode)
+        verify(connections.dialogExample).build(any())
     }
 
     @Test
@@ -132,10 +112,9 @@ class SwitcherRouterTest {
     @Test
     fun `Content_Blocker configuration resolves to correct Node`() {
         val routingAction = router.resolveConfiguration(Content.Blocker).apply { execute() }
-        val nodes = routingAction.buildNodes(listOf(root(null)))
+        routingAction.buildNodes(listOf(root(null)))
 
-        assertThat(nodes).hasSize(1)
-        assertThat(nodes.first()).isEqualTo(blockerNode)
+        verify(connections.blocker).build(any())
     }
 
     @Test

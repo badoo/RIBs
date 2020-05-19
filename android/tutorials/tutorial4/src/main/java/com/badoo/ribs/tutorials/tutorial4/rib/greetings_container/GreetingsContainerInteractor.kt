@@ -10,7 +10,7 @@ class GreetingsContainerInteractor(
     buildParams: BuildParams<Nothing?>,
     private val router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
-) : Interactor<Nothing>(
+) : Interactor<GreetingsContainer, Nothing>(
     buildParams = buildParams,
     disposables = null
 ) {

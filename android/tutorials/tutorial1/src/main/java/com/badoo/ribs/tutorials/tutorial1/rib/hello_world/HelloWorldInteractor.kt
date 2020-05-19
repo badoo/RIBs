@@ -11,7 +11,7 @@ import io.reactivex.functions.Consumer
 class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>,
     private val output: Consumer<HelloWorld.Output>
-) : Interactor<HelloWorldView>(
+) : Interactor<HelloWorld, HelloWorldView>(
     buildParams = buildParams,
     disposables = null
 ) {

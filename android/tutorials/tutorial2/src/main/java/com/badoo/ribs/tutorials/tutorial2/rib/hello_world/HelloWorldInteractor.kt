@@ -5,7 +5,7 @@ import com.badoo.ribs.core.builder.BuildParams
 
 class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>
-) : Interactor<HelloWorldView>(
+) : Interactor<HelloWorld, HelloWorldView>(
     buildParams = buildParams,
     disposables = null
 )

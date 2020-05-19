@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.badoo.ribs.intellij-plugin</id>
     <name>RIBs</name>
-    <version>0.19.0</version>
+    <version>0.20.0</version>
     <vendor url="https://github.com/badoo" email="release@corp.badoo.com">Badoo</vendor>
 
     <description><![CDATA[
@@ -12,6 +12,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <strong>0.20</strong><br/>
+      <ul>
+        <li>Node plugins</li>
+      </ul>
+
       <strong>0.19</strong><br/>
       <ul>
         <li>Moved customisation fetching mechanism from Builder client code to framework</li>

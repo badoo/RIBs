@@ -368,8 +368,14 @@ open class Node<V : RibView>(
     override fun getLifecycle(): Lifecycle =
         lifecycleManager.lifecycle
 
+    fun <P> plugins(pClass: Class<P>): List<P> =
+        plugins.filterIsInstance(pClass)
+
+    inline fun <reified P> plugins(): List<P> =
+        plugins(P::class.java)
+
     fun <P> plugin(pClass: Class<P>): P? =
-        plugins.filterIsInstance(pClass).firstOrNull()
+        plugins(pClass).firstOrNull()
 
     inline fun <reified P> plugin(): P? =
         plugin(P::class.java)

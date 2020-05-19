@@ -43,7 +43,7 @@ abstract class Builder<P, T : Rib> {
             )
         )
         return build(buildParams).also { rib ->
-            rib.node.plugins.filterIsInstance<RibAware<T>>().forEach { plugin ->
+            rib.node.plugins<RibAware<T>>().forEach { plugin ->
                 plugin.init(rib)
             }
 

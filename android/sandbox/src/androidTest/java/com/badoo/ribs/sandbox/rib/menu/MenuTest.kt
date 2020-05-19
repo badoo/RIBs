@@ -9,10 +9,7 @@ import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.sandbox.rib.menu.element.MenuElement
-import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 import org.junit.Rule
 import org.junit.Test
@@ -29,8 +26,7 @@ class MenuTest {
 
     private val menu = MenuElement()
 
-    private val menuInput = PublishRelay.create<Menu.Input>()
-    private val menuOutput = PublishRelay.create<Menu.Output>()
+    private val connector = Menu.Connector()
 
     @Test
     fun initialState_noSelectedElements() {
@@ -53,7 +49,7 @@ class MenuTest {
 
     @Test
     fun itemClick_producesSelectOutput() {
-        val observer = menuOutput.subscribeOnTestObserver()
+        val observer = connector.output.subscribeOnTestObserver()
 
         menu.fooItem.click()
 
@@ -70,13 +66,12 @@ class MenuTest {
     }
 
     private fun acceptInput(input: Menu.Input) = runOnUiThread {
-        menuInput.accept(input)
+        connector.input.accept(input)
     }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         MenuBuilder(object : Menu.Dependency {
-            override fun menuInput(): ObservableSource<Menu.Input> = menuInput
-            override fun menuOutput(): Consumer<Menu.Output> = menuOutput
+            override fun menuConnector(): Menu.Connector = connector
         }).build(root(savedInstanceState))
 
     private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {

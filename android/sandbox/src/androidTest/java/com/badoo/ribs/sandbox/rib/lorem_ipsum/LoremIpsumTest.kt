@@ -9,7 +9,6 @@ import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.sandbox.R
-import io.reactivex.functions.Consumer
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,9 +18,7 @@ class LoremIpsumTest {
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-        LoremIpsumBuilder(object : LoremIpsum.Dependency {
-            override fun loremIpsumOutput(): Consumer<LoremIpsum.Output> = Consumer {}
-        }).build(root(savedInstanceState))
+        LoremIpsumBuilder(object : LoremIpsum.Dependency {}).build(root(savedInstanceState))
 
     @Test
     fun testTextDisplayed() {

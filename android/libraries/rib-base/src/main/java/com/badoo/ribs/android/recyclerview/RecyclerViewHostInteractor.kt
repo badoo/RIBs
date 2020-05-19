@@ -14,7 +14,7 @@ internal class RecyclerViewHostInteractor<T : Parcelable>(
     private val input: ObservableSource<Input<T>>,
     private val feature: RecyclerViewHostFeature<T>,
     private val adapter: Adapter<T>
-) : Interactor<RibView>(
+) : Interactor<RecyclerViewHost<T>, RibView>(
     buildParams = buildParams,
     disposables = feature
 ) {

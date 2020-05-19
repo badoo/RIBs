@@ -1,4 +1,4 @@
-package com.badoo.ribs.sandbox.rib.switcher
+package com.badoo.ribs.sandbox.rib.switcher.routing
 
 import android.view.animation.OvershootInterpolator
 import com.badoo.ribs.core.routing.transition.effect.AnimationContainer

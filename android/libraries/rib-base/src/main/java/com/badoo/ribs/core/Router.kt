@@ -54,8 +54,7 @@ abstract class Router<C : Parcelable, Permanent : C, Content : C, Overlay : C, V
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(this.savedInstanceState)
     private lateinit var backStackFeature: BackStackFeature<C>
     private lateinit var configurationFeature: ConfigurationFeature<C>
-    lateinit var node: Node<*>
-        private set
+    override lateinit var node: Node<*>
 
     override fun init(node: Node<*>) {
         this.node = node

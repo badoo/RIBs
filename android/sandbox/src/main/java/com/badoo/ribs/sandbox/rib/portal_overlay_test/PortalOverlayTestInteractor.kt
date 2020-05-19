@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Interactor
 
 class PortalOverlayTestInteractor(
     buildParams: BuildParams<Nothing?>
-) : Interactor<PortalOverlayTestView>(
+) : Interactor<PortalOverlayTest, PortalOverlayTestView>(
     buildParams = buildParams,
     disposables = null
 )

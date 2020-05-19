@@ -17,9 +17,11 @@ package com.badoo.ribs.core
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.BackPressHandler
-import com.badoo.ribs.core.plugin.SavesInstanceState
-import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
+import com.badoo.ribs.core.plugin.RibAware
+import com.badoo.ribs.core.plugin.RibAwareImpl
+import com.badoo.ribs.core.plugin.SavesInstanceState
+import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable
@@ -29,22 +31,17 @@ import io.reactivex.disposables.Disposable
  *
  * @param <V> the type of [RibView].
  **/
-abstract class Interactor<V : RibView>(
+abstract class Interactor<R : Rib, V : RibView>(
     buildParams: BuildParams<*>,
-    private val disposables: Disposable?
+    private val disposables: Disposable?,
+    private val ribAware: RibAware<R> = RibAwareImpl()
 ) : Identifiable by buildParams.identifier,
-    NodeAware,
+    RibAware<R> by ribAware,
     BackPressHandler,
     NodeLifecycleAware,
+    SubtreeChangeAware,
     SavesInstanceState,
     ViewAware<V> {
-
-    protected lateinit var node: Node<*>
-        private set
-
-    override fun init(node: Node<*>) {
-        this.node = node
-    }
 
     override fun onDetach() {
         disposables?.dispose()

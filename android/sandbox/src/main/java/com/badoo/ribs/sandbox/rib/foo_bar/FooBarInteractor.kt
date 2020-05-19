@@ -21,7 +21,7 @@ import io.reactivex.functions.Consumer
 class FooBarInteractor(
     buildParams: BuildParams<Nothing?>,
     private val permissionRequester: PermissionRequester
-) : Interactor<FooBarView>(
+) : Interactor<FooBar, FooBarView>(
     buildParams = buildParams,
     disposables = null
 ) {

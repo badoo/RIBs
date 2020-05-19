@@ -7,7 +7,7 @@ import com.badoo.ribs.core.Interactor
 class BigInteractor(
     buildParams: BuildParams<Nothing?>,
     private val router: BigRouter
-) : Interactor<BigView>(
+) : Interactor<Big, BigView>(
     buildParams = buildParams,
     disposables = null
 ) {

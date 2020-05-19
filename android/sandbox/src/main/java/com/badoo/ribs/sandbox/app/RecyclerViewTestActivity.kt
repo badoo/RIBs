@@ -29,12 +29,11 @@ import com.badoo.ribs.sandbox.rib.foo_bar.FooBarBuilder
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumBuilder
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
-import com.badoo.ribs.sandbox.rib.switcher.builder.SwitcherBuilder
+import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 import kotlinx.android.parcel.Parcelize
 
 /** The sample app's single activity */
@@ -56,14 +55,10 @@ class RecyclerViewTestActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     private val fooBarBuilder = FooBarBuilder(object : FooBar.Dependency {
-        override fun foobarInput(): ObservableSource<FooBar.Input> = Observable.empty()
-        override fun foobarOutput(): Consumer<FooBar.Output> = Consumer {}
         override fun permissionRequester(): PermissionRequester = this@RecyclerViewTestActivity.permissionRequester
     })
 
-    private val loremIpsumBuilder = LoremIpsumBuilder(object : LoremIpsum.Dependency {
-        override fun loremIpsumOutput(): Consumer<LoremIpsum.Output> = Consumer { }
-    })
+    private val loremIpsumBuilder = LoremIpsumBuilder(object : LoremIpsum.Dependency {})
 
     private val noopPortal = object : Portal.OtherSide {
         override fun showContent(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {
@@ -75,17 +70,18 @@ class RecyclerViewTestActivity : RibActivity() {
         }
     }
 
-    private val switcherBuilder = SwitcherBuilder(
-        object : Switcher.Dependency {
-            override fun activityStarter(): ActivityStarter = activityStarter
-            override fun permissionRequester(): PermissionRequester =
-                permissionRequester
+    private val switcherBuilder =
+        SwitcherBuilder(
+            object : Switcher.Dependency {
+                override fun activityStarter(): ActivityStarter = activityStarter
+                override fun permissionRequester(): PermissionRequester =
+                    permissionRequester
 
-            override fun dialogLauncher(): DialogLauncher = this@RecyclerViewTestActivity
-            override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
-            override fun portal(): Portal.OtherSide = noopPortal
-        }
-    )
+                override fun dialogLauncher(): DialogLauncher = this@RecyclerViewTestActivity
+                override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
+                override fun portal(): Portal.OtherSide = noopPortal
+            }
+        )
 
     private val ribResolver = object : RecyclerViewRibResolver<Item> {
         override fun resolve(element: Item): RoutingAction =

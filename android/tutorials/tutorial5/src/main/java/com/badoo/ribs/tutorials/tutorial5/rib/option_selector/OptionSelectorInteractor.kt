@@ -15,7 +15,7 @@ class OptionSelectorInteractor(
     buildParams: BuildParams<Nothing?>,
     private val output: Consumer<Output>,
     options: List<Text>
-) : Interactor<OptionSelectorView>(
+) : Interactor<OptionSelector, OptionSelectorView>(
     buildParams = buildParams,
     disposables = null
 ) {

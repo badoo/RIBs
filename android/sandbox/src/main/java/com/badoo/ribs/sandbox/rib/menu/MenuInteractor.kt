@@ -10,29 +10,25 @@ import com.badoo.ribs.sandbox.rib.menu.feature.MenuFeature
 import com.badoo.ribs.sandbox.rib.menu.mapper.InputToState
 import com.badoo.ribs.sandbox.rib.menu.mapper.StateToViewModel
 import com.badoo.ribs.sandbox.rib.menu.mapper.ViewEventToOutput
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 class MenuInteractor(
     buildParams: BuildParams<Nothing?>,
-    private val input: ObservableSource<Menu.Input>,
-    private val output: Consumer<Menu.Output>,
     private val feature: MenuFeature
-) : Interactor<MenuView>(
+) : Interactor<Menu, MenuView>(
     buildParams = buildParams,
     disposables = feature
 ) {
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
-            bind(input to feature using InputToState)
+            bind(rib.input to feature using InputToState)
         }
     }
 
     override fun onViewCreated(view: MenuView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
             bind(feature to view using StateToViewModel)
-            bind(view to output using ViewEventToOutput)
+            bind(view to rib.output using ViewEventToOutput)
         }
     }
 }

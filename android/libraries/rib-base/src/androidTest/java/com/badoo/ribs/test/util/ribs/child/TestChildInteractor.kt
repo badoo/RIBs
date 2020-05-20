@@ -5,7 +5,7 @@ import com.badoo.ribs.core.builder.BuildParams
 
 class TestChildInteractor(
     buildParams: BuildParams<Nothing?>
-) : Interactor<TestChildView>(
+) : Interactor<TestChild, TestChildView>(
     buildParams = buildParams,
     disposables = null
 )

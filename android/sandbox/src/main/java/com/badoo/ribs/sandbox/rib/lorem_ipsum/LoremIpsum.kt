@@ -1,14 +1,16 @@
 package com.badoo.ribs.sandbox.rib.lorem_ipsum
 
+import com.badoo.ribs.clienthelper.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.RibCustomisation
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum.Input
+import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum.Output
 
-interface LoremIpsum : Rib {
+interface LoremIpsum : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
-        fun loremIpsumOutput(): Consumer<Output>
-    }
+    interface Dependency
+
+    sealed class Input
 
     sealed class Output {
         object SomeEvent : Output()

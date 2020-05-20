@@ -2,17 +2,15 @@ package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarConnections
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
 import com.nhaarman.mockitokotlin2.mock
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class FooBarInteractorTest {
 
-    private val input: ObservableSource<FooBar.Input> = mock()
-    private val output: Consumer<FooBar.Output> = mock()
     private val feature: FooBarFeature = mock()
     private val router: FooBarRouter = mock()
     private lateinit var interactor: FooBarInteractor
@@ -21,8 +19,6 @@ class FooBarInteractorTest {
     fun setup() {
         interactor = FooBarInteractor(
             buildParams = BuildParams.Empty(),
-            input = input,
-            output = output,
             feature = feature,
             router = router
         )

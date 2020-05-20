@@ -1,21 +1,19 @@
 package com.badoo.ribs.sandbox.rib.hello_world
 
 import com.badoo.ribs.android.CanProvideActivityStarter
+import com.badoo.ribs.clienthelper.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.RibCustomisation
-import io.reactivex.ObservableSource
+import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Input
+import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Output
 import io.reactivex.Single
-import io.reactivex.functions.Consumer
 
-interface HelloWorld : Rib {
+interface HelloWorld : Rib, Connectable<Input, Output> {
 
     interface Dependency :
         CanProvideActivityStarter,
-        CanProvidePortal {
-        fun helloWorldInput(): ObservableSource<Input>
-        fun helloWorldOutput(): Consumer<Output>
-    }
+        CanProvidePortal
 
     sealed class Input
 

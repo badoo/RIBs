@@ -13,8 +13,6 @@ class MenuBuilder(
         val feature = MenuFeature()
         val interactor = MenuInteractor(
             buildParams = buildParams,
-            input = dependency.menuInput(),
-            output = dependency.menuOutput(),
             feature = feature
         )
 

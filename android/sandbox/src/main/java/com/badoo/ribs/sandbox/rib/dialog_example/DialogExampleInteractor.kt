@@ -1,17 +1,16 @@
 package com.badoo.ribs.sandbox.rib.dialog_example
 
-import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
+import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleRouter.Configuration
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleRouter.Configuration.Content
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
@@ -19,17 +18,22 @@ import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.SimpleDialog
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleConnections
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Content
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
-class DialogExampleInteractor(
+class DialogExampleInteractor internal constructor(
     buildParams: BuildParams<Nothing?>,
     private val router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
+    private val connections: DialogExampleConnections,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-) : Interactor<DialogExampleView>(
+) : Interactor<DialogExample, DialogExampleView>(
     buildParams = buildParams,
     disposables = null
 ) {
@@ -45,6 +49,14 @@ class DialogExampleInteractor(
             bind(simpleDialog to dialogEventConsumer)
             bind(lazyDialog to dialogEventConsumer)
             bind(ribDialog to dialogEventConsumer)
+        }
+    }
+
+    override fun onChildCreated(child: Node<*>) {
+        child.lifecycle.createDestroy {
+            when (child) {
+                is LoremIpsum -> bind(child.output to loremIpsumOutputConsumer)
+            }
         }
     }
 
@@ -91,7 +103,7 @@ class DialogExampleInteractor(
         }
     }
 
-    internal val loremIpsumOutputConsumer : Consumer<LoremIpsum.Output> = Consumer {
+    private val loremIpsumOutputConsumer : Consumer<LoremIpsum.Output> = Consumer {
         dummyViewInput.accept(ViewModel("Button in Lorem Ipsum RIB clicked"))
         router.popBackStack()
     }

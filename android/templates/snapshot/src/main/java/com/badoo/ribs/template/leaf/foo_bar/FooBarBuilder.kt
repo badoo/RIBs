@@ -11,7 +11,7 @@ class FooBarBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): FooBar {
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
         val feature = feature()
-        val interactor = interactor(buildParams, dependency, feature)
+        val interactor = interactor(buildParams, feature)
 
         return node(buildParams, customisation, interactor)
     }
@@ -21,13 +21,10 @@ class FooBarBuilder(
 
     private fun interactor(
         buildParams: BuildParams<*>,
-        dependency: FooBar.Dependency,
         feature: FooBarFeature
     ) =
         FooBarInteractor(
             buildParams = buildParams,
-            input = dependency.fooBarInput(),
-            output = dependency.fooBarOutput(),
             feature = feature
         )
 

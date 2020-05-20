@@ -1,6 +1,7 @@
 package com.badoo.ribs.sandbox.rib.dialog_example
 
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -18,7 +19,8 @@ class DialogExampleInteractorTest {
             router = router,
             simpleDialog = mock(),
             lazyDialog = mock(),
-            ribDialog = mock()
+            ribDialog = mock(),
+            connections = mock()
         )
     }
 

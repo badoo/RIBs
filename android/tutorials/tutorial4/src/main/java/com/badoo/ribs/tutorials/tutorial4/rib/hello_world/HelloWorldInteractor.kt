@@ -16,7 +16,7 @@ class HelloWorldInteractor(
     config: HelloWorld.Config,
     private val output: Consumer<HelloWorld.Output>,
     buildParams: BuildParams<Nothing?>
-) : Interactor<HelloWorldView>(
+) : Interactor<HelloWorld, HelloWorldView>(
     buildParams = buildParams,
     disposables = null
 ) {

@@ -4,15 +4,26 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 
 interface Plugin
 
+interface RibAware<T : Rib> : Plugin {
+    val rib: T
+
+    fun init(rib: T) {}
+}
+
 interface NodeAware : Plugin {
+    val node: Node<*>
+
     fun init(node: Node<*>) {}
 }
 
 interface NodeLifecycleAware : Plugin {
+    fun onCreate() {}
+
     fun onAttach(nodeLifecycle: Lifecycle) {}
 
     fun onDetach() {}
@@ -29,9 +40,11 @@ interface ViewLifecycleAware : Plugin {
 }
 
 interface SubtreeChangeAware : Plugin {
-    fun onAttachChildNode(child: Node<*>) {}
+    fun onChildCreated(child: Node<*>) {}
 
-    fun onDetachChildNode(child: Node<*>) {}
+    fun onAttachChild(child: Node<*>) {}
+
+    fun onDetachChild(child: Node<*>) {}
 }
 
 interface SubtreeViewChangeAware : Plugin {

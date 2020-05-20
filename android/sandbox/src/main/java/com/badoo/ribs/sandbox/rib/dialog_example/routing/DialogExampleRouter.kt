@@ -1,4 +1,4 @@
-package com.badoo.ribs.sandbox.rib.dialog_example
+package com.badoo.ribs.sandbox.rib.dialog_example.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
@@ -7,9 +7,10 @@ import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDial
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.dialog.DialogLauncher
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleRouter.Configuration
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleRouter.Configuration.Content
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleRouter.Configuration.Overlay
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Content
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.SimpleDialog

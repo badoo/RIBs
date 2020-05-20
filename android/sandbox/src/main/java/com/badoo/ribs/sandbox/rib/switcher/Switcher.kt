@@ -8,7 +8,8 @@ import com.badoo.ribs.customisation.CanProvidePortal
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherRouter.Configuration
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherTransitionHandler
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import io.reactivex.Single
 
@@ -22,6 +23,10 @@ interface Switcher : Rib {
 
         fun coffeeMachine(): CoffeeMachine
     }
+
+    sealed class Input
+
+    sealed class Output
 
     class Customisation(
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),

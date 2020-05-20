@@ -124,6 +124,11 @@ open class Node<V : RibView>(
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
+    internal fun onCreate() {
+        parent?.onChildCreated(this)
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onCreate() }
+    }
+
     @CallSuper
     open fun onAttach() {
         lifecycleManager.onCreateRib()
@@ -208,6 +213,10 @@ open class Node<V : RibView>(
         isPendingDetach = false
     }
 
+    fun onChildCreated(child: Node<*>) {
+        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildCreated(child) }
+    }
+
     /**
      * Attaches a child node to this node.
      *
@@ -224,7 +233,7 @@ open class Node<V : RibView>(
         lifecycleManager.onAttachChild(child)
         child.onAttach()
         childrenAttachesRelay.accept(child)
-        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onAttachChildNode(child) }
+        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onAttachChild(child) }
     }
 
     private fun verifyNotRoot(child: Node<*>) {
@@ -269,7 +278,7 @@ open class Node<V : RibView>(
      */
     @MainThread
     internal fun detachChildNode(child: Node<*>) {
-        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChildNode(child) }
+        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChild(child) }
         children.remove(child)
 
 //        ribRefWatcher.watchDeletedObject(child)
@@ -359,8 +368,14 @@ open class Node<V : RibView>(
     override fun getLifecycle(): Lifecycle =
         lifecycleManager.lifecycle
 
+    fun <P> plugins(pClass: Class<P>): List<P> =
+        plugins.filterIsInstance(pClass)
+
+    inline fun <reified P> plugins(): List<P> =
+        plugins(P::class.java)
+
     fun <P> plugin(pClass: Class<P>): P? =
-        plugins.filterIsInstance(pClass).firstOrNull()
+        plugins(pClass).firstOrNull()
 
     inline fun <reified P> plugin(): P? =
         plugin(P::class.java)

@@ -17,7 +17,7 @@ class SmallInteractor(
     buildParams: BuildParams<Nothing?>,
     portal: Portal.OtherSide,
     private val router: Router<Configuration, *, Content, Nothing, SmallView>
-) : Interactor<SmallView>(
+) : Interactor<Small, SmallView>(
     buildParams = buildParams,
     disposables = null
 ) {

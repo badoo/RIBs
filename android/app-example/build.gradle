@@ -13,7 +13,7 @@ def getAccessToken() {
     }
     def localPropsKey = props.getProperty("accesskey")
 
-    return localPropsKey ?: systemEnvKey ?: ""
+    return localPropsKey ?: systemEnvKey ?: "\"\""
 }
 
 android {

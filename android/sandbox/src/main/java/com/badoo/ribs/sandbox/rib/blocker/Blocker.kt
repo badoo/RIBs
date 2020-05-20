@@ -1,14 +1,16 @@
 package com.badoo.ribs.sandbox.rib.blocker
 
+import com.badoo.ribs.clienthelper.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.RibCustomisation
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.sandbox.rib.blocker.Blocker.Input
+import com.badoo.ribs.sandbox.rib.blocker.Blocker.Output
 
-interface Blocker : Rib {
+interface Blocker : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
-        fun blockerOutput(): Consumer<Output>
-    }
+    interface Dependency
+
+    sealed class Input
 
     sealed class Output {
         object SomeEvent : Output()

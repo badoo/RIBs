@@ -1,5 +1,6 @@
 package com.badoo.ribs.core
 
+import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
@@ -14,7 +15,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class InteractorTest {
 
-    private lateinit var interactor: Interactor<TestView>
+    private lateinit var interactor: Interactor<TestRib, TestView>
     private val disposables = mock<Disposable>()
 
     @Before

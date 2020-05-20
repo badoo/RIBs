@@ -1,18 +1,16 @@
 package com.badoo.ribs.sandbox.rib.menu
 
 import android.os.Parcelable
+import com.badoo.ribs.clienthelper.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.RibCustomisation
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.sandbox.rib.menu.Menu.Input
+import com.badoo.ribs.sandbox.rib.menu.Menu.Output
 import kotlinx.android.parcel.Parcelize
 
-interface Menu : Rib {
+interface Menu : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
-        fun menuInput(): ObservableSource<Input>
-        fun menuOutput(): Consumer<Output>
-    }
+    interface Dependency
 
     sealed class Input {
         data class SelectMenuItem(val menuItem: MenuItem) : Input()
@@ -26,6 +24,7 @@ interface Menu : Rib {
         @Parcelize object HelloWorld : MenuItem()
         @Parcelize object FooBar : MenuItem()
         @Parcelize object Dialogs : MenuItem()
+
     }
 
     class Customisation(

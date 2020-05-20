@@ -1,12 +1,12 @@
 package com.badoo.ribs.sandbox.rib.menu.mapper
 
-import com.badoo.ribs.sandbox.rib.menu.Menu
+import com.badoo.ribs.sandbox.rib.menu.Menu.Output
 import com.badoo.ribs.sandbox.rib.menu.MenuView
 
-internal object ViewEventToOutput : (MenuView.Event) -> Menu.Output? {
+internal object ViewEventToOutput : (MenuView.Event) -> Output? {
 
-    override fun invoke(event: MenuView.Event): Menu.Output? = when (event) {
-        is MenuView.Event.Select -> Menu.Output.MenuItemSelected(
+    override fun invoke(event: MenuView.Event): Output? = when (event) {
+        is MenuView.Event.Select -> Output.MenuItemSelected(
             menuItem = event.menuItem
         )
     }

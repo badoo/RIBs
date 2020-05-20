@@ -20,7 +20,7 @@ import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
-import com.badoo.ribs.sandbox.rib.switcher.builder.SwitcherBuilder
+import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
 import io.reactivex.Observable

@@ -2,21 +2,28 @@
 package com.badoo.ribs.sandbox.rib.dialog_example.builder
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleInteractor
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleNode
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleRouter
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.SimpleDialog
-import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleConnections
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumBuilder
 import dagger.Provides
-import io.reactivex.functions.Consumer
 
 @dagger.Module
 internal object DialogExampleModule {
+
+    @DialogExampleScope
+    @Provides
+    @JvmStatic
+    internal fun connections(
+        component: DialogExampleComponent
+    ) = DialogExampleConnections(
+        loremIpsumBuilder = LoremIpsumBuilder(component)
+    )
 
     @DialogExampleScope
     @Provides
@@ -45,14 +52,14 @@ internal object DialogExampleModule {
     @JvmStatic
     internal fun router(
         buildParams: BuildParams<Nothing?>,
-        dialogLauncher: DialogLauncher,
+        dependency: DialogExample.Dependency,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleRouter =
         DialogExampleRouter(
             buildParams = buildParams,
-            dialogLauncher = dialogLauncher,
+            dialogLauncher = dependency.dialogLauncher(),
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
             ribDialog = ribDialog
@@ -64,6 +71,7 @@ internal object DialogExampleModule {
     internal fun interactor(
         buildParams: BuildParams<Nothing?>,
         router: DialogExampleRouter,
+        connections: DialogExampleConnections,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
@@ -71,6 +79,7 @@ internal object DialogExampleModule {
         DialogExampleInteractor(
             buildParams = buildParams,
             router = router,
+            connections = connections,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
             ribDialog = ribDialog
@@ -92,12 +101,4 @@ internal object DialogExampleModule {
             router
         )
     )
-
-    @DialogExampleScope
-    @Provides
-    @JvmStatic
-    internal fun loremIpsumOutputConsumer(
-        interactor: DialogExampleInteractor
-    ): Consumer<LoremIpsum.Output> =
-        interactor.loremIpsumOutputConsumer
 }

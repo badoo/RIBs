@@ -7,11 +7,12 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherRouter.Configuration.Content.Foo
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherRouter.Configuration.Content.Hello
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content.Foo
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content.Hello
 import io.reactivex.Single
 
-class SwitcherNode(
+class SwitcherNode internal constructor(
     buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> SwitcherView?)?,
     plugins: List<Plugin>,

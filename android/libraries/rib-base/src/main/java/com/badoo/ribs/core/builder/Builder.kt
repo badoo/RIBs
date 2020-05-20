@@ -17,6 +17,7 @@ package com.badoo.ribs.core.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.plugin.RibAware
 import java.util.UUID
 
 /**
@@ -41,7 +42,13 @@ abstract class Builder<P, T : Rib> {
                     ?: UUID.randomUUID()
             )
         )
-        return build(buildParams)
+        return build(buildParams).also { rib ->
+            rib.node.plugins<RibAware<T>>().forEach { plugin ->
+                plugin.init(rib)
+            }
+
+            rib.node.onCreate()
+        }
     }
 
     protected abstract fun build(buildParams: BuildParams<P>): T

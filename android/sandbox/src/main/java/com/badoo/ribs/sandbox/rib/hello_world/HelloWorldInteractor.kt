@@ -9,12 +9,8 @@ import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.sandbox.app.OtherActivity
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Content
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Permanent
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.sandbox.rib.hello_world.analytics.HelloWorldAnalytics
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature
@@ -22,17 +18,13 @@ import com.badoo.ribs.sandbox.rib.hello_world.mapper.InputToWish
 import com.badoo.ribs.sandbox.rib.hello_world.mapper.NewsToOutput
 import com.badoo.ribs.sandbox.rib.hello_world.mapper.ViewEventToAnalyticsEvent
 import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>,
-    private val router: Router<Configuration, Permanent, Content, Nothing, HelloWorldView>,
-    private val input: ObservableSource<HelloWorld.Input>,
-    private val output: Consumer<HelloWorld.Output>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : Interactor<HelloWorldView>(
+) : Interactor<HelloWorld, HelloWorldView>(
     buildParams = buildParams,
     disposables = feature
 ) {
@@ -46,8 +38,8 @@ class HelloWorldInteractor(
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
-            bind(feature.news to output using NewsToOutput)
-            bind(input to feature using InputToWish)
+            bind(feature.news to rib.output using NewsToOutput)
+            bind(rib.input to feature using InputToWish)
         }
     }
 

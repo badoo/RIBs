@@ -22,7 +22,7 @@ import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.MenuView
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView
-import com.badoo.ribs.sandbox.rib.switcher.builder.SwitcherBuilder
+import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
 import com.badoo.ribs.sandbox.rib.util.TestDefaultDependencies
 import com.badoo.ribs.sandbox.rib.util.TestView
 import com.badoo.ribs.sandbox.rib.util.component

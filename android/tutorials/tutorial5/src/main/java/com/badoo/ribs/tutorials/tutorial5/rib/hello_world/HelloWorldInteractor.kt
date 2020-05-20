@@ -22,7 +22,7 @@ class HelloWorldInteractor(
     private val input: ObservableSource<Input>,
     private val output: Consumer<Output>,
     buildParams: BuildParams<Nothing?>
-) : Interactor<HelloWorldView>(
+) : Interactor<HelloWorld, HelloWorldView>(
     buildParams = buildParams,
     disposables = null
 ) {

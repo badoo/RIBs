@@ -1,24 +1,26 @@
 package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Answers
 import org.robolectric.RobolectricTestRunner
 
 
 @RunWith(RobolectricTestRunner::class)
 class FooBarRouterTest {
 
-    private var interactor: FooBarInteractor = mock()
     private var router: FooBarRouter? = null
 
     @Before
     fun setup() {
         router = FooBarRouter(
-            buildParams = BuildParams.Empty()
+            buildParams = BuildParams.Empty(),
+            connections = mock(defaultAnswer = Answers.RETURNS_MOCKS)
         )
     }
 

@@ -3,6 +3,19 @@ configureAndroidApp(project)
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+def getAccessToken() {
+    def systemEnvKey = System.getenv('ACCESS_KEY')
+
+    def props = new Properties()
+    def propsFile = file("local.properties")
+    if (propsFile.exists()) {
+        propsFile.withInputStream { props.load(it) }
+    }
+    def localPropsKey = props.getProperty("accesskey")
+
+    return localPropsKey ?: systemEnvKey ?: "\"\""
+}
+
 android {
     compileSdkVersion 29
 
@@ -14,6 +27,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "ACCESS_KEY", getAccessToken()
     }
 
     buildTypes {
@@ -22,6 +36,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -30,6 +45,12 @@ dependencies {
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
+
+    implementation deps.retrofit.retrofit
+    implementation deps.retrofit.rxjavaAdapter
+    implementation deps.retrofit.moshiConverter
+    implementation deps.retrofit.okhttp
+    implementation deps.retrofit.okhttpLoggingInterceptor
 
     testImplementation deps.test.junit
     androidTestImplementation deps.test.junit

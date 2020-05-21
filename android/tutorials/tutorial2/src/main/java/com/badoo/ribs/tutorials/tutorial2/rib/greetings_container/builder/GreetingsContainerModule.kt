@@ -14,27 +14,25 @@ internal object GreetingsContainerModule {
     @GreetingsContainerScope
     @Provides
     @JvmStatic
-    internal fun router(
-        // pass component to child rib builders, or remove if there are none
-        component: GreetingsContainerComponent,
+    internal fun interactor(
         buildParams: BuildParams<Nothing?>
-    ): GreetingsContainerRouter =
-        GreetingsContainerRouter(
+    ): GreetingsContainerInteractor =
+        GreetingsContainerInteractor(
             buildParams = buildParams
         )
 
     @GreetingsContainerScope
     @Provides
     @JvmStatic
-    internal fun interactor(
-        buildParams: BuildParams<Nothing?>,
-        router: GreetingsContainerRouter,
-        output: Consumer<GreetingsContainer.Output>
-    ): GreetingsContainerInteractor =
-        GreetingsContainerInteractor(
+    internal fun router(
+        // pass component to child rib builders, or remove if there are none
+        component: GreetingsContainerComponent,
+        interactor: GreetingsContainerInteractor,
+        buildParams: BuildParams<Nothing?>
+    ): GreetingsContainerRouter =
+        GreetingsContainerRouter(
             buildParams = buildParams,
-            router = router,
-            output = output
+            routingSource = interactor
         )
 
     @GreetingsContainerScope

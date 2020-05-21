@@ -60,6 +60,9 @@ class BackStackFeature<C : Parcelable>(
         reducer = ReducerImpl()
     )
 
+    val state: BackStackFeatureState<C>
+        get() = feature.state
+
     val activeConfiguration: ObservableSource<C>
         get() = Observable.wrap(feature)
             .mapNotNull {

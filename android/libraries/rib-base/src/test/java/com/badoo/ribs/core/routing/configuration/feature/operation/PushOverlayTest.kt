@@ -4,7 +4,8 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
-import com.badoo.ribs.core.routing.history.RoutingElement
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -15,7 +16,10 @@ class PushOverlayTest {
     @Test
     fun `not applicable when current overlay same`() {
         val backStack: BackStack<Configuration> = listOf(
-            RoutingElement(C1, listOf(O1))
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration),
+                overlays = listOf(O1 as Configuration)
+            )
         )
         pushOverlay = PushOverlay(O1)
 
@@ -27,7 +31,10 @@ class PushOverlayTest {
     @Test
     fun `applicable when current element with different configuration`() {
         val backStack = listOf(
-            RoutingElement(C1, listOf(O1))
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration),
+                overlays = listOf(O1 as Configuration)
+            )
         )
         pushOverlay = PushOverlay(O2)
 
@@ -39,16 +46,22 @@ class PushOverlayTest {
     @Test
     fun `invoke add configuration when push`() {
         val backStack = listOf(
-            RoutingElement(C1, listOf(O1))
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration),
+                overlays = listOf(O1 as Configuration)
+            )
         )
         pushOverlay = PushOverlay(O2)
 
         val newBackStack = pushOverlay.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            RoutingElement(
-                C1,
-                listOf(O1, O2)
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration),
+                overlays = listOf(
+                    O1 as Configuration,
+                    O2 as Configuration
+                )
             )
         )
     }

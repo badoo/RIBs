@@ -5,7 +5,8 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
-import com.badoo.ribs.core.routing.history.RoutingElement
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -25,7 +26,10 @@ class PopTest {
     @Test
     fun `applicable when backStack contains single element with overlays`() {
         val backStack = listOf(
-            RoutingElement(C1, listOf(O1))
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration),
+                overlays = listOf(O1 as Configuration)
+            )
         )
 
         val applicable = pop.isApplicable(backStack)
@@ -49,8 +53,8 @@ class PopTest {
         val newBackStack = pop.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            RoutingElement(
-                C1
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration)
             )
         )
     }
@@ -58,19 +62,29 @@ class PopTest {
     @Test
     fun `invoke remove last overlay when overlay on top`() {
         //last element with two overlays
-        val backStack = listOf<RoutingElement<Configuration>>(
-            RoutingElement(C1),
-            RoutingElement(
-                C2,
-                listOf(O1, O2)
+        val backStack = listOf<RoutingHistoryElement<Configuration>>(
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration)
+            ),
+            RoutingHistoryElement(
+                routing = Routing(C2 as Configuration),
+                overlays = listOf(
+                    O1  as Configuration,
+                    O2 as Configuration
+                )
             )
         )
 
         val newBackStack = pop.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            RoutingElement(C1),
-            RoutingElement(C2, listOf(O1))
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration)
+            ),
+            RoutingHistoryElement(
+                routing = Routing(C2 as Configuration),
+                overlays = listOf(O1 as Configuration)
+            )
         )
     }
 }

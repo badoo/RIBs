@@ -3,7 +3,8 @@ package com.badoo.ribs.core.routing.configuration.feature.operation
 import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
-import com.badoo.ribs.core.routing.history.RoutingElement
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -24,7 +25,10 @@ class PushTest {
     @Test
     fun `not applicable when current element same with different overlays`() {
         val backStack = listOf(
-            RoutingElement(C1, listOf(C2))
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration),
+                overlays = listOf(C2 as Configuration)
+            )
         )
         push = Push(C1)
 
@@ -51,8 +55,12 @@ class PushTest {
         val newBackStack = push.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            RoutingElement(C1),
-            RoutingElement(C2)
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration)
+            ),
+            RoutingHistoryElement(
+                routing = Routing(C2 as Configuration)
+            )
         )
     }
 }

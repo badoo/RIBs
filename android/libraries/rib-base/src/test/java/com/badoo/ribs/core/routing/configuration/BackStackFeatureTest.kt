@@ -11,6 +11,7 @@ import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.feature.operation.asBackStackElements
 import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -29,14 +30,14 @@ class BackStackFeatureTest {
 
     private lateinit var timeCapsuleEmpty: TimeCapsule<BackStackFeatureState<Configuration>>
     private lateinit var timeCapsuleWithContent: TimeCapsule<BackStackFeatureState<Configuration>>
-    private lateinit var backstackInTimeCapsule: List<Routing<Configuration>>
+    private lateinit var backstackInTimeCapsule: List<RoutingHistoryElement<Configuration>>
     private lateinit var backStackFeature: BackStackFeature<Configuration>
 
     @Before
     fun setUp() {
-        backstackInTimeCapsule = listOf<Routing<Configuration>>(
-            Routing(C3),
-            Routing(C2)
+        backstackInTimeCapsule = listOf(
+            RoutingHistoryElement(Routing(C3 as Configuration)),
+            RoutingHistoryElement(Routing(C2 as Configuration))
         )
 
         timeCapsuleEmpty = mock()
@@ -62,7 +63,7 @@ class BackStackFeatureTest {
 
     @Test
     fun `Initial state matches initial configuration`() {
-        assertEquals(initialConfiguration, backStackFeature.state.current!!.configuration)
+        assertEquals(initialConfiguration, backStackFeature.state.current!!.routing.configuration)
     }
 
     @Test

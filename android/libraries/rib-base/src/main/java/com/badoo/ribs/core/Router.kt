@@ -65,7 +65,7 @@ abstract class Router<C : Parcelable>(
         timeCapsule.saveState(outState)
     }
 
-    override fun onAttach(ribLifecycle: Lifecycle) {
+    override fun onAttach(nodeLifecycle: Lifecycle) {
         binder.bind(routingSource.toCommands() to configurationFeature)
     }
 

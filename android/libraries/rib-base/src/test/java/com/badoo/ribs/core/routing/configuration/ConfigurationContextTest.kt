@@ -100,10 +100,10 @@ class ConfigurationContextTest {
     @Test
     fun `Unresolved resolve() keeps configuration`() {
         val parentNode = createMockNode()
-        val configuration = mock<Parcelable>()
-        val unresolved = Unresolved(mock(), Routing(configuration))
+        val routing = Routing(mock<Parcelable>())
+        val unresolved = Unresolved(mock(), routing)
         val resolved = unresolved.resolve(defaultResolver, parentNode)
-        assertEquals(configuration, resolved.configuration)
+        assertEquals(routing, resolved.routing)
     }
 
     @Test
@@ -177,7 +177,7 @@ class ConfigurationContextTest {
 
         val unresolved = Unresolved<Parcelable>(mock(), mock(), bundles)
         val resolved = unresolved.resolve(resolver, parentNode)
-        val expectedAncestryInfo = AncestryInfo.Child(expectedParent, resolved.configuration)
+        val expectedAncestryInfo = AncestryInfo.Child(expectedParent, resolved.routing)
 
         argumentCaptor<List<BuildContext>>().apply {
             verify(routingAction).buildNodes(capture())
@@ -267,10 +267,10 @@ class ConfigurationContextTest {
 
     @Test
     fun `Resolved shrink() keeps configuration`() {
-        val configuration = mock<Parcelable>()
-        val resolved = Resolved<Parcelable>(ACTIVE, Routing(configuration), mock(), mock(), mock())
+        val routing = Routing(mock<Parcelable>())
+        val resolved = Resolved<Parcelable>(ACTIVE, routing, mock(), mock(), mock())
         val unresolved = resolved.shrink()
-        assertEquals(configuration, unresolved.configuration)
+        assertEquals(routing, unresolved.routing)
     }
 
     @Test

@@ -19,7 +19,7 @@ import kotlinx.android.parcel.Parcelize
  */
 internal sealed class ConfigurationContext<C : Parcelable> {
 
-    abstract val configuration: Routing<C>
+    abstract val routing: Routing<C>
     abstract val activationState: ActivationState
 
     /**
@@ -77,7 +77,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     @Parcelize
     data class Unresolved<C : Parcelable>(
         override val activationState: ActivationState,
-        override val configuration: Routing<C>,
+        override val routing: Routing<C>,
         val bundles: List<Bundle> = emptyList()
     ) : ConfigurationContext<C>(), Parcelable {
 
@@ -96,10 +96,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             parentNode: Node<*>
         ): Resolved<C> {
             bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
-            val routingAction = resolver.resolve(configuration)
+            val routingAction = resolver.resolve(routing)
             return Resolved(
                     activationState = activationState,
-                    configuration = configuration,
+                    routing = routing,
                     bundles = bundles,
                     routingAction = routingAction,
                     nodes = buildNodes(routingAction, parentNode)
@@ -133,7 +133,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         ): BuildContext = BuildContext(
             ancestryInfo = AncestryInfo.Child(
                 anchor = routingAction.anchor() ?: parentNode,
-                creatorConfiguration = configuration
+                creatorConfiguration = routing
             ),
             savedInstanceState = null,
             customisations = parentNode.buildContext.customisations.getSubDirectoryOrSelf(
@@ -161,7 +161,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
      */
     data class Resolved<C : Parcelable>(
         override val activationState: ActivationState,
-        override val configuration: Routing<C>,
+        override val routing: Routing<C>,
         var bundles: List<Bundle>,
         val routingAction: RoutingAction,
         val nodes: List<Node<*>>
@@ -175,7 +175,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override fun shrink(): Unresolved<C> =
             Unresolved(
                 activationState.sleep(),
-                configuration,
+                routing,
                 bundles
             )
 

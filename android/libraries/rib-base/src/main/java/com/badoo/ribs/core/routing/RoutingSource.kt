@@ -17,11 +17,11 @@ interface RoutingSource<C : Parcelable> :
 
     class Permanent<C : Parcelable>(permanents: Set<C>) : RoutingSource<C> {
 
-        private val routingElements = permanents.map {
-            RoutingHistoryElement(Routing(it))
-        }
+        private val routingElements =
+            permanents.map { RoutingHistoryElement(Routing(it)) }
 
-        private val permanentHistory = RoutingHistory.from(routingElements)
+        private val permanentHistory =
+            RoutingHistory.from(routingElements)
 
         override fun remove(identifier: Routing.Identifier) {
             // no-op -- it's permanent!

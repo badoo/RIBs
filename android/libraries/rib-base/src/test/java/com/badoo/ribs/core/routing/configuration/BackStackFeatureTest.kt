@@ -80,7 +80,7 @@ class BackStackFeatureTest {
 
     @Test
     fun `update state when operation is acceptable`() {
-        val newBackStack = listOf(C2, C3).asBackStackElements()
+        val newBackStack = listOf(C2, C3).asBackStackElements(true)
         val backStackOperation = backStackOperation { newBackStack }
 
         backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
@@ -90,7 +90,7 @@ class BackStackFeatureTest {
 
     @Test
     fun `stay with previous state when operation is not acceptable`() {
-        val newBackStack = listOf(C2, C3).asBackStackElements()
+        val newBackStack = listOf(C2, C3).asBackStackElements(true)
         val oldBackStack = backStackFeature.state.backStack
         val backStackOperation = backStackOperation(
             isApplicable = { false },

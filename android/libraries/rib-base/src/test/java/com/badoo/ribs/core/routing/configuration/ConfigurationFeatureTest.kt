@@ -169,7 +169,7 @@ class ConfigurationFeatureTest {
 
             Content(0, Routing(ContentViewParented1 as Configuration)) to Unresolved<Configuration>(SLEEPING, Routing(ContentViewParented1), helperContentViewParented1.bundles),
             Content(1, Routing(ContentViewParented2 as Configuration)) to Unresolved<Configuration>(SLEEPING, Routing(ContentViewParented2), helperContentViewParented2.bundles),
-            Content(2, Routing(ContentViewParented3 as Configuration)) to Unresolved<Configuration>(SLEEPING, Routing(ContentViewParented3), helperContentViewParented3.bundles),
+            Content(2, Routing(ContentViewParented3 as Configuration)) to Unresolved<Configuration>(INACTIVE, Routing(ContentViewParented3), helperContentViewParented3.bundles),
 
             Content(3, Routing(ContentExternal1 as Configuration)) to Unresolved<Configuration>(SLEEPING, Routing(ContentExternal1), helperContentExternal1.bundles),
             Content(4, Routing(ContentExternal2 as Configuration)) to Unresolved<Configuration>(INACTIVE, Routing(ContentExternal2), helperContentExternal2.bundles)
@@ -186,13 +186,13 @@ class ConfigurationFeatureTest {
     }
 
     private val permanentParts = listOf(
-        Permanent1,
-        Permanent2
+        Routing(Permanent1),
+        Routing(Permanent2)
     )
 
     private fun createFeature(timeCapsule: TimeCapsule<SavedState<Configuration>>): ConfigurationFeature<Configuration> {
         return ConfigurationFeature(
-            initialConfigurations = permanentParts,
+            initialConfigurations = permanentParts.map { it.configuration },
             timeCapsule = timeCapsule,
             resolver = resolver,
             parentNode = parentNode,
@@ -678,7 +678,7 @@ class ConfigurationFeatureTest {
             Remove(Content(0, Routing(ContentViewParented1 as Configuration)))
         ))
         val configurationsLeftInPool = feature.state.pool.map {
-            it.value.configuration
+            it.value.routing
         }
         assertEquals(permanentParts, configurationsLeftInPool)
     }

@@ -3,9 +3,9 @@ package com.badoo.ribs.core.helper
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 
@@ -24,7 +24,10 @@ class TestRouter(
     private val routingActionForO3: RoutingAction = mock()
 ) : Router<TestRouter.Configuration>(
     buildParams = buildParams,
-    routingSource = RoutingSource.Permanent(emptySet()),
+    routingSource = BackStackFeature(
+        buildParams = buildParams,
+        initialConfiguration = initialConfiguration
+    ),
     permanentParts = permanentParts
 ) {
 

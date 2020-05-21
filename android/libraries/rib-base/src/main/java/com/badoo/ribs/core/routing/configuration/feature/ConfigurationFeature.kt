@@ -44,7 +44,7 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  * the view is available.
  */
 internal class ConfigurationFeature<C : Parcelable>(
-    initialConfigurations: List<C>,
+    initialConfigurations: List<C>, // FIXME once Permanent is used as RoutingSource, this can be removed
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: ConfigurationResolver<C>,
     parentNode: Node<*>,

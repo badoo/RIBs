@@ -2,6 +2,7 @@ package com.badoo.ribs.core.routing.portal
 
 import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
@@ -47,32 +48,17 @@ class PortalRouter(
     // TODO probably needs to change from List<Parcelable> to List<AncestryInfo>,
     //  so that extra info can be added too. See below for details.
     private fun List<Parcelable>.resolve(): RoutingAction {
-        // TODO grab first from real root somehow -- currently works only if PortalRouter is in the root rib
+        // TODO grab first from real root (now should be possible) -- currently works only if PortalRouter is in the root rib
         var targetRouter: ConfigurationResolver<Parcelable> =
             this@PortalRouter as ConfigurationResolver<Parcelable>
-        var routingAction: RoutingAction = targetRouter.resolve(
-            Routing(
-                first()
-            )
-        )
+        var routingAction: RoutingAction = targetRouter.resolve(Routing(first()))
 
         drop(1).forEach { element ->
             val bundles = emptyList<Bundle?>()
 
             // TODO don't build it again if already available as child.
             //  This probably means storing Node identifier in addition to (Parcelable) configuration.
-            val ribs = routingAction.buildNodes(
-                listOf(
-                    BuildContext(
-                        ancestryInfo = AncestryInfo.Root, // we'll be discarding these Nodes, it doesn't matter
-                        // TODO for maximum correctness, original List<> should also contain Bundles,
-                        //  as that might change how dependencies are built (right now there's no case for this,
-                        //  but can be in the future).
-                        savedInstanceState = null,
-                        customisations = RibCustomisationDirectoryImpl()
-                    )
-                )
-            )
+            val ribs = buildStep(routingAction)
 
             // TODO having 0 nodes is an impossible scenario, but having more than 1 can be valid.
             //  Solution is again to store Node identifiers & Bundles that help picking the correct one.
@@ -83,12 +69,25 @@ class PortalRouter(
             } ?: throw IllegalStateException("Invalid chain of parents. This should never happen. Chain: $this")
 
             routingAction = targetRouter.resolve(
-                Routing(
-                    element
-                )
+                Routing(element)
             )
         }
 
         return routingAction
+    }
+
+    private fun buildStep(routingAction: RoutingAction): List<Rib> {
+        return routingAction.buildNodes(
+            listOf(
+                BuildContext(
+                    ancestryInfo = AncestryInfo.Root, // we'll be discarding these Nodes, it doesn't matter
+                    // TODO for maximum correctness, original List<> should also contain Bundles,
+                    //  as that might change how dependencies are built (right now there's no case for this,
+                    //  but can be in the future).
+                    savedInstanceState = null,
+                    customisations = RibCustomisationDirectoryImpl()
+                )
+            )
+        )
     }
 }

@@ -19,6 +19,7 @@ internal object RoutingHistoryDiffer {
      * of [C] configurations representing the back stack), and translates the diff to
      * a list of [ConfigurationCommand]s that represent getting from the old state to the new one.
      */
+    @SuppressWarnings("NestedBlockDepth", "LongMethod") // TODO will be reworked
     fun <C : Parcelable> diff(
         previous: RoutingHistory<C>,
         current: RoutingHistory<C>

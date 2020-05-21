@@ -7,7 +7,9 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
@@ -21,17 +23,14 @@ private val buildParams = BuildParams.Empty()
 
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<*, View>,
-    val viewFactory: ((ViewGroup) -> View?)? = null,
-    router: Router<*, *, *, *, View>? = null
+    val viewFactory: ((ViewGroup) -> View?)? = null
 ) {
-
-    val router: Router<*, *, *, *, View> = router ?: TestRouter.createTestRouter()
 
     var nodeCreator: () -> Node<View> = {
         Node(
             buildParams = buildParams,
             viewFactory = viewFactory,
-            plugins = listOf(this.router, interactor)
+            plugins = listOf(interactor)
         )
     }
 
@@ -73,11 +72,10 @@ class InteractorTestHelper<View : RibView>(
     companion object {
         inline fun <reified View, ViewEvent> create(
             interactor: Interactor<*, View>,
-            viewEventRelay: Relay<ViewEvent>,
-            router: Router<*, *, *, *, View>? = null
+            viewEventRelay: Relay<ViewEvent>
         ): InteractorTestHelper<View> where View : RibView, View : ObservableSource<ViewEvent> {
             val view: View = viewEventRelay.subscribedView()
-            return InteractorTestHelper(interactor, { view }, router)
+            return InteractorTestHelper(interactor, { view })
         }
     }
 }
@@ -91,22 +89,20 @@ inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView w
         }
     }
 
-private class TestRouter<C : Parcelable, Permanent : C, Content : C, Overlay : C, V : RibView>(
-    initialConfig: Content
-) : Router<C, Permanent, Content, Overlay, V>(
+private class TestRouter<C : Parcelable>() : Router<C>(
     buildParams = buildParams,
-    transitionHandler = null,
-    initialConfiguration = initialConfig
+    routingSource = RoutingSource.Permanent<C>(emptySet()),
+    transitionHandler = null
 ) {
 
     var resolveConfiguration: (C) -> RoutingAction = { RoutingAction.noop() }
 
-    override fun resolveConfiguration(configuration: C): RoutingAction =
-        resolveConfiguration.invoke(configuration)
+    override fun resolve(routing: Routing<C>): RoutingAction =
+        resolveConfiguration.invoke(routing.configuration)
 
     companion object {
-        fun <V : RibView> createTestRouter() =
-            TestRouter<TestConfiguration, TestConfiguration, TestConfiguration, TestConfiguration, V>(TestConfiguration)
+        fun createTestRouter() =
+            TestRouter<TestConfiguration>()
     }
 }
 

@@ -10,7 +10,7 @@ import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
     buildParams: BuildParams<*> = BuildParams.Empty(),
-    router: Router<*, *, *, *, V> = mock(),
+    router: Router<*> = mock(),
     viewFactory: ((ViewGroup) -> V?)? = mock(),
     interactor: Interactor<*, V> = mock()
 ) : Node<V>(

@@ -2,7 +2,6 @@ package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
-import com.badoo.ribs.template.node.foo_bar.routing.FooBarConnections
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After

@@ -22,8 +22,7 @@ class FooBarInteractor(
     buildParams: BuildParams<Nothing?>,
     private val permissionRequester: PermissionRequester
 ) : Interactor<FooBar, FooBarView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     companion object {

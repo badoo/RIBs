@@ -15,8 +15,7 @@ class MenuInteractor(
     buildParams: BuildParams<Nothing?>,
     private val feature: MenuFeature
 ) : Interactor<Menu, MenuView>(
-    buildParams = buildParams,
-    disposables = feature
+    buildParams = buildParams
 ) {
 
     override fun onAttach(nodeLifecycle: Lifecycle) {

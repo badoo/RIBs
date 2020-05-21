@@ -90,7 +90,7 @@ class GreetingsContainerRouter(
         @Parcelize object Default : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
+    override fun resolve(routing: RoutingElement<Configuration>): RoutingAction =
         RoutingAction.noop()
 }
 ```
@@ -117,8 +117,8 @@ import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attac
 
 /* ... */
 
-override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-    when (configuration) {
+override fun resolve(routing: RoutingElement<Configuration>): RoutingAction =
+    when (routing.configuration) {
         is Configuration.HelloWorld -> attach { TODO() }
     }
 ```
@@ -148,8 +148,8 @@ class GreetingsContainerRouter(
 We'll care about how to pass it here just in a moment, but first let's finish our job here, and replace the `TODO()` block in our `attach` block:
 
 ```kotlin
-override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-    when (configuration) {
+override fun resolve(routing: RoutingElement<Configuration>): RoutingAction =
+    when (routing.configuration) {
         is Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
     }
 ```

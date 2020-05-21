@@ -1,13 +1,16 @@
 package com.badoo.ribs.core.routing.action
 
+import android.os.Parcelable
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.dialog.DialogLauncher
 
-class DialogRoutingAction<Event : Any>(
-    private val router: Router<*, *, *, *, *>,
+class DialogRoutingAction<Event : Any, C : Parcelable>(
+    private val routingSource: RoutingSource<C>,
+    private val routingElementId: Routing.Identifier,
     private val dialogLauncher: DialogLauncher,
     private val dialog: Dialog<Event>
 ) : RoutingAction {
@@ -19,7 +22,7 @@ class DialogRoutingAction<Event : Any>(
 
     override fun execute() {
         dialogLauncher.show(dialog, onClose = {
-            router.popBackStack()
+            routingSource.remove(routingElementId)
         })
     }
 
@@ -28,11 +31,12 @@ class DialogRoutingAction<Event : Any>(
     }
 
     companion object {
-        fun showDialog(
-            router: Router<*, *, *, *, *>,
+        fun <C : Parcelable> showDialog(
+            routingSource: RoutingSource<C>,
+            routingElementId: Routing.Identifier,
             dialogLauncher: DialogLauncher,
             dialog: Dialog<*>
         ): RoutingAction =
-            DialogRoutingAction(router, dialogLauncher, dialog)
+            DialogRoutingAction(routingSource, routingElementId, dialogLauncher, dialog)
     }
 }

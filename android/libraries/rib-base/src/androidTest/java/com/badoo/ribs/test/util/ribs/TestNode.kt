@@ -10,7 +10,7 @@ import com.badoo.ribs.core.view.ViewFactory
 class TestNode<V: RibView>(
     buildParams: BuildParams<*>,
     viewFactory: ViewFactory<Nothing?, V>,
-    private val router: Router<*, *, *, *, V>,
+    private val router: Router<*>,
     interactor: Interactor<*, V>
 ): Node<V>(
     buildParams = buildParams,

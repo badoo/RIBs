@@ -1,20 +1,24 @@
 package com.badoo.ribs.template.node_dagger.foo_bar
 
 import android.view.ViewGroup
+import com.badoo.ribs.clienthelper.Connectable
+import com.badoo.ribs.clienthelper.NodeConnector
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.template.node_dagger.foo_bar.FooBar.*
 import io.reactivex.Single
 
 class FooBarNode internal constructor(
     buildParams: BuildParams<*>,
     viewFactory: ((ViewGroup) -> FooBarView?)?,
-    plugins: List<Plugin> = emptyList()
+    plugins: List<Plugin> = emptyList(),
+    connector: NodeConnector<Input, Output> = NodeConnector()
 ) : Node<FooBarView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), FooBar {
+), FooBar, Connectable<Input, Output> by connector {
 
     /**
      * TODO:
@@ -36,6 +40,6 @@ class FooBarNode internal constructor(
     // todo: expose ALL possible children (even permanent parts), or remove if there's none
     // override fun attachChild1(): Single<Child> =
     //     attachWorkflow {
-    //         // router.push(ConfigurationForChild)
+    //         // backStack.push(ConfigurationForChild)
     //     }
 }

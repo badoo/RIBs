@@ -20,7 +20,7 @@ class FooBarRouterTest {
     fun setup() {
         router = FooBarRouter(
             buildParams = BuildParams.Empty(),
-            connections = mock(defaultAnswer = Answers.RETURNS_MOCKS)
+            childBuilders = mock(defaultAnswer = Answers.RETURNS_MOCKS)
         )
     }
 

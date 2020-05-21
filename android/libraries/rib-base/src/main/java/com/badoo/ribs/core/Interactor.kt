@@ -33,7 +33,7 @@ import io.reactivex.disposables.Disposable
  **/
 abstract class Interactor<R : Rib, V : RibView>(
     buildParams: BuildParams<*>,
-    private val disposables: Disposable?,
+    private val disposables: Disposable? = null,
     private val ribAware: RibAware<R> = RibAwareImpl()
 ) : Identifiable by buildParams.identifier,
     RibAware<R> by ribAware,
@@ -46,4 +46,7 @@ abstract class Interactor<R : Rib, V : RibView>(
     override fun onDetach() {
         disposables?.dispose()
     }
+
+    val node: Node<*>
+       get() = rib.node
 }

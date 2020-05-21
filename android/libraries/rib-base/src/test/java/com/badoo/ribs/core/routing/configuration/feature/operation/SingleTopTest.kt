@@ -7,7 +7,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C6
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.history.RoutingElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -64,8 +64,8 @@ class SingleTopTest {
         val newBackStack = singleTop.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(newConfiguration)
+            RoutingElement(C1),
+            RoutingElement(newConfiguration)
         )
     }
 
@@ -77,9 +77,9 @@ class SingleTopTest {
         val newBackStack = singleTop.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(C2),
-            BackStackElement(C3)
+            RoutingElement(C1),
+            RoutingElement(C2),
+            RoutingElement(C3)
         )
     }
 
@@ -92,9 +92,9 @@ class SingleTopTest {
         val invoke = singleTop.invoke(backStack)
 
         assertThat(invoke).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(C2),
-            BackStackElement(newConfiguration)
+            RoutingElement(C1),
+            RoutingElement(C2),
+            RoutingElement(newConfiguration)
         )
     }
 
@@ -109,10 +109,12 @@ class SingleTopTest {
         val invoke = singleTop.invoke(backStack)
 
         assertThat(invoke).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(initialConfiguration),
-            BackStackElement(C4),
-            BackStackElement(newConfiguration)
+            RoutingElement(C1),
+            RoutingElement(
+                initialConfiguration
+            ),
+            RoutingElement(C4),
+            RoutingElement(newConfiguration)
         )
     }
 }

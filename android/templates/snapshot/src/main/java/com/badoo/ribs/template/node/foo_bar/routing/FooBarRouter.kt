@@ -3,22 +3,24 @@ package com.badoo.ribs.template.node.foo_bar.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.template.node.foo_bar.FooBarView
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration.Content
-import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration.Overlay
-import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
+
 class FooBarRouter internal constructor(
     buildParams: BuildParams<*>,
-    private val connections: FooBarConnections,
+    routingSource: RoutingSource<Configuration>,
+    private val builders: FooBarChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
-): Router<Configuration, Permanent, Content, Overlay, FooBarView>(
+): Router<Configuration>(
     buildParams = buildParams,
+    routingSource = routingSource,
     transitionHandler = transitionHandler,
-    initialConfiguration = Content.Default,
     permanentParts = emptyList()
 ) {
     sealed class Configuration : Parcelable {
@@ -29,13 +31,13 @@ class FooBarRouter internal constructor(
         sealed class Overlay : Configuration()
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-        with(connections) {
-            when (configuration) {
+    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+        with(builders) {
+            when (routing.configuration) {
                 // TODO implement all branches
                 //  to attach children use:
-                //  Content.Child1 -> attach { connections.child.build(it) }
-                Content.Default -> RoutingAction.noop()
+                //  Content.Child1 -> attach { child.build(it) }
+                is Content.Default -> noop()
             }
         }
 }

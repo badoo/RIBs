@@ -5,7 +5,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.history.RoutingElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -25,7 +25,7 @@ class PopTest {
     @Test
     fun `applicable when backStack contains single element with overlays`() {
         val backStack = listOf(
-            BackStackElement(C1, listOf(O1))
+            RoutingElement(C1, listOf(O1))
         )
 
         val applicable = pop.isApplicable(backStack)
@@ -48,22 +48,29 @@ class PopTest {
 
         val newBackStack = pop.invoke(backStack)
 
-        assertThat(newBackStack).containsExactly(BackStackElement(C1))
+        assertThat(newBackStack).containsExactly(
+            RoutingElement(
+                C1
+            )
+        )
     }
 
     @Test
     fun `invoke remove last overlay when overlay on top`() {
         //last element with two overlays
-        val backStack = listOf<BackStackElement<Configuration>>(
-            BackStackElement(C1),
-            BackStackElement(C2, listOf(O1, O2))
+        val backStack = listOf<RoutingElement<Configuration>>(
+            RoutingElement(C1),
+            RoutingElement(
+                C2,
+                listOf(O1, O2)
+            )
         )
 
         val newBackStack = pop.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(C2, listOf(O1))
+            RoutingElement(C1),
+            RoutingElement(C2, listOf(O1))
         )
     }
 }

@@ -52,7 +52,7 @@ internal class DeactivateAction<C : Parcelable>(
         transitionElements = actionableNodes.mapNotNull {
             it.view?.let { ribView ->
                 TransitionElement(
-                    configuration = item.configuration,
+                    configuration = item.configuration.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.EXIT,
                     isBackStackOperation = isBackStackOperation,
                     parentViewGroup = parentNode.targetViewGroupForChild(it),

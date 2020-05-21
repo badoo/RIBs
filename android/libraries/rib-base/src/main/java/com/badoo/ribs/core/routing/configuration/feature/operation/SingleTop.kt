@@ -1,8 +1,10 @@
 package com.badoo.ribs.core.routing.configuration.feature.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 
 data class SingleTop<C : Parcelable>(
     private val configuration: C
@@ -13,7 +15,7 @@ data class SingleTop<C : Parcelable>(
     override fun invoke(backStack: BackStack<C>): BackStack<C> {
         val targetClass = configuration.javaClass
         val lastIndexOfSameClass = backStack.indexOfLast {
-            targetClass.isInstance(it.configuration)
+            targetClass.isInstance(it.routing.configuration)
         }
 
         val operation: (BackStack<C>) -> BackStack<C> =
@@ -44,10 +46,14 @@ data class SingleTop<C : Parcelable>(
     ) : (BackStack<C>) -> BackStack<C> {
 
         override fun invoke(backStack: BackStack<C>): BackStack<C> =
-            backStack.dropLast(backStack.size - position) + BackStackElement(configuration)
+            backStack.dropLast(backStack.size - position) + RoutingHistoryElement(
+                Routing(
+                    configuration
+                )
+            )
     }
 }
 
-fun <C : Parcelable> Router<C, *, *, *, *>.singleTop(configuration: C) {
-    acceptOperation(SingleTop(configuration))
+fun <C : Parcelable> BackStackFeature<C>.singleTop(configuration: C) {
+    accept(Operation(SingleTop(configuration)))
 }

@@ -5,12 +5,12 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeatureState
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.feature.operation.asBackStackElements
+import com.badoo.ribs.core.routing.history.Routing
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -29,14 +29,14 @@ class BackStackFeatureTest {
 
     private lateinit var timeCapsuleEmpty: TimeCapsule<BackStackFeatureState<Configuration>>
     private lateinit var timeCapsuleWithContent: TimeCapsule<BackStackFeatureState<Configuration>>
-    private lateinit var backstackInTimeCapsule: List<BackStackElement<Configuration>>
+    private lateinit var backstackInTimeCapsule: List<Routing<Configuration>>
     private lateinit var backStackFeature: BackStackFeature<Configuration>
 
     @Before
     fun setUp() {
-        backstackInTimeCapsule = listOf<BackStackElement<Configuration>>(
-            BackStackElement(C3),
-            BackStackElement(C2)
+        backstackInTimeCapsule = listOf<Routing<Configuration>>(
+            Routing(C3),
+            Routing(C2)
         )
 
         timeCapsuleEmpty = mock()

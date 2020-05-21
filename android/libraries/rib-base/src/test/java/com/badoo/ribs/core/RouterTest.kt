@@ -3,7 +3,6 @@ package com.badoo.ribs.core
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
@@ -77,11 +76,5 @@ class RouterTest {
         router.onSaveInstanceState(mock())
         verify(childNodeC2_1).onSaveInstanceState(any())
         verify(childNodeC2_2).onSaveInstanceState(any())
-    }
-
-    @Test
-    fun `Pushing another configuration after initial is possible`() {
-        router.onAttach(mock())
-        router.push(TestRouter.Configuration.C5)
     }
 }

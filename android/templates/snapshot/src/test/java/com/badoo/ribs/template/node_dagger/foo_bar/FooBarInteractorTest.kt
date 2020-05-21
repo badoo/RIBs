@@ -2,6 +2,7 @@ package com.badoo.ribs.template.node_dagger.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
+import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

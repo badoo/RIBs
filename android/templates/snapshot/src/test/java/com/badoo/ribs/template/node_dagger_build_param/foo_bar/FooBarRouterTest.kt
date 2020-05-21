@@ -1,6 +1,7 @@
 package com.badoo.ribs.template.node_dagger_build_param.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarRouter
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -17,9 +18,10 @@ class FooBarRouterTest {
 
     @Before
     fun setup() {
-        router = FooBarRouter(
-            buildParams = buildParams
-        )
+        router =
+            FooBarRouter(
+                buildParams = buildParams
+            )
     }
 
     @After

@@ -1,8 +1,9 @@
 package com.badoo.ribs.core.routing.configuration.feature.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 
 data class Push<C : Parcelable>(
     private val configuration: C
@@ -11,12 +12,12 @@ data class Push<C : Parcelable>(
         configuration != backStack.current?.configuration
 
     override fun invoke(backStack: BackStack<C>): BackStack<C> =
-        backStack + BackStackElement(configuration)
+        backStack + RoutingHistoryElement(Routing(configuration))
 
-    private val BackStack<C>.current: BackStackElement<C>?
-        get() = this.lastOrNull()
+    private val BackStack<C>.current: Routing<C>?
+        get() = this.lastOrNull()?.routing
 }
 
-fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.push(configuration: Content) {
-    acceptOperation(Push(configuration))
+fun <C : Parcelable> BackStackFeature<C>.push(configuration: C) {
+    accept(BackStackFeature.Operation(Push(configuration)))
 }

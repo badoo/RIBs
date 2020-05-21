@@ -4,11 +4,15 @@ import androidx.test.espresso.Espresso
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.android.lifecycle.helper.NodeState
+import com.badoo.ribs.core.BackStackInteractor
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
+import com.badoo.ribs.test.util.ribs.root.TestRootView
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Rule
 
@@ -24,22 +28,35 @@ abstract class BaseNodesTest {
         val pushConfiguration2: TestRootRouter.Configuration? = null
     )
 
-    protected fun test(setup: When, expectedState: ExpectedState, testBlock: (TestRootRouter, TestNode<*>) -> Unit) {
+    protected fun test(
+        setup: When,
+        expectedState: ExpectedState,
+        testBlock: (BackStackFeature<TestRootRouter.Configuration>, TestNode<*>) -> Unit
+    ) {
         val rootProvider = TestRoot.Provider(
             initialConfiguration = setup.initialConfiguration,
             permanentParts = setup.permanentParts
         )
 
-        ribsRule.start { activity, savedInstanceState -> rootProvider.create(activity.dialogLauncher(), savedInstanceState) }
+        val backStack: BackStackFeature<TestRootRouter.Configuration> = BackStackFeature(
+            buildParams = BuildParams.Empty(),
+            initialConfiguration = setup.initialConfiguration
+        )
 
-        val router: TestRootRouter = rootProvider.rootNode?.getRouter() as TestRootRouter
+        ribsRule.start { activity, savedInstanceState ->
+            rootProvider.create(
+                dialogLauncher = activity.dialogLauncher(),
+                savedInstanceState = savedInstanceState,
+                routingSource = backStack
+            )
+        }
 
-        testBlock.invoke(router, rootProvider.rootNode!!)
+        testBlock.invoke(backStack, rootProvider.rootNode!!)
 
         rootProvider.makeAssertions(expectedState)
     }
 
-    protected fun TestRootRouter.pushIt(configuration: TestRootRouter.Configuration) {
+    protected fun BackStackFeature<TestRootRouter.Configuration>.pushIt(configuration: TestRootRouter.Configuration) {
         when (configuration) {
             is TestRootRouter.Configuration.Content -> push(configuration)
             is TestRootRouter.Configuration.Overlay -> pushOverlay(configuration)
@@ -48,11 +65,23 @@ abstract class BaseNodesTest {
 
     private fun TestRoot.Provider.makeAssertions(expected: ExpectedState) {
         Espresso.onIdle()
-        permanentNode1?.let { assertThat(it.toNodeState()).describedAs("Permanent node 1 state").isEqualTo(expected.permanentNode1) }
-        permanentNode2?.let { assertThat(it.toNodeState()).describedAs("Permanent node 2 state").isEqualTo(expected.permanentNode2) }
-        childNode1?.let { assertThat(it.toNodeState()).describedAs("Child node 1 state").isEqualTo(expected.node1) }
-        childNode2?.let { assertThat(it.toNodeState()).describedAs("Child node 2 state").isEqualTo(expected.node2) }
-        childNode3?.let { assertThat(it.toNodeState()).describedAs("Child node 3 state").isEqualTo(expected.node3) }
+        permanentNode1?.let {
+            assertThat(it.toNodeState()).describedAs("Permanent node 1 state")
+                .isEqualTo(expected.permanentNode1)
+        }
+        permanentNode2?.let {
+            assertThat(it.toNodeState()).describedAs("Permanent node 2 state")
+                .isEqualTo(expected.permanentNode2)
+        }
+        childNode1?.let {
+            assertThat(it.toNodeState()).describedAs("Child node 1 state").isEqualTo(expected.node1)
+        }
+        childNode2?.let {
+            assertThat(it.toNodeState()).describedAs("Child node 2 state").isEqualTo(expected.node2)
+        }
+        childNode3?.let {
+            assertThat(it.toNodeState()).describedAs("Child node 3 state").isEqualTo(expected.node3)
+        }
     }
 
     private fun TestNode<*>.toNodeState() =

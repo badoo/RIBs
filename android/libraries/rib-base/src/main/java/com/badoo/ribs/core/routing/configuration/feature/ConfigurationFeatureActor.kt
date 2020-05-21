@@ -9,6 +9,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
@@ -29,7 +30,7 @@ import io.reactivex.Observable
  */
 @SuppressWarnings("LargeClass") // TODO extract
 internal class ConfigurationFeatureActor<C : Parcelable>(
-    private val configurationResolver: (C) -> RoutingAction,
+    private val configurationResolver: ConfigurationResolver<C>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {

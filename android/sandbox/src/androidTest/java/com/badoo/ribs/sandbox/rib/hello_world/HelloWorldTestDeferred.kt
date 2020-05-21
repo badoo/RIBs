@@ -23,11 +23,7 @@ class HelloWorldTestDeferred {
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         HelloWorldBuilder(object : HelloWorld.Dependency {
-            override fun portal(): Portal.OtherSide = object : Portal.OtherSide {
-                override fun showContent(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {}
-                override fun showOverlay(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {}
-            }
-
+            override fun portal(): Portal.OtherSide = Portal.OtherSide.NOOP
             override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
         }).build(root(savedInstanceState))
 

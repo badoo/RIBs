@@ -5,7 +5,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.history.RoutingElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -26,7 +26,7 @@ class ReplaceTest {
     @Test
     fun `not applicable when current element configuration same with different overlay`() {
         val backStack = listOf(
-            BackStackElement(C1, listOf(O1))
+            RoutingElement(C1, listOf(O1))
         )
         replace = Replace(C1)
 
@@ -43,8 +43,8 @@ class ReplaceTest {
         val newBackStack = replace.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(C3)
+            RoutingElement(C1),
+            RoutingElement(C3)
         )
     }
 }

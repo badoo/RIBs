@@ -6,7 +6,6 @@ import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
@@ -16,8 +15,10 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
 import io.reactivex.Observable.fromIterable
@@ -45,7 +46,7 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
 internal class ConfigurationFeature<C : Parcelable>(
     initialConfigurations: List<C>,
     timeCapsule: TimeCapsule<SavedState<C>>,
-    resolver: (C) -> RoutingAction,
+    resolver: ConfigurationResolver<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
 ) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
@@ -133,7 +134,12 @@ internal class ConfigurationFeature<C : Parcelable>(
                 initialState.pool.isEmpty() -> fromIterable(
                     initialConfigurations
                         .mapIndexed { index, configuration ->
-                            val key = ConfigurationKey.Permanent(index, configuration)
+                            val key = ConfigurationKey.Permanent(
+                                index,
+                                Routing(
+                                    configuration
+                                )
+                            )
 
                             Transaction.ListOfCommands(
                                 descriptor = TransitionDescriptor.None,

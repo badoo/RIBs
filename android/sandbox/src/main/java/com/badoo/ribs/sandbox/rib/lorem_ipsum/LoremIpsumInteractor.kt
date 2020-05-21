@@ -10,8 +10,7 @@ import com.badoo.ribs.sandbox.rib.lorem_ipsum.mapper.ViewEventToOutput
 class LoremIpsumInteractor(
     buildParams: BuildParams<Nothing?>
 ) : Interactor<LoremIpsum, LoremIpsumView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     override fun onViewCreated(view: LoremIpsumView, viewLifecycle: Lifecycle) {

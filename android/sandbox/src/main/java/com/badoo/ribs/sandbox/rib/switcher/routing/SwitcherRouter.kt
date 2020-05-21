@@ -3,17 +3,19 @@ package com.badoo.ribs.sandbox.rib.switcher.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherView
+import com.badoo.ribs.sandbox.rib.switcher.SwitcherInteractor
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
@@ -24,14 +26,15 @@ import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
+    routingSource: RoutingSource<Configuration>,
     transitionHandler: TransitionHandler<Configuration>? = null,
-    private val connections: SwitcherConnections,
+    private val builders: SwitcherChildBuilders,
     private val dialogLauncher: DialogLauncher,
     private val dialogToTestOverlay: DialogToTestOverlay
-): Router<Configuration, Permanent, Content, Overlay, SwitcherView>(
+): Router<Configuration>(
     buildParams = buildParams,
+    routingSource = routingSource,
     transitionHandler = transitionHandler,
-    initialConfiguration = Content.DialogsExample,
     permanentParts = listOf(
         Permanent.Menu
     )
@@ -53,9 +56,9 @@ class SwitcherRouter internal constructor(
 
     internal val menuUpdater = PublishRelay.create<Menu.Input>()
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-        with(connections) {
-            return when (configuration) {
+    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+        with(builders) {
+            when (routing.configuration) {
                 is Permanent.Menu -> attach { menu.build(it) }
                 is Content.Hello -> composite(
                     attach { helloWorld.build(it) },
@@ -70,7 +73,7 @@ class SwitcherRouter internal constructor(
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
                 )
                 is Content.Blocker -> attach { blocker.build(it) }
-                is Overlay.Dialog -> showDialog(this@SwitcherRouter, dialogLauncher, dialogToTestOverlay)
+                is Overlay.Dialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogToTestOverlay)
             }
         }
 }

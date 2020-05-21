@@ -2,19 +2,21 @@ package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
+import com.badoo.ribs.core.routing.history.RoutingHistory
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-internal data class BackStackFeatureState<C : Parcelable>(
-    val backStack: BackStack<C> = emptyList()
-) : Parcelable {
 
-    val current: BackStackElement<C>?
+@Parcelize
+data class BackStackFeatureState<C : Parcelable>(
+    val backStack: BackStack<C> = emptyList()
+) : Parcelable, RoutingHistory<C> {
+
+    val current: RoutingHistoryElement<C>?
         get() = backStack.lastOrNull()
+
+    override fun iterator(): Iterator<RoutingHistoryElement<C>> =
+        backStack.iterator()
 }
 
-@Parcelize
-data class BackStackElement<C : Parcelable>(
-    val configuration: C,
-    val overlays: List<C> = emptyList()
-) : Parcelable
+

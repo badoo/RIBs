@@ -12,7 +12,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.history.RoutingElement
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -396,9 +396,18 @@ class ConnectorCommandCreatorTest {
         assertEquals(expected, actual)
     }
 
-    private fun backStack(vararg configurations: Configuration): List<BackStackElement<Configuration>> =
-        configurations.map { BackStackElement(it) }
+    private fun backStack(vararg configurations: Configuration): List<RoutingElement<Configuration>> =
+        configurations.map {
+            RoutingElement(
+                it
+            )
+        }
 
-    private fun backStackWithOverlays(vararg configurations: Pair<Configuration, List<Configuration>>): List<BackStackElement<Configuration>> =
-        configurations.map { BackStackElement(it.first, it.second) }
+    private fun backStackWithOverlays(vararg configurations: Pair<Configuration, List<Configuration>>): List<RoutingElement<Configuration>> =
+        configurations.map {
+            RoutingElement(
+                it.first,
+                it.second
+            )
+        }
 }

@@ -52,6 +52,7 @@ internal object DialogExampleModule {
     @JvmStatic
     internal fun router(
         buildParams: BuildParams<Nothing?>,
+        interactor: DialogExampleInteractor,
         dependency: DialogExample.Dependency,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
@@ -59,6 +60,7 @@ internal object DialogExampleModule {
     ): DialogExampleRouter =
         DialogExampleRouter(
             buildParams = buildParams,
+            routingSource = interactor,
             dialogLauncher = dependency.dialogLauncher(),
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
@@ -70,16 +72,12 @@ internal object DialogExampleModule {
     @JvmStatic
     internal fun interactor(
         buildParams: BuildParams<Nothing?>,
-        router: DialogExampleRouter,
-        connections: DialogExampleConnections,
         simpleDialog: SimpleDialog,
         lazyDialog: LazyDialog,
         ribDialog: RibDialog
     ): DialogExampleInteractor =
         DialogExampleInteractor(
             buildParams = buildParams,
-            router = router,
-            connections = connections,
             simpleDialog = simpleDialog,
             lazyDialog = lazyDialog,
             ribDialog = ribDialog

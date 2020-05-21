@@ -1,18 +1,34 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
+import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
+import com.badoo.mvicore.extension.mapNotNull
 import com.badoo.mvicore.feature.ActorReducerFeature
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Effect
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.plugin.BackPressHandler
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
+import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.feature.operation.NewRoot
+import com.badoo.ribs.core.routing.configuration.feature.operation.Remove
+import com.badoo.ribs.core.routing.configuration.feature.operation.canPop
+import com.badoo.ribs.core.routing.configuration.feature.operation.canPopOverlay
+import com.badoo.ribs.core.routing.configuration.feature.operation.pop
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistory
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just
+import io.reactivex.ObservableSource
+import io.reactivex.Observer
+import io.reactivex.functions.Consumer
 
 private val timeCapsuleKey = BackStackFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(): BackStackFeatureState<C> =
@@ -29,23 +45,46 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
  * @see BackStackFeature.ActorImpl for logic deciding whether an operation should be carried out
  * @see BackStackFeature.ReducerImpl for the implementation of applying state changes
  */
-internal class BackStackFeature<C : Parcelable>(
-    initialConfiguration: C,
+class BackStackFeature<C : Parcelable>(
+    private val initialConfiguration: C,
     timeCapsule: TimeCapsule<BackStackFeatureState<C>>
-) : ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
-    initialState = timeCapsule.initialState(),
-    bootstrapper = BootstrapperImpl(
-        timeCapsule.initialState(),
-        initialConfiguration
-    ),
-    actor = ActorImpl<C>(),
-    reducer = ReducerImpl<C>()
-) {
+) : Consumer<Operation<C>>, RoutingSource<C>, BackPressHandler {
+
+    val feature = ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
+        initialState = timeCapsule.initialState(),
+        bootstrapper = BootstrapperImpl(
+            timeCapsule.initialState(),
+            initialConfiguration
+        ),
+        actor = ActorImpl(),
+        reducer = ReducerImpl()
+    )
+
+    val activeConfiguration: ObservableSource<C>
+        get() = Observable.wrap(feature)
+            .mapNotNull {
+                it.backStack
+                    // FIXME set active in operation
+    //                .findLast { it.activation == RoutingHistoryElement.Activation.ACTIVE }
+                    .last()
+                    ?.routing
+                    ?.configuration
+            }
+            .startWith(initialConfiguration)
+
+    constructor(
+        initialConfiguration: C, // FIXME this should be Routing<C>
+        buildParams: BuildParams<*>
+    ) : this(
+        initialConfiguration,
+        AndroidTimeCapsule(buildParams.savedInstanceState)
+    )
+
     val initialState =
         timeCapsule.initialState()
 
     init {
-        timeCapsule.register(timeCapsuleKey) { state }
+        timeCapsule.register(timeCapsuleKey) { feature.state }
     }
 
     /**
@@ -102,9 +141,53 @@ internal class BackStackFeature<C : Parcelable>(
             state.apply(effect)
 
         private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C> = when (effect) {
-            is Effect.Applied -> copy(
-                backStack = effect.backStackOperation(backStack)
-            )
+            is Effect.Applied -> {
+                copy(
+                    backStack = effect
+                        .backStackOperation.invoke(backStack)
+                        .activateLastElement()
+                )
+            }
         }
+
+        private fun BackStack<C>.activateLastElement(): BackStack<C> =
+            mapIndexed { index, element ->
+                element.copy(
+                    activation = if (index == lastIndex) ACTIVE else INACTIVE
+                )
+            }
     }
+
+    fun popBackStack(): Boolean =
+        if (feature.state.backStack.canPop) {
+            pop()
+            true
+        } else {
+            false
+        }
+
+    fun popOverlay(): Boolean =
+        if (feature.state.backStack.canPopOverlay) {
+            pop()
+            true
+        } else {
+            false
+        }
+
+    override fun handleBackPressFirst(): Boolean =
+        popOverlay()
+
+    override fun handleBackPressFallback(): Boolean =
+        popBackStack()
+
+    override fun remove(identifier: Routing.Identifier) {
+        feature.accept(Operation(Remove(identifier)))
+    }
+
+    override fun accept(operation: Operation<C>) {
+        feature.accept(operation)
+    }
+
+    override fun subscribe(observer: Observer<in RoutingHistory<C>>) =
+        feature.subscribe(observer)
 }

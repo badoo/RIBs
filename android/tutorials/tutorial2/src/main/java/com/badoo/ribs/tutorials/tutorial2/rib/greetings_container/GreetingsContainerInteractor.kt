@@ -8,7 +8,7 @@ import io.reactivex.functions.Consumer
 
 class GreetingsContainerInteractor(
     buildParams: BuildParams<Nothing?>,
-    private val router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
+    private val router: GreetingsContainerRouter,
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<GreetingsContainer, Nothing>(
     buildParams = buildParams,

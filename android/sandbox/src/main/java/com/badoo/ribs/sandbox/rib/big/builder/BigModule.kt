@@ -15,26 +15,26 @@ internal object BigModule {
     @BigScope
     @Provides
     @JvmStatic
-    internal fun router(
-        // pass component to child rib builders, or remove if there are none
-        component: BigComponent,
+    internal fun interactor(
         buildParams: BuildParams<Nothing?>
-    ): BigRouter =
-        BigRouter(
-            buildParams = buildParams,
-            smallBuilder = SmallBuilder(component)
+    ): BigInteractor =
+        BigInteractor(
+            buildParams = buildParams
         )
 
     @BigScope
     @Provides
     @JvmStatic
-    internal fun interactor(
+    internal fun router(
+        // pass component to child rib builders, or remove if there are none
+        component: BigComponent,
         buildParams: BuildParams<Nothing?>,
-        router: BigRouter
-    ): BigInteractor =
-        BigInteractor(
+        interactor: BigInteractor
+    ): BigRouter =
+        BigRouter(
             buildParams = buildParams,
-            router = router
+            routingSource = interactor,
+            smallBuilder = SmallBuilder(component)
         )
 
     @BigScope

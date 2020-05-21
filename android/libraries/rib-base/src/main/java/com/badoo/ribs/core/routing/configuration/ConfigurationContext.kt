@@ -6,6 +6,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.util.RIBs
 import kotlinx.android.parcel.Parcelize
@@ -18,7 +19,7 @@ import kotlinx.android.parcel.Parcelize
  */
 internal sealed class ConfigurationContext<C : Parcelable> {
 
-    abstract val configuration: C
+    abstract val configuration: Routing<C>
     abstract val activationState: ActivationState
 
     /**
@@ -67,7 +68,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     abstract fun sleep(): ConfigurationContext<C>
     abstract fun wakeUp(): ConfigurationContext<C>
     abstract fun shrink(): Unresolved<C>
-    abstract fun resolve(resolver: (C) -> RoutingAction, parentNode: Node<*>): Resolved<C>
+    abstract fun resolve(resolver: ConfigurationResolver<C>, parentNode: Node<*>): Resolved<C>
 
     /**
      * Represents [ConfigurationContext] that is persistable in a [android.os.Bundle],
@@ -76,7 +77,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     @Parcelize
     data class Unresolved<C : Parcelable>(
         override val activationState: ActivationState,
-        override val configuration: C,
+        override val configuration: Routing<C>,
         val bundles: List<Bundle> = emptyList()
     ) : ConfigurationContext<C>(), Parcelable {
 
@@ -91,11 +92,11 @@ internal sealed class ConfigurationContext<C : Parcelable> {
          * Resolves and sets the associated [RoutingAction], builds associated [Node]s
          */
         override fun resolve(
-            resolver: (C) -> RoutingAction,
+            resolver: ConfigurationResolver<C>,
             parentNode: Node<*>
         ): Resolved<C> {
             bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
-            val routingAction = resolver.invoke(configuration)
+            val routingAction = resolver.resolve(configuration)
             return Resolved(
                     activationState = activationState,
                     configuration = configuration,
@@ -160,14 +161,14 @@ internal sealed class ConfigurationContext<C : Parcelable> {
      */
     data class Resolved<C : Parcelable>(
         override val activationState: ActivationState,
-        override val configuration: C,
+        override val configuration: Routing<C>,
         var bundles: List<Bundle>,
         val routingAction: RoutingAction,
         val nodes: List<Node<*>>
     ) : ConfigurationContext<C>() {
 
         override fun resolve(
-            resolver: (C) -> RoutingAction,
+            resolver: ConfigurationResolver<C>,
             parentNode: Node<*>
         ): Resolved<C> = this
 

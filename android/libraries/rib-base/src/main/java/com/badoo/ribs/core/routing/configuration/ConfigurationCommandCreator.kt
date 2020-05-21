@@ -8,9 +8,9 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import java.lang.Math.min
 
 
@@ -29,26 +29,27 @@ internal object ConfigurationCommandCreator {
             oldStack -> emptyList()
             else -> {
                 val commands = mutableListOf<ConfigurationCommand<C>>()
-                val indexOfLastCommonConfiguration = findIndexOfLastCommonConfiguration(oldStack, newStack)
+                val indexOfLastCommonConfiguration =
+                    findIndexOfLastCommonConfiguration(oldStack, newStack)
                 commands += oldStack.deactivateIfNeeded(newStack)
                 commands += oldStack.removeUntil(indexOfLastCommonConfiguration)
                 commands += newStack.addFrom(indexOfLastCommonConfiguration)
                 commands += newStack.activateIfNeeded(oldStack)
                 commands += newStack.overlayDiff(oldStack)
                 commands
+            }
         }
-    }
 
     private fun findIndexOfLastCommonConfiguration(
-        oldStack: List<BackStackElement<*>>,
-        newStack: List<BackStackElement<*>>
+        oldStack: List<RoutingHistoryElement<*>>,
+        newStack: List<RoutingHistoryElement<*>>
     ): Int {
         var idx = -1
         val lastCommonIndex = min(oldStack.lastIndex, newStack.lastIndex)
 
         for (i in 0..lastCommonIndex) {
             // Compare only configurations, as if it's only the overlays that are different, they will be handled later
-            if (newStack.elementAt(i).configuration != oldStack.elementAt(i).configuration) {
+            if (newStack.elementAt(i).routing.configuration != oldStack.elementAt(i).routing.configuration) {
                 return idx
             }
 
@@ -61,8 +62,7 @@ internal object ConfigurationCommandCreator {
     private fun <C : Parcelable> BackStack<C>.deactivateIfNeeded(other: BackStack<C>): List<ConfigurationCommand<C>> =
         when {
             contentListHasChanged(other) && isNotEmpty() -> {
-                val configuration = last().configuration
-                val contentKey = Content(lastIndex, configuration)
+                val contentKey = Content(lastIndex, last().routing)
                 val commands = mutableListOf<ConfigurationCommand<C>>()
                 commands += last().deactivateAllOverlays(contentKey)
                 commands += Deactivate(contentKey)
@@ -75,7 +75,7 @@ internal object ConfigurationCommandCreator {
      * A comparison between two lists that doesn't care about overlay differences, only the direct elements
      */
     private fun <C : Parcelable> BackStack<C>.contentListHasChanged(other: BackStack<C>) =
-        map { it.configuration } != other.map { it.configuration }
+        map { it.routing.configuration } != other.map { it.routing.configuration }
 
     private fun <C : Parcelable> BackStack<C>.removeUntil(targetIdxExclusive: Int): List<ConfigurationCommand<C>> {
         val offset = targetIdxExclusive + 1
@@ -83,7 +83,7 @@ internal object ConfigurationCommandCreator {
             .mapIndexed { contentIndex, backStackElement ->
                 val commands = mutableListOf<ConfigurationCommand<C>>()
                 val realIndex = offset + contentIndex
-                val contentKey = Content(realIndex, backStackElement.configuration)
+                val contentKey = Content(realIndex, backStackElement.routing)
                 commands += Remove(contentKey)
                 commands += backStackElement.removeAllOverlays(contentKey).reversed()
                 if (realIndex != lastIndex) {
@@ -101,7 +101,7 @@ internal object ConfigurationCommandCreator {
         return subList(offset, size)
             .mapIndexed { contentIndex, backStackElement ->
                 val commands = mutableListOf<ConfigurationCommand<C>>()
-                val contentKey = Content(offset + contentIndex, backStackElement.configuration)
+                val contentKey = Content(offset + contentIndex, backStackElement.routing)
                 commands += Add(contentKey)
                 commands += backStackElement.addAllOverlays(contentKey)
                 commands
@@ -113,8 +113,7 @@ internal object ConfigurationCommandCreator {
         when {
             isNotEmpty() && contentListHasChanged(other) -> {
                 val commands = mutableListOf<ConfigurationCommand<C>>()
-                val configuration = last().configuration
-                val contentKey = Content(lastIndex, configuration)
+                val contentKey = Content(lastIndex, last().routing)
                 val activate = Activate<C>(contentKey)
                 commands += activate
                 commands += last().activateAllOverlays(contentKey)
@@ -123,24 +122,24 @@ internal object ConfigurationCommandCreator {
             else -> emptyList()
         }
 
-    private fun <C : Parcelable> BackStackElement<C>.addAllOverlays(content: Content<C>): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> RoutingHistoryElement<C>.addAllOverlays(content: Content<C>): List<ConfigurationCommand<C>> =
         overlays.mapIndexed { overlayIndex, overlayConfiguration ->
             Add(Overlay(Key(content, overlayIndex, overlayConfiguration)))
         }
 
-    private fun <C : Parcelable> BackStackElement<C>.activateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> RoutingHistoryElement<C>.activateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
         overlays.mapIndexed { overlayIndex, overlayConfiguration ->
             Activate<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
         }
 
-    private fun <C : Parcelable> BackStackElement<C>.deactivateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> RoutingHistoryElement<C>.deactivateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
         overlays
             .mapIndexed { overlayIndex, overlayConfiguration ->
                 Deactivate<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
             }
             .reversed()
 
-    private fun <C : Parcelable> BackStackElement<C>.removeAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
+    private fun <C : Parcelable> RoutingHistoryElement<C>.removeAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
         overlays
             .mapIndexed { overlayIndex, overlayConfiguration ->
                 Remove<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
@@ -152,7 +151,7 @@ internal object ConfigurationCommandCreator {
 
         forEachIndexed { index, newElement ->
             val oldElement = oldStack.getOrNull(index)
-            val contentKey = Content<C>(index, newElement.configuration)
+            val contentKey = Content<C>(index, newElement.routing)
             commands += oldElement?.removeNecessaryOverlays(newElement, contentKey) ?: emptyList()
             commands += newElement.addNecessaryOverlays(oldElement, contentKey)
         }
@@ -167,8 +166,8 @@ internal object ConfigurationCommandCreator {
      *
      * Difference will be removed from Old.
      */
-    private fun <C : Parcelable> BackStackElement<C>.removeNecessaryOverlays(
-        newElement: BackStackElement<C>,
+    private fun <C : Parcelable> RoutingHistoryElement<C>.removeNecessaryOverlays(
+        newElement: RoutingHistoryElement<C>,
         contentKey: Content<C>
     ): List<ConfigurationCommand<C>> =
         overlays
@@ -189,8 +188,8 @@ internal object ConfigurationCommandCreator {
      *
      * Difference will be added to New.
      */
-    private fun <C : Parcelable> BackStackElement<C>.addNecessaryOverlays(
-        oldElement: BackStackElement<C>?,
+    private fun <C : Parcelable> RoutingHistoryElement<C>.addNecessaryOverlays(
+        oldElement: RoutingHistoryElement<C>?,
         contentKey: Content<C>
     ): List<ConfigurationCommand<C>> =
         overlays
@@ -203,6 +202,7 @@ internal object ConfigurationCommandCreator {
             }
             .flatten()
 
-    private fun <C : Parcelable> BackStackElement<C>.overlayAt(index: Int): C? =
+    private fun <C : Parcelable> RoutingHistoryElement<C>.overlayAt(index: Int): C? =
         overlays.getOrNull(index)
 }
+

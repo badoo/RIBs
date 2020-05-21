@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
+import com.badoo.ribs.core.routing.history.Routing
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -31,24 +32,37 @@ import kotlinx.android.parcel.Parcelize
  * @see ConfigurationFeature.ActorImpl.resolve
  *
  */
+// TODO consider if RoutingElement.identifier is unique / node (even w/ multiple RoutingSources),
+//  ConfigurationKey class is then not needed, simply use identifier as key in the pool
 sealed class ConfigurationKey<C : Parcelable> : Parcelable {
 
-    abstract val configuration: C
+    abstract val configuration: Routing<C>
 
     @Parcelize
-    data class Permanent<C : Parcelable>(val index: Int, override val configuration: C) : ConfigurationKey<C>()
+    data class Permanent<C : Parcelable>(
+        val index: Int, // TODO remove, not needed, there's identifier in RoutingElement
+        override val configuration: Routing<C>
+    ) : ConfigurationKey<C>()
 
     @Parcelize
-    data class Content<C : Parcelable>(val index: Int, override val configuration: C) : ConfigurationKey<C>()
+    data class Content<C : Parcelable>(
+        val index: Int, // TODO remove, not needed, there's identifier in RoutingElement
+        override val configuration: Routing<C>
+    ) : ConfigurationKey<C>()
 
     @Parcelize
     data class Overlay<C : Parcelable>(val key: Key<C>) : ConfigurationKey<C>() {
 
-        override val configuration: C
-            get() = key.configuration
+        override val configuration: Routing<C>
+            get() = Routing(key.configuration) // FIXME
 
         @Parcelize
-        data class Key<C : Parcelable>(val contentKey: Content<C>, val index: Int, val configuration: C) : Parcelable
+        data class Key<C : Parcelable>(
+            val contentKey: Content<C>,
+            val index: Int,
+            val configuration: C
+//            val configuration: RoutingElement<C>
+        ) : Parcelable
     }
 
 

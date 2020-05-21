@@ -3,9 +3,11 @@ package com.badoo.ribs.sandbox.rib.hello_world
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Permanent
@@ -14,10 +16,11 @@ import kotlinx.android.parcel.Parcelize
 
 class HelloWorldRouter(
     buildParams: BuildParams<Nothing?>,
+    routingSource: RoutingSource<Configuration>,
     private val smallBuilder: SmallBuilder
-): Router<Configuration, Permanent, Content, Nothing, HelloWorldView>(
+): Router<Configuration>(
     buildParams = buildParams,
-    initialConfiguration = Content.Default,
+    routingSource = routingSource,
     permanentParts = listOf(Permanent.Small)
 ) {
     sealed class Configuration : Parcelable {
@@ -29,8 +32,8 @@ class HelloWorldRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-        when (configuration) {
+    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+        when (routing.configuration) {
             Permanent.Small -> attach { smallBuilder.build(it) }
             Content.Default -> noop()
     }

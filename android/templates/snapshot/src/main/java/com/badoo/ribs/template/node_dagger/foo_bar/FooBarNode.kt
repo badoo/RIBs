@@ -6,7 +6,8 @@ import com.badoo.ribs.clienthelper.NodeConnector
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.template.node_dagger.foo_bar.FooBar.*
+import com.badoo.ribs.template.node_dagger.foo_bar.FooBar.Input
+import com.badoo.ribs.template.node_dagger.foo_bar.FooBar.Output
 import io.reactivex.Single
 
 class FooBarNode internal constructor(

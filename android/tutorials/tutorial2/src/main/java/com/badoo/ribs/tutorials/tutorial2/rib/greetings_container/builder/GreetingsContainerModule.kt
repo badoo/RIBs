@@ -1,12 +1,10 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.builder
 
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainer
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerInteractor
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter
 import dagger.Provides
-import io.reactivex.functions.Consumer
 
 @dagger.Module
 internal object GreetingsContainerModule {

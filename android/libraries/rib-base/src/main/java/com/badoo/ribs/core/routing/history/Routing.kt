@@ -14,6 +14,6 @@ data class Routing<C : Parcelable>(
 
     @Parcelize
     data class Identifier(
-        val id: Int = 0 // FIXME no default
+        val id: Serializable = 0 // FIXME no default
     ) : Parcelable
 }

@@ -1,10 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container
 
-import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.BackStackInteractor
-import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer.Output.GreetingsSaid
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerRouter.Configuration

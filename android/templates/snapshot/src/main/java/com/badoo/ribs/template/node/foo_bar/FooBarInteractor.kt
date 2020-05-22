@@ -15,7 +15,6 @@ import com.badoo.ribs.template.node.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.node.foo_bar.mapper.StateToViewModel
 import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToWish
-import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
 internal class FooBarInteractor(

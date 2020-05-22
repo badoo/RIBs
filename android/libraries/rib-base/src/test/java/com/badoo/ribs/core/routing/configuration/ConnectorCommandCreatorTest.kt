@@ -253,10 +253,8 @@ class ConnectorCommandCreatorTest {
         )
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Add(
-                Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1))
-            ),
-            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1)))
+            Add(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration)))),
+            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration))))
         )
         assertEquals(expected, actual)
     }
@@ -275,14 +273,10 @@ class ConnectorCommandCreatorTest {
         )
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Add(
-                Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1))
-            ),
-            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1))),
-            Add(
-                Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1 ,Configuration.O2))
-            ),
-            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1 ,Configuration.O2)))
+            Add(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration)))),
+            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration)))),
+            Add(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration)))),
+            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration))))
         )
         assertEquals(expected, actual)
     }
@@ -301,10 +295,8 @@ class ConnectorCommandCreatorTest {
         )
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Add(
-                Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2))
-            ),
-            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2)))
+            Add(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration)))),
+            Activate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration))))
         )
         assertEquals(expected, actual)
     }
@@ -323,8 +315,8 @@ class ConnectorCommandCreatorTest {
         )
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2))),
-            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2)))
+            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration)))),
+            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration))))
         )
         assertEquals(expected, actual)
     }
@@ -343,10 +335,10 @@ class ConnectorCommandCreatorTest {
         )
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2))),
-            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2))),
-            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1))),
-            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1)))
+            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration)))),
+            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration)))),
+            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration)))),
+            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration))))
         )
         assertEquals(expected, actual)
     }
@@ -364,11 +356,11 @@ class ConnectorCommandCreatorTest {
         )
         val actual = ConfigurationCommandCreator.diff(oldStack, newStack)
         val expected = listOf<ConfigurationCommand<Configuration>>(
-            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2))),
-            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1))),
+            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration)))),
+            Deactivate(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration)))),
             Deactivate(Content(2, Routing(C3 as Configuration))),
-            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Configuration.O2))),
-            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Configuration.O1))),
+            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 1, Routing(Configuration.O2 as Configuration)))),
+            Remove(Overlay(Overlay.Key(Content(2, Routing(C3 as Configuration)), 0, Routing(Configuration.O1 as Configuration)))),
             Remove(Content(2, Routing(C3 as Configuration))),
             Activate(Content(1, Routing(C2 as Configuration)))
         )
@@ -391,8 +383,8 @@ class ConnectorCommandCreatorTest {
             Deactivate<Configuration>(Content(2, Routing(C3 as Configuration))),
             Remove<Configuration>(Content(2, Routing(C3 as Configuration))),
             Activate<Configuration>(Content(1, Routing(C2 as Configuration))),
-            Activate<Configuration>(Overlay(Overlay.Key(Content(1, Routing(C2 as Configuration)), 0, Configuration.O1))),
-            Activate<Configuration>(Overlay(Overlay.Key(Content(1, Routing(C2 as Configuration)), 1, Configuration.O2)))
+            Activate<Configuration>(Overlay(Overlay.Key(Content(1, Routing(C2 as Configuration)), 0, Routing(Configuration.O1 as Configuration)))),
+            Activate<Configuration>(Overlay(Overlay.Key(Content(1, Routing(C2 as Configuration)), 1, Routing(Configuration.O2 as Configuration))))
         )
         assertEquals(expected, actual)
     }
@@ -407,10 +399,10 @@ class ConnectorCommandCreatorTest {
         }
 
     private fun backStackWithOverlays(vararg configurations: Pair<Configuration, List<Configuration>>): List<RoutingHistoryElement<Configuration>> =
-        configurations.map {
+        configurations.map { pair ->
             RoutingHistoryElement(
-                routing = Routing(configuration = it.first),
-                overlays = it.second
+                routing = Routing(configuration = pair.first),
+                overlays = pair.second.map { Routing(it) }
             )
         }
 }

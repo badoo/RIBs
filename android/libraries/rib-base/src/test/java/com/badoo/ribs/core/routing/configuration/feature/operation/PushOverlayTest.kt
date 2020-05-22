@@ -18,7 +18,9 @@ class PushOverlayTest {
         val backStack: BackStack<Configuration> = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
-                overlays = listOf(O1 as Configuration)
+                overlays = listOf(
+                    Routing(O1 as Configuration)
+                )
             )
         )
         pushOverlay = PushOverlay(O1)
@@ -33,7 +35,9 @@ class PushOverlayTest {
         val backStack = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
-                overlays = listOf(O1 as Configuration)
+                overlays = listOf(
+                    Routing(O1 as Configuration)
+                )
             )
         )
         pushOverlay = PushOverlay(O2)
@@ -48,7 +52,9 @@ class PushOverlayTest {
         val backStack = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
-                overlays = listOf(O1 as Configuration)
+                overlays = listOf(
+                    Routing(O1 as Configuration)
+                )
             )
         )
         pushOverlay = PushOverlay(O2)
@@ -59,8 +65,8 @@ class PushOverlayTest {
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
                 overlays = listOf(
-                    O1 as Configuration,
-                    O2 as Configuration
+                    Routing(O1 as Configuration),
+                    Routing(O2 as Configuration)
                 )
             )
         )

@@ -27,7 +27,9 @@ class PushTest {
         val backStack = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
-                overlays = listOf(C2 as Configuration)
+                overlays = listOf(
+                    Routing(Configuration.O2 as Configuration)
+                )
             )
         )
         push = Push(C1)

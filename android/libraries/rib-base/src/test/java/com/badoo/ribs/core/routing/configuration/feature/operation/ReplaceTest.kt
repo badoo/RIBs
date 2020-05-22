@@ -28,7 +28,9 @@ class ReplaceTest {
         val backStack = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
-                overlays = listOf(C1 as Configuration)
+                overlays = listOf(
+                    Routing(Configuration.O2 as Configuration)
+                )
             )
         )
         replace = Replace(C1)

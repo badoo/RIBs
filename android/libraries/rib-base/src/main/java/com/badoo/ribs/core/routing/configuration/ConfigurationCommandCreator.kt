@@ -10,6 +10,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Overlay.Key
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import java.lang.Math.min
 
@@ -123,26 +124,26 @@ internal object ConfigurationCommandCreator {
         }
 
     private fun <C : Parcelable> RoutingHistoryElement<C>.addAllOverlays(content: Content<C>): List<ConfigurationCommand<C>> =
-        overlays.mapIndexed { overlayIndex, overlayConfiguration ->
-            Add(Overlay(Key(content, overlayIndex, overlayConfiguration)))
+        overlays.mapIndexed { overlayIndex, overlayRouting ->
+            Add(Overlay(Key(content, overlayIndex, overlayRouting)))
         }
 
     private fun <C : Parcelable> RoutingHistoryElement<C>.activateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
-        overlays.mapIndexed { overlayIndex, overlayConfiguration ->
-            Activate<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
+        overlays.mapIndexed { overlayIndex, overlayRouting ->
+            Activate<C>(Overlay(Key(contentKey, overlayIndex, overlayRouting)))
         }
 
     private fun <C : Parcelable> RoutingHistoryElement<C>.deactivateAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
         overlays
-            .mapIndexed { overlayIndex, overlayConfiguration ->
-                Deactivate<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
+            .mapIndexed { overlayIndex, overlayRouting ->
+                Deactivate<C>(Overlay(Key(contentKey, overlayIndex, overlayRouting)))
             }
             .reversed()
 
     private fun <C : Parcelable> RoutingHistoryElement<C>.removeAllOverlays(contentKey: Content<C>): List<ConfigurationCommand<C>> =
         overlays
-            .mapIndexed { overlayIndex, overlayConfiguration ->
-                Remove<C>(Overlay(Key(contentKey, overlayIndex, overlayConfiguration)))
+            .mapIndexed { overlayIndex, overlayRouting ->
+                Remove<C>(Overlay(Key(contentKey, overlayIndex, overlayRouting)))
             }
             .reversed()
 
@@ -202,7 +203,7 @@ internal object ConfigurationCommandCreator {
             }
             .flatten()
 
-    private fun <C : Parcelable> RoutingHistoryElement<C>.overlayAt(index: Int): C? =
+    private fun <C : Parcelable> RoutingHistoryElement<C>.overlayAt(index: Int): Routing<C>? =
         overlays.getOrNull(index)
 }
 

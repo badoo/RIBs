@@ -30,7 +30,7 @@ class NewRootTest {
         val backStack = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
-                overlays = listOf(O1 as Configuration)
+                overlays = listOf(Routing(O1 as Configuration))
             )
 
         )

@@ -36,32 +36,31 @@ import kotlinx.android.parcel.Parcelize
 //  ConfigurationKey class is then not needed, simply use identifier as key in the pool
 sealed class ConfigurationKey<C : Parcelable> : Parcelable {
 
-    abstract val configuration: Routing<C>
+    abstract val routing: Routing<C>
 
     @Parcelize
     data class Permanent<C : Parcelable>(
         val index: Int, // TODO remove, not needed, there's identifier in RoutingElement
-        override val configuration: Routing<C>
+        override val routing: Routing<C>
     ) : ConfigurationKey<C>()
 
     @Parcelize
     data class Content<C : Parcelable>(
         val index: Int, // TODO remove, not needed, there's identifier in RoutingElement
-        override val configuration: Routing<C>
+        override val routing: Routing<C>
     ) : ConfigurationKey<C>()
 
     @Parcelize
     data class Overlay<C : Parcelable>(val key: Key<C>) : ConfigurationKey<C>() {
 
-        override val configuration: Routing<C>
-            get() = Routing(key.configuration) // FIXME
+        override val routing: Routing<C>
+            get() = key.routing
 
         @Parcelize
         data class Key<C : Parcelable>(
             val contentKey: Content<C>,
             val index: Int,
-            val configuration: C
-//            val configuration: RoutingElement<C>
+            val routing: Routing<C>
         ) : Parcelable
     }
 

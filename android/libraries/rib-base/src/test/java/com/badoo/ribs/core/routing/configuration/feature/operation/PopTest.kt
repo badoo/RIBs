@@ -28,7 +28,9 @@ class PopTest {
         val backStack = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
-                overlays = listOf(O1 as Configuration)
+                overlays = listOf(
+                    Routing(O1 as Configuration)
+                )
             )
         )
 
@@ -69,8 +71,8 @@ class PopTest {
             RoutingHistoryElement(
                 routing = Routing(C2 as Configuration),
                 overlays = listOf(
-                    O1  as Configuration,
-                    O2 as Configuration
+                    Routing(O1 as Configuration),
+                    Routing(O2 as Configuration)
                 )
             )
         )
@@ -83,7 +85,9 @@ class PopTest {
             ),
             RoutingHistoryElement(
                 routing = Routing(C2 as Configuration),
-                overlays = listOf(O1 as Configuration)
+                overlays = listOf(
+                    Routing(O1 as Configuration)
+                )
             )
         )
     }

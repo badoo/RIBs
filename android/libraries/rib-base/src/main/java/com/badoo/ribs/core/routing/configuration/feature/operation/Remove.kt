@@ -9,7 +9,12 @@ class Remove<C : Parcelable>(
 ) : BackStackOperation<C> {
 
     override fun invoke(backStack: BackStack<C>): BackStack<C> {
-        val toRemove = backStack.find { it.routing.identifier == identifier }
+        val toRemove = backStack.find {
+            it.routing.identifier == identifier
+            // FIXME try to remove overlay with identifier
+//                ||
+//                it.overlays.find { it.identifier == identifier }
+        }
 
         return toRemove?.let { backStack.minus(it) } ?: backStack
     }

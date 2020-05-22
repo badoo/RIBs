@@ -8,12 +8,12 @@ import java.io.Serializable
 data class Routing<C : Parcelable>(
     val configuration: C,
     val identifier: Identifier = Identifier(), // TODO consider Any // FIXME no default
-    val meta: Serializable = 0
+    val meta: Serializable = 0 // FIXME Parcelable
 
 ) : Parcelable {
 
     @Parcelize
     data class Identifier(
-        val id: Serializable = 0 // FIXME no default
+        val id: Serializable = 0 // FIXME no default // FIXME Parcelable
     ) : Parcelable
 }

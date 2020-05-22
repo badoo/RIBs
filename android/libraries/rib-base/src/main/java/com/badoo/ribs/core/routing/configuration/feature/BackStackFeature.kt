@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
+import android.util.Log
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Bootstrapper
@@ -29,6 +30,7 @@ import io.reactivex.Observable.just
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.functions.Consumer
+import java.io.Serializable
 
 private val timeCapsuleKey = BackStackFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(): BackStackFeatureState<C> =
@@ -145,20 +147,47 @@ class BackStackFeature<C : Parcelable>(
 
         private fun BackStackFeatureState<C>.apply(effect: Effect<C>): BackStackFeatureState<C> = when (effect) {
             is Effect.Applied -> {
+                val updated = effect
+                    .backStackOperation.invoke(backStack)
+                    .applyBackStackMaintenance()
+                
                 copy(
-                    backStack = effect
-                        .backStackOperation.invoke(backStack)
-                        .activateLastElement()
+                    backStack = updated
                 )
             }
         }
 
-        private fun BackStack<C>.activateLastElement(): BackStack<C> =
+        // TODO reconsider if identifier maintenance should be done as per operation
+        // TODO add unit test checking id uniqueness
+        private fun BackStack<C>.applyBackStackMaintenance(): BackStack<C> =
             mapIndexed { index, element ->
                 element.copy(
+                    routing = element.routing.copy(
+                        identifier = Routing.Identifier(
+                            id = ContentType.Content(
+                                idx = index
+                            )
+                        )
+                    ),
+                    overlays = element.overlays.mapIndexed { overlayIndex, overlay ->
+                        overlay.copy(
+                            identifier = Routing.Identifier(
+                                id = ContentType.Overlay(
+                                    content = ContentType.Content(index),
+                                    idx = overlayIndex
+                                )
+                            )
+                        )
+                    },
                     activation = if (index == lastIndex) ACTIVE else INACTIVE
                 )
             }
+
+        // FIXME replace with original ConfigurationKey
+        sealed class ContentType : Serializable {
+            data class Content(val idx: Int): ContentType() // FIXME add configuration
+            data class Overlay(val content: Content, val idx: Int): ContentType()
+        }
     }
 
     fun popBackStack(): Boolean =

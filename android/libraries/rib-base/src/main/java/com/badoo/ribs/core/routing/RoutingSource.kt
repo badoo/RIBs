@@ -16,10 +16,12 @@ interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
     SubtreeBackPressHandler {
 
-    operator fun plus(other: RoutingSource<C>): RoutingSource<C> {
+    operator fun plus(second: RoutingSource<C>): RoutingSource<C> {
+        val first = this
+
         val combined = Observable.combineLatest(
             this,
-            other,
+            second,
             BiFunction<RoutingHistory<C>, RoutingHistory<C>, RoutingHistory<C>> { source1, source2 ->
                 object : RoutingHistory<C> {
                     override fun iterator(): Iterator<RoutingHistoryElement<C>> =
@@ -34,9 +36,15 @@ interface RoutingSource<C : Parcelable> :
             }
 
             override fun remove(identifier: Routing.Identifier) {
-                this@RoutingSource.remove(identifier)
-                other.remove(identifier)
+                first.remove(identifier)
+                second.remove(identifier)
             }
+
+            override fun handleBackPressFirst(): Boolean =
+                first.handleBackPressFirst() || second.handleBackPressFirst()
+
+            override fun handleBackPressFallback(): Boolean =
+                first.handleBackPressFallback() || second.handleBackPressFallback()
         }
     }
 

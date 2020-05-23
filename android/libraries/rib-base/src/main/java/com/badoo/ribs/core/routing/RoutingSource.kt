@@ -5,6 +5,7 @@ import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
@@ -18,7 +19,14 @@ interface RoutingSource<C : Parcelable> :
     class Permanent<C : Parcelable>(permanents: Set<C>) : RoutingSource<C> {
 
         private val routingElements =
-            permanents.map { RoutingHistoryElement(Routing(it)) }
+            permanents.mapIndexed { idx, configuration ->
+                RoutingHistoryElement(
+                    activation = ACTIVE,
+                    routing = Routing(
+                        configuration = configuration,
+                        identifier = Routing.Identifier("Permanent $idx")
+                    )
+            ) }
 
         private val permanentHistory =
             RoutingHistory.from(routingElements)

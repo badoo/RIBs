@@ -30,7 +30,6 @@ import io.reactivex.Observable.just
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.functions.Consumer
-import java.io.Serializable
 
 private val timeCapsuleKey = BackStackFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(): BackStackFeatureState<C> =
@@ -170,9 +169,7 @@ class BackStackFeature<C : Parcelable>(
         private fun routingWithCorrectId(element: RoutingHistoryElement<C>, index: Int): Routing<C> =
             element.routing.copy(
                 identifier = Routing.Identifier(
-                    id = ContentType.Content(
-                        idx = index
-                    )
+                    id = "Back stack ${System.identityHashCode(this)} #$index"
                 )
             )
 
@@ -180,19 +177,10 @@ class BackStackFeature<C : Parcelable>(
             element.overlays.mapIndexed { overlayIndex, overlay ->
                 overlay.copy(
                     identifier = Routing.Identifier(
-                        id = ContentType.Overlay(
-                            content = ContentType.Content(index),
-                            idx = overlayIndex
-                        )
+                        id = "Back stack ${System.identityHashCode(this)} overlay #$index.$overlayIndex"
                     )
                 )
             }
-
-        // FIXME replace with original ConfigurationKey
-        sealed class ContentType : Serializable {
-            data class Content(val idx: Int): ContentType() // FIXME add configuration
-            data class Overlay(val content: Content, val idx: Int): ContentType()
-        }
     }
 
     fun popBackStack(): Boolean =

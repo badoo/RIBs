@@ -14,6 +14,17 @@ interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
     SubtreeBackPressHandler {
 
+    operator fun plus(other: RoutingSource<C>): RoutingSource<C> {
+        val merged = Observable.merge(this, other)
+
+        return object : RoutingSource<C>,  ObservableSource<RoutingHistory<C>> by merged{
+            override fun remove(identifier: Routing.Identifier) {
+                this@RoutingSource.remove(identifier)
+                other.remove(identifier)
+            }
+        }
+    }
+
     fun remove(identifier: Routing.Identifier)
 
     class Permanent<C : Parcelable>(permanents: Iterable<C>) : RoutingSource<C> {

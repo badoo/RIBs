@@ -44,14 +44,13 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  * the view is available.
  */
 internal class ConfigurationFeature<C : Parcelable>(
-    initialConfigurations: List<C>, // FIXME once Permanent is used as RoutingSource, this can be removed
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: ConfigurationResolver<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
 ) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
-    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), initialConfigurations),
+    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>()),
     actor = ConfigurationFeatureActor(
         resolver,
         parentNode,
@@ -68,47 +67,47 @@ internal class ConfigurationFeature<C : Parcelable>(
             class WakeUp<C : Parcelable>: Global<C>()
             class Sleep<C : Parcelable>: Global<C>()
             class SaveInstanceState<C : Parcelable>(
-                val updatedElements: Map<ConfigurationKey<C>, Resolved<C>>
+                val updatedElements: Map<Routing<C>, Resolved<C>>
             ): Global<C>()
         }
 
         sealed class Individual<C : Parcelable>: Effect<C>() {
-            abstract val key: ConfigurationKey<C>
+            abstract val key: Routing<C>
 
             class Added<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Removed<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Activated<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Deactivated<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class PendingDeactivateTrue<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class PendingDeactivateFalse<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class PendingRemovalTrue<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class PendingRemovalFalse<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
         }
 
@@ -121,36 +120,13 @@ internal class ConfigurationFeature<C : Parcelable>(
         ) : Effect<C>()
     }
 
-    /**
-     * Automatically calls [Add] + [Activate] on all [initialConfigurations]
-     */
     class BootStrapperImpl<C : Parcelable>(
-        private val initialState: WorkingState<C>,
-        private val initialConfigurations: List<C>
+        private val initialState: WorkingState<C>
     ) : Bootstrapper<Transaction<C>> {
 
         override fun invoke(): Observable<Transaction<C>> =
             when {
-                initialState.pool.isEmpty() -> fromIterable(
-                    initialConfigurations
-                        .mapIndexed { index, configuration ->
-                            val key = ConfigurationKey.Permanent(
-                                index,
-                                Routing(
-                                    configuration
-                                )
-                            )
-
-                            Transaction.ListOfCommands(
-                                descriptor = TransitionDescriptor.None,
-                                commands = listOf(
-                                    Add(key),
-                                    Activate(key)
-                                )
-                            )
-                        }
-                )
-                else -> Observable.just(
+                initialState.pool.isNotEmpty() -> Observable.just(
                     Transaction.ListOfCommands(
                         descriptor = TransitionDescriptor.None,
                         commands = initialState.pool
@@ -158,6 +134,7 @@ internal class ConfigurationFeature<C : Parcelable>(
                             .map { Add(it.key) }
                     )
                 )
+                else -> Observable.empty()
             }
     }
 

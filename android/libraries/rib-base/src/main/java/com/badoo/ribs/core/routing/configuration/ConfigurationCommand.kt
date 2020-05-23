@@ -11,6 +11,7 @@ import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.configuration.action.single.RemoveAction
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionFactory
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionPair
+import com.badoo.ribs.core.routing.history.Routing
 
 /**
  * Represents a command to change one or more [ConfigurationContext] elements.
@@ -22,11 +23,11 @@ import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionP
  * [Node] manipulations) are to be found in the associated Actions created by [ActionFactory].
  */
 internal sealed class ConfigurationCommand<C : Parcelable> {
-    abstract val key: ConfigurationKey<C>
+    abstract val key: Routing<C>
     abstract val actionFactory: ReversibleActionFactory
 
     data class Add<C : Parcelable>(
-        override val key: ConfigurationKey<C>
+        override val key: Routing<C>
     ) : ConfigurationCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
@@ -36,7 +37,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
     }
 
     data class Remove<C : Parcelable>(
-        override val key: ConfigurationKey<C>
+        override val key: Routing<C>
     ) : ConfigurationCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
@@ -46,7 +47,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
     }
 
     data class Activate<C : Parcelable>(
-        override val key: ConfigurationKey<C>
+        override val key: Routing<C>
     ) : ConfigurationCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =
@@ -58,7 +59,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
     }
 
     data class Deactivate<C : Parcelable>(
-        override val key: ConfigurationKey<C>
+        override val key: Routing<C>
     ) : ConfigurationCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =

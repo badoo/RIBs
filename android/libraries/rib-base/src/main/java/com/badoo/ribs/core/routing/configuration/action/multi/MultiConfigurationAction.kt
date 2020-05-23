@@ -3,10 +3,10 @@ package com.badoo.ribs.core.routing.configuration.action.multi
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.Pool
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
+import com.badoo.ribs.core.routing.history.Routing
 
 /**
  * Represents an action that affects multiple configurations when executed.
@@ -27,7 +27,7 @@ internal interface MultiConfigurationAction<C : Parcelable> {
     fun Pool<C>.filterByActivationState(
         filterActivationState: ConfigurationContext.ActivationState,
         params: TransactionExecutionParams<C>,
-        block: (ConfigurationKey<C>, Resolved<C>) -> Unit
+        block: (Routing<C>, Resolved<C>) -> Unit
     ) {
         this
             .filter { it.value.activationState == filterActivationState }

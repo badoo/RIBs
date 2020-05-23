@@ -8,6 +8,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.history.Routing
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -15,7 +16,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 internal data class SavedState<C : Parcelable>(
-    val pool: Map<ConfigurationKey<C>, Unresolved<C>>
+    val pool: Map<Routing<C>, Unresolved<C>>
 ) : Parcelable {
 
     /**
@@ -37,8 +38,8 @@ internal data class SavedState<C : Parcelable>(
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
     val pool: Pool<C> = poolOf(),
-    val pendingDeactivate: Set<ConfigurationKey<C>> = setOf(),
-    val pendingRemoval: Set<ConfigurationKey<C>> = setOf(),
+    val pendingDeactivate: Set<Routing<C>> = setOf(),
+    val pendingRemoval: Set<Routing<C>> = setOf(),
     val ongoingTransitions: List<OngoingTransition<C>> = emptyList()
 ) {
     /**

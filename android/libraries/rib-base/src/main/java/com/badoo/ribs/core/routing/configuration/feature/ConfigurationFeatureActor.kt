@@ -162,7 +162,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
                 defaultElements[command.key] = ConfigurationContext.Unresolved(
                     activationState = ConfigurationContext.ActivationState.INACTIVE,
-                    routing = command.key.routing
+                    routing = command.key
                 )
             }
         }

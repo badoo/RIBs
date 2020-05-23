@@ -10,6 +10,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
@@ -20,7 +21,7 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class ActivateAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: ConfigurationKey<C>,
+    private val key: Routing<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
     private val actionableNodes: List<Node<*>>,

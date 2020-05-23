@@ -18,7 +18,10 @@
 //import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 //import org.junit.Assert.assertEquals
 //import org.junit.Test
-//
+
+// FIXME the tests are right, but should be updated:
+//  - ConfigurationKey -> Routing
+//  - Proper identifiers
 //class DifferTest {
 //
 //    @Test
@@ -422,8 +425,12 @@
 //                    routing = Routing(
 //                        configuration = it.first
 //                    ),
-//                    overlays = it.second
+//                    overlays = it.second.map { overlayConfiguration ->
+//                        Routing(
+//                            configuration = overlayConfiguration
+//                        )
+//                    }
 //                )
 //            }
 //        )
-//}
+}

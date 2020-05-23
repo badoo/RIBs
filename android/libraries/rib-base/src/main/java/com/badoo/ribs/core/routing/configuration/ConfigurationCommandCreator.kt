@@ -12,6 +12,7 @@ import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import java.lang.Math.min
 
 
+@Deprecated("Left here for comparison only. Use RoutingHistoryDiffer instead")
 internal object ConfigurationCommandCreator {
 
     /**
@@ -19,6 +20,7 @@ internal object ConfigurationCommandCreator {
      * of [C] configurations representing the back stack), and translates the diff to
      * a list of [ConfigurationCommand]s that represent getting from the old state to the new one.
      */
+    @Deprecated("Left here for comparison only. Use RoutingHistoryDiffer.diff instead")
     fun <C : Parcelable> diff(
         oldStack: BackStack<C>,
         newStack: BackStack<C>

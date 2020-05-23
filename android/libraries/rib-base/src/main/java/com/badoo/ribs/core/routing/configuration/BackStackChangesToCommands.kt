@@ -6,6 +6,7 @@ import com.badoo.ribs.core.routing.configuration.feature.BackStackFeatureState
 import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
+import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer
 import com.badoo.ribs.util.RIBs
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -29,10 +30,9 @@ internal fun <C : Parcelable> ObservableSource<RoutingHistory<C>>.toCommands(): 
             current.ensureUniqueIds()
 
             val commands =
-                ConfigurationCommandCreator.diff(
-                    //  Note: Next PR will add new differ algorithm and this legacy list-based approach will be removed
-                    previous.toList(),
-                    current.toList()
+                RoutingHistoryDiffer.diff(
+                    previous,
+                    current
                 )
             when {
                 commands.isNotEmpty() -> Observable.just(
@@ -41,7 +41,7 @@ internal fun <C : Parcelable> ObservableSource<RoutingHistory<C>>.toCommands(): 
                             from = previous,
                             to = current
                         ),
-                        commands = commands
+                        commands = commands.toList() // TODO consider to rename ListOfCommands to SetOfCommands?
                     )
                 )
                 else -> Observable.empty()

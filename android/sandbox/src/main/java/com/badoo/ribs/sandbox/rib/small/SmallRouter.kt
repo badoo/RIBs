@@ -22,8 +22,7 @@ class SmallRouter(
     private val portalOverlayTestBuilder: PortalOverlayTestBuilder
 ): Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource,
-    permanentParts = emptyList()
+    routingSource = routingSource
 ) {
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {

@@ -14,20 +14,19 @@ import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class Router<C : Parcelable>(
     buildParams: BuildParams<*>,
     protected val routingSource: RoutingSource<C>,
-    private val permanentParts: List<C> = emptyList(), // FIXME as RoutingSource.Permanent in next version
     private val transitionHandler: TransitionHandler<C>? = null
 ) : ConfigurationResolver<C>,
     NodeAware,
@@ -50,7 +49,6 @@ abstract class Router<C : Parcelable>(
 
     private fun initFeatures(node: Node<*>) {
         configurationFeature = ConfigurationFeature(
-            initialConfigurations = permanentParts,
             timeCapsule = timeCapsule,
             resolver = this,
             parentNode = node,
@@ -84,6 +82,6 @@ abstract class Router<C : Parcelable>(
     }
 
     // FIXME this shouldn't be here
-    internal fun getNodes(configurationKey: ConfigurationKey<C>): List<Node<*>>? =
-        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
+//    internal fun getNodes(configurationKey: Routing<C>): List<Node<*>>? =
+//        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
 }

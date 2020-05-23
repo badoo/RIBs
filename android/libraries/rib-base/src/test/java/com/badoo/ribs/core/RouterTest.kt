@@ -53,8 +53,7 @@ class RouterTest {
             routingActionForC5 = routingActionForC5,
             routingActionForO1 = mock(),
             routingActionForO2 = mock(),
-            routingActionForO3 = mock(),
-            permanentParts = listOf()
+            routingActionForO3 = mock()
         )
 
         node = mock(defaultAnswer = Answers.RETURNS_MOCKS)

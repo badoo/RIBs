@@ -4,15 +4,14 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.history.Routing
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
     buildParams: BuildParams<Nothing?> = testBuildParams(),
     initialConfiguration: Configuration = Configuration.C1,
-    permanentParts: List<Nothing> = emptyList(),
     private val routingActionForC1: RoutingAction = mock(),
     private val routingActionForC2: RoutingAction = mock(),
     private val routingActionForC3: RoutingAction = mock(),
@@ -27,8 +26,7 @@ class TestRouter(
     routingSource = BackStackFeature(
         buildParams = buildParams,
         initialConfiguration = initialConfiguration
-    ),
-    permanentParts = permanentParts
+    )
 ) {
 
     sealed class Configuration : Parcelable {

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.RoutingSource.Permanent.Companion.permanent
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
@@ -17,9 +18,9 @@ import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
 import com.jakewharton.rxrelay2.PublishRelay
 import kotlinx.android.parcel.Parcelize
 
@@ -32,11 +33,8 @@ class SwitcherRouter internal constructor(
     private val dialogToTestOverlay: DialogToTestOverlay
 ): Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource,
-    transitionHandler = transitionHandler,
-    permanentParts = listOf(
-        Permanent.Menu
-    )
+    routingSource = routingSource + permanent(Permanent.Menu),
+    transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {

@@ -20,8 +20,7 @@ class FooBarRouter internal constructor(
 ): Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,
-    transitionHandler = transitionHandler,
-    permanentParts = emptyList()
+    transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration()

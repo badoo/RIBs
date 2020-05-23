@@ -1,7 +1,6 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
-import android.util.Log
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Bootstrapper
@@ -22,6 +21,7 @@ import com.badoo.ribs.core.routing.configuration.feature.operation.canPopOverlay
 import com.badoo.ribs.core.routing.configuration.feature.operation.pop
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import io.reactivex.Observable
@@ -78,7 +78,7 @@ class BackStackFeature<C : Parcelable>(
             .startWith(initialConfiguration)
 
     constructor(
-        initialConfiguration: C, // FIXME this should be Routing<C>
+        initialConfiguration: C, // FIXME this should be RoutingHistoryElement<C>
         buildParams: BuildParams<*>
     ) : this(
         initialConfiguration,
@@ -150,36 +150,41 @@ class BackStackFeature<C : Parcelable>(
                 val updated = effect
                     .backStackOperation.invoke(backStack)
                     .applyBackStackMaintenance()
-                
+
                 copy(
                     backStack = updated
                 )
             }
         }
 
-        // TODO reconsider if identifier maintenance should be done as per operation
         // TODO add unit test checking id uniqueness
         private fun BackStack<C>.applyBackStackMaintenance(): BackStack<C> =
             mapIndexed { index, element ->
                 element.copy(
-                    routing = element.routing.copy(
-                        identifier = Routing.Identifier(
-                            id = ContentType.Content(
-                                idx = index
-                            )
+                    activation = if (index == lastIndex) ACTIVE else INACTIVE,
+                    routing = routingWithCorrectId(element, index),
+                    overlays = overlaysWithCorrectId(element, index)
+                )
+            }
+
+        private fun routingWithCorrectId(element: RoutingHistoryElement<C>, index: Int): Routing<C> =
+            element.routing.copy(
+                identifier = Routing.Identifier(
+                    id = ContentType.Content(
+                        idx = index
+                    )
+                )
+            )
+
+        private fun overlaysWithCorrectId(element: RoutingHistoryElement<C>, index: Int): List<Routing<C>> =
+            element.overlays.mapIndexed { overlayIndex, overlay ->
+                overlay.copy(
+                    identifier = Routing.Identifier(
+                        id = ContentType.Overlay(
+                            content = ContentType.Content(index),
+                            idx = overlayIndex
                         )
-                    ),
-                    overlays = element.overlays.mapIndexed { overlayIndex, overlay ->
-                        overlay.copy(
-                            identifier = Routing.Identifier(
-                                id = ContentType.Overlay(
-                                    content = ContentType.Content(index),
-                                    idx = overlayIndex
-                                )
-                            )
-                        )
-                    },
-                    activation = if (index == lastIndex) ACTIVE else INACTIVE
+                    )
                 )
             }
 

@@ -70,6 +70,8 @@ dependencies {
     implementation deps.retrofit.okhttpLoggingInterceptor
 
     testImplementation deps.test.junit
+    testImplementation deps.test.mockitoKotlin
+    testImplementation deps.test.assertj
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner

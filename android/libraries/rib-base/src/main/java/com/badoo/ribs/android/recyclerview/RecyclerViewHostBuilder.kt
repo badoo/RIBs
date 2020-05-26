@@ -2,11 +2,13 @@ package com.badoo.ribs.android.recyclerview
 
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
+import com.badoo.ribs.core.ExperimentalApi
 import com.badoo.ribs.core.RouterByDelegate
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
 import com.badoo.ribs.core.routing.RoutingSource
 
+@ExperimentalApi
 class RecyclerViewHostBuilder<T : Parcelable>(
     private val dependency: RecyclerViewHost.Dependency<T>
 ) : SimpleBuilder<RecyclerViewHost<T>>() {
@@ -15,7 +17,9 @@ class RecyclerViewHostBuilder<T : Parcelable>(
     override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHost<T> {
         val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
-        val routingSource = RoutingSource.Set<T>()
+        val routingSource = RoutingSource.Set<T>(
+            allowRepeatingConfigurations = true
+        )
 
         val feature = RecyclerViewHostFeature(
             timeCapsule = timeCapsule,
@@ -31,13 +35,15 @@ class RecyclerViewHostBuilder<T : Parcelable>(
         val adapter = Adapter(
             hostingStrategy = dependency.hostingStrategy(),
             initialEntries = feature.state.items,
-            router = router,
+            routingSource = routingSource,
+            feature = feature,
             viewHolderLayoutParams = dependency.viewHolderLayoutParams()
         )
 
         val interactor = RecyclerViewHostInteractor(
             buildParams = buildParams,
             input = dependency.recyclerViewHostInput(),
+            router = router,
             feature = feature,
             adapter = adapter
         )

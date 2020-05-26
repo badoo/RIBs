@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
@@ -21,9 +21,10 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class ActivateAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: Routing<C>,
+    private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
+    private val callbacks: ActionExecutionCallbacks<C>,
     private val actionableNodes: List<Node<*>>,
     private val isBackStackOperation: Boolean,
     private val globalActivationLevel: ConfigurationContext.ActivationState
@@ -36,9 +37,10 @@ internal class ActivateAction<C : Parcelable>(
         ): Action<C> =
             ActivateAction(
                 emitter = params.transactionExecutionParams.emitter,
-                key = params.key,
+                routing = params.routing,
                 item = params.item,
                 parentNode = params.transactionExecutionParams.parentNode,
+                callbacks = params.callbacks,
                 actionableNodes = actionableNodes,
                 isBackStackOperation = params.isBackStackOperation,
                 globalActivationLevel = params.transactionExecutionParams.globalActivationLevel
@@ -59,8 +61,9 @@ internal class ActivateAction<C : Parcelable>(
         // The least we can do is to mark correct state, this is regardless of executing transitions
         if (!itemAlreadyActivated) {
             emitter.onNext(
-                Effect.Individual.Activated(key, item.copy(activationState = globalActivationLevel))
+                Effect.Individual.Activated(routing, item.copy(activationState = globalActivationLevel))
             )
+            callbacks.onActivated(routing, actionableNodes)
         }
 
         if (canExecute) {
@@ -93,7 +96,7 @@ internal class ActivateAction<C : Parcelable>(
             item.routingAction.execute()
 
             emitter.onNext(
-                Effect.Individual.PendingDeactivateFalse(key)
+                Effect.Individual.PendingDeactivateFalse(routing)
             )
         }
     }

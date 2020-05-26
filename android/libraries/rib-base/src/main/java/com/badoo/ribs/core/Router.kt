@@ -18,10 +18,15 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay2.Relay
+import io.reactivex.ObservableSource
+import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class Router<C : Parcelable>(
@@ -33,11 +38,27 @@ abstract class Router<C : Parcelable>(
     NodeLifecycleAware,
     ViewLifecycleAware,
     SavesInstanceState,
-    SubtreeBackPressHandler by routingSource {
+    SubtreeBackPressHandler by routingSource,
+    ActionExecutionCallbacks<C>,
+    ObservableSource<Router.Event<C>> {
+
+    @ExperimentalApi
+    sealed class Event<C : Parcelable> {
+        data class Activated<C : Parcelable>(
+            val routing: Routing<C>,
+            val nodes: List<Node<*>>
+        ) : Event<C>()
+
+        data class Deactivated<C : Parcelable>(
+            val routing: Routing<C>,
+            val nodes: List<Node<*>>
+        ) : Event<C>()
+    }
 
     private val binder = Binder()
     private val disposables = CompositeDisposable()
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
+    private val events: Relay<Event<C>> = PublishRelay.create()
 
     private lateinit var configurationFeature: ConfigurationFeature<C>
     override lateinit var node: Node<*>
@@ -51,6 +72,7 @@ abstract class Router<C : Parcelable>(
         configurationFeature = ConfigurationFeature(
             timeCapsule = timeCapsule,
             resolver = this,
+            callbacks = this,
             parentNode = node,
             transitionHandler = transitionHandler
         )
@@ -81,7 +103,21 @@ abstract class Router<C : Parcelable>(
         configurationFeature.dispose()
     }
 
-    // FIXME this shouldn't be here
-//    internal fun getNodes(configurationKey: Routing<C>): List<Node<*>>? =
-//        (configurationFeature.state.pool[configurationKey] as? ConfigurationContext.Resolved<C>)?.nodes
+    override fun onActivated(routing: Routing<C>, nodes: List<Node<*>>) {
+        events.accept(Event.Activated(
+            routing = routing,
+            nodes = nodes
+        ))
+    }
+
+    override fun onDeactivated(routing: Routing<C>, nodes: List<Node<*>>) {
+        events.accept(Event.Deactivated(
+            routing = routing,
+            nodes = nodes
+        ))
+    }
+
+    override fun subscribe(observer: Observer<in Event<C>>) {
+        events.subscribe(observer)
+    }
 }

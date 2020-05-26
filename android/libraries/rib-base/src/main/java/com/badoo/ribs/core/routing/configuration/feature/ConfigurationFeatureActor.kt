@@ -12,6 +12,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
@@ -31,6 +32,7 @@ import io.reactivex.Observable
 @SuppressWarnings("LargeClass") // TODO extract
 internal class ConfigurationFeatureActor<C : Parcelable>(
     private val configurationResolver: ConfigurationResolver<C>,
+    private val callbacks: ActionExecutionCallbacks<C>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
@@ -208,7 +210,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 ActionExecutionParams(
                     transactionExecutionParams = params,
                     command = command,
-                    key = command.key,
+                    routing = command.key,
+                    callbacks = callbacks,
                     isBackStackOperation = commands.isBackStackOperation(command.key)
                 )
             )

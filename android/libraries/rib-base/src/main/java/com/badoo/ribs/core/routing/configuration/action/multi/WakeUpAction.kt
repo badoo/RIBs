@@ -3,6 +3,7 @@ package com.badoo.ribs.core.routing.configuration.action.multi
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.ActivateAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Global
@@ -26,11 +27,12 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
             val action = ActivateAction(
                 emitter = params.emitter,
                 item = configurationContext,
-                key = key,
+                routing = key,
                 parentNode = params.parentNode,
                 actionableNodes = configurationContext.nodes,
                 isBackStackOperation = false,
-                globalActivationLevel = params.globalActivationLevel
+                globalActivationLevel = params.globalActivationLevel,
+                callbacks = ActionExecutionCallbacks.noop() // FIXME
             )
             action.onBeforeTransition()
             action.onTransition()

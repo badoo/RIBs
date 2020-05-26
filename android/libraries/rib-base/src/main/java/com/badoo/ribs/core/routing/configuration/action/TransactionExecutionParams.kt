@@ -25,10 +25,26 @@ internal data class TransactionExecutionParams<C : Parcelable>(
 internal data class ActionExecutionParams<C : Parcelable>(
     val transactionExecutionParams: TransactionExecutionParams<C>,
     val command: ConfigurationCommand<C>,
-    val key: Routing<C>,
+    val routing: Routing<C>,
+    val callbacks: ActionExecutionCallbacks<C>,
     val isBackStackOperation: Boolean
 ) {
     val item: ConfigurationContext.Resolved<C> by lazy {
-        transactionExecutionParams.resolver.invoke(key)
+        transactionExecutionParams.resolver.invoke(routing)
+    }
+}
+
+interface ActionExecutionCallbacks<C : Parcelable> {
+    fun onActivated(routing: Routing<C>, nodes: List<Node<*>>)
+
+    fun onDeactivated(routing: Routing<C>, nodes: List<Node<*>>)
+
+    companion object {
+        // FIXME remove
+        fun <C : Parcelable> noop() = object : ActionExecutionCallbacks<C> {
+            override fun onActivated(routing: Routing<C>, nodes: List<Node<*>>) {}
+
+            override fun onDeactivated(routing: Routing<C>, nodes: List<Node<*>>) {}
+        }
     }
 }

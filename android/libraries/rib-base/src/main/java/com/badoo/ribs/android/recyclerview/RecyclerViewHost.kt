@@ -5,16 +5,16 @@ import android.os.Parcelable
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
+import com.badoo.ribs.core.ExperimentalApi
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import io.reactivex.ObservableSource
 import kotlinx.android.parcel.Parcelize
 
-/**
- * Considered experimental. Handle with care.
- */
+@ExperimentalApi
 interface RecyclerViewHost<T : Parcelable>: Rib {
 
+    @ExperimentalApi
     interface Dependency<T : Parcelable> {
         fun hostingStrategy(): HostingStrategy
         fun initialElements(): List<T>
@@ -25,6 +25,7 @@ interface RecyclerViewHost<T : Parcelable>: Rib {
         fun viewHolderLayoutParams(): FrameLayout.LayoutParams
     }
 
+    @ExperimentalApi
     enum class HostingStrategy {
         /**
          * Child RIBs get created immediately and are only destroyed along with host
@@ -38,6 +39,7 @@ interface RecyclerViewHost<T : Parcelable>: Rib {
         LAZY
     }
 
+    @ExperimentalApi
     sealed class Input<T : Parcelable> : Parcelable {
         @Parcelize
         data class Add<T : Parcelable>(val element: T): Input<T>()

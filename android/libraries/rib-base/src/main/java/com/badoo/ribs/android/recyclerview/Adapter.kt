@@ -9,17 +9,22 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGE
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
+import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.history.Routing
+import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
-import java.util.UUID
 
 internal class Adapter<T : Parcelable>(
     private val hostingStrategy: RecyclerViewHost.HostingStrategy,
     initialEntries: List<Entry<T>>? = null,
-    private val router: RecyclerViewHostRouter<T>,
+    private val routingSource: RoutingSource.Set<T>,
+    private val feature: RecyclerViewHostFeature<T>,
     private val viewHolderLayoutParams: FrameLayout.LayoutParams
 ) : RecyclerView.Adapter<Adapter.ViewHolder>(),
     Consumer<RecyclerViewHostFeature.State<T>> {
+
+    internal val routingEvents: BehaviorRelay<Router.Event<T>> = BehaviorRelay.create()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var identifier: Routing.Identifier? = null
@@ -45,7 +50,7 @@ internal class Adapter<T : Parcelable>(
 
     private fun eagerAdd(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
-            routingSource.add(entry.identifier)
+            routingSource.add(entry.element, entry.identifier)
         }
     }
 
@@ -59,19 +64,22 @@ internal class Adapter<T : Parcelable>(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entry = items[position]
         holder.identifier = entry.identifier
-//        holder.uuid = entry.uuid
     }
 
     override fun onViewAttachedToWindow(holder: ViewHolder) {
         super.onViewAttachedToWindow(holder)
         val identifier = holder.identifier!! // at this point it should be bound
+
         if (hostingStrategy == LAZY) {
-            router.add(identifier)
+            val entry = feature.state.items.find { it.identifier == identifier }!!
+            routingSource.add(entry.element, entry.identifier)
         }
         routingSource.activate(identifier)
-        router.getNodes(identifier)!!.forEach { childNode ->
-            // TODO this is needed because AttachMode.EXTERNAL
-            childNode.attachToView(holder.itemView as FrameLayout)
+
+        // TODO assert correct new event received in test
+        val lastRouting = routingEvents.value as Router.Event.Activated
+        lastRouting.nodes.forEach {
+            it.attachToView(holder.itemView as FrameLayout)
         }
     }
 
@@ -92,8 +100,9 @@ internal class Adapter<T : Parcelable>(
 
     private fun deactivate(identifier: Routing.Identifier) {
         routingSource.deactivate(identifier)
-        router.getNodes(identifier)!!.forEach { childNode ->
-            childNode.detachFromView()
+        val lastRouting = routingEvents.value as Router.Event.Deactivated
+        lastRouting.nodes.forEach {
+            it.detachFromView()
         }
     }
 }

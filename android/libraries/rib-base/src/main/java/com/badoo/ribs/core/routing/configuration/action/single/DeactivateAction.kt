@@ -6,6 +6,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
@@ -20,9 +21,10 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class DeactivateAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: Routing<C>,
+    private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
+    private val callbacks: ActionExecutionCallbacks<C>,
     private val actionableNodes: List<Node<*>>,
     private val isBackStackOperation: Boolean,
     private val targetActivationState: ActivationState = INACTIVE
@@ -34,9 +36,10 @@ internal class DeactivateAction<C : Parcelable>(
             actionableNodes: List<Node<*>>
         ): Action<C> = DeactivateAction(
             emitter = params.transactionExecutionParams.emitter,
-            key = params.key,
+            routing = params.routing,
             item = params.item,
             parentNode = params.transactionExecutionParams.parentNode,
+            callbacks = params.callbacks,
             actionableNodes = actionableNodes,
             isBackStackOperation = params.isBackStackOperation
         )
@@ -70,7 +73,7 @@ internal class DeactivateAction<C : Parcelable>(
                 it.markPendingViewDetach(true)
             }
             emitter.onNext(
-                Effect.Individual.PendingDeactivateTrue(key)
+                Effect.Individual.PendingDeactivateTrue(routing)
             )
         }
     }
@@ -83,8 +86,10 @@ internal class DeactivateAction<C : Parcelable>(
             }
 
             emitter.onNext(
-                Effect.Individual.Deactivated(key, item.copy(activationState = targetActivationState))
+                Effect.Individual.Deactivated(routing, item.copy(activationState = targetActivationState))
             )
+
+            callbacks.onActivated(routing, actionableNodes)
         }
     }
 }

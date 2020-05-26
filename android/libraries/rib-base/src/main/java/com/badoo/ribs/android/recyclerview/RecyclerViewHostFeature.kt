@@ -45,9 +45,6 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
         data class Entry<T : Parcelable>(
             val element: T,
             val identifier: Routing.Identifier
-//            ,
-//            val uuid: UUID = UUID.randomUUID(),
-//            val configurationKey: ConfigurationKey<RecyclerViewHostRouter.Configuration>
         ) : Parcelable
     }
 
@@ -75,16 +72,9 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
                 val uuid = UUID.randomUUID()
                 state.copy(
                     lastCommand = input,
-//                    nextKey = state.nextKey + 1,
                     items = state.items + State.Entry<T>(
                         element = input.element,
                         identifier = Routing.Identifier(uuid)
-//                        ,
-//                        uuid = uuid,
-//                        configurationKey = ConfigurationKey.Content(
-//                            index = state.nextKey,
-//                            configuration = Item(uuid)
-//                        )
                     )
                 )
             }

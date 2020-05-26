@@ -8,7 +8,7 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 
-class RecyclerViewHostNode<T : Parcelable> internal constructor(
+internal class RecyclerViewHostNode<T : Parcelable>(
     buildParams: BuildParams<Nothing?>,
     plugins: List<Plugin>,
     private val viewDeps: RecyclerViewHostView.Dependency,

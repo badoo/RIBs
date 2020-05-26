@@ -1,5 +1,6 @@
 package com.badoo.ribs.core
 
+@ExperimentalApi
 // TODO consider if this is better as internal
 enum class AttachMode {
     /**

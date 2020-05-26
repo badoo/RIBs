@@ -3,14 +3,19 @@ package com.badoo.ribs.core.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.Routing.Identifier
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.jakewharton.rxrelay2.BehaviorRelay
+import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.functions.BiFunction
+import java.security.PrivateKey
 
 interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
@@ -18,7 +23,7 @@ interface RoutingSource<C : Parcelable> :
 
     operator fun plus(other: RoutingSource<C>): RoutingSource<C> = Combined(this, other)
 
-    fun remove(identifier: Routing.Identifier)
+    fun remove(identifier: Identifier)
 
     data class Combined<C : Parcelable>(
         val first: RoutingSource<C>,
@@ -46,7 +51,7 @@ interface RoutingSource<C : Parcelable> :
             combined.subscribe(observer)
         }
 
-        override fun remove(identifier: Routing.Identifier) {
+        override fun remove(identifier: Identifier) {
             first.remove(identifier)
             second.remove(identifier)
         }
@@ -73,14 +78,14 @@ interface RoutingSource<C : Parcelable> :
                     activation = ACTIVE,
                     routing = Routing(
                         configuration = configuration,
-                        identifier = Routing.Identifier("Permanent $idx")
+                        identifier = Identifier("Permanent $idx")
                     )
             ) }
 
         private val permanentHistory =
             RoutingHistory.from(routingElements)
 
-        override fun remove(identifier: Routing.Identifier) {
+        override fun remove(identifier: Identifier) {
             // no-op -- it's permanent!
         }
 
@@ -93,7 +98,7 @@ interface RoutingSource<C : Parcelable> :
 
     // TODO extract
     class Empty<C : Parcelable> : RoutingSource<C> {
-        override fun remove(identifier: Routing.Identifier) {
+        override fun remove(identifier: Identifier) {
             // no-op -- it's empty
         }
 
@@ -102,46 +107,77 @@ interface RoutingSource<C : Parcelable> :
     }
 
     // TODO extract
-    class Set<C : Parcelable> : RoutingSource<C> {
-        private val states: BehaviorRelay<RoutingHistory<C>> = BehaviorRelay.create()
-        private val set: MutableSet<Routing<C>> = mutableSetOf()
-        private val history: Iterable<RoutingHistoryElement<C>>
-            get() = set.map {
-                RoutingHistoryElement(
-                    activation = ACTIVE,
-                    routing = it,
-                    overlays = emptyList()
-                )
+    class Set<C : Parcelable>(
+        private val allowRepeatingConfigurations: Boolean
+    ) : RoutingSource<C> {
+        private val states: Relay<RoutingHistory<C>> = BehaviorRelay.create()
+        private val set: MutableSet<RoutingHistoryElement<C>> = mutableSetOf()
+
+        fun add(
+            configuration: C,
+            identifier: Identifier = Identifier(
+                "Set ${System.identityHashCode(this)} #$configuration"
+            )
+        ): Identifier {
+            val result: Identifier
+            var existing: RoutingHistoryElement<C>? = null
+
+            if (!allowRepeatingConfigurations) {
+                existing = set.find { it.routing.configuration == configuration }
             }
 
-        fun add(configuration: C) {
-            if (set.none { it.configuration == configuration }) {
+            if (existing != null) {
+                result = existing.routing.identifier
+            } else {
+                result = identifier
                 set.add(
-                    Routing(
-                        configuration = configuration,
-                        identifier = Routing.Identifier("Set ${System.identityHashCode(this)} #$configuration")
+                    RoutingHistoryElement(
+                        activation = INACTIVE,
+                        routing = Routing(
+                            configuration = configuration,
+                            identifier = identifier
+                        ),
+                        overlays = emptyList()
+                    )
+                )
+                updateState()
+            }
+
+            return result
+        }
+
+        fun activate(identifier: Identifier) {
+            updateActivation(identifier, ACTIVE)
+        }
+
+        fun deactivate(identifier: Identifier) {
+            updateActivation(identifier, INACTIVE)
+        }
+
+        private fun updateActivation(identifier: Identifier, activation: Activation) {
+            findElement(identifier)?.let {
+                set.remove(it)
+                set.add(
+                    it.copy(
+                        activation = activation
                     )
                 )
                 updateState()
             }
         }
 
-        fun remove(configuration: C) {
-            set.find { it.configuration == configuration }?.let {
+        override fun remove(identifier: Identifier) {
+            findElement(identifier)?.let {
                 set.remove(it)
                 updateState()
             }
         }
 
-        override fun remove(identifier: Routing.Identifier) {
-            set.find { it.identifier == identifier }?.let {
-                set.remove(it)
-                updateState()
-            }
-        }
+        private fun findElement(identifier: Identifier) =
+            set.find { it.routing.identifier == identifier }
 
         private fun updateState() {
-            states.accept(RoutingHistory.from(history))
+            states.accept(RoutingHistory.from(set))
         }
 
         override fun subscribe(observer: Observer<in RoutingHistory<C>>) =

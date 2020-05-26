@@ -3,7 +3,6 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
@@ -27,7 +26,7 @@ internal class RemoveAction<C : Parcelable>(
         ): Action<C> =
             RemoveAction(
                 emitter = params.transactionExecutionParams.emitter,
-                key = params.key,
+                key = params.routing,
                 item = params.item,
                 params = params
             )

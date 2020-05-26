@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import io.reactivex.ObservableSource
 import kotlinx.android.parcel.Parcelize
 
@@ -18,7 +19,7 @@ interface RecyclerViewHost<T : Parcelable>: Rib {
         fun hostingStrategy(): HostingStrategy
         fun initialElements(): List<T>
         fun recyclerViewHostInput(): ObservableSource<Input<T>>
-        fun resolver(): RecyclerViewRibResolver<T>
+        fun resolver(): ConfigurationResolver<T>
         fun recyclerViewFactory(): RecyclerViewFactory
         fun layoutManagerFactory(): LayoutManagerFactory
         fun viewHolderLayoutParams(): FrameLayout.LayoutParams

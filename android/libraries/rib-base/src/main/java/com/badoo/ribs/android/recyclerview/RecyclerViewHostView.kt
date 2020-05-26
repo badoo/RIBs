@@ -12,7 +12,7 @@ internal interface RecyclerViewHostView : RibView {
     interface Factory : ViewFactory<Dependency, RecyclerViewHostView>
 
     interface Dependency {
-//        fun adapter(): Adapter<*>
+        fun adapter(): Adapter<*>
         fun recyclerViewFactory(): RecyclerViewFactory
         fun layoutManagerFactory(): LayoutManagerFactory
     }
@@ -26,7 +26,7 @@ internal class RecyclerViewHostViewImpl private constructor(
         override fun invoke(deps: Dependency): (ViewGroup) -> RecyclerViewHostView = {
             RecyclerViewHostViewImpl(
                 androidView = deps.recyclerViewFactory().invoke(it.context).apply {
-//                    adapter = deps.adapter()
+                    adapter = deps.adapter()
                     layoutManager = deps.layoutManagerFactory().invoke(it.context)
                 }
             )

@@ -186,7 +186,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 val lookup = tempPool[key]
                 if (lookup is ConfigurationContext.Resolved) lookup
                 else {
-                    val item = state.pool[key] ?: defaultElements[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
+                    val item = defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
                     val resolved = item.resolve(configurationResolver, parentNode)
                     tempPool[key] = resolved
                     resolved

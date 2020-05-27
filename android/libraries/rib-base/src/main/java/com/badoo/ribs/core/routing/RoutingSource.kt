@@ -107,11 +107,16 @@ interface RoutingSource<C : Parcelable> :
     }
 
     // TODO extract
-    class Set<C : Parcelable>(
+    class Pool<C : Parcelable>(
         private val allowRepeatingConfigurations: Boolean
     ) : RoutingSource<C> {
-        private val states: Relay<RoutingHistory<C>> = BehaviorRelay.create()
-        private val set: MutableSet<RoutingHistoryElement<C>> = mutableSetOf()
+        private var elements: Map<Identifier, RoutingHistoryElement<C>> = emptyMap()
+        private val current: RoutingHistory<C>
+            get() = RoutingHistory.from(elements.values)
+
+        private val states: Relay<RoutingHistory<C>> = BehaviorRelay.createDefault(
+            RoutingHistory.from(current)
+        )
 
         fun add(
             configuration: C,
@@ -119,31 +124,30 @@ interface RoutingSource<C : Parcelable> :
                 "Set ${System.identityHashCode(this)} #$configuration"
             )
         ): Identifier {
-            val result: Identifier
-            var existing: RoutingHistoryElement<C>? = null
-
             if (!allowRepeatingConfigurations) {
-                existing = set.find { it.routing.configuration == configuration }
+                elements
+                    .filter { it.value.routing.configuration == configuration }
+                    .map { it.key }
+                    .firstOrNull()?.let {
+                        return it
+                    }
             }
 
-            if (existing != null) {
-                result = existing.routing.identifier
-            } else {
-                result = identifier
-                set.add(
-                    RoutingHistoryElement(
-                        activation = INACTIVE,
-                        routing = Routing(
-                            configuration = configuration,
-                            identifier = identifier
-                        ),
-                        overlays = emptyList()
-                    )
+            elements = elements.plus(
+                identifier to RoutingHistoryElement(
+                    activation = INACTIVE,
+                    routing = Routing(
+                        configuration = configuration,
+                        identifier = identifier
+                    ),
+                    // TODO consider overlay support -- not needed now, can be added later
+                    overlays = emptyList()
                 )
-                updateState()
-            }
+            )
 
-            return result
+            updateState()
+
+            return identifier
         }
 
         fun activate(identifier: Identifier) {
@@ -155,10 +159,10 @@ interface RoutingSource<C : Parcelable> :
         }
 
         private fun updateActivation(identifier: Identifier, activation: Activation) {
-            findElement(identifier)?.let {
-                set.remove(it)
-                set.add(
-                    it.copy(
+            elements[identifier]?.let {
+                elements = elements
+                    .minus(it.routing.identifier)
+                    .plus(it.routing.identifier to it.copy(
                         activation = activation
                     )
                 )
@@ -167,17 +171,16 @@ interface RoutingSource<C : Parcelable> :
         }
 
         override fun remove(identifier: Identifier) {
-            findElement(identifier)?.let {
-                set.remove(it)
+            elements[identifier]?.let {
+                elements = elements
+                    .minus(it.routing.identifier)
+
                 updateState()
             }
         }
 
-        private fun findElement(identifier: Identifier) =
-            set.find { it.routing.identifier == identifier }
-
         private fun updateState() {
-            states.accept(RoutingHistory.from(set))
+            states.accept(current)
         }
 
         override fun subscribe(observer: Observer<in RoutingHistory<C>>) =

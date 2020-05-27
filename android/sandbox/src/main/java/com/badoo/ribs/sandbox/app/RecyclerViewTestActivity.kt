@@ -13,7 +13,7 @@ import com.badoo.ribs.android.recyclerview.LayoutManagerFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
-import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -33,8 +33,6 @@ import com.badoo.ribs.sandbox.rib.switcher.Switcher
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
 import kotlinx.android.parcel.Parcelize
 
 /** The sample app's single activity */
@@ -75,9 +73,7 @@ class RecyclerViewTestActivity : RibActivity() {
         SwitcherBuilder(
             object : Switcher.Dependency {
                 override fun activityStarter(): ActivityStarter = activityStarter
-                override fun permissionRequester(): PermissionRequester =
-                    permissionRequester
-
+                override fun permissionRequester(): PermissionRequester = permissionRequester
                 override fun dialogLauncher(): DialogLauncher = this@RecyclerViewTestActivity
                 override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
                 override fun portal(): Portal.OtherSide = noopPortal
@@ -93,21 +89,17 @@ class RecyclerViewTestActivity : RibActivity() {
             }
     }
 
-    private val initialElements = listOf(
+    private val initialElements = listOf<Item>(
         Item.FooBarItem
     )
 
-    private val inputCommands = Observable.just<Input<Item>>(
-        Input.Add(Item.LoremIpsumItem),
-        Input.Add(Item.Switcher)
-    )
+    private lateinit var recyclerViewHost: RecyclerViewHost<Item>
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
         RecyclerViewHostBuilder(
             object : RecyclerViewHost.Dependency<Item> {
                 override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = EAGER
                 override fun initialElements(): List<Item> = initialElements
-                override fun recyclerViewHostInput(): ObservableSource<Input<Item>> = inputCommands
                 override fun resolver(): ConfigurationResolver<Item> = resolver
                 override fun recyclerViewFactory(): RecyclerViewFactory = ::RecyclerView
                 override fun layoutManagerFactory(): LayoutManagerFactory = ::LinearLayoutManager
@@ -117,5 +109,12 @@ class RecyclerViewTestActivity : RibActivity() {
                         FrameLayout.LayoutParams.WRAP_CONTENT
                     )
             }
-        ).build(root(savedInstanceState))
+        ).build(root(savedInstanceState)).also {
+            recyclerViewHost = it
+        }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerViewHost.input.accept(Add(Item.LoremIpsumItem))
+    }
 }

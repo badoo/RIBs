@@ -17,7 +17,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
     override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHost<T> {
         val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
-        val routingSource = RoutingSource.Set<T>(
+        val routingSource = RoutingSource.Pool<T>(
             allowRepeatingConfigurations = true
         )
 
@@ -42,7 +42,6 @@ class RecyclerViewHostBuilder<T : Parcelable>(
 
         val interactor = RecyclerViewHostInteractor(
             buildParams = buildParams,
-            input = dependency.recyclerViewHostInput(),
             router = router,
             feature = feature,
             adapter = adapter

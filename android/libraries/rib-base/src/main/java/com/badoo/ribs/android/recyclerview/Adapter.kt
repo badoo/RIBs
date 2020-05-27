@@ -18,7 +18,7 @@ import io.reactivex.functions.Consumer
 internal class Adapter<T : Parcelable>(
     private val hostingStrategy: RecyclerViewHost.HostingStrategy,
     initialEntries: List<Entry<T>>? = null,
-    private val routingSource: RoutingSource.Set<T>,
+    private val routingSource: RoutingSource.Pool<T>,
     private val feature: RecyclerViewHostFeature<T>,
     private val viewHolderLayoutParams: FrameLayout.LayoutParams
 ) : RecyclerView.Adapter<Adapter.ViewHolder>(),

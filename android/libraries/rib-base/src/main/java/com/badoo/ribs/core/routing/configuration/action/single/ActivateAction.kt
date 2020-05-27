@@ -63,7 +63,12 @@ internal class ActivateAction<C : Parcelable>(
             emitter.onNext(
                 Effect.Individual.Activated(routing, item.copy(activationState = globalActivationLevel))
             )
-            callbacks.onActivated(routing, actionableNodes)
+
+            // TODO make the difference between actionableNodes (e.g. AttachMode.PARENT) vs item.nodes (all nodes)
+            //  more pronounced. Here we want to notify callback of any node (especially those with AttachMode.EXTERNAL)
+            //  so that they can be attached by external handler.
+            //  Consider
+            callbacks.onActivated(routing, item.nodes)
         }
 
         if (canExecute) {
@@ -71,6 +76,10 @@ internal class ActivateAction<C : Parcelable>(
         }
     }
 
+    /**
+     * TODO Consider doing this in Router when callback is fired. This would fix
+     *  actionableNodes vs item.nodes disparity here and make the decision more pronounced.
+     */
     private fun prepareTransition() {
         actionableNodes.forEach {
             parentNode.createChildView(it)

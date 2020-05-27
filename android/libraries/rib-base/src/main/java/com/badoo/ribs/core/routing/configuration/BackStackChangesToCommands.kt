@@ -2,7 +2,6 @@ package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeatureState
 import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
@@ -19,11 +18,9 @@ import io.reactivex.ObservableSource
  */
 internal fun <C : Parcelable> ObservableSource<RoutingHistory<C>>.toCommands(): Observable<Transaction<C>> =
     Observable.wrap(this)
-        // FIXME this was the original and working one, but signature change means initialState is not accessible
-//        .startWith(initialState)
-
-        // FIXME temp solution, but this won't be good when restoring from bundle
-        .startWith(BackStackFeatureState()) // TODO reconsider // Bootstrapper can overwrite it by the time we receive the first state emission here
+        // FIXME add baselineState to RoutingSource interface to support baseline when restoring from Bundle:
+//        .startWith(baselineState)
+        .startWith(RoutingHistory.from(emptySet()))
 
         .buffer(2, 1)
         .flatMap { (previous, current) ->

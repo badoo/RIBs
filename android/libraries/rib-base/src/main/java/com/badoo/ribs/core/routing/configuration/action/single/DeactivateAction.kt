@@ -89,7 +89,7 @@ internal class DeactivateAction<C : Parcelable>(
                 Effect.Individual.Deactivated(routing, item.copy(activationState = targetActivationState))
             )
 
-            callbacks.onActivated(routing, actionableNodes)
+            callbacks.onDeactivated(routing, item.nodes)
         }
     }
 }

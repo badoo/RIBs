@@ -42,7 +42,7 @@ internal object GreetingsContainerModule {
         buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
-    ) : Node<Nothing> = Node(
+    ) : Node<Nothing> = Node<Nothing>(
         buildParams = buildParams,
         viewFactory = null,
         plugins = listOf(interactor, router)

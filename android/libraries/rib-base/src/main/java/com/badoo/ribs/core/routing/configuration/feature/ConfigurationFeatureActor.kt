@@ -6,13 +6,13 @@ import android.view.View
 import com.badoo.mvicore.element.Actor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
@@ -32,7 +32,7 @@ import io.reactivex.Observable
 @SuppressWarnings("LargeClass") // TODO extract
 internal class ConfigurationFeatureActor<C : Parcelable>(
     private val configurationResolver: ConfigurationResolver<C>,
-    private val callbacks: ActionExecutionCallbacks<C>,
+    private val activator: RoutingActivator<C>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
@@ -192,6 +192,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     resolved
                 }
             },
+            activator = activator,
             parentNode = parentNode,
             globalActivationLevel = when (transaction) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING
@@ -211,7 +212,6 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     transactionExecutionParams = params,
                     command = command,
                     routing = command.key,
-                    callbacks = callbacks,
                     isBackStackOperation = commands.isBackStackOperation(command.key)
                 )
             )

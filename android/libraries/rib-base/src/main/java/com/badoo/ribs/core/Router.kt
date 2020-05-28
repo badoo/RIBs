@@ -13,12 +13,13 @@ import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.routing.RoutingSource
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
+import com.badoo.ribs.core.routing.activator.ChildActivator
+import com.badoo.ribs.core.routing.activator.RoutingActivator
+import com.badoo.ribs.core.routing.activator.UnhandledChildActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
 import com.badoo.ribs.core.routing.history.Routing
@@ -32,14 +33,14 @@ import io.reactivex.disposables.CompositeDisposable
 abstract class Router<C : Parcelable>(
     buildParams: BuildParams<*>,
     protected val routingSource: RoutingSource<C>,
-    private val transitionHandler: TransitionHandler<C>? = null
+    private val transitionHandler: TransitionHandler<C>? = null,
+    private val clientChildActivator: ChildActivator<C> = UnhandledChildActivator()
 ) : ConfigurationResolver<C>,
     NodeAware,
     NodeLifecycleAware,
     ViewLifecycleAware,
     SavesInstanceState,
     SubtreeBackPressHandler by routingSource,
-    ActionExecutionCallbacks<C>,
     ObservableSource<Router.Event<C>> {
 
     @ExperimentalApi
@@ -72,7 +73,9 @@ abstract class Router<C : Parcelable>(
         configurationFeature = ConfigurationFeature(
             timeCapsule = timeCapsule,
             resolver = this,
-            callbacks = this,
+            activator = RoutingActivator(
+                clientChildActivator
+            ),
             parentNode = node,
             transitionHandler = transitionHandler
         )
@@ -101,20 +104,6 @@ abstract class Router<C : Parcelable>(
         // TODO consider extending Disposables plugin
         binder.dispose()
         configurationFeature.dispose()
-    }
-
-    override fun onActivated(routing: Routing<C>, nodes: List<Node<*>>) {
-        events.accept(Event.Activated(
-            routing = routing,
-            nodes = nodes
-        ))
-    }
-
-    override fun onDeactivated(routing: Routing<C>, nodes: List<Node<*>>) {
-        events.accept(Event.Deactivated(
-            routing = routing,
-            nodes = nodes
-        ))
     }
 
     override fun subscribe(observer: Observer<in Event<C>>) {

@@ -52,7 +52,6 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
-                nodeFilter = { it.attachMode == AttachMode.PARENT },
                 forwardActionFactory = ActivateAction.Factory,
                 reverseActionFactory = DeactivateAction.Factory
             )
@@ -64,7 +63,6 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
-                nodeFilter = { it.attachMode == AttachMode.PARENT },
                 forwardActionFactory = DeactivateAction.Factory,
                 reverseActionFactory = ActivateAction.Factory
             )

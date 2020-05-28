@@ -26,12 +26,6 @@ class RecyclerViewHostBuilder<T : Parcelable>(
             initialElements = dependency.initialElements()
         )
 
-        val router = RouterByDelegate(
-            buildParams = buildParams,
-            routingSource = routingSource,
-            configurationResolver = dependency.resolver()
-        )
-
         val adapter = Adapter(
             hostingStrategy = dependency.hostingStrategy(),
             initialEntries = feature.state.items,
@@ -40,9 +34,15 @@ class RecyclerViewHostBuilder<T : Parcelable>(
             viewHolderLayoutParams = dependency.viewHolderLayoutParams()
         )
 
+        val router = RouterByDelegate(
+            buildParams = buildParams,
+            routingSource = routingSource,
+            configurationResolver = dependency.resolver(),
+            clientChildActivator = adapter
+        )
+
         val interactor = RecyclerViewHostInteractor(
             buildParams = buildParams,
-            router = router,
             feature = feature,
             adapter = adapter
         )

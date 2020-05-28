@@ -3,10 +3,10 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
@@ -24,23 +24,20 @@ internal class DeactivateAction<C : Parcelable>(
     private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
-    private val callbacks: ActionExecutionCallbacks<C>,
-    private val actionableNodes: List<Node<*>>,
+    private val activator: RoutingActivator<C>,
     private val isBackStackOperation: Boolean,
     private val targetActivationState: ActivationState = INACTIVE
 ) : Action<C> {
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
-            params: ActionExecutionParams<C>,
-            actionableNodes: List<Node<*>>
+            params: ActionExecutionParams<C>
         ): Action<C> = DeactivateAction(
             emitter = params.transactionExecutionParams.emitter,
             routing = params.routing,
             item = params.item,
             parentNode = params.transactionExecutionParams.parentNode,
-            callbacks = params.callbacks,
-            actionableNodes = actionableNodes,
+            activator = params.transactionExecutionParams.activator,
             isBackStackOperation = params.isBackStackOperation
         )
     }
@@ -52,7 +49,7 @@ internal class DeactivateAction<C : Parcelable>(
         emptyList()
 
     override fun onBeforeTransition() {
-        transitionElements = actionableNodes.mapNotNull {
+        transitionElements = item.nodes.mapNotNull {
             it.view?.let { ribView ->
                 TransitionElement(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
@@ -69,7 +66,7 @@ internal class DeactivateAction<C : Parcelable>(
     override fun onTransition(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             item.routingAction.cleanup()
-            actionableNodes.forEach {
+            item.nodes.forEach {
                 it.markPendingViewDetach(true)
             }
             emitter.onNext(
@@ -80,7 +77,8 @@ internal class DeactivateAction<C : Parcelable>(
 
     override fun onFinish(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
-            actionableNodes.forEach {
+            activator.deactivate(routing, item.nodes)
+            item.nodes.forEach {
                 it.saveViewState()
                 parentNode.detachChildView(it)
             }
@@ -89,7 +87,7 @@ internal class DeactivateAction<C : Parcelable>(
                 Effect.Individual.Deactivated(routing, item.copy(activationState = targetActivationState))
             )
 
-            callbacks.onDeactivated(routing, item.nodes)
+
         }
     }
 }

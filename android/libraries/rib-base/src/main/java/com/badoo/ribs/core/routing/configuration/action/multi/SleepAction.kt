@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
@@ -30,11 +29,10 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
                 emitter = params.emitter,
                 item = configurationContext,
                 routing = key,
+                activator = params.activator,
                 parentNode = params.parentNode,
-                actionableNodes = configurationContext.nodes,
                 isBackStackOperation = false,
-                targetActivationState = SLEEPING,
-                callbacks = ActionExecutionCallbacks.noop() // FIXME
+                targetActivationState = SLEEPING
             )
             action.onBeforeTransition()
             action.onTransition()

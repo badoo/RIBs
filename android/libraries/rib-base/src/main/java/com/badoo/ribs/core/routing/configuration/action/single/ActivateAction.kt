@@ -3,10 +3,10 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.action.ActionExecutionCallbacks
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
@@ -24,24 +24,21 @@ internal class ActivateAction<C : Parcelable>(
     private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
-    private val callbacks: ActionExecutionCallbacks<C>,
-    private val actionableNodes: List<Node<*>>,
+    private val activator: RoutingActivator<C>,
     private val isBackStackOperation: Boolean,
     private val globalActivationLevel: ConfigurationContext.ActivationState
 ) : Action<C> {
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
-            params: ActionExecutionParams<C>,
-            actionableNodes: List<Node<*>>
+            params: ActionExecutionParams<C>
         ): Action<C> =
             ActivateAction(
                 emitter = params.transactionExecutionParams.emitter,
                 routing = params.routing,
                 item = params.item,
                 parentNode = params.transactionExecutionParams.parentNode,
-                callbacks = params.callbacks,
-                actionableNodes = actionableNodes,
+                activator = params.transactionExecutionParams.activator,
                 isBackStackOperation = params.isBackStackOperation,
                 globalActivationLevel = params.transactionExecutionParams.globalActivationLevel
             )
@@ -63,15 +60,10 @@ internal class ActivateAction<C : Parcelable>(
             emitter.onNext(
                 Effect.Individual.Activated(routing, item.copy(activationState = globalActivationLevel))
             )
-
-            // TODO make the difference between actionableNodes (e.g. AttachMode.PARENT) vs item.nodes (all nodes)
-            //  more pronounced. Here we want to notify callback of any node (especially those with AttachMode.EXTERNAL)
-            //  so that they can be attached by external handler.
-            //  Consider
-            callbacks.onActivated(routing, item.nodes)
         }
 
         if (canExecute) {
+            activator.activate(routing, item.nodes)
             prepareTransition()
         }
     }
@@ -81,12 +73,7 @@ internal class ActivateAction<C : Parcelable>(
      *  actionableNodes vs item.nodes disparity here and make the decision more pronounced.
      */
     private fun prepareTransition() {
-        actionableNodes.forEach {
-            parentNode.createChildView(it)
-            parentNode.attachChildView(it)
-        }
-
-        transitionElements = actionableNodes.mapNotNull {
+        transitionElements = item.nodes.mapNotNull {
             it.view?.let { ribView ->
                 TransitionElement(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement

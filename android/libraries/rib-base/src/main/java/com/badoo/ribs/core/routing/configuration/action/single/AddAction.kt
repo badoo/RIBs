@@ -21,8 +21,7 @@ internal class AddAction<C : Parcelable>(
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
-            params: ActionExecutionParams<C>,
-            actionableNodes: List<Node<*>>
+            params: ActionExecutionParams<C>
         ): Action<C> {
             return AddAction(
                 emitter = params.transactionExecutionParams.emitter,

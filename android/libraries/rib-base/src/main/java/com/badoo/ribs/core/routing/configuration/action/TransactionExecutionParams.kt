@@ -2,6 +2,7 @@ package com.badoo.ribs.core.routing.configuration.action
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
@@ -17,6 +18,7 @@ import com.badoo.ribs.core.routing.history.Routing
 internal data class TransactionExecutionParams<C : Parcelable>(
     val emitter: EffectEmitter<C>,
     val resolver: (Routing<C>) -> ConfigurationContext.Resolved<C>,
+    val activator: RoutingActivator<C>,
     val parentNode: Node<*>,
     val globalActivationLevel: ConfigurationContext.ActivationState
 )
@@ -26,25 +28,9 @@ internal data class ActionExecutionParams<C : Parcelable>(
     val transactionExecutionParams: TransactionExecutionParams<C>,
     val command: ConfigurationCommand<C>,
     val routing: Routing<C>,
-    val callbacks: ActionExecutionCallbacks<C>,
     val isBackStackOperation: Boolean
 ) {
     val item: ConfigurationContext.Resolved<C> by lazy {
         transactionExecutionParams.resolver.invoke(routing)
-    }
-}
-
-interface ActionExecutionCallbacks<C : Parcelable> {
-    fun onActivated(routing: Routing<C>, nodes: List<Node<*>>)
-
-    fun onDeactivated(routing: Routing<C>, nodes: List<Node<*>>)
-
-    companion object {
-        // FIXME remove
-        fun <C : Parcelable> noop() = object : ActionExecutionCallbacks<C> {
-            override fun onActivated(routing: Routing<C>, nodes: List<Node<*>>) {}
-
-            override fun onDeactivated(routing: Routing<C>, nodes: List<Node<*>>) {}
-        }
     }
 }

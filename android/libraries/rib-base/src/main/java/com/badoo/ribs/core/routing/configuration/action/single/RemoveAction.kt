@@ -20,10 +20,7 @@ internal class RemoveAction<C : Parcelable>(
 ) : Action<C> {
 
     object Factory: ActionFactory {
-        override fun <C : Parcelable> create(
-            params: ActionExecutionParams<C>,
-            actionableNodes: List<Node<*>>
-        ): Action<C> =
+        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): Action<C> =
             RemoveAction(
                 emitter = params.transactionExecutionParams.emitter,
                 key = params.routing,

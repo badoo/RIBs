@@ -4,13 +4,11 @@ import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.view.RibView
 
 internal class RecyclerViewHostInteractor<T : Parcelable>(
     buildParams: BuildParams<*>,
-    private val router: Router<T>,
     private val feature: RecyclerViewHostFeature<T>,
     private val adapter: Adapter<T>
 ) : Interactor<RecyclerViewHost<T>, RibView>(
@@ -20,7 +18,6 @@ internal class RecyclerViewHostInteractor<T : Parcelable>(
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
-            bind(router to adapter.routingEvents)
             bind(feature to adapter) // TODO consider viewLifecycle
             bind(rib.input to feature)
         }

@@ -91,7 +91,7 @@ internal class Adapter<T : Parcelable>(
         super.onViewRecycled(holder)
         val identifier = holder.identifier!! // at this point it should be bound
 
-        deactivate(identifier)
+        routingSource.deactivate(identifier)
         if (hostingStrategy == LAZY) {
             routingSource.remove(identifier)
         }
@@ -99,14 +99,10 @@ internal class Adapter<T : Parcelable>(
 
     internal fun onDestroy() {
         items.forEach {
-            deactivate(it.identifier)
+            routingSource.deactivate(it.identifier)
         }
     }
-
-    private fun deactivate(identifier: Routing.Identifier) {
-        routingSource.deactivate(identifier)
-    }
-
+    
     override fun deactivate(routing: Routing<T>, child: Node<*>) {
         child.detachFromView()
     }

@@ -14,6 +14,7 @@ import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.activator.ChildActivator
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.util.RIBs
+import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer
 import java.lang.ref.WeakReference
 
@@ -84,17 +85,17 @@ internal class Adapter<T : Parcelable>(
     override fun activate(routing: Routing<T>, child: Node<*>) {
         holders[routing.identifier]?.get()?.let { holder ->
             child.attachToView(holder.itemView as FrameLayout)
-        } ?: RIBs.errorHandler.handleNonFatalError("Holder is gone! Routing: $routing, child: $child")
+        } ?: errorHandler.handleNonFatalError("Holder is gone! Routing: $routing, child: $child")
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
-        val identifier = holder.identifier!! // at this point it should be bound
-
-        routingSource.deactivate(identifier)
-        if (hostingStrategy == LAZY) {
-            routingSource.remove(identifier)
-        }
+        holder.identifier?.let { identifier ->
+            routingSource.deactivate(identifier)
+            if (hostingStrategy == LAZY) {
+                routingSource.remove(identifier)
+            }
+        } ?: errorHandler.handleNonFatalError("Holder is not bound! holder: $holder")
     }
 
     internal fun onDestroy() {
@@ -102,7 +103,7 @@ internal class Adapter<T : Parcelable>(
             routingSource.deactivate(it.identifier)
         }
     }
-    
+
     override fun deactivate(routing: Routing<T>, child: Node<*>) {
         child.detachFromView()
     }

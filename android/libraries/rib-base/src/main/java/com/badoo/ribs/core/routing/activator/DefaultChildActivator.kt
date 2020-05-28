@@ -4,8 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.history.Routing
 
-class DefaultChildActivator<C : Parcelable> :
-    ChildActivator<C> {
+class DefaultChildActivator<C : Parcelable> : ChildActivator<C> {
 
     override fun activate(routing: Routing<C>, child: Node<*>) {
         requireNotNull(child.parent)

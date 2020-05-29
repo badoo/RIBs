@@ -22,12 +22,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.toCommands
-import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
-import com.jakewharton.rxrelay2.PublishRelay
-import com.jakewharton.rxrelay2.Relay
-import io.reactivex.ObservableSource
-import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class Router<C : Parcelable>(
@@ -40,26 +35,11 @@ abstract class Router<C : Parcelable>(
     NodeLifecycleAware,
     ViewLifecycleAware,
     SavesInstanceState,
-    SubtreeBackPressHandler by routingSource,
-    ObservableSource<Router.Event<C>> {
-
-    @ExperimentalApi
-    sealed class Event<C : Parcelable> {
-        data class Activated<C : Parcelable>(
-            val routing: Routing<C>,
-            val nodes: List<Node<*>>
-        ) : Event<C>()
-
-        data class Deactivated<C : Parcelable>(
-            val routing: Routing<C>,
-            val nodes: List<Node<*>>
-        ) : Event<C>()
-    }
+    SubtreeBackPressHandler by routingSource {
 
     private val binder = Binder()
     private val disposables = CompositeDisposable()
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
-    private val events: Relay<Event<C>> = PublishRelay.create()
 
     private lateinit var configurationFeature: ConfigurationFeature<C>
     override lateinit var node: Node<*>
@@ -104,9 +84,5 @@ abstract class Router<C : Parcelable>(
         // TODO consider extending Disposables plugin
         binder.dispose()
         configurationFeature.dispose()
-    }
-
-    override fun subscribe(observer: Observer<in Event<C>>) {
-        events.subscribe(observer)
     }
 }

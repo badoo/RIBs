@@ -13,7 +13,6 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.activator.ChildActivator
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.util.RIBs
 import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer
 import java.lang.ref.WeakReference

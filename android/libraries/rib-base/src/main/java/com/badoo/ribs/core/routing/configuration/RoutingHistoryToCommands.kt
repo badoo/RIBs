@@ -1,7 +1,6 @@
 package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
@@ -23,6 +22,7 @@ internal fun <C : Parcelable> ObservableSource<RoutingHistory<C>>.toCommands(): 
         .startWith(RoutingHistory.from(emptySet()))
 
         .buffer(2, 1)
+        .filter { it.size == 2 } // In case a source has onComplete() before emitting 2 elements
         .flatMap { (previous, current) ->
             current.ensureUniqueIds()
 

@@ -11,7 +11,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableSource
 
 /**
- * Takes the state emissions from [BackStackFeature], and translates them to a stream of
+ * Takes two consecutive [RoutingHistory] emissions, and calculates their difference as a set of
  * [ConfigurationCommand]s.
  *
  * @see [RoutingHistoryDiffer.diff]

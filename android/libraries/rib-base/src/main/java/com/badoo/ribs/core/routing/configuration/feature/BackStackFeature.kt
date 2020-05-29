@@ -58,7 +58,10 @@ class BackStackFeature<C : Parcelable>(
             initialConfiguration
         ),
         actor = ActorImpl(),
-        reducer = ReducerImpl()
+        reducer = ReducerImpl(
+            contentIdFactory = this::contentIdForPosition,
+            overlayIdFactory = this::overlayIdForPosition
+        )
     )
 
     val state: BackStackFeatureState<C>
@@ -68,8 +71,6 @@ class BackStackFeature<C : Parcelable>(
         get() = Observable.wrap(feature)
             .mapNotNull {
                 it.backStack
-                    // FIXME set active in operation
-    //                .findLast { it.activation == RoutingHistoryElement.Activation.ACTIVE }
                     .last()
                     ?.routing
                     ?.configuration
@@ -77,7 +78,7 @@ class BackStackFeature<C : Parcelable>(
             .startWith(initialConfiguration)
 
     constructor(
-        initialConfiguration: C, // FIXME this should be RoutingHistoryElement<C>
+        initialConfiguration: C, // TODO consider this to be RoutingHistoryElement<C>?
         buildParams: BuildParams<*>
     ) : this(
         initialConfiguration,
@@ -140,7 +141,10 @@ class BackStackFeature<C : Parcelable>(
      * Creates a new [State] based on the old one + the applied [Effect]
      */
     @SuppressWarnings("LongMethod")
-    class ReducerImpl<C : Parcelable> : Reducer<BackStackFeatureState<C>, Effect<C>> {
+    class ReducerImpl<C : Parcelable>(
+        val contentIdFactory: (Int, C) -> Routing.Identifier,
+        val overlayIdFactory: (Int, C, Int, C) -> Routing.Identifier
+    ) : Reducer<BackStackFeatureState<C>, Effect<C>> {
         override fun invoke(state: BackStackFeatureState<C>, effect: Effect<C>): BackStackFeatureState<C> =
             state.apply(effect)
 
@@ -168,22 +172,26 @@ class BackStackFeature<C : Parcelable>(
 
         private fun routingWithCorrectId(element: RoutingHistoryElement<C>, index: Int): Routing<C> =
             element.routing.copy(
-                identifier = Routing.Identifier(
-                    id = "Back stack ${System.identityHashCode(this)} #$index"
+                identifier = contentIdFactory(
+                    index,
+                    element.routing.configuration
                 )
             )
 
         private fun overlaysWithCorrectId(element: RoutingHistoryElement<C>, index: Int): List<Routing<C>> =
             element.overlays.mapIndexed { overlayIndex, overlay ->
                 overlay.copy(
-                    identifier = Routing.Identifier(
-                        id = "Back stack ${System.identityHashCode(this)} overlay #$index.$overlayIndex"
+                    identifier = overlayIdFactory(
+                        index,
+                        element.routing.configuration,
+                        overlayIndex,
+                        overlay.configuration
                     )
                 )
             }
     }
 
-    fun popBackStack(): Boolean =
+    fun popBackStack(): Boolean = // TODO rename
         if (feature.state.backStack.canPop) {
             pop()
             true
@@ -215,4 +223,10 @@ class BackStackFeature<C : Parcelable>(
 
     override fun subscribe(observer: Observer<in RoutingHistory<C>>) =
         feature.subscribe(observer)
+
+    internal fun contentIdForPosition(position: Int, content: C): Routing.Identifier =
+        Routing.Identifier("Back stack ${System.identityHashCode(this)} #$position = $content")
+
+    internal fun overlayIdForPosition(position: Int, content: C, overlayIndex: Int, overlay: C): Routing.Identifier =
+        Routing.Identifier("Back stack ${System.identityHashCode(this)} overlay #$position.$overlayIndex = $content.$overlay")
 }

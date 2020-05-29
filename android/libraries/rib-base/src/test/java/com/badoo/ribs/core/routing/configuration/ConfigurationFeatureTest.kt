@@ -176,14 +176,14 @@ class ConfigurationFeatureTest {
 
         val poolInTimeCapsule = mapOf(
             routingsforTimeCapsule[0] to Unresolved(SLEEPING, routingsforTimeCapsule[0], helperPermanent1.bundles),
-            routingsforTimeCapsule[1] to Unresolved(SLEEPING, routingsforTimeCapsule[2], helperPermanent2.bundles),
+            routingsforTimeCapsule[1] to Unresolved(SLEEPING, routingsforTimeCapsule[1], helperPermanent2.bundles),
 
-            routingsforTimeCapsule[2] to Unresolved(SLEEPING, routingsforTimeCapsule[3], helperContentViewParented1.bundles),
-            routingsforTimeCapsule[3] to Unresolved(SLEEPING, routingsforTimeCapsule[4], helperContentViewParented2.bundles),
-            routingsforTimeCapsule[4] to Unresolved(INACTIVE, routingsforTimeCapsule[5], helperContentViewParented3.bundles),
+            routingsforTimeCapsule[2] to Unresolved(SLEEPING, routingsforTimeCapsule[2], helperContentViewParented1.bundles),
+            routingsforTimeCapsule[3] to Unresolved(SLEEPING, routingsforTimeCapsule[3], helperContentViewParented2.bundles),
+            routingsforTimeCapsule[4] to Unresolved(INACTIVE, routingsforTimeCapsule[4], helperContentViewParented3.bundles),
 
-            routingsforTimeCapsule[5] to Unresolved(SLEEPING, routingsforTimeCapsule[6], helperContentExternal1.bundles),
-            routingsforTimeCapsule[6] to Unresolved(INACTIVE, routingsforTimeCapsule[7], helperContentExternal2.bundles)
+            routingsforTimeCapsule[5] to Unresolved(SLEEPING, routingsforTimeCapsule[5], helperContentExternal1.bundles),
+            routingsforTimeCapsule[6] to Unresolved(INACTIVE, routingsforTimeCapsule[6], helperContentExternal2.bundles)
         )
 
         emptyTimeCapsule = mock()

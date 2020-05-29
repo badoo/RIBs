@@ -15,6 +15,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.functions.BiFunction
+import java.util.UUID
 
 interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
@@ -120,7 +121,7 @@ interface RoutingSource<C : Parcelable> :
         fun add(
             configuration: C,
             identifier: Identifier = Identifier(
-                "Set ${System.identityHashCode(this)} #$configuration"
+                "Set ${System.identityHashCode(this)} #$configuration.${if (allowRepeatingConfigurations) UUID.randomUUID() else "#"}"
             )
         ): Identifier {
             if (!allowRepeatingConfigurations) {

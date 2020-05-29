@@ -22,7 +22,7 @@ data class SingleTop<C : Parcelable>(
             if (lastIndexOfSameClass == -1) {
                 Push(configuration)
             } else {
-                if (backStack[lastIndexOfSameClass] == configuration) {
+                if (backStack[lastIndexOfSameClass].routing.configuration == configuration) {
                     SingleTopReactivateBackStackOperation(lastIndexOfSameClass)
                 } else {
                     SingleTopReplaceBackStackOperation(configuration, lastIndexOfSameClass)

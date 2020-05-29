@@ -23,8 +23,6 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Config
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.ContentViewParented3
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.Permanent1
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.Permanent2
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Content
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey.Permanent
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature

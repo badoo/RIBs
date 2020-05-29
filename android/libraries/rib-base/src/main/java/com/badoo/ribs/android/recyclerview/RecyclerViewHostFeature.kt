@@ -7,7 +7,6 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ReducerFeature
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.history.Routing
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
@@ -60,12 +59,6 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
                 }
     }
 
-    /**
-     * [ConfigurationKey] uses Int parameter for position. That's convenient for back stack,
-     * but in our case, positions can change in a RecyclerView, and that could cause
-     * [ConfigurationKey] collision easily. Here we mark elements use [State.nextKey] for
-     * [ConfigurationKey] position, which we keep incrementing.
-     */
     class ReducerImpl<T : Parcelable> : Reducer<State<T>, Input<T>> {
         override fun invoke(state: State<T>, input: Input<T>): State<T> = when (input) {
             is Input.Add -> {

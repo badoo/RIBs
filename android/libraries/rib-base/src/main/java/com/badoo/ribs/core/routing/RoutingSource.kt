@@ -83,15 +83,14 @@ interface RoutingSource<C : Parcelable> :
             ) }
 
         private val permanentHistory =
-            RoutingHistory.from(routingElements)
+            Observable.just(RoutingHistory.from(routingElements))
 
         override fun remove(identifier: Identifier) {
             // no-op -- it's permanent!
         }
 
         override fun subscribe(observer: Observer<in RoutingHistory<C>>) {
-            Observable
-                .just(permanentHistory)
+            permanentHistory
                 .subscribe(observer)
         }
     }

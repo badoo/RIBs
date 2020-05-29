@@ -51,7 +51,7 @@ class BackStackFeature<C : Parcelable>(
     timeCapsule: TimeCapsule<BackStackFeatureState<C>>
 ) : Consumer<Operation<C>>, RoutingSource<C>, BackPressHandler {
 
-    val feature = ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
+    private val feature = ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
         initialState = timeCapsule.initialState(),
         bootstrapper = BootstrapperImpl(
             timeCapsule.initialState(),

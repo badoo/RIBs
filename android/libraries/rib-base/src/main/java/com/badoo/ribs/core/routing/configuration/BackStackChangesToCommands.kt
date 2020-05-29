@@ -14,7 +14,7 @@ import io.reactivex.ObservableSource
  * Takes the state emissions from [BackStackFeature], and translates them to a stream of
  * [ConfigurationCommand]s.
  *
- * @see [ConfigurationCommandCreator.diff]
+ * @see [RoutingHistoryDiffer.diff]
  */
 internal fun <C : Parcelable> ObservableSource<RoutingHistory<C>>.toCommands(): Observable<Transaction<C>> =
     Observable.wrap(this)

@@ -29,10 +29,12 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
         ?: WorkingState())
 
 /**
+ * FIXME rewrite
+ *
  * State store responsible for executing [ConfigurationCommand]s it takes as inputs.
  *
  * The [WorkingState] contains a pool of [ConfigurationContext] elements referenced
- * by [ConfigurationKey] objects. Practically, these keep reference to all configurations
+ * by [Routing] objects. Practically, these keep reference to all configurations
  * currently associated with the RIB: all initial configurations (typically permanent parts
  * and one content type) + the ones coming from back stack changes.
  *

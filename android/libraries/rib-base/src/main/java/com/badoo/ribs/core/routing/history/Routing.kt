@@ -7,7 +7,7 @@ import java.io.Serializable
 @Parcelize
 data class Routing<C : Parcelable>(
     val configuration: C,
-    val identifier: Identifier = Identifier(), // TODO consider Any // FIXME no default
+    val identifier: Identifier = Identifier(), // FIXME no default
     val meta: Parcelable = NoMeta
 
 ) : Parcelable {

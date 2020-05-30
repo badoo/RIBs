@@ -49,7 +49,8 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
 class BackStackFeature<C : Parcelable>(
     private val initialConfiguration: C,
     timeCapsule: TimeCapsule<BackStackFeatureState<C>>
-) : Consumer<Operation<C>>, RoutingSource<C>, BackPressHandler {
+) : Consumer<Operation<C>>,
+    RoutingSource<C> {
 
     private val feature = ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
         initialState = timeCapsule.initialState(),

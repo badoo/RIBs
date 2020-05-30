@@ -15,7 +15,7 @@ import io.reactivex.Observable
  *
  * @see [RoutingHistoryDiffer.diff]
  */
-internal fun <C : Parcelable> RoutingSource<C>.toCommands(): Observable<Transaction<C>> =
+internal fun <C : Parcelable> RoutingSource<C>.changes(): Observable<Transaction<C>> =
     Observable.wrap(this)
         .startWith(baseLineState)
         .buffer(2, 1)

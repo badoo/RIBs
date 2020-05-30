@@ -21,7 +21,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
-import com.badoo.ribs.core.routing.configuration.toCommands
+import com.badoo.ribs.core.routing.configuration.changes
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.disposables.CompositeDisposable
 
@@ -68,7 +68,7 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
-        binder.bind(routingSource.toCommands() to configurationFeature)
+        binder.bind(routingSource.changes() to configurationFeature)
     }
 
     override fun onAttachToView(parentViewGroup: ViewGroup) {

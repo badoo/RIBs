@@ -91,7 +91,7 @@ inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView w
 
 private class TestRouter<C : Parcelable> : Router<C>(
     buildParams = buildParams,
-    routingSource = RoutingSource.Permanent<C>(buildParams, emptySet()),
+    routingSource = RoutingSource.Permanent<C>(emptySet()),
     transitionHandler = null
 ) {
 

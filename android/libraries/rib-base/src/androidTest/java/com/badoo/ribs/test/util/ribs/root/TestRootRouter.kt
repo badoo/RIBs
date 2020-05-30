@@ -32,7 +32,7 @@ class TestRootRouter(
     permanentParts: List<Permanent>
 ) : Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource + permanent(buildParams, permanentParts)
+    routingSource = routingSource + permanent(permanentParts)
 ) {
 
     sealed class Configuration : Parcelable {

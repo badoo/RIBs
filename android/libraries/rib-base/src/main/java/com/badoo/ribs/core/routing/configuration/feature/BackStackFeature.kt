@@ -80,7 +80,7 @@ class BackStackFeature<C : Parcelable>(
             }
             .startWith(initialConfiguration)
 
-    override val baseLineState: RoutingHistory<C> =
+    override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
         timeCapsule.initialState()
 
     init {

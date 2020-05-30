@@ -15,9 +15,9 @@ import io.reactivex.Observable
  *
  * @see [RoutingHistoryDiffer.diff]
  */
-internal fun <C : Parcelable> RoutingSource<C>.changes(): Observable<Transaction<C>> =
+internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): Observable<Transaction<C>> =
     Observable.wrap(this)
-        .startWith(baseLineState)
+        .startWith(baseLineState(fromRestored))
         .buffer(2, 1)
         .filter { it.size == 2 } // In case a source has onComplete() before emitting 2 elements
         .flatMap { (previous, current) ->

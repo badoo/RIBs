@@ -40,6 +40,7 @@ abstract class Router<C : Parcelable>(
     private val binder = Binder()
     private val disposables = CompositeDisposable()
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
+    private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
 
     private lateinit var configurationFeature: ConfigurationFeature<C>
     override lateinit var node: Node<*>
@@ -68,7 +69,7 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
-        binder.bind(routingSource.changes() to configurationFeature)
+        binder.bind(routingSource.changes(hasSavedState) to configurationFeature)
     }
 
     override fun onAttachToView(parentViewGroup: ViewGroup) {

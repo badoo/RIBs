@@ -21,7 +21,7 @@ class HelloWorldRouter(
     private val smallBuilder: SmallBuilder
 ): Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource + permanent(buildParams, Small)
+    routingSource = routingSource + permanent(Small)
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {

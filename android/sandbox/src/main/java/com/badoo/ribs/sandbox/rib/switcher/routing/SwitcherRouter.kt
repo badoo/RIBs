@@ -33,7 +33,7 @@ class SwitcherRouter internal constructor(
     private val dialogToTestOverlay: DialogToTestOverlay
 ): Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource + permanent(buildParams, Permanent.Menu),
+    routingSource = routingSource + permanent(Permanent.Menu),
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {

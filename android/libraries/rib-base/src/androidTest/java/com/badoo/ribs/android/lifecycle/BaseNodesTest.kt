@@ -11,6 +11,7 @@ import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
+import com.badoo.ribs.test.util.runOnMainSync
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Rule
 
@@ -36,21 +37,25 @@ abstract class BaseNodesTest {
             permanentParts = setup.permanentParts
         )
 
-        val backStack: BackStackFeature<TestRootRouter.Configuration> = BackStackFeature(
-            buildParams = BuildParams.Empty(),
-            initialConfiguration = setup.initialConfiguration
-        )
+        var backStack: BackStackFeature<TestRootRouter.Configuration>? = null
+
+        runOnMainSync {
+            // SameThreadVerifier will check if it was created on the same thread it will be used on
+            backStack = BackStackFeature(
+                buildParams = BuildParams.Empty(),
+                initialConfiguration = setup.initialConfiguration
+            )
+        }
 
         ribsRule.start { activity, savedInstanceState ->
             rootProvider.create(
                 dialogLauncher = activity.dialogLauncher(),
                 savedInstanceState = savedInstanceState,
-                routingSource = backStack
+                routingSource = backStack!!
             )
         }
-
-        testBlock.invoke(backStack, rootProvider.rootNode!!)
-
+        
+        testBlock.invoke(backStack!!, rootProvider.rootNode!!)
         rootProvider.makeAssertions(expectedState)
     }
 

@@ -54,18 +54,13 @@ interface TestRoot : Rib {
             }
 
         fun create(
+            buildParams: BuildParams<*>,
             dialogLauncher: DialogLauncher,
             savedInstanceState: Bundle?,
             routingSource: RoutingSource<Configuration> = RoutingSource.Empty()
         ): TestNode<TestRootView> {
             val router = TestRootRouter(
-                buildParams = BuildParams(
-                    payload = null,
-                    buildContext = BuildContext.root(savedInstanceState),
-                    identifier = Rib.Identifier(
-                        uuid = UUID.randomUUID()
-                    )
-                ),
+                buildParams = buildParams,
                 routingSource = routingSource,
                 builderPermanent1 = builder { permanentNode1 = it },
                 builderPermanent2 = builder { permanentNode2 = it },

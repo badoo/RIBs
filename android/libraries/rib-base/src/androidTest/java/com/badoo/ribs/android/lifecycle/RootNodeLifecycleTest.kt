@@ -2,6 +2,7 @@ package com.badoo.ribs.android.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.finishActivitySync
 import org.assertj.core.api.Assertions.assertThat
@@ -15,6 +16,7 @@ class RootNodeLifecycleTest {
     @get:Rule
     val ribsRule = RibsRule { activity, savedInstanceState ->
         provider.create(
+            buildParams = BuildParams.Empty(),
             dialogLauncher = activity.dialogLauncher(),
             savedInstanceState = savedInstanceState
         )

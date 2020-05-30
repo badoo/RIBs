@@ -21,7 +21,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
-    buildParams: BuildParams<Nothing?>,
+    buildParams: BuildParams<*>,
     routingSource: RoutingSource<Configuration>,
     private val builderPermanent1: NodeFactory,
     private val builderPermanent2: NodeFactory,
@@ -32,7 +32,7 @@ class TestRootRouter(
     permanentParts: List<Permanent>
 ) : Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource + permanent(permanentParts)
+    routingSource = routingSource + permanent(buildParams, permanentParts)
 ) {
 
     sealed class Configuration : Parcelable {

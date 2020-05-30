@@ -1,6 +1,9 @@
 package com.badoo.ribs.core.routing
 
+import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.Routing.Identifier
@@ -19,7 +22,8 @@ import java.util.UUID
 
 interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
-    SubtreeBackPressHandler {
+    SubtreeBackPressHandler,
+    SavesInstanceState {
 
     /**
      * Baseline will be used for diffing all further emissions against.
@@ -78,15 +82,26 @@ interface RoutingSource<C : Parcelable> :
 
         override fun handleBackPressFallback(): Boolean =
             first.handleBackPressFallback() || second.handleBackPressFallback()
+
+        override fun onSaveInstanceState(outState: Bundle) {
+            super.onSaveInstanceState(outState)
+            first.onSaveInstanceState(outState)
+            second.onSaveInstanceState(outState)
+        }
     }
 
     // TODO extract
-    class Permanent<C : Parcelable>(permanents: Iterable<C>) : RoutingSource<C> {
+    class Permanent<C : Parcelable>(
+        buildParams: BuildParams<*>,
+        permanents: Iterable<C>
+    ) : RoutingSource<C> {
 
         companion object {
-            fun <C : Parcelable> permanent(permanents: Iterable<C>) = Permanent(permanents)
+            fun <C : Parcelable> permanent(buildParams: BuildParams<*>, permanents: Iterable<C>) =
+                Permanent(buildParams, permanents)
 
-            fun <C : Parcelable> permanent(vararg permanents: C) = Permanent(permanents.toSet())
+            fun <C : Parcelable> permanent(buildParams: BuildParams<*>, vararg permanents: C) =
+                Permanent(buildParams, permanents.toSet())
         }
 
         private val routingElements =
@@ -102,11 +117,12 @@ interface RoutingSource<C : Parcelable> :
         private val permanentHistory =
             Observable.just(RoutingHistory.from(routingElements))
 
-        /**
-         * This [RoutingSource] is non-persistent
-         */
         override val baseLineState: RoutingHistory<C> =
-            RoutingHistory.from(emptySet())
+            if (buildParams.savedInstanceState == null) {
+                RoutingHistory.from(emptySet())
+            } else {
+                RoutingHistory.from(routingElements)
+            }
 
         override fun remove(identifier: Identifier) {
             // no-op -- it's permanent!
@@ -143,6 +159,7 @@ interface RoutingSource<C : Parcelable> :
             RoutingHistory.from(current)
         )
 
+        // FIXME save/restore to bundle to support correct baseLineState
         override val baseLineState: RoutingHistory<C> =
             RoutingHistory.from(emptySet())
 

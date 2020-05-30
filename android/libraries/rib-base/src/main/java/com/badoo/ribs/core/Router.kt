@@ -53,9 +53,7 @@ abstract class Router<C : Parcelable>(
         configurationFeature = ConfigurationFeature(
             timeCapsule = timeCapsule,
             resolver = this,
-            activator = RoutingActivator(
-                clientChildActivator
-            ),
+            activator = RoutingActivator(clientChildActivator),
             parentNode = node,
             transitionHandler = transitionHandler
         )
@@ -64,6 +62,7 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        routingSource.onSaveInstanceState(outState)
         configurationFeature.accept(SaveInstanceState())
         timeCapsule.saveState(outState)
     }

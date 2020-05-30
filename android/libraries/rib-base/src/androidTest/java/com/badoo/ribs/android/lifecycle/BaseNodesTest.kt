@@ -4,6 +4,8 @@ import androidx.test.espresso.Espresso
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.android.lifecycle.helper.NodeState
+import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
@@ -11,9 +13,9 @@ import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
-import com.badoo.ribs.test.util.runOnMainSync
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Rule
+import java.util.UUID
 
 abstract class BaseNodesTest {
 
@@ -39,22 +41,29 @@ abstract class BaseNodesTest {
 
         var backStack: BackStackFeature<TestRootRouter.Configuration>? = null
 
-        runOnMainSync {
+        ribsRule.start { activity, savedInstanceState ->
+            val buildParams = BuildParams(
+                payload = null,
+                buildContext = BuildContext.root(savedInstanceState),
+                identifier = Rib.Identifier(
+                    uuid = UUID.randomUUID()
+                )
+            )
+
             // SameThreadVerifier will check if it was created on the same thread it will be used on
             backStack = BackStackFeature(
-                buildParams = BuildParams.Empty(),
+                buildParams = buildParams,
                 initialConfiguration = setup.initialConfiguration
             )
-        }
 
-        ribsRule.start { activity, savedInstanceState ->
             rootProvider.create(
+                buildParams = buildParams,
                 dialogLauncher = activity.dialogLauncher(),
                 savedInstanceState = savedInstanceState,
                 routingSource = backStack!!
             )
         }
-        
+
         testBlock.invoke(backStack!!, rootProvider.rootNode!!)
         rootProvider.makeAssertions(expectedState)
     }

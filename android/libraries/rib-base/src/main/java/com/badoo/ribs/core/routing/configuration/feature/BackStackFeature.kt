@@ -1,5 +1,6 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
+import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.element.Actor
@@ -9,7 +10,6 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.extension.mapNotNull
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
@@ -47,10 +47,12 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
  * @see BackStackFeature.ReducerImpl for the implementation of applying state changes
  */
 class BackStackFeature<C : Parcelable>(
-    private val initialConfiguration: C,
-    timeCapsule: TimeCapsule<BackStackFeatureState<C>>
+    buildParams: BuildParams<*>,
+    private val initialConfiguration: C // TODO consider this to be RoutingHistoryElement<C>?
 ) : Consumer<Operation<C>>,
     RoutingSource<C> {
+
+    private val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
     private val feature = ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
         initialState = timeCapsule.initialState(),
@@ -77,14 +79,6 @@ class BackStackFeature<C : Parcelable>(
                     ?.configuration
             }
             .startWith(initialConfiguration)
-
-    constructor(
-        initialConfiguration: C, // TODO consider this to be RoutingHistoryElement<C>?
-        buildParams: BuildParams<*>
-    ) : this(
-        initialConfiguration,
-        AndroidTimeCapsule(buildParams.savedInstanceState)
-    )
 
     override val baseLineState: RoutingHistory<C> =
         timeCapsule.initialState()
@@ -224,6 +218,11 @@ class BackStackFeature<C : Parcelable>(
 
     override fun subscribe(observer: Observer<in RoutingHistory<C>>) =
         feature.subscribe(observer)
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        timeCapsule.saveState(outState)
+    }
 
     internal fun contentIdForPosition(position: Int, content: C): Routing.Identifier =
         Routing.Identifier("Back stack ${System.identityHashCode(this)} #$position = $content")

@@ -1,13 +1,13 @@
 package com.badoo.ribs.core.routing.configuration
 
 import android.os.Parcelable
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer
 import com.badoo.ribs.util.RIBs
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
 
 /**
  * Takes two consecutive [RoutingHistory] emissions, and calculates their difference as a set of
@@ -15,12 +15,9 @@ import io.reactivex.ObservableSource
  *
  * @see [RoutingHistoryDiffer.diff]
  */
-internal fun <C : Parcelable> ObservableSource<RoutingHistory<C>>.toCommands(): Observable<Transaction<C>> =
+internal fun <C : Parcelable> RoutingSource<C>.toCommands(): Observable<Transaction<C>> =
     Observable.wrap(this)
-        // FIXME add baselineState to RoutingSource interface to support baseline when restoring from Bundle:
-//        .startWith(baselineState)
-        .startWith(RoutingHistory.from(emptySet()))
-
+        .startWith(baseLineState)
         .buffer(2, 1)
         .filter { it.size == 2 } // In case a source has onComplete() before emitting 2 elements
         .flatMap { (previous, current) ->

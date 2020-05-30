@@ -85,7 +85,7 @@ class BackStackFeature<C : Parcelable>(
         AndroidTimeCapsule(buildParams.savedInstanceState)
     )
 
-    val initialState =
+    override val baseLineState: RoutingHistory<C> =
         timeCapsule.initialState()
 
     init {

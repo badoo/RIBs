@@ -21,9 +21,20 @@ interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
     SubtreeBackPressHandler {
 
-    operator fun plus(other: RoutingSource<C>): RoutingSource<C> = Combined(this, other)
+    /**
+     * Baseline will be used for diffing all further emissions against.
+     *
+     * It is intended to report an empty state on new instance creation.
+     *
+     * If the [RoutingSource] implements its own persistence however, then it should report the restored
+     * state as a baseline, otherwise all of its restored elements will be considered "new" when
+     * diffing against empty state, and as a result, added again.
+     */
+    val baseLineState: RoutingHistory<C>
 
     fun remove(identifier: Identifier)
+
+    operator fun plus(other: RoutingSource<C>): RoutingSource<C> = Combined(this, other)
 
     data class Combined<C : Parcelable>(
         val first: RoutingSource<C>,
@@ -46,6 +57,12 @@ interface RoutingSource<C : Parcelable> :
                 CombinedHistory(source1, source2)
             }
         )
+
+        override val baseLineState: RoutingHistory<C> =
+            CombinedHistory(
+                first.baseLineState,
+                second.baseLineState
+            )
 
         override fun subscribe(observer: Observer<in RoutingHistory<C>>) {
             combined.subscribe(observer)
@@ -85,6 +102,12 @@ interface RoutingSource<C : Parcelable> :
         private val permanentHistory =
             Observable.just(RoutingHistory.from(routingElements))
 
+        /**
+         * This [RoutingSource] is non-persistent
+         */
+        override val baseLineState: RoutingHistory<C> =
+            RoutingHistory.from(emptySet())
+
         override fun remove(identifier: Identifier) {
             // no-op -- it's permanent!
         }
@@ -97,6 +120,9 @@ interface RoutingSource<C : Parcelable> :
 
     // TODO extract
     class Empty<C : Parcelable> : RoutingSource<C> {
+        override val baseLineState: RoutingHistory<C> =
+            RoutingHistory.from(emptySet())
+
         override fun remove(identifier: Identifier) {
             // no-op -- it's empty
         }
@@ -116,6 +142,9 @@ interface RoutingSource<C : Parcelable> :
         private val states: Relay<RoutingHistory<C>> = BehaviorRelay.createDefault(
             RoutingHistory.from(current)
         )
+
+        override val baseLineState: RoutingHistory<C> =
+            RoutingHistory.from(emptySet())
 
         fun add(
             configuration: C,

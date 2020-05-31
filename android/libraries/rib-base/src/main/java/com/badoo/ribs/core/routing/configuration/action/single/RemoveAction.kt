@@ -17,8 +17,7 @@ internal class RemoveAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
     private val routing: Routing<C>,
     private var item: Resolved<C>,
-    private val activator: RoutingActivator<C>,
-    private val params: ActionExecutionParams<C>
+    private val activator: RoutingActivator<C>
 ) : Action<C> {
 
     object Factory: ActionFactory {
@@ -27,8 +26,7 @@ internal class RemoveAction<C : Parcelable>(
                 emitter = params.transactionExecutionParams.emitter,
                 routing = params.routing,
                 item = params.item,
-                activator = params.transactionExecutionParams.activator,
-                params = params
+                activator = params.transactionExecutionParams.activator
             )
     }
 

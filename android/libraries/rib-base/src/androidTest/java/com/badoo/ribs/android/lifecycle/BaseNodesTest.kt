@@ -29,6 +29,7 @@ abstract class BaseNodesTest {
         val pushConfiguration2: TestRootRouter.Configuration? = null
     )
 
+    @SuppressWarnings("LongMethod")
     protected fun test(
         setup: When,
         expectedState: ExpectedState,

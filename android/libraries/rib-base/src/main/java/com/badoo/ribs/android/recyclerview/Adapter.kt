@@ -104,6 +104,7 @@ internal class Adapter<T : Parcelable>(
     }
 
     override fun deactivate(routing: Routing<T>, child: Node<*>) {
+        child.saveViewState()
         child.detachFromView()
     }
 }

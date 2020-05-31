@@ -44,9 +44,11 @@ abstract class Router<C : Parcelable>(
 
     private lateinit var configurationFeature: ConfigurationFeature<C>
     override lateinit var node: Node<*>
+    private lateinit var routingExecutor: RoutingActivator<C>
 
     override fun init(node: Node<*>) {
         this.node = node
+        routingExecutor = RoutingActivator(node, clientChildActivator)
         initFeatures(node)
     }
 
@@ -54,8 +56,8 @@ abstract class Router<C : Parcelable>(
         configurationFeature = ConfigurationFeature(
             timeCapsule = timeCapsule,
             resolver = this,
-            activator = RoutingActivator(clientChildActivator),
-            parentNode = node,
+            activator = routingExecutor,
+            parentNode = node, // TODO remove
             transitionHandler = transitionHandler
         )
 

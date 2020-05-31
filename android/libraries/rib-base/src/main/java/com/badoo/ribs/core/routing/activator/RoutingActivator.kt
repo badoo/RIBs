@@ -5,11 +5,25 @@ import com.badoo.ribs.core.AttachMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.history.Routing
 
-class RoutingActivator<C : Parcelable>(
+internal class RoutingActivator<C : Parcelable>(
+    private val parentNode: Node<*>,
     private val clientActivator: ChildActivator<C>
 ) {
     private val defaultActivator: ChildActivator<C> =
         DefaultChildActivator()
+
+    fun add(routing: Routing<C>, nodes: List<Node<*>>) {
+        nodes.forEach { child ->
+            parentNode.attachChildNode(child)
+        }
+    }
+
+    fun remove(routing: Routing<C>, nodes: List<Node<*>>) {
+        nodes.forEach { child ->
+            parentNode.detachChildView(child)
+            parentNode.detachChildNode(child)
+        }
+    }
 
     fun activate(routing: Routing<C>, nodes: List<Node<*>>) {
         nodes.forEach { child ->

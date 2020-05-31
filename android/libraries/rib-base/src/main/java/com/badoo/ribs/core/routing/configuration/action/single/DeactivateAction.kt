@@ -8,7 +8,8 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.Deactivated
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateTrue
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionDirection
@@ -67,23 +68,15 @@ internal class DeactivateAction<C : Parcelable>(
     override fun onTransition(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             item.routingAction.cleanup()
-            item.nodes.forEach {
-                it.markPendingViewDetach(true)
-            }
-            emitter.onNext(
-                Effect.Individual.PendingDeactivateTrue(routing)
-            )
+            activator.onTransitionDeactivate(routing, item.nodes)
+            emitter.onNext(PendingDeactivateTrue(routing))
         }
     }
 
     override fun onFinish(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             activator.deactivate(routing, item.nodes)
-            emitter.onNext(
-                Effect.Individual.Deactivated(routing, item.copy(activationState = targetActivationState))
-            )
-
-
+            emitter.onNext(Deactivated(routing, item.copy(activationState = targetActivationState)))
         }
     }
 }

@@ -44,4 +44,28 @@ internal class RoutingActivator<C : Parcelable>(
             }
         }
     }
+
+    fun onTransitionAdd(routing: Routing<C>, nodes: List<Node<*>>) {
+        nodes.forEach { child ->
+            child.markPendingDetach(false)
+        }
+    }
+
+    fun onTransitionRemove(routing: Routing<C>, nodes: List<Node<*>>) {
+        nodes.forEach { child ->
+            child.markPendingDetach(true)
+        }
+    }
+
+    fun onTransitionActivate(routing: Routing<C>, nodes: List<Node<*>>) {
+        nodes.forEach { child ->
+            child.markPendingViewDetach(false)
+        }
+    }
+
+    fun onTransitionDeactivate(routing: Routing<C>, nodes: List<Node<*>>) {
+        nodes.forEach { child ->
+            child.markPendingViewDetach(true)
+        }
+    }
 }

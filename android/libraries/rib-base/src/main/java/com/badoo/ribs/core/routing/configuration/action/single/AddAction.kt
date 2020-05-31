@@ -5,7 +5,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.Added
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingRemovalFalse
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionElement
@@ -36,15 +37,12 @@ internal class AddAction<C : Parcelable>(
 
     override fun onBeforeTransition() {
         activator.add(routing, item.nodes)
-        emitter.onNext(
-            Effect.Individual.Added(routing, item)
-        )
+        emitter.onNext(Added(routing, item))
     }
 
     override fun onTransition(forceExecute: Boolean) {
-        emitter.onNext(
-            Effect.Individual.PendingRemovalFalse(routing)
-        )
+        activator.onTransitionAdd(routing, item.nodes)
+        emitter.onNext(PendingRemovalFalse(routing))
     }
 
     override fun onFinish(forceExecute: Boolean) {

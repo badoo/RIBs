@@ -9,6 +9,7 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Activation
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateFalse
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionDirection
@@ -68,11 +69,8 @@ internal class ActivateAction<C : Parcelable>(
         }
     }
 
-    /**
-     * TODO Consider doing this in Router when callback is fired. This would fix
-     *  actionableNodes vs item.nodes disparity here and make the decision more pronounced.
-     */
     private fun prepareTransition() {
+        // TODO Consider doing this closer to Router (e.g. result of RoutingActivator.activate)
         transitionElements = item.nodes.mapNotNull {
             it.view?.let { ribView ->
                 TransitionElement(
@@ -90,10 +88,8 @@ internal class ActivateAction<C : Parcelable>(
     override fun onTransition(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             item.routingAction.execute()
-
-            emitter.onNext(
-                Effect.Individual.PendingDeactivateFalse(routing)
-            )
+            activator.onTransitionActivate(routing, item.nodes)
+            emitter.onNext(PendingDeactivateFalse(routing))
         }
     }
 

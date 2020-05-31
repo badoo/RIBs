@@ -5,7 +5,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingRemovalTrue
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.Removed
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionElement
@@ -40,19 +41,12 @@ internal class RemoveAction<C : Parcelable>(
     }
 
     override fun onTransition(forceExecute: Boolean) {
-        // FIXME do in Activator
-        item.nodes.forEach {
-            it.markPendingDetach(true) // FIXME reverse should remove this flag!
-        }
-        emitter.onNext(
-            Effect.Individual.PendingRemovalTrue(routing)
-        )
+        activator.onTransitionRemove(routing, item.nodes)
+        emitter.onNext(PendingRemovalTrue(routing))
     }
 
     override fun onFinish(forceExecute: Boolean) {
         activator.remove(routing, item.nodes)
-        emitter.onNext(
-            Effect.Individual.Removed(routing, item)
-        )
+        emitter.onNext(Removed(routing, item))
     }
 }

@@ -98,7 +98,7 @@ class AuthDataSourceImplTest {
     fun `when logout then state is anonymous`() {
         authDataSource.logout()
 
-        assertThat(authDataSource.getState()).isEqualTo(AuthState.Anonymous)
+        assertThat(authDataSource.getState()).isEqualTo(AuthState.Unauthenticated)
     }
 
     @Test

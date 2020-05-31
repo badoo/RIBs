@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.auth
 
+import android.util.Log
 import com.badoo.ribs.example.BuildConfig
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.AccessToken
@@ -34,25 +35,31 @@ class AuthDataSourceImpl(
         )
             .doOnSuccess(::onAuthSuccess)
 
+    private fun onAuthSuccess(token: AccessToken) {
+        val authState = AuthState.Authenticated(token.accessToken)
+        updateState(authState)
+    }
+
     override fun loginAnonymous() {
         val state = AuthState.Anonymous
         updateState(state)
     }
 
     override fun logout() {
-        val state = AuthState.Anonymous
+        val state = AuthState.Unauthenticated
         updateState(state)
     }
 
-    override fun getState(): AuthState =
-        if (stateRelay.hasValue()) {
-            stateRelay.value!!
-        } else throw IllegalStateException("Cannot retrieve auth state")
-
-    private fun onAuthSuccess(token: AccessToken) {
-        val authState = AuthState.Authenticated(token.accessToken)
-        updateState(authState)
+    override fun getState(): AuthState {
+        val authState = stateRelay.value
+        return if (authState != null) {
+            authState
+        } else {
+            Log.e("AuthDataSource", "Cannot retrieve auth state")
+            AuthState.Unauthenticated
+        }
     }
+
 
     private fun updateState(authState: AuthState) {
         storage.save(authState)

@@ -20,9 +20,11 @@ import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
+// TODO add more tests:
+//  - identifier maintenance
+//  - activation maintenance
 class BackStackFeatureTest {
 
     companion object {
@@ -80,20 +82,27 @@ class BackStackFeatureTest {
     }
 
     @Test
-    @Ignore("This should be reworked. Routing identifier is now crafted inside BackStackFeature and causes a difference.")
-    fun `update state when operation is acceptable`() {
-        val newBackStack = listOf(C2, C3).asBackStackElements(true)
-        val backStackOperation = backStackOperation { newBackStack }
+    fun `State is updated when operation is applicable`() {
+        val newBackStack = listOf(C2, C3)
+            .asBackStackElements(true)
+
+        val backStackOperation = backStackOperation(
+            isApplicable = { true },
+            backStackOperation = { newBackStack }
+        )
 
         backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
 
-        assertEquals(newBackStack, backStackFeature.state.backStack)
+        val expected = newBackStack.map { it.routing.configuration }
+        val actual = backStackFeature.state.backStack.map { it.routing.configuration }
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `stay with previous state when operation is not acceptable`() {
-        val newBackStack = listOf(C2, C3).asBackStackElements(true)
+    fun `State is not updated when operation is not applicable`() {
         val oldBackStack = backStackFeature.state.backStack
+        val newBackStack = listOf(C2, C3).asBackStackElements(true)
         val backStackOperation = backStackOperation(
             isApplicable = { false },
             backStackOperation = { newBackStack }

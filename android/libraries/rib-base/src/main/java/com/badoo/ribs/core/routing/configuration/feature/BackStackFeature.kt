@@ -46,13 +46,10 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
  * @see BackStackFeature.ActorImpl for logic deciding whether an operation should be carried out
  * @see BackStackFeature.ReducerImpl for the implementation of applying state changes
  */
-class BackStackFeature<C : Parcelable>(
-    buildParams: BuildParams<*>,
-    private val initialConfiguration: C // TODO consider this to be RoutingHistoryElement<C>?
-) : Consumer<Operation<C>>,
-    RoutingSource<C> {
-
-    private val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
+class BackStackFeature<C : Parcelable> internal constructor(
+    private val initialConfiguration: C,
+    private val timeCapsule: AndroidTimeCapsule
+)  : Consumer<Operation<C>>, RoutingSource<C> {
 
     private val feature = ActorReducerFeature<Operation<C>, Effect<C>, BackStackFeatureState<C>, Nothing>(
         initialState = timeCapsule.initialState(),
@@ -82,6 +79,14 @@ class BackStackFeature<C : Parcelable>(
 
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
         timeCapsule.initialState()
+
+    constructor(
+        initialConfiguration: C, // TODO consider this to be RoutingHistoryElement<C>?
+        buildParams: BuildParams<*>
+    ) : this(
+        initialConfiguration,
+        AndroidTimeCapsule(buildParams.savedInstanceState)
+    )
 
     init {
         timeCapsule.register(timeCapsuleKey) { feature.state }

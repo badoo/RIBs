@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.routing.configuration
 
-import com.badoo.mvicore.element.TimeCapsule
+import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
@@ -29,8 +29,8 @@ class BackStackFeatureTest {
         private val initialConfiguration = C1
     }
 
-    private lateinit var timeCapsuleEmpty: TimeCapsule<BackStackFeatureState<Configuration>>
-    private lateinit var timeCapsuleWithContent: TimeCapsule<BackStackFeatureState<Configuration>>
+    private lateinit var timeCapsuleEmpty: AndroidTimeCapsule
+    private lateinit var timeCapsuleWithContent: AndroidTimeCapsule
     private lateinit var backstackInTimeCapsule: List<RoutingHistoryElement<Configuration>>
     private lateinit var backStackFeature: BackStackFeature<Configuration>
 
@@ -50,10 +50,10 @@ class BackStackFeatureTest {
         setupBackStackManager(timeCapsuleEmpty)
     }
 
-    private fun setupBackStackManager(timeCapsule: TimeCapsule<BackStackFeatureState<Configuration>>) {
+    private fun setupBackStackManager(timeCapsule: AndroidTimeCapsule) {
         backStackFeature = BackStackFeature(
-            initialConfiguration,
-            timeCapsule
+            initialConfiguration = initialConfiguration,
+            timeCapsule = timeCapsule
         )
     }
 

@@ -49,6 +49,7 @@ internal class DeactivateAction<C : Parcelable>(
         emptyList()
 
     override fun onBeforeTransition() {
+        // TODO Consider doing this closer to Router (in result of RoutingActivator)
         transitionElements = item.nodes.mapNotNull {
             it.view?.let { ribView ->
                 TransitionElement(
@@ -78,11 +79,6 @@ internal class DeactivateAction<C : Parcelable>(
     override fun onFinish(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             activator.deactivate(routing, item.nodes)
-            item.nodes.forEach {
-                it.saveViewState()
-                parentNode.detachChildView(it)
-            }
-
             emitter.onNext(
                 Effect.Individual.Deactivated(routing, item.copy(activationState = targetActivationState))
             )

@@ -11,7 +11,20 @@ def getAccessToken() {
     if (propsFile.exists()) {
         propsFile.withInputStream { props.load(it) }
     }
-    def localPropsKey = props.getProperty("accesskey")
+    def localPropsKey = props.getProperty("accessKey")
+
+    return localPropsKey ?: systemEnvKey ?: "\"\""
+}
+
+def getClientSecret() {
+    def systemEnvKey = System.getenv('CLIENT_SECRET')
+
+    def props = new Properties()
+    def propsFile = file("local.properties")
+    if (propsFile.exists()) {
+        propsFile.withInputStream { props.load(it) }
+    }
+    def localPropsKey = props.getProperty("clientSecret")
 
     return localPropsKey ?: systemEnvKey ?: "\"\""
 }
@@ -28,6 +41,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "ACCESS_KEY", getAccessToken()
+        buildConfigField "String", "CLIENT_SECRET", getClientSecret()
     }
 
     buildTypes {
@@ -46,6 +60,9 @@ dependencies {
     implementation deps.android.constraintLayout
     implementation deps.android.design
 
+    implementation deps.external.rxrelay2
+    implementation deps.external.rxandroid2
+
     implementation deps.retrofit.retrofit
     implementation deps.retrofit.rxjavaAdapter
     implementation deps.retrofit.moshiConverter
@@ -53,6 +70,8 @@ dependencies {
     implementation deps.retrofit.okhttpLoggingInterceptor
 
     testImplementation deps.test.junit
+    testImplementation deps.test.mockitoKotlin
+    testImplementation deps.test.assertj
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner

@@ -161,10 +161,10 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         val defaultElements: MutablePool<C> = mutablePoolOf()
 
         commands.forEach { command ->
-            if (command is RoutingCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
-                defaultElements[command.key] = RoutingContext.Unresolved(
+            if (command is RoutingCommand.Add<C> && !state.pool.containsKey(command.routing) && !defaultElements.containsKey(command.routing)) {
+                defaultElements[command.routing] = RoutingContext.Unresolved(
                     activationState = RoutingContext.ActivationState.INACTIVE,
-                    routing = command.key
+                    routing = command.routing
                 )
             }
         }
@@ -211,8 +211,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 ActionExecutionParams(
                     transactionExecutionParams = params,
                     command = command,
-                    routing = command.key,
-                    isBackStackOperation = commands.isBackStackOperation(command.key)
+                    routing = command.routing,
+                    isBackStackOperation = commands.isBackStackOperation(command.routing)
                 )
             )
         } catch (e: KeyNotFoundInPoolException) {

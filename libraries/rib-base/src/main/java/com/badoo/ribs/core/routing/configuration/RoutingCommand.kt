@@ -22,11 +22,11 @@ import com.badoo.ribs.core.routing.history.Routing
  * [Node] manipulations) are to be found in the associated Actions created by [ActionFactory].
  */
 internal sealed class RoutingCommand<C : Parcelable> {
-    abstract val key: Routing<C>
+    abstract val routing: Routing<C>
     abstract val actionFactory: ReversibleActionFactory
 
     data class Add<C : Parcelable>(
-        override val key: Routing<C>
+        override val routing: Routing<C>
     ) : RoutingCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
@@ -36,7 +36,7 @@ internal sealed class RoutingCommand<C : Parcelable> {
     }
 
     data class Remove<C : Parcelable>(
-        override val key: Routing<C>
+        override val routing: Routing<C>
     ) : RoutingCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
@@ -46,7 +46,7 @@ internal sealed class RoutingCommand<C : Parcelable> {
     }
 
     data class Activate<C : Parcelable>(
-        override val key: Routing<C>
+        override val routing: Routing<C>
     ) : RoutingCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =
@@ -57,7 +57,7 @@ internal sealed class RoutingCommand<C : Parcelable> {
     }
 
     data class Deactivate<C : Parcelable>(
-        override val key: Routing<C>
+        override val routing: Routing<C>
     ) : RoutingCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =

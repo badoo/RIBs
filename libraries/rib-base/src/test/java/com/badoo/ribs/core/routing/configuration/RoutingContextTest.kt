@@ -22,7 +22,7 @@ import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class ConfigurationContextTest {
+class RoutingContextTest {
 
     companion object {
         private const val NB_EXPECTED_NODES = 3

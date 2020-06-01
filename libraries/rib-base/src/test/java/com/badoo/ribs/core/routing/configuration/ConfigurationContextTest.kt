@@ -7,11 +7,11 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Unresolved
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.any

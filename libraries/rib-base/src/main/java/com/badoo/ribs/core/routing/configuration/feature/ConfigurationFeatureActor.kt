@@ -8,8 +8,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
@@ -162,8 +162,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
         commands.forEach { command ->
             if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
-                defaultElements[command.key] = ConfigurationContext.Unresolved(
-                    activationState = ConfigurationContext.ActivationState.INACTIVE,
+                defaultElements[command.key] = RoutingContext.Unresolved(
+                    activationState = RoutingContext.ActivationState.INACTIVE,
                     routing = command.key
                 )
             }
@@ -184,7 +184,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             emitter = emitter,
             resolver = { key ->
                 val lookup = tempPool[key]
-                if (lookup is ConfigurationContext.Resolved) lookup
+                if (lookup is RoutingContext.Resolved) lookup
                 else {
                     val item = defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
                     val resolved = item.resolve(configurationResolver, parentNode)
@@ -196,7 +196,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             parentNode = parentNode,
             globalActivationLevel = when (transaction) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING
-                is MultiConfigurationCommand.WakeUp -> ConfigurationContext.ActivationState.ACTIVE
+                is MultiConfigurationCommand.WakeUp -> RoutingContext.ActivationState.ACTIVE
                 else -> state.activationLevel
             }
         )

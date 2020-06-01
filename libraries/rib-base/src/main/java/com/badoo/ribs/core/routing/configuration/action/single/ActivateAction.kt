@@ -4,9 +4,9 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateFalse
@@ -27,7 +27,7 @@ internal class ActivateAction<C : Parcelable>(
     private val parentNode: Node<*>,
     private val activator: RoutingActivator<C>,
     private val isBackStackOperation: Boolean,
-    private val globalActivationLevel: ConfigurationContext.ActivationState
+    private val globalActivationLevel: RoutingContext.ActivationState
 ) : Action<C> {
 
     object Factory: ActionFactory {

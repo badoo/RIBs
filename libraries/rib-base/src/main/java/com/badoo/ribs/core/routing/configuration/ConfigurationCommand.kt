@@ -13,9 +13,9 @@ import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionP
 import com.badoo.ribs.core.routing.history.Routing
 
 /**
- * Represents a command to change one or more [ConfigurationContext] elements.
+ * Represents a command to change one or more [RoutingContext] elements.
  *
- * The command object holds only the data necessary to resolve the [ConfigurationContext] that the
+ * The command object holds only the data necessary to resolve the [RoutingContext] that the
  * command needs to be executed on on a logical level.
  *
  * Associated actions that need to be executed (resulting in [RoutingAction] and

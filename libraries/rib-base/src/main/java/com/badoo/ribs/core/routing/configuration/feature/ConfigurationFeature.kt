@@ -9,11 +9,11 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
@@ -32,12 +32,12 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  *
  * State store responsible for executing [ConfigurationCommand]s it takes as inputs.
  *
- * The [WorkingState] contains a pool of [ConfigurationContext] elements referenced
+ * The [WorkingState] contains a pool of [RoutingContext] elements referenced
  * by [Routing] objects. Practically, these keep reference to all configurations
  * currently associated with the RIB: all initial configurations (typically permanent parts
  * and one content type) + the ones coming from back stack changes.
  *
- * Any given [ConfigurationContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
+ * Any given [RoutingContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
  * respective to whether it is active on the screen.
  * Last elements in the back stack are activated, others are deactivated.
  * Permanent parts are added and activated on initialisation and never deactivated as long as

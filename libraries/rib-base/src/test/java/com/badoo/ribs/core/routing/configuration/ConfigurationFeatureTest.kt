@@ -13,10 +13,10 @@ import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Unresolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.ContentExternal1
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.ContentExternal2
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.ContentViewParented1

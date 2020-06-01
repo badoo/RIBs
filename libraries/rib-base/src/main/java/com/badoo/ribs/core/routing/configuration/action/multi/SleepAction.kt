@@ -1,9 +1,9 @@
 package com.badoo.ribs.core.routing.configuration.action.multi
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect

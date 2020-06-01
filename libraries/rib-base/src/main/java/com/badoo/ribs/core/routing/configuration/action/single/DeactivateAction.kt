@@ -4,9 +4,9 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.Deactivated
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateTrue

@@ -21,7 +21,6 @@ before_script:
   - adb shell input keyevent 82 # menu
 
 script:
-  - cd android
   - adb devices
   - ./gradlew build detekt --console=plain
 

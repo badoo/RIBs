@@ -9,10 +9,10 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Activate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Remove
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved

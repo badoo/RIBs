@@ -11,7 +11,7 @@ import io.reactivex.Observable
 
 /**
  * Takes two consecutive [RoutingHistory] emissions, and calculates their difference as a set of
- * [ConfigurationCommand]s.
+ * [RoutingCommand]s.
  *
  * @see [RoutingHistoryDiffer.diff]
  */

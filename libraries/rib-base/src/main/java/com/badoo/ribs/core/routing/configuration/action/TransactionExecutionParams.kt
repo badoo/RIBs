@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.configuration.action
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
+import com.badoo.ribs.core.routing.configuration.RoutingCommand
 import com.badoo.ribs.core.routing.configuration.RoutingContext
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
@@ -26,7 +26,7 @@ internal data class TransactionExecutionParams<C : Parcelable>(
 
 internal data class ActionExecutionParams<C : Parcelable>(
     val transactionExecutionParams: TransactionExecutionParams<C>,
-    val command: ConfigurationCommand<C>,
+    val command: RoutingCommand<C>,
     val routing: Routing<C>,
     val isBackStackOperation: Boolean
 ) {

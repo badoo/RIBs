@@ -7,7 +7,7 @@ import com.badoo.mvicore.element.Actor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
+import com.badoo.ribs.core.routing.configuration.RoutingCommand
 import com.badoo.ribs.core.routing.configuration.RoutingContext
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.RoutingResolver
@@ -24,7 +24,7 @@ import io.reactivex.Observable
 
 /**
  * Executes [MultiConfigurationAction] / [SingleConfigurationAction] associated with the incoming
- * [ConfigurationCommand]. The actions will take care of [RoutingAction] invocations and [Node]
+ * [RoutingCommand]. The actions will take care of [RoutingAction] invocations and [Node]
  * manipulations, and are expected to return updated elements.
  *
  * Updated elements are then passed on to the [ReducerImpl] in the respective [Effect]s
@@ -152,16 +152,16 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
     /**
      * Since the state doesn't yet reflect elements we're just about to add, we'll create them ahead
-     * so that other [ConfigurationCommand]s that rely on their existence can function properly.
+     * so that other [RoutingCommand]s that rely on their existence can function properly.
      */
     private fun createDefaultElements(
         state: WorkingState<C>,
-        commands: List<ConfigurationCommand<C>>
+        commands: List<RoutingCommand<C>>
     ): Pool<C> {
         val defaultElements: MutablePool<C> = mutablePoolOf()
 
         commands.forEach { command ->
-            if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
+            if (command is RoutingCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
                 defaultElements[command.key] = RoutingContext.Unresolved(
                     activationState = RoutingContext.ActivationState.INACTIVE,
                     routing = command.key
@@ -203,7 +203,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     }
 
     private fun createActions(
-        commands: List<ConfigurationCommand<C>>,
+        commands: List<RoutingCommand<C>>,
         params: TransactionExecutionParams<C>
     ): List<ReversibleAction<C>> = commands.map { command ->
         try {

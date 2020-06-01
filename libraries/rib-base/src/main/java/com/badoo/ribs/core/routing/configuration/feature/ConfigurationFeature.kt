@@ -7,8 +7,8 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
+import com.badoo.ribs.core.routing.configuration.RoutingCommand
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
 import com.badoo.ribs.core.routing.configuration.RoutingContext
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
@@ -30,7 +30,7 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
 /**
  * FIXME rewrite
  *
- * State store responsible for executing [ConfigurationCommand]s it takes as inputs.
+ * State store responsible for executing [RoutingCommand]s it takes as inputs.
  *
  * The [WorkingState] contains a pool of [RoutingContext] elements referenced
  * by [Routing] objects. Practically, these keep reference to all configurations

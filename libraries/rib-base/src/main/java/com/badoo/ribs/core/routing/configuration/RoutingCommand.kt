@@ -21,13 +21,13 @@ import com.badoo.ribs.core.routing.history.Routing
  * Associated actions that need to be executed (resulting in [RoutingAction] and
  * [Node] manipulations) are to be found in the associated Actions created by [ActionFactory].
  */
-internal sealed class ConfigurationCommand<C : Parcelable> {
+internal sealed class RoutingCommand<C : Parcelable> {
     abstract val key: Routing<C>
     abstract val actionFactory: ReversibleActionFactory
 
     data class Add<C : Parcelable>(
         override val key: Routing<C>
-    ) : ConfigurationCommand<C>() {
+    ) : RoutingCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
                 forwardActionFactory = AddAction.Factory,
@@ -37,7 +37,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
     data class Remove<C : Parcelable>(
         override val key: Routing<C>
-    ) : ConfigurationCommand<C>() {
+    ) : RoutingCommand<C>() {
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
                 forwardActionFactory = RemoveAction.Factory,
@@ -47,7 +47,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
     data class Activate<C : Parcelable>(
         override val key: Routing<C>
-    ) : ConfigurationCommand<C>() {
+    ) : RoutingCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(
@@ -58,7 +58,7 @@ internal sealed class ConfigurationCommand<C : Parcelable> {
 
     data class Deactivate<C : Parcelable>(
         override val key: Routing<C>
-    ) : ConfigurationCommand<C>() {
+    ) : RoutingCommand<C>() {
 
         override val actionFactory: ReversibleActionFactory =
             ReversibleActionPair.Factory(

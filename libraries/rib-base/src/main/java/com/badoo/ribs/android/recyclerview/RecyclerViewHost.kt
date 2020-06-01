@@ -8,7 +8,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.clienthelper.Connectable
 import com.badoo.ribs.core.ExperimentalApi
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import kotlinx.android.parcel.Parcelize
 
 @ExperimentalApi
@@ -18,7 +18,7 @@ interface RecyclerViewHost<T : Parcelable>: Rib, Connectable<Input<T>, Nothing> 
     interface Dependency<T : Parcelable> {
         fun hostingStrategy(): HostingStrategy
         fun initialElements(): List<T>
-        fun resolver(): ConfigurationResolver<T>
+        fun resolver(): RoutingResolver<T>
         fun recyclerViewFactory(): RecyclerViewFactory
         fun layoutManagerFactory(): LayoutManagerFactory
         fun viewHolderLayoutParams(): FrameLayout.LayoutParams

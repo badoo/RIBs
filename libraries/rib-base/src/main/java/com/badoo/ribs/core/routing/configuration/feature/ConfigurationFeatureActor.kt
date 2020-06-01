@@ -10,7 +10,7 @@ import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.RoutingContext
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
@@ -31,7 +31,7 @@ import io.reactivex.Observable
  */
 @SuppressWarnings("LargeClass") // TODO extract
 internal class ConfigurationFeatureActor<C : Parcelable>(
-    private val configurationResolver: ConfigurationResolver<C>,
+    private val resolver: RoutingResolver<C>,
     private val activator: RoutingActivator<C>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
@@ -187,7 +187,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 if (lookup is RoutingContext.Resolved) lookup
                 else {
                     val item = defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
-                    val resolved = item.resolve(configurationResolver, parentNode)
+                    val resolved = item.resolve(resolver, parentNode)
                     tempPool[key] = resolved
                     resolved
                 }

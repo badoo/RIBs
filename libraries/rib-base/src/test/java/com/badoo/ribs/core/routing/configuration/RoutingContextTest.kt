@@ -40,7 +40,7 @@ class RoutingContextTest {
         on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn ribs
     }
-    private val defaultResolver = mock<ConfigurationResolver<Parcelable>> {
+    private val defaultResolver = mock<RoutingResolver<Parcelable>> {
         on { resolve(any()) } doReturn defaultRoutingAction
     }
 
@@ -51,7 +51,7 @@ class RoutingContextTest {
         on { buildNodes(any()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }
-    private val resolverWithAnchor = mock<ConfigurationResolver<Parcelable>> {
+    private val resolverWithAnchor = mock<RoutingResolver<Parcelable>> {
         on { resolve(any()) } doReturn routingActionWithAnchor
     }
 
@@ -164,7 +164,7 @@ class RoutingContextTest {
 
 
     private fun verifyBuildNodesCalledCorrectly(
-        resolver: ConfigurationResolver<Parcelable>,
+        resolver: RoutingResolver<Parcelable>,
         routingAction: RoutingAction,
         expectedParent: Node<*>,
         parentNode: Node<*>,

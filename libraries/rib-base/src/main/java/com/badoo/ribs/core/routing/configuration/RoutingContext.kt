@@ -70,7 +70,7 @@ internal sealed class RoutingContext<C : Parcelable> {
     abstract fun sleep(): RoutingContext<C>
     abstract fun wakeUp(): RoutingContext<C>
     abstract fun shrink(): Unresolved<C>
-    abstract fun resolve(resolver: ConfigurationResolver<C>, parentNode: Node<*>): Resolved<C>
+    abstract fun resolve(resolver: RoutingResolver<C>, parentNode: Node<*>): Resolved<C>
 
     /**
      * Represents [RoutingContext] that is persistable in a [android.os.Bundle],
@@ -94,7 +94,7 @@ internal sealed class RoutingContext<C : Parcelable> {
          * Resolves and sets the associated [RoutingAction], builds associated [Node]s
          */
         override fun resolve(
-            resolver: ConfigurationResolver<C>,
+            resolver: RoutingResolver<C>,
             parentNode: Node<*>
         ): Resolved<C> {
             bundles.forEach { it.classLoader = RoutingContext::class.java.classLoader }
@@ -170,7 +170,7 @@ internal sealed class RoutingContext<C : Parcelable> {
     ) : RoutingContext<C>() {
 
         override fun resolve(
-            resolver: ConfigurationResolver<C>,
+            resolver: RoutingResolver<C>,
             parentNode: Node<*>
         ): Resolved<C> = this
 

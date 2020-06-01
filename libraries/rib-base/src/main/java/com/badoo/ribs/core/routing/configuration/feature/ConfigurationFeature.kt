@@ -14,7 +14,7 @@ import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.history.Routing
@@ -45,7 +45,7 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  */
 internal class ConfigurationFeature<C : Parcelable>(
     timeCapsule: TimeCapsule<SavedState<C>>,
-    resolver: ConfigurationResolver<C>,
+    resolver: RoutingResolver<C>,
     activator: RoutingActivator<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
@@ -53,7 +53,7 @@ internal class ConfigurationFeature<C : Parcelable>(
     initialState = timeCapsule.initialState<C>(),
     bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>()),
     actor = ConfigurationFeatureActor(
-        configurationResolver = resolver,
+        resolver = resolver,
         activator = activator,
         parentNode = parentNode,
         transitionHandler = transitionHandler

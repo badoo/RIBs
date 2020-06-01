@@ -64,7 +64,7 @@ class ConfigurationFeatureTest {
     private lateinit var poolInTimeCapsule: Map<Routing<Configuration>, Unresolved<Configuration>>
 
     private lateinit var feature: ConfigurationFeature<Configuration>
-    private lateinit var resolver: ConfigurationResolver<Configuration>
+    private lateinit var resolver: RoutingResolver<Configuration>
     private lateinit var parentNode: Node<Nothing>
 
     private lateinit var helperPermanent1: ConfigurationTestHelper

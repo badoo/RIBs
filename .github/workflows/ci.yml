@@ -77,10 +77,10 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: 11
-            # uses: actions/cache@v1
-            #  with:
-            #      path: ~/.gradle/caches
-            #      key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
+            - uses: actions/cache@v1
+              with:
+                 path: ~/.gradle/caches
+                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
 
 
             - name: Instrumentation tests
@@ -88,4 +88,4 @@ jobs:
               with:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
-                  script: ./gradlew connectedCheck -p android
+                  script: ./gradlew connectedCheck

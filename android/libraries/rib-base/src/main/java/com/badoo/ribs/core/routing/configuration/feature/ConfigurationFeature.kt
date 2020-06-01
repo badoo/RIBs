@@ -6,21 +6,20 @@ import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.Observable
-import io.reactivex.Observable.fromIterable
 
 private val timeCapsuleKey = ConfigurationFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
@@ -29,10 +28,12 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
         ?: WorkingState())
 
 /**
+ * FIXME rewrite
+ *
  * State store responsible for executing [ConfigurationCommand]s it takes as inputs.
  *
  * The [WorkingState] contains a pool of [ConfigurationContext] elements referenced
- * by [ConfigurationKey] objects. Practically, these keep reference to all configurations
+ * by [Routing] objects. Practically, these keep reference to all configurations
  * currently associated with the RIB: all initial configurations (typically permanent parts
  * and one content type) + the ones coming from back stack changes.
  *
@@ -43,18 +44,19 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  * the view is available.
  */
 internal class ConfigurationFeature<C : Parcelable>(
-    initialConfigurations: List<C>,
     timeCapsule: TimeCapsule<SavedState<C>>,
-    resolver: (C) -> RoutingAction,
+    resolver: ConfigurationResolver<C>,
+    activator: RoutingActivator<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
 ) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
-    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>(), initialConfigurations),
+    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>()),
     actor = ConfigurationFeatureActor(
-        resolver,
-        parentNode,
-        transitionHandler
+        configurationResolver = resolver,
+        activator = activator,
+        parentNode = parentNode,
+        transitionHandler = transitionHandler
     ),
     reducer = ReducerImpl()
 ) {
@@ -67,47 +69,47 @@ internal class ConfigurationFeature<C : Parcelable>(
             class WakeUp<C : Parcelable>: Global<C>()
             class Sleep<C : Parcelable>: Global<C>()
             class SaveInstanceState<C : Parcelable>(
-                val updatedElements: Map<ConfigurationKey<C>, Resolved<C>>
+                val updatedElements: Map<Routing<C>, Resolved<C>>
             ): Global<C>()
         }
 
         sealed class Individual<C : Parcelable>: Effect<C>() {
-            abstract val key: ConfigurationKey<C>
+            abstract val key: Routing<C>
 
             class Added<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Removed<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Activated<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class Deactivated<C : Parcelable>(
-                override val key: ConfigurationKey<C>,
+                override val key: Routing<C>,
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
             class PendingDeactivateTrue<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class PendingDeactivateFalse<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class PendingRemovalTrue<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class PendingRemovalFalse<C : Parcelable>(
-                override val key: ConfigurationKey<C>
+                override val key: Routing<C>
             ) : Individual<C>()
         }
 
@@ -120,31 +122,13 @@ internal class ConfigurationFeature<C : Parcelable>(
         ) : Effect<C>()
     }
 
-    /**
-     * Automatically calls [Add] + [Activate] on all [initialConfigurations]
-     */
     class BootStrapperImpl<C : Parcelable>(
-        private val initialState: WorkingState<C>,
-        private val initialConfigurations: List<C>
+        private val initialState: WorkingState<C>
     ) : Bootstrapper<Transaction<C>> {
 
         override fun invoke(): Observable<Transaction<C>> =
             when {
-                initialState.pool.isEmpty() -> fromIterable(
-                    initialConfigurations
-                        .mapIndexed { index, configuration ->
-                            val key = ConfigurationKey.Permanent(index, configuration)
-
-                            Transaction.ListOfCommands(
-                                descriptor = TransitionDescriptor.None,
-                                commands = listOf(
-                                    Add(key),
-                                    Activate(key)
-                                )
-                            )
-                        }
-                )
-                else -> Observable.just(
+                initialState.pool.isNotEmpty() -> Observable.just(
                     Transaction.ListOfCommands(
                         descriptor = TransitionDescriptor.None,
                         commands = initialState.pool
@@ -152,6 +136,7 @@ internal class ConfigurationFeature<C : Parcelable>(
                             .map { Add(it.key) }
                     )
                 )
+                else -> Observable.empty()
             }
     }
 

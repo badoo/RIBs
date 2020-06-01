@@ -4,11 +4,14 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.NodeFactory
+import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.RoutingSource.Permanent.Companion.permanent
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.ribs.TestRibDialog
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
@@ -18,19 +21,18 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
-    buildParams: BuildParams<Nothing?>,
+    buildParams: BuildParams<*>,
+    routingSource: RoutingSource<Configuration>,
     private val builderPermanent1: NodeFactory,
     private val builderPermanent2: NodeFactory,
     private val builder3: NodeFactory,
     private val builder1: NodeFactory,
     private val builder2: NodeFactory,
     private val dialogLauncher: DialogLauncher,
-    permanentParts: List<Permanent>,
-    initialConfiguration: Content
-) : Router<Configuration, Permanent, Content, Overlay, TestRootView>(
+    permanentParts: List<Permanent>
+) : Router<Configuration>(
     buildParams = buildParams,
-    initialConfiguration = initialConfiguration,
-    permanentParts = permanentParts
+    routingSource = routingSource + permanent(permanentParts)
 ) {
 
     sealed class Configuration : Parcelable {
@@ -54,8 +56,8 @@ class TestRootRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-        when (configuration) {
+    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+        when (routing.configuration) {
             Permanent.Permanent1 -> attach(builderPermanent1)
             Permanent.Permanent2 -> attach(builderPermanent2)
             Content.NoOp -> noop()
@@ -66,8 +68,8 @@ class TestRootRouter(
                 attach(builder1),
                 attach(builder2)
             )
-            Overlay.AttachNode1AsOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder1))
-            Overlay.AttachNode2AsOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder2))
-            Overlay.AttachNode3AsOverlay -> showDialog(this, dialogLauncher, TestRibDialog(builder3))
+            Overlay.AttachNode1AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder1))
+            Overlay.AttachNode2AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder2))
+            Overlay.AttachNode3AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder3))
         }
 }

@@ -2,11 +2,13 @@ package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingRemovalTrue
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.Removed
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
@@ -14,21 +16,18 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class RemoveAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: ConfigurationKey<C>,
+    private val routing: Routing<C>,
     private var item: Resolved<C>,
-    private val params: ActionExecutionParams<C>
+    private val activator: RoutingActivator<C>
 ) : Action<C> {
 
     object Factory: ActionFactory {
-        override fun <C : Parcelable> create(
-            params: ActionExecutionParams<C>,
-            actionableNodes: List<Node<*>>
-        ): Action<C> =
+        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): Action<C> =
             RemoveAction(
                 emitter = params.transactionExecutionParams.emitter,
-                key = params.key,
+                routing = params.routing,
                 item = params.item,
-                params = params
+                activator = params.transactionExecutionParams.activator
             )
     }
 
@@ -42,22 +41,12 @@ internal class RemoveAction<C : Parcelable>(
     }
 
     override fun onTransition(forceExecute: Boolean) {
-        item.nodes.forEach {
-            it.markPendingDetach(true)
-        }
-        emitter.onNext(
-            Effect.Individual.PendingRemovalTrue(key)
-        )
+        activator.onTransitionRemove(routing, item.nodes)
+        emitter.onNext(PendingRemovalTrue(routing))
     }
 
     override fun onFinish(forceExecute: Boolean) {
-        item.nodes.forEach {
-            params.transactionExecutionParams.parentNode.detachChildView(it)
-            params.transactionExecutionParams.parentNode.detachChildNode(it)
-        }
-
-        emitter.onNext(
-            Effect.Individual.Removed(key, item)
-        )
+        activator.remove(routing, item.nodes)
+        emitter.onNext(Removed(routing, item))
     }
 }

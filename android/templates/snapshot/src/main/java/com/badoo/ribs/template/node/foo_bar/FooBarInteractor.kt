@@ -7,6 +7,7 @@ import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.template.node.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.mapper.InputToWish
@@ -14,12 +15,12 @@ import com.badoo.ribs.template.node.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.node.foo_bar.mapper.StateToViewModel
 import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToWish
-import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
-    private val feature: FooBarFeature,
-    private val router: FooBarRouter
+    private val backStack: BackStackFeature<Configuration>,
+    private val feature: FooBarFeature
 ) : Interactor<FooBar, FooBarView>(
     buildParams = buildParams,
     disposables = feature

@@ -6,11 +6,11 @@ import com.badoo.ribs.test.util.runOnMainSync
 class PushTwoPopOneDefaultTest : PushTwoPopOneTest() {
 
     override fun pushTwoConfigurationAndPop(setup: When, expectedState: ExpectedState) {
-        test(setup, expectedState) { router, _ ->
+        test(setup, expectedState) { backStack, _ ->
             runOnMainSync {
-                router.pushIt(setup.pushConfiguration1!!)
-                router.pushIt(setup.pushConfiguration2!!)
-                router.popBackStack()
+                backStack.pushIt(setup.pushConfiguration1!!)
+                backStack.pushIt(setup.pushConfiguration2!!)
+                backStack.popBackStack()
             }
         }
     }

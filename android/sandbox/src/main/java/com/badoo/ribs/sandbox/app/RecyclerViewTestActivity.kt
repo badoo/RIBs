@@ -13,14 +13,15 @@ import com.badoo.ribs.android.recyclerview.LayoutManagerFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
-import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
+import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
-import com.badoo.ribs.android.recyclerview.client.RecyclerViewRibResolver
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R
@@ -32,8 +33,6 @@ import com.badoo.ribs.sandbox.rib.switcher.Switcher
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
 import kotlinx.android.parcel.Parcelize
 
 /** The sample app's single activity */
@@ -61,11 +60,11 @@ class RecyclerViewTestActivity : RibActivity() {
     private val loremIpsumBuilder = LoremIpsumBuilder(object : LoremIpsum.Dependency {})
 
     private val noopPortal = object : Portal.OtherSide {
-        override fun showContent(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {
+        override fun showContent(remoteNode: Node<*>, remoteConfiguration: Parcelable) {
             // Sorry, no-op
         }
 
-        override fun showOverlay(remoteRouter: Router<*, *, *, *, *>, remoteConfiguration: Parcelable) {
+        override fun showOverlay(remoteNode: Node<*>, remoteConfiguration: Parcelable) {
             // Sorry, no-op
         }
     }
@@ -74,40 +73,34 @@ class RecyclerViewTestActivity : RibActivity() {
         SwitcherBuilder(
             object : Switcher.Dependency {
                 override fun activityStarter(): ActivityStarter = activityStarter
-                override fun permissionRequester(): PermissionRequester =
-                    permissionRequester
-
+                override fun permissionRequester(): PermissionRequester = permissionRequester
                 override fun dialogLauncher(): DialogLauncher = this@RecyclerViewTestActivity
                 override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
                 override fun portal(): Portal.OtherSide = noopPortal
             }
         )
 
-    private val ribResolver = object : RecyclerViewRibResolver<Item> {
-        override fun resolve(element: Item): RoutingAction =
-            when (element) {
+    private val resolver = object : ConfigurationResolver<Item> {
+        override fun resolve(routing: Routing<Item>): RoutingAction =
+            when (routing.configuration) {
                 Item.LoremIpsumItem -> recyclerView { loremIpsumBuilder.build(it) }
                 Item.FooBarItem -> recyclerView { fooBarBuilder.build(it) }
                 Item.Switcher-> recyclerView { switcherBuilder.build(it) }
             }
     }
 
-    private val initialElements = listOf(
+    private val initialElements = listOf<Item>(
         Item.FooBarItem
     )
 
-    private val inputCommands = Observable.just<Input<Item>>(
-        Input.Add(Item.LoremIpsumItem),
-        Input.Add(Item.Switcher)
-    )
+    private lateinit var recyclerViewHost: RecyclerViewHost<Item>
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
         RecyclerViewHostBuilder(
             object : RecyclerViewHost.Dependency<Item> {
                 override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = EAGER
                 override fun initialElements(): List<Item> = initialElements
-                override fun recyclerViewHostInput(): ObservableSource<Input<Item>> = inputCommands
-                override fun resolver(): RecyclerViewRibResolver<Item> = ribResolver
+                override fun resolver(): ConfigurationResolver<Item> = resolver
                 override fun recyclerViewFactory(): RecyclerViewFactory = ::RecyclerView
                 override fun layoutManagerFactory(): LayoutManagerFactory = ::LinearLayoutManager
                 override fun viewHolderLayoutParams(): FrameLayout.LayoutParams =
@@ -116,5 +109,12 @@ class RecyclerViewTestActivity : RibActivity() {
                         FrameLayout.LayoutParams.WRAP_CONTENT
                     )
             }
-        ).build(root(savedInstanceState))
+        ).build(root(savedInstanceState)).also {
+            recyclerViewHost = it
+        }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerViewHost.input.accept(Add(Item.LoremIpsumItem))
+    }
 }

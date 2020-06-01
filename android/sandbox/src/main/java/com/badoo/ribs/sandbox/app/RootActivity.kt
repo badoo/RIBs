@@ -40,7 +40,7 @@ class RootActivity : RibActivity() {
 
     private lateinit var workflowRoot: Portal
 
-    override fun createRib(savedInstanceState: Bundle?): Portal =
+    override fun createRib(savedInstanceState: Bundle?) =
         PortalBuilder(
             object : Portal.Dependency {
                 override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction = { portal ->
@@ -79,8 +79,6 @@ class RootActivity : RibActivity() {
             // adb shell am start -a "android.intent.action.VIEW" -d "app-example://workflow2"
             (it.data?.host == "workflow2") -> executeWorkflow2()
 
-            // adb shell am start -a "android.intent.action.VIEW" -d "app-example://testcrash"
-            (it.data?.host == "testcrash") -> executeTestCrash()
             else -> null
         }
     }
@@ -104,11 +102,6 @@ class RootActivity : RibActivity() {
 
             BiFunction<Switcher, HelloWorld, Unit> { _, _ -> Unit }
         )
-
-    private fun executeTestCrash(): Observable<*> =
-        switcher()
-            .flatMap { it.testCrash() }
-            .toObservable()
 
     @Suppress("UNCHECKED_CAST")
     private fun switcher() =

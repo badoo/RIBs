@@ -1,6 +1,7 @@
 package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
@@ -20,7 +21,8 @@ class FooBarRouterTest {
     fun setup() {
         router = FooBarRouter(
             buildParams = BuildParams.Empty(),
-            connections = mock(defaultAnswer = Answers.RETURNS_MOCKS)
+            builders = mock(defaultAnswer = Answers.RETURNS_MOCKS),
+            routingSource = RoutingSource.Empty()
         )
     }
 

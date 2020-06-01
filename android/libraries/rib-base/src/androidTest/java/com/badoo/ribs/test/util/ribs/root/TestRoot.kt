@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
@@ -44,27 +46,27 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> TestNode<TestChildView> = {
-            TestChildBuilder().build(it).also {
-                block.invoke(it)
+        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> TestNode<TestChildView> =
+            {
+                TestChildBuilder().build(it).also {
+                    block.invoke(it)
+                }
             }
-        }
 
-        fun create(dialogLauncher: DialogLauncher, savedInstanceState: Bundle?): TestNode<TestRootView> {
+        fun create(
+            buildParams: BuildParams<*>,
+            dialogLauncher: DialogLauncher,
+            savedInstanceState: Bundle?,
+            routingSource: RoutingSource<Configuration> = RoutingSource.Empty()
+        ): TestNode<TestRootView> {
             val router = TestRootRouter(
-                buildParams = BuildParams(
-                    payload = null,
-                    buildContext = BuildContext.root(savedInstanceState),
-                    identifier = Rib.Identifier(
-                        uuid = UUID.randomUUID()
-                    )
-                ),
+                buildParams = buildParams,
+                routingSource = routingSource,
                 builderPermanent1 = builder { permanentNode1 = it },
                 builderPermanent2 = builder { permanentNode2 = it },
                 builder1 = builder { childNode1 = it },
                 builder2 = builder { childNode2 = it },
                 builder3 = builder { childNode3 = it },
-                initialConfiguration = initialConfiguration,
                 permanentParts = permanentParts,
                 dialogLauncher = dialogLauncher
             )

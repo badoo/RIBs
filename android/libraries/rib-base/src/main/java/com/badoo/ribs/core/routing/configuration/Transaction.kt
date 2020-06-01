@@ -8,6 +8,7 @@ import com.badoo.ribs.core.routing.configuration.action.multi.SaveInstanceStateA
 import com.badoo.ribs.core.routing.configuration.action.multi.SleepAction
 import com.badoo.ribs.core.routing.configuration.action.multi.WakeUpAction
 import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
+import com.badoo.ribs.core.routing.history.Routing
 
 internal sealed class Transaction<C : Parcelable> {
 
@@ -46,5 +47,5 @@ internal sealed class Transaction<C : Parcelable> {
     }
 }
 
-internal fun <C : Parcelable> List<ConfigurationCommand<C>>.isBackStackOperation(key: ConfigurationKey<C>): Boolean =
+internal fun <C : Parcelable> List<ConfigurationCommand<C>>.isBackStackOperation(key: Routing<C>): Boolean =
     none { it.key == key && (it is Add || it is Remove) }

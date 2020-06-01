@@ -1,7 +1,6 @@
 package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionPair.Direction.FORWARD
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionPair.Direction.REVERSED
@@ -13,18 +12,14 @@ internal data class ReversibleActionPair<T : Parcelable>(
 ) : ReversibleAction<T> {
 
     class Factory(
-        private val nodeFilter: (Node<*>) -> Boolean = { true },
         private val forwardActionFactory: ActionFactory,
         private val reverseActionFactory: ActionFactory
     ) : ReversibleActionFactory {
-        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): ReversibleAction<C> {
-            val nodes = params.item.nodes.filter(nodeFilter)
-
-            return ReversibleActionPair(
-                forwardAction = forwardActionFactory.create(params, nodes),
-                reverseAction = reverseActionFactory.create(params, nodes)
+        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): ReversibleAction<C> =
+            ReversibleActionPair(
+                forwardAction = forwardActionFactory.create(params),
+                reverseAction = reverseActionFactory.create(params)
             )
-        }
     }
 
     private enum class Direction {

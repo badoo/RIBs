@@ -6,7 +6,8 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -27,7 +28,11 @@ class NewRootTest {
     @Test
     fun `not applicable when backStack same configuration with overlays`() {
         val backStack = listOf(
-            BackStackElement(C1, listOf(O1))
+            RoutingHistoryElement(
+                routing = Routing(C1 as Configuration),
+                overlays = listOf(Routing(O1 as Configuration))
+            )
+
         )
         newRoot = NewRoot(C1)
 
@@ -48,12 +53,18 @@ class NewRootTest {
 
     @Test
     fun `single top configuration when invoked`() {
-        val configuration = C4
+        val configuration: Configuration = C4
         val backStack = listOf(configuration, C2, C3).asBackStackElements()
         newRoot = NewRoot(configuration)
 
         val newBackStack = newRoot.invoke(backStack)
 
-        assertThat(newBackStack).containsExactly(BackStackElement(configuration))
+        assertThat(newBackStack).containsExactly(
+            RoutingHistoryElement(
+                Routing(
+                    configuration
+                )
+            )
+        )
     }
 }

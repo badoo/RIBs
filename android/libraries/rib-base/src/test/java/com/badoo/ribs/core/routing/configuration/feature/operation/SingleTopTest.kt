@@ -7,7 +7,8 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C6
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -64,8 +65,8 @@ class SingleTopTest {
         val newBackStack = singleTop.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(newConfiguration)
+            RoutingHistoryElement(Routing(C1 as Configuration)),
+            RoutingHistoryElement(Routing(newConfiguration as Configuration))
         )
     }
 
@@ -77,9 +78,9 @@ class SingleTopTest {
         val newBackStack = singleTop.invoke(backStack)
 
         assertThat(newBackStack).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(C2),
-            BackStackElement(C3)
+            RoutingHistoryElement(Routing(C1 as Configuration)),
+            RoutingHistoryElement(Routing(C2 as Configuration)),
+            RoutingHistoryElement(Routing(C3 as Configuration))
         )
     }
 
@@ -92,9 +93,9 @@ class SingleTopTest {
         val invoke = singleTop.invoke(backStack)
 
         assertThat(invoke).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(C2),
-            BackStackElement(newConfiguration)
+            RoutingHistoryElement(Routing(C1 as Configuration)),
+            RoutingHistoryElement(Routing(C2 as Configuration)),
+            RoutingHistoryElement(Routing(newConfiguration))
         )
     }
 
@@ -109,10 +110,10 @@ class SingleTopTest {
         val invoke = singleTop.invoke(backStack)
 
         assertThat(invoke).containsExactly(
-            BackStackElement(C1),
-            BackStackElement(initialConfiguration),
-            BackStackElement(C4),
-            BackStackElement(newConfiguration)
+            RoutingHistoryElement(Routing(C1 as Configuration)),
+            RoutingHistoryElement(Routing(initialConfiguration)),
+            RoutingHistoryElement(Routing(C4 as Configuration)),
+            RoutingHistoryElement(Routing(newConfiguration))
         )
     }
 }

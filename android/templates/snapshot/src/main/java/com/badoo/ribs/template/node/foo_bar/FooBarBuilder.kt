@@ -4,47 +4,59 @@ package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
+import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
-import com.badoo.ribs.template.node.foo_bar.routing.FooBarConnections
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
+import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
 class FooBarBuilder(
     private val dependency: FooBar.Dependency
 ) : SimpleBuilder<FooBar>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): FooBar {
-        val connections = FooBarConnections(dependency)
+        val connections = FooBarChildBuilders(dependency)
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
-        val router = router(buildParams, connections, customisation)
+        val backStack = backStack(buildParams)
         val feature = feature()
-        val interactor = interactor(buildParams, router, feature)
+        val interactor = interactor(buildParams, backStack, feature)
+        val router = router(buildParams, backStack, connections, customisation)
 
         return node(buildParams, customisation, interactor, router)
     }
 
+    private fun backStack(buildParams: BuildParams<*>) =
+        BackStackFeature<Configuration>(
+            buildParams = buildParams,
+            initialConfiguration = Configuration.Content.Default
+        )
+
     private fun feature() =
         FooBarFeature()
 
+    private fun interactor(
+        buildParams: BuildParams<*>,
+        backStack: BackStackFeature<Configuration>,
+        feature: FooBarFeature
+    ) = FooBarInteractor(
+        buildParams = buildParams,
+        backStack = backStack,
+        feature = feature
+    )
+
     private fun router(
         buildParams: BuildParams<*>,
-        connections: FooBarConnections,
+        routingSource: RoutingSource<Configuration>,
+        builders: FooBarChildBuilders,
         customisation: FooBar.Customisation
     ) =
         FooBarRouter(
             buildParams = buildParams,
-            connections = connections,
+            builders = builders,
+            routingSource = routingSource,
             transitionHandler = customisation.transitionHandler
         )
-
-    private fun interactor(
-        buildParams: BuildParams<*>,
-        router: FooBarRouter,
-        feature: FooBarFeature
-    ) = FooBarInteractor(
-        buildParams = buildParams,
-        feature = feature,
-        router = router
-    )
 
     private fun node(
         buildParams: BuildParams<*>,

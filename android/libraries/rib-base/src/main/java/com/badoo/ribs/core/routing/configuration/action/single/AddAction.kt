@@ -2,11 +2,13 @@ package com.badoo.ribs.core.routing.configuration.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.Added
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingRemovalFalse
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
@@ -14,45 +16,33 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class AddAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: ConfigurationKey<C>,
+    private val routing: Routing<C>,
     private var item: Resolved<C>,
-    private val parentNode: Node<*>
+    private val activator: RoutingActivator<C>
 ) : Action<C> {
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
-            params: ActionExecutionParams<C>,
-            actionableNodes: List<Node<*>>
-        ): Action<C> {
-            return AddAction(
-                emitter = params.transactionExecutionParams.emitter,
-                key = params.key,
-                item = params.item,
-                parentNode = params.transactionExecutionParams.parentNode
-            )
-        }
+            params: ActionExecutionParams<C>
+        ): Action<C> = AddAction(
+            emitter = params.transactionExecutionParams.emitter,
+            routing = params.routing,
+            item = params.item,
+            activator = params.transactionExecutionParams.activator
+        )
     }
 
     override var canExecute: Boolean =
         true
 
     override fun onBeforeTransition() {
-        parentNode.attachNodes(item.nodes)
-        emitter.onNext(
-            Effect.Individual.Added(key, item)
-        )
-    }
-
-    private fun Node<*>.attachNodes(nodes: List<Node<*>>) {
-        nodes.forEach {
-            attachChildNode(it)
-        }
+        activator.add(routing, item.nodes)
+        emitter.onNext(Added(routing, item))
     }
 
     override fun onTransition(forceExecute: Boolean) {
-        emitter.onNext(
-            Effect.Individual.PendingRemovalFalse(key)
-        )
+        activator.onTransitionAdd(routing, item.nodes)
+        emitter.onNext(PendingRemovalFalse(routing))
     }
 
     override fun onFinish(forceExecute: Boolean) {

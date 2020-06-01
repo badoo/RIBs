@@ -2,9 +2,12 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherConnections
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherChildBuilders
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
 
@@ -12,7 +15,7 @@ class SwitcherBuilder(
     private val dependency: Switcher.Dependency
 ) : SimpleBuilder<SwitcherNode>() {
 
-    private val children = SwitcherConnections(dependency)
+    private val builders = SwitcherChildBuilders(dependency)
     private val dialogToTestOverlay = DialogToTestOverlay()
     private val viewDependency: SwitcherView.Dependency =
         object : SwitcherView.Dependency {
@@ -21,13 +24,14 @@ class SwitcherBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): SwitcherNode {
         val customisation = buildParams.getOrDefault(Switcher.Customisation())
-        val router = router(buildParams, customisation)
-        val interactor = interactor(buildParams, router)
+        val backStack  = backStack(buildParams)
+        val interactor = interactor(buildParams, backStack)
+        val router = router(buildParams, customisation, backStack)
 
         return SwitcherNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(viewDependency),
-            router = router,
+            backStack = backStack,
             plugins = listOf(
                 interactor,
                 router
@@ -35,25 +39,33 @@ class SwitcherBuilder(
         )
     }
 
-    private fun router(
-        buildParams: BuildParams<Nothing?>,
-        customisation: Switcher.Customisation
-    ): SwitcherRouter =
-        SwitcherRouter(
+    private fun backStack(buildParams: BuildParams<Nothing?>): BackStackFeature<Configuration> =
+        BackStackFeature(
             buildParams = buildParams,
-            transitionHandler = customisation.transitionHandler,
-            connections = children,
-            dialogLauncher = dependency.dialogLauncher(),
-            dialogToTestOverlay = dialogToTestOverlay
+            initialConfiguration = Content.DialogsExample
         )
 
     private fun interactor(
         buildParams: BuildParams<Nothing?>,
-        router: SwitcherRouter
+        backStack: BackStackFeature<Configuration>
     ): SwitcherInteractor =
         SwitcherInteractor(
             buildParams = buildParams,
-            router = router,
+            backStack = backStack,
+            dialogToTestOverlay = dialogToTestOverlay
+        )
+
+    private fun router(
+        buildParams: BuildParams<Nothing?>,
+        customisation: Switcher.Customisation,
+        backStack: BackStackFeature<Configuration>
+    ): SwitcherRouter =
+        SwitcherRouter(
+            buildParams = buildParams,
+            routingSource = backStack,
+            transitionHandler = customisation.transitionHandler,
+            builders = builders,
+            dialogLauncher = dependency.dialogLauncher(),
             dialogToTestOverlay = dialogToTestOverlay
         )
 }

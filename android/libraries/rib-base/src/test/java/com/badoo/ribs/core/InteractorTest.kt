@@ -1,7 +1,7 @@
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.helper.TestInteractor
+import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
 import com.nhaarman.mockitokotlin2.mock
@@ -22,7 +22,6 @@ class InteractorTest {
     fun setUp() {
         interactor = TestInteractor(
             buildParams = testBuildParams(),
-            router = mock(),
             disposables = disposables
         )
     }

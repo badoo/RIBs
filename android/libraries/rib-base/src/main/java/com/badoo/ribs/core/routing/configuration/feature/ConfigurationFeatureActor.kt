@@ -6,9 +6,11 @@ import android.view.View
 import com.badoo.mvicore.element.Actor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
@@ -29,7 +31,8 @@ import io.reactivex.Observable
  */
 @SuppressWarnings("LargeClass") // TODO extract
 internal class ConfigurationFeatureActor<C : Parcelable>(
-    private val configurationResolver: (C) -> RoutingAction,
+    private val configurationResolver: ConfigurationResolver<C>,
+    private val activator: RoutingActivator<C>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
 ) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
@@ -161,7 +164,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             if (command is ConfigurationCommand.Add<C> && !state.pool.containsKey(command.key) && !defaultElements.containsKey(command.key)) {
                 defaultElements[command.key] = ConfigurationContext.Unresolved(
                     activationState = ConfigurationContext.ActivationState.INACTIVE,
-                    configuration = command.key.configuration
+                    routing = command.key
                 )
             }
         }
@@ -183,12 +186,13 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 val lookup = tempPool[key]
                 if (lookup is ConfigurationContext.Resolved) lookup
                 else {
-                    val item = state.pool[key] ?: defaultElements[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
+                    val item = defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
                     val resolved = item.resolve(configurationResolver, parentNode)
                     tempPool[key] = resolved
                     resolved
                 }
             },
+            activator = activator,
             parentNode = parentNode,
             globalActivationLevel = when (transaction) {
                 is MultiConfigurationCommand.Sleep -> SLEEPING
@@ -207,7 +211,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                 ActionExecutionParams(
                     transactionExecutionParams = params,
                     command = command,
-                    key = command.key,
+                    routing = command.key,
                     isBackStackOperation = commands.isBackStackOperation(command.key)
                 )
             )

@@ -2,10 +2,11 @@ package com.badoo.ribs.core.routing.configuration.action
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
+import com.badoo.ribs.core.routing.history.Routing
 
 /**
  * Helper class for action execution.
@@ -16,7 +17,8 @@ import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
  */
 internal data class TransactionExecutionParams<C : Parcelable>(
     val emitter: EffectEmitter<C>,
-    val resolver: (ConfigurationKey<C>) -> ConfigurationContext.Resolved<C>,
+    val resolver: (Routing<C>) -> ConfigurationContext.Resolved<C>,
+    val activator: RoutingActivator<C>,
     val parentNode: Node<*>,
     val globalActivationLevel: ConfigurationContext.ActivationState
 )
@@ -25,10 +27,10 @@ internal data class TransactionExecutionParams<C : Parcelable>(
 internal data class ActionExecutionParams<C : Parcelable>(
     val transactionExecutionParams: TransactionExecutionParams<C>,
     val command: ConfigurationCommand<C>,
-    val key: ConfigurationKey<C>,
+    val routing: Routing<C>,
     val isBackStackOperation: Boolean
 ) {
     val item: ConfigurationContext.Resolved<C> by lazy {
-        transactionExecutionParams.resolver.invoke(key)
+        transactionExecutionParams.resolver.invoke(routing)
     }
 }

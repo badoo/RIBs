@@ -4,9 +4,8 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.Text
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.BackStackInteractor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.dialog.Dialog
@@ -18,7 +17,6 @@ import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.SimpleDialog
-import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleConnections
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Overlay
@@ -28,14 +26,12 @@ import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor internal constructor(
     buildParams: BuildParams<Nothing?>,
-    private val router: Router<Configuration, Nothing, Content, Overlay, DialogExampleView>,
-    private val connections: DialogExampleConnections,
     private val simpleDialog: SimpleDialog,
     private val lazyDialog: LazyDialog,
     private val ribDialog: RibDialog
-) : Interactor<DialogExample, DialogExampleView>(
+) : BackStackInteractor<DialogExample, DialogExampleView, Configuration>(
     buildParams = buildParams,
-    disposables = null
+    initialConfiguration = Content.Default
 ) {
 
     private val dummyViewInput = BehaviorRelay.createDefault(
@@ -62,13 +58,13 @@ class DialogExampleInteractor internal constructor(
 
     private val viewEventConsumer: Consumer<DialogExampleView.Event> = Consumer {
         when (it) {
-            ShowSimpleDialogClicked -> router.pushOverlay(Overlay.SimpleDialog)
+            ShowSimpleDialogClicked -> backStack.pushOverlay(Overlay.SimpleDialog)
             ShowLazyDialog -> {
                 initLazyDialog()
-                router.pushOverlay(Overlay.LazyDialog)
+                backStack.pushOverlay(Overlay.LazyDialog)
             }
 
-            ShowRibDialogClicked -> router.pushOverlay(Overlay.RibDialog)
+            ShowRibDialogClicked -> backStack.pushOverlay(Overlay.RibDialog)
         }
     }
 
@@ -105,6 +101,6 @@ class DialogExampleInteractor internal constructor(
 
     private val loremIpsumOutputConsumer : Consumer<LoremIpsum.Output> = Consumer {
         dummyViewInput.accept(ViewModel("Button in Lorem Ipsum RIB clicked"))
-        router.popBackStack()
+        backStack.popBackStack()
     }
 }

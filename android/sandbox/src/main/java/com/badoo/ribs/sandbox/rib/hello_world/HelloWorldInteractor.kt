@@ -8,9 +8,11 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.ActivityStarter
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.core.BackStackInteractor
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.sandbox.app.OtherActivity
+import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration
+import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.sandbox.rib.hello_world.analytics.HelloWorldAnalytics
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature
@@ -24,16 +26,18 @@ class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : Interactor<HelloWorld, HelloWorldView>(
+) : BackStackInteractor<HelloWorld, HelloWorldView, Configuration>(
     buildParams = buildParams,
-    disposables = feature
+    initialConfiguration = Content.Default
 ) {
+
     companion object {
         private const val REQUEST_CODE_OTHER_ACTIVITY = 1
     }
 
     private val dummyViewInput = BehaviorRelay.createDefault(
-        ViewModel("My id: " + id.replace("${HelloWorldInteractor::class.java.name}.", ""))
+        ViewModel("My id: " + buildParams.identifier.uuid.toString()
+            .replace("${HelloWorldInteractor::class.java.name}.", ""))
     )
 
     override fun onAttach(nodeLifecycle: Lifecycle) {

@@ -9,22 +9,28 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGE
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
-import com.badoo.ribs.android.recyclerview.RecyclerViewHostRouter.Configuration
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
+import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.activator.ChildActivator
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer
-import java.util.UUID
+import java.lang.ref.WeakReference
 
 internal class Adapter<T : Parcelable>(
     private val hostingStrategy: RecyclerViewHost.HostingStrategy,
     initialEntries: List<Entry<T>>? = null,
-    private val router: RecyclerViewHostRouter<T>,
+    private val routingSource: RoutingSource.Pool<T>,
+    private val feature: RecyclerViewHostFeature<T>,
     private val viewHolderLayoutParams: FrameLayout.LayoutParams
 ) : RecyclerView.Adapter<Adapter.ViewHolder>(),
-    Consumer<RecyclerViewHostFeature.State<T>> {
+    Consumer<RecyclerViewHostFeature.State<T>>,
+    ChildActivator<T> {
+
+    private val holders: MutableMap<Routing.Identifier, WeakReference<ViewHolder>> = mutableMapOf()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var configurationKey: ConfigurationKey<Configuration>? = null
-        var uuid: UUID? = null
+        var identifier: Routing.Identifier? = null
     }
 
     private var items: List<Entry<T>> = initialEntries ?: emptyList()
@@ -41,13 +47,12 @@ internal class Adapter<T : Parcelable>(
                 eagerAdd(state.items.last())
                 notifyItemInserted(state.items.lastIndex)
             }
-
         }
     }
 
     private fun eagerAdd(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
-            router.add(entry.configurationKey)
+            routingSource.add(entry.element, entry.identifier)
         }
     }
 
@@ -60,42 +65,46 @@ internal class Adapter<T : Parcelable>(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entry = items[position]
-        holder.configurationKey = entry.configurationKey
-        holder.uuid = entry.uuid
-
+        holder.identifier = entry.identifier
     }
 
     override fun onViewAttachedToWindow(holder: ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        val configurationKey = holder.configurationKey!! // at this point it should be bound
+        val identifier = holder.identifier!! // at this point it should be bound
+        holders[identifier] = WeakReference(holder)
+
         if (hostingStrategy == LAZY) {
-            router.add(configurationKey)
+            val entry = feature.state.items.find { it.identifier == identifier }!!
+            routingSource.add(entry.element, entry.identifier)
         }
-        router.activate(configurationKey)
-        router.getNodes(configurationKey)!!.forEach { childNode ->
-            childNode.attachToView(holder.itemView as FrameLayout)
-        }
+
+        routingSource.activate(identifier)
+    }
+
+    override fun activate(routing: Routing<T>, child: Node<*>) {
+        holders[routing.identifier]?.get()?.let { holder ->
+            child.attachToView(holder.itemView as FrameLayout)
+        } ?: errorHandler.handleNonFatalError("Holder is gone! Routing: $routing, child: $child")
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
-        val configurationKey = holder.configurationKey!! // at this point it should be bound
-        deactivate(configurationKey)
-        if (hostingStrategy == LAZY) {
-            router.remove(configurationKey)
-        }
+        holder.identifier?.let { identifier ->
+            routingSource.deactivate(identifier)
+            if (hostingStrategy == LAZY) {
+                routingSource.remove(identifier)
+            }
+        } ?: errorHandler.handleNonFatalError("Holder is not bound! holder: $holder")
     }
 
     internal fun onDestroy() {
         items.forEach {
-            deactivate(it.configurationKey)
+            routingSource.deactivate(it.identifier)
         }
     }
 
-    private fun deactivate(configurationKey: ConfigurationKey<Configuration>) {
-        router.deactivate(configurationKey)
-        router.getNodes(configurationKey)!!.forEach { childNode ->
-            childNode.detachFromView()
-        }
+    override fun deactivate(routing: Routing<T>, child: Node<*>) {
+        child.saveViewState()
+        child.detachFromView()
     }
 }

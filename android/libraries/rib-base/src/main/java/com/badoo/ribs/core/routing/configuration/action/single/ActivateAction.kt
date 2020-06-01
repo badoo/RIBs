@@ -3,13 +3,15 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationKey
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateFalse
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
@@ -20,25 +22,24 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
  */
 internal class ActivateAction<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
-    private val key: ConfigurationKey<C>,
+    private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
-    private val actionableNodes: List<Node<*>>,
+    private val activator: RoutingActivator<C>,
     private val isBackStackOperation: Boolean,
     private val globalActivationLevel: ConfigurationContext.ActivationState
 ) : Action<C> {
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
-            params: ActionExecutionParams<C>,
-            actionableNodes: List<Node<*>>
+            params: ActionExecutionParams<C>
         ): Action<C> =
             ActivateAction(
                 emitter = params.transactionExecutionParams.emitter,
-                key = params.key,
+                routing = params.routing,
                 item = params.item,
                 parentNode = params.transactionExecutionParams.parentNode,
-                actionableNodes = actionableNodes,
+                activator = params.transactionExecutionParams.activator,
                 isBackStackOperation = params.isBackStackOperation,
                 globalActivationLevel = params.transactionExecutionParams.globalActivationLevel
             )
@@ -58,25 +59,22 @@ internal class ActivateAction<C : Parcelable>(
         // The least we can do is to mark correct state, this is regardless of executing transitions
         if (!itemAlreadyActivated) {
             emitter.onNext(
-                Effect.Individual.Activated(key, item.copy(activationState = globalActivationLevel))
+                Effect.Individual.Activated(routing, item.copy(activationState = globalActivationLevel))
             )
         }
 
         if (canExecute) {
+            activator.activate(routing, item.nodes)
             prepareTransition()
         }
     }
 
     private fun prepareTransition() {
-        actionableNodes.forEach {
-            parentNode.createChildView(it)
-            parentNode.attachChildView(it)
-        }
-
-        transitionElements = actionableNodes.mapNotNull {
+        // TODO Consider doing this closer to Router (e.g. result of RoutingActivator.activate)
+        transitionElements = item.nodes.mapNotNull {
             it.view?.let { ribView ->
                 TransitionElement(
-                    configuration = item.configuration,
+                    configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.ENTER,
                     isBackStackOperation = isBackStackOperation,
                     parentViewGroup = parentNode.targetViewGroupForChild(it),
@@ -90,10 +88,8 @@ internal class ActivateAction<C : Parcelable>(
     override fun onTransition(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             item.routingAction.execute()
-
-            emitter.onNext(
-                Effect.Individual.PendingDeactivateFalse(key)
-            )
+            activator.onTransitionActivate(routing, item.nodes)
+            emitter.onNext(PendingDeactivateFalse(routing))
         }
     }
 

@@ -17,29 +17,29 @@ internal object SmallModule {
     @SmallScope
     @Provides
     @JvmStatic
-    internal fun router(
-        // pass component to child rib builders, or remove if there are none
-        component: SmallComponent,
-        buildParams: BuildParams<Nothing?>
-    ): SmallRouter =
-        SmallRouter(
+    internal fun interactor(
+        buildParams: BuildParams<Nothing?>,
+        portal: Portal.OtherSide
+    ): SmallInteractor =
+        SmallInteractor(
             buildParams = buildParams,
-            bigBuilder = BigBuilder(component),
-            portalOverlayTestBuilder = PortalOverlayTestBuilder(component)
+            portal = portal
         )
 
     @SmallScope
     @Provides
     @JvmStatic
-    internal fun interactor(
+    internal fun router(
+        // pass component to child rib builders, or remove if there are none
+        component: SmallComponent,
         buildParams: BuildParams<Nothing?>,
-        router: SmallRouter,
-        portal: Portal.OtherSide
-    ): SmallInteractor =
-        SmallInteractor(
+        interactor: SmallInteractor
+    ): SmallRouter =
+        SmallRouter(
             buildParams = buildParams,
-            router = router,
-            portal = portal
+            routingSource = interactor,
+            bigBuilder = BigBuilder(component),
+            portalOverlayTestBuilder = PortalOverlayTestBuilder(component)
         )
 
     @SmallScope

@@ -13,12 +13,16 @@ class HelloWorldBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): HelloWorld {
         val customisation = buildParams.getOrDefault(HelloWorld.Customisation())
-        val router = HelloWorldRouter(buildParams, smallBuilder())
         val feature = HelloWorldFeature()
         val interactor = HelloWorldInteractor(
             buildParams = buildParams,
             feature = feature,
             activityStarter = dependency.activityStarter()
+        )
+        val router = HelloWorldRouter(
+            buildParams,
+            interactor,
+            smallBuilder()
         )
 
         return HelloWorldNode(

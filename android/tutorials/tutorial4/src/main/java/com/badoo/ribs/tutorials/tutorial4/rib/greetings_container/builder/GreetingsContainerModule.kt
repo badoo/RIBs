@@ -1,10 +1,9 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.builder
 
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial4.R
-import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainerInteractor
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainerRouter
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld
@@ -21,10 +20,12 @@ internal object GreetingsContainerModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: GreetingsContainerComponent,
+        interactor: GreetingsContainerInteractor,
         buildParams: BuildParams<Nothing?>
     ): GreetingsContainerRouter =
         GreetingsContainerRouter(
             buildParams = buildParams,
+            routingSource = interactor,
             helloWorldBuilder = HelloWorldBuilder(component)
         )
 
@@ -32,14 +33,10 @@ internal object GreetingsContainerModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildParams: BuildParams<Nothing?>,
-        router: GreetingsContainerRouter,
-        output: Consumer<GreetingsContainer.Output>
+        buildParams: BuildParams<Nothing?>
     ): GreetingsContainerInteractor =
         GreetingsContainerInteractor(
-            buildParams = buildParams,
-            router = router,
-            output = output
+            buildParams = buildParams
         )
 
     @GreetingsContainerScope
@@ -49,7 +46,7 @@ internal object GreetingsContainerModule {
         buildParams: BuildParams<Nothing?>,
         router: GreetingsContainerRouter,
         interactor: GreetingsContainerInteractor
-    ) : Node<Nothing> = Node(
+    ) : Node<Nothing> = Node<Nothing>(
         buildParams = buildParams,
         viewFactory = null,
         plugins = listOf(interactor, router)

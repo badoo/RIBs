@@ -1,15 +1,16 @@
 package com.badoo.ribs.core.routing.portal
 
+import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestRouter
-import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Portal
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Default
-import org.junit.Assert.*
+import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Portal
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -28,22 +29,25 @@ class PortalRouterTest {
         node1 = TestNode(router = TestRouter(routingActionForC2 = attach { node2 }))
 
         router = PortalRouter(
-            buildParams = testBuildParams()
-        ).apply {
+            buildParams = testBuildParams(),
+            routingSource = RoutingSource.Empty(),
             defaultRoutingAction = attach { node1 }
-        }
+        )
     }
 
     @Test
     fun `Resolving Portal configuration builds expected remote Node`() {
-        val remoteRoutingAction = router.resolveConfiguration(
-            Portal(
-                listOf(
-                    Default,
-                    TestRouter.Configuration.C2,
-                    TestRouter.Configuration.C3
+        val remoteRoutingAction = router.resolve(
+            Routing(
+                Portal(
+                    listOf(
+                        Default,
+                        TestRouter.Configuration.C2,
+                        TestRouter.Configuration.C3
+                    )
                 )
             )
+
         )
 
         val builtNodes = remoteRoutingAction.buildNodes(listOf(root(null)))

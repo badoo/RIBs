@@ -2,7 +2,7 @@ package com.badoo.ribs.template.node.foo_bar.routing
 
 import com.badoo.ribs.template.node.foo_bar.FooBar
 
-internal class FooBarConnections(
+internal class FooBarChildBuilders(
     dependency: FooBar.Dependency
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)

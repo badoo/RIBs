@@ -6,6 +6,8 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter.Configuration
 import com.badoo.ribs.template.node_dagger.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.InputToWish
@@ -13,15 +15,11 @@ import com.badoo.ribs.template.node_dagger.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.StateToViewModel
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.ViewEventToWish
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
-    private val router: FooBarRouter,
-    private val input: ObservableSource<FooBar.Input>,
-    private val output: Consumer<FooBar.Output>,
-    private val feature: FooBarFeature
+    private val feature: FooBarFeature,
+    private val backStack: BackStackFeature<Configuration>
 ) : Interactor<FooBar, FooBarView>(
     buildParams = buildParams,
     disposables = feature
@@ -29,8 +27,8 @@ internal class FooBarInteractor(
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
-            bind(feature.news to output using NewsToOutput)
-            bind(input to feature using InputToWish)
+            bind(feature.news to rib.output using NewsToOutput)
+            bind(rib.input to feature using InputToWish)
         }
     }
 

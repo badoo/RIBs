@@ -82,7 +82,7 @@ abstract class Dialog<T : Any> private constructor(
                  * A benefit of this would be back press and lifecycle propagation.
                  * Not entirely sure it is needed. To be reconsidered later.
                  */
-                attachMode = AttachMode.EXTERNAL
+                attachMode = AttachMode.REMOTE
             )
 
             listOf(

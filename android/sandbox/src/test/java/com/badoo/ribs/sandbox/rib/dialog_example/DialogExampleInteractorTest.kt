@@ -9,18 +9,15 @@ import org.junit.Test
 
 class DialogExampleInteractorTest {
 
-    private val router: DialogExampleRouter = mock()
     private lateinit var interactor: DialogExampleInteractor
 
     @Before
     fun setup() {
         interactor = DialogExampleInteractor(
             buildParams = BuildParams.Empty(),
-            router = router,
             simpleDialog = mock(),
             lazyDialog = mock(),
-            ribDialog = mock(),
-            connections = mock()
+            ribDialog = mock()
         )
     }
 

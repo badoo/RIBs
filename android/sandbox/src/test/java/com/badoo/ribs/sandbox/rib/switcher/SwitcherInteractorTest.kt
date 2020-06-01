@@ -4,11 +4,12 @@ import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
-import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
+import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
 import com.jakewharton.rxrelay2.PublishRelay
@@ -20,22 +21,22 @@ import org.junit.Test
 
 class SwitcherInteractorTest {
 
-    private val router: SwitcherRouter = mock()
+    private val backStack: BackStackFeature<Configuration> = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
-    private val viewEventRelay = PublishRelay.create<Event>()
 
-    private lateinit var switcherInteractor: SwitcherInteractor
+    private val viewEventRelay = PublishRelay.create<Event>()
+    private lateinit var interactor: SwitcherInteractor
     private lateinit var interactorTestHelper: InteractorTestHelper<SwitcherView>
 
     @Before
     fun setup() {
-        switcherInteractor = SwitcherInteractor(
+        interactor = SwitcherInteractor(
             buildParams = BuildParams.Empty(),
-            router = router,
+            backStack = backStack,
             dialogToTestOverlay = dialogToTestOverlay
         )
 
-        interactorTestHelper = InteractorTestHelper.create(switcherInteractor, viewEventRelay, router)
+        interactorTestHelper = InteractorTestHelper.create(interactor, viewEventRelay)
     }
 
     @Test
@@ -43,7 +44,7 @@ class SwitcherInteractorTest {
         interactorTestHelper.moveToStateAndCheck(STARTED) {
             viewEventRelay.accept(Event.ShowOverlayDialogClicked)
 
-            verify(router).pushOverlay(Overlay.Dialog)
+            verify(backStack).pushOverlay(Overlay.Dialog)
         }
     }
 
@@ -52,7 +53,7 @@ class SwitcherInteractorTest {
         interactorTestHelper.moveToStateAndCheck(STARTED) {
             viewEventRelay.accept(Event.ShowBlockerClicked)
 
-            verify(router).push(Content.Blocker)
+            verify(backStack).push(Content.Blocker)
         }
     }
 
@@ -61,7 +62,7 @@ class SwitcherInteractorTest {
         interactorTestHelper.moveToStateAndCheck(CREATED) {
             viewEventRelay.accept(Event.ShowBlockerClicked)
 
-            verify(router, never()).push(Content.Blocker)
+            verify(backStack, never()).push(Content.Blocker)
         }
     }
 }

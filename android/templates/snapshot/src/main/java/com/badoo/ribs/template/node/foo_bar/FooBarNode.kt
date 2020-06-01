@@ -41,6 +41,6 @@ class FooBarNode internal constructor(
     // todo: expose ALL possible children (even permanent parts), or remove if there's none
     // override fun attachChild1(): Single<Child> =
     //     attachWorkflow {
-    //         // router.push(ConfigurationForChild)
+    //         // backStack.push(ConfigurationForChild)
     //     }
 }

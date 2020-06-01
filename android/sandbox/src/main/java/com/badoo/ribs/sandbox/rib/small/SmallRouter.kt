@@ -3,9 +3,11 @@ package com.badoo.ribs.sandbox.rib.small
 import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.AnchoredAttachRoutingAction.Companion.anchor
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.sandbox.rib.big.builder.BigBuilder
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestBuilder
 import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration
@@ -15,12 +17,12 @@ import kotlinx.android.parcel.Parcelize
 
 class SmallRouter(
     buildParams: BuildParams<Nothing?>,
+    routingSource: RoutingSource<Configuration>,
     private val bigBuilder: BigBuilder,
     private val portalOverlayTestBuilder: PortalOverlayTestBuilder
-): Router<Configuration, Nothing, Content, Nothing, SmallView>(
+): Router<Configuration>(
     buildParams = buildParams,
-    initialConfiguration = Content.Default,
-    permanentParts = emptyList()
+    routingSource = routingSource
 ) {
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
@@ -32,8 +34,8 @@ class SmallRouter(
         }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-        when (configuration) {
+    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+        when (routing.configuration) {
             Content.Default -> noop()
             FullScreen.ShowBig -> anchor(node) { bigBuilder.build(it) }
             FullScreen.ShowOverlay -> anchor(node) { portalOverlayTestBuilder.build(it) }

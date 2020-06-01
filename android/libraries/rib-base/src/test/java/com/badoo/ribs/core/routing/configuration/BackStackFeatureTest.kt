@@ -1,16 +1,17 @@
 package com.badoo.ribs.core.routing.configuration
 
-import com.badoo.mvicore.element.TimeCapsule
+import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeatureState
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.feature.operation.asBackStackElements
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -21,22 +22,25 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 
+// TODO add more tests:
+//  - identifier maintenance
+//  - activation maintenance
 class BackStackFeatureTest {
 
     companion object {
         private val initialConfiguration = C1
     }
 
-    private lateinit var timeCapsuleEmpty: TimeCapsule<BackStackFeatureState<Configuration>>
-    private lateinit var timeCapsuleWithContent: TimeCapsule<BackStackFeatureState<Configuration>>
-    private lateinit var backstackInTimeCapsule: List<BackStackElement<Configuration>>
+    private lateinit var timeCapsuleEmpty: AndroidTimeCapsule
+    private lateinit var timeCapsuleWithContent: AndroidTimeCapsule
+    private lateinit var backstackInTimeCapsule: List<RoutingHistoryElement<Configuration>>
     private lateinit var backStackFeature: BackStackFeature<Configuration>
 
     @Before
     fun setUp() {
-        backstackInTimeCapsule = listOf<BackStackElement<Configuration>>(
-            BackStackElement(C3),
-            BackStackElement(C2)
+        backstackInTimeCapsule = listOf(
+            RoutingHistoryElement(Routing(C3 as Configuration)),
+            RoutingHistoryElement(Routing(C2 as Configuration))
         )
 
         timeCapsuleEmpty = mock()
@@ -48,10 +52,10 @@ class BackStackFeatureTest {
         setupBackStackManager(timeCapsuleEmpty)
     }
 
-    private fun setupBackStackManager(timeCapsule: TimeCapsule<BackStackFeatureState<Configuration>>) {
+    private fun setupBackStackManager(timeCapsule: AndroidTimeCapsule) {
         backStackFeature = BackStackFeature(
-            initialConfiguration,
-            timeCapsule
+            initialConfiguration = initialConfiguration,
+            timeCapsule = timeCapsule
         )
     }
 
@@ -62,7 +66,7 @@ class BackStackFeatureTest {
 
     @Test
     fun `Initial state matches initial configuration`() {
-        assertEquals(initialConfiguration, backStackFeature.state.current!!.configuration)
+        assertEquals(initialConfiguration, backStackFeature.state.current!!.routing.configuration)
     }
 
     @Test
@@ -78,19 +82,27 @@ class BackStackFeatureTest {
     }
 
     @Test
-    fun `update state when operation is acceptable`() {
-        val newBackStack = listOf(C2, C3).asBackStackElements()
-        val backStackOperation = backStackOperation { newBackStack }
+    fun `State is updated when operation is applicable`() {
+        val newBackStack = listOf(C2, C3)
+            .asBackStackElements(true)
+
+        val backStackOperation = backStackOperation(
+            isApplicable = { true },
+            backStackOperation = { newBackStack }
+        )
 
         backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
 
-        assertEquals(newBackStack, backStackFeature.state.backStack)
+        val expected = newBackStack.map { it.routing.configuration }
+        val actual = backStackFeature.state.backStack.map { it.routing.configuration }
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `stay with previous state when operation is not acceptable`() {
-        val newBackStack = listOf(C2, C3).asBackStackElements()
+    fun `State is not updated when operation is not applicable`() {
         val oldBackStack = backStackFeature.state.backStack
+        val newBackStack = listOf(C2, C3).asBackStackElements(true)
         val backStackOperation = backStackOperation(
             isApplicable = { false },
             backStackOperation = { newBackStack }

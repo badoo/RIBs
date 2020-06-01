@@ -1,8 +1,9 @@
 package com.badoo.ribs.core.routing.configuration.feature.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.routing.configuration.feature.BackStackElement
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 
 data class NewRoot<C : Parcelable>(
     private val configuration: C
@@ -10,12 +11,13 @@ data class NewRoot<C : Parcelable>(
 
     //We shouldn't change root if root configuration same but backStack contains overlays
     override fun isApplicable(backStack: BackStack<C>): Boolean =
-        !(backStack.size == 1 && backStack.first().configuration == configuration)
+        !(backStack.size == 1 && backStack.first().routing.configuration == configuration)
 
     override fun invoke(backStack: BackStack<C>): BackStack<C> =
-        listOf(BackStackElement(configuration))
+        listOf(RoutingHistoryElement(Routing(configuration)))
 }
 
-fun <C : Parcelable, Content : C> Router<C, *, Content, *, *>.newRoot(configuration: Content) {
-    acceptOperation(NewRoot(configuration))
+fun <C : Parcelable> BackStackFeature<C>.newRoot(configuration: C) {
+    accept(BackStackFeature.Operation(NewRoot(configuration)))
 }
+

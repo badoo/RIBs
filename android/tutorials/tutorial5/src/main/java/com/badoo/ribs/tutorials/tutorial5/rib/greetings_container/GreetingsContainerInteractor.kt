@@ -1,7 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container
 
-import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.BackStackInteractor
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer.Output.GreetingsSaid
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerRouter.Configuration
@@ -14,11 +13,10 @@ import io.reactivex.functions.Consumer
 
 class GreetingsContainerInteractor(
     buildParams: BuildParams<Nothing?>,
-    router: Router<Configuration, Nothing, Configuration, Nothing, Nothing>,
     output: Consumer<GreetingsContainer.Output>
-) : Interactor<GreetingsContainer, Nothing>(
+) : BackStackInteractor<GreetingsContainer, Nothing, Configuration>(
     buildParams = buildParams,
-    disposables = null
+    initialConfiguration = Configuration.HelloWorld
 ) {
     internal val helloWorldInputSource: Relay<HelloWorld.Input> = PublishRelay.create()
     internal val helloWorldOutputConsumer: Consumer<HelloWorld.Output> = Consumer {

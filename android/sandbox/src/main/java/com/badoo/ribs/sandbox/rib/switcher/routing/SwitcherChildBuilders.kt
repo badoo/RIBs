@@ -12,7 +12,7 @@ import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.MenuBuilder
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
 
-internal open class SwitcherConnections(
+internal open class SwitcherChildBuilders(
     dependency: Switcher.Dependency
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)

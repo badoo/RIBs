@@ -26,9 +26,9 @@ internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
             val action = ActivateAction(
                 emitter = params.emitter,
                 item = configurationContext,
-                key = key,
+                routing = key,
+                activator = params.activator,
                 parentNode = params.parentNode,
-                actionableNodes = configurationContext.nodes,
                 isBackStackOperation = false,
                 globalActivationLevel = params.globalActivationLevel
             )

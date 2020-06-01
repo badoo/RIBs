@@ -4,13 +4,14 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.history.Routing
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
     buildParams: BuildParams<Nothing?> = testBuildParams(),
     initialConfiguration: Configuration = Configuration.C1,
-    permanentParts: List<Nothing> = emptyList(),
     private val routingActionForC1: RoutingAction = mock(),
     private val routingActionForC2: RoutingAction = mock(),
     private val routingActionForC3: RoutingAction = mock(),
@@ -20,10 +21,12 @@ class TestRouter(
     private val routingActionForO1: RoutingAction = mock(),
     private val routingActionForO2: RoutingAction = mock(),
     private val routingActionForO3: RoutingAction = mock()
-) : Router<TestRouter.Configuration, Nothing, TestRouter.Configuration, Nothing, TestView>(
+) : Router<TestRouter.Configuration>(
     buildParams = buildParams,
-    initialConfiguration = initialConfiguration,
-    permanentParts = permanentParts
+    routingSource = BackStackFeature(
+        buildParams = buildParams,
+        initialConfiguration = initialConfiguration
+    )
 ) {
 
     sealed class Configuration : Parcelable {
@@ -41,8 +44,8 @@ class TestRouter(
         @Parcelize object O3 : Configuration() { override fun toString(): String = "O3" }
     }
 
-    override fun resolveConfiguration(configuration: Configuration): RoutingAction =
-        when (configuration) {
+    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+        when (routing.configuration) {
             is Configuration.C1 -> routingActionForC1
             is Configuration.C2 -> routingActionForC2
             is Configuration.C3 -> routingActionForC3

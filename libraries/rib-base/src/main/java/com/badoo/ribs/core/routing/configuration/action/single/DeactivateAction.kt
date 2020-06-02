@@ -26,7 +26,7 @@ internal class DeactivateAction<C : Parcelable>(
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
     private val activator: RoutingActivator<C>,
-    private val isBackStackOperation: Boolean,
+    private val addedOrRemoved: Boolean,
     private val targetActivationState: ActivationState = INACTIVE
 ) : RoutingTransitionAction<C> {
 
@@ -39,7 +39,7 @@ internal class DeactivateAction<C : Parcelable>(
             item = params.item,
             parentNode = params.transactionExecutionParams.parentNode,
             activator = params.transactionExecutionParams.activator,
-            isBackStackOperation = params.isBackStackOperation
+            addedOrRemoved = params.addedOrRemoved
         )
     }
 
@@ -56,7 +56,7 @@ internal class DeactivateAction<C : Parcelable>(
                 TransitionElement(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.EXIT,
-                    isBackStackOperation = isBackStackOperation,
+                    addedOrRemoved = addedOrRemoved,
                     parentViewGroup = parentNode.targetViewGroupForChild(it),
                     identifier = it.identifier,
                     view = ribView.androidView

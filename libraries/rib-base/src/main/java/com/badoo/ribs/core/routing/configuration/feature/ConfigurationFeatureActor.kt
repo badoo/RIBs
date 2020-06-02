@@ -16,7 +16,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
-import com.badoo.ribs.core.routing.configuration.isBackStackOperation
+import com.badoo.ribs.core.routing.configuration.addedOrRemoved
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
@@ -212,7 +212,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
                     transactionExecutionParams = params,
                     command = command,
                     routing = command.routing,
-                    isBackStackOperation = commands.isBackStackOperation(command.routing)
+                    addedOrRemoved = commands.addedOrRemoved(command.routing)
                 )
             )
         } catch (e: KeyNotFoundInPoolException) {

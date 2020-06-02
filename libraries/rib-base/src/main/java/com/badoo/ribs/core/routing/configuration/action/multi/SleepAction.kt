@@ -31,7 +31,7 @@ internal class SleepAction<C : Parcelable> : PoolAction<C> {
                 routing = key,
                 activator = params.activator,
                 parentNode = params.parentNode,
-                isBackStackOperation = false,
+                addedOrRemoved = false,
                 targetActivationState = SLEEPING
             )
             action.onBeforeTransition()

@@ -18,10 +18,10 @@ fun <T> TransitionElement<out T>.slide(
     animationContainer: AnimationContainer = Parent,
     duration: Long = defaultDuration,
     interpolator: Interpolator = defaultInterpolator,
-    reverseOnBackStack: Boolean = true
+    reverseWhenAddedOrRemoved: Boolean = true
 ) : Transition {
     val evaluator = SingleProgressEvaluator().also { progressEvaluator.add(it) }
-    val actualGravity = if (reverseOnBackStack && (isBackStackOperation xor (direction == TransitionDirection.EXIT))) gravity.reverse() else gravity
+    val actualGravity = if (reverseWhenAddedOrRemoved && (addedOrRemoved xor (direction == TransitionDirection.ENTER))) gravity.reverse() else gravity
     val endValues = slideEndValues(animationContainer, actualGravity).let {
         when (direction) {
             TransitionDirection.EXIT -> it

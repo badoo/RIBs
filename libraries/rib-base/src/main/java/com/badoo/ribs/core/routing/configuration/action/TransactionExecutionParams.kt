@@ -28,7 +28,7 @@ internal data class ActionExecutionParams<C : Parcelable>(
     val transactionExecutionParams: TransactionExecutionParams<C>,
     val command: RoutingCommand<C>,
     val routing: Routing<C>,
-    val isBackStackOperation: Boolean
+    val addedOrRemoved: Boolean
 ) {
     val item: RoutingContext.Resolved<C> by lazy {
         transactionExecutionParams.resolver.invoke(routing)

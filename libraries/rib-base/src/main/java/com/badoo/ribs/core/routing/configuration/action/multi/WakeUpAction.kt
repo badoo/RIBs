@@ -29,7 +29,7 @@ internal class WakeUpAction<C : Parcelable> : PoolAction<C> {
                 routing = key,
                 activator = params.activator,
                 parentNode = params.parentNode,
-                isBackStackOperation = false,
+                addedOrRemoved = false,
                 globalActivationLevel = params.globalActivationLevel
             )
             action.onBeforeTransition()

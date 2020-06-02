@@ -8,20 +8,10 @@ android:
     - android-28
     - android-24
     - android-21
-    - sys-img-armeabi-v7a-android-21            # Emulators
 
 jdk: oraclejdk8
 
-before_script:
-  - android list target
-  - echo no | android create avd --force -n test_21 -t android-21 --abi armeabi-v7a -c 100M
-  - emulator -avd test_21 -no-skin -no-window &
-  - android-wait-for-emulator
-  # Unlock the emulator
-  - adb shell input keyevent 82 # menu
-
 script:
-  - adb devices
   - ./gradlew build detekt --console=plain
 
 env:

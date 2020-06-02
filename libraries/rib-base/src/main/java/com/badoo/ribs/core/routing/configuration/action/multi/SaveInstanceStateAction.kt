@@ -10,7 +10,7 @@ import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 /**
  * Calls saveInstanceState() on all Nodes associated with Resolved configurations in the pool
  */
-internal class SaveInstanceStateAction<C : Parcelable> : MultiConfigurationAction<C> {
+internal class SaveInstanceStateAction<C : Parcelable> : PoolAction<C> {
 
     /**
      * Finds [Resolved] elements in the pool and maps them to the value returned by calling

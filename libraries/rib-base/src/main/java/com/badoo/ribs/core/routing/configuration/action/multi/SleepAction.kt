@@ -12,7 +12,7 @@ import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 /**
  * Calls [DeactivateAction] all elements with an [ActivationState] of [ACTIVE].
  */
-internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
+internal class SleepAction<C : Parcelable> : PoolAction<C> {
 
     /**
      * Filters the pool for [ACTIVE] elements, executes [DeactivateAction] on all of them.

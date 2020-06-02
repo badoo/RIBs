@@ -9,12 +9,12 @@ import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 import com.badoo.ribs.core.routing.history.Routing
 
 /**
- * Represents an action that affects multiple configurations when executed.
+ * Represents an action that affects multiple [Routing] elements in the pool when executed.
  */
-internal interface MultiConfigurationAction<C : Parcelable> {
+internal interface PoolAction<C : Parcelable> {
 
     /**
-     * @param pool   pool of all configurations to act on
+     * @param pool   pool of all [Routing] elements to act on
      * @param params execution params holder
      *
      * @return sub-pool of the updated elements

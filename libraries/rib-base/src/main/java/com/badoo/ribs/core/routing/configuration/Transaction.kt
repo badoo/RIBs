@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
 import com.badoo.ribs.core.routing.configuration.RoutingCommand.Remove
-import com.badoo.ribs.core.routing.configuration.action.multi.MultiConfigurationAction
+import com.badoo.ribs.core.routing.configuration.action.multi.PoolAction
 import com.badoo.ribs.core.routing.configuration.action.multi.SaveInstanceStateAction
 import com.badoo.ribs.core.routing.configuration.action.multi.SleepAction
 import com.badoo.ribs.core.routing.configuration.action.multi.WakeUpAction
@@ -15,20 +15,20 @@ internal sealed class Transaction<C : Parcelable> {
     // TODO move these out to top level maybe
     sealed class MultiConfigurationCommand<C : Parcelable> : Transaction<C>() {
 
-        abstract val action: MultiConfigurationAction<C>
+        abstract val action: PoolAction<C>
 
         class Sleep<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction<C> =
+            override val action: PoolAction<C> =
                 SleepAction()
         }
 
         class WakeUp<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction<C> =
+            override val action: PoolAction<C> =
                 WakeUpAction()
         }
 
         class SaveInstanceState<C : Parcelable> : MultiConfigurationCommand<C>() {
-            override val action: MultiConfigurationAction<C> =
+            override val action: PoolAction<C> =
                 SaveInstanceStateAction()
         }
     }

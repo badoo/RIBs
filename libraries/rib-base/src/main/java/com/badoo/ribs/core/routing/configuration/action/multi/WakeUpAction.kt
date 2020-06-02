@@ -11,7 +11,7 @@ import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 /**
  * Calls [ActivateAction] all elements with an [ActivationState] of [SLEEPING].
  */
-internal class WakeUpAction<C : Parcelable> : MultiConfigurationAction<C> {
+internal class WakeUpAction<C : Parcelable> : PoolAction<C> {
 
     /**
      * Filters the pool for [SLEEPING] elements, executes [ActivateAction] on all of them.

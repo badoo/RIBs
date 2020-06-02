@@ -19,10 +19,10 @@ internal class RemoveAction<C : Parcelable>(
     private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val activator: RoutingActivator<C>
-) : Action<C> {
+) : RoutingTransitionAction<C> {
 
     object Factory: ActionFactory {
-        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): Action<C> =
+        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): RoutingTransitionAction<C> =
             RemoveAction(
                 emitter = params.transactionExecutionParams.emitter,
                 routing = params.routing,

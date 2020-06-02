@@ -7,8 +7,8 @@ import com.badoo.ribs.core.routing.configuration.action.single.ReversibleActionP
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
 internal data class ReversibleActionPair<T : Parcelable>(
-    private val forwardAction: Action<T>,
-    private val reverseAction: Action<T>
+    private val forwardAction: RoutingTransitionAction<T>,
+    private val reverseAction: RoutingTransitionAction<T>
 ) : ReversibleAction<T> {
 
     class Factory(
@@ -41,7 +41,7 @@ internal data class ReversibleActionPair<T : Parcelable>(
         // If forwardAction is doing its thing, reverseAction should also disregard its own canExecute flag
         get() = direction == REVERSED && forwardAction.canExecute
 
-    private val activeAction: Action<T>
+    private val activeAction: RoutingTransitionAction<T>
         get() = when (direction) {
             FORWARD -> forwardAction
             REVERSED -> reverseAction

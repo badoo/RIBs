@@ -19,12 +19,12 @@ internal class AddAction<C : Parcelable>(
     private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val activator: RoutingActivator<C>
-) : Action<C> {
+) : RoutingTransitionAction<C> {
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
             params: ActionExecutionParams<C>
-        ): Action<C> = AddAction(
+        ): RoutingTransitionAction<C> = AddAction(
             emitter = params.transactionExecutionParams.emitter,
             routing = params.routing,
             item = params.item,

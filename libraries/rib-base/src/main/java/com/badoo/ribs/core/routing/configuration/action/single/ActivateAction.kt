@@ -28,12 +28,12 @@ internal class ActivateAction<C : Parcelable>(
     private val activator: RoutingActivator<C>,
     private val isBackStackOperation: Boolean,
     private val globalActivationLevel: RoutingContext.ActivationState
-) : Action<C> {
+) : RoutingTransitionAction<C> {
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
             params: ActionExecutionParams<C>
-        ): Action<C> =
+        ): RoutingTransitionAction<C> =
             ActivateAction(
                 emitter = params.transactionExecutionParams.emitter,
                 routing = params.routing,

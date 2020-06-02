@@ -1,8 +1,7 @@
 package com.badoo.ribs.core
 
 @ExperimentalApi
-// TODO consider if this is better as internal
-enum class AttachMode { // TODO rename --> Activation
+enum class ActivationMode {
     /**
      * The node's view will be attached/detached automatically to its parent.
      *

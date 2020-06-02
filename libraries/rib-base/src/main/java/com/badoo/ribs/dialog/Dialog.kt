@@ -1,7 +1,7 @@
 package com.badoo.ribs.dialog
 
 import com.badoo.ribs.android.Text
-import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.NodeFactory
@@ -82,7 +82,7 @@ abstract class Dialog<T : Any> private constructor(
                  * A benefit of this would be back press and lifecycle propagation.
                  * Not entirely sure it is needed. To be reconsidered later.
                  */
-                attachMode = AttachMode.REMOTE
+                activationMode = ActivationMode.REMOTE
             )
 
             listOf(

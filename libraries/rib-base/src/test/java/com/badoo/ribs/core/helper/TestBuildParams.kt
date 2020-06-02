@@ -2,7 +2,7 @@ package com.badoo.ribs.core.helper
 
 import android.os.Bundle
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
-import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Rib
@@ -19,7 +19,7 @@ fun testBuildParams(
     } else {
         BuildContext(
             ancestryInfo = ancestryInfo,
-            attachMode = AttachMode.PARENT,
+            activationMode = ActivationMode.PARENT,
             savedInstanceState = savedInstanceState,
             customisations = RibCustomisationDirectoryImpl()
     )},

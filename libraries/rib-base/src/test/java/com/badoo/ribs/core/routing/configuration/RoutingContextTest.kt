@@ -2,7 +2,7 @@ package com.badoo.ribs.core.routing.configuration
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
@@ -186,7 +186,7 @@ class RoutingContextTest {
 
             list.forEachIndexed { idx, buildContext ->
                 assertEquals(expectedAncestryInfo, buildContext.ancestryInfo)
-                assertEquals(AttachMode.PARENT, buildContext.attachMode)
+                assertEquals(ActivationMode.PARENT, buildContext.activationMode)
 
                 if (bundles.isNotEmpty()) {
                     assertEquals(bundles[idx], buildContext.savedInstanceState)

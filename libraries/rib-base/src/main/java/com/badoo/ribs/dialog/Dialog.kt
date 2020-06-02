@@ -75,14 +75,14 @@ abstract class Dialog<T : Any> private constructor(
         nodeFactory?.let { factory ->
             val clientParams = buildContext.copy(
                 /**
-                 * RIBs inside dialogs behaved like Root nodes so far in that they were
+                 * Children inside dialogs behaved like root nodes so far in that they were
                  * not added as a child of any other Node.
                  * Using [AncestryInfo.Child.anchor] it's now also possible to change this,
-                 * and rather add the RIB inside the dialog to the parent, if removal is also guaranteed.
+                 * and rather add the child inside the dialog to the parent, if removal is also guaranteed.
                  * A benefit of this would be back press and lifecycle propagation.
                  * Not entirely sure it is needed. To be reconsidered later.
                  */
-                activationMode = ActivationMode.REMOTE
+                activationMode = ActivationMode.BY_ROUTING_ACTION
             )
 
             listOf(

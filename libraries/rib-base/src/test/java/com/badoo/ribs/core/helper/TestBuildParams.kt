@@ -19,7 +19,7 @@ fun testBuildParams(
     } else {
         BuildContext(
             ancestryInfo = ancestryInfo,
-            activationMode = ActivationMode.PARENT,
+            activationMode = ActivationMode.ATTACH_TO_PARENT,
             savedInstanceState = savedInstanceState,
             customisations = RibCustomisationDirectoryImpl()
     )},

@@ -136,25 +136,25 @@ class ConfigurationFeatureTest {
         val routingContentExternal2 = Routing(identifier = Identifier("Content 4"), configuration = ContentExternal2 as Configuration)
 
         helperPermanent1 =
-            ConfigurationTestHelper.create(routingPermanent1,2, ActivationMode.PARENT)
+            ConfigurationTestHelper.create(routingPermanent1,2, ActivationMode.ATTACH_TO_PARENT)
 
         helperPermanent2 =
-            ConfigurationTestHelper.create(routingPermanent2,3, ActivationMode.PARENT)
+            ConfigurationTestHelper.create(routingPermanent2,3, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentViewParented1 =
-            ConfigurationTestHelper.create(routingContentViewParented1,2, ActivationMode.PARENT)
+            ConfigurationTestHelper.create(routingContentViewParented1,2, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentViewParented2 =
-            ConfigurationTestHelper.create(routingContentViewParented2,3, ActivationMode.PARENT)
+            ConfigurationTestHelper.create(routingContentViewParented2,3, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentViewParented3 =
-            ConfigurationTestHelper.create(routingContentViewParented3,2, ActivationMode.PARENT)
+            ConfigurationTestHelper.create(routingContentViewParented3,2, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentExternal1 =
-            ConfigurationTestHelper.create(routingContentExternal1,2, ActivationMode.EXTERNAL)
+            ConfigurationTestHelper.create(routingContentExternal1,2, ActivationMode.CLIENT)
 
         helperContentExternal2 =
-            ConfigurationTestHelper.create(routingContentExternal2,3, ActivationMode.EXTERNAL)
+            ConfigurationTestHelper.create(routingContentExternal2,3, ActivationMode.CLIENT)
 
         val helpers = listOf(
             helperPermanent1,

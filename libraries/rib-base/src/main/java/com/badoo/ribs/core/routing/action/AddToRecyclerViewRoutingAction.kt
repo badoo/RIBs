@@ -15,7 +15,7 @@ open class AddToRecyclerViewRoutingAction(
         listOf(
             nodeFactory.invoke(
                 buildContexts.first().copy(
-                    activationMode = ActivationMode.EXTERNAL
+                    activationMode = ActivationMode.CLIENT
                 )
             )
         )

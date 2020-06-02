@@ -186,7 +186,7 @@ class RoutingContextTest {
 
             list.forEachIndexed { idx, buildContext ->
                 assertEquals(expectedAncestryInfo, buildContext.ancestryInfo)
-                assertEquals(ActivationMode.PARENT, buildContext.activationMode)
+                assertEquals(ActivationMode.ATTACH_TO_PARENT, buildContext.activationMode)
 
                 if (bundles.isNotEmpty()) {
                     assertEquals(bundles[idx], buildContext.savedInstanceState)

@@ -9,7 +9,7 @@ import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 
 data class BuildContext internal constructor(
     val ancestryInfo: AncestryInfo,
-    val activationMode: ActivationMode = ActivationMode.PARENT,
+    val activationMode: ActivationMode = ActivationMode.ATTACH_TO_PARENT,
     val savedInstanceState: Bundle?,
     val customisations: RibCustomisationDirectory,
     val plugins: List<Plugin> = emptyList()

@@ -1,11 +1,11 @@
 package com.badoo.ribs.core.routing.history
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.RoutingCommand
-import com.badoo.ribs.core.routing.configuration.RoutingCommand.Activate
-import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
-import com.badoo.ribs.core.routing.configuration.RoutingCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.RoutingCommand.Remove
+import com.badoo.ribs.core.routing.state.RoutingCommand
+import com.badoo.ribs.core.routing.state.RoutingCommand.Activate
+import com.badoo.ribs.core.routing.state.RoutingCommand.Add
+import com.badoo.ribs.core.routing.state.RoutingCommand.Deactivate
+import com.badoo.ribs.core.routing.state.RoutingCommand.Remove
 import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.INACTIVE

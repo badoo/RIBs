@@ -12,7 +12,7 @@ import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.state.transaction.Transaction
-import com.badoo.ribs.core.routing.state.transaction.Transaction.MultiConfigurationCommand
+import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.state.action.single.ReversibleAction
@@ -50,12 +50,12 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         when (transaction) {
-            is MultiConfigurationCommand -> processMultiConfigurationCommand(transaction, state)
+            is PoolCommand -> processMultiConfigurationCommand(transaction, state)
             is Transaction.ListOfCommands -> processTransaction(state, transaction)
         }
 
     private fun processMultiConfigurationCommand(
-        transaction: MultiConfigurationCommand<C>,
+        transaction: PoolCommand<C>,
         state: WorkingState<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create { emitter ->
@@ -201,8 +201,8 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
             activator = activator,
             parentNode = parentNode,
             globalActivationLevel = when (transaction) {
-                is MultiConfigurationCommand.Sleep -> SLEEPING
-                is MultiConfigurationCommand.WakeUp -> RoutingContext.ActivationState.ACTIVE
+                is PoolCommand.Sleep -> SLEEPING
+                is PoolCommand.WakeUp -> RoutingContext.ActivationState.ACTIVE
                 else -> state.activationLevel
             }
         )

@@ -17,9 +17,9 @@ import com.badoo.ribs.core.routing.activator.ChildActivator
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.activator.UnhandledChildActivator
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.state.transaction.Transaction.MultiConfigurationCommand.SaveInstanceState
-import com.badoo.ribs.core.routing.state.transaction.Transaction.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.state.transaction.Transaction.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand.SaveInstanceState
+import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand.Sleep
+import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.source.changes
 import com.badoo.ribs.core.routing.source.RoutingSource

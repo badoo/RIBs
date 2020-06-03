@@ -24,8 +24,8 @@ import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.
 import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.ContentViewParented3
 import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.Permanent1
 import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.Permanent2
-import com.badoo.ribs.core.routing.state.transaction.Transaction.MultiConfigurationCommand.Sleep
-import com.badoo.ribs.core.routing.state.transaction.Transaction.MultiConfigurationCommand.WakeUp
+import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand.Sleep
+import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.state.feature.SavedState
 import com.badoo.ribs.core.routing.history.Routing

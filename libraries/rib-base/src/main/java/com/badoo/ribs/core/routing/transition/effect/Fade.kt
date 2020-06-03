@@ -8,6 +8,7 @@ import androidx.annotation.CheckResult
 import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.effect.helper.ReverseHolder
 import com.badoo.ribs.core.routing.transition.handler.defaultDuration
 import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
 import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator
@@ -37,7 +38,8 @@ fun <T> TransitionElement<out T>.fade(
         evaluator.updateProgress(1.0f * (progress - from) / (to - from))
     }
 
-    val reverseHolder = ReverseHolder()
+    val reverseHolder =
+        ReverseHolder()
     valueAnimator.addListener(object : AnimatorListenerAdapter() {
         override fun onAnimationStart(animation: Animator?) {
             evaluator.start()

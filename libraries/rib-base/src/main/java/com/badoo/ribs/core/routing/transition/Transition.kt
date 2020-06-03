@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.transition
 
 import android.animation.ValueAnimator
-import com.badoo.ribs.core.routing.transition.effect.ReverseHolder
+import com.badoo.ribs.core.routing.transition.effect.helper.ReverseHolder
 
 interface Transition {
 

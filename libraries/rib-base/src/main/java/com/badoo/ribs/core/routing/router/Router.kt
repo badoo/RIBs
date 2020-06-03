@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing
+package com.badoo.ribs.core.routing.router
 
 import android.os.Bundle
 import android.os.Parcelable

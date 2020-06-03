@@ -3,7 +3,7 @@ package com.badoo.ribs.test.util.ribs
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.Router
+import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 

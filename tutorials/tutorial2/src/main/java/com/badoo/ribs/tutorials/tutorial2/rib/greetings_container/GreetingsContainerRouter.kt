@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.Router
+import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter.Configuration
 import kotlinx.android.parcel.Parcelize

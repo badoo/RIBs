@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.Router
+import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction

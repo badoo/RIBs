@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.dialog_example.routing
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.Router
+import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog

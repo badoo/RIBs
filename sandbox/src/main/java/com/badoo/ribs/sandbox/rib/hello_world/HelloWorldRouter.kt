@@ -4,11 +4,11 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.source.impl.Permanent.Companion.permanent
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Permanent.Small

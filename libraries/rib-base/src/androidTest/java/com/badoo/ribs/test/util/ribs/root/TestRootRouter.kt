@@ -1,17 +1,17 @@
 package com.badoo.ribs.test.util.ribs.root
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.NodeFactory
-import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.source.impl.Permanent.Companion.permanent
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.router.Router
+import com.badoo.ribs.core.routing.source.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.ribs.TestRibDialog
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration

@@ -1,17 +1,14 @@
 package com.badoo.ribs.core.routing.source
 
-import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import com.badoo.ribs.core.routing.ConcatIterator
 import com.badoo.ribs.core.routing.history.Routing.Identifier
 import com.badoo.ribs.core.routing.history.RoutingHistory
-import com.badoo.ribs.core.routing.history.RoutingHistoryElement
-import io.reactivex.Observable
+import com.badoo.ribs.core.routing.source.impl.Combined
+import com.badoo.ribs.core.routing.source.impl.Empty
+import com.badoo.ribs.core.routing.source.impl.Permanent
 import io.reactivex.ObservableSource
-import io.reactivex.Observer
-import io.reactivex.functions.BiFunction
 
 interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
@@ -36,58 +33,15 @@ interface RoutingSource<C : Parcelable> :
     operator fun plus(other: RoutingSource<C>): RoutingSource<C> =
         Combined(this, other)
 
-    data class Combined<C : Parcelable>(
-        val first: RoutingSource<C>,
-        val second: RoutingSource<C>
-    ) : RoutingSource<C> {
+    companion object {
+        fun <C : Parcelable> empty() =
+            Empty<C>()
 
-        data class CombinedHistory<C : Parcelable>(
-            val first: RoutingHistory<C>,
-            val second: RoutingHistory<C>
-        ):  RoutingHistory<C> {
+        fun <C : Parcelable> permanent(permanents: Iterable<C>) =
+            Permanent(permanents)
 
-            override fun iterator(): Iterator<RoutingHistoryElement<C>> =
-                ConcatIterator(first.iterator()) + second.iterator()
-        }
-
-        private val combined = Observable.combineLatest(
-            first,
-            second,
-            BiFunction<RoutingHistory<C>, RoutingHistory<C>, RoutingHistory<C>> { source1, source2 ->
-                CombinedHistory(
-                    source1,
-                    source2
-                )
-            }
-        )
-
-        override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
-            CombinedHistory(
-                first.baseLineState(fromRestored),
-                second.baseLineState(fromRestored)
-            )
-
-        override fun subscribe(observer: Observer<in RoutingHistory<C>>) {
-            combined.subscribe(observer)
-        }
-
-        override fun remove(identifier: Identifier) {
-            first.remove(identifier)
-            second.remove(identifier)
-        }
-
-        override fun handleBackPressFirst(): Boolean =
-            first.handleBackPressFirst() || second.handleBackPressFirst()
-
-        override fun handleBackPressFallback(): Boolean =
-            first.handleBackPressFallback() || second.handleBackPressFallback()
-
-        override fun onSaveInstanceState(outState: Bundle) {
-            super.onSaveInstanceState(outState)
-            first.onSaveInstanceState(outState)
-            second.onSaveInstanceState(outState)
-        }
+        fun <C : Parcelable> permanent(vararg permanents: C) =
+            Permanent(permanents.toSet())
     }
-
 }
 

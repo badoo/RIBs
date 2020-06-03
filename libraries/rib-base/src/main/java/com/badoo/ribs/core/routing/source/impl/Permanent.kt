@@ -12,14 +12,6 @@ class Permanent<C : Parcelable>(
     permanents: Iterable<C>
 ) : RoutingSource<C> {
 
-    companion object {
-        fun <C : Parcelable> permanent(permanents: Iterable<C>) =
-            Permanent(permanents)
-
-        fun <C : Parcelable> permanent(vararg permanents: C) =
-            Permanent(permanents.toSet())
-    }
-
     private val routingElements =
         permanents.mapIndexed { idx, configuration ->
             RoutingHistoryElement(

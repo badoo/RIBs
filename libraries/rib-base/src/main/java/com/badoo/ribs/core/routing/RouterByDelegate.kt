@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.activator.ChildActivator
 import com.badoo.ribs.core.routing.activator.UnhandledChildActivator
-import com.badoo.ribs.core.routing.configuration.RoutingResolver
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.source.RoutingSource
 
 class RouterByDelegate<T : Parcelable>(

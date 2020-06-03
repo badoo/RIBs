@@ -16,12 +16,12 @@ import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.routing.activator.ChildActivator
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.activator.UnhandledChildActivator
-import com.badoo.ribs.core.routing.configuration.RoutingResolver
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
-import com.badoo.ribs.core.routing.configuration.changes
+import com.badoo.ribs.core.routing.source.changes
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import io.reactivex.disposables.CompositeDisposable

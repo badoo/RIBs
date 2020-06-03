@@ -8,7 +8,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.clienthelper.Connectable
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.routing.configuration.RoutingResolver
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import kotlinx.android.parcel.Parcelize
 
 @ExperimentalApi

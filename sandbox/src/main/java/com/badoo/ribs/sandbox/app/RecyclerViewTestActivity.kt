@@ -20,7 +20,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.RoutingResolver
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.dialog.DialogLauncher
@@ -80,7 +80,8 @@ class RecyclerViewTestActivity : RibActivity() {
             }
         )
 
-    private val resolver = object : RoutingResolver<Item> {
+    private val resolver = object :
+        RoutingResolver<Item> {
         override fun resolve(routing: Routing<Item>): RoutingAction =
             when (routing.configuration) {
                 Item.LoremIpsumItem -> recyclerView { loremIpsumBuilder.build(it) }

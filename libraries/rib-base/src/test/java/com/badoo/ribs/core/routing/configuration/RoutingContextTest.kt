@@ -14,6 +14,7 @@ import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.configuration.RoutingContext.Unresolved
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.AncestryInfo
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doReturn

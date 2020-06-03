@@ -10,7 +10,7 @@ import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.configuration.RoutingCommand
 import com.badoo.ribs.core.routing.configuration.RoutingContext
 import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.RoutingResolver
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams

@@ -30,6 +30,7 @@ import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.configuration.feature.SavedState
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.Routing.Identifier
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn

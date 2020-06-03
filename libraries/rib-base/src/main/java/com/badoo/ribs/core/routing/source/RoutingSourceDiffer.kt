@@ -1,7 +1,7 @@
-package com.badoo.ribs.core.routing.configuration
+package com.badoo.ribs.core.routing.source
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.source.RoutingSource
+import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.feature.TransitionDescriptor
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
@@ -47,14 +47,22 @@ internal fun <C : Parcelable> RoutingHistory<C>.ensureUniqueIds() {
     forEach { element ->
         if (ids.contains(element.routing.identifier)) {
             val errorMessage = "Non-unique content id found: ${element.routing.identifier}"
-            RIBs.errorHandler.handleNonFatalError(errorMessage, NonUniqueRoutingIdentifierException(errorMessage))
+            RIBs.errorHandler.handleNonFatalError(errorMessage,
+                NonUniqueRoutingIdentifierException(
+                    errorMessage
+                )
+            )
         }
         ids.add(element.routing.identifier)
 
         element.overlays.forEach { overlay ->
             if (ids.contains(overlay.identifier)) {
                 val errorMessage = "Non-unique overlay id found: ${overlay.identifier}"
-                RIBs.errorHandler.handleNonFatalError(errorMessage, NonUniqueRoutingIdentifierException(errorMessage))
+                RIBs.errorHandler.handleNonFatalError(errorMessage,
+                    NonUniqueRoutingIdentifierException(
+                        errorMessage
+                    )
+                )
             }
             ids.add(overlay.identifier)
         }

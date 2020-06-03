@@ -9,7 +9,7 @@ import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect.Ind
 import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect.Individual.Removed
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Removes [Node]s from their parent, resulting in the end of their lifecycles.

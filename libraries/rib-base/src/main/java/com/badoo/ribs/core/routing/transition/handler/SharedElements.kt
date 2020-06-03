@@ -1,9 +1,9 @@
-package com.badoo.ribs.core.routing.client.handler
+package com.badoo.ribs.core.routing.transition.handler
 
-import com.badoo.ribs.core.routing.client.TransitionElement
-import com.badoo.ribs.core.routing.client.TransitionPair
-import com.badoo.ribs.core.routing.client.effect.sharedelement.SharedElementTransition.Params
-import com.badoo.ribs.core.routing.client.effect.sharedelement.sharedElementTransition
+import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionPair
+import com.badoo.ribs.core.routing.transition.effect.sharedelement.SharedElementTransition.Params
+import com.badoo.ribs.core.routing.transition.effect.sharedelement.sharedElementTransition
 
 
 open class SharedElements<T>(

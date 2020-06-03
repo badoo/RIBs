@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.client.effect.helper
+package com.badoo.ribs.core.routing.transition.effect.helper
 
 import android.view.View
 import android.view.ViewGroup

@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.state.action.single
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 internal interface RoutingTransitionAction<C : Parcelable> {
     fun onBeforeTransition()

@@ -7,7 +7,7 @@ import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.client.handler.TransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration.Content
 import kotlinx.android.parcel.Parcelize

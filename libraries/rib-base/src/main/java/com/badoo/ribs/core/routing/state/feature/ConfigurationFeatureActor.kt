@@ -15,9 +15,9 @@ import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.state.action.single.ReversibleAction
-import com.badoo.ribs.core.routing.client.TransitionDirection
-import com.badoo.ribs.core.routing.client.TransitionElement
-import com.badoo.ribs.core.routing.client.handler.TransitionHandler
+import com.badoo.ribs.core.routing.transition.TransitionDirection
+import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.routing.state.MutablePool
 import com.badoo.ribs.core.routing.state.Pool
 import com.badoo.ribs.core.routing.state.exception.CommandExecutionException

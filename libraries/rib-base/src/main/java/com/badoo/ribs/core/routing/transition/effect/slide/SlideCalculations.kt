@@ -1,14 +1,14 @@
-package com.badoo.ribs.core.routing.client.effect.slide
+package com.badoo.ribs.core.routing.transition.effect.slide
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.routing.client.TransitionElement
-import com.badoo.ribs.core.routing.client.effect.Gravity
-import com.badoo.ribs.core.routing.client.effect.helper.AnimationContainer
-import com.badoo.ribs.core.routing.client.effect.helper.AnimationContainer.FindParentById
-import com.badoo.ribs.core.routing.client.effect.helper.AnimationContainer.Parent
-import com.badoo.ribs.core.routing.client.effect.helper.AnimationContainer.RootView
-import com.badoo.ribs.core.routing.client.effect.helper.EndValues
-import com.badoo.ribs.core.routing.client.effect.helper.findParentById
+import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.effect.Gravity
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.FindParentById
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.Parent
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.RootView
+import com.badoo.ribs.core.routing.transition.effect.helper.EndValues
+import com.badoo.ribs.core.routing.transition.effect.helper.findParentById
 
 
 internal fun <T> TransitionElement<out T>.slideEndValues(

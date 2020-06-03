@@ -1,15 +1,15 @@
-package com.badoo.ribs.core.routing.client.handler
+package com.badoo.ribs.core.routing.transition.handler
 
 import android.view.animation.Interpolator
-import com.badoo.ribs.core.routing.client.Transition
-import com.badoo.ribs.core.routing.client.TransitionDirection.ENTER
-import com.badoo.ribs.core.routing.client.TransitionDirection.EXIT
-import com.badoo.ribs.core.routing.client.TransitionElement
-import com.badoo.ribs.core.routing.client.TransitionPair
-import com.badoo.ribs.core.routing.client.effect.Gravity
-import com.badoo.ribs.core.routing.client.effect.helper.AnimationContainer
-import com.badoo.ribs.core.routing.client.effect.slide.slide
-import com.badoo.ribs.core.routing.client.invoke
+import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.TransitionDirection.ENTER
+import com.badoo.ribs.core.routing.transition.TransitionDirection.EXIT
+import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionPair
+import com.badoo.ribs.core.routing.transition.effect.Gravity
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer
+import com.badoo.ribs.core.routing.transition.effect.slide.slide
+import com.badoo.ribs.core.routing.transition.invoke
 
 
 open class TabSwitcher<T>(

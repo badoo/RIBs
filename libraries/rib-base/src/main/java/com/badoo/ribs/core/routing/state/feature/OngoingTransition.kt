@@ -3,9 +3,9 @@ package com.badoo.ribs.core.routing.state.feature
 import android.os.Handler
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.state.action.single.ReversibleAction
-import com.badoo.ribs.core.routing.client.TransitionDirection
-import com.badoo.ribs.core.routing.client.TransitionElement
-import com.badoo.ribs.core.routing.client.TransitionPair
+import com.badoo.ribs.core.routing.transition.TransitionDirection
+import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionPair
 import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
 
 internal class OngoingTransition<C : Parcelable>(

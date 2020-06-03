@@ -10,7 +10,7 @@ import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDial
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.client.handler.TransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.rib.menu.Menu

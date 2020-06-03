@@ -12,8 +12,8 @@ import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateFalse
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.client.TransitionDirection
-import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionDirection
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**
  * Attaches views of associated [Node]s to a parentNode, and executes the associated [RoutingAction].

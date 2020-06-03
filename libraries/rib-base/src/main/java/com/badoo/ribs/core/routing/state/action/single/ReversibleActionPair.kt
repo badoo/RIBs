@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.action.single.ReversibleActionPair.Direction.FORWARD
 import com.badoo.ribs.core.routing.state.action.single.ReversibleActionPair.Direction.REVERSED
-import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.transition.TransitionElement
 
 internal data class ReversibleActionPair<T : Parcelable>(
     private val forwardAction: RoutingTransitionAction<T>,

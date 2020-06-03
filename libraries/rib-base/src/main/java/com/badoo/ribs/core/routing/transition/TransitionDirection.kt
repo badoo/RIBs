@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.client
+package com.badoo.ribs.core.routing.transition
 
 enum class TransitionDirection {
     ENTER, EXIT

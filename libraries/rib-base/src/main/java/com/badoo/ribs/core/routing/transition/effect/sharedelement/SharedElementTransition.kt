@@ -1,5 +1,5 @@
 @file:SuppressWarnings("LongMethod")
-package com.badoo.ribs.core.routing.client.effect.sharedelement
+package com.badoo.ribs.core.routing.transition.effect.sharedelement
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import androidx.annotation.CheckResult
-import com.badoo.ribs.core.routing.client.Transition
-import com.badoo.ribs.core.routing.client.TransitionDirection
-import com.badoo.ribs.core.routing.client.TransitionElement
-import com.badoo.ribs.core.routing.client.effect.sharedelement.SharedElementTransition.RotationParams
-import com.badoo.ribs.core.routing.client.effect.helper.ReverseHolder
-import com.badoo.ribs.core.routing.client.handler.defaultDuration
-import com.badoo.ribs.core.routing.client.handler.defaultInterpolator
-import com.badoo.ribs.core.routing.client.progress.SingleProgressEvaluator
+import com.badoo.ribs.core.routing.transition.Transition
+import com.badoo.ribs.core.routing.transition.TransitionDirection
+import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.effect.sharedelement.SharedElementTransition.RotationParams
+import com.badoo.ribs.core.routing.transition.effect.helper.ReverseHolder
+import com.badoo.ribs.core.routing.transition.handler.defaultDuration
+import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
+import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator
 
 interface SharedElementTransition {
     data class Params(

@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.client.effect
+package com.badoo.ribs.core.routing.transition.effect
 
 enum class Gravity {
     LEFT, RIGHT, TOP, BOTTOM;

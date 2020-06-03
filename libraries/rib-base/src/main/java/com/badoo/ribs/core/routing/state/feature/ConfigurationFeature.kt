@@ -17,7 +17,7 @@ import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.client.handler.TransitionHandler
+import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
 import io.reactivex.Observable
 

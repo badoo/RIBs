@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.mock
 

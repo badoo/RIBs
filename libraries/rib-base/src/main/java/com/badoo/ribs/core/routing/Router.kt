@@ -1,4 +1,4 @@
-package com.badoo.ribs.core
+package com.badoo.ribs.core.routing
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
-import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.activator.ChildActivator
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.activator.UnhandledChildActivator

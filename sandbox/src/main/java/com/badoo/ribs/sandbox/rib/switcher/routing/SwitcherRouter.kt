@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.switcher.routing
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.RoutingSource.Permanent.Companion.permanent

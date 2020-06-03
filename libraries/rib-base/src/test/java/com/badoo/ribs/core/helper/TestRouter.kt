@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.helper
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature

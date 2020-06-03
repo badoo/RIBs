@@ -1,7 +1,7 @@
 package com.badoo.ribs.test.util.ribs.root
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.routing.RoutingSource

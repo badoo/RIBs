@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.AncestryInfo
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.Router
+import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.RoutingSource

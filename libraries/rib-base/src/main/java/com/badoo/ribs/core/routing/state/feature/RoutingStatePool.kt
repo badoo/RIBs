@@ -8,8 +8,8 @@ import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.annotation.OutdatedDocumentation
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
-import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Add
+import com.badoo.ribs.core.routing.state.changeset.RoutingCommand
+import com.badoo.ribs.core.routing.state.changeset.RoutingCommand.Add
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.INACTIVE
@@ -21,7 +21,7 @@ import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.state.feature.state.SavedState
 import com.badoo.ribs.core.routing.state.feature.state.WorkingState
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
+import com.badoo.ribs.core.routing.state.changeset.TransitionDescriptor
 import io.reactivex.Observable
 
 private val timeCapsuleKey = RoutingStatePool::class.java.name

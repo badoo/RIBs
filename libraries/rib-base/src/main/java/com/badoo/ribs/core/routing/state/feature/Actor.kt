@@ -22,9 +22,9 @@ import com.badoo.ribs.core.routing.state.feature.state.WorkingState
 import com.badoo.ribs.core.routing.state.feature.state.withDefaults
 import com.badoo.ribs.core.routing.state.mutablePoolOf
 import com.badoo.ribs.core.routing.state.toMutablePool
-import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
-import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
-import com.badoo.ribs.core.routing.state.transaction.addedOrRemoved
+import com.badoo.ribs.core.routing.state.changeset.RoutingCommand
+import com.badoo.ribs.core.routing.state.changeset.TransitionDescriptor
+import com.badoo.ribs.core.routing.state.changeset.addedOrRemoved
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler

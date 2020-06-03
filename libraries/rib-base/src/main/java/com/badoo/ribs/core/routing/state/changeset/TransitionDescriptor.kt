@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.state.transaction
+package com.badoo.ribs.core.routing.state.changeset
 
 internal data class TransitionDescriptor(
     val from: Any?,

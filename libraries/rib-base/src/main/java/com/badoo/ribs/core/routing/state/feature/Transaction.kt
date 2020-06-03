@@ -5,9 +5,9 @@ import com.badoo.ribs.core.routing.state.action.multi.PoolAction
 import com.badoo.ribs.core.routing.state.action.multi.SaveInstanceStateAction
 import com.badoo.ribs.core.routing.state.action.multi.SleepAction
 import com.badoo.ribs.core.routing.state.action.multi.WakeUpAction
-import com.badoo.ribs.core.routing.state.transaction.RoutingChangeset
-import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
-import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
+import com.badoo.ribs.core.routing.state.changeset.RoutingChangeset
+import com.badoo.ribs.core.routing.state.changeset.RoutingCommand
+import com.badoo.ribs.core.routing.state.changeset.TransitionDescriptor
 
 internal sealed class Transaction<C : Parcelable> {
 

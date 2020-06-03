@@ -1,5 +1,5 @@
 @file:SuppressWarnings("LongParameterList")
-package com.badoo.ribs.core.routing.transition.effect
+package com.badoo.ribs.core.routing.transition.effect.slide
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.view.animation.Interpolator
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.effect.Gravity
 import com.badoo.ribs.core.routing.transition.effect.helper.EndValues
 import com.badoo.ribs.core.routing.transition.effect.helper.ReverseHolder
 import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator

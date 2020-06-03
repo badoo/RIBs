@@ -1,5 +1,5 @@
 @file:SuppressWarnings("LongMethod")
-package com.badoo.ribs.core.routing.transition.effect
+package com.badoo.ribs.core.routing.transition.effect.sharedelement
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -12,7 +12,7 @@ import androidx.annotation.CheckResult
 import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
-import com.badoo.ribs.core.routing.transition.effect.SharedElementTransition.RotationParams
+import com.badoo.ribs.core.routing.transition.effect.sharedelement.SharedElementTransition.RotationParams
 import com.badoo.ribs.core.routing.transition.effect.helper.ReverseHolder
 import com.badoo.ribs.core.routing.transition.handler.defaultDuration
 import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator

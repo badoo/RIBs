@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.transition.effect
+package com.badoo.ribs.core.routing.transition.effect.fade
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

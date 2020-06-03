@@ -8,7 +8,7 @@ import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
 import com.badoo.ribs.core.routing.transition.effect.Gravity
 import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer
-import com.badoo.ribs.core.routing.transition.effect.slide
+import com.badoo.ribs.core.routing.transition.effect.slide.slide
 import com.badoo.ribs.core.routing.transition.invoke
 
 

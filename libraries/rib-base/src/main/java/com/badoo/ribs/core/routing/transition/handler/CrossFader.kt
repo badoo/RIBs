@@ -5,7 +5,7 @@ import com.badoo.ribs.core.routing.transition.Transition
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.TransitionPair
-import com.badoo.ribs.core.routing.transition.effect.fade
+import com.badoo.ribs.core.routing.transition.effect.fade.fade
 import com.badoo.ribs.core.routing.transition.invoke
 
 

@@ -1,7 +1,8 @@
-package com.badoo.ribs.core.routing.transition.effect
+package com.badoo.ribs.core.routing.transition.effect.slide
 
 import android.view.ViewGroup
 import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.transition.effect.Gravity
 import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer
 import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.FindParentById
 import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.Parent

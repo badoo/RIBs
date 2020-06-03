@@ -20,6 +20,8 @@ import com.badoo.ribs.core.routing.state.addedOrRemoved
 import com.badoo.ribs.core.routing.client.TransitionDirection
 import com.badoo.ribs.core.routing.client.TransitionElement
 import com.badoo.ribs.core.routing.client.handler.TransitionHandler
+import com.badoo.ribs.core.routing.state.exception.CommandExecutionException
+import com.badoo.ribs.core.routing.state.exception.KeyNotFoundInPoolException
 import io.reactivex.Observable
 
 /**

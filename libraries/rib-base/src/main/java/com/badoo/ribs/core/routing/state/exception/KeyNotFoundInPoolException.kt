@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.state.feature
+package com.badoo.ribs.core.routing.state.exception
 
 import com.badoo.ribs.core.routing.history.Routing
 

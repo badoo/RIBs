@@ -7,9 +7,9 @@ import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.source.impl.Permanent
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
@@ -91,7 +91,7 @@ inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView w
 
 private class TestRouter<C : Parcelable> : Router<C>(
     buildParams = buildParams,
-    routingSource = RoutingSource.Permanent<C>(emptySet()),
+    routingSource = Permanent<C>(emptySet()),
     transitionHandler = null
 ) {
 

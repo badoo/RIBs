@@ -5,7 +5,7 @@ import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.source.RoutingSource.Permanent.Companion.permanent
+import com.badoo.ribs.core.routing.source.impl.Permanent.Companion.permanent
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog

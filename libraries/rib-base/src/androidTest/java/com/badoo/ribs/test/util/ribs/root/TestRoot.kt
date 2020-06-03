@@ -6,6 +6,7 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.source.RoutingSource
+import com.badoo.ribs.core.routing.source.impl.Empty
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
@@ -55,7 +56,7 @@ interface TestRoot : Rib {
             buildParams: BuildParams<*>,
             dialogLauncher: DialogLauncher,
             savedInstanceState: Bundle?,
-            routingSource: RoutingSource<Configuration> = RoutingSource.Empty()
+            routingSource: RoutingSource<Configuration> = Empty()
         ): TestNode<TestRootView> {
             val router = TestRootRouter(
                 buildParams = buildParams,

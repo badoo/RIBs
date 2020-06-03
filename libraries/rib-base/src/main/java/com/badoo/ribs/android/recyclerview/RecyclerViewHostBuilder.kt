@@ -6,7 +6,7 @@ import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.routing.router.RouterByDelegate
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
-import com.badoo.ribs.core.routing.source.RoutingSource
+import com.badoo.ribs.core.routing.source.impl.Pool
 
 @ExperimentalApi
 class RecyclerViewHostBuilder<T : Parcelable>(
@@ -17,7 +17,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
     override fun build(buildParams: BuildParams<Nothing?>): RecyclerViewHost<T> {
         val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
-        val routingSource = RoutingSource.Pool<T>(
+        val routingSource = Pool<T>(
             allowRepeatingConfigurations = true
         )
 

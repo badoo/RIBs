@@ -129,7 +129,7 @@ internal class ConfigurationFeature<C : Parcelable>(
         override fun invoke(): Observable<Transaction<C>> =
             when {
                 initialState.pool.isNotEmpty() -> Observable.just(
-                    Transaction.ListOfCommands(
+                    Transaction.RoutingChangeset(
                         descriptor = TransitionDescriptor.None,
                         commands = initialState.pool
                             .filter { it.value.activationState == SLEEPING }

@@ -12,35 +12,22 @@ import com.badoo.ribs.core.routing.history.Routing
 
 internal sealed class Transaction<C : Parcelable> {
 
-    // TODO move these out to top level maybe
-    sealed class PoolCommand<C : Parcelable> : Transaction<C>() {
-
-        abstract val action: PoolAction<C>
-
-        class Sleep<C : Parcelable> : PoolCommand<C>() {
-            override val action: PoolAction<C> =
-                SleepAction()
-        }
-
-        class WakeUp<C : Parcelable> : PoolCommand<C>() {
-            override val action: PoolAction<C> =
-                WakeUpAction()
-        }
-
-        class SaveInstanceState<C : Parcelable> : PoolCommand<C>() {
-            override val action: PoolAction<C> =
-                SaveInstanceStateAction()
-        }
+    sealed class PoolCommand<C : Parcelable>(
+        val action: PoolAction<C>
+    ) : Transaction<C>() {
+        class Sleep<C : Parcelable> : PoolCommand<C>(SleepAction())
+        class WakeUp<C : Parcelable> : PoolCommand<C>(WakeUpAction())
+        class SaveInstanceState<C : Parcelable> : PoolCommand<C>(SaveInstanceStateAction())
     }
 
-    data class ListOfCommands<C : Parcelable>(
+    data class RoutingChangeset<C : Parcelable>(
         val descriptor: TransitionDescriptor,
         val commands: List<RoutingCommand<C>>
     ) : Transaction<C>()
 
     companion object {
         fun <C : Parcelable> from(vararg commands: RoutingCommand<out C>): Transaction<C> =
-            ListOfCommands(
+            RoutingChangeset(
                 descriptor = TransitionDescriptor.None,
                 commands = commands.toList() as List<RoutingCommand<C>>
             )

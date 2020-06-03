@@ -30,7 +30,7 @@ internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): O
                 )
             when {
                 commands.isNotEmpty() -> Observable.just(
-                    Transaction.ListOfCommands(
+                    Transaction.RoutingChangeset(
                         descriptor = TransitionDescriptor(
                             from = previous,
                             to = current

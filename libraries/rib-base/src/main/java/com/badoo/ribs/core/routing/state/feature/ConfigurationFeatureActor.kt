@@ -26,6 +26,7 @@ import com.badoo.ribs.core.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.core.routing.state.exception.KeyNotFoundInPoolException
 import com.badoo.ribs.core.routing.state.mutablePoolOf
 import com.badoo.ribs.core.routing.state.toMutablePool
+import com.badoo.ribs.core.routing.state.transaction.Transaction.RoutingChangeset
 import io.reactivex.Observable
 
 /**
@@ -50,13 +51,13 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         transaction: Transaction<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         when (transaction) {
-            is PoolCommand -> processMultiConfigurationCommand(transaction, state)
-            is Transaction.ListOfCommands -> processTransaction(state, transaction)
+            is PoolCommand -> processPoolCommand(state, transaction)
+            is RoutingChangeset -> processChangeset(state, transaction)
         }
 
-    private fun processMultiConfigurationCommand(
-        transaction: PoolCommand<C>,
-        state: WorkingState<C>
+    private fun processPoolCommand(
+        state: WorkingState<C>,
+        transaction: PoolCommand<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create { emitter ->
             transaction.action.execute(state, createParams(emitter, state, emptyMap(), transaction))
@@ -66,9 +67,9 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         ABORT, CONTINUE
     }
 
-    private fun processTransaction(
+    private fun processChangeset(
         state: WorkingState<C>,
-        transaction: Transaction.ListOfCommands<C>
+        transaction: RoutingChangeset<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create { emitter ->
             val commands = transaction.commands
@@ -100,7 +101,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
     private fun checkOngoingTransitions(
         state: WorkingState<C>,
-        transaction: Transaction.ListOfCommands<C>
+        transaction: RoutingChangeset<C>
     ): NewTransitionsExecution {
         state.ongoingTransitions.forEach {
             when {

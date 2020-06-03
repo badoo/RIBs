@@ -108,6 +108,7 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+captures/
 
 ## Obj-C/Swift specific
 *.hmap

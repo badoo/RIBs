@@ -8,7 +8,7 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration
 import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
@@ -49,8 +49,8 @@ class PortalRouter(
     //  so that extra info can be added too. See below for details.
     private fun List<Parcelable>.resolve(): RoutingAction {
         // TODO grab first from real root (now should be possible) -- currently works only if PortalRouter is in the root rib
-        var targetRouter: ConfigurationResolver<Parcelable> =
-            this@PortalRouter as ConfigurationResolver<Parcelable>
+        var targetRouter: RoutingResolver<Parcelable> =
+            this@PortalRouter as RoutingResolver<Parcelable>
         var routingAction: RoutingAction = targetRouter.resolve(Routing(first()))
 
         drop(1).forEach { element ->
@@ -64,7 +64,7 @@ class PortalRouter(
             //  Solution is again to store Node identifiers & Bundles that help picking the correct one.
             val rib = ribs.first()
 
-            rib.node.plugin<ConfigurationResolver<Parcelable>>()?.let {
+            rib.node.plugin<RoutingResolver<Parcelable>>()?.let {
                 targetRouter = it
             } ?: throw IllegalStateException("Invalid chain of parents. This should never happen. Chain: $this")
 

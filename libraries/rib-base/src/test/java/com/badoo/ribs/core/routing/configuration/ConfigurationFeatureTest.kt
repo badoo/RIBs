@@ -3,20 +3,20 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.mvicore.element.TimeCapsule
-import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Activate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Remove
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Unresolved
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.ContentExternal1
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.ContentExternal2
 import com.badoo.ribs.core.routing.configuration.ConfigurationFeatureTest.Configuration.ContentViewParented1
@@ -64,7 +64,7 @@ class ConfigurationFeatureTest {
     private lateinit var poolInTimeCapsule: Map<Routing<Configuration>, Unresolved<Configuration>>
 
     private lateinit var feature: ConfigurationFeature<Configuration>
-    private lateinit var resolver: ConfigurationResolver<Configuration>
+    private lateinit var resolver: RoutingResolver<Configuration>
     private lateinit var parentNode: Node<Nothing>
 
     private lateinit var helperPermanent1: ConfigurationTestHelper
@@ -83,11 +83,11 @@ class ConfigurationFeatureTest {
         val routingAction: RoutingAction
     ) {
         companion object {
-            fun create(routing: Routing<Configuration>, nbNodes: Int, viewAttachMode: AttachMode): ConfigurationTestHelper {
+            fun create(routing: Routing<Configuration>, nbNodes: Int, viewActivationMode: ActivationMode): ConfigurationTestHelper {
                 val nodes = MutableList(nbNodes) { i ->
                     mock<Node<Nothing>> {
                         on { this.buildContext } doReturn BuildContext.root(null)
-                        on { this.attachMode } doReturn viewAttachMode
+                        on { this.activationMode } doReturn viewActivationMode
                         on { toString() } doReturn "Node #$i of ${routing.configuration}"
                     }
                 }
@@ -136,25 +136,25 @@ class ConfigurationFeatureTest {
         val routingContentExternal2 = Routing(identifier = Identifier("Content 4"), configuration = ContentExternal2 as Configuration)
 
         helperPermanent1 =
-            ConfigurationTestHelper.create(routingPermanent1,2, AttachMode.PARENT)
+            ConfigurationTestHelper.create(routingPermanent1,2, ActivationMode.ATTACH_TO_PARENT)
 
         helperPermanent2 =
-            ConfigurationTestHelper.create(routingPermanent2,3, AttachMode.PARENT)
+            ConfigurationTestHelper.create(routingPermanent2,3, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentViewParented1 =
-            ConfigurationTestHelper.create(routingContentViewParented1,2, AttachMode.PARENT)
+            ConfigurationTestHelper.create(routingContentViewParented1,2, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentViewParented2 =
-            ConfigurationTestHelper.create(routingContentViewParented2,3, AttachMode.PARENT)
+            ConfigurationTestHelper.create(routingContentViewParented2,3, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentViewParented3 =
-            ConfigurationTestHelper.create(routingContentViewParented3,2, AttachMode.PARENT)
+            ConfigurationTestHelper.create(routingContentViewParented3,2, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentExternal1 =
-            ConfigurationTestHelper.create(routingContentExternal1,2, AttachMode.EXTERNAL)
+            ConfigurationTestHelper.create(routingContentExternal1,2, ActivationMode.CLIENT)
 
         helperContentExternal2 =
-            ConfigurationTestHelper.create(routingContentExternal2,3, AttachMode.EXTERNAL)
+            ConfigurationTestHelper.create(routingContentExternal2,3, ActivationMode.CLIENT)
 
         val helpers = listOf(
             helperPermanent1,

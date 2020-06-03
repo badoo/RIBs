@@ -1,9 +1,9 @@
 package com.badoo.ribs.core.routing.configuration.action.multi
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
@@ -12,7 +12,7 @@ import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 /**
  * Calls [DeactivateAction] all elements with an [ActivationState] of [ACTIVE].
  */
-internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
+internal class SleepAction<C : Parcelable> : PoolAction<C> {
 
     /**
      * Filters the pool for [ACTIVE] elements, executes [DeactivateAction] on all of them.
@@ -31,7 +31,7 @@ internal class SleepAction<C : Parcelable> : MultiConfigurationAction<C> {
                 routing = key,
                 activator = params.activator,
                 parentNode = params.parentNode,
-                isBackStackOperation = false,
+                addedOrRemoved = false,
                 targetActivationState = SLEEPING
             )
             action.onBeforeTransition()

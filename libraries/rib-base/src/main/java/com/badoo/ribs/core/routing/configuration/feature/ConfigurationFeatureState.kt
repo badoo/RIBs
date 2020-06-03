@@ -1,12 +1,12 @@
 package com.badoo.ribs.core.routing.configuration.feature
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Unresolved
 import com.badoo.ribs.core.routing.history.Routing
 import kotlinx.android.parcel.Parcelize
 
@@ -31,8 +31,8 @@ internal data class SavedState<C : Parcelable>(
 /**
  * The state [ConfigurationFeature] can work with.
  *
- * @param activationLevel represents the maximum level any [ConfigurationContext] can be activated to. Can be either [SLEEPING] or [ACTIVE].
- * @param pool            represents the pool of all [ConfigurationContext] elements
+ * @param activationLevel represents the maximum level any [RoutingContext] can be activated to. Can be either [SLEEPING] or [ACTIVE].
+ * @param pool            represents the pool of all [RoutingContext] elements
  */
 internal data class WorkingState<C : Parcelable>(
     val activationLevel: ActivationState = SLEEPING,
@@ -43,7 +43,7 @@ internal data class WorkingState<C : Parcelable>(
 ) {
     /**
      * Converts the [WorkingState] to [SavedState] by shrinking all
-     * [ConfigurationContext.Resolved] elements back to [ConfigurationContext.Unresolved]
+     * [RoutingContext.Resolved] elements back to [RoutingContext.Unresolved]
      */
     fun toSavedState(): SavedState<C> =
         SavedState(

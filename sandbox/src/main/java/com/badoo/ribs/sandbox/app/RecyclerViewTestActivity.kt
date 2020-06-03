@@ -20,7 +20,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.Portal
 import com.badoo.ribs.dialog.DialogLauncher
@@ -80,7 +80,7 @@ class RecyclerViewTestActivity : RibActivity() {
             }
         )
 
-    private val resolver = object : ConfigurationResolver<Item> {
+    private val resolver = object : RoutingResolver<Item> {
         override fun resolve(routing: Routing<Item>): RoutingAction =
             when (routing.configuration) {
                 Item.LoremIpsumItem -> recyclerView { loremIpsumBuilder.build(it) }
@@ -100,7 +100,7 @@ class RecyclerViewTestActivity : RibActivity() {
             object : RecyclerViewHost.Dependency<Item> {
                 override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = EAGER
                 override fun initialElements(): List<Item> = initialElements
-                override fun resolver(): ConfigurationResolver<Item> = resolver
+                override fun resolver(): RoutingResolver<Item> = resolver
                 override fun recyclerViewFactory(): RecyclerViewFactory = ::RecyclerView
                 override fun layoutManagerFactory(): LayoutManagerFactory = ::LinearLayoutManager
                 override fun viewHolderLayoutParams(): FrameLayout.LayoutParams =

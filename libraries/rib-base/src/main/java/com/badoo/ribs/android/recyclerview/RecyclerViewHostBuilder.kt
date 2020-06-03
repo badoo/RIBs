@@ -37,7 +37,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
         val router = RouterByDelegate(
             buildParams = buildParams,
             routingSource = routingSource,
-            configurationResolver = dependency.resolver(),
+            resolver = dependency.resolver(),
             clientChildActivator = adapter
         )
 

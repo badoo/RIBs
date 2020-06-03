@@ -1,20 +1,20 @@
 package com.badoo.ribs.core.routing.configuration.action.multi
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.Pool
 import com.badoo.ribs.core.routing.configuration.feature.WorkingState
 import com.badoo.ribs.core.routing.history.Routing
 
 /**
- * Represents an action that affects multiple configurations when executed.
+ * Represents an action that affects multiple [Routing] elements in the pool when executed.
  */
-internal interface MultiConfigurationAction<C : Parcelable> {
+internal interface PoolAction<C : Parcelable> {
 
     /**
-     * @param pool   pool of all configurations to act on
+     * @param pool   pool of all [Routing] elements to act on
      * @param params execution params holder
      *
      * @return sub-pool of the updated elements
@@ -22,10 +22,10 @@ internal interface MultiConfigurationAction<C : Parcelable> {
     fun execute(state: WorkingState<C>, params: TransactionExecutionParams<C>)
 
     /**
-     * Invokes [block] on all [ConfigurationContext.Resolved] elements that are in the provided [filterActivationState]
+     * Invokes [block] on all [RoutingContext.Resolved] elements that are in the provided [filterActivationState]
      */
     fun Pool<C>.filterByActivationState(
-        filterActivationState: ConfigurationContext.ActivationState,
+        filterActivationState: RoutingContext.ActivationState,
         params: TransactionExecutionParams<C>,
         block: (Routing<C>, Resolved<C>) -> Unit
     ) {

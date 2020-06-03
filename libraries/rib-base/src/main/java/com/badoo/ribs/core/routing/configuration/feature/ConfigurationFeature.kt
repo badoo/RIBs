@@ -7,14 +7,14 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.RoutingCommand
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
+import com.badoo.ribs.core.routing.configuration.RoutingContext
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.history.Routing
@@ -30,14 +30,14 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
 /**
  * FIXME rewrite
  *
- * State store responsible for executing [ConfigurationCommand]s it takes as inputs.
+ * State store responsible for executing [RoutingCommand]s it takes as inputs.
  *
- * The [WorkingState] contains a pool of [ConfigurationContext] elements referenced
+ * The [WorkingState] contains a pool of [RoutingContext] elements referenced
  * by [Routing] objects. Practically, these keep reference to all configurations
  * currently associated with the RIB: all initial configurations (typically permanent parts
  * and one content type) + the ones coming from back stack changes.
  *
- * Any given [ConfigurationContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
+ * Any given [RoutingContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
  * respective to whether it is active on the screen.
  * Last elements in the back stack are activated, others are deactivated.
  * Permanent parts are added and activated on initialisation and never deactivated as long as
@@ -45,7 +45,7 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  */
 internal class ConfigurationFeature<C : Parcelable>(
     timeCapsule: TimeCapsule<SavedState<C>>,
-    resolver: ConfigurationResolver<C>,
+    resolver: RoutingResolver<C>,
     activator: RoutingActivator<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
@@ -53,7 +53,7 @@ internal class ConfigurationFeature<C : Parcelable>(
     initialState = timeCapsule.initialState<C>(),
     bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>()),
     actor = ConfigurationFeatureActor(
-        configurationResolver = resolver,
+        resolver = resolver,
         activator = activator,
         parentNode = parentNode,
         transitionHandler = transitionHandler

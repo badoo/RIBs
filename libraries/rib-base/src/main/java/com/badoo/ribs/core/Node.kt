@@ -88,8 +88,8 @@ open class Node<V : RibView>(
             is AncestryInfo.Child -> ancestryInfo.anchor
         }
 
-    internal open val attachMode: AttachMode =
-        buildContext.attachMode
+    internal open val activationMode: ActivationMode =
+        buildContext.activationMode
 
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)

@@ -9,10 +9,10 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Activate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Remove
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.routing.configuration.feature.operation.push
 import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
@@ -56,7 +56,7 @@ class BackStackDiffingIntegrationTest {
         val oldStack = backStack.state
         val newStack = backStack.state
         val actual = RoutingHistoryDiffer.diff(oldStack, newStack)
-        val expected = emptySet<ConfigurationCommand<C>>()
+        val expected = emptySet<RoutingCommand<C>>()
         assertEquals(expected, actual)
     }
 

@@ -16,7 +16,7 @@ import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.activator.ChildActivator
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.activator.UnhandledChildActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationResolver
+import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.Sleep
 import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationCommand.WakeUp
@@ -30,7 +30,7 @@ abstract class Router<C : Parcelable>(
     protected val routingSource: RoutingSource<C>,
     private val transitionHandler: TransitionHandler<C>? = null,
     private val clientChildActivator: ChildActivator<C> = UnhandledChildActivator()
-) : ConfigurationResolver<C>,
+) : RoutingResolver<C>,
     NodeAware,
     NodeLifecycleAware,
     ViewLifecycleAware,

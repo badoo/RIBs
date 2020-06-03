@@ -1,15 +1,12 @@
 package com.badoo.ribs.core.routing.history
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Activate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Add
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Deactivate
-import com.badoo.ribs.core.routing.configuration.ConfigurationCommand.Remove
+import com.badoo.ribs.core.routing.configuration.RoutingCommand
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Activate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Deactivate
+import com.badoo.ribs.core.routing.configuration.RoutingCommand.Remove
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer.activate
-import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer.deactivate
-import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer.diff
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.SHRUNK
@@ -20,17 +17,17 @@ internal object RoutingHistoryDiffer {
     /**
      * Calculates diff between two states of [BackStackFeature] (where each state contains the current list
      * of [C] configurations representing the back stack), and translates the diff to
-     * a list of [ConfigurationCommand]s that represent getting from the old state to the new one.
+     * a list of [RoutingCommand]s that represent getting from the old state to the new one.
      */
     @SuppressWarnings("NestedBlockDepth", "LongMethod") // TODO will be reworked
     fun <C : Parcelable> diff(
         previous: RoutingHistory<C>,
         current: RoutingHistory<C>
-    ): Set<ConfigurationCommand<C>> =
+    ): Set<RoutingCommand<C>> =
         when (current) {
             previous -> emptySet()
             else -> {
-                val commands = mutableSetOf<ConfigurationCommand<C>>()
+                val commands = mutableSetOf<RoutingCommand<C>>()
                 val previousIds = previous.map { it.routing.identifier }
                 val currentIds = current.map { it.routing.identifier }
 
@@ -61,36 +58,36 @@ internal object RoutingHistoryDiffer {
     private fun <C : Parcelable> RoutingHistory<C>.find(identifier: Routing.Identifier): RoutingHistoryElement<C>? =
         find { it.routing.identifier == identifier }
 
-    private fun <C : Parcelable> RoutingHistoryElement<C>.remove(): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> RoutingHistoryElement<C>.remove(): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
         commands += Remove(routing)
         commands += overlays.map { Remove(it) }
         return commands
     }
 
-    private fun <C : Parcelable> RoutingHistoryElement<C>.deactivate(): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> RoutingHistoryElement<C>.deactivate(): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
         commands += Deactivate(routing)
         commands += overlays.map { Deactivate(it) }
         return commands
     }
 
-    private fun <C : Parcelable> RoutingHistoryElement<C>.add(): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> RoutingHistoryElement<C>.add(): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
         commands += Add(routing)
         commands += overlays.map { Add(it) }
         return commands
     }
 
-    private fun <C : Parcelable> RoutingHistoryElement<C>.activate(): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> RoutingHistoryElement<C>.activate(): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
         commands += Activate(routing)
         commands += overlays.map { Activate(it) }
         return commands
     }
 
-    private fun <C : Parcelable> diff(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> diff(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
 
         commands += diffActivationChange(t0, t1)
         commands += diffMetaChange(t0, t1)
@@ -99,8 +96,8 @@ internal object RoutingHistoryDiffer {
         return commands
     }
 
-    private fun <C : Parcelable> diffActivationChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> diffActivationChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.activation != t0.activation) {
             commands += when (t1.activation) {
@@ -113,8 +110,8 @@ internal object RoutingHistoryDiffer {
         return commands
     }
 
-    private fun <C : Parcelable> diffMetaChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> diffMetaChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.routing.meta != t0.routing.meta) {
             // FIXME implement
@@ -123,8 +120,8 @@ internal object RoutingHistoryDiffer {
         return commands
     }
 
-    private fun <C : Parcelable> diffOverlayChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<ConfigurationCommand<C>> {
-        val commands = mutableSetOf<ConfigurationCommand<C>>()
+    private fun <C : Parcelable> diffOverlayChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+        val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.overlays != t0.overlays) {
             // TODO make note in public doc that overlay indices are meant to be stable

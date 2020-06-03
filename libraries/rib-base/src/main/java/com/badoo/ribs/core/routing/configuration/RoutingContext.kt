@@ -3,9 +3,10 @@ package com.badoo.ribs.core.routing.configuration
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.OutdatedDocumentation
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.util.RIBs
@@ -14,16 +15,17 @@ import kotlinx.android.parcel.Parcelize
 /**
  * Describes a Configuration the [Node] can be in.
  *
- * [ConfigurationContext] can either be [ConfigurationContext.Unresolved], or
- * [ConfigurationContext.Resolved]
+ * [RoutingContext] can either be [RoutingContext.Unresolved], or
+ * [RoutingContext.Resolved]
  */
-internal sealed class ConfigurationContext<C : Parcelable> {
+@OutdatedDocumentation
+internal sealed class RoutingContext<C : Parcelable> {
 
     abstract val routing: Routing<C>
     abstract val activationState: ActivationState
 
     /**
-     * Represents the activation state a [ConfigurationContext] can be in.
+     * Represents the activation state a [RoutingContext] can be in.
      */
     enum class ActivationState {
         /**
@@ -64,14 +66,14 @@ internal sealed class ConfigurationContext<C : Parcelable> {
             }
     }
 
-    abstract fun withActivationState(activationState: ActivationState): ConfigurationContext<C>
-    abstract fun sleep(): ConfigurationContext<C>
-    abstract fun wakeUp(): ConfigurationContext<C>
+    abstract fun withActivationState(activationState: ActivationState): RoutingContext<C>
+    abstract fun sleep(): RoutingContext<C>
+    abstract fun wakeUp(): RoutingContext<C>
     abstract fun shrink(): Unresolved<C>
-    abstract fun resolve(resolver: ConfigurationResolver<C>, parentNode: Node<*>): Resolved<C>
+    abstract fun resolve(resolver: RoutingResolver<C>, parentNode: Node<*>): Resolved<C>
 
     /**
-     * Represents [ConfigurationContext] that is persistable in a [android.os.Bundle],
+     * Represents [RoutingContext] that is persistable in a [android.os.Bundle],
      * storing the minimum amount of information from which a [Resolved] can be restored.
      */
     @Parcelize
@@ -79,7 +81,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         override val activationState: ActivationState,
         override val routing: Routing<C>,
         val bundles: List<Bundle> = emptyList()
-    ) : ConfigurationContext<C>(), Parcelable {
+    ) : RoutingContext<C>(), Parcelable {
 
         init {
             // TODO add compile-time safety for this
@@ -92,10 +94,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
          * Resolves and sets the associated [RoutingAction], builds associated [Node]s
          */
         override fun resolve(
-            resolver: ConfigurationResolver<C>,
+            resolver: RoutingResolver<C>,
             parentNode: Node<*>
         ): Resolved<C> {
-            bundles.forEach { it.classLoader = ConfigurationContext::class.java.classLoader }
+            bundles.forEach { it.classLoader = RoutingContext::class.java.classLoader }
             val routingAction = resolver.resolve(routing)
             return Resolved(
                     activationState = activationState,
@@ -156,7 +158,7 @@ internal sealed class ConfigurationContext<C : Parcelable> {
     }
 
     /**
-     * Represents [ConfigurationContext] that has its [RoutingAction] resolved, its [Node]s built
+     * Represents [RoutingContext] that has its [RoutingAction] resolved, its [Node]s built
      * and attached to a parentNode.
      */
     data class Resolved<C : Parcelable>(
@@ -165,10 +167,10 @@ internal sealed class ConfigurationContext<C : Parcelable> {
         var bundles: List<Bundle>,
         val routingAction: RoutingAction,
         val nodes: List<Node<*>>
-    ) : ConfigurationContext<C>() {
+    ) : RoutingContext<C>() {
 
         override fun resolve(
-            resolver: ConfigurationResolver<C>,
+            resolver: RoutingResolver<C>,
             parentNode: Node<*>
         ): Resolved<C> = this
 

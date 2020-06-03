@@ -4,9 +4,9 @@ import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateFalse
@@ -26,21 +26,21 @@ internal class ActivateAction<C : Parcelable>(
     private var item: Resolved<C>,
     private val parentNode: Node<*>,
     private val activator: RoutingActivator<C>,
-    private val isBackStackOperation: Boolean,
-    private val globalActivationLevel: ConfigurationContext.ActivationState
-) : Action<C> {
+    private val addedOrRemoved: Boolean,
+    private val globalActivationLevel: RoutingContext.ActivationState
+) : RoutingTransitionAction<C> {
 
     object Factory: ActionFactory {
         override fun <C : Parcelable> create(
             params: ActionExecutionParams<C>
-        ): Action<C> =
+        ): RoutingTransitionAction<C> =
             ActivateAction(
                 emitter = params.transactionExecutionParams.emitter,
                 routing = params.routing,
                 item = params.item,
                 parentNode = params.transactionExecutionParams.parentNode,
                 activator = params.transactionExecutionParams.activator,
-                isBackStackOperation = params.isBackStackOperation,
+                addedOrRemoved = params.addedOrRemoved,
                 globalActivationLevel = params.transactionExecutionParams.globalActivationLevel
             )
     }
@@ -76,7 +76,7 @@ internal class ActivateAction<C : Parcelable>(
                 TransitionElement(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.ENTER,
-                    isBackStackOperation = isBackStackOperation,
+                    addedOrRemoved = addedOrRemoved,
                     parentViewGroup = parentNode.targetViewGroupForChild(it),
                     identifier = it.identifier,
                     view = ribView.androidView

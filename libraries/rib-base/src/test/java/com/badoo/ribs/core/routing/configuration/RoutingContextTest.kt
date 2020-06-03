@@ -2,16 +2,16 @@ package com.badoo.ribs.core.routing.configuration
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.AttachMode
+import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Unresolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.core.routing.configuration.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Unresolved
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.any
@@ -22,7 +22,7 @@ import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class ConfigurationContextTest {
+class RoutingContextTest {
 
     companion object {
         private const val NB_EXPECTED_NODES = 3
@@ -40,7 +40,7 @@ class ConfigurationContextTest {
         on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn ribs
     }
-    private val defaultResolver = mock<ConfigurationResolver<Parcelable>> {
+    private val defaultResolver = mock<RoutingResolver<Parcelable>> {
         on { resolve(any()) } doReturn defaultRoutingAction
     }
 
@@ -51,7 +51,7 @@ class ConfigurationContextTest {
         on { buildNodes(any()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }
-    private val resolverWithAnchor = mock<ConfigurationResolver<Parcelable>> {
+    private val resolverWithAnchor = mock<RoutingResolver<Parcelable>> {
         on { resolve(any()) } doReturn routingActionWithAnchor
     }
 
@@ -164,7 +164,7 @@ class ConfigurationContextTest {
 
 
     private fun verifyBuildNodesCalledCorrectly(
-        resolver: ConfigurationResolver<Parcelable>,
+        resolver: RoutingResolver<Parcelable>,
         routingAction: RoutingAction,
         expectedParent: Node<*>,
         parentNode: Node<*>,
@@ -186,7 +186,7 @@ class ConfigurationContextTest {
 
             list.forEachIndexed { idx, buildContext ->
                 assertEquals(expectedAncestryInfo, buildContext.ancestryInfo)
-                assertEquals(AttachMode.PARENT, buildContext.attachMode)
+                assertEquals(ActivationMode.ATTACH_TO_PARENT, buildContext.activationMode)
 
                 if (bundles.isNotEmpty()) {
                     assertEquals(bundles[idx], buildContext.savedInstanceState)

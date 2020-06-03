@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.configuration.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.configuration.ConfigurationContext.Resolved
+import com.badoo.ribs.core.routing.configuration.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingRemovalTrue
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.Removed
@@ -19,10 +19,10 @@ internal class RemoveAction<C : Parcelable>(
     private val routing: Routing<C>,
     private var item: Resolved<C>,
     private val activator: RoutingActivator<C>
-) : Action<C> {
+) : RoutingTransitionAction<C> {
 
     object Factory: ActionFactory {
-        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): Action<C> =
+        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): RoutingTransitionAction<C> =
             RemoveAction(
                 emitter = params.transactionExecutionParams.emitter,
                 routing = params.routing,

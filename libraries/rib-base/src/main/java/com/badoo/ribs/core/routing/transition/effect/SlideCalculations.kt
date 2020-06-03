@@ -2,9 +2,12 @@ package com.badoo.ribs.core.routing.transition.effect
 
 import android.view.ViewGroup
 import com.badoo.ribs.core.routing.transition.TransitionElement
-import com.badoo.ribs.core.routing.transition.effect.AnimationContainer.FindParentById
-import com.badoo.ribs.core.routing.transition.effect.AnimationContainer.Parent
-import com.badoo.ribs.core.routing.transition.effect.AnimationContainer.RootView
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.FindParentById
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.Parent
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.RootView
+import com.badoo.ribs.core.routing.transition.effect.helper.EndValues
+import com.badoo.ribs.core.routing.transition.effect.helper.findParentById
 
 
 internal fun <T> TransitionElement<out T>.slideEndValues(

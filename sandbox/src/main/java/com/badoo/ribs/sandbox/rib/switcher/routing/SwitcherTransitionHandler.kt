@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.switcher.routing
 
 import android.view.animation.OvershootInterpolator
-import com.badoo.ribs.core.routing.transition.effect.AnimationContainer
+import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer
 import com.badoo.ribs.core.routing.transition.effect.SharedElementTransition
 import com.badoo.ribs.core.routing.transition.handler.CrossFader
 import com.badoo.ribs.core.routing.transition.handler.SharedElements

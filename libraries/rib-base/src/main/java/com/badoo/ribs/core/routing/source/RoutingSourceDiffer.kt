@@ -2,7 +2,7 @@ package com.badoo.ribs.core.routing.source
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.state.feature.Transaction
-import com.badoo.ribs.core.routing.state.feature.TransitionDescriptor
+import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer

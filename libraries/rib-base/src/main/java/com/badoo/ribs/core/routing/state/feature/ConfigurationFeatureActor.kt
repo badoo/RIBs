@@ -25,6 +25,7 @@ import com.badoo.ribs.core.routing.state.exception.KeyNotFoundInPoolException
 import com.badoo.ribs.core.routing.state.mutablePoolOf
 import com.badoo.ribs.core.routing.state.toMutablePool
 import com.badoo.ribs.core.routing.state.feature.Transaction.RoutingChange
+import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
 import com.badoo.ribs.core.routing.state.transaction.addedOrRemoved
 import io.reactivex.Observable
 

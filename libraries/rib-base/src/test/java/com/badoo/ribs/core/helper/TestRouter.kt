@@ -5,7 +5,7 @@ import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 

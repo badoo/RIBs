@@ -7,7 +7,7 @@ import com.badoo.ribs.annotation.OutdatedDocumentation
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.AncestryInfo
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.util.RIBs

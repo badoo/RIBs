@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.state.feature.operation
 
 import com.badoo.ribs.core.helper.TestRouter
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.*
 import com.badoo.ribs.core.routing.source.backstack.BackStack

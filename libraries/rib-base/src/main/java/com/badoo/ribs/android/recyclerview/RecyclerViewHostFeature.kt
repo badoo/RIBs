@@ -7,7 +7,7 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ReducerFeature
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
 import java.util.UUID

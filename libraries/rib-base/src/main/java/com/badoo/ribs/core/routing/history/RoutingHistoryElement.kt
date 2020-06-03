@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.history
 
 import android.os.Parcelable
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import kotlinx.android.parcel.Parcelize
 

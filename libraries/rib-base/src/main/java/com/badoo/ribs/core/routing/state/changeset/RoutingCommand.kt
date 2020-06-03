@@ -10,7 +10,7 @@ import com.badoo.ribs.core.routing.state.action.single.DeactivateAction
 import com.badoo.ribs.core.routing.state.action.single.RemoveAction
 import com.badoo.ribs.core.routing.state.action.single.ReversibleActionFactory
 import com.badoo.ribs.core.routing.state.action.single.ReversibleActionPair
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 
 /**
  * Represents a command to change one or more [RoutingContext] elements.

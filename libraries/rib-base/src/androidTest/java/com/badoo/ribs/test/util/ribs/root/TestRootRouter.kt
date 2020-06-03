@@ -8,7 +8,7 @@ import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.compo
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.source.RoutingSource.Companion.permanent

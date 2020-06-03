@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.state.changeset
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 
 internal typealias RoutingChangeset<C> = List<RoutingCommand<C>>
 

@@ -28,8 +28,8 @@ import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.core.routing.state.feature.RoutingStatePool
 import com.badoo.ribs.core.routing.state.feature.state.SavedState
-import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.history.Routing.Identifier
+import com.badoo.ribs.core.routing.Routing
+import com.badoo.ribs.core.routing.Routing.Identifier
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.state.feature.Transaction
 import com.nhaarman.mockitokotlin2.clearInvocations

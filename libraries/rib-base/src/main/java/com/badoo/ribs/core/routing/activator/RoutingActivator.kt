@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.activator
 import android.os.Parcelable
 import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 
 internal class RoutingActivator<C : Parcelable>(
     private val parentNode: Node<*>,

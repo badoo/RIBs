@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.state.feature.state
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.state.Pool
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.feature.OngoingTransition

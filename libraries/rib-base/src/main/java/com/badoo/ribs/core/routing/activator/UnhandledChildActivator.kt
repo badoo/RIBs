@@ -2,7 +2,7 @@ package com.badoo.ribs.core.routing.activator
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.util.RIBs
 
 class UnhandledChildActivator<C : Parcelable> : ChildActivator<C> {

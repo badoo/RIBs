@@ -9,7 +9,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer
 import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.core.routing.source.backstack.operation.newRoot

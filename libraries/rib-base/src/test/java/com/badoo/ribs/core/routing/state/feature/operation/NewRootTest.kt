@@ -6,7 +6,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C4
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.badoo.ribs.core.routing.source.backstack.operation.NewRoot
 import org.assertj.core.api.Assertions.assertThat

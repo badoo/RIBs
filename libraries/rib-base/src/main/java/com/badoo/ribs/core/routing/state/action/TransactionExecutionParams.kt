@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 
 /**
  * Helper class for action execution.

@@ -21,7 +21,7 @@ import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R

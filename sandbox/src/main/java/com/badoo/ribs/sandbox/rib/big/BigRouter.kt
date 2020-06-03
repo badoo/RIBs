@@ -7,7 +7,7 @@ import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration.Permanent

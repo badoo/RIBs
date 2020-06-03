@@ -6,7 +6,7 @@ import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.source.impl.Empty
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Default
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Portal

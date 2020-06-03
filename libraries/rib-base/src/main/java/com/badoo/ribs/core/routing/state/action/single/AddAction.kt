@@ -8,7 +8,7 @@ import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect.Individual.Added
 import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect.Individual.PendingRemovalFalse
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.transition.TransitionElement
 
 /**

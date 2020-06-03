@@ -10,7 +10,7 @@ import com.badoo.ribs.core.routing.source.backstack.BackStackFeatureState
 import com.badoo.ribs.core.routing.source.backstack.BackStack
 import com.badoo.ribs.core.routing.source.backstack.operation.BackStackOperation
 import com.badoo.ribs.core.routing.state.feature.operation.asBackStackElements
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn

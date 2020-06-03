@@ -7,7 +7,7 @@ import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.AnchoredAttachRoutingAction.Companion.anchor
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.sandbox.rib.big.builder.BigBuilder
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestBuilder
 import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration

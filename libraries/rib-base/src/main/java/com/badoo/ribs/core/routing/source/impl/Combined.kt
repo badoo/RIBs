@@ -2,7 +2,7 @@ package com.badoo.ribs.core.routing.source.impl
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.badoo.ribs.core.routing.source.RoutingSource

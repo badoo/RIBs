@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.GreetingsContainerRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial3.rib.hello_world.builder.HelloWorldBuilder
 import kotlinx.android.parcel.Parcelize

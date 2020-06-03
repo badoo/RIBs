@@ -10,7 +10,7 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.portal.PortalRouter.Configuration.Overlay

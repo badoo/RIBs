@@ -11,7 +11,7 @@ import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect
 import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect.Individual.PendingDeactivateFalse
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 

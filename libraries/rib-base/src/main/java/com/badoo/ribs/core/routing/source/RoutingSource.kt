@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.source
 import android.os.Parcelable
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import com.badoo.ribs.core.routing.history.Routing.Identifier
+import com.badoo.ribs.core.routing.Routing.Identifier
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.source.impl.Combined
 import com.badoo.ribs.core.routing.source.impl.Empty

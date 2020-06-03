@@ -18,7 +18,7 @@ import com.badoo.ribs.core.routing.source.backstack.operation.Remove
 import com.badoo.ribs.core.routing.source.backstack.operation.canPop
 import com.badoo.ribs.core.routing.source.backstack.operation.canPopOverlay
 import com.badoo.ribs.core.routing.source.backstack.operation.pop
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE

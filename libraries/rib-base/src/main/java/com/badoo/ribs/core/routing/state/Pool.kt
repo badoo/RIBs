@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.state
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 
 internal typealias Pool<C> = Map<Routing<C>, RoutingContext<C>>
 

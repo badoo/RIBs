@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.routing.history
 
 import android.os.Parcelable
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.state.changeset.RoutingCommand
 import com.badoo.ribs.core.routing.state.changeset.RoutingCommand.Activate
 import com.badoo.ribs.core.routing.state.changeset.RoutingCommand.Add

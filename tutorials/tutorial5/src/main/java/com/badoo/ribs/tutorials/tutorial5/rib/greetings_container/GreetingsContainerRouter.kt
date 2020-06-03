@@ -6,7 +6,7 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.builder.HelloWorldBuilder
 import kotlinx.android.parcel.Parcelize

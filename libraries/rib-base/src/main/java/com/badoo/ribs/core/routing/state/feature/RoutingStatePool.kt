@@ -17,7 +17,7 @@ import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.state.feature.state.SavedState
 import com.badoo.ribs.core.routing.state.feature.state.WorkingState
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler

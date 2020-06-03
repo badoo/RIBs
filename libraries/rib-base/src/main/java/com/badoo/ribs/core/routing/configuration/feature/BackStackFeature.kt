@@ -10,7 +10,7 @@ import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.extension.mapNotNull
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation

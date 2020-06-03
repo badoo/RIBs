@@ -17,7 +17,7 @@ package com.badoo.ribs.core
 
 import android.os.Parcelable
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable

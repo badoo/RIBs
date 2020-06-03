@@ -3,8 +3,8 @@ package com.badoo.ribs.sandbox.rib.switcher.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
-import com.badoo.ribs.core.routing.RoutingSource.Permanent.Companion.permanent
+import com.badoo.ribs.core.routing.source.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource.Permanent.Companion.permanent
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog

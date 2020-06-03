@@ -2,7 +2,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.DialogRoutingAction
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.dialog.DialogLauncher

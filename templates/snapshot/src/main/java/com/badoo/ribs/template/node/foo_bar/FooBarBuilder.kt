@@ -4,7 +4,7 @@ package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarChildBuilders

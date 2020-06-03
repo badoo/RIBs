@@ -3,7 +3,7 @@ package com.badoo.ribs.test.util.ribs.child
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter.Configuration

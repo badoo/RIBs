@@ -1,9 +1,10 @@
-package com.badoo.ribs.core.routing
+package com.badoo.ribs.core.routing.source
 
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
+import com.badoo.ribs.core.routing.ConcatIterator
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.Routing.Identifier
 import com.badoo.ribs.core.routing.history.RoutingHistory
@@ -39,7 +40,8 @@ interface RoutingSource<C : Parcelable> :
 
     fun remove(identifier: Identifier)
 
-    operator fun plus(other: RoutingSource<C>): RoutingSource<C> = Combined(this, other)
+    operator fun plus(other: RoutingSource<C>): RoutingSource<C> =
+        Combined(this, other)
 
     data class Combined<C : Parcelable>(
         val first: RoutingSource<C>,
@@ -59,7 +61,10 @@ interface RoutingSource<C : Parcelable> :
             first,
             second,
             BiFunction<RoutingHistory<C>, RoutingHistory<C>, RoutingHistory<C>> { source1, source2 ->
-                CombinedHistory(source1, source2)
+                CombinedHistory(
+                    source1,
+                    source2
+                )
             }
         )
 
@@ -98,10 +103,14 @@ interface RoutingSource<C : Parcelable> :
 
         companion object {
             fun <C : Parcelable> permanent(permanents: Iterable<C>) =
-                Permanent(permanents)
+                Permanent(
+                    permanents
+                )
 
             fun <C : Parcelable> permanent(vararg permanents: C) =
-                Permanent(permanents.toSet())
+                Permanent(
+                    permanents.toSet()
+                )
         }
 
         private val routingElements =
@@ -135,7 +144,8 @@ interface RoutingSource<C : Parcelable> :
     }
 
     // TODO extract
-    class Empty<C : Parcelable> : RoutingSource<C> {
+    class Empty<C : Parcelable> :
+        RoutingSource<C> {
 
         override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
             RoutingHistory.from(emptySet())

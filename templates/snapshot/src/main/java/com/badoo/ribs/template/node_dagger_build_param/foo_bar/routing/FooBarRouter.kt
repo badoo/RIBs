@@ -3,7 +3,7 @@ package com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.core.routing.history.Routing

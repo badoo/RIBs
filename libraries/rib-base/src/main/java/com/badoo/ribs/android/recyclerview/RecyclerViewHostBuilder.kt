@@ -6,7 +6,7 @@ import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.routing.RouterByDelegate
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.routing.source.RoutingSource
 
 @ExperimentalApi
 class RecyclerViewHostBuilder<T : Parcelable>(

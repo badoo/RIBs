@@ -2,7 +2,7 @@
 package com.badoo.ribs.template.node_dagger.foo_bar.builder
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarInteractor
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarNode

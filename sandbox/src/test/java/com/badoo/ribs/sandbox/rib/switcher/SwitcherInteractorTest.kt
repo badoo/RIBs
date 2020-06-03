@@ -4,9 +4,9 @@ import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.operation.push
-import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.core.routing.source.backstack.operation.push
+import com.badoo.ribs.core.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration

@@ -6,7 +6,7 @@ import com.badoo.ribs.core.routing.configuration.RoutingCommand.Activate
 import com.badoo.ribs.core.routing.configuration.RoutingCommand.Add
 import com.badoo.ribs.core.routing.configuration.RoutingCommand.Deactivate
 import com.badoo.ribs.core.routing.configuration.RoutingCommand.Remove
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement.Activation.SHRUNK

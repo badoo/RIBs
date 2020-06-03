@@ -5,10 +5,10 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeatureState
-import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
-import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeatureState
+import com.badoo.ribs.core.routing.source.backstack.BackStack
+import com.badoo.ribs.core.routing.source.backstack.operation.BackStackOperation
 import com.badoo.ribs.core.routing.configuration.feature.operation.asBackStackElements
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
@@ -53,10 +53,11 @@ class BackStackFeatureTest {
     }
 
     private fun setupBackStackManager(timeCapsule: AndroidTimeCapsule) {
-        backStackFeature = BackStackFeature(
-            initialConfiguration = initialConfiguration,
-            timeCapsule = timeCapsule
-        )
+        backStackFeature =
+            BackStackFeature(
+                initialConfiguration = initialConfiguration,
+                timeCapsule = timeCapsule
+            )
     }
 
     @Test

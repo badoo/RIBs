@@ -7,10 +7,10 @@ import com.badoo.mvicore.binder.using
 import com.badoo.ribs.core.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.operation.pop
-import com.badoo.ribs.core.routing.configuration.feature.operation.push
-import com.badoo.ribs.core.routing.configuration.feature.operation.pushOverlay
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.core.routing.source.backstack.operation.pop
+import com.badoo.ribs.core.routing.source.backstack.operation.push
+import com.badoo.ribs.core.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.dialog.Dialog
 import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.menu.Menu

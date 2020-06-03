@@ -1,9 +1,10 @@
-package com.badoo.ribs.core.routing.configuration.feature.operation
+package com.badoo.ribs.core.routing.source.backstack.operation
 
 import android.os.Parcelable
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
+import com.badoo.ribs.core.routing.source.backstack.BackStack
 
 class Remove<C : Parcelable>(
     private val identifier: Routing.Identifier

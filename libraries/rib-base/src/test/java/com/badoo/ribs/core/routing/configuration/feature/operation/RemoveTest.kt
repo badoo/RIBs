@@ -10,6 +10,8 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.Routing.Identifier
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
+import com.badoo.ribs.core.routing.source.backstack.BackStack
+import com.badoo.ribs.core.routing.source.backstack.operation.Remove
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

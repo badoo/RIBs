@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.configuration.feature
+package com.badoo.ribs.core.routing.source.backstack
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -11,14 +11,13 @@ import com.badoo.mvicore.extension.mapNotNull
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature.Operation
-import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
-import com.badoo.ribs.core.routing.configuration.feature.operation.BackStackOperation
-import com.badoo.ribs.core.routing.configuration.feature.operation.NewRoot
-import com.badoo.ribs.core.routing.configuration.feature.operation.Remove
-import com.badoo.ribs.core.routing.configuration.feature.operation.canPop
-import com.badoo.ribs.core.routing.configuration.feature.operation.canPopOverlay
-import com.badoo.ribs.core.routing.configuration.feature.operation.pop
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature.Operation
+import com.badoo.ribs.core.routing.source.backstack.operation.BackStackOperation
+import com.badoo.ribs.core.routing.source.backstack.operation.NewRoot
+import com.badoo.ribs.core.routing.source.backstack.operation.Remove
+import com.badoo.ribs.core.routing.source.backstack.operation.canPop
+import com.badoo.ribs.core.routing.source.backstack.operation.canPopOverlay
+import com.badoo.ribs.core.routing.source.backstack.operation.pop
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
@@ -118,7 +117,11 @@ class BackStackFeature<C : Parcelable> internal constructor(
         private val initialConfiguration: C
     ) : Bootstrapper<Operation<C>> {
         override fun invoke(): Observable<Operation<C>> = when {
-            state.backStack.isEmpty() -> just(Operation(NewRoot(initialConfiguration)))
+            state.backStack.isEmpty() -> just(Operation(
+                NewRoot(
+                    initialConfiguration
+                )
+            ))
             else -> empty()
         }
     }
@@ -131,7 +134,12 @@ class BackStackFeature<C : Parcelable> internal constructor(
         @SuppressWarnings("LongMethod")
         override fun invoke(state: BackStackFeatureState<C>, op: Operation<C>): Observable<out Effect<C>> =
             if (op.backStackOperation.isApplicable(state.backStack)) {
-                just(Effect.Applied(state, op.backStackOperation))
+                just(
+                    Effect.Applied(
+                        state,
+                        op.backStackOperation
+                    )
+                )
             } else {
                 empty()
             }
@@ -214,7 +222,11 @@ class BackStackFeature<C : Parcelable> internal constructor(
         popBackStack()
 
     override fun remove(identifier: Routing.Identifier) {
-        feature.accept(Operation(Remove(identifier)))
+        feature.accept(Operation(
+            Remove(
+                identifier
+            )
+        ))
     }
 
     override fun accept(operation: Operation<C>) {

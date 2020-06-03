@@ -1,7 +1,6 @@
-package com.badoo.ribs.core.routing.configuration.feature
+package com.badoo.ribs.core.routing.source.backstack
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.configuration.feature.operation.BackStack
 import com.badoo.ribs.core.routing.history.RoutingHistory
 import com.badoo.ribs.core.routing.history.RoutingHistoryElement
 import kotlinx.android.parcel.Parcelize

@@ -5,8 +5,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.configuration.feature.operation.push
+import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.core.routing.source.backstack.operation.push
 import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import io.reactivex.Single

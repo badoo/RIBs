@@ -3,7 +3,7 @@ package com.badoo.ribs.core.routing.state.action
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.state.RoutingCommand
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing

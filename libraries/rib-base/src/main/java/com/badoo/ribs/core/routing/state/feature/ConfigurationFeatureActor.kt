@@ -7,21 +7,25 @@ import com.badoo.mvicore.element.Actor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.state.RoutingCommand
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.state.Transaction
-import com.badoo.ribs.core.routing.state.Transaction.MultiConfigurationCommand
+import com.badoo.ribs.core.routing.state.transaction.Transaction
+import com.badoo.ribs.core.routing.state.transaction.Transaction.MultiConfigurationCommand
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.state.action.single.ReversibleAction
-import com.badoo.ribs.core.routing.state.addedOrRemoved
+import com.badoo.ribs.core.routing.state.transaction.addedOrRemoved
 import com.badoo.ribs.core.routing.client.TransitionDirection
 import com.badoo.ribs.core.routing.client.TransitionElement
 import com.badoo.ribs.core.routing.client.handler.TransitionHandler
+import com.badoo.ribs.core.routing.state.MutablePool
+import com.badoo.ribs.core.routing.state.Pool
 import com.badoo.ribs.core.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.core.routing.state.exception.KeyNotFoundInPoolException
+import com.badoo.ribs.core.routing.state.mutablePoolOf
+import com.badoo.ribs.core.routing.state.toMutablePool
 import io.reactivex.Observable
 
 /**

@@ -9,10 +9,10 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
-import com.badoo.ribs.core.routing.state.RoutingCommand.Activate
-import com.badoo.ribs.core.routing.state.RoutingCommand.Add
-import com.badoo.ribs.core.routing.state.RoutingCommand.Deactivate
-import com.badoo.ribs.core.routing.state.RoutingCommand.Remove
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Activate
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Add
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Deactivate
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Remove
 import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.core.routing.source.backstack.operation.push
 import com.badoo.ribs.core.routing.source.backstack.operation.pushOverlay
@@ -22,6 +22,7 @@ import com.badoo.ribs.core.routing.source.backstack.operation.pop
 import com.badoo.ribs.core.routing.source.backstack.operation.singleTop
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistoryDiffer
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

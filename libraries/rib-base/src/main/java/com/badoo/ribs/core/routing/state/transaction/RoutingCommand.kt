@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.state
+package com.badoo.ribs.core.routing.state.transaction
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node

@@ -1,8 +1,8 @@
-package com.badoo.ribs.core.routing.state
+package com.badoo.ribs.core.routing.state.transaction
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.state.RoutingCommand.Add
-import com.badoo.ribs.core.routing.state.RoutingCommand.Remove
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Add
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Remove
 import com.badoo.ribs.core.routing.state.action.multi.PoolAction
 import com.badoo.ribs.core.routing.state.action.multi.SaveInstanceStateAction
 import com.badoo.ribs.core.routing.state.action.multi.SleepAction

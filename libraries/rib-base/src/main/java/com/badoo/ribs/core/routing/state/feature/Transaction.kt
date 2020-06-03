@@ -1,14 +1,12 @@
-package com.badoo.ribs.core.routing.state.transaction
+package com.badoo.ribs.core.routing.state.feature
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Add
-import com.badoo.ribs.core.routing.state.transaction.RoutingCommand.Remove
 import com.badoo.ribs.core.routing.state.action.multi.PoolAction
 import com.badoo.ribs.core.routing.state.action.multi.SaveInstanceStateAction
 import com.badoo.ribs.core.routing.state.action.multi.SleepAction
 import com.badoo.ribs.core.routing.state.action.multi.WakeUpAction
-import com.badoo.ribs.core.routing.state.feature.TransitionDescriptor
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.state.transaction.RoutingChangeset
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
 
 internal sealed class Transaction<C : Parcelable> {
 
@@ -20,19 +18,16 @@ internal sealed class Transaction<C : Parcelable> {
         class SaveInstanceState<C : Parcelable> : PoolCommand<C>(SaveInstanceStateAction())
     }
 
-    data class RoutingChangeset<C : Parcelable>(
+    data class RoutingChange<C : Parcelable>(
         val descriptor: TransitionDescriptor,
-        val commands: List<RoutingCommand<C>>
+        val changeset: RoutingChangeset<C>
     ) : Transaction<C>()
 
     companion object {
         fun <C : Parcelable> from(vararg commands: RoutingCommand<out C>): Transaction<C> =
-            RoutingChangeset(
+            RoutingChange(
                 descriptor = TransitionDescriptor.None,
-                commands = commands.toList() as List<RoutingCommand<C>>
+                changeset = commands.toList() as RoutingChangeset<C>
             )
     }
 }
-
-internal fun <C : Parcelable> List<RoutingCommand<C>>.addedOrRemoved(routing: Routing<C>): Boolean =
-    any { it.routing == routing && (it is Add || it is Remove) }

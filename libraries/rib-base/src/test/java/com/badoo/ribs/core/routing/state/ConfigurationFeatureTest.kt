@@ -24,14 +24,14 @@ import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.
 import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.ContentViewParented3
 import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.Permanent1
 import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.Permanent2
-import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand.Sleep
-import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand.WakeUp
+import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.Sleep
+import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.state.feature.SavedState
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.Routing.Identifier
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.state.transaction.Transaction
+import com.badoo.ribs.core.routing.state.feature.Transaction
 import com.nhaarman.mockitokotlin2.clearInvocations
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn

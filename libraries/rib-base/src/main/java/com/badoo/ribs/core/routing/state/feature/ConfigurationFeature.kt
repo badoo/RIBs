@@ -15,7 +15,6 @@ import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.state.transaction.Transaction
 import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.client.handler.TransitionHandler
@@ -129,9 +128,9 @@ internal class ConfigurationFeature<C : Parcelable>(
         override fun invoke(): Observable<Transaction<C>> =
             when {
                 initialState.pool.isNotEmpty() -> Observable.just(
-                    Transaction.RoutingChangeset(
+                    Transaction.RoutingChange(
                         descriptor = TransitionDescriptor.None,
-                        commands = initialState.pool
+                        changeset = initialState.pool
                             .filter { it.value.activationState == SLEEPING }
                             .map { Add(it.key) }
                     )

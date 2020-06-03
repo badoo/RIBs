@@ -11,12 +11,10 @@ import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.state.transaction.Transaction
-import com.badoo.ribs.core.routing.state.transaction.Transaction.PoolCommand
+import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.state.action.single.ReversibleAction
-import com.badoo.ribs.core.routing.state.transaction.addedOrRemoved
 import com.badoo.ribs.core.routing.client.TransitionDirection
 import com.badoo.ribs.core.routing.client.TransitionElement
 import com.badoo.ribs.core.routing.client.handler.TransitionHandler
@@ -26,7 +24,8 @@ import com.badoo.ribs.core.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.core.routing.state.exception.KeyNotFoundInPoolException
 import com.badoo.ribs.core.routing.state.mutablePoolOf
 import com.badoo.ribs.core.routing.state.toMutablePool
-import com.badoo.ribs.core.routing.state.transaction.Transaction.RoutingChangeset
+import com.badoo.ribs.core.routing.state.feature.Transaction.RoutingChange
+import com.badoo.ribs.core.routing.state.transaction.addedOrRemoved
 import io.reactivex.Observable
 
 /**
@@ -52,7 +51,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     ): Observable<ConfigurationFeature.Effect<C>> =
         when (transaction) {
             is PoolCommand -> processPoolCommand(state, transaction)
-            is RoutingChangeset -> processChangeset(state, transaction)
+            is RoutingChange -> processRoutingChange(state, transaction)
         }
 
     private fun processPoolCommand(
@@ -67,12 +66,12 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         ABORT, CONTINUE
     }
 
-    private fun processChangeset(
+    private fun processRoutingChange(
         state: WorkingState<C>,
-        transaction: RoutingChangeset<C>
+        transaction: RoutingChange<C>
     ): Observable<ConfigurationFeature.Effect<C>> =
         Observable.create { emitter ->
-            val commands = transaction.commands
+            val commands = transaction.changeset
             val defaultElements = createDefaultElements(state, commands)
             val params = createParams(
                 emitter = emitter,
@@ -101,7 +100,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
 
     private fun checkOngoingTransitions(
         state: WorkingState<C>,
-        transaction: RoutingChangeset<C>
+        transaction: RoutingChange<C>
     ): NewTransitionsExecution {
         state.ongoingTransitions.forEach {
             when {

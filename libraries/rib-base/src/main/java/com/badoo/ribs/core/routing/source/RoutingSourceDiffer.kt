@@ -1,7 +1,7 @@
 package com.badoo.ribs.core.routing.source
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.state.transaction.Transaction
+import com.badoo.ribs.core.routing.state.feature.Transaction
 import com.badoo.ribs.core.routing.state.feature.TransitionDescriptor
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.RoutingHistory
@@ -30,12 +30,12 @@ internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): O
                 )
             when {
                 commands.isNotEmpty() -> Observable.just(
-                    Transaction.RoutingChangeset(
+                    Transaction.RoutingChange(
                         descriptor = TransitionDescriptor(
                             from = previous,
                             to = current
                         ),
-                        commands = commands.toList() // TODO consider to rename ListOfCommands to SetOfCommands?
+                        changeset = commands.toList() // TODO consider to rename ListOfCommands to SetOfCommands?
                     )
                 )
                 else -> Observable.empty()

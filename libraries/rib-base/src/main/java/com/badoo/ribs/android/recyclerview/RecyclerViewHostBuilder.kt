@@ -2,7 +2,7 @@ package com.badoo.ribs.android.recyclerview
 
 import android.os.Parcelable
 import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.ribs.core.ExperimentalApi
+import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.RouterByDelegate
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder

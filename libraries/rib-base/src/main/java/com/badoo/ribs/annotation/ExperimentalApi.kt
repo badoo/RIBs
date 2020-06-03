@@ -1,4 +1,4 @@
-package com.badoo.ribs.core
+package com.badoo.ribs.annotation
 
 @Retention(AnnotationRetention.SOURCE)
 annotation class ExperimentalApi

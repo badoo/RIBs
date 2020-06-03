@@ -3,53 +3,50 @@ package com.badoo.ribs.core.routing.state.feature
 import android.os.Handler
 import android.os.Parcelable
 import android.view.View
-import com.badoo.mvicore.element.Actor
+import com.badoo.mvicore.element.Actor as MviCoreActor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.activator.RoutingActivator
-import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
+import com.badoo.ribs.core.routing.resolver.RoutingResolver
+import com.badoo.ribs.core.routing.state.MutablePool
+import com.badoo.ribs.core.routing.state.Pool
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.state.action.single.ReversibleAction
+import com.badoo.ribs.core.routing.state.exception.CommandExecutionException
+import com.badoo.ribs.core.routing.state.exception.KeyNotFoundInPoolException
+import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand
+import com.badoo.ribs.core.routing.state.feature.Transaction.RoutingChange
+import com.badoo.ribs.core.routing.state.feature.state.WorkingState
+import com.badoo.ribs.core.routing.state.feature.state.withDefaults
+import com.badoo.ribs.core.routing.state.mutablePoolOf
+import com.badoo.ribs.core.routing.state.toMutablePool
+import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
+import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
+import com.badoo.ribs.core.routing.state.transaction.addedOrRemoved
 import com.badoo.ribs.core.routing.transition.TransitionDirection
 import com.badoo.ribs.core.routing.transition.TransitionElement
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.core.routing.state.MutablePool
-import com.badoo.ribs.core.routing.state.Pool
-import com.badoo.ribs.core.routing.state.exception.CommandExecutionException
-import com.badoo.ribs.core.routing.state.exception.KeyNotFoundInPoolException
-import com.badoo.ribs.core.routing.state.mutablePoolOf
-import com.badoo.ribs.core.routing.state.toMutablePool
-import com.badoo.ribs.core.routing.state.feature.Transaction.RoutingChange
-import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
-import com.badoo.ribs.core.routing.state.transaction.addedOrRemoved
 import io.reactivex.Observable
 
 /**
- * Executes [MultiConfigurationAction] / [SingleConfigurationAction] associated with the incoming
- * [RoutingCommand]. The actions will take care of [RoutingAction] invocations and [Node]
- * manipulations, and are expected to return updated elements.
- *
- * Updated elements are then passed on to the [ReducerImpl] in the respective [Effect]s
+ * Executes side-effects of state update.
  */
 @SuppressWarnings("LargeClass") // TODO extract
-internal class ConfigurationFeatureActor<C : Parcelable>(
+internal class Actor<C : Parcelable>(
     private val resolver: RoutingResolver<C>,
     private val activator: RoutingActivator<C>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?
-) : Actor<WorkingState<C>, Transaction<C>, ConfigurationFeature.Effect<C>> {
+) : MviCoreActor<WorkingState<C>, Transaction<C>, RoutingStatePool.Effect<C>> {
 
     private val handler = Handler()
 
     override fun invoke(
         state: WorkingState<C>,
         transaction: Transaction<C>
-    ): Observable<ConfigurationFeature.Effect<C>> =
+    ): Observable<RoutingStatePool.Effect<C>> =
         when (transaction) {
             is PoolCommand -> processPoolCommand(state, transaction)
             is RoutingChange -> processRoutingChange(state, transaction)
@@ -58,7 +55,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun processPoolCommand(
         state: WorkingState<C>,
         transaction: PoolCommand<C>
-    ): Observable<ConfigurationFeature.Effect<C>> =
+    ): Observable<RoutingStatePool.Effect<C>> =
         Observable.create { emitter ->
             transaction.action.execute(state, createParams(emitter, state, emptyMap(), transaction))
         }
@@ -70,7 +67,7 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
     private fun processRoutingChange(
         state: WorkingState<C>,
         transaction: RoutingChange<C>
-    ): Observable<ConfigurationFeature.Effect<C>> =
+    ): Observable<RoutingStatePool.Effect<C>> =
         Observable.create { emitter ->
             val commands = transaction.changeset
             val defaultElements = createDefaultElements(state, commands)
@@ -229,3 +226,4 @@ internal class ConfigurationFeatureActor<C : Parcelable>(
         }
     }
 }
+

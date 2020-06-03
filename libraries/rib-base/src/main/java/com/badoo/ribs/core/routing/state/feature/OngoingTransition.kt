@@ -37,7 +37,7 @@ internal class OngoingTransition<C : Parcelable>(
     fun start() {
         actions.forEach { it.onTransition() }
         emitter.onNext(
-            ConfigurationFeature.Effect.TransitionStarted(
+            RoutingStatePool.Effect.TransitionStarted(
                 this
             )
         )
@@ -50,7 +50,7 @@ internal class OngoingTransition<C : Parcelable>(
         handler.removeCallbacks(checkFinishedRunnable)
         actions.forEach { it.onFinish() }
         emitter.onNext(
-            ConfigurationFeature.Effect.TransitionFinished(
+            RoutingStatePool.Effect.TransitionFinished(
                 this
             )
         )

@@ -1,43 +1,20 @@
-package com.badoo.ribs.core.routing.state.feature
+package com.badoo.ribs.core.routing.state.feature.state
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.state.RoutingContext
-import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState
-import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.ACTIVE
-import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.INACTIVE
-import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
-import com.badoo.ribs.core.routing.state.RoutingContext.Unresolved
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.state.Pool
+import com.badoo.ribs.core.routing.state.RoutingContext
+import com.badoo.ribs.core.routing.state.feature.OngoingTransition
 import com.badoo.ribs.core.routing.state.poolOf
-import kotlinx.android.parcel.Parcelize
 
 /**
- * The state of [ConfigurationFeature] in a form that can be persisted to [android.os.Bundle].
- */
-@Parcelize
-internal data class SavedState<C : Parcelable>(
-    val pool: Map<Routing<C>, Unresolved<C>>
-) : Parcelable {
-
-    /**
-     * Converts the [SavedState] to [WorkingState]
-     */
-    fun toWorkingState(): WorkingState<C> =
-        WorkingState(
-            SLEEPING,
-            pool
-        )
-}
-
-/**
- * The state [ConfigurationFeature] can work with.
+ * The state [RoutingStatePool] can work with.
  *
  * @param activationLevel represents the maximum level any [RoutingContext] can be activated to. Can be either [SLEEPING] or [ACTIVE].
  * @param pool            represents the pool of all [RoutingContext] elements
  */
 internal data class WorkingState<C : Parcelable>(
-    val activationLevel: ActivationState = SLEEPING,
+    val activationLevel: RoutingContext.ActivationState = RoutingContext.ActivationState.SLEEPING,
     val pool: Pool<C> = poolOf(),
     val pendingDeactivate: Set<Routing<C>> = setOf(),
     val pendingRemoval: Set<Routing<C>> = setOf(),
@@ -55,7 +32,7 @@ internal data class WorkingState<C : Parcelable>(
                     val pendingDeactivateApplied = when {
                         !pendingDeactivate.contains(entry.key) -> original
                         else -> original.withActivationState(
-                            activationState = INACTIVE
+                            activationState = RoutingContext.ActivationState.INACTIVE
                         )
                     }
 

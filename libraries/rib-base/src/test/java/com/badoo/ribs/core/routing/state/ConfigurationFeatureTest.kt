@@ -26,8 +26,8 @@ import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.
 import com.badoo.ribs.core.routing.state.ConfigurationFeatureTest.Configuration.Permanent2
 import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.WakeUp
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature
-import com.badoo.ribs.core.routing.state.feature.SavedState
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool
+import com.badoo.ribs.core.routing.state.feature.state.SavedState
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.history.Routing.Identifier
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
@@ -65,7 +65,7 @@ class ConfigurationFeatureTest {
     private lateinit var restoredTimeCapsule: TimeCapsule<SavedState<Configuration>>
     private lateinit var poolInTimeCapsule: Map<Routing<Configuration>, Unresolved<Configuration>>
 
-    private lateinit var feature: ConfigurationFeature<Configuration>
+    private lateinit var feature: RoutingStatePool<Configuration>
     private lateinit var resolver: RoutingResolver<Configuration>
     private lateinit var parentNode: Node<Nothing>
 
@@ -199,7 +199,7 @@ class ConfigurationFeatureTest {
 
         emptyTimeCapsule = mock()
         restoredTimeCapsule = mock {
-            on { get<SavedState<Configuration>>(ConfigurationFeature::class.java.name) } doReturn SavedState(
+            on { get<SavedState<Configuration>>(RoutingStatePool::class.java.name) } doReturn SavedState(
                 pool = poolInTimeCapsule
             )
         }
@@ -215,8 +215,8 @@ class ConfigurationFeatureTest {
 
     private val routingActivator: RoutingActivator<Configuration> = mock()
 
-    private fun createFeature(timeCapsule: TimeCapsule<SavedState<Configuration>>): ConfigurationFeature<Configuration> {
-        return ConfigurationFeature(
+    private fun createFeature(timeCapsule: TimeCapsule<SavedState<Configuration>>): RoutingStatePool<Configuration> {
+        return RoutingStatePool(
             timeCapsule = timeCapsule,
             resolver = resolver,
             parentNode = parentNode,
@@ -237,7 +237,7 @@ class ConfigurationFeatureTest {
 
     // For backwards compatibility with legacy testing approaches until test suite is reworked -- still
     //  better than throwing them away
-    private fun ConfigurationFeature<Configuration>.addPermanents() {
+    private fun RoutingStatePool<Configuration>.addPermanents() {
         accept(Transaction.from(
             Add(helperPermanent1.routing),
             Add(helperPermanent2.routing),

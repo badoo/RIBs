@@ -5,7 +5,7 @@ import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.state.Pool
-import com.badoo.ribs.core.routing.state.feature.WorkingState
+import com.badoo.ribs.core.routing.state.feature.state.WorkingState
 import com.badoo.ribs.core.routing.history.Routing
 
 /**

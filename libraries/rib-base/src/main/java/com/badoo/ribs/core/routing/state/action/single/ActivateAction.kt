@@ -8,8 +8,8 @@ import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect.Individual.PendingDeactivateFalse
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect.Individual.PendingDeactivateFalse
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionDirection

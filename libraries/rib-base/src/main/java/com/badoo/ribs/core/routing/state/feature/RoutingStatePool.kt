@@ -5,6 +5,7 @@ import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.feature.ActorReducerFeature
+import com.badoo.ribs.annotation.OutdatedDocumentation
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.state.transaction.RoutingCommand
@@ -15,13 +16,15 @@ import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect
 import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.core.routing.state.feature.state.SavedState
+import com.badoo.ribs.core.routing.state.feature.state.WorkingState
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.routing.state.transaction.TransitionDescriptor
 import io.reactivex.Observable
 
-private val timeCapsuleKey = ConfigurationFeature::class.java.name
+private val timeCapsuleKey = RoutingStatePool::class.java.name
 private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
     (get<SavedState<C>>(timeCapsuleKey)
         ?.let { it.toWorkingState() }
@@ -43,7 +46,8 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  * Permanent parts are added and activated on initialisation and never deactivated as long as
  * the view is available.
  */
-internal class ConfigurationFeature<C : Parcelable>(
+@OutdatedDocumentation
+internal class RoutingStatePool<C : Parcelable>(
     timeCapsule: TimeCapsule<SavedState<C>>,
     resolver: RoutingResolver<C>,
     activator: RoutingActivator<C>,
@@ -52,7 +56,7 @@ internal class ConfigurationFeature<C : Parcelable>(
 ) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
     initialState = timeCapsule.initialState<C>(),
     bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>()),
-    actor = ConfigurationFeatureActor(
+    actor = Actor(
         resolver = resolver,
         activator = activator,
         parentNode = parentNode,

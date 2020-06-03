@@ -20,7 +20,7 @@ import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.SaveInstanceState
 import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.core.routing.state.feature.Transaction.PoolCommand.WakeUp
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool
 import com.badoo.ribs.core.routing.source.changes
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
@@ -43,7 +43,7 @@ abstract class Router<C : Parcelable>(
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
 
-    private lateinit var configurationFeature: ConfigurationFeature<C>
+    private lateinit var routingStatePool: RoutingStatePool<C>
     override lateinit var node: Node<*>
     private lateinit var routingExecutor: RoutingActivator<C>
 
@@ -54,7 +54,7 @@ abstract class Router<C : Parcelable>(
     }
 
     private fun initFeatures(node: Node<*>) {
-        configurationFeature = ConfigurationFeature(
+        routingStatePool = RoutingStatePool(
             timeCapsule = timeCapsule,
             resolver = this,
             activator = routingExecutor,
@@ -62,30 +62,30 @@ abstract class Router<C : Parcelable>(
             transitionHandler = transitionHandler
         )
 
-        disposables.add(configurationFeature)
+        disposables.add(routingStatePool)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         routingSource.onSaveInstanceState(outState)
-        configurationFeature.accept(SaveInstanceState())
+        routingStatePool.accept(SaveInstanceState())
         timeCapsule.saveState(outState)
     }
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
-        binder.bind(routingSource.changes(hasSavedState) to configurationFeature)
+        binder.bind(routingSource.changes(hasSavedState) to routingStatePool)
     }
 
     override fun onAttachToView(parentViewGroup: ViewGroup) {
-        configurationFeature.accept(WakeUp())
+        routingStatePool.accept(WakeUp())
     }
 
     override fun onDetachFromView(parentViewGroup: ViewGroup) {
-        configurationFeature.accept(Sleep())
+        routingStatePool.accept(Sleep())
     }
 
     override fun onDetach() {
         // TODO consider extending Disposables plugin
         binder.dispose()
-        configurationFeature.dispose()
+        routingStatePool.dispose()
     }
 }

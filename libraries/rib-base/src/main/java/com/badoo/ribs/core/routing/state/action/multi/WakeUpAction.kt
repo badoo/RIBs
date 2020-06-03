@@ -5,8 +5,8 @@ import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState
 import com.badoo.ribs.core.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.state.action.single.ActivateAction
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect.Global
-import com.badoo.ribs.core.routing.state.feature.WorkingState
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect.Global
+import com.badoo.ribs.core.routing.state.feature.state.WorkingState
 
 /**
  * Calls [ActivateAction] all elements with an [ActivationState] of [SLEEPING].

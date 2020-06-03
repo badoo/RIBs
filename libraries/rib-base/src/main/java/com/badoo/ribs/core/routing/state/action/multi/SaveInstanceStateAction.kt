@@ -4,8 +4,8 @@ import android.os.Parcelable
 import com.badoo.ribs.core.routing.state.RoutingContext
 import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.state.action.TransactionExecutionParams
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect
-import com.badoo.ribs.core.routing.state.feature.WorkingState
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect
+import com.badoo.ribs.core.routing.state.feature.state.WorkingState
 
 /**
  * Calls saveInstanceState() on all Nodes associated with Resolved configurations in the pool

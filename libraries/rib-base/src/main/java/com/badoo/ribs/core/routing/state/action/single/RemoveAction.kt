@@ -5,8 +5,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.activator.RoutingActivator
 import com.badoo.ribs.core.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.core.routing.state.action.ActionExecutionParams
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect.Individual.PendingRemovalTrue
-import com.badoo.ribs.core.routing.state.feature.ConfigurationFeature.Effect.Individual.Removed
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect.Individual.PendingRemovalTrue
+import com.badoo.ribs.core.routing.state.feature.RoutingStatePool.Effect.Individual.Removed
 import com.badoo.ribs.core.routing.state.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
 import com.badoo.ribs.core.routing.transition.TransitionElement

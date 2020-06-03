@@ -1,8 +1,8 @@
-package com.badoo.ribs.core.routing.transition.handler
+package com.badoo.ribs.core.routing.client.handler
 
-import com.badoo.ribs.core.routing.transition.Transition
-import com.badoo.ribs.core.routing.transition.TransitionElement
-import com.badoo.ribs.core.routing.transition.TransitionPair
+import com.badoo.ribs.core.routing.client.Transition
+import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.client.TransitionPair
 
 
 interface TransitionHandler<C> {

@@ -1,11 +1,11 @@
-package com.badoo.ribs.core.routing.transition
+package com.badoo.ribs.core.routing.client
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CheckResult
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.routing.transition.progress.MultiProgressEvaluator
-import com.badoo.ribs.core.routing.transition.progress.ProgressEvaluator
+import com.badoo.ribs.core.routing.client.progress.MultiProgressEvaluator
+import com.badoo.ribs.core.routing.client.progress.ProgressEvaluator
 
 /**
  * @param addedOrRemoved the flag will be true for any [Routing] that either just got created,

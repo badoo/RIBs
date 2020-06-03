@@ -1,17 +1,17 @@
-package com.badoo.ribs.core.routing.transition.effect.fade
+package com.badoo.ribs.core.routing.client.effect.fade
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.view.animation.Interpolator
 import androidx.annotation.CheckResult
-import com.badoo.ribs.core.routing.transition.Transition
-import com.badoo.ribs.core.routing.transition.TransitionDirection
-import com.badoo.ribs.core.routing.transition.TransitionElement
-import com.badoo.ribs.core.routing.transition.effect.helper.ReverseHolder
-import com.badoo.ribs.core.routing.transition.handler.defaultDuration
-import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
-import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator
+import com.badoo.ribs.core.routing.client.Transition
+import com.badoo.ribs.core.routing.client.TransitionDirection
+import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.client.effect.helper.ReverseHolder
+import com.badoo.ribs.core.routing.client.handler.defaultDuration
+import com.badoo.ribs.core.routing.client.handler.defaultInterpolator
+import com.badoo.ribs.core.routing.client.progress.SingleProgressEvaluator
 import kotlin.math.abs
 
 @CheckResult

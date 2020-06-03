@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.transition.handler
+package com.badoo.ribs.core.routing.client.handler
 
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Interpolator

@@ -17,9 +17,9 @@ import com.badoo.ribs.core.routing.configuration.action.ActionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.TransactionExecutionParams
 import com.badoo.ribs.core.routing.configuration.action.single.ReversibleAction
 import com.badoo.ribs.core.routing.configuration.addedOrRemoved
-import com.badoo.ribs.core.routing.transition.TransitionDirection
-import com.badoo.ribs.core.routing.transition.TransitionElement
-import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.core.routing.client.TransitionDirection
+import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.client.handler.TransitionHandler
 import io.reactivex.Observable
 
 /**

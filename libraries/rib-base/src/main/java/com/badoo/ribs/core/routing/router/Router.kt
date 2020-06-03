@@ -23,7 +23,7 @@ import com.badoo.ribs.core.routing.configuration.Transaction.MultiConfigurationC
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature
 import com.badoo.ribs.core.routing.source.changes
 import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.core.routing.client.handler.TransitionHandler
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class Router<C : Parcelable>(

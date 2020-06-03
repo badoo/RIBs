@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.transition.progress
+package com.badoo.ribs.core.routing.client.progress
 
 interface ProgressEvaluator {
     /**

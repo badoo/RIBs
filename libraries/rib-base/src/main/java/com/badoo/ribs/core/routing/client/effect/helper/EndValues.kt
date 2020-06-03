@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.transition.effect.helper
+package com.badoo.ribs.core.routing.client.effect.helper
 
 data class EndValues(
     val from: Float,

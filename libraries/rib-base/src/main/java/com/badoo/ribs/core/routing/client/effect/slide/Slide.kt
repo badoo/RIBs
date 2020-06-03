@@ -1,18 +1,18 @@
 @file:SuppressWarnings("LongParameterList")
-package com.badoo.ribs.core.routing.transition.effect.slide
+package com.badoo.ribs.core.routing.client.effect.slide
 
 import android.view.animation.Interpolator
 import androidx.annotation.CheckResult
-import com.badoo.ribs.core.routing.transition.Transition
-import com.badoo.ribs.core.routing.transition.TransitionDirection
-import com.badoo.ribs.core.routing.transition.TransitionElement
-import com.badoo.ribs.core.routing.transition.effect.Gravity
-import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer
-import com.badoo.ribs.core.routing.transition.effect.helper.AnimationContainer.Parent
-import com.badoo.ribs.core.routing.transition.effect.helper.ReverseHolder
-import com.badoo.ribs.core.routing.transition.handler.defaultDuration
-import com.badoo.ribs.core.routing.transition.handler.defaultInterpolator
-import com.badoo.ribs.core.routing.transition.progress.SingleProgressEvaluator
+import com.badoo.ribs.core.routing.client.Transition
+import com.badoo.ribs.core.routing.client.TransitionDirection
+import com.badoo.ribs.core.routing.client.TransitionElement
+import com.badoo.ribs.core.routing.client.effect.Gravity
+import com.badoo.ribs.core.routing.client.effect.helper.AnimationContainer
+import com.badoo.ribs.core.routing.client.effect.helper.AnimationContainer.Parent
+import com.badoo.ribs.core.routing.client.effect.helper.ReverseHolder
+import com.badoo.ribs.core.routing.client.handler.defaultDuration
+import com.badoo.ribs.core.routing.client.handler.defaultInterpolator
+import com.badoo.ribs.core.routing.client.progress.SingleProgressEvaluator
 
 
 @CheckResult

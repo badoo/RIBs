@@ -9,7 +9,7 @@ import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Ef
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect.Individual.PendingRemovalFalse
 import com.badoo.ribs.core.routing.configuration.feature.EffectEmitter
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.transition.TransitionElement
+import com.badoo.ribs.core.routing.client.TransitionElement
 
 /**
  * Attaches [Node]s to a parentNode without their views

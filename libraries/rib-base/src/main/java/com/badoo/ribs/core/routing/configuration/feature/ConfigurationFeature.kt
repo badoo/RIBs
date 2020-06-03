@@ -18,7 +18,7 @@ import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.configuration.Transaction
 import com.badoo.ribs.core.routing.configuration.feature.ConfigurationFeature.Effect
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.core.routing.client.handler.TransitionHandler
 import io.reactivex.Observable
 
 private val timeCapsuleKey = ConfigurationFeature::class.java.name

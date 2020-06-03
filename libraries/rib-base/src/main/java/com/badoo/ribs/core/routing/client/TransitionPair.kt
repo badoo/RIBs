@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.transition
+package com.badoo.ribs.core.routing.client
 
 /**
  * See the commit this class was introduced in.

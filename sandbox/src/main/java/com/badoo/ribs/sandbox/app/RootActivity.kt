@@ -13,9 +13,9 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
 import com.badoo.ribs.portal.PortalRouter
-import com.badoo.ribs.core.routing.transition.handler.CrossFader
-import com.badoo.ribs.core.routing.transition.handler.Slider
-import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.core.routing.client.handler.CrossFader
+import com.badoo.ribs.core.routing.client.handler.Slider
+import com.badoo.ribs.core.routing.client.handler.TransitionHandler
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld

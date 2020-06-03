@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.small
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.customisation.CanProvidePortal
+import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.customisation.RibCustomisation
 
 interface Small : Rib {

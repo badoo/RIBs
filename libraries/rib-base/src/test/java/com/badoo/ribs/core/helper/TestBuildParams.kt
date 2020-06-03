@@ -6,7 +6,7 @@ import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.routing.portal.AncestryInfo
+import com.badoo.ribs.core.AncestryInfo
 import java.util.UUID
 
 fun testBuildParams(

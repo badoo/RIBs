@@ -1,7 +1,8 @@
-package com.badoo.ribs.core.routing.portal
+package com.badoo.ribs.portal
 
 import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.core.AncestryInfo
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Router
 import com.badoo.ribs.core.builder.BuildContext
@@ -10,9 +11,9 @@ import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration
-import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content
-import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Overlay
+import com.badoo.ribs.portal.PortalRouter.Configuration
+import com.badoo.ribs.portal.PortalRouter.Configuration.Content
+import com.badoo.ribs.portal.PortalRouter.Configuration.Overlay
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import kotlinx.android.parcel.Parcelize

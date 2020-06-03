@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.portal
+package com.badoo.ribs.portal
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder

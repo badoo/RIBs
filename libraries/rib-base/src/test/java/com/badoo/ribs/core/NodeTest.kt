@@ -18,7 +18,6 @@ import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.ViewAware
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.any

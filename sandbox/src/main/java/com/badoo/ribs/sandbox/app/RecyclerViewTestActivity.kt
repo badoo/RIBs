@@ -22,7 +22,7 @@ import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Compani
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.configuration.RoutingResolver
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.portal.Portal
+import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar

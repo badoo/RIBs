@@ -2,7 +2,7 @@
 package com.badoo.ribs.sandbox.rib.small.builder
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.portal.Portal
+import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.sandbox.rib.big.builder.BigBuilder
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestBuilder
 import com.badoo.ribs.sandbox.rib.small.Small

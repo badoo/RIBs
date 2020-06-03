@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.routing.portal
+package com.badoo.ribs.portal
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
@@ -8,8 +8,8 @@ import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.routing.RoutingSource
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Default
-import com.badoo.ribs.core.routing.portal.PortalRouter.Configuration.Content.Portal
+import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Default
+import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Portal
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

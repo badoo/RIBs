@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.customisation.CanProvidePortal
+import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.dialog.CanProvideDialogLauncher

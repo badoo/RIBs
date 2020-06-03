@@ -1,7 +1,6 @@
-package com.badoo.ribs.core.routing.portal
+package com.badoo.ribs.core
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Node
 
 sealed class AncestryInfo {
 

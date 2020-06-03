@@ -2,7 +2,7 @@ package com.badoo.ribs.sandbox.rib.hello_world
 
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.SimpleBuilder
-import com.badoo.ribs.customisation.CanProvidePortal
+import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature
 import com.badoo.ribs.sandbox.rib.small.Small
 import com.badoo.ribs.sandbox.rib.small.builder.SmallBuilder

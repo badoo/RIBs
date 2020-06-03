@@ -10,9 +10,9 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.portal.Portal
-import com.badoo.ribs.core.routing.portal.PortalBuilder
-import com.badoo.ribs.core.routing.portal.PortalRouter
+import com.badoo.ribs.portal.Portal
+import com.badoo.ribs.portal.PortalBuilder
+import com.badoo.ribs.portal.PortalRouter
 import com.badoo.ribs.core.routing.transition.handler.CrossFader
 import com.badoo.ribs.core.routing.transition.handler.Slider
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler

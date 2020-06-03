@@ -3,7 +3,6 @@ package com.badoo.ribs.core
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.helper.TestBuilder
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify

@@ -1,7 +1,7 @@
 package com.badoo.ribs.portal
 
 import android.os.Parcelable
-import com.badoo.ribs.core.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.backstack.operation.push

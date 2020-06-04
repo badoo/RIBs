@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.builder.BuildParams
 import io.reactivex.observers.TestObserver
 

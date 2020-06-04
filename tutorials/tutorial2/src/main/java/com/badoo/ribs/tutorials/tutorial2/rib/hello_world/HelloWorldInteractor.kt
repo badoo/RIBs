@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.hello_world
 
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.builder.BuildParams
 
 class HelloWorldInteractor(

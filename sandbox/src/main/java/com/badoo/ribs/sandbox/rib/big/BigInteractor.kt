@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.big
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.core.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration
 

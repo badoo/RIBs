@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container
 
-import com.badoo.ribs.core.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer.Output.GreetingsSaid
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerRouter.Configuration

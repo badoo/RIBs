@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.Text
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.tutorials.tutorial4.R
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.mapper.ViewEventToOutput
 import com.badoo.ribs.tutorials.tutorial4.util.User

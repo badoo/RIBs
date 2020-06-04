@@ -1,6 +1,6 @@
 package com.badoo.ribs.test.util.ribs.child
 
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.builder.BuildParams
 
 class TestChildInteractor(

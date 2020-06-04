@@ -2,7 +2,7 @@ package com.badoo.ribs.sandbox.rib.small
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.ribs.core.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration

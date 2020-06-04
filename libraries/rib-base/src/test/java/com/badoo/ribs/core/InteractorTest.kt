@@ -1,5 +1,6 @@
 package com.badoo.ribs.core
 
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.helper.TestInteractor
 import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.helper.TestView

@@ -2,7 +2,7 @@ package com.badoo.ribs.sandbox.rib.util
 
 import android.view.ViewGroup
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.view.RibView

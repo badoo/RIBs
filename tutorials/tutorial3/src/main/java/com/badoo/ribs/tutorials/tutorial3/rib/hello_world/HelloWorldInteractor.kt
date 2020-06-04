@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial3.rib.hello_world
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.builder.BuildParams
 
 class HelloWorldInteractor(

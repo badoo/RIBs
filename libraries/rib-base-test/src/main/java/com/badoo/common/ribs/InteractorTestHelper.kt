@@ -3,7 +3,7 @@ package com.badoo.common.ribs
 import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams

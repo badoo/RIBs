@@ -28,6 +28,6 @@ class PortalNode internal constructor(
 
     override fun showInPortal(ancestryInfo: AncestryInfo): Single<Rib> =
         attachWorkflow {
-            backStack.push(Content.Portal(ancestryInfo.configurationChain))
+            backStack.push(Content.Portal(ancestryInfo.routingChain))
         }
 }

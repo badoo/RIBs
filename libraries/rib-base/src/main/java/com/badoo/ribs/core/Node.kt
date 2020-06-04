@@ -64,6 +64,11 @@ open class Node<V : RibView>(
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
 
+    /**
+     * This is the logical parent of the current [Node] (i.e. the one that created it).
+     *
+     * Not necessarily the parentNode the view is attached to (e.g. portals).
+     */
     val parent: Node<*>? =
         when (val ancestryInfo = ancestryInfo) {
             is AncestryInfo.Root -> null

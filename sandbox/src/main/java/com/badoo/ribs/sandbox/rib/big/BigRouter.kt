@@ -8,6 +8,7 @@ import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration.Permanent
@@ -20,7 +21,7 @@ class BigRouter(
     private val smallBuilder: SmallBuilder
 ): Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource
+    routingSource = routingSource + permanent(Permanent.Small)
 ) {
 
     // TODO consider addressing case like this where there's only permanent parts

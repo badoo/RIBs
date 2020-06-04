@@ -22,7 +22,7 @@ class NodePluginSubtreeChangeAwareTest : NodePluginTest() {
         val buildContext = BuildContext(
             ancestryInfo = AncestryInfo.Child(
                 anchor = node,
-                creatorConfiguration = mock()
+                creatorRouting = mock()
             ),
             savedInstanceState = null,
             customisations = mock()

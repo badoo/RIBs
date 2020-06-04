@@ -137,7 +137,7 @@ internal sealed class RoutingContext<C : Parcelable> {
             BuildContext(
                 ancestryInfo = AncestryInfo.Child(
                     anchor = routingAction.anchor() ?: parentNode,
-                    creatorConfiguration = routing
+                    creatorRouting = routing
                 ),
                 savedInstanceState = null,
                 customisations = parentNode.buildContext.customisations.getSubDirectoryOrSelf(

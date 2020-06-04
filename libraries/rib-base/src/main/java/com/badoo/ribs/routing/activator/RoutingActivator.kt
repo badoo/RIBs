@@ -10,7 +10,7 @@ internal class RoutingActivator<C : Parcelable>(
     private val clientActivator: ChildActivator<C>
 ) {
     private val defaultActivator: ChildActivator<C> =
-        DefaultChildActivator()
+        DefaultChildActivator(parentNode)
 
     fun add(routing: Routing<C>, nodes: List<Node<*>>) {
         nodes.forEach { child ->

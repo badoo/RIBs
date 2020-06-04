@@ -2,14 +2,14 @@ package com.badoo.ribs.routing.state
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.annotation.OutdatedDocumentation
-import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.routing.action.RoutingAction
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.core.builder.AncestryInfo
+import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.resolver.RoutingResolver
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.util.RIBs
 import kotlinx.android.parcel.Parcelize
 
@@ -133,16 +133,17 @@ internal sealed class RoutingContext<C : Parcelable> {
         private fun createBuildContext(
             routingAction: RoutingAction,
             parentNode: Node<*>
-        ): BuildContext = BuildContext(
-            ancestryInfo = AncestryInfo.Child(
-                anchor = routingAction.anchor() ?: parentNode,
-                creatorConfiguration = routing
-            ),
-            savedInstanceState = null,
-            customisations = parentNode.buildContext.customisations.getSubDirectoryOrSelf(
-                parentNode::class
+        ): BuildContext =
+            BuildContext(
+                ancestryInfo = AncestryInfo.Child(
+                    anchor = routingAction.anchor() ?: parentNode,
+                    creatorConfiguration = routing
+                ),
+                savedInstanceState = null,
+                customisations = parentNode.buildContext.customisations.getSubDirectoryOrSelf(
+                    parentNode::class
+                )
             )
-        )
 
         override fun withActivationState(activationState: ActivationState) =
             copy(

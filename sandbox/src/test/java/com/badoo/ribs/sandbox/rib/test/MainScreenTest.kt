@@ -5,12 +5,12 @@ import android.app.Instrumentation
 import android.content.Intent
 import android.view.ViewGroup
 import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
+import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
-import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView
@@ -21,8 +21,8 @@ import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.MenuView
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
-import com.badoo.ribs.sandbox.rib.switcher.SwitcherView
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
+import com.badoo.ribs.sandbox.rib.switcher.SwitcherView
 import com.badoo.ribs.sandbox.rib.util.TestDefaultDependencies
 import com.badoo.ribs.sandbox.rib.util.TestView
 import com.badoo.ribs.sandbox.rib.util.component

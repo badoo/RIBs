@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.small.builder
 
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.big.Big
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTest
 import com.badoo.ribs.sandbox.rib.small.Small

@@ -2,7 +2,7 @@ package com.badoo.ribs.tutorials.tutorial5.rib.option_selector.builder
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView
 

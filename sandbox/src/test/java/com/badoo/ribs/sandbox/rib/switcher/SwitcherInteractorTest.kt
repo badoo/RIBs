@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import com.badoo.common.ribs.InteractorTestHelper
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay

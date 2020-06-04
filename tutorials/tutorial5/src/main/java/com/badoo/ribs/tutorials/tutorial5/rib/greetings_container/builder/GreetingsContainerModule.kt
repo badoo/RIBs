@@ -1,6 +1,8 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.builder
 
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerInteractor
@@ -8,8 +10,6 @@ import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsConta
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
-import com.badoo.ribs.android.text.Text
-import com.badoo.ribs.core.builder.BuildParams
 import dagger.Provides
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

@@ -27,12 +27,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.core.Rib.Identifier
-import com.badoo.ribs.core.builder.ActivationMode
-import com.badoo.ribs.core.builder.AncestryInfo
-import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.lifecycle.LifecycleManager
+import com.badoo.ribs.core.modality.ActivationMode
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware

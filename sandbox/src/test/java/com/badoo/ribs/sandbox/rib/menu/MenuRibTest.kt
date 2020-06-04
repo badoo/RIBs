@@ -1,12 +1,12 @@
 package com.badoo.ribs.sandbox.rib.menu
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
-import com.badoo.ribs.sandbox.rib.menu.Menu.Output.MenuItemSelected
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
+import com.badoo.ribs.sandbox.rib.menu.Menu.Output.MenuItemSelected
 import com.badoo.ribs.sandbox.rib.menu.MenuView.Event.Select
 import com.badoo.ribs.sandbox.rib.util.TestView
 import com.badoo.ribs.sandbox.rib.util.subscribeOnTestObserver

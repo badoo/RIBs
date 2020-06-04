@@ -1,13 +1,13 @@
 package com.badoo.ribs.android.dialog.routing.action
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.source.RoutingSource
 
 class DialogRoutingAction<Event : Any, C : Parcelable>(
     private val routingSource: RoutingSource<C>,

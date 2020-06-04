@@ -5,7 +5,7 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Config
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Input

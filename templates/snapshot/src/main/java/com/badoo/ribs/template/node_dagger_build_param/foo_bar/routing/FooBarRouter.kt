@@ -1,12 +1,12 @@
 package com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.router.Router
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
-import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarRouter.Configuration
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarRouter.Configuration.Content

@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.node.foo_bar
 
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration

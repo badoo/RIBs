@@ -1,7 +1,7 @@
 package com.badoo.ribs.routing.router
 
 import android.os.Parcelable
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver

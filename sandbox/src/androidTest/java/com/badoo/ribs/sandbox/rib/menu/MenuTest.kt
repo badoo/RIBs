@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld

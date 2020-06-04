@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.builder
+package com.badoo.ribs.core.modality
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node

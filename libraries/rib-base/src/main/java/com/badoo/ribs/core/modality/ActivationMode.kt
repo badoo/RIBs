@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.builder
+package com.badoo.ribs.core.modality
 
 /**
  * Describes the way a new child will need to be activated.

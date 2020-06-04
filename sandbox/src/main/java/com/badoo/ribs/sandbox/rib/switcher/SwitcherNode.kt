@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.push

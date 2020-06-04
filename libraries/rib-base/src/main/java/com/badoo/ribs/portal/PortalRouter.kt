@@ -2,20 +2,20 @@ package com.badoo.ribs.portal
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.builder.AncestryInfo
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.routing.router.Router
-import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.routing.action.RoutingAction
-import com.badoo.ribs.routing.resolver.RoutingResolver
-import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.portal.PortalRouter.Configuration.Overlay
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolver.RoutingResolver
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(

@@ -1,7 +1,7 @@
 package com.badoo.ribs.portal
 
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.core.modality.BuildParams
 
 class PortalBuilder(
     private val dependency: Portal.Dependency

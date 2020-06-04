@@ -3,12 +3,12 @@ package com.badoo.ribs.portal
 import android.os.Parcelable
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.routing.source.backstack.operation.push
-import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.portal.PortalRouter.Configuration.Overlay
+import com.badoo.ribs.routing.source.backstack.operation.push
+import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 
 internal class PortalInteractor(
     buildParams: BuildParams<Nothing?>

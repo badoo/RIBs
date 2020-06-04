@@ -3,7 +3,7 @@ package com.badoo.ribs.template.leaf.foo_bar
 import android.os.Bundle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import org.junit.Rule
 import org.junit.Test
 

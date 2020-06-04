@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
@@ -17,12 +17,12 @@ import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
+import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.source.changes
+import com.badoo.ribs.routing.state.feature.RoutingStatePool
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.SaveInstanceState
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
-import com.badoo.ribs.routing.state.feature.RoutingStatePool
-import com.badoo.ribs.routing.source.changes
-import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import io.reactivex.disposables.CompositeDisposable
 

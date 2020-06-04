@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.node_dagger_build_param.foo_bar
 
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarRouter

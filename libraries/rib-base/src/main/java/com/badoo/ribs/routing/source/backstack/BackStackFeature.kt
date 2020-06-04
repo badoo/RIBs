@@ -9,7 +9,12 @@ import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.mvicore.extension.mapNotNull
 import com.badoo.mvicore.feature.ActorReducerFeature
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.history.RoutingHistory
+import com.badoo.ribs.routing.history.RoutingHistoryElement
+import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
+import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.backstack.BackStackFeature.Operation
 import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
@@ -18,11 +23,6 @@ import com.badoo.ribs.routing.source.backstack.operation.Remove
 import com.badoo.ribs.routing.source.backstack.operation.canPop
 import com.badoo.ribs.routing.source.backstack.operation.canPopOverlay
 import com.badoo.ribs.routing.source.backstack.operation.pop
-import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.history.RoutingHistory
-import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
-import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import io.reactivex.Observable
 import io.reactivex.Observable.empty
 import io.reactivex.Observable.just

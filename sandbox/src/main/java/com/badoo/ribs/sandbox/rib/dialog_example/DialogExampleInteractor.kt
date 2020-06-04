@@ -3,13 +3,13 @@ package com.badoo.ribs.sandbox.rib.dialog_example
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
+import com.badoo.ribs.android.dialog.Dialog
+import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
-import com.badoo.ribs.android.dialog.Dialog
-import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked

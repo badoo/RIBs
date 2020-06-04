@@ -9,7 +9,7 @@ import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Content

@@ -17,7 +17,7 @@ package com.badoo.ribs.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.modality.BuildContext
 
 /**
  * Responsible for building a [Node]. Parent [Router]s should pass in static dependencies via the

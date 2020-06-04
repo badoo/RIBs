@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input
 import com.badoo.ribs.sandbox.rib.menu.Menu.Output

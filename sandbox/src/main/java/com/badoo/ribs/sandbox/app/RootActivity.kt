@@ -43,9 +43,10 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?) =
         PortalBuilder(
             object : Portal.Dependency {
-                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction = { portal ->
-                    attach { buildSwitcherNode(portal, it) }
-                }
+                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction =
+                    { portal ->
+                        attach { buildSwitcherNode(portal, it) }
+                    }
 
                 override fun transitionHandler(): TransitionHandler<PortalRouter.Configuration>? =
                     TransitionHandler.multiple(
@@ -53,7 +54,10 @@ class RootActivity : RibActivity() {
                         CrossFader { it.configuration is PortalRouter.Configuration.Overlay }
                     )
 
-                private fun buildSwitcherNode(portal: Portal.OtherSide, buildContext: BuildContext): Switcher {
+                private fun buildSwitcherNode(
+                    portal: Portal.OtherSide,
+                    buildContext: BuildContext
+                ): Switcher {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
                             override fun activityStarter(): ActivityStarter = activityStarter
@@ -62,7 +66,8 @@ class RootActivity : RibActivity() {
 
                             override fun dialogLauncher(): DialogLauncher = this@RootActivity
                             override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
-                            override fun portal(): Portal.OtherSide = portal
+                            override fun portal(): Portal.OtherSide =
+                                portal
                         }
                     ).build(buildContext)
                 }

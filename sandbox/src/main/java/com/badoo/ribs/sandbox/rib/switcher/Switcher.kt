@@ -21,7 +21,7 @@ interface Switcher : Rib {
         CanProvideActivityStarter,
         CanProvidePermissionRequester,
         CanProvideDialogLauncher,
-        CanProvidePortal {
+        com.badoo.ribs.portal.CanProvidePortal {
 
         fun coffeeMachine(): CoffeeMachine
     }

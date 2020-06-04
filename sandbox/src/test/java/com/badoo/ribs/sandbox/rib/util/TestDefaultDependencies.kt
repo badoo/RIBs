@@ -13,7 +13,7 @@ class TestDefaultDependencies :
     CanProvideActivityStarter,
     CanProvidePermissionRequester,
     CanProvideDialogLauncher,
-    CanProvidePortal {
+    com.badoo.ribs.portal.CanProvidePortal {
 
     val permissionRequester = TestPermissionRequester()
     val activityStarter = TestActivityStarter()
@@ -21,5 +21,5 @@ class TestDefaultDependencies :
     override fun permissionRequester() = permissionRequester
     override fun activityStarter(): ActivityStarter = activityStarter
     override fun dialogLauncher(): DialogLauncher = mock()
-    override fun portal(): Portal.OtherSide = mock()
+    override fun portal(): com.badoo.ribs.portal.Portal.OtherSide = mock()
 }

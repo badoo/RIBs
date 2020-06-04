@@ -59,7 +59,7 @@ class RecyclerViewTestActivity : RibActivity() {
 
     private val loremIpsumBuilder = LoremIpsumBuilder(object : LoremIpsum.Dependency {})
 
-    private val noopPortal = object : Portal.OtherSide {
+    private val noopPortal = object : com.badoo.ribs.portal.Portal.OtherSide {
         override fun showContent(remoteNode: Node<*>, remoteConfiguration: Parcelable) {
             // Sorry, no-op
         }
@@ -76,7 +76,7 @@ class RecyclerViewTestActivity : RibActivity() {
                 override fun permissionRequester(): PermissionRequester = permissionRequester
                 override fun dialogLauncher(): DialogLauncher = this@RecyclerViewTestActivity
                 override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
-                override fun portal(): Portal.OtherSide = noopPortal
+                override fun portal(): com.badoo.ribs.portal.Portal.OtherSide = noopPortal
             }
         )
 

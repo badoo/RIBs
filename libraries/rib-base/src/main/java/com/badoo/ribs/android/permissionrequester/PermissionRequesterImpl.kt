@@ -1,4 +1,4 @@
-package com.badoo.ribs.android
+package com.badoo.ribs.android.permissionrequester
 
 import android.annotation.TargetApi
 import android.content.pm.PackageManager
@@ -6,10 +6,10 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
-import com.badoo.ribs.android.PermissionRequester.CheckPermissionsResult
-import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
-import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.Cancelled
-import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.CheckPermissionsResult
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.Cancelled
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry

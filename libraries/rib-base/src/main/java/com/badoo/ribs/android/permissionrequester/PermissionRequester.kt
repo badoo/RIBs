@@ -1,6 +1,6 @@
-package com.badoo.ribs.android
+package com.badoo.ribs.android.permissionrequester
 
-import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
 import com.badoo.ribs.android.requestcode.RequestCodeClient

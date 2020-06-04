@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.util
 
-import com.badoo.ribs.android.PermissionRequester
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import io.reactivex.Observable
 

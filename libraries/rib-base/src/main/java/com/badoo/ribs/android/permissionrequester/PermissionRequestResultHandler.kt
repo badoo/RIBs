@@ -1,4 +1,4 @@
-package com.badoo.ribs.android
+package com.badoo.ribs.android.permissionrequester
 
 interface PermissionRequestResultHandler {
 

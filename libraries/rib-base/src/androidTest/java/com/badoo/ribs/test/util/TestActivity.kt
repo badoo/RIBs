@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.activitystarter.ActivityStarterImpl
-import com.badoo.ribs.android.PermissionRequester
-import com.badoo.ribs.android.PermissionRequesterImpl
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.android.permissionrequester.PermissionRequesterImpl
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
 class TestActivity : AppCompatActivity() {

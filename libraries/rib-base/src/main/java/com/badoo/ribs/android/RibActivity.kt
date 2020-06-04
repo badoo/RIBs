@@ -11,6 +11,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.dialog.toAlertDialog
+import com.badoo.ribs.android.permissionrequester.PermissionRequesterImpl
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.WeakHashMap

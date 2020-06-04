@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.foo_bar
 
-import com.badoo.ribs.android.CanProvidePermissionRequester
+import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.RibCustomisation

@@ -3,7 +3,7 @@ package com.badoo.ribs.android
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import com.badoo.ribs.core.RequestCodeClient
+import com.badoo.ribs.android.requestcode.RequestCodeClient
 
 interface PermissionRequester :
     RequestCodeBasedEventStream<RequestPermissionsEvent> {

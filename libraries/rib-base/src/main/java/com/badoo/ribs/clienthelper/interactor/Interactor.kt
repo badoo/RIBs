@@ -1,6 +1,6 @@
 package com.badoo.ribs.clienthelper.interactor
 
-import com.badoo.ribs.core.RequestCodeClient
+import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildParams

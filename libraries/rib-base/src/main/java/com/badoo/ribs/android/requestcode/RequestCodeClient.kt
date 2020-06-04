@@ -1,4 +1,4 @@
-package com.badoo.ribs.core
+package com.badoo.ribs.android.requestcode
 
 interface RequestCodeClient {
 

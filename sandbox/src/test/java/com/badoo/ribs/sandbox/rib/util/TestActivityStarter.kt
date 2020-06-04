@@ -4,7 +4,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
 import com.badoo.ribs.android.ActivityStarter
-import com.badoo.ribs.core.RequestCodeClient
+import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import com.nhaarman.mockitokotlin2.doReturn

@@ -20,7 +20,7 @@ import android.content.Intent
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import com.badoo.ribs.core.RequestCodeClient
+import com.badoo.ribs.android.requestcode.RequestCodeClient
 
 /**
  * Start activities. A much cleaner dependency than an entire activity or context, and easier to

@@ -11,7 +11,7 @@ import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.Cancelled
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
-import com.badoo.ribs.core.RequestCodeClient
+import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
 class PermissionRequesterImpl(

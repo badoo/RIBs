@@ -1,7 +1,6 @@
 package com.badoo.ribs.android.requestcode
 
-import com.badoo.ribs.core.RequestCodeClient
- import com.badoo.ribs.util.RIBs
+import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock

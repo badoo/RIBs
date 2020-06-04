@@ -12,7 +12,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
-import com.badoo.ribs.core.RequestCodeClient
+import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.test.util.OtherActivity
 import com.badoo.ribs.test.util.TestActivity
 import com.badoo.ribs.test.util.TestRequestCodeClient

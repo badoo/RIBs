@@ -6,7 +6,7 @@ import android.content.Intent
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
-import com.badoo.ribs.core.RequestCodeClient
+import com.badoo.ribs.android.requestcode.RequestCodeClient
 
 class ActivityStarterImpl(
     private val activity: Activity,

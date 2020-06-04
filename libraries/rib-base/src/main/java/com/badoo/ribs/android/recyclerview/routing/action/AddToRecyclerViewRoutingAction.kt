@@ -3,18 +3,18 @@ package com.badoo.ribs.android.recyclerview.routing.action
 import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.NodeFactory
+import com.badoo.ribs.core.builder.RibFactory
 import com.badoo.ribs.routing.action.RoutingAction
 
 open class AddToRecyclerViewRoutingAction(
-    private val nodeFactory: NodeFactory
+    private val ribFactory: RibFactory
 ) : RoutingAction {
 
     override val nbNodesToBuild: Int = 1
 
     override fun buildNodes(buildContexts: List<BuildContext>): List<Rib> =
         listOf(
-            nodeFactory.invoke(
+            ribFactory.invoke(
                 buildContexts.first().copy(
                     activationMode = ActivationMode.CLIENT
                 )
@@ -22,9 +22,9 @@ open class AddToRecyclerViewRoutingAction(
         )
 
     companion object {
-        fun recyclerView(nodeFactory: NodeFactory): RoutingAction =
+        fun recyclerView(ribFactory: RibFactory): RoutingAction =
             AddToRecyclerViewRoutingAction(
-                nodeFactory
+                ribFactory
             )
     }
 }

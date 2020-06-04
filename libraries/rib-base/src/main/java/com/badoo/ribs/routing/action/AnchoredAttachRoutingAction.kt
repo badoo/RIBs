@@ -1,23 +1,23 @@
 package com.badoo.ribs.routing.action
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.builder.NodeFactory
+import com.badoo.ribs.core.builder.RibFactory
 
 class AnchoredAttachRoutingAction(
     private val anchor: Node<*>,
-    nodeFactory: NodeFactory
+    ribFactory: RibFactory
 ) : AttachRibRoutingAction(
-    nodeFactory = nodeFactory
+    ribFactory = ribFactory
 ) {
 
     override fun anchor(): Node<*>? =
         anchor
 
     companion object {
-        fun anchor(anchor: Node<*>, nodeFactory: NodeFactory): RoutingAction =
+        fun anchor(anchor: Node<*>, ribFactory: RibFactory): RoutingAction =
                 AnchoredAttachRoutingAction(
                     anchor = anchor,
-                    nodeFactory = nodeFactory
+                    ribFactory = ribFactory
                 )
     }
 }

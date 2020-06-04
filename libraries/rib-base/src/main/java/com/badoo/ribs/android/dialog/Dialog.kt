@@ -4,7 +4,7 @@ import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.NodeFactory
+import com.badoo.ribs.core.builder.RibFactory
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
@@ -17,7 +17,7 @@ abstract class Dialog<T : Any> private constructor(
     var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
     internal var buttons: ButtonsConfig<T>? = null
-    private var nodeFactory: NodeFactory? = null
+    private var ribFactory: RibFactory? = null
     internal var rib: Rib? = null
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
@@ -29,8 +29,8 @@ abstract class Dialog<T : Any> private constructor(
         factory()
     }
 
-    fun nodeFactory(nodeFactory: NodeFactory) {
-        this.nodeFactory = nodeFactory
+    fun ribFactory(ribFactory: RibFactory) {
+        this.ribFactory = ribFactory
     }
 
     fun buttons(factory: ButtonsConfig<T>.() -> Unit) {
@@ -72,7 +72,7 @@ abstract class Dialog<T : Any> private constructor(
     }
 
     fun buildNodes(buildContext: BuildContext): List<Rib> =
-        nodeFactory?.let { factory ->
+        ribFactory?.let { factory ->
             val clientParams = buildContext.copy(
                 /**
                  * Children inside dialogs behaved like root nodes so far in that they were

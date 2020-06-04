@@ -2,23 +2,23 @@ package com.badoo.ribs.routing.action
 
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.NodeFactory
+import com.badoo.ribs.core.builder.RibFactory
 
 open class AttachRibRoutingAction(
-    private val nodeFactory: NodeFactory
+    private val ribFactory: RibFactory
 ) : RoutingAction {
 
     override val nbNodesToBuild: Int = 1
 
     override fun buildNodes(buildContexts: List<BuildContext>): List<Rib> =
         listOf(
-            nodeFactory.invoke(
+            ribFactory.invoke(
                 buildContexts.first()
             )
         )
 
     companion object {
-        fun attach(nodeFactory: NodeFactory): RoutingAction =
-            AttachRibRoutingAction(nodeFactory)
+        fun attach(ribFactory: RibFactory): RoutingAction =
+            AttachRibRoutingAction(ribFactory)
     }
 }

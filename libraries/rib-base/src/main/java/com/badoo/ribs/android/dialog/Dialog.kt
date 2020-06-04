@@ -1,6 +1,6 @@
 package com.badoo.ribs.android.dialog
 
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext

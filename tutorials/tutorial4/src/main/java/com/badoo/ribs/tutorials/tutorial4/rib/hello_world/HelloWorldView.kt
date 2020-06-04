@@ -4,7 +4,7 @@ import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.customisation.inflate

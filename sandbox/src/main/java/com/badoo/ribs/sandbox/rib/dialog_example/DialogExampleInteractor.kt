@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.dialog_example
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams

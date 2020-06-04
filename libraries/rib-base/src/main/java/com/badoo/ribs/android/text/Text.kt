@@ -1,4 +1,4 @@
-package com.badoo.ribs.android
+package com.badoo.ribs.android.text
 
 import android.content.Context
 
@@ -16,7 +16,8 @@ interface Text {
             string
     }
 
-    class Resource(private val resId: Int, private vararg val formatArgs: Any) : Text {
+    class Resource(private val resId: Int, private vararg val formatArgs: Any) :
+        Text {
         override fun resolve(context: Context): String =
             context.resources.getString(resId, *formatArgs)
     }

@@ -8,7 +8,7 @@ import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsConta
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.builder.HelloWorldBuilder
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.builder.BuildParams
 import dagger.Provides
 import io.reactivex.ObservableSource

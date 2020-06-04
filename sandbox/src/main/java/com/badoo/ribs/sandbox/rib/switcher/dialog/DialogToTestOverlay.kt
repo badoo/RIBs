@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.switcher.dialog
 
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable

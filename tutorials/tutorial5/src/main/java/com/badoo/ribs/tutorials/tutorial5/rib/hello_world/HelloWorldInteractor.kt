@@ -3,7 +3,7 @@ package com.badoo.ribs.tutorials.tutorial5.rib.hello_world
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.R

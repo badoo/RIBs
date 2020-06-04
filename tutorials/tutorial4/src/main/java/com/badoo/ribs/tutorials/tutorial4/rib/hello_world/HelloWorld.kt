@@ -1,6 +1,6 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.hello_world
 
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.tutorials.tutorial4.util.User
 import io.reactivex.functions.Consumer

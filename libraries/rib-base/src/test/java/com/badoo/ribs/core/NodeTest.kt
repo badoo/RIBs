@@ -20,6 +20,7 @@ import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.ViewAware
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
@@ -77,7 +78,7 @@ class NodeTest {
         router = mock()
         interactor = mock()
         node = createNode(viewFactory = viewFactory)
-        childAncestry = AncestryInfo.Child(node, AnyConfiguration)
+        childAncestry = AncestryInfo.Child(node, Routing(AnyConfiguration))
 
         addChildren()
         root1 = TestNode(
@@ -332,14 +333,14 @@ class NodeTest {
         // by default it's not started, should be on INITIALIZED
 
         val directChild = TestNode(
-                viewFactory = mock<TestViewFactory>(),
-                buildParams = testBuildParams(ancestryInfo = childAncestry)
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         val grandChildAncestryInfo: AncestryInfo =
-                AncestryInfo.Child(directChild, AnyConfiguration)
+            AncestryInfo.Child(directChild, Routing(AnyConfiguration))
         val grandChild = TestNode(
-                viewFactory = mock<TestViewFactory>(),
-                buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
         )
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
@@ -369,7 +370,8 @@ class NodeTest {
             buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         val grandChildAncestryInfo: AncestryInfo =
-                AncestryInfo.Child(directChild, AnyConfiguration)
+            AncestryInfo.Child(directChild, Routing(AnyConfiguration))
+
         val grandChild = TestNode(
             viewFactory = mock<TestViewFactory>(),
             buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
@@ -433,10 +435,11 @@ class NodeTest {
             buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         val grandChildAncestryInfo: AncestryInfo =
-                AncestryInfo.Child(directChild, AnyConfiguration)
+            AncestryInfo.Child(directChild, Routing(AnyConfiguration))
+
         val grandChild = TestNode(
-                viewFactory = mock<TestViewFactory>(),
-                buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
+            viewFactory = mock<TestViewFactory>(),
+            buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo)
         )
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)

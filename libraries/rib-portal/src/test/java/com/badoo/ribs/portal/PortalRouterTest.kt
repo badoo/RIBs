@@ -2,9 +2,7 @@ package com.badoo.ribs.portal
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.core.helper.TestNode
-import com.badoo.ribs.core.helper.TestRouter
-import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.impl.Empty
@@ -29,7 +27,7 @@ class PortalRouterTest {
         node1 = TestNode(router = TestRouter(routingActionForC2 = attach { node2 }))
 
         router = PortalRouter(
-            buildParams = testBuildParams(),
+            buildParams = BuildParams.Empty(),
             routingSource = Empty(),
             defaultRoutingAction = attach { node1 }
         )
@@ -41,9 +39,9 @@ class PortalRouterTest {
             Routing(
                 Portal(
                     listOf(
-                        Default,
-                        TestRouter.Configuration.C2,
-                        TestRouter.Configuration.C3
+                        Routing(Default),
+                        Routing(TestRouter.Configuration.C2),
+                        Routing(TestRouter.Configuration.C3)
                     )
                 )
             )

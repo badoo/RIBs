@@ -8,8 +8,8 @@ import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.portal.CanProvidePortal
-import com.badoo.ribs.customisation.RibCustomisationDirectory
-import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.customisation.RibCustomisationDirectory
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
@@ -51,7 +51,8 @@ class MainScreenTest {
     private val dialogExampleView = TestDialogExampleView()
     private val fooBarView = TestFooBarView()
     private val helloWorldView = TestHelloWorldView()
-    private val customisation = RibCustomisationDirectoryImpl().apply {
+    private val customisation = RibCustomisationDirectoryImpl()
+        .apply {
         put(Menu.Customisation::class, mock {
             on { viewFactory } doReturn object : MenuView.Factory {
                 override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {

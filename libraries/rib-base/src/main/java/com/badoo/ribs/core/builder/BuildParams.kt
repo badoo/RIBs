@@ -3,8 +3,8 @@ package com.badoo.ribs.core.builder
 import android.os.Bundle
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
-import com.badoo.ribs.customisation.RibCustomisation
-import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.customisation.RibCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import java.util.UUID
 
 

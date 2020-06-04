@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.customisation.inflate
+import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.menu.MenuView.Event

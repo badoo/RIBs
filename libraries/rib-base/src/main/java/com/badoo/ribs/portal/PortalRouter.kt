@@ -15,7 +15,7 @@ import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.portal.PortalRouter.Configuration.Overlay
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import kotlinx.android.parcel.Parcelize
 
 class PortalRouter(

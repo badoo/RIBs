@@ -6,7 +6,7 @@ import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.customisation.inflate
+import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.ViewModel

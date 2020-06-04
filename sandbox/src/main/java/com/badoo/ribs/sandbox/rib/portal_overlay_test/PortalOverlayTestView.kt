@@ -4,7 +4,7 @@ import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.customisation.inflate
+import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestView.Event
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestView.ViewModel

@@ -4,7 +4,7 @@ import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.portal.CanProvidePortal
-import com.badoo.ribs.customisation.RibCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Input
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Output
 import io.reactivex.Single

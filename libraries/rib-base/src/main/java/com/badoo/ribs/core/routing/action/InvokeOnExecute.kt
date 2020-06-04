@@ -1,13 +1,13 @@
 package com.badoo.ribs.core.routing.action
 
 class InvokeOnExecute(
-    private val onInvoke: () -> Unit
+    private val block: () -> Unit
 ) : RoutingAction {
 
     override val nbNodesToBuild: Int = 0
 
     override fun execute() {
-        onInvoke()
+        block()
     }
 
     companion object {

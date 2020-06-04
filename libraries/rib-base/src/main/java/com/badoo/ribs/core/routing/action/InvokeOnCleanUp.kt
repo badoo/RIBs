@@ -1,13 +1,13 @@
 package com.badoo.ribs.core.routing.action
 
 class InvokeOnCleanup(
-    private val f: () -> Unit
+    private val block: () -> Unit
 ) : RoutingAction {
 
     override val nbNodesToBuild: Int = 0
 
     override fun cleanup() {
-        f()
+        block()
     }
 
     companion object {

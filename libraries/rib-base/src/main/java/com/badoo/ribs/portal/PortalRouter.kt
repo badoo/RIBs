@@ -2,7 +2,7 @@ package com.badoo.ribs.portal
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.AncestryInfo
+import com.badoo.ribs.core.builder.AncestryInfo
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.builder.BuildContext

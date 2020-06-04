@@ -1,6 +1,6 @@
 package com.badoo.ribs.android.recyclerview.routing.action
 
-import com.badoo.ribs.core.ActivationMode
+import com.badoo.ribs.core.builder.ActivationMode
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.RibFactory

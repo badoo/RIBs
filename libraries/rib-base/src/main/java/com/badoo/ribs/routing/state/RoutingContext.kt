@@ -8,7 +8,7 @@ import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.core.AncestryInfo
+import com.badoo.ribs.core.builder.AncestryInfo
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.util.RIBs
 import kotlinx.android.parcel.Parcelize

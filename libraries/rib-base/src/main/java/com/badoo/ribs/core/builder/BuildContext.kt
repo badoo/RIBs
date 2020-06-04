@@ -1,9 +1,7 @@
 package com.badoo.ribs.core.builder
 
 import android.os.Bundle
-import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.AncestryInfo
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 

@@ -31,10 +31,10 @@ enum class ActivationMode {
      * The child's view is somewhere else in the view tree and it shouldn't be added to the parent's
      * view automatically.
      *
-     * No action is required by client code. View will be attached/detached
-     * automatically by the routing action itself upon execution.
+     * No action is required neither by client code nor the parent. View will be attached/detached
+     * automatically by some other mechanism that takes responsibility.
      *
-     * Example: dialog routing action
+     * Example: dialog routing action, which takes care of adding child into dialog itself
      */
-    BY_ROUTING_ACTION
+    NOOP
 }

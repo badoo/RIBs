@@ -30,7 +30,7 @@ internal class RoutingActivator<C : Parcelable>(
             when (child.activationMode) {
                 ActivationMode.ATTACH_TO_PARENT -> defaultActivator.activate(routing, child)
                 ActivationMode.CLIENT -> clientActivator.activate(routing, child)
-                ActivationMode.BY_ROUTING_ACTION -> Unit // intended to be no-op
+                ActivationMode.NOOP -> Unit // intended to be no-op
             }
         }
     }
@@ -40,7 +40,7 @@ internal class RoutingActivator<C : Parcelable>(
             when (child.activationMode) {
                 ActivationMode.ATTACH_TO_PARENT -> defaultActivator.deactivate(routing, child)
                 ActivationMode.CLIENT -> clientActivator.deactivate(routing, child)
-                ActivationMode.BY_ROUTING_ACTION -> Unit // intended to be no-op
+                ActivationMode.NOOP -> Unit // intended to be no-op
             }
         }
     }

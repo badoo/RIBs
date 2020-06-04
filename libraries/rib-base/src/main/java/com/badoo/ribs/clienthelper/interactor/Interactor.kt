@@ -26,7 +26,7 @@ abstract class Interactor<R : Rib, V : RibView>(
     SavesInstanceState,
     RequestCodeClient {
 
-    override val id: String
+    override val requestCodeClientId: String
         get() = buildParams.identifier.toString()
 
     override fun onDetach() {

@@ -97,7 +97,7 @@ class ActivityStarterTest {
 
     @Test
     fun startActivityForResult_startActivitiesWithCollisionThatReturnsOkResultAndRestart_returnsOkResultCode() {
-        assertThat(collisionIdentifiable1.id.hashCode()).isEqualTo(collisionIdentifiable2.id.hashCode())
+        assertThat(collisionIdentifiable1.requestCodeClientId.hashCode()).isEqualTo(collisionIdentifiable2.requestCodeClientId.hashCode())
         activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
         activityRule.activity.ignoreActivityStarts = true
 
@@ -172,7 +172,7 @@ class ActivityStarterTest {
 
     companion object {
         private val identifiable = TestRequestCodeClient()
-        private val collisionIdentifiable1 = TestRequestCodeClient(id = "Siblings")
-        private val collisionIdentifiable2 = TestRequestCodeClient(id = "Teheran")
+        private val collisionIdentifiable1 = TestRequestCodeClient(requestCodeClientId = "Siblings")
+        private val collisionIdentifiable2 = TestRequestCodeClient(requestCodeClientId = "Teheran")
     }
 }

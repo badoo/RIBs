@@ -42,7 +42,7 @@ class RequestCodeBasedEventStreamImplTest {
     @Test
     fun `publish - there are clients listening for the response - does not call unhandled request code handler`() {
         val stream = TestRequestCodeBasedEventStream()
-        val identifiable = TestRequestCodeClient(id = "test")
+        val identifiable = TestRequestCodeClient(requestCodeClientId = "test")
         val externalRequestCode = stream.convertToExternalRequestCode(identifiable, 1)
         val event = TestEvent(stream.convertToInternalRequestCode(externalRequestCode))
         disposables.add(stream.events(identifiable).subscribe())
@@ -52,7 +52,7 @@ class RequestCodeBasedEventStreamImplTest {
         verify(RIBs.errorHandler, never()).handleNoRequestCodeListenersError(any(), any(), any(), any())
     }
 
-    class TestRequestCodeClient(override val id: String) : RequestCodeClient
+    class TestRequestCodeClient(override val requestCodeClientId: String) : RequestCodeClient
 
     class TestEvent(override val requestCode: Int) : RequestCodeBasedEventStream.RequestCodeBasedEvent
 

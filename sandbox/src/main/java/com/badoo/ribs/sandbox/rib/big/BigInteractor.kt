@@ -13,6 +13,6 @@ class BigInteractor(
 ) {
 
     override fun onViewCreated(view: BigView, viewLifecycle: Lifecycle) {
-        view.accept(BigView.ViewModel("My id: " + id.replace("${BigInteractor::class.java.name}.", "")))
+        view.accept(BigView.ViewModel("My id: " + requestCodeClientId.replace("${BigInteractor::class.java.name}.", "")))
     }
 }

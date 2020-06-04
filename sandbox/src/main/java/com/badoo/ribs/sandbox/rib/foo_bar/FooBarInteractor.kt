@@ -40,7 +40,7 @@ class FooBarInteractor(
         }
 
         dummyViewInput.accept(
-            ViewModel("My id: " + id.replace("${FooBarInteractor::class.java.name}.", ""))
+            ViewModel("My id: " + requestCodeClientId.replace("${FooBarInteractor::class.java.name}.", ""))
         )
     }
 

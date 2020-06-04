@@ -40,7 +40,7 @@ class TestActivityStarter : ActivityStarter {
     override fun events(client: RequestCodeClient): Observable<ActivityStarter.ActivityResultEvent> =
         eventsRelay
             .filter { (identifiable, _) ->
-                identifiable.id == client.id
+                identifiable.requestCodeClientId == client.requestCodeClientId
             }
             .map { it.second }
 

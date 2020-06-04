@@ -2,5 +2,5 @@ package com.badoo.ribs.core
 
 interface RequestCodeClient {
 
-    val id: String
+    val requestCodeClientId: String
 }

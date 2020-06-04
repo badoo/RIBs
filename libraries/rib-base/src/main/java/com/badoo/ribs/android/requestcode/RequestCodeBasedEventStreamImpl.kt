@@ -13,7 +13,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val events = HashMap<Int, Relay<T>>()
 
     override fun events(client: RequestCodeClient): Observable<T> {
-        val id = requestCodeRegistry.generateGroupId(client.id)
+        val id = requestCodeRegistry.generateGroupId(client.requestCodeClientId)
         ensureSubject(id)
 
         return events.getValue(id)
@@ -53,5 +53,5 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         requestCodeRegistry.resolveRequestCode(this)
 
     protected fun RequestCodeClient.forgeExternalRequestCode(internalRequestCode: Int) =
-        requestCodeRegistry.generateRequestCode(this.id, internalRequestCode)
+        requestCodeRegistry.generateRequestCode(this.requestCodeClientId, internalRequestCode)
 }

@@ -33,7 +33,6 @@ androidExtensions {
 
 dependencies {
     implementation deps.external.kotlinStdlib
-
     kapt deps.apt.daggerCompiler
     compileOnly deps.apt.javax
 
@@ -42,13 +41,13 @@ dependencies {
     implementation deps.android.design
     implementation deps.android.percent
 
-    implementation project(":libraries:rib-android")
-
     implementation deps.external.dagger
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
+
+    implementation project(":libraries:rib-base")
 
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.junit

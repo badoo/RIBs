@@ -5,7 +5,7 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.builder.NodeFactory
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
-import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
+import com.badoo.ribs.dialog.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.core.routing.Routing

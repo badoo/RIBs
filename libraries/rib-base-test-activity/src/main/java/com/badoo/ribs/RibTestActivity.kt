@@ -3,7 +3,7 @@ package com.badoo.ribs
 import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.common.rib.test.activity.R
-import com.badoo.ribs.android.CanProvideActivityStarter
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib

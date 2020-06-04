@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.app
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
-import com.badoo.ribs.android.ActivityStarter
+import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.builder.BuildContext

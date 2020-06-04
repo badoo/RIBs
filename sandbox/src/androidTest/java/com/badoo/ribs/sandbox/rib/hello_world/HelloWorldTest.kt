@@ -7,7 +7,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.RibTestActivity
-import com.badoo.ribs.android.ActivityStarter
+import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.sandbox.R

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.badoo.ribs.android.activitystarter.ActivityStarterImpl
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.android.dialog.Dialog

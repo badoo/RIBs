@@ -4,7 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.app.Instrumentation
 import android.content.Intent
 import android.view.ViewGroup
-import com.badoo.ribs.android.CanProvideActivityStarter
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.portal.CanProvidePortal

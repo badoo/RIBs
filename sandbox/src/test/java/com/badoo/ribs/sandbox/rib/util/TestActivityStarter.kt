@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.util
 import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
-import com.badoo.ribs.android.ActivityStarter
+import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay

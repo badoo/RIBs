@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
-import com.badoo.ribs.android.CanProvideActivityStarter
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler

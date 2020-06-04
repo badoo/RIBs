@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.util
 
-import com.badoo.ribs.android.ActivityStarter
-import com.badoo.ribs.android.CanProvideActivityStarter
+import com.badoo.ribs.android.activitystarter.ActivityStarter
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.CanProvidePermissionRequester
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.CanProvidePortal

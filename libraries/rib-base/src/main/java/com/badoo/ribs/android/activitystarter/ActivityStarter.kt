@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.badoo.ribs.android
+package com.badoo.ribs.android.activitystarter
 
 import android.content.Context
 import android.content.Intent
-import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
+import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
 import com.badoo.ribs.android.requestcode.RequestCodeClient
@@ -26,8 +26,7 @@ import com.badoo.ribs.android.requestcode.RequestCodeClient
  * Start activities. A much cleaner dependency than an entire activity or context, and easier to
  * inject and mock in tests.
  */
-interface ActivityStarter :
-    RequestCodeBasedEventStream<ActivityResultEvent> {
+interface ActivityStarter : RequestCodeBasedEventStream<ActivityResultEvent> {
 
     fun startActivity(createIntent: Context.() -> Intent)
 

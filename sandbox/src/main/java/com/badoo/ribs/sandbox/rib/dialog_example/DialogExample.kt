@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.dialog_example
 
-import com.badoo.ribs.clienthelper.Connectable
+import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.customisation.RibCustomisation
 import com.badoo.ribs.android.dialog.CanProvideDialogLauncher

@@ -1,4 +1,4 @@
-package com.badoo.ribs.clienthelper
+package com.badoo.ribs.clienthelper.connector
 
 import com.jakewharton.rxrelay2.Relay
 

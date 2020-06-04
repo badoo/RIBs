@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.node.foo_bar
 
-import com.badoo.ribs.clienthelper.Connectable
+import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.customisation.RibCustomisation

@@ -5,8 +5,8 @@ import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.android.lifecycle.helper.NodeState
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay

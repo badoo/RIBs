@@ -1,12 +1,12 @@
 package com.badoo.ribs.core.helper
 
 import android.os.Bundle
-import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
-import com.badoo.ribs.core.ActivationMode
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.AncestryInfo
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.modality.ActivationMode
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import java.util.UUID
 
 fun testBuildParams(

@@ -1,6 +1,7 @@
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.helper.TestBuilder
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.nhaarman.mockitokotlin2.eq

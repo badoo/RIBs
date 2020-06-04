@@ -2,9 +2,9 @@ package com.badoo.ribs.test.util.ribs.root
 
 import androidx.lifecycle.Lifecycle
 import android.os.Bundle
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.android.dialog.DialogLauncher

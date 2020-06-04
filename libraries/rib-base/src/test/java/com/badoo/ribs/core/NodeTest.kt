@@ -8,7 +8,6 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestNode
@@ -17,6 +16,8 @@ import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.routing.router.Router

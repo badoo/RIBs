@@ -1,6 +1,6 @@
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.helper.TestBuilder
 import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.plugin.RibAware

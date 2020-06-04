@@ -1,6 +1,6 @@
 package com.badoo.ribs.test.util.ribs
 
-import com.badoo.ribs.core.builder.RibFactory
+import com.badoo.ribs.android.dialog.RibFactory
 import com.badoo.ribs.android.dialog.Dialog
 
 

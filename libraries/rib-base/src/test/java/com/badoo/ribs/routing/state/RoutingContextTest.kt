@@ -2,19 +2,19 @@ package com.badoo.ribs.routing.state
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.builder.BuildContext
+import com.badoo.ribs.core.modality.ActivationMode
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.RoutingContext.Unresolved
-import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.core.AncestryInfo
-import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doReturn

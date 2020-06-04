@@ -1,8 +1,8 @@
 package com.badoo.ribs.test.util.ribs.root
 
 import android.os.Parcelable
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.RibFactory
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.action.RibFactory
 import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.action.CompositeRoutingAction.Companion.composite
 import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction.Companion.showDialog

@@ -1,6 +1,6 @@
 package com.badoo.ribs.routing.state
 
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3

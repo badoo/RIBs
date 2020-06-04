@@ -4,7 +4,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
 import com.badoo.ribs.android.ActivityStarter
-import com.badoo.ribs.core.Identifiable
+import com.badoo.ribs.core.RequestCodeClient
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import com.nhaarman.mockitokotlin2.doReturn
@@ -19,13 +19,13 @@ class TestActivityStarter : ActivityStarter {
     private val intents: MutableList<Intent> = mutableListOf()
     private val responses: MutableList<Pair<Condition<Intent>, ActivityResult>> = mutableListOf()
 
-    private val eventsRelay: Relay<Pair<Identifiable, ActivityStarter.ActivityResultEvent>> = PublishRelay.create()
+    private val eventsRelay: Relay<Pair<RequestCodeClient, ActivityStarter.ActivityResultEvent>> = PublishRelay.create()
 
     override fun startActivity(createIntent: Context.() -> Intent) {
         intents += testContext.createIntent()
     }
 
-    override fun startActivityForResult(client: Identifiable, requestCode: Int, createIntent: Context.() -> Intent) {
+    override fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent) {
         val intent = testContext.createIntent()
 
         intents += intent
@@ -37,7 +37,7 @@ class TestActivityStarter : ActivityStarter {
         eventsRelay.accept(client to ActivityStarter.ActivityResultEvent(requestCode, result.resultCode, result.resultData))
     }
 
-    override fun events(client: Identifiable): Observable<ActivityStarter.ActivityResultEvent> =
+    override fun events(client: RequestCodeClient): Observable<ActivityStarter.ActivityResultEvent> =
         eventsRelay
             .filter { (identifiable, _) ->
                 identifiable.id == client.id

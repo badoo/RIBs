@@ -12,10 +12,10 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
-import com.badoo.ribs.core.Identifiable
+import com.badoo.ribs.core.RequestCodeClient
 import com.badoo.ribs.test.util.OtherActivity
 import com.badoo.ribs.test.util.TestActivity
-import com.badoo.ribs.test.util.TestIdentifiable
+import com.badoo.ribs.test.util.TestRequestCodeClient
 import com.badoo.ribs.test.util.restartActivitySync
 import com.badoo.ribs.test.util.subscribeOnTestObserver
 import io.reactivex.observers.TestObserver
@@ -142,7 +142,7 @@ class ActivityStarterTest {
 
     @Test
     fun startActivityForResult_startActivityWhenWeHaveMultipleIdentifiers_returnsResultEventOnlyForOne() {
-        val otherIdentifiable = TestIdentifiable("other")
+        val otherIdentifiable = TestRequestCodeClient("other")
         givenResultForActivity<OtherActivity>(resultCode = RESULT_OK)
         val otherIdentifiableObserver = activityRule.activity.activityStarter.events(otherIdentifiable).subscribeOnTestObserver()
         val observer = activityRule.activity.activityStarter.events(identifiable).subscribeOnTestObserver()
@@ -164,15 +164,15 @@ class ActivityStarterTest {
         intending(hasComponent(T::class.java.name)).respondWith(Instrumentation.ActivityResult(resultCode, data))
     }
 
-    private fun startOtherActivity(identifiable: Identifiable, requestCode: Int) {
-        activityRule.activity.activityStarter.startActivityForResult(identifiable, requestCode = requestCode) {
+    private fun startOtherActivity(client: RequestCodeClient, requestCode: Int) {
+        activityRule.activity.activityStarter.startActivityForResult(client, requestCode = requestCode) {
             Intent(this, OtherActivity::class.java)
         }
     }
 
     companion object {
-        private val identifiable = TestIdentifiable()
-        private val collisionIdentifiable1 = TestIdentifiable(id = "Siblings")
-        private val collisionIdentifiable2 = TestIdentifiable(id = "Teheran")
+        private val identifiable = TestRequestCodeClient()
+        private val collisionIdentifiable1 = TestRequestCodeClient(id = "Siblings")
+        private val collisionIdentifiable2 = TestRequestCodeClient(id = "Teheran")
     }
 }

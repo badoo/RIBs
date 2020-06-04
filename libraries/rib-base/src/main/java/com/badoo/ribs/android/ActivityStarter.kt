@@ -20,7 +20,7 @@ import android.content.Intent
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import com.badoo.ribs.core.Identifiable
+import com.badoo.ribs.core.RequestCodeClient
 
 /**
  * Start activities. A much cleaner dependency than an entire activity or context, and easier to
@@ -31,7 +31,7 @@ interface ActivityStarter :
 
     fun startActivity(createIntent: Context.() -> Intent)
 
-    fun startActivityForResult(client: Identifiable, requestCode: Int, createIntent: Context.() -> Intent)
+    fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent)
 
     data class ActivityResultEvent(
         override val requestCode: Int,

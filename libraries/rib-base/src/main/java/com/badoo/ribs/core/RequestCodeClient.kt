@@ -1,6 +1,6 @@
 package com.badoo.ribs.core
 
-interface Identifiable {
+interface RequestCodeClient {
 
     val id: String
 }

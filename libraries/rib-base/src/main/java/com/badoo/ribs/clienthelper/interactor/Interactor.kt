@@ -1,6 +1,6 @@
 package com.badoo.ribs.clienthelper.interactor
 
-import com.badoo.ribs.core.Identifiable
+import com.badoo.ribs.core.RequestCodeClient
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildParams
@@ -18,7 +18,7 @@ abstract class Interactor<R : Rib, V : RibView>(
     buildParams: BuildParams<*>,
     private val disposables: Disposable? = null,
     private val ribAware: RibAware<R> = RibAwareImpl()
-) : Identifiable by buildParams.identifier,
+) : RequestCodeClient by buildParams.identifier,
     RibAware<R> by ribAware,
     BackPressHandler,
     NodeLifecycleAware,

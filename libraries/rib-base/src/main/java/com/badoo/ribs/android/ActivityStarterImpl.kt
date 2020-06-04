@@ -6,7 +6,7 @@ import android.content.Intent
 import com.badoo.ribs.android.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
-import com.badoo.ribs.core.Identifiable
+import com.badoo.ribs.core.RequestCodeClient
 
 class ActivityStarterImpl(
     private val activity: Activity,
@@ -19,7 +19,7 @@ class ActivityStarterImpl(
         activity.startActivity(activity.createIntent())
     }
 
-    override fun startActivityForResult(client: Identifiable, requestCode: Int, createIntent: Context.() -> Intent) {
+    override fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent) {
         activity.startActivityForResult(
             activity.createIntent(),
             client.forgeExternalRequestCode(requestCode)

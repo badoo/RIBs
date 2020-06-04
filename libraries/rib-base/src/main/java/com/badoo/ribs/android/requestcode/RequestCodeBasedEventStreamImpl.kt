@@ -1,7 +1,7 @@
 package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import com.badoo.ribs.core.Identifiable
+import com.badoo.ribs.core.RequestCodeClient
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
@@ -12,7 +12,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
 ) : RequestCodeBasedEventStream<T> {
     private val events = HashMap<Int, Relay<T>>()
 
-    override fun events(client: Identifiable): Observable<T> {
+    override fun events(client: RequestCodeClient): Observable<T> {
         val id = requestCodeRegistry.generateGroupId(client.id)
         ensureSubject(id)
 
@@ -52,6 +52,6 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     protected fun Int.toInternalRequestCode() =
         requestCodeRegistry.resolveRequestCode(this)
 
-    protected fun Identifiable.forgeExternalRequestCode(internalRequestCode: Int) =
+    protected fun RequestCodeClient.forgeExternalRequestCode(internalRequestCode: Int) =
         requestCodeRegistry.generateRequestCode(this.id, internalRequestCode)
 }

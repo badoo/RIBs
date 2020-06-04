@@ -11,7 +11,7 @@ import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.Cancelled
 import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
-import com.badoo.ribs.core.Identifiable
+import com.badoo.ribs.core.RequestCodeClient
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
 class PermissionRequesterImpl(
@@ -22,7 +22,7 @@ class PermissionRequesterImpl(
     PermissionRequestResultHandler {
 
     override fun checkPermissions(
-        client: Identifiable,
+        client: RequestCodeClient,
         permissions: Array<String>
     ) : CheckPermissionsResult {
         val granted = mutableListOf<String>()
@@ -52,7 +52,7 @@ class PermissionRequesterImpl(
 
     @TargetApi(Build.VERSION_CODES.M)
     override fun requestPermissions(
-        client: Identifiable,
+        client: RequestCodeClient,
         requestCode: Int,
         permissions: Array<String>
     ) {

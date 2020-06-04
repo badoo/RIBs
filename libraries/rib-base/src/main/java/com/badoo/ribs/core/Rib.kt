@@ -8,7 +8,7 @@ interface Rib {
 
     data class Identifier(
         val uuid: UUID
-    ) : Identifiable {
+    ) : RequestCodeClient {
 
         override val id: String
             get() = uuid.toString()

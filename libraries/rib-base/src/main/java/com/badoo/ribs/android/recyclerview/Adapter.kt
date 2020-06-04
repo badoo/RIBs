@@ -10,9 +10,9 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.RoutingSource
-import com.badoo.ribs.core.routing.activator.ChildActivator
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.routing.activator.ChildActivator
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.source.impl.Pool
 import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer
 import java.lang.ref.WeakReference
@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference
 internal class Adapter<T : Parcelable>(
     private val hostingStrategy: RecyclerViewHost.HostingStrategy,
     initialEntries: List<Entry<T>>? = null,
-    private val routingSource: RoutingSource.Pool<T>,
+    private val routingSource: Pool<T>,
     private val feature: RecyclerViewHostFeature<T>,
     private val viewHolderLayoutParams: FrameLayout.LayoutParams
 ) : RecyclerView.Adapter<Adapter.ViewHolder>(),

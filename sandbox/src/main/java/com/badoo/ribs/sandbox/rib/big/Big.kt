@@ -1,17 +1,14 @@
 package com.badoo.ribs.sandbox.rib.big
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.customisation.CanProvidePortal
-import com.badoo.ribs.customisation.RibCustomisation
+import com.badoo.ribs.portal.CanProvidePortal
+import com.badoo.ribs.core.customisation.RibCustomisation
 
 interface Big : Rib {
 
-    interface Dependency :
-        CanProvidePortal
+    interface Dependency : CanProvidePortal
 
     class Customisation(
         val viewFactory: BigView.Factory = BigViewImpl.Factory()
     ) : RibCustomisation
-
-    interface Workflow
 }

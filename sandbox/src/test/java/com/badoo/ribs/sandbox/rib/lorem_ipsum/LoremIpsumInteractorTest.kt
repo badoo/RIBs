@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.lorem_ipsum
 
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

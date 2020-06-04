@@ -1,8 +1,8 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.option_selector
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.customisation.RibCustomisation
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.core.customisation.RibCustomisation
+import com.badoo.ribs.android.text.Text
 import io.reactivex.functions.Consumer
 
 interface OptionSelector : Rib {

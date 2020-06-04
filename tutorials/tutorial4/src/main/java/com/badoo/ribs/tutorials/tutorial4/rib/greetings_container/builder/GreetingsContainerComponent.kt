@@ -1,7 +1,7 @@
 package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.builder
 
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainer
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld
 import dagger.BindsInstance

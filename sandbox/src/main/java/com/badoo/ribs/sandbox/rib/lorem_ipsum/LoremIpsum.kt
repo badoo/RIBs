@@ -1,8 +1,8 @@
 package com.badoo.ribs.sandbox.rib.lorem_ipsum
 
-import com.badoo.ribs.clienthelper.Connectable
+import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.customisation.RibCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum.Input
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum.Output
 

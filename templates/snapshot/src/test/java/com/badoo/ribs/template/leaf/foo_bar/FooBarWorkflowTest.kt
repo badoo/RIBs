@@ -1,9 +1,6 @@
 package com.badoo.ribs.template.leaf.foo_bar
 
-import com.badoo.ribs.core.builder.BuildContext
-import com.nhaarman.mockitokotlin2.mock
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.core.modality.BuildContext
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

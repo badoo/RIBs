@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.portal_overlay_test
 
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.clienthelper.interactor.Interactor
+import com.badoo.ribs.core.modality.BuildParams
 
 class PortalOverlayTestInteractor(
     buildParams: BuildParams<Nothing?>

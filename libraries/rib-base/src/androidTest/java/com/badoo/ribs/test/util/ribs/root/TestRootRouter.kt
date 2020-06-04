@@ -1,18 +1,18 @@
 package com.badoo.ribs.test.util.ribs.root
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.NodeFactory
-import com.badoo.ribs.core.routing.RoutingSource
-import com.badoo.ribs.core.routing.RoutingSource.Permanent.Companion.permanent
-import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
-import com.badoo.ribs.core.routing.action.DialogRoutingAction.Companion.showDialog
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
-import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.action.RibFactory
+import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
+import com.badoo.ribs.routing.action.CompositeRoutingAction.Companion.composite
+import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction.Companion.showDialog
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.test.util.ribs.TestRibDialog
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content
@@ -23,11 +23,11 @@ import kotlinx.android.parcel.Parcelize
 class TestRootRouter(
     buildParams: BuildParams<*>,
     routingSource: RoutingSource<Configuration>,
-    private val builderPermanent1: NodeFactory,
-    private val builderPermanent2: NodeFactory,
-    private val builder3: NodeFactory,
-    private val builder1: NodeFactory,
-    private val builder2: NodeFactory,
+    private val builderPermanent1: RibFactory,
+    private val builderPermanent2: RibFactory,
+    private val builder3: RibFactory,
+    private val builder1: RibFactory,
+    private val builder2: RibFactory,
     private val dialogLauncher: DialogLauncher,
     permanentParts: List<Permanent>
 ) : Router<Configuration>(

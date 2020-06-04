@@ -1,12 +1,12 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
-import com.badoo.ribs.android.CanProvideActivityStarter
-import com.badoo.ribs.android.CanProvidePermissionRequester
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
+import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.customisation.CanProvidePortal
-import com.badoo.ribs.customisation.RibCustomisation
-import com.badoo.ribs.dialog.CanProvideDialogLauncher
+import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.portal.CanProvidePortal
+import com.badoo.ribs.core.customisation.RibCustomisation
+import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld

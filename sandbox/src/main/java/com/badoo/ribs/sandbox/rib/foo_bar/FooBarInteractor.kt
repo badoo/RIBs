@@ -1,15 +1,15 @@
 package com.badoo.ribs.sandbox.rib.foo_bar
 
 import android.Manifest
-import com.badoo.ribs.core.builder.BuildParams
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
-import com.badoo.ribs.android.PermissionRequester
-import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent
-import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.Cancelled
-import com.badoo.ribs.android.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
-import com.badoo.ribs.core.Interactor
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.Cancelled
+import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
+import com.badoo.ribs.clienthelper.interactor.Interactor
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.RequestPermissionsButtonClicked
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.ViewModel
@@ -40,7 +40,7 @@ class FooBarInteractor(
         }
 
         dummyViewInput.accept(
-            ViewModel("My id: " + id.replace("${FooBarInteractor::class.java.name}.", ""))
+            ViewModel("My id: " + requestCodeClientId.replace("${FooBarInteractor::class.java.name}.", ""))
         )
     }
 

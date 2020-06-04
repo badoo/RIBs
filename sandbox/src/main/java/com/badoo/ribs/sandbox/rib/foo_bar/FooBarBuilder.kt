@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.foo_bar
 
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.SimpleBuilder
+import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.foo_bar.viewplugin.ParentLongClickListener
 
 class FooBarBuilder(

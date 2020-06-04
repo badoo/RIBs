@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.app
 
-import com.badoo.ribs.customisation.RibCustomisationDirectory
-import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.customisation.RibCustomisationDirectory
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar

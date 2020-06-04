@@ -27,9 +27,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.core.Rib.Identifier
-import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
+import com.badoo.ribs.core.lifecycle.LifecycleManager
+import com.badoo.ribs.core.modality.ActivationMode
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.NodeAware
@@ -42,7 +45,6 @@ import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.BehaviorRelay

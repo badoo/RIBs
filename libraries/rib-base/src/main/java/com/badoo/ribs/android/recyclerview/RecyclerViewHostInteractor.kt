@@ -3,8 +3,8 @@ package com.badoo.ribs.android.recyclerview
 import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
-import com.badoo.ribs.core.Interactor
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.clienthelper.interactor.Interactor
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 
 internal class RecyclerViewHostInteractor<T : Parcelable>(

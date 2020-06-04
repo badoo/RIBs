@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.foo_bar
 
-import com.badoo.ribs.android.PermissionRequester
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.core.modality.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before

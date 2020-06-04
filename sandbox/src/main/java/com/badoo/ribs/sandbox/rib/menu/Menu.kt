@@ -1,9 +1,9 @@
 package com.badoo.ribs.sandbox.rib.menu
 
 import android.os.Parcelable
-import com.badoo.ribs.clienthelper.Connectable
+import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.customisation.RibCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input
 import com.badoo.ribs.sandbox.rib.menu.Menu.Output
 import kotlinx.android.parcel.Parcelize

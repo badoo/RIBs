@@ -1,11 +1,11 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
-import com.badoo.ribs.core.routing.action.DialogRoutingAction
-import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
@@ -38,7 +38,7 @@ class SwitcherRouterTest {
     private val router =
         SwitcherRouter(
             buildParams = BuildParams.Empty(),
-            routingSource = RoutingSource.Empty(),
+            routingSource = Empty(),
             transitionHandler = null,
             builders = builders,
             dialogLauncher = dialogLauncher,

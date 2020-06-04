@@ -1,13 +1,13 @@
 package com.badoo.ribs.core
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.routing.portal.AncestryInfo
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Before

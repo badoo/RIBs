@@ -1,6 +1,6 @@
 package com.badoo.ribs.sandbox.rib.big.builder
 
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.big.Big
 import com.badoo.ribs.sandbox.rib.big.BigNode
 import com.badoo.ribs.sandbox.rib.small.Small

@@ -1,7 +1,7 @@
 package com.badoo.ribs.test.util
 
-import com.badoo.ribs.dialog.Dialog
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.Dialog
+import com.badoo.ribs.android.dialog.DialogLauncher
 
 class NoOpDialogLauncher : DialogLauncher {
     

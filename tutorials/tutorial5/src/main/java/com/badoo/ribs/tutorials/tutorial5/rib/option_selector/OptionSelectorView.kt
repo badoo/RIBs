@@ -8,11 +8,11 @@ import android.widget.RadioGroup
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.customisation.inflate
+import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.ViewModel
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

@@ -1,7 +1,6 @@
 package com.badoo.ribs.android.requestcode
 
-import com.badoo.ribs.core.Identifiable
- import com.badoo.ribs.util.RIBs
+import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
@@ -42,7 +41,7 @@ class RequestCodeBasedEventStreamImplTest {
     @Test
     fun `publish - there are clients listening for the response - does not call unhandled request code handler`() {
         val stream = TestRequestCodeBasedEventStream()
-        val identifiable = TestIdentifiable(id = "test")
+        val identifiable = TestRequestCodeClient(requestCodeClientId = "test")
         val externalRequestCode = stream.convertToExternalRequestCode(identifiable, 1)
         val event = TestEvent(stream.convertToInternalRequestCode(externalRequestCode))
         disposables.add(stream.events(identifiable).subscribe())
@@ -52,7 +51,7 @@ class RequestCodeBasedEventStreamImplTest {
         verify(RIBs.errorHandler, never()).handleNoRequestCodeListenersError(any(), any(), any(), any())
     }
 
-    class TestIdentifiable(override val id: String) : Identifiable
+    class TestRequestCodeClient(override val requestCodeClientId: String) : RequestCodeClient
 
     class TestEvent(override val requestCode: Int) : RequestCodeBasedEventStream.RequestCodeBasedEvent
 
@@ -65,8 +64,8 @@ class RequestCodeBasedEventStreamImplTest {
         fun convertToInternalRequestCode(externalRequestCode: Int): Int =
             externalRequestCode.toInternalRequestCode()
 
-        fun convertToExternalRequestCode(identifiable: Identifiable, internalRequestCode: Int): Int =
-            identifiable.forgeExternalRequestCode(internalRequestCode)
+        fun convertToExternalRequestCode(client: RequestCodeClient, internalRequestCode: Int): Int =
+            client.forgeExternalRequestCode(internalRequestCode)
 
     }
 }

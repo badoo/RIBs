@@ -226,7 +226,7 @@ Create `InputToViewModel` in the `mapper` package:
 ```kotlin
 package com.badoo.ribs.tutorials.tutorial4.rib.hello_world.mapper
 
-import com.badoo.ribs.android.Text
+import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.tutorials.tutorial4.R
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.HelloWorld.Input.UpdateButtonText

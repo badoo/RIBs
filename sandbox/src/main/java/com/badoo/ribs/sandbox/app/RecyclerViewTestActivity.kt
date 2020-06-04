@@ -6,24 +6,24 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.badoo.ribs.android.ActivityStarter
-import com.badoo.ribs.android.PermissionRequester
 import com.badoo.ribs.android.RibActivity
+import com.badoo.ribs.android.activitystarter.ActivityStarter
+import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.recyclerview.LayoutManagerFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewFactory
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
+import com.badoo.ribs.android.recyclerview.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
-import com.badoo.ribs.core.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.RoutingResolver
-import com.badoo.ribs.core.routing.history.Routing
-import com.badoo.ribs.core.routing.portal.Portal
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.portal.Portal
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarBuilder
@@ -80,7 +80,8 @@ class RecyclerViewTestActivity : RibActivity() {
             }
         )
 
-    private val resolver = object : RoutingResolver<Item> {
+    private val resolver = object :
+        RoutingResolver<Item> {
         override fun resolve(routing: Routing<Item>): RoutingAction =
             when (routing.configuration) {
                 Item.LoremIpsumItem -> recyclerView { loremIpsumBuilder.build(it) }

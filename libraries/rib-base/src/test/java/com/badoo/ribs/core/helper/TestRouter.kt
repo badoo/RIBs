@@ -1,11 +1,11 @@
 package com.badoo.ribs.core.helper
 
 import android.os.Parcelable
-import com.badoo.ribs.core.Router
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.configuration.feature.BackStackFeature
-import com.badoo.ribs.core.routing.history.Routing
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.Routing
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 

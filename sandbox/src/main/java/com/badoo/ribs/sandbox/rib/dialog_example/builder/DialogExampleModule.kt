@@ -1,15 +1,15 @@
 @file:Suppress("LongParameterList")
 package com.badoo.ribs.sandbox.rib.dialog_example.builder
 
-import com.badoo.ribs.core.builder.BuildParams
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleInteractor
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleNode
-import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.LazyDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.RibDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.SimpleDialog
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleConnections
+import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumBuilder
 import dagger.Provides
 

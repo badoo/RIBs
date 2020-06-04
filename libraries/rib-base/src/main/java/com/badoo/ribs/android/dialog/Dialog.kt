@@ -1,11 +1,11 @@
-package com.badoo.ribs.dialog
+package com.badoo.ribs.android.dialog
 
 import com.badoo.ribs.android.Text
 import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.NodeFactory
-import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
+import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 

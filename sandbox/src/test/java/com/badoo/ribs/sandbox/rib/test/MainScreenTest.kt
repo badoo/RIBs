@@ -10,7 +10,7 @@ import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.customisation.RibCustomisationDirectory
 import com.badoo.ribs.customisation.RibCustomisationDirectoryImpl
-import com.badoo.ribs.dialog.CanProvideDialogLauncher
+import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView

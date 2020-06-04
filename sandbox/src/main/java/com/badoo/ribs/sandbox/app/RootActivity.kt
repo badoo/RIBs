@@ -16,7 +16,7 @@ import com.badoo.ribs.portal.PortalRouter
 import com.badoo.ribs.core.routing.transition.handler.CrossFader
 import com.badoo.ribs.core.routing.transition.handler.Slider
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.Switcher

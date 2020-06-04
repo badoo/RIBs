@@ -23,7 +23,7 @@ import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.resolver.RoutingResolver
 import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.portal.Portal
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarBuilder

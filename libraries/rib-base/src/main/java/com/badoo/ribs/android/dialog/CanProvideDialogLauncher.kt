@@ -1,4 +1,4 @@
-package com.badoo.ribs.dialog
+package com.badoo.ribs.android.dialog
 
 interface CanProvideDialogLauncher {
     fun dialogLauncher(): DialogLauncher

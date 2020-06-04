@@ -7,9 +7,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.dialog.Dialog
-import com.badoo.ribs.dialog.DialogLauncher
-import com.badoo.ribs.dialog.toAlertDialog
+import com.badoo.ribs.android.dialog.Dialog
+import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.toAlertDialog
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.WeakHashMap

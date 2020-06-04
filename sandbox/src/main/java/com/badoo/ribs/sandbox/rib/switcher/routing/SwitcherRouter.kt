@@ -6,13 +6,13 @@ import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.core.routing.action.CompositeRoutingAction.Companion.composite
-import com.badoo.ribs.dialog.routing.action.DialogRoutingAction.Companion.showDialog
+import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction.Companion.showDialog
 import com.badoo.ribs.core.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.core.routing.action.RoutingAction
 import com.badoo.ribs.core.routing.Routing
 import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.routing.source.RoutingSource.Companion.permanent
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem

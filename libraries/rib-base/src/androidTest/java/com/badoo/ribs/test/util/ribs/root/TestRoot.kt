@@ -7,7 +7,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.routing.source.RoutingSource
 import com.badoo.ribs.core.routing.source.impl.Empty
-import com.badoo.ribs.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildView

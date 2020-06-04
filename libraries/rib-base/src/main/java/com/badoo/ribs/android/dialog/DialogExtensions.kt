@@ -1,10 +1,10 @@
-package com.badoo.ribs.dialog
+package com.badoo.ribs.android.dialog
 
 import android.content.Context
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import com.badoo.ribs.dialog.Dialog.CancellationPolicy.Cancellable
-import com.badoo.ribs.dialog.Dialog.CancellationPolicy.NonCancellable
+import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
+import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
 
 fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> Unit) : AlertDialog =
     AlertDialog.Builder(context)

@@ -11,7 +11,7 @@ import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.core.routing.source.backstack.operation.pop
 import com.badoo.ribs.core.routing.source.backstack.operation.push
 import com.badoo.ribs.core.routing.source.backstack.operation.pushOverlay
-import com.badoo.ribs.dialog.Dialog
+import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem

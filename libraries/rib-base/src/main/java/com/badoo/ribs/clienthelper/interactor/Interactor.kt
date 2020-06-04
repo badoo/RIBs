@@ -15,16 +15,19 @@ import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable
 
 abstract class Interactor<R : Rib, V : RibView>(
-    buildParams: BuildParams<*>,
+    private val buildParams: BuildParams<*>,
     private val disposables: Disposable? = null,
     private val ribAware: RibAware<R> = RibAwareImpl()
-) : RequestCodeClient by buildParams.identifier,
-    RibAware<R> by ribAware,
-    BackPressHandler,
+) : RibAware<R> by ribAware,
+    ViewAware<V>,
     NodeLifecycleAware,
     SubtreeChangeAware,
+    BackPressHandler,
     SavesInstanceState,
-    ViewAware<V> {
+    RequestCodeClient {
+
+    override val id: String
+        get() = buildParams.identifier.toString()
 
     override fun onDetach() {
         disposables?.dispose()

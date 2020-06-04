@@ -113,7 +113,7 @@ sealed class Configuration : Parcelable {
 Next, change the resolution so that it attaches something:
 
 ```kotlin
-import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
+import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 
 /* ... */
 

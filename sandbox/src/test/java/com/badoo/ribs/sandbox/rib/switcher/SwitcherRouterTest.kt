@@ -3,8 +3,8 @@ package com.badoo.ribs.sandbox.rib.switcher
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction
-import com.badoo.ribs.core.routing.Routing
-import com.badoo.ribs.core.routing.source.impl.Empty
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem

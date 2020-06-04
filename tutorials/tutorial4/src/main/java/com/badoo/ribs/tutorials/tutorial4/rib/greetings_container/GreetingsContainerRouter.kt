@@ -2,11 +2,11 @@ package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container
 
 import com.badoo.ribs.core.builder.BuildParams
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.router.Router
-import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.Routing
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainerRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial4.rib.hello_world.builder.HelloWorldBuilder
 import kotlinx.android.parcel.Parcelize

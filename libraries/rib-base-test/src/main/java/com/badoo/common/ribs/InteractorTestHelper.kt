@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.router.Router
+import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.Routing
-import com.badoo.ribs.core.routing.source.impl.Permanent
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.source.impl.Permanent
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource

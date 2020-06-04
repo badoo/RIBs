@@ -1,13 +1,13 @@
 package com.badoo.ribs.tutorials.tutorial2.rib.greetings_container
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.router.Router
-import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.tutorials.tutorial2.rib.greetings_container.GreetingsContainerRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.Routing
+import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.Routing
 
 class GreetingsContainerRouter(
     buildParams: BuildParams<Nothing?>,

@@ -4,7 +4,7 @@ import com.badoo.ribs.core.ActivationMode
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
 import com.badoo.ribs.core.builder.NodeFactory
-import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.RoutingAction
 
 open class AddToRecyclerViewRoutingAction(
     private val nodeFactory: NodeFactory

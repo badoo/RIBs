@@ -2,7 +2,7 @@ package com.badoo.ribs.core.helper
 
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.routing.router.Router
+import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.nhaarman.mockitokotlin2.mock

@@ -4,8 +4,8 @@ import android.os.Parcelable
 import com.badoo.ribs.core.AncestryInfo
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import io.reactivex.Single
 
 interface Portal : Rib {

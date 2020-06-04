@@ -1,13 +1,13 @@
 package com.badoo.ribs.sandbox.rib.big
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.router.Router
+import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.action.RoutingAction.Companion.noop
-import com.badoo.ribs.core.routing.Routing
+import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration.Permanent

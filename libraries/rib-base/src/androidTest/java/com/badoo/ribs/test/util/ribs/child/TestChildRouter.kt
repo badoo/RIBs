@@ -1,11 +1,11 @@
 package com.badoo.ribs.test.util.ribs.child
 
 import android.os.Parcelable
-import com.badoo.ribs.core.routing.router.Router
+import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.Routing
-import com.badoo.ribs.core.routing.source.impl.Empty
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter.Configuration
 import kotlinx.android.parcel.Parcelize
 

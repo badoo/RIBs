@@ -19,9 +19,9 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext.Companion.root
 import com.badoo.ribs.android.recyclerview.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
-import com.badoo.ribs.core.routing.action.RoutingAction
-import com.badoo.ribs.core.routing.resolver.RoutingResolver
-import com.badoo.ribs.core.routing.Routing
+import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolver.RoutingResolver
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.sandbox.R

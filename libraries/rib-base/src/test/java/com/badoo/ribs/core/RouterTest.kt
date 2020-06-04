@@ -2,7 +2,7 @@ package com.badoo.ribs.core
 
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
-import com.badoo.ribs.core.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn

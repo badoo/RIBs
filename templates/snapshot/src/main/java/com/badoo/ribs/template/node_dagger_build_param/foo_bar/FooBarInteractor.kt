@@ -6,7 +6,7 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarRouter.Configuration
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.feature.FooBarFeature

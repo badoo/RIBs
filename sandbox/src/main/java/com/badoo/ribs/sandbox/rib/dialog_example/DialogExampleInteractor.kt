@@ -7,7 +7,7 @@ import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.source.backstack.operation.pushOverlay
+import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog

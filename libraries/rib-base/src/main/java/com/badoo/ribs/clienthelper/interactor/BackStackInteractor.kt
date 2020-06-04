@@ -3,8 +3,8 @@ package com.badoo.ribs.clienthelper.interactor
 import android.os.Parcelable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.source.RoutingSource
-import com.badoo.ribs.core.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.disposables.Disposable
 

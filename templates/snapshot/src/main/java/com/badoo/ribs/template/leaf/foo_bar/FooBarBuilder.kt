@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.leaf.foo_bar
 
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.SimpleBuilder
+import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 
 class FooBarBuilder(

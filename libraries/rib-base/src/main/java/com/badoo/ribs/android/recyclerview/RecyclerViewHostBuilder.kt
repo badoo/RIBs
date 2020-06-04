@@ -5,7 +5,7 @@ import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.routing.router.RouterByDelegate
 import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.builder.SimpleBuilder
+import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.routing.source.impl.Pool
 
 @ExperimentalApi

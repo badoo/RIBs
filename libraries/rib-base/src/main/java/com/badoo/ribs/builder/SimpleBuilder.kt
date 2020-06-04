@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.badoo.ribs.core.builder
+package com.badoo.ribs.builder
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.builder.BuildContext
 
 /**
  * Responsible for building a [Node]. Parent [Router]s should pass in static dependencies via the

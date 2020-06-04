@@ -1,4 +1,4 @@
-package com.badoo.ribs.core
+package com.badoo.ribs.core.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE

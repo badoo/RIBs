@@ -1,8 +1,9 @@
-package com.badoo.ribs.core
+package com.badoo.ribs.core.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.badoo.ribs.core.Node
 
 internal class LifecycleManager(
     private val owner: Node<*>

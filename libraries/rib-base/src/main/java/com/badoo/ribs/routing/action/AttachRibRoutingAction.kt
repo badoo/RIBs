@@ -2,7 +2,6 @@ package com.badoo.ribs.routing.action
 
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.builder.BuildContext
-import com.badoo.ribs.core.builder.RibFactory
 
 open class AttachRibRoutingAction(
     private val ribFactory: RibFactory

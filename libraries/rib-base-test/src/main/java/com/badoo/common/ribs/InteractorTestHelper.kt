@@ -1,20 +1,14 @@
 package com.badoo.common.ribs
 
-import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
-import com.badoo.ribs.routing.router.Router
-import com.badoo.ribs.routing.source.impl.Permanent
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
-import kotlinx.android.parcel.Parcelize
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
@@ -88,23 +82,3 @@ inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView w
             this@subscribedView.subscribe(observer)
         }
     }
-
-private class TestRouter<C : Parcelable> : Router<C>(
-    buildParams = buildParams,
-    routingSource = Permanent<C>(emptySet()),
-    transitionHandler = null
-) {
-
-    var resolveConfiguration: (C) -> RoutingAction = { RoutingAction.noop() }
-
-    override fun resolve(routing: Routing<C>): RoutingAction =
-        resolveConfiguration.invoke(routing.configuration)
-
-    companion object {
-        fun createTestRouter() =
-            TestRouter<TestConfiguration>()
-    }
-}
-
-@Parcelize
-private object TestConfiguration : Parcelable

@@ -20,7 +20,6 @@ import com.badoo.ribs.android.recyclerview.routing.action.AddToRecyclerViewRouti
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.resolver.RoutingResolver

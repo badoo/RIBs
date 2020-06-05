@@ -19,7 +19,7 @@ internal object SmallModule {
     @JvmStatic
     internal fun interactor(
         buildParams: BuildParams<Nothing?>,
-        portal: com.badoo.ribs.portal.Portal.OtherSide
+        portal: Portal.OtherSide
     ): SmallInteractor =
         SmallInteractor(
             buildParams = buildParams,

@@ -30,6 +30,11 @@ androidExtensions {
     experimental = true
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
+    }
+}
 
 dependencies {
     implementation deps.external.kotlinStdlib

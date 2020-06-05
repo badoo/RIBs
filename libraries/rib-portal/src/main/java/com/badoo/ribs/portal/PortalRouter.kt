@@ -2,6 +2,7 @@ package com.badoo.ribs.portal
 
 import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext
@@ -17,7 +18,8 @@ import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import kotlinx.android.parcel.Parcelize
 
-class PortalRouter(
+@ExperimentalApi
+class PortalRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
     private val defaultRoutingAction: RoutingAction,
@@ -27,6 +29,7 @@ class PortalRouter(
     routingSource = routingSource,
     transitionHandler = transitionHandler
 ) {
+    @ExperimentalApi
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize object Default : Content()

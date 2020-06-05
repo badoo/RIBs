@@ -13,7 +13,7 @@ import io.reactivex.functions.Consumer
 
 class SmallInteractor(
     private val buildParams: BuildParams<Nothing?>,
-    portal: com.badoo.ribs.portal.Portal.OtherSide
+    portal: Portal.OtherSide
 ) : BackStackInteractor<Small, SmallView, Configuration>(
     buildParams = buildParams,
     initialConfiguration = Configuration.Content.Default

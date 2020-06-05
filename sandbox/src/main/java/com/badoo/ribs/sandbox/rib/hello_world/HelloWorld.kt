@@ -13,7 +13,7 @@ interface HelloWorld : Rib, Connectable<Input, Output> {
 
     interface Dependency :
         CanProvideActivityStarter,
-        com.badoo.ribs.portal.CanProvidePortal
+        CanProvidePortal
 
     sealed class Input
 

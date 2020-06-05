@@ -133,7 +133,7 @@ class MainScreenTest {
                 CanProvideActivityStarter by dependencies,
                 CanProvidePermissionRequester by dependencies,
                 CanProvideDialogLauncher by dependencies,
-                com.badoo.ribs.portal.CanProvidePortal by dependencies {
+                CanProvidePortal by dependencies {
 
                 override fun coffeeMachine(): CoffeeMachine = mock()
             }

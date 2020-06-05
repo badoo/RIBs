@@ -17,7 +17,6 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGE
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
 import com.badoo.ribs.android.recyclerview.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
-import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
@@ -36,7 +35,6 @@ import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
 import kotlinx.android.parcel.Parcelize
 
 /** The sample app's single activity */
-@OptIn(ExperimentalApi::class)
 class RecyclerViewTestActivity : RibActivity() {
 
     // We'll put these into the RecyclerView by resolving them to builders (see below)

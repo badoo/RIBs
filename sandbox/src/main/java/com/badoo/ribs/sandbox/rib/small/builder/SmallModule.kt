@@ -1,6 +1,7 @@
 @file:SuppressWarnings("LongParameterList", "LongMethod")
 package com.badoo.ribs.sandbox.rib.small.builder
 
+import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.sandbox.rib.big.builder.BigBuilder
@@ -12,6 +13,7 @@ import com.badoo.ribs.sandbox.rib.small.SmallRouter
 import dagger.Provides
 
 @dagger.Module
+@OptIn(ExperimentalApi::class)
 internal object SmallModule {
 
     @SmallScope
@@ -19,7 +21,7 @@ internal object SmallModule {
     @JvmStatic
     internal fun interactor(
         buildParams: BuildParams<Nothing?>,
-        portal: com.badoo.ribs.portal.Portal.OtherSide
+        portal: Portal.OtherSide
     ): SmallInteractor =
         SmallInteractor(
             buildParams = buildParams,

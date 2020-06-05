@@ -1,8 +1,10 @@
 package com.badoo.ribs.portal
 
+import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 
+@ExperimentalApi
 class PortalBuilder(
     private val dependency: Portal.Dependency
 ) : SimpleBuilder<Portal>() {

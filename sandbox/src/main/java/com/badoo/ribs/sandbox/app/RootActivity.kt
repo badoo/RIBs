@@ -7,6 +7,7 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.portal.Portal
@@ -28,6 +29,7 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
 /** The sample app's single activity */
+@OptIn(ExperimentalApi::class)
 class RootActivity : RibActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

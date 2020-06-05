@@ -2,6 +2,7 @@ package com.badoo.ribs.sandbox.rib.small
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
+import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.Portal
@@ -11,9 +12,10 @@ import com.badoo.ribs.sandbox.rib.small.SmallView.Event
 import com.badoo.ribs.sandbox.rib.small.SmallView.ViewModel
 import io.reactivex.functions.Consumer
 
+@OptIn(ExperimentalApi::class)
 class SmallInteractor(
     private val buildParams: BuildParams<Nothing?>,
-    portal: com.badoo.ribs.portal.Portal.OtherSide
+    portal: Portal.OtherSide
 ) : BackStackInteractor<Small, SmallView, Configuration>(
     buildParams = buildParams,
     initialConfiguration = Configuration.Content.Default

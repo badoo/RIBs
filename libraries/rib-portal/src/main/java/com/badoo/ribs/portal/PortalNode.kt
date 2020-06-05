@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.push
 import io.reactivex.Single
 
-class PortalNode internal constructor(
+internal class PortalNode(
     buildParams: BuildParams<*>,
     plugins: List<Plugin>,
     private val backStack: BackStackFeature<Configuration>

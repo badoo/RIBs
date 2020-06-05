@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
-import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.PortalRouter.Configuration
@@ -31,28 +30,26 @@ class PortalRouter(
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize object Default : Content()
-            // TODO List<RoutingElement>
-            @Parcelize data class Portal(val configurationChain: List<Parcelable>) : Content()
+            @Parcelize data class Portal(val routingChain: List<Routing<out Parcelable>>) : Content()
         }
         sealed class Overlay : Configuration() {
-            @Parcelize data class Portal(val configurationChain: List<Parcelable>) : Overlay()
+            @Parcelize data class Portal(val configurationChain: List<Routing<out Parcelable>>) : Overlay()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): RoutingAction =
         when (val configuration = routing.configuration) {
             is Content.Default -> defaultRoutingAction
-            is Content.Portal -> configuration.configurationChain.resolve()
+            is Content.Portal -> configuration.routingChain.resolve()
             is Overlay.Portal -> configuration.configurationChain.resolve()
         }
 
     // TODO probably needs to change from List<Parcelable> to List<AncestryInfo>,
     //  so that extra info can be added too. See below for details.
-    private fun List<Parcelable>.resolve(): RoutingAction {
+    private fun List<Routing<out Parcelable>>.resolve(): RoutingAction {
         // TODO grab first from real root (now should be possible) -- currently works only if PortalRouter is in the root rib
-        var targetRouter: RoutingResolver<Parcelable> =
-            this@PortalRouter as RoutingResolver<Parcelable>
-        var routingAction: RoutingAction = targetRouter.resolve(Routing(first()))
+        var targetRouter: RoutingResolver<Parcelable> = this@PortalRouter as RoutingResolver<Parcelable>
+        var routingAction: RoutingAction = targetRouter.resolve(first() as Routing<Parcelable>)
 
         drop(1).forEach { element ->
             val bundles = emptyList<Bundle?>()
@@ -69,9 +66,7 @@ class PortalRouter(
                 targetRouter = it
             } ?: throw IllegalStateException("Invalid chain of parents. This should never happen. Chain: $this")
 
-            routingAction = targetRouter.resolve(
-                Routing(element)
-            )
+            routingAction = targetRouter.resolve(element as Routing<Parcelable>)
         }
 
         return routingAction
@@ -80,8 +75,8 @@ class PortalRouter(
     private fun buildStep(routingAction: RoutingAction): List<Rib> {
         return routingAction.buildNodes(
             listOf(
-                BuildContext(
-                    ancestryInfo = AncestryInfo.Root, // we'll be discarding these Nodes, it doesn't matter
+                // we'll be discarding these Nodes, it doesn't matter
+                BuildContext.root(
                     // TODO for maximum correctness, original List<> should also contain Bundles,
                     //  as that might change how dependencies are built (right now there's no case for this,
                     //  but can be in the future).

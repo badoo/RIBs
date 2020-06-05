@@ -1,15 +1,13 @@
 package com.badoo.ribs.sandbox.rib.big
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration
 
 class BigInteractor(
     buildParams: BuildParams<*>
-) : BackStackInteractor<Big, BigView, Configuration>(
-    buildParams = buildParams,
-    initialConfiguration = Configuration.Content.Default
+) : Interactor<Big, BigView>(
+    buildParams = buildParams
 ) {
 
     override fun onViewCreated(view: BigView, viewLifecycle: Lifecycle) {

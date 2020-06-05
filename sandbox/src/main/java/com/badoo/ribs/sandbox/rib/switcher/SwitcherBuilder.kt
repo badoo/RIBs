@@ -42,7 +42,7 @@ class SwitcherBuilder(
     private fun backStack(buildParams: BuildParams<Nothing?>): BackStackFeature<Configuration> =
         BackStackFeature(
             buildParams = buildParams,
-            initialConfiguration = Content.DialogsExample
+            initialConfiguration = Content.Hello
         )
 
     private fun interactor(

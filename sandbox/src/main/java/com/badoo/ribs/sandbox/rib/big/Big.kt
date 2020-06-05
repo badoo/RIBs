@@ -6,7 +6,7 @@ import com.badoo.ribs.core.customisation.RibCustomisation
 
 interface Big : Rib {
 
-    interface Dependency : CanProvidePortal
+    interface Dependency : com.badoo.ribs.portal.CanProvidePortal
 
     class Customisation(
         val viewFactory: BigView.Factory = BigViewImpl.Factory()

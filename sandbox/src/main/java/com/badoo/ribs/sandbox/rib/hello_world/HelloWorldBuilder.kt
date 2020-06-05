@@ -38,6 +38,6 @@ class HelloWorldBuilder(
     private fun smallBuilder(): SmallBuilder =
         SmallBuilder(
             object : Small.Dependency,
-                CanProvidePortal by dependency { }
+                com.badoo.ribs.portal.CanProvidePortal by dependency { }
         )
 }

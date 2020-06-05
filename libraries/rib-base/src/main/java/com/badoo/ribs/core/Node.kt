@@ -61,13 +61,14 @@ open class Node<V : RibView>(
     internal val buildContext: BuildContext =
         buildParams.buildContext
 
-    /**
-     * TODO PortalRouter.Configuration.Portal can then work directly with a @Parcelize AncestryInfo,
-     *  which was not possible until now.
-     */
-    internal val ancestryInfo: AncestryInfo =
+    val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
 
+    /**
+     * This is the logical parent of the current [Node] (i.e. the one that created it).
+     *
+     * Not necessarily the parentNode the view is attached to (e.g. portals).
+     */
     val parent: Node<*>? =
         when (val ancestryInfo = ancestryInfo) {
             is AncestryInfo.Root -> null

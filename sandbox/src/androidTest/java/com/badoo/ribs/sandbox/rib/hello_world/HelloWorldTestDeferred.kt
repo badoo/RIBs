@@ -21,7 +21,7 @@ class HelloWorldTestDeferred {
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         HelloWorldBuilder(object : HelloWorld.Dependency {
-            override fun portal(): Portal.OtherSide = Portal.OtherSide.NOOP
+            override fun portal(): com.badoo.ribs.portal.Portal.OtherSide = com.badoo.ribs.portal.Portal.OtherSide.NOOP
             override fun activityStarter(): ActivityStarter = ribTestActivity.activityStarter
         }).build(root(savedInstanceState))
 

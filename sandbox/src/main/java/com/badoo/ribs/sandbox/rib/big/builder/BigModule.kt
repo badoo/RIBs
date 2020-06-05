@@ -28,12 +28,10 @@ internal object BigModule {
     internal fun router(
         // pass component to child rib builders, or remove if there are none
         component: BigComponent,
-        buildParams: BuildParams<Nothing?>,
-        interactor: BigInteractor
+        buildParams: BuildParams<Nothing?>
     ): BigRouter =
         BigRouter(
             buildParams = buildParams,
-            routingSource = interactor,
             smallBuilder = SmallBuilder(component)
         )
 

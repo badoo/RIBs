@@ -8,14 +8,15 @@ import dagger.BindsInstance
 
 @DialogExampleScope
 @dagger.Component(
-    modules = [DialogExampleModule::class]
+    modules = [DialogExampleModule::class],
+    dependencies = [DialogExample.Dependency::class]
 )
 internal interface DialogExampleComponent : LoremIpsum.Dependency {
 
     @dagger.Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance dependency: DialogExample.Dependency,
+            dependency: DialogExample.Dependency,
             @BindsInstance customisation: DialogExample.Customisation,
             @BindsInstance buildParams: BuildParams<Nothing?>
         ): DialogExampleComponent

@@ -322,7 +322,7 @@ open class Node<V : RibView>(
             .filter { it.isAttachedToView && !(it.isPendingDetach || it.isPendingViewDetach ) }
             .any { it.handleBackPress() }
 
-    internal fun saveViewState() {
+    fun saveViewState() {
         view?.let {
             it.androidView.saveHierarchyState(savedViewState)
         }

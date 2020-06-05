@@ -49,6 +49,7 @@ dependencies {
 
     implementation project(":libraries:rib-base")
     implementation project(":libraries:rib-portal")
+    implementation project(":libraries:rib-recyclerview")
 
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.junit

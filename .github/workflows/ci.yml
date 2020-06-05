@@ -25,7 +25,7 @@ jobs:
 
             - name: Assemble
               run: ./gradlew assemble
-              working-directory: ./android              
+              working-directory: . 
     detekt:
         name: Detekt
         runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
                   java-version: 11
             - name: Detekt
               run: ./gradlew detekt
-              working-directory: ./android
+              working-directory: .
               
     unit-tests:
         name: Unit tests
@@ -59,7 +59,7 @@ jobs:
                   key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
             - name: Unit tests
               run: ./gradlew testDebugUnitTest
-              working-directory: ./android
+              working-directory: .
 
     instrumentation-tests:
         name: Instrumentation tests
@@ -79,8 +79,8 @@ jobs:
                   java-version: 11
             - uses: actions/cache@v1
               with:
-                  path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
+                 path: ~/.gradle/caches
+                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
 
 
             - name: Instrumentation tests
@@ -88,4 +88,4 @@ jobs:
               with:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
-                  script: ./android/gradlew connectedCheck -p android
+                  script: ./gradlew connectedCheck

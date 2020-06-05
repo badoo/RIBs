@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/debug_switcher"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/workflow_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Workflow 1" />
+
+    <Button
+        android:id="@+id/workflow_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Workflow 2"/>
+
+</LinearLayout>

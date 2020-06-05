@@ -1,9 +1,0 @@
-configureAndroidLibrary(project)
-
-dependencies {
-    compileOnly deps.android.annotations
-    implementation project(":libraries:rib-workflow")
-    implementation project(":libraries:rib-uava")
-    implementation deps.external.rxjava2
-    implementation deps.test.assertj
-}

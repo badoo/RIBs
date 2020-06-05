@@ -1,0 +1,44 @@
+buildscript {
+    apply from: 'gradle/dependencies.gradle'
+
+    repositories {
+        jcenter()
+        google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath deps.build.gradlePlugins.android
+        classpath deps.build.gradlePlugins.kotlin
+        classpath deps.build.gradlePlugins.mavenPublish
+        classpath deps.build.gradlePlugins.detekt
+    }
+}
+
+apply from: 'gradle/dependencies.gradle'
+apply from: 'gradle/utils.gradle'
+
+subprojects {
+    buildscript {
+        repositories {
+            jcenter()
+            maven { url deps.build.gradlePluginsUrl }
+            maven { url "https://maven.google.com" }
+            maven { url "https://plugins.gradle.org/m2/" }
+        }
+    }
+
+    repositories {
+        jcenter()
+        maven { url deps.build.gradlePluginsUrl }
+        maven { url "https://maven.google.com" }
+        maven { url "https://jitpack.io" }
+    }
+}
+
+configureDetektForAllSubprojects(project)
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

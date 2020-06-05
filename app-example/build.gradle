@@ -1,0 +1,78 @@
+configureAndroidApp(project)
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def getAccessToken() {
+    def systemEnvKey = System.getenv('ACCESS_KEY')
+
+    def props = new Properties()
+    def propsFile = file("local.properties")
+    if (propsFile.exists()) {
+        propsFile.withInputStream { props.load(it) }
+    }
+    def localPropsKey = props.getProperty("accessKey")
+
+    return localPropsKey ?: systemEnvKey ?: "\"\""
+}
+
+def getClientSecret() {
+    def systemEnvKey = System.getenv('CLIENT_SECRET')
+
+    def props = new Properties()
+    def propsFile = file("local.properties")
+    if (propsFile.exists()) {
+        propsFile.withInputStream { props.load(it) }
+    }
+    def localPropsKey = props.getProperty("clientSecret")
+
+    return localPropsKey ?: systemEnvKey ?: "\"\""
+}
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "com.badoo.ribs.example"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "ACCESS_KEY", getAccessToken()
+        buildConfigField "String", "CLIENT_SECRET", getClientSecret()
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation deps.external.kotlinStdlib
+
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.design
+
+    implementation deps.external.rxrelay2
+    implementation deps.external.rxandroid2
+
+    implementation deps.retrofit.retrofit
+    implementation deps.retrofit.rxjavaAdapter
+    implementation deps.retrofit.moshiConverter
+    implementation deps.retrofit.okhttp
+    implementation deps.retrofit.okhttpLoggingInterceptor
+
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockitoKotlin
+    testImplementation deps.test.assertj
+    androidTestImplementation deps.test.junit
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.runner
+}

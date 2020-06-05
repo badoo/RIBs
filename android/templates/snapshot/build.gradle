@@ -1,7 +1,0 @@
-apply from: file('../common-template.gradle')
-
-dependencies {
-    implementation project(":libraries:rib-android")
-    debugImplementation project(":libraries:rib-base-test-activity")
-    androidTestImplementation project(":libraries:rib-base-test")
-}

@@ -2,6 +2,9 @@ package com.badoo.ribs.core
 
 import java.util.UUID
 
+/**
+ * The conceptual main element of the system.
+ */
 interface Rib {
 
     val node: Node<*>

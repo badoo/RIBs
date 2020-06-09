@@ -7,7 +7,7 @@ import com.badoo.ribs.routing.Routing
 sealed class AncestryInfo {
 
     /**
-     * The whole chain of Configurations that can be used to reach this [Node]
+     * The whole chain of [Routing] that can be used to reach this [Node]
      */
     abstract val routingChain: List<Routing<out Parcelable>>
 

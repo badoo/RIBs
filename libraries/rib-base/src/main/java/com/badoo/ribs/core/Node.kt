@@ -38,7 +38,13 @@ import io.reactivex.Single
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
- * Responsible for handling the addition and removal of child nodes.
+ * The main structure element of the system.
+ *
+ * Not responsible for making decisions itself.
+ *
+ * Offers operations to manage children.
+ * Maintains lifecycle state.
+ * Forwards events to plugins / children respectively.
  **/
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(

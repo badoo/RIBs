@@ -7,6 +7,9 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 
+/**
+ * Holds information passed by the framework to affect modality of the same Node depending on context.
+ */
 data class BuildContext internal constructor(
     val ancestryInfo: AncestryInfo,
     val activationMode: ActivationMode = ActivationMode.ATTACH_TO_PARENT,

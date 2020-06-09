@@ -35,10 +35,12 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
     (get(timeCapsuleKey) ?: BackStackFeatureState())
 
 /**
- * State store responsible for the changes of the logical back stack (described as a list of [C]
- * elements in [BackStackFeature.State]).
+ * State store implementing [RoutingSource] that keeps a simple linear history of [Routing]s.
  *
- * Does nothing beyond the manipulation of the list of [C] elements.
+ * It will maintain a [RoutingHistory] such the last, and only the last [RoutingHistoryElement] is
+ * set to active [RoutingHistoryElement.Activation.ACTIVE].
+ *
+ * Elements are persisted to Bundle (see [AndroidTimeCapsule]) and restored automatically.
  *
  * @see BackStackFeature.Operation for supported operations
  * @see BackStackFeature.BootstrapperImpl for operations emitted during initialisation
@@ -80,7 +82,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         timeCapsule.initialState()
 
     constructor(
-        initialConfiguration: C, // TODO consider this to be RoutingHistoryElement<C>?
+        initialConfiguration: C, // TODO consider 2nd constructor with RoutingHistoryElement<C>
         buildParams: BuildParams<*>
     ) : this(
         initialConfiguration,

@@ -9,7 +9,7 @@ interface ProgressEvaluator {
      *
      * Don't rely on its value for determining whether we're running still, use [isPending] for that.
      *
-     * This field is currently not used by the framework. It's kept here for pending support of
+     * This field is currently not used by the framework. It's kept here for potential support of
      * notifying child RibViews. It might be removed later if that functionality is dropped.
      */
     val progress: Float

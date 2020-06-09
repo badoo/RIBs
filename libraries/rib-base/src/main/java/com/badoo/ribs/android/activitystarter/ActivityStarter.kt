@@ -8,7 +8,7 @@ import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCod
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 
 /**
- * Start activities. A much cleaner dependency than an entire activity or context, and easier to
+ * Start Activities. A much cleaner dependency than an entire Activity or Context, and easier to
  * inject and mock in tests.
  */
 interface ActivityStarter : RequestCodeBasedEventStream<ActivityResultEvent> {

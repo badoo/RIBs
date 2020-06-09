@@ -4,12 +4,12 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
+
 @Parcelize
 data class Routing<C : Parcelable>(
     val configuration: C,
     val identifier: Identifier = Identifier(), // FIXME no default
     val meta: Parcelable = NoMeta
-
 ) : Parcelable {
 
     @Parcelize

@@ -8,6 +8,13 @@ import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import java.util.UUID
 
 
+/**
+ * Represents information passed to components.
+ *
+ * @param payload holds data only available build-time
+ * @param buildContext see [BuildContext]
+ * @param identifier unique identifier (not supposed to be human-readable)
+ */
 class BuildParams<T>(
     val payload: T,
     val buildContext: BuildContext,

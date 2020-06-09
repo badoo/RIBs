@@ -3,13 +3,21 @@ package com.badoo.ribs.routing.source
 import android.os.Parcelable
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import com.badoo.ribs.routing.Routing.Identifier
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.source.impl.Combined
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.routing.source.impl.Permanent
 import io.reactivex.ObservableSource
 
+/**
+ * Represents a source that emits [RoutingHistory].
+ *
+ * Implementations will be notified to handle back press, so that they can change their
+ *  internal [RoutingHistory]] as a reaction.
+ *
+ * Implementations will be notified to save their state.
+ */
 interface RoutingSource<C : Parcelable> :
     ObservableSource<RoutingHistory<C>>,
     SubtreeBackPressHandler,
@@ -28,7 +36,10 @@ interface RoutingSource<C : Parcelable> :
      */
     fun baseLineState(fromRestored: Boolean): RoutingHistory<C>
 
-    fun remove(identifier: Identifier)
+    /**
+     * Should remove any specific [Routing] from the current [RoutingHistory] by its id.
+     */
+    fun remove(identifier: Routing.Identifier)
 
     operator fun plus(other: RoutingSource<C>): RoutingSource<C> =
         Combined(this, other)

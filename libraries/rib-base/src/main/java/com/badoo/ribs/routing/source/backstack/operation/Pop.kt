@@ -5,6 +5,12 @@ import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.BackStack
 
+/**
+ * Operation:
+ *
+ * [A, B, C] + Pop = [A, B]  // no overlays
+ * [A, B, C {O1}] + Pop = [A, B, C]  // overlays are popped first
+ */
 class Pop<C : Parcelable> : BackStackOperation<C> {
 
     override fun invoke(backStack: BackStack<C>): BackStack<C> =

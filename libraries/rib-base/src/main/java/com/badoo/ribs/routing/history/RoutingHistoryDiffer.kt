@@ -2,15 +2,14 @@ package com.badoo.ribs.routing.history
 
 import android.os.Parcelable
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
+import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
+import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.SHRUNK
 import com.badoo.ribs.routing.state.changeset.RoutingCommand
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Activate
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Deactivate
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Remove
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
-import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
-import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
-import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.SHRUNK
 
 
 internal object RoutingHistoryDiffer {

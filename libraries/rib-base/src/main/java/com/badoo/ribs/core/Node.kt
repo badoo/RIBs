@@ -229,7 +229,6 @@ open class Node<V : RibView>(
         }
     }
 
-    // FIXME internal + protected?
     fun attachChildView(child: Node<*>) {
         if (isAttachedToView) {
             val target = targetViewGroupForChild(child)
@@ -246,7 +245,6 @@ open class Node<V : RibView>(
         }
     }
 
-    // FIXME internal + protected?
     fun detachChildView(child: Node<*>) {
         child.detachFromView()
         plugins.filterIsInstance<SubtreeViewChangeAware>().forEach { it.onDetachChildView(child) }

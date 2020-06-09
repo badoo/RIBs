@@ -5,6 +5,10 @@ import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.TransitionPair
 
 
+/**
+ * Interface to be implemented in client code to handle transition animations of
+ * routing changes.
+ */
 interface TransitionHandler<C> {
 
     fun onTransition(elements: List<TransitionElement<out C>>): TransitionPair

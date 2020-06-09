@@ -7,6 +7,13 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.BackStack
 
+/**
+ * Operation:
+ *
+ * [A, B, C, D] + SingleTop(B) = [A, B]          // of same type and equals, acts as n * Pop
+ * [A, B, C, D] + SingleTop(B') = [A, B']        // of same type but not equals, acts as n * Pop + Replace
+ * [A, B, C, D] + SingleTop(E) = [A, B, C, D, E] // not found, acts as Push
+ */
 data class SingleTop<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {

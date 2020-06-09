@@ -16,9 +16,8 @@ import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.SHRUNK
 internal object RoutingHistoryDiffer {
 
     /**
-     * Calculates diff between two states of [BackStackFeature] (where each state contains the current list
-     * of [C] configurations representing the back stack), and translates the diff to
-     * a list of [RoutingCommand]s that represent getting from the old state to the new one.
+     * Maps the diff between two [RoutingHistory] as a set of [RoutingCommand]s. Executing those
+     * commands in any order represent transitioning from the old state to the new one.
      */
     @SuppressWarnings("NestedBlockDepth", "LongMethod") // TODO will be reworked
     fun <C : Parcelable> diff(
@@ -44,11 +43,9 @@ internal object RoutingHistoryDiffer {
                     commands += if (toAdd.activation == ACTIVE) toAdd.activate() else emptySet()
                 }
 
-                // TODO extract modify
                 currentIds.intersect(previousIds).forEach { identifier ->
                     val t0 = previous.find { it.routing.identifier == identifier }!!
                     val t1 = current.find { it.routing.identifier == identifier }!!
-
                     commands += diff(t0, t1)
                 }
 
@@ -104,7 +101,7 @@ internal object RoutingHistoryDiffer {
             commands += when (t1.activation) {
                 ACTIVE -> t1.activate()
                 INACTIVE -> t1.deactivate()
-                SHRUNK -> emptySet()// FIXME implement
+                SHRUNK -> emptySet() // TODO not supported at the moment. Implement later.
             }
         }
 
@@ -115,7 +112,7 @@ internal object RoutingHistoryDiffer {
         val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.routing.meta != t0.routing.meta) {
-            // FIXME implement
+            // TODO not supported at the moment. Implement later.
         }
 
         return commands
@@ -125,7 +122,6 @@ internal object RoutingHistoryDiffer {
         val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.overlays != t0.overlays) {
-            // TODO make note in public doc that overlay indices are meant to be stable
             t0.overlays.minus(t1.overlays).forEach { overlay ->
                 if (t0.activation == ACTIVE) commands += Deactivate(overlay)
                 commands += Remove(overlay)

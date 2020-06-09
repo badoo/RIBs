@@ -6,6 +6,11 @@ import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.BackStack
 
+/**
+ * Operation:
+ *
+ * [A, B, C] + Remove(id of B) = [A, C]
+ */
 class Remove<C : Parcelable>(
     private val identifier: Routing.Identifier
 ) : BackStackOperation<C> {

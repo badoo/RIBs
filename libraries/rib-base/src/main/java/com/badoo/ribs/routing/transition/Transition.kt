@@ -3,6 +3,9 @@ package com.badoo.ribs.routing.transition
 import android.animation.ValueAnimator
 import com.badoo.ribs.routing.transition.effect.helper.ReverseHolder
 
+/**
+ * Interfaces between internal routing changes and client code animations.
+ */
 interface Transition {
 
     fun start()

@@ -14,7 +14,8 @@ import com.badoo.ribs.util.RIBs
 import kotlinx.android.parcel.Parcelize
 
 /**
- * Describes a Configuration the [Node] can be in.
+ * Holds persistent (activation level) and disposable (e.g. resolved Nodes) extra information
+ * related to a [Routing].
  *
  * [RoutingContext] can either be [RoutingContext.Unresolved], or
  * [RoutingContext.Resolved]

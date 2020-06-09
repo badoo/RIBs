@@ -18,7 +18,6 @@ internal object RoutingHistoryDiffer {
      * Maps the diff between two [RoutingHistory] as a set of [RoutingCommand]s. Executing those
      * commands in any order represent transitioning from the old state to the new one.
      */
-    @SuppressWarnings("NestedBlockDepth", "LongMethod") // TODO will be reworked
     fun <C : Parcelable> diff(
         previous: RoutingHistory<C>,
         current: RoutingHistory<C>

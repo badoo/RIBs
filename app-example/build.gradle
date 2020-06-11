@@ -2,6 +2,7 @@ configureAndroidApp(project)
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 def getAccessToken() {
     def systemEnvKey = System.getenv('ACCESS_KEY')
@@ -56,10 +57,15 @@ android {
 dependencies {
     implementation deps.external.kotlinStdlib
 
+    kapt deps.apt.daggerCompiler
+
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
 
+    implementation deps.external.dagger
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
 
@@ -68,10 +74,14 @@ dependencies {
     implementation deps.retrofit.moshiConverter
     implementation deps.retrofit.okhttp
     implementation deps.retrofit.okhttpLoggingInterceptor
+    implementation project(":libraries:rib-base")
 
     testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
+    testImplementation project(":libraries:rib-base-test")
+
+    androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner

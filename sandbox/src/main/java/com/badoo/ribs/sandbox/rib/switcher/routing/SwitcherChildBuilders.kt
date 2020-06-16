@@ -18,7 +18,7 @@ internal open class SwitcherChildBuilders(
     private val subtreeDeps = SubtreeDependency(dependency)
 
     val menu = MenuBuilder(subtreeDeps)
-    val helloWorld = HelloWorldBuilder(subtreeDeps)
+    val helloWorld = HelloWorldBuilder()
     val fooBar = FooBarBuilder(subtreeDeps)
     val dialogExample = DialogExampleBuilder(subtreeDeps)
     val blocker = BlockerBuilder(subtreeDeps)
@@ -27,13 +27,9 @@ internal open class SwitcherChildBuilders(
         dependency: Switcher.Dependency
     ) : Switcher.Dependency by dependency,
         Menu.Dependency,
-        HelloWorld.Dependency,
         FooBar.Dependency,
         DialogExample.Dependency,
         Blocker.Dependency {
 
     }
 }
-
-
-

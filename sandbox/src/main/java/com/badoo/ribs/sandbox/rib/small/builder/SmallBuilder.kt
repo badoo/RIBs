@@ -8,13 +8,13 @@ class SmallBuilder(
     private val dependency: Small.Dependency
 ) : SimpleBuilder<Small>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): Small =
-        DaggerSmallComponent
-            .factory()
-            .create(
-                dependency = dependency,
-                customisation = buildParams.getOrDefault(Small.Customisation()),
-                buildParams = buildParams
-            )
-            .node()
+    override fun build(buildParams: BuildParams<Nothing?>): Small = TODO()
+//        DaggerSmallComponent
+//            .factory()
+//            .create(
+//                dependency = dependency,
+//                customisation = buildParams.getOrDefault(Small.Customisation()),
+//                buildParams = buildParams
+//            )
+//            .node()
 }

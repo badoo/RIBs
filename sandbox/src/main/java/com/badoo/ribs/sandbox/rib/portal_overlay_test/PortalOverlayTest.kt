@@ -5,9 +5,10 @@ import com.badoo.ribs.core.customisation.RibCustomisation
 
 interface PortalOverlayTest : Rib {
 
-    interface Dependency
-
-    class Customisation(
-        val viewFactory: PortalOverlayTestView.Factory = PortalOverlayTestViewImpl.Factory()
-    ) : RibCustomisation
 }
+
+class Customisation(
+    val viewFactory: PortalOverlayTestView.Factory = PortalOverlayTestViewImpl.Factory()
+) : RibCustomisation
+
+interface Dependency

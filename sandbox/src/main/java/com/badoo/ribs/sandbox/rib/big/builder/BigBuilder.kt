@@ -4,17 +4,15 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.big.Big
 
-class BigBuilder(
-    private val dependency: Big.Dependency
-) : SimpleBuilder<Big>() {
+class BigBuilder() : SimpleBuilder<Big>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): Big =
-        DaggerBigComponent
-            .factory()
-            .create(
-                dependency = dependency,
-                customisation = buildParams.getOrDefault(Big.Customisation()),
-                buildParams = buildParams
-            )
-            .node()
+    override fun build(buildParams: BuildParams<Nothing?>): Big = TODO()
+//        DaggerBigComponent
+//            .factory()
+//            .create(
+//                dependency = dependency,
+//                customisation = buildParams.getOrDefault(Big.Customisation()),
+//                buildParams = buildParams
+//            )
+//            .node()
 }

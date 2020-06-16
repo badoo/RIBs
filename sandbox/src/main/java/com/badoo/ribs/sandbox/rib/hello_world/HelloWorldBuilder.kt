@@ -8,7 +8,7 @@ import com.badoo.ribs.sandbox.rib.small.Small
 import com.badoo.ribs.sandbox.rib.small.builder.SmallBuilder
 
 class HelloWorldBuilder(
-    private val dependency: HelloWorld.Dependency
+//    private val dependency: HelloWorld
 ) : SimpleBuilder<HelloWorld>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): HelloWorld {
@@ -17,7 +17,7 @@ class HelloWorldBuilder(
         val interactor = HelloWorldInteractor(
             buildParams = buildParams,
             feature = feature,
-            activityStarter = dependency.activityStarter()
+            activityStarter = TODO()
         )
         val router = HelloWorldRouter(
             buildParams,
@@ -37,7 +37,6 @@ class HelloWorldBuilder(
 
     private fun smallBuilder(): SmallBuilder =
         SmallBuilder(
-            object : Small.Dependency,
-                CanProvidePortal by dependency { }
+            TODO()
         )
 }

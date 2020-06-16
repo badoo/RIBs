@@ -24,10 +24,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
+        kotlinCompilerExtensionVersion "0.1.0-dev13"
+    }
 }
 
 androidExtensions {
     experimental = true
+    features = ["parcelize"]
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
@@ -38,13 +48,14 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 
 dependencies {
     implementation deps.external.kotlinStdlib
-    kapt deps.apt.daggerCompiler
+//    kapt deps.apt.daggerCompiler
     compileOnly deps.apt.javax
 
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
     implementation deps.android.percent
+    implementation "androidx.compose:compose-runtime:0.1.0-dev13"
 
     implementation deps.external.dagger
     implementation deps.external.mviCore

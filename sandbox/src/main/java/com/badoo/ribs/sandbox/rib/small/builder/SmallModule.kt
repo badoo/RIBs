@@ -38,8 +38,8 @@ internal object SmallModule {
         SmallRouter(
             buildParams = buildParams,
             routingSource = interactor,
-            bigBuilder = BigBuilder(component),
-            portalOverlayTestBuilder = PortalOverlayTestBuilder(component)
+            bigBuilder = BigBuilder(),
+            portalOverlayTestBuilder = PortalOverlayTestBuilder(TODO())
         )
 
     @SmallScope

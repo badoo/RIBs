@@ -40,14 +40,7 @@ internal object BigModule {
     @JvmStatic
     internal fun node(
         buildParams: BuildParams<Nothing?>,
-        customisation: Big.Customisation,
         router: BigRouter,
         interactor: BigInteractor
-    ) : BigNode = BigNode(
-        buildParams = buildParams,
-        viewFactory = customisation.viewFactory(null),
-        plugins =  listOf(
-            interactor, router
-        )
-    )
+    ) : BigNode = TODO()
 }

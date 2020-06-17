@@ -49,12 +49,6 @@ subprojects {
 
     configurations.all {
         resolutionStrategy.eachDependency {
-            if (requested.group == "org.jetbrains.kotlin" && requested.module.name == "kotlin-compiler-embeddable") {
-                useVersion("1.3.70-dev-withExperimentalGoogleExtensions-20200424")
-            }
-            if (requested.group == "androidx.compose" && requested.module.name == "compose-compiler") {
-                useVersion("0.1.0-dev10")
-            }
         }
     }
 }

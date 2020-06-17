@@ -2,9 +2,10 @@ package com.badoo.ribs.sandbox.rib.portal_overlay_test
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTest.Customisation
 
 class PortalOverlayTestBuilder(
-    private val dependency: Dependency
+    private val dependency: PortalOverlayTest.Dependency
 ) : SimpleBuilder<PortalOverlayTest>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): PortalOverlayTest {

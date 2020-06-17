@@ -15,7 +15,7 @@ class SwitcherBuilder(
     private val dependency: Switcher.Dependency
 ) : SimpleBuilder<SwitcherNode>() {
 
-    private val builders = SwitcherChildBuilders(dependency)
+    private val builders by lazy { SwitcherChildBuilders(dependency) }
     private val dialogToTestOverlay = DialogToTestOverlay()
     private val viewDependency: SwitcherView.Dependency =
         object : SwitcherView.Dependency {

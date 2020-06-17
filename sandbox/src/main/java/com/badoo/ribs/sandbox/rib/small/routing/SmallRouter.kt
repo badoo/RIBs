@@ -1,4 +1,4 @@
-package com.badoo.ribs.sandbox.rib.small
+package com.badoo.ribs.sandbox.rib.small.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -8,18 +8,15 @@ import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.sandbox.rib.big.builder.BigBuilder
-import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestBuilder
-import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration
-import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration.Content
-import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration.FullScreen
+import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration
+import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration.Content
+import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration.FullScreen
 import kotlinx.android.parcel.Parcelize
 
-class SmallRouter(
+class SmallRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
-    private val bigBuilder: BigBuilder,
-    private val portalOverlayTestBuilder: PortalOverlayTestBuilder
+    private val builders: SmallChildBuilders
 ): Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource
@@ -35,9 +32,13 @@ class SmallRouter(
     }
 
     override fun resolve(routing: Routing<Configuration>): RoutingAction =
-        when (routing.configuration) {
-            Content.Default -> noop()
-            FullScreen.ShowBig -> anchor(node) { bigBuilder.build(it) }
-            FullScreen.ShowOverlay -> anchor(node) { portalOverlayTestBuilder.build(it) }
+        with(builders) {
+            when (routing.configuration) {
+                Content.Default -> noop()
+                FullScreen.ShowBig -> anchor(node) { big.build(it) }
+                FullScreen.ShowOverlay -> anchor(node) { portalOverlay.build(it) }
+            }
         }
+
 }
+

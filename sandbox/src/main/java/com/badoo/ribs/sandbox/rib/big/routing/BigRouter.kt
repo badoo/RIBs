@@ -1,4 +1,4 @@
-package com.badoo.ribs.sandbox.rib.big
+package com.badoo.ribs.sandbox.rib.big.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -7,14 +7,13 @@ import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
-import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration
-import com.badoo.ribs.sandbox.rib.big.BigRouter.Configuration.Permanent
-import com.badoo.ribs.sandbox.rib.small.builder.SmallBuilder
+import com.badoo.ribs.sandbox.rib.big.routing.BigRouter.Configuration
+import com.badoo.ribs.sandbox.rib.big.routing.BigRouter.Configuration.Permanent
 import kotlinx.android.parcel.Parcelize
 
-class BigRouter(
+class BigRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
-    private val smallBuilder: SmallBuilder
+    private val builders: BigChildBuilders
 ): Router<Configuration>(
     buildParams = buildParams,
     routingSource = permanent(Permanent.Small)
@@ -27,7 +26,9 @@ class BigRouter(
     }
 
     override fun resolve(routing: Routing<Configuration>): RoutingAction =
-        when (routing.configuration) {
-            Permanent.Small -> attach { smallBuilder.build(it) }
+        with(builders) {
+            when (routing.configuration) {
+                Permanent.Small -> attach { small.build(it) }
+            }
         }
 }

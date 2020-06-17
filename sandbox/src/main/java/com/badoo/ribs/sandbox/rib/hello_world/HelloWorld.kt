@@ -11,9 +11,9 @@ import io.reactivex.Single
 
 interface HelloWorld : Rib, Connectable<Input, Output> {
 
-//    interface Dependency :
-//        CanProvideActivityStarter,
-//        CanProvidePortal
+    interface Dependency :
+        CanProvideActivityStarter,
+        CanProvidePortal
 
     sealed class Input
 

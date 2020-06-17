@@ -1,11 +1,15 @@
 package com.badoo.ribs.sandbox.rib.compose_leaf
 
+import android.content.Context
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
+import android.widget.FrameLayout
+import androidx.compose.Composable
+import androidx.compose.Recomposer
+import androidx.ui.core.setContent
+import androidx.ui.foundation.Text
+import androidx.ui.layout.Column
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.customisation.inflate
-import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.Event
 import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
@@ -19,7 +23,7 @@ interface ComposeLeafView : RibView,
     sealed class Event
 
     data class ViewModel(
-        val i: Int = 0
+        val text: String = "Initial view model text"
     )
 
     interface Factory : ViewFactory<Nothing?, ComposeLeafView>
@@ -27,22 +31,36 @@ interface ComposeLeafView : RibView,
 
 
 class ComposeLeafViewImpl private constructor(
-    override val androidView: ViewGroup,
+    context: Context,
+    private val composable: @Composable() (ViewModel) -> Unit,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : ComposeLeafView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_compose_leaf
+        private val composable: @Composable() (ViewModel) -> Unit = { Content(it) }
     ) : ComposeLeafView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> ComposeLeafView = {
             ComposeLeafViewImpl(
-                inflate(it, layoutRes)
+                it.context,
+                composable
             )
         }
     }
 
-    override fun accept(vm: ComposeLeafView.ViewModel) {
+    override val androidView: ViewGroup = FrameLayout(context)
+
+    override fun accept(vm: ViewModel) {
+        androidView.setContent(Recomposer.current()) {
+            composable(vm)
+        }
+    }
+}
+
+@Composable
+fun Content(vm: ViewModel) {
+    Column {
+        Text(text = "ComposeLeafView: ${vm.text}")
     }
 }

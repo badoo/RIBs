@@ -1,5 +1,7 @@
 package com.badoo.ribs.sandbox.rib.compose_parent.routing
 
+import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeaf
+import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafBuilder
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParent
 
 internal class ComposeParentChildBuilders(
@@ -7,14 +9,12 @@ internal class ComposeParentChildBuilders(
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    // TODO add public fields for all children
-    // val child1 = Child1Builder(subtreeDeps)
+    val composeLeaf = ComposeLeafBuilder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: ComposeParent.Dependency
-    ) : ComposeParent.Dependency by dependency
-        // TODO enumerate dependencies of children this Rib can host
-        // , Child1.Dependency
+    ) : ComposeParent.Dependency by dependency,
+        ComposeLeaf.Dependency
     {
         // TODO implement subtree dependencies here
     }

@@ -1,11 +1,15 @@
 package com.badoo.ribs.sandbox.rib.compose_parent
 
+import android.content.Context
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
+import android.widget.FrameLayout
+import androidx.compose.Composable
+import androidx.compose.Recomposer
+import androidx.ui.core.setContent
+import androidx.ui.foundation.Text
+import androidx.ui.layout.Column
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.core.customisation.inflate
-import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentView.Event
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
@@ -27,22 +31,36 @@ interface ComposeParentView : RibView,
 
 
 class ComposeParentViewImpl private constructor(
-    override val androidView: ViewGroup,
-    private val events: PublishRelay<Event> = PublishRelay.create()
+    context: Context,
+    private val composable: @Composable() (ViewModel) -> Unit,
+    private val events: PublishRelay<ComposeParentView.Event> = PublishRelay.create()
 ) : ComposeParentView,
-    ObservableSource<Event> by events,
+    ObservableSource<ComposeParentView.Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_compose_parent
+        private val composable: @Composable() (ViewModel) -> Unit = { Content(it) }
     ) : ComposeParentView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> ComposeParentView = {
             ComposeParentViewImpl(
-                inflate(it, layoutRes)
+                it.context,
+                composable
             )
         }
     }
 
-    override fun accept(vm: ComposeParentView.ViewModel) {
+    override val androidView: ViewGroup = FrameLayout(context)
+
+    override fun accept(vm: ViewModel) {
+        androidView.setContent(Recomposer.current()) {
+            composable(vm)
+        }
+    }
+}
+
+@Composable
+fun Content(vm: ViewModel) {
+    Column {
+        Text(text = "ComposeParentView")
     }
 }

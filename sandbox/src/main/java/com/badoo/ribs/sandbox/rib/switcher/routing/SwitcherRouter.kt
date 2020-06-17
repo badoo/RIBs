@@ -62,7 +62,7 @@ class SwitcherRouter internal constructor(
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.HelloWorld)) }
                 )
                 is Content.Foo -> composite(
-                    attach { composeLeaf.build(it) },
+                    attach { composeParent.build(it) },
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.FooBar)) }
                 )
                 is Content.DialogsExample -> composite(

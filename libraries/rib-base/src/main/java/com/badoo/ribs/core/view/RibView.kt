@@ -9,4 +9,6 @@ interface RibView {
 
     fun getParentViewForChild(child: Node<*>): ViewGroup? =
         androidView
+
+    fun onChildViewAttached() {}
 }

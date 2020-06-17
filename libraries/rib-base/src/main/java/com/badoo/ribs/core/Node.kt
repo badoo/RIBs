@@ -239,6 +239,11 @@ open class Node<V : RibView>(
         if (isAttachedToView) {
             val target = targetViewGroupForChild(child)
             child.attachToView(target)
+
+            if (!isViewless) {
+                view!!.onChildViewAttached()
+            }
+
             plugins.filterIsInstance<SubtreeViewChangeAware>().forEach { it.onAttachChildView(child) }
         }
     }

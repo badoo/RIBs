@@ -5,9 +5,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.Composable
 import androidx.compose.Recomposer
+import androidx.ui.core.Modifier
 import androidx.ui.core.setContent
+import androidx.ui.foundation.Box
 import androidx.ui.foundation.Text
 import androidx.ui.layout.Column
+import androidx.ui.layout.padding
+import androidx.ui.unit.Dp
+import androidx.ui.viewinterop.AndroidView
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentView.Event
@@ -23,7 +29,8 @@ interface ComposeParentView : RibView,
     sealed class Event
 
     data class ViewModel(
-        val i: Int = 0
+        val childView: @Composable() () -> Unit = {},
+        val menuView: @Composable() () -> Unit = { Menu() }
     )
 
     interface Factory : ViewFactory<Nothing?, ComposeParentView>
@@ -50,11 +57,23 @@ class ComposeParentViewImpl private constructor(
     }
 
     override val androidView: ViewGroup = FrameLayout(context)
+    private val container: ViewGroup = FrameLayout(context)
 
     override fun accept(vm: ViewModel) {
         androidView.setContent(Recomposer.current()) {
             composable(vm)
         }
+    }
+
+    override fun getParentViewForChild(child: Node<*>): ViewGroup? =
+        container
+
+    override fun onChildViewAttached() {
+        accept(
+            ViewModel(
+                childView = { AndroidView(view = container) }
+            )
+        )
     }
 }
 
@@ -62,5 +81,15 @@ class ComposeParentViewImpl private constructor(
 fun Content(vm: ViewModel) {
     Column {
         Text(text = "ComposeParentView")
+        Text(text = "Child:")
+        Box(modifier = Modifier.padding(all = Dp(40f))) {
+            vm.childView()
+        }
+        vm.menuView()
     }
+}
+
+@Composable
+fun Menu() {
+    Text(text = "Here be menu")
 }

@@ -2,65 +2,40 @@ package com.badoo.ribs.example.logged_out_container
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerChildBuilders
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter
+import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration.Content
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 
 class LoggedOutContainerBuilder(
     private val dependency: LoggedOutContainer.Dependency
 ) : SimpleBuilder<LoggedOutContainer>() {
 
+    private val builders = LoggedOutContainerChildBuilders()
+
     override fun build(buildParams: BuildParams<Nothing?>): LoggedOutContainer {
-        val connections = LoggedOutContainerChildBuilders()
         val customisation = buildParams.getOrDefault(LoggedOutContainer.Customisation())
-        val backStack = backStack(buildParams)
-        val interactor = interactor(buildParams, backStack, dependency.authDataSource)
-        val router = router(buildParams, connections, backStack, customisation)
-
-        return node(buildParams, interactor, router)
-    }
-
-
-    private fun backStack(
-        buildParams: BuildParams<Nothing?>
-    ): BackStackFeature<LoggedOutContainerRouter.Configuration> =
-        BackStackFeature(
+        val backStack = BackStackFeature<LoggedOutContainerRouter.Configuration>(
             buildParams = buildParams,
-            initialConfiguration = LoggedOutContainerRouter.Configuration.Content.Default
+            initialConfiguration = Content.Default
         )
-
-    private fun interactor(
-        buildParams: BuildParams<Nothing?>,
-        backStack: BackStackFeature<LoggedOutContainerRouter.Configuration>,
-        authDataSource: AuthDataSource
-    ): LoggedOutContainerInteractor =
-        LoggedOutContainerInteractor(
+        val interactor = LoggedOutContainerInteractor(
             buildParams = buildParams,
             backStack = backStack,
-            authDataSource = authDataSource
+            authDataSource = dependency.authDataSource
         )
-
-    private fun router(
-        buildParams: BuildParams<Nothing?>,
-        builders: LoggedOutContainerChildBuilders,
-        backStack: BackStackFeature<LoggedOutContainerRouter.Configuration>,
-        customisation: LoggedOutContainer.Customisation
-    ): LoggedOutContainerRouter =
-        LoggedOutContainerRouter(
+        val router = LoggedOutContainerRouter(
             buildParams = buildParams,
             routingSource = backStack,
             builders = builders,
             transitionHandler = customisation.transitionHandler
         )
 
-    private fun node(
-        buildParams: BuildParams<Nothing?>,
-        interactor: LoggedOutContainerInteractor,
-        router: LoggedOutContainerRouter
-    ): LoggedOutContainerNode = LoggedOutContainerNode(
-        buildParams = buildParams,
-        plugins = listOf(interactor, router)
-    )
+        return LoggedOutContainerNode(
+            buildParams = buildParams,
+            plugins = listOf(interactor, router)
+        )
+    }
+
 
 }

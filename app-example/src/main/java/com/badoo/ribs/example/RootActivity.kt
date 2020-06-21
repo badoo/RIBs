@@ -13,7 +13,7 @@ import com.badoo.ribs.example.auth.PreferencesAuthStateStorage
 import com.badoo.ribs.example.network.ApiFactory
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.root.Root
-import com.badoo.ribs.example.root.builder.RootBuilder
+import com.badoo.ribs.example.root.RootBuilder
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
 import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach

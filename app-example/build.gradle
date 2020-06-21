@@ -69,9 +69,19 @@ dependencies {
     implementation deps.retrofit.okhttp
     implementation deps.retrofit.okhttpLoggingInterceptor
 
+    implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-portal")
+
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
+
     testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
+    testImplementation project(":libraries:rib-base-test")
+
+    debugImplementation project(":libraries:rib-base-test-activity")
+    androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner

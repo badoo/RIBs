@@ -11,13 +11,13 @@ class LoggedOutContainerBuilder(
     private val dependency: LoggedOutContainer.Dependency
 ) : SimpleBuilder<LoggedOutContainer>() {
 
-    private val builders = LoggedOutContainerChildBuilders()
+    private val builders = LoggedOutContainerChildBuilders(dependency)
 
     override fun build(buildParams: BuildParams<Nothing?>): LoggedOutContainer {
         val customisation = buildParams.getOrDefault(LoggedOutContainer.Customisation())
         val backStack = BackStackFeature<LoggedOutContainerRouter.Configuration>(
             buildParams = buildParams,
-            initialConfiguration = Content.Default
+            initialConfiguration = Content.Welcome
         )
         val interactor = LoggedOutContainerInteractor(
             buildParams = buildParams,

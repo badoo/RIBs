@@ -37,7 +37,7 @@ class WelcomeInteractorTest {
     }
 
     @Test
-    fun `an example test with some conditions should pass`() {
+    fun `when skip auth clicked then loginAnonymous called`() {
         interactorTestHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             viewEventRelay.accept(Event.SkipClicked)
 
@@ -46,7 +46,7 @@ class WelcomeInteractorTest {
     }
 
     @Test
-    fun `an example test with some conditions output`() {
+    fun `when LoginClicked then output LoginClicked`() {
         interactorTestHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             viewEventRelay.accept(Event.LoginClicked)
 
@@ -55,7 +55,7 @@ class WelcomeInteractorTest {
     }
 
     @Test
-    fun `an example test with some conditions output regiser`() {
+    fun `when RegisterClicked then output RegisterClicked`() {
         interactorTestHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             viewEventRelay.accept(Event.RegisterClicked)
 

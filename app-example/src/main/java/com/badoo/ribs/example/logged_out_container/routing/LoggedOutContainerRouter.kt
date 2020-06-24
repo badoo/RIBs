@@ -5,6 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration.Content
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.routing.router.Router
@@ -25,14 +26,20 @@ class LoggedOutContainerRouter internal constructor(
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize
-            object Default : Content()
+            object Welcome : Content()
+            @Parcelize
+            object Login : Content()
+            @Parcelize
+            object Register : Content()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): RoutingAction =
         with(builders) {
             when (routing.configuration) {
-                is Content.Default -> noop()
+                is Content.Welcome -> attach { welcomeBuilder.build(it) }
+                is Content.Login -> noop()
+                is Content.Register -> noop()
             }
         }
 }

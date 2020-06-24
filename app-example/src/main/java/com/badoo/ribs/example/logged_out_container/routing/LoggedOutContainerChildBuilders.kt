@@ -13,5 +13,6 @@ internal class LoggedOutContainerChildBuilders(
 
     private class SubtreeDeps(
         dependency: LoggedOutContainer.Dependency
-    ) : LoggedOutContainer.Dependency by dependency, Welcome.Dependency
+    ) : LoggedOutContainer.Dependency by dependency,
+        Welcome.Dependency
 }

@@ -7,6 +7,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration
+import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration.Content
 import com.badoo.ribs.example.welcome.Welcome
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.replace
@@ -37,8 +38,8 @@ internal class LoggedOutContainerInteractor(
 
     private val welcomeListener = Consumer<Welcome.Output> { output ->
         when (output) {
-            Welcome.Output.RegisterClicked -> backStack.replace(Configuration.Content.Register)
-            Welcome.Output.LoginClicked -> backStack.replace(Configuration.Content.Login)
+            Welcome.Output.RegisterClicked -> backStack.replace(Content.Register)
+            Welcome.Output.LoginClicked -> backStack.replace(Content.Login)
         }
     }
 }

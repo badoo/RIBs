@@ -3,5 +3,5 @@
     <string name="welcome_heading">Welcome</string>
     <string name="welcome_login">Login</string>
     <string name="welcome_register">Register</string>
-    <string name="welcome_login_anonymous">Skip Auth</string>
+    <string name="welcome_login_anonymous">Continue as guest</string>
 </resources>

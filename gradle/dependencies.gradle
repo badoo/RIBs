@@ -8,13 +8,13 @@ def versions = [
 
     materialVersion:'1.1.0', // https://github.com/material-components/material-components-android/releases
     androidxAnnotationVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/annotation
-    androidxAppCompatVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
+    androidxAppCompatVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
     androidxBrowserVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/browser
     androidxBroadcastVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
     androidxCardViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
     androidxCollectionVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
     androidxConstraintLayoutVersion:'1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
-    androidxCoreVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/core
+    androidxCoreVersion:'1.3.0', // https://developer.android.com/jetpack/androidx/releases/core
     androidxExifVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
     androidxFragmentVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/fragment
     androidxGridLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
@@ -22,7 +22,7 @@ def versions = [
     androidxLoaderVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
     androidxPaletteVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
     androidxPercentLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
-    androidxRecyclerViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
+    androidxRecyclerViewVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
     androidxTestVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/test
     androidxTestUiAutoVersion:'2.2.0',
     retrofitVersion: '2.8.1',
@@ -96,6 +96,7 @@ def external = [
     leakcanaryDebug: 'com.squareup.leakcanary:leakcanary-android:1.6.3',
     apacheCommons: 'org.apache.commons:commons-lang3:3.0',
     gson: 'com.google.code.gson:gson:2.8.5',
+    coil: 'io.coil-kt:coil:0.11.0',
 ]
 
 def retrofit = [

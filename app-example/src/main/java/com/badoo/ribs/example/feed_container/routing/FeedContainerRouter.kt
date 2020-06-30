@@ -1,38 +1,42 @@
-package com.badoo.ribs.example.logged_in_container.routing
+package com.badoo.ribs.example.feed_container.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration
-import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration.Content
+import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration
+import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration.Permanent
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
 import com.badoo.ribs.routing.router.Router
-import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import kotlinx.android.parcel.Parcelize
 
-class LoggedInContainerRouter internal constructor(
+class FeedContainerRouter internal constructor(
     buildParams: BuildParams<*>,
-    routingSource: RoutingSource<Configuration>,
-    private val builders: LoggedInContainerChildBuilders,
+    private val builders: FeedContainerChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
 ) : Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource,
+    routingSource = permanent(Permanent.AppBar, Permanent.PhotoFeed),
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
-        sealed class Content : Configuration() {
+        sealed class Permanent : Configuration() {
             @Parcelize
-            object PhotoFeed : Content()
+            object AppBar : Configuration()
+
+            @Parcelize
+            object PhotoFeed : Configuration()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): RoutingAction =
         with(builders) {
             when (routing.configuration) {
-                is Content.PhotoFeed -> attach { photoFeedBuilder.build(it) }
+                is Permanent.AppBar -> noop()
+                is Permanent.PhotoFeed -> attach { photoFeedBuilder.build(it) }
             }
         }
 }

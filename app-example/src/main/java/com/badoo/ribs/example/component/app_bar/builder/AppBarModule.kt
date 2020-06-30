@@ -3,15 +3,17 @@ package com.badoo.ribs.example.component.app_bar.builder
 
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.component.app_bar.AppBar
+import com.badoo.ribs.example.component.app_bar.AppBar.Output
 import com.badoo.ribs.example.component.app_bar.AppBarInteractor
 import com.badoo.ribs.example.component.app_bar.AppBarNode
+import com.badoo.ribs.example.component.app_bar.builder.AppBarBuilder.Params
 import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter
 import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter.Configuration
 import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter.Configuration.Content
-import com.badoo.ribs.example.component.app_bar.feature.AppBarFeature
 import com.badoo.ribs.example.component.app_bar.routing.AppBarChildBuilders
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import dagger.Provides
+import io.reactivex.functions.Consumer
 
 @dagger.Module
 internal object AppBarModule {
@@ -19,14 +21,8 @@ internal object AppBarModule {
     @AppBarScope
     @Provides
     @JvmStatic
-    internal fun feature(): AppBarFeature =
-        AppBarFeature()
-
-    @AppBarScope
-    @Provides
-    @JvmStatic
     internal fun backStack(
-        buildParams: BuildParams<Nothing?>
+        buildParams: BuildParams<Params>
     ): BackStackFeature<Configuration> =
         BackStackFeature(
             buildParams = buildParams,
@@ -37,13 +33,13 @@ internal object AppBarModule {
     @Provides
     @JvmStatic
     internal fun interactor(
-        buildParams: BuildParams<Nothing?>,
-        feature: AppBarFeature,
+        buildParams: BuildParams<Params>,
+        output: Consumer<Output>,
         backStack: BackStackFeature<Configuration>
     ): AppBarInteractor =
         AppBarInteractor(
             buildParams = buildParams,
-            feature = feature,
+            output = output,
             backStack = backStack
         )
 
@@ -61,7 +57,7 @@ internal object AppBarModule {
     @Provides
     @JvmStatic
     internal fun router(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         builders: AppBarChildBuilders,
         backStack: BackStackFeature<Configuration>,
         customisation: AppBar.Customisation
@@ -77,7 +73,7 @@ internal object AppBarModule {
     @Provides
     @JvmStatic
     internal fun node(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         customisation: AppBar.Customisation,
         interactor: AppBarInteractor,
         router: AppBarRouter

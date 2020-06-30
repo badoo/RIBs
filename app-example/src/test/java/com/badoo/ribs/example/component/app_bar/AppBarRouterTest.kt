@@ -1,9 +1,10 @@
 package com.badoo.ribs.example.component.app_bar
 
-import com.badoo.ribs.core.builder.BuildParams
-import com.badoo.ribs.core.routing.RoutingSource
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.example.component.app_bar.builder.AppBarBuilder
 import com.badoo.ribs.example.component.app_bar.routing.AppBarChildBuilders
 import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter
+import com.badoo.ribs.routing.source.RoutingSource
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -15,7 +16,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class AppBarRouterTest {
 
-    private val buildParams: BuildParams<Nothing?> = mock()
+    private val buildParams: BuildParams<AppBarBuilder.Params> = mock()
     private val builder: AppBarChildBuilders = mock()
     private var router: AppBarRouter? = null
 
@@ -23,7 +24,7 @@ class AppBarRouterTest {
     fun setup() {
         router = AppBarRouter(
             buildParams = buildParams,
-            routingSource = RoutingSource.Empty(),
+            routingSource = RoutingSource.empty(),
             builders = builder
         )
     }

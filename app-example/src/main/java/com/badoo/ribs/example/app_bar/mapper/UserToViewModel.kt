@@ -1,7 +1,7 @@
-package com.badoo.ribs.example.component.app_bar.mapper
+package com.badoo.ribs.example.app_bar.mapper
 
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.component.app_bar.AppBarView
+import com.badoo.ribs.example.app_bar.AppBarView
 import com.badoo.ribs.example.network.model.User
 
 object UserToViewModel : (User) -> AppBarView.ViewModel {

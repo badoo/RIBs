@@ -1,4 +1,4 @@
-package com.badoo.ribs.example.component.app_bar
+package com.badoo.ribs.example.app_bar
 
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,8 +10,8 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.component.app_bar.AppBarView.Event
-import com.badoo.ribs.example.component.app_bar.AppBarView.ViewModel
+import com.badoo.ribs.example.app_bar.AppBarView.Event
+import com.badoo.ribs.example.app_bar.AppBarView.ViewModel
 import com.badoo.ribs.example.image.ImageDownloader
 import com.badoo.ribs.example.view.TargettableImageView
 import com.jakewharton.rxrelay2.PublishRelay

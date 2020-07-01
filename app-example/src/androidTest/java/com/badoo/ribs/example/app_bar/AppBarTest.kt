@@ -1,4 +1,4 @@
-package com.badoo.ribs.example.component.app_bar
+package com.badoo.ribs.example.app_bar
 
 import android.content.Context
 import android.os.Bundle
@@ -8,7 +8,6 @@ import com.badoo.mvicore.extension.asConsumer
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.example.*
-import com.badoo.ribs.example.component.app_bar.builder.AppBarBuilder
 import com.badoo.ribs.example.element.AppBarElement
 import com.badoo.ribs.example.image.ImageDownloader
 import com.badoo.ribs.example.repository.UserRepository

@@ -2,10 +2,13 @@ package com.badoo.common.ribs
 
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
+import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
@@ -70,6 +73,17 @@ class InteractorTestHelper<View : RibView>(
         ): InteractorTestHelper<View> where View : RibView, View : ObservableSource<ViewEvent> {
             val view: View = viewEventRelay.subscribedView()
             return InteractorTestHelper(interactor, { view })
+        }
+
+        inline fun <reified R, reified Input, reified Output> Interactor<R, *>.mockIO(
+            inputRelay: Relay<Input> = PublishRelay.create(),
+            outputRelay: Relay<Output> = PublishRelay.create()
+        ) where R : Rib, R : Connectable<Input, Output> {
+            val rib = mock(R::class.java).apply {
+                whenever(input).thenReturn(inputRelay)
+                whenever(output).thenReturn(outputRelay)
+            }
+            init(rib)
         }
     }
 }

@@ -78,6 +78,12 @@ dependencies {
     implementation deps.retrofit.picasso
     implementation project(":libraries:rib-base")
 
+    implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-portal")
+
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
+
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin

@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rib_app_bar"
+    app:contentInsetStart="0dp"
+    app:contentInsetEnd="0dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -15,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
-        <com.badoo.ribs.example.view.TargettableImageView
+        <com.badoo.ribs.example.view.CircularTargettableImageView
             android:id="@+id/toolbar_action_start"
             android:layout_width="?actionBarSize"
             android:layout_height="0dp"
@@ -23,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@drawable/ic_launcher_background"
+            android:padding="12dp"
             />
 
         <androidx.appcompat.widget.AppCompatImageView

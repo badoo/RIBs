@@ -5,9 +5,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.ribs.example.R
+import com.badoo.ribs.example.image.ImageTarget
 import org.hamcrest.Matcher
 import org.hamcrest.core.AllOf.allOf
 
@@ -31,6 +33,16 @@ class AppBarElement {
 
     fun checkTitle(title: String) {
         onView(titleView).check(matches(withText(title)))
+    }
+
+    fun checkShowingPlaceholder() {
+        onView(avatarButton)
+            .check(matches(withContentDescription(ImageTarget.CONTENT_DESCRIPTION_LOADING)))
+    }
+
+    fun checkShowingAvatar() {
+        onView(avatarButton)
+            .check(matches(withContentDescription(ImageTarget.CONTENT_DESCRIPTION_LOAD_SUCCESS)))
     }
 
     private fun descendantWithId(id: Int) =

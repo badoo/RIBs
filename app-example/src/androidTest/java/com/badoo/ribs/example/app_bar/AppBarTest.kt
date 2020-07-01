@@ -23,11 +23,13 @@ class AppBarTest {
 
     private val outputTest: TestObserver<AppBar.Output> = TestObserver()
 
+    private val fakeImageDownloader: FakeImageDownloader = FakeImageDownloader()
+
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         AppBarBuilder(object : AppBar.Dependency {
             override val userRepository: UserRepository = FakeUserRepository.of(MY_USER)
             override val appBarOutput: Consumer<AppBar.Output> = outputTest.asConsumer()
-            override val imageDownloader: ImageDownloader = FakeImageDownloader()
+            override val imageDownloader: ImageDownloader = fakeImageDownloader
         }).build(
             buildContext = root(savedInstanceState),
             payload = AppBarBuilder.Params(MY_ID)
@@ -55,5 +57,17 @@ class AppBarTest {
         appBarElement.clickSearch()
 
         outputTest.assertValue(AppBar.Output.SearchClicked)
+    }
+
+    @Test
+    fun whenImageDownloadingSucceeds_showPicture() {
+        fakeImageDownloader.succeed()
+
+        appBarElement.checkShowingAvatar()
+    }
+
+    @Test
+    fun whenWaitingForImageDownload_showPlaceholder() {
+        appBarElement.checkShowingPlaceholder()
     }
 }

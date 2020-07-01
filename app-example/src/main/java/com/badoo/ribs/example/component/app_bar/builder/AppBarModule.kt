@@ -11,6 +11,8 @@ import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter
 import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter.Configuration
 import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter.Configuration.Content
 import com.badoo.ribs.example.component.app_bar.routing.AppBarChildBuilders
+import com.badoo.ribs.example.image.ImageDownloader
+import com.badoo.ribs.example.repository.UserRepository
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import dagger.Provides
 import io.reactivex.functions.Consumer
@@ -35,12 +37,14 @@ internal object AppBarModule {
     internal fun interactor(
         buildParams: BuildParams<Params>,
         output: Consumer<Output>,
-        backStack: BackStackFeature<Configuration>
+        backStack: BackStackFeature<Configuration>,
+        userRepository: UserRepository
     ): AppBarInteractor =
         AppBarInteractor(
             buildParams = buildParams,
             output = output,
-            backStack = backStack
+            backStack = backStack,
+            userRepository = userRepository
         )
 
     @AppBarScope
@@ -76,10 +80,11 @@ internal object AppBarModule {
         buildParams: BuildParams<Params>,
         customisation: AppBar.Customisation,
         interactor: AppBarInteractor,
-        router: AppBarRouter
+        router: AppBarRouter,
+        imageDownloader: ImageDownloader
     ) : AppBarNode = AppBarNode(
         buildParams = buildParams,
-        viewFactory = customisation.viewFactory(null),
+        viewFactory = customisation.viewFactory(imageDownloader),
         plugins = listOf(interactor, router)
     )
 }

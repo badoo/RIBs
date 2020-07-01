@@ -5,17 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rib_app_bar"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar_contents"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="?actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.badoo.ribs.example.view.TargettableImageView
             android:id="@+id/toolbar_action_start"
             android:layout_width="?actionBarSize"
             android:layout_height="0dp"
@@ -47,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/toolbar_action_start"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="App Bar"
+            android:text="@string/app_name"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

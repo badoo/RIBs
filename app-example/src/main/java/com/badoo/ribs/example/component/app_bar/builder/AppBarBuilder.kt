@@ -4,14 +4,13 @@ import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.component.app_bar.AppBar
 import com.badoo.ribs.example.component.app_bar.builder.AppBarBuilder.Params
-import com.badoo.ribs.example.network.model.User
 
 class AppBarBuilder(
     private val dependency: AppBar.Dependency
 ) : Builder<Params, AppBar>() {
 
     data class Params(
-        val user: User
+        val userId: String
     )
 
     override fun build(buildParams: BuildParams<Params>): AppBar =

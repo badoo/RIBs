@@ -6,14 +6,18 @@ import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.example.component.app_bar.AppBar.Input
 import com.badoo.ribs.example.component.app_bar.AppBar.Output
 import com.badoo.ribs.example.component.app_bar.routing.AppBarRouter
+import com.badoo.ribs.example.image.ImageDownloader
 import com.badoo.ribs.example.repository.UserRepository
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import io.reactivex.Single
+import io.reactivex.functions.Consumer
 
 interface AppBar : Rib, Connectable<Input, Output> {
 
     interface Dependency {
         val userRepository: UserRepository
+        val appBarOutput: Consumer<Output>
+        val imageDownloader: ImageDownloader
     }
 
     sealed class Input

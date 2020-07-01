@@ -66,6 +66,7 @@ dependencies {
     implementation deps.external.dagger
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
+    implementation deps.external.mviCoreDiff
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
 
@@ -74,6 +75,7 @@ dependencies {
     implementation deps.retrofit.moshiConverter
     implementation deps.retrofit.okhttp
     implementation deps.retrofit.okhttpLoggingInterceptor
+    implementation deps.retrofit.picasso
     implementation project(":libraries:rib-base")
 
     testImplementation deps.external.roboelectricBase
@@ -82,6 +84,7 @@ dependencies {
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
 
+    debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.androidTest.espresso

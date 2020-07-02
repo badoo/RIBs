@@ -52,13 +52,20 @@ android {
     }
 
 }
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 dependencies {
     implementation deps.external.kotlinStdlib
 
     implementation deps.android.appCompat
-    implementation deps.android.constraintLayout
     implementation deps.android.design
+    implementation deps.android.constraintLayout
+    implementation deps.android.recyclerView
+    implementation deps.external.coil
 
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2

@@ -19,7 +19,9 @@ interface FeedContainer : Rib, Connectable<Input, Output> {
 
     sealed class Input
 
-    sealed class Output
+    sealed class Output {
+        data class PhotoClicked(val id: String) : Output()
+    }
 
     class Customisation(
         val viewFactory: FeedContainerView.Factory = FeedContainerViewImpl.Factory(),

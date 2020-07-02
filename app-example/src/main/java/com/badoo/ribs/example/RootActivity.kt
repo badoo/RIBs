@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
-import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
@@ -19,7 +18,6 @@ import com.badoo.ribs.portal.PortalBuilder
 import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.action.RoutingAction
 
-@ExperimentalApi
 class RootActivity : RibActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_root)
@@ -51,6 +49,8 @@ class RootActivity : RibActivity() {
                     ApiFactory.api(BuildConfig.DEBUG, BuildConfig.ACCESS_KEY)
                 override val authStateStorage: AuthStateStorage =
                     PreferencesAuthStateStorage(PreferenceManager.getDefaultSharedPreferences(this@RootActivity))
+
+                override fun portal(): Portal.OtherSide = portal
             }
         ).build(buildContext)
 

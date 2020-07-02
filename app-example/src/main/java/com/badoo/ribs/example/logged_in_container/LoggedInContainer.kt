@@ -8,11 +8,12 @@ import com.badoo.ribs.example.logged_in_container.LoggedInContainer.Input
 import com.badoo.ribs.example.logged_in_container.LoggedInContainer.Output
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter
 import com.badoo.ribs.example.network.UnsplashApi
+import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
 interface LoggedInContainer : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
+    interface Dependency : CanProvidePortal {
         val authDataSource: AuthDataSource
         val api: UnsplashApi
     }

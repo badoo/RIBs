@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration.Content
+import com.badoo.ribs.example.photo_details.PhotoDetailsBuilder
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.action.RoutingAction
@@ -26,13 +27,22 @@ class LoggedInContainerRouter internal constructor(
         sealed class Content : Configuration() {
             @Parcelize
             object PhotoFeed : Content()
+
+            @Parcelize
+            data class PhotoDetails(val photoId: String) : Content()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): RoutingAction =
         with(builders) {
-            when (routing.configuration) {
+            when (val configuration = routing.configuration) {
                 is Content.PhotoFeed -> attach { photoFeedBuilder.build(it) }
+                is Content.PhotoDetails -> attach {
+                    photoDetailsBuilder.build(
+                        it,
+                        PhotoDetailsBuilder.Params(configuration.photoId)
+                    )
+                }
             }
         }
 }

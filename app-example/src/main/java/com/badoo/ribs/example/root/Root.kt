@@ -8,11 +8,12 @@ import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.root.Root.Input
 import com.badoo.ribs.example.root.Root.Output
 import com.badoo.ribs.example.root.routing.RootRouter
+import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
 interface Root : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
+    interface Dependency: CanProvidePortal {
         val api: UnsplashApi
         val authStateStorage: AuthStateStorage
     }

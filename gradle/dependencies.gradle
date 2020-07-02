@@ -27,7 +27,6 @@ def versions = [
     androidxTestUiAutoVersion:'2.2.0',
     retrofitVersion: '2.8.1',
     okhttp: '3.14.7',
-    picasso: '2.71828',
 ]
 
 def apt = [
@@ -107,7 +106,6 @@ def retrofit = [
     moshiConverter: "com.squareup.retrofit2:converter-moshi:${versions.retrofitVersion}",
     okhttp: "com.squareup.okhttp3:okhttp:${versions.okhttp}",
     okhttpLoggingInterceptor : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
-    picasso: "com.squareup.picasso:picasso:${versions.picasso}"
 ]
 
 ext.deps = [

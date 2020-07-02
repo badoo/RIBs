@@ -10,7 +10,7 @@ const val MY_NAME = "MyName"
 const val MY_BIO = "My name is MyName. I am a test user."
 const val MY_LOCATION = "London, United Kingdom"
 
-const val TEST_IMAGE_URL = "https://example.com/test.jpg"
+const val TEST_IMAGE_URL = "https://eska.com/wp-content/uploads/2019/09/eska-mono-black-voor.jpg"
 const val TEST_EXTERNAL_URL = "https://example.com/test.html"
 
 val MY_PROFILE_IMAGE_URLS: Urls =
@@ -48,3 +48,4 @@ val MY_USER: User =
         profileImage = MY_PROFILE_IMAGE_URLS,
         links = MY_LINKS
     )
+

@@ -11,7 +11,6 @@ import com.badoo.ribs.example.app_bar.mapper.ViewEventToOutput
 import com.badoo.ribs.example.network.model.User
 import com.badoo.ribs.example.repository.UserRepository
 import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
 internal class AppBarInteractor(
     buildParams: BuildParams<Params>,

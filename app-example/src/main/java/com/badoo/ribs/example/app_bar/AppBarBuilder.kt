@@ -3,7 +3,6 @@ package com.badoo.ribs.example.app_bar
 import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.app_bar.AppBarBuilder.Params
-import com.badoo.ribs.example.image.ImageDownloader
 import com.badoo.ribs.example.repository.UserRepository
 
 class AppBarBuilder(
@@ -21,8 +20,7 @@ class AppBarBuilder(
             interactor = interactor(
                 buildParams = buildParams,
                 userRepository = dependency.userRepository
-            ),
-            imageDownloader = dependency.imageDownloader
+            )
         )
 
     private fun interactor(
@@ -37,12 +35,11 @@ class AppBarBuilder(
     private fun node(
         buildParams: BuildParams<Params>,
         customisation: AppBar.Customisation,
-        interactor: AppBarInteractor,
-        imageDownloader: ImageDownloader
+        interactor: AppBarInteractor
     ): AppBarNode =
         AppBarNode(
             buildParams = buildParams,
-            viewFactory = customisation.viewFactory(imageDownloader),
+            viewFactory = customisation.viewFactory(null),
             plugins = listOf(interactor)
         )
 }

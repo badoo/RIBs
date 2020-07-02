@@ -4,31 +4,39 @@ import android.content.Context
 import android.os.Bundle
 import androidx.test.platform.app.InstrumentationRegistry
 import com.badoo.common.ribs.RibsRule
-import com.badoo.mvicore.extension.asConsumer
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.example.*
+import com.badoo.ribs.example.FakeUserRepository
+import com.badoo.ribs.example.MY_ID
+import com.badoo.ribs.example.MY_USER
+import com.badoo.ribs.example.R
 import com.badoo.ribs.example.element.AppBarElement
-import com.badoo.ribs.example.image.ImageDownloader
 import com.badoo.ribs.example.repository.UserRepository
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.example.rule.FakeImageLoaderRule
 import io.reactivex.observers.TestObserver
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.RuleChain
 
 class AppBarTest {
 
+    private val fakeImageLoaderRule: FakeImageLoaderRule = FakeImageLoaderRule()
+
+    private val ribsRule = RibsRule { activity, savedInstanceState ->
+        buildRib(activity, savedInstanceState)
+    }
+
     @get:Rule
-    val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
+    val ruleChain: RuleChain =
+        RuleChain
+            .outerRule(fakeImageLoaderRule)
+            .around(ribsRule)
 
     private lateinit var outputTest: TestObserver<AppBar.Output>
-
-    private val fakeImageDownloader: FakeImageDownloader = FakeImageDownloader()
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         AppBarBuilder(object : AppBar.Dependency {
             override val userRepository: UserRepository = FakeUserRepository.of(MY_USER)
-            override val imageDownloader: ImageDownloader = fakeImageDownloader
         }).build(
             buildContext = root(savedInstanceState),
             payload = AppBarBuilder.Params(MY_ID)
@@ -58,17 +66,5 @@ class AppBarTest {
         appBarElement.clickSearch()
 
         outputTest.assertValue(AppBar.Output.SearchClicked)
-    }
-
-    @Test
-    fun whenImageDownloadingSucceeds_showPicture() {
-        fakeImageDownloader.succeed()
-
-        appBarElement.checkShowingAvatar()
-    }
-
-    @Test
-    fun whenWaitingForImageDownload_showPlaceholder() {
-        appBarElement.checkShowingPlaceholder()
     }
 }

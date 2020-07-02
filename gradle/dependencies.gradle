@@ -87,6 +87,7 @@ def external = [
     dagger: "com.google.dagger:dagger:${versions.dagger}",
     mviCore: "com.github.badoo.mvicore:mvicore:${versions.mviCore}",
     mviCoreAndroid: "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
+    mviCoreDiff: "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
     rxjava2: "io.reactivex.rxjava2:rxjava:2.2.6",
     rxrelay2: "com.jakewharton.rxrelay2:rxrelay:2.1.0",
     rxandroid2: "io.reactivex.rxjava2:rxandroid:2.1.1",

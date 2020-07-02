@@ -11,13 +11,13 @@ class LoggedInContainerBuilder(
     private val dependency: LoggedInContainer.Dependency
 ) : SimpleBuilder<LoggedInContainer>() {
 
-    private val builders = LoggedInContainerChildBuilders()
+    private val builders = LoggedInContainerChildBuilders(dependency)
 
     override fun build(buildParams: BuildParams<Nothing?>): LoggedInContainer {
         val customisation = buildParams.getOrDefault(LoggedInContainer.Customisation())
         val backStack = BackStackFeature<LoggedInContainerRouter.Configuration>(
             buildParams = buildParams,
-            initialConfiguration = Content.Default
+            initialConfiguration = Content.PhotoFeed
         )
         val interactor = LoggedInContainerInteractor(
             buildParams = buildParams,

@@ -21,19 +21,20 @@ class AppBarTest {
     @get:Rule
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
-    private val outputTest: TestObserver<AppBar.Output> = TestObserver()
+    private lateinit var outputTest: TestObserver<AppBar.Output>
 
     private val fakeImageDownloader: FakeImageDownloader = FakeImageDownloader()
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         AppBarBuilder(object : AppBar.Dependency {
             override val userRepository: UserRepository = FakeUserRepository.of(MY_USER)
-            override val appBarOutput: Consumer<AppBar.Output> = outputTest.asConsumer()
             override val imageDownloader: ImageDownloader = fakeImageDownloader
         }).build(
             buildContext = root(savedInstanceState),
             payload = AppBarBuilder.Params(MY_ID)
-        )
+        ).also {
+            outputTest = it.output.test()
+        }
 
     private val appBarElement: AppBarElement = AppBarElement()
 

@@ -28,8 +28,7 @@ interface AppBarView : RibView,
     }
 
     data class ViewModel(
-        val profileImageUrl: String,
-        @DrawableRes val placeholderRes: Int
+        val profileImageUrl: String
     )
 
     interface Factory : ViewFactory<ImageDownloader, AppBarView>
@@ -70,8 +69,8 @@ class AppBarViewImpl private constructor(
 
     private val modelWatcher: ModelWatcher<ViewModel> =
         modelWatcher {
-            watch({ it }, ViewModel::profileImageUrl or ViewModel::placeholderRes) {
-                imageDownloader.download(it.profileImageUrl, it.placeholderRes, startAction)
+            watch(ViewModel::profileImageUrl) {
+                imageDownloader.download(it, R.drawable.ic_profile_placeholder, startAction)
             }
         }
 

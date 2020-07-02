@@ -15,8 +15,7 @@ import io.reactivex.functions.Consumer
 
 internal class AppBarInteractor(
     buildParams: BuildParams<Params>,
-    userRepository: UserRepository,
-    private val output: Consumer<AppBar.Output>
+    userRepository: UserRepository
 ) : Interactor<AppBar, AppBarView>(
     buildParams = buildParams
 ) {
@@ -28,7 +27,7 @@ internal class AppBarInteractor(
 
     override fun onViewCreated(view: AppBarView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
-            bind(view to output using ViewEventToOutput)
+            bind(view to rib.output using ViewEventToOutput)
             bind(userSource to view using UserToViewModel)
         }
     }

@@ -2,25 +2,15 @@ package com.badoo.ribs.example.photo_feed.mapper
 
 import com.badoo.ribs.example.photo_feed.feature.PhotoFeedFeature.State
 import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.ViewModel
-import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.ViewModel.InitialLoading
-import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.ViewModel.InitialLoadingError
-import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.ViewModel.Loaded
-import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.ViewModel.LoadingNext
-import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.ViewModel.LoadingNextError
 
 internal object StateToViewModel : (State) -> ViewModel {
 
     override fun invoke(state: State): ViewModel =
-        when {
-            state.hasError && state.pageNumber == State.firstPageNumber -> InitialLoadingError
-            state.isLoading && state.pageNumber == State.firstPageNumber -> InitialLoading
-            state.isLoading && state.pageNumber > State.firstPageNumber -> LoadingNext(
-                state.photos
-            )
-            state.hasError && state.pageNumber > State.firstPageNumber -> LoadingNextError(
-                state.photos
-            )
-            !state.isLoading && !state.hasError -> Loaded(state.photos)
-            else -> Loaded(state.photos)
+        when (state) {
+            is State.InitialLoading -> ViewModel.InitialLoading
+            is State.InitialLoadingError -> ViewModel.InitialLoadingError
+            is State.Loaded -> ViewModel.Loaded(state.photos)
+            is State.LoadingNext -> ViewModel.LoadingNext(state.photos)
+            is State.LoadingNextError -> ViewModel.LoadingNextError(state.photos)
         }
 }

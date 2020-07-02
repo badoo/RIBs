@@ -141,6 +141,7 @@ class PhotoFeedViewImpl private constructor(
 
     private fun showInitialLoading() {
         photoList.visibility = GONE
+        initialLoadingError.visibility = GONE
         initialLoader.visibility = VISIBLE
     }
 

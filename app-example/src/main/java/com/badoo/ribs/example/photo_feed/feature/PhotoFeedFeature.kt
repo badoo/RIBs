@@ -17,19 +17,34 @@ import io.reactivex.Observable
 internal class PhotoFeedFeature(
     dataSource: PhotoFeedDataSource
 ) : ActorReducerFeature<Wish, Effect, State, News>(
-    initialState = State(),
+    initialState = State.Loaded(emptyList(), State.firstPageNumber),
     bootstrapper = BootStrapperImpl(),
     actor = ActorImpl(dataSource),
     reducer = ReducerImpl(),
     newsPublisher = NewsPublisherImpl()
 ) {
 
-    data class State(
-        val isLoading: Boolean = false,
-        val pageNumber: Int = firstPageNumber,
-        val photos: List<Photo> = emptyList(),
-        val hasError: Boolean = false
+    sealed class State(
+        open val pageNumber: Int = firstPageNumber,
+        open val photos: List<Photo> = emptyList()
     ) {
+        object InitialLoading : State()
+        object InitialLoadingError : State()
+        data class Loaded(
+            override val photos: List<Photo>,
+            override val pageNumber: Int
+        ) : State(pageNumber, photos)
+
+        data class LoadingNext(
+            override val photos: List<Photo>,
+            override val pageNumber: Int
+        ) : State(pageNumber, photos)
+
+        data class LoadingNextError(
+            override val photos: List<Photo>,
+            override val pageNumber: Int
+        ) : State(pageNumber, photos)
+
         companion object {
             const val firstPageNumber = 1
         }
@@ -58,7 +73,11 @@ internal class PhotoFeedFeature(
     ) : Actor<State, Wish, Effect> {
         override fun invoke(state: State, wish: Wish): Observable<Effect> =
             when (wish) {
-                is Wish.LoadNextPage -> if (!state.isLoading) loadPage(state.pageNumber) else Observable.empty()
+                is Wish.LoadNextPage ->
+                    when (state) {
+                        is State.InitialLoading, is State.LoadingNext -> Observable.empty()
+                        else -> loadPage(state.pageNumber)
+                    }
                 is Wish.Refresh -> loadPage(0).startWith(Effect.PhotosCleared)
             }
 
@@ -76,14 +95,18 @@ internal class PhotoFeedFeature(
     class ReducerImpl : Reducer<State, Effect> {
         override fun invoke(state: State, effect: Effect): State =
             when (effect) {
-                is Effect.PageLoaded -> state.copy(
-                    isLoading = false,
-                    photos = state.photos + effect.photos,
-                    pageNumber = effect.pageNumber
+                is Effect.PageLoaded -> State.Loaded(
+                    state.photos + effect.photos, effect.pageNumber
                 )
-                is Effect.LoadingStarted -> state.copy(isLoading = true)
-                is Effect.LoadingFailed -> state.copy(isLoading = false, hasError = true)
-                is Effect.PhotosCleared -> State()
+                is Effect.LoadingStarted -> when {
+                    state is State.InitialLoadingError || state.photos.isEmpty() -> State.InitialLoading
+                    else -> State.LoadingNext(state.photos, state.pageNumber)
+                }
+                is Effect.LoadingFailed -> when (state) {
+                    is State.InitialLoading -> State.InitialLoadingError
+                    else -> State.LoadingNextError(state.photos, state.pageNumber)
+                }
+                is Effect.PhotosCleared -> State.InitialLoading
             }
     }
 

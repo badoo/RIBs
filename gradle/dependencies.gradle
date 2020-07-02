@@ -7,7 +7,7 @@ def versions = [
     robolectric: '4.2',
 
     materialVersion:'1.1.0', // https://github.com/material-components/material-components-android/releases
-    androidxAnnotationVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/annotation
+    androidxAnnotationVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
     androidxAppCompatVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
     androidxBrowserVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/browser
     androidxBroadcastVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager

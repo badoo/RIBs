@@ -86,6 +86,7 @@ dependencies {
 
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
+    implementation deps.external.mviCoreDiff
 
     testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin

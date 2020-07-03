@@ -20,7 +20,7 @@ import com.badoo.ribs.routing.action.RoutingAction
 
 class RootActivity : RibActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_root)
+        setContentView(R.layout.example_activity_root)
         super.onCreate(savedInstanceState)
     }
 

@@ -28,6 +28,7 @@ internal class PhotoDetailsFeature(
     newsPublisher = NewsPublisherImpl(authDataSource)
 ) {
 
+
     sealed class State {
         object Loading : State()
         data class Loaded(val detail: Photo) : State()
@@ -43,6 +44,7 @@ internal class PhotoDetailsFeature(
         data class PhotoLoaded(val detail: Photo) : Effect()
         object LikeSent : Effect()
         object UnlikeSent : Effect()
+        object LikeNotSent : Effect()
     }
 
     sealed class News {
@@ -68,13 +70,17 @@ internal class PhotoDetailsFeature(
             }
 
         private fun likeOrDislikePhoto(state: State): Observable<Effect> =
-            if (state is State.Loaded && authDataSource.getState() is Authenticated) {
-                if (state.detail.likedByUser) {
-                    unlikePhoto()
-                } else {
-                    likePhoto()
+            when {
+                state !is State.Loaded -> Observable.empty()
+                authDataSource.getState() !is Authenticated -> Effect.LikeNotSent.toObservable()
+                else -> {
+                    if (state.detail.likedByUser) {
+                        unlikePhoto()
+                    } else {
+                        likePhoto()
+                    }
                 }
-            } else Observable.empty()
+            }
 
         private fun likePhoto(): Observable<Effect> {
             return photoDetailsDataSource.likePhoto(photoId)
@@ -96,6 +102,7 @@ internal class PhotoDetailsFeature(
                 is Effect.PhotoLoaded -> State.Loaded(effect.detail)
                 is Effect.LikeSent -> likeState(state, true)
                 is Effect.UnlikeSent -> likeState(state, false)
+                is Effect.LikeNotSent -> state
             }
 
         private fun likeState(state: State, isLiked: Boolean): State {
@@ -111,12 +118,8 @@ internal class PhotoDetailsFeature(
         private val authDataSource: AuthDataSource
     ) : NewsPublisher<Wish, Effect, State, News> {
         override fun invoke(wish: Wish, effect: Effect, state: State): News? =
-            when (wish) {
-                is Wish.LikePhoto -> {
-                    if (authDataSource.getState() !is Authenticated) {
-                        News.ShowLogin
-                    } else null
-                }
+            when (effect) {
+                is Effect.LikeNotSent -> News.ShowLogin
                 else -> null
             }
     }

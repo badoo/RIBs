@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.network
 
+import com.badoo.ribs.example.auth.AuthStateStorage
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,15 +11,19 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ApiFactory {
     private const val BASE_URL = "https://api.unsplash.com/"
-    fun api(isDebug: Boolean, accessKey: String): UnsplashApi =
+    fun api(isDebug: Boolean, accessKey: String, authStateStorage: AuthStateStorage): UnsplashApi =
         retrofit(
-            client = okhttpClient(isDebug, accessKey),
+            client = okhttpClient(isDebug, accessKey, authStateStorage),
             baseUrl = BASE_URL
         ).create(UnsplashApi::class.java)
 
-    private fun okhttpClient(isDebug: Boolean, accessKey: String): OkHttpClient =
+    private fun okhttpClient(
+        isDebug: Boolean,
+        accessKey: String,
+        authStateStorage: AuthStateStorage
+    ): OkHttpClient =
         OkHttpClient.Builder()
-            .addNetworkInterceptor(authInterceptor(accessKey))
+            .addNetworkInterceptor(authInterceptor(accessKey, authStateStorage))
             .addNetworkInterceptor(loggingInterceptor(isDebug))
             .build()
 
@@ -34,5 +39,8 @@ object ApiFactory {
             level = if (isDebug) Level.BODY else Level.NONE
         }
 
-    private fun authInterceptor(accessKey: String) = AuthInterceptor(accessKey)
+    private fun authInterceptor(
+        accessKey: String,
+        authStateStorage: AuthStateStorage
+    ) = AuthInterceptor(accessKey, authStateStorage)
 }

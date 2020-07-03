@@ -71,6 +71,8 @@ dependencies {
     implementation deps.android.constraintLayout
     implementation deps.android.recyclerView
     implementation deps.external.coil
+    implementation "androidx.browser:browser:1.2.0"
+
 
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2

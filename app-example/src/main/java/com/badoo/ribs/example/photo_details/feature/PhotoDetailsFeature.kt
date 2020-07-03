@@ -83,7 +83,7 @@ internal class PhotoDetailsFeature(
         }
 
         private fun unlikePhoto(): Observable<Effect> {
-            return photoDetailsDataSource.likePhoto(photoId)
+            return photoDetailsDataSource.unlikePhoto(photoId)
                 .toObservable<Effect>()
                 .startWith(Effect.UnlikeSent)
         }

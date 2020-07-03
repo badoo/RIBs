@@ -1,8 +1,14 @@
 package com.badoo.ribs.example.auth
 
 import android.content.SharedPreferences
+import android.util.Log
+import com.jakewharton.rxrelay2.BehaviorRelay
+import io.reactivex.ObservableSource
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 interface AuthStateStorage {
+    val authUpdates: ObservableSource<AuthState>
+    fun getState(): AuthState
     fun save(state: AuthState)
     fun restore(): AuthState
 }
@@ -10,6 +16,20 @@ interface AuthStateStorage {
 class PreferencesAuthStateStorage(
     private val preferences: SharedPreferences
 ) : AuthStateStorage {
+    private val stateRelay = BehaviorRelay.createDefault<AuthState>(restore())
+
+    override val authUpdates: ObservableSource<AuthState> =
+        stateRelay.observeOn(AndroidSchedulers.mainThread())
+
+    override fun getState(): AuthState {
+        val authState = stateRelay.value
+        return if (authState != null) {
+            authState
+        } else {
+            Log.e("AuthDataSource", "Cannot retrieve auth state")
+            AuthState.Unauthenticated
+        }
+    }
 
     override fun save(state: AuthState) {
         when (state) {
@@ -25,6 +45,7 @@ class PreferencesAuthStateStorage(
                 .putString(ACCESS_TOKEN_KEY, state.accessToken)
                 .apply()
         }
+        stateRelay.accept(state)
     }
 
     override fun restore(): AuthState {

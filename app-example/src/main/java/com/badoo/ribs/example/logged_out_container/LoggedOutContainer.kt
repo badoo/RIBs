@@ -7,12 +7,14 @@ import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.logged_out_container.LoggedOutContainer.Input
 import com.badoo.ribs.example.logged_out_container.LoggedOutContainer.Output
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter
+import com.badoo.ribs.example.login.AuthCodeDataSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
 interface LoggedOutContainer : Rib, Connectable<Input, Output> {
 
     interface Dependency {
         val authDataSource: AuthDataSource
+        val authCodeDataSource: AuthCodeDataSource
     }
 
     sealed class Input

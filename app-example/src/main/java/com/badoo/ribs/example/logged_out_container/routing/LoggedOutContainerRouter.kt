@@ -27,8 +27,10 @@ class LoggedOutContainerRouter internal constructor(
         sealed class Content : Configuration() {
             @Parcelize
             object Welcome : Content()
+
             @Parcelize
             object Login : Content()
+
             @Parcelize
             object Register : Content()
         }
@@ -38,7 +40,7 @@ class LoggedOutContainerRouter internal constructor(
         with(builders) {
             when (routing.configuration) {
                 is Content.Welcome -> attach { welcomeBuilder.build(it) }
-                is Content.Login -> noop()
+                is Content.Login -> attach { loginBuilder.build(it) }
                 is Content.Register -> noop()
             }
         }

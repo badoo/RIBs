@@ -10,6 +10,7 @@ interface PhotoDetailsDataSource {
     fun getPhoto(id: String): Single<Photo>
 
     fun likePhoto(id: String): Completable
+    fun unlikePhoto(id: String): Completable
 }
 
 
@@ -20,4 +21,7 @@ class PhotoDetailsDataSourceImpl(private val api: UnsplashApi) : PhotoDetailsDat
 
     override fun likePhoto(id: String): Completable =
         api.likePhoto(id)
+
+    override fun unlikePhoto(id: String): Completable =
+        api.unlikePhoto(id)
 }

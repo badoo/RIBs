@@ -1,5 +1,3 @@
-@file:SuppressWarnings("LongParameterList")
-
 package com.badoo.ribs.example.photo_details
 
 import com.badoo.ribs.builder.Builder
@@ -26,13 +24,13 @@ class PhotoDetailsBuilder(
         )
         val feature = PhotoDetailsFeature(
             buildParams.payload.photoId,
-            dependency.photoDetailsDataSource
+            dependency.photoDetailsDataSource,
+            dependency.authDataSource
         )
         val interactor = PhotoDetailsInteractor(
             buildParams = buildParams,
             backStack = backStack,
             feature = feature,
-            authDataSource = dependency.authDataSource,
             portal = dependency.portal()
         )
         val router = PhotoDetailsRouter(

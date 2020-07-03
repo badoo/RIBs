@@ -7,12 +7,11 @@ import com.badoo.mvicore.binder.using
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.example.auth.AuthDataSource
-import com.badoo.ribs.example.auth.AuthState.Authenticated
 import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature
-import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature.Wish
+import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature.News
 import com.badoo.ribs.example.photo_details.mapper.NewsToOutput
 import com.badoo.ribs.example.photo_details.mapper.StateToViewModel
+import com.badoo.ribs.example.photo_details.mapper.ViewEventToWish
 import com.badoo.ribs.example.photo_details.routing.PhotoDetailsRouter.Configuration
 import com.badoo.ribs.example.photo_details.routing.PhotoDetailsRouter.Configuration.Content
 import com.badoo.ribs.portal.Portal
@@ -23,7 +22,6 @@ internal class PhotoDetailsInteractor(
     buildParams: BuildParams<*>,
     private val backStack: BackStackFeature<Configuration>,
     private val feature: PhotoDetailsFeature,
-    private val authDataSource: AuthDataSource,
     private val portal: Portal.OtherSide
 ) : Interactor<PhotoDetails, PhotoDetailsView>(
     buildParams = buildParams,
@@ -33,25 +31,20 @@ internal class PhotoDetailsInteractor(
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature.news to rib.output using NewsToOutput)
+            bind(feature.news to newsConsumer)
         }
     }
 
     override fun onViewCreated(view: PhotoDetailsView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
             bind(feature to view using StateToViewModel)
-            bind(view to likeEventConsumer)
+            bind(view to feature using ViewEventToWish)
         }
     }
 
-    private val likeEventConsumer = Consumer<PhotoDetailsView.Event> { event ->
-        when (event) {
-            is PhotoDetailsView.Event.LikeClicked -> {
-                if (authDataSource.getState() is Authenticated) {
-                    feature.accept(Wish.LikePhoto)
-                } else {
-                    portal.showContent(node, Content.Login)
-                }
-            }
+    private val newsConsumer = Consumer<News> { news ->
+        when (news) {
+            is News.ShowLogin -> portal.showContent(node, Content.Login)
         }
 
     }

@@ -107,7 +107,7 @@ interface UnsplashApi {
     /**
      * https://unsplash.com/documentation#unlike-a-photo
      */
-    @DELETE("photos/{id}/unlike")
+    @DELETE("photos/{id}/like")
     fun unlikePhoto(@Path("id") id: String): Completable
     //endregion
 

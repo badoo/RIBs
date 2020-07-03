@@ -9,7 +9,8 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.example.auth.AuthStateStorage
-import com.badoo.ribs.example.auth.PreferencesAuthStateStorage
+import com.badoo.ribs.example.auth.AuthStateStorageImpl
+import com.badoo.ribs.example.auth.PreferencesAuthStatePersistence
 import com.badoo.ribs.example.login.AuthCodeDataSource
 import com.badoo.ribs.example.network.ApiFactory
 import com.badoo.ribs.example.network.UnsplashApi
@@ -51,8 +52,13 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
         portal: Portal.OtherSide,
         buildContext: BuildContext
     ): Root {
-        val stateStorage =
-            PreferencesAuthStateStorage(PreferenceManager.getDefaultSharedPreferences(this@RootActivity))
+        val stateStorage = AuthStateStorageImpl(
+            persistence = PreferencesAuthStatePersistence(
+                PreferenceManager.getDefaultSharedPreferences(
+                    this@RootActivity
+                )
+            )
+        )
 
         return RootBuilder(
             object : Root.Dependency {

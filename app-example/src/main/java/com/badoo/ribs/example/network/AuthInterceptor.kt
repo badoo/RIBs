@@ -20,7 +20,7 @@ class AuthInterceptor(accessKey: String, private val authTokenProvider: AuthStat
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val authHeaderValue = when (val authState = authTokenProvider.getState()) {
+        val authHeaderValue = when (val authState = authTokenProvider.state) {
             is AuthState.Authenticated -> "Bearer ${authState.accessToken}"
             else -> authHeaderValue
         }

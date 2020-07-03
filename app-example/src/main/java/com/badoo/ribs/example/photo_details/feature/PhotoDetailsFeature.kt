@@ -72,7 +72,7 @@ internal class PhotoDetailsFeature(
         private fun likeOrDislikePhoto(state: State): Observable<Effect> =
             when {
                 state !is State.Loaded -> Observable.empty()
-                authDataSource.getState() !is Authenticated -> Effect.LikeNotSent.toObservable()
+                authDataSource.state !is Authenticated -> Effect.LikeNotSent.toObservable()
                 else -> {
                     if (state.detail.likedByUser) {
                         unlikePhoto()

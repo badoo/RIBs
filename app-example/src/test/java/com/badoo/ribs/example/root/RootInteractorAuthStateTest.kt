@@ -3,6 +3,7 @@ package com.badoo.ribs.example.root
 import androidx.lifecycle.Lifecycle
 import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.example.RxSchedulerRule
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.auth.AuthState
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration
@@ -13,6 +14,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -22,6 +24,9 @@ class RootInteractorAuthStateTest(
     private val authState: AuthState,
     private val expectedConfiguration: Configuration
 ) {
+    @get:Rule
+    val rxSchedulerRule = RxSchedulerRule()
+
     private val backStack: BackStackFeature<Configuration> = mock()
     private val stateRelay = PublishRelay.create<AuthState>()
     private val authDataSource = mock<AuthDataSource>().apply {

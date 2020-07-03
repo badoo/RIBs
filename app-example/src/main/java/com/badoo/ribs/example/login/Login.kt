@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.login
 
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
@@ -9,7 +10,7 @@ import com.badoo.ribs.example.login.Login.Output
 
 interface Login : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
+    interface Dependency : CanProvideActivityStarter {
         val authCodeDataSource: AuthCodeDataSource
         val authDataSource: AuthDataSource
     }
@@ -18,9 +19,7 @@ interface Login : Rib, Connectable<Input, Output> {
 
     sealed class Output
 
-    class Customisation(
-        val viewFactory: LoginView.Factory = LoginViewImpl.Factory()
-    ) : RibCustomisation
+    class Customisation : RibCustomisation
 }
 
 

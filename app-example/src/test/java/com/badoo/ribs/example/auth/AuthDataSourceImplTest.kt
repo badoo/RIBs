@@ -3,7 +3,6 @@ package com.badoo.ribs.example.auth
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.AccessToken
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
@@ -13,14 +12,16 @@ import org.junit.Test
 
 class AuthDataSourceImplTest {
     private lateinit var authDataSource: AuthDataSourceImpl
+    private lateinit var storage: AuthStateStorage
     private var api: UnsplashApi = mock()
-    private var storage: AuthStateStorage = mock()
+    private var persistence: AuthStatePersistence = mock()
     private lateinit var authStateSubscriber: TestObserver<AuthState>
 
     @Before
     fun setUp() {
-        whenever(storage.restore()).thenReturn(AuthState.Unauthenticated)
+        whenever(persistence.restore()).thenReturn(AuthState.Unauthenticated)
 
+        storage = AuthStateStorageImpl(persistence)
         authDataSource = AuthDataSourceImpl(
             api = api,
             storage = storage,
@@ -35,8 +36,8 @@ class AuthDataSourceImplTest {
     @Test
     fun `when init then state restored from storage`() {
         val token = "accessToken"
-        whenever(storage.restore()).thenReturn(AuthState.Authenticated(token))
-
+        whenever(persistence.restore()).thenReturn(AuthState.Authenticated(token))
+        storage = AuthStateStorageImpl(persistence)
         authDataSource = AuthDataSourceImpl(
             api = api,
             storage = storage,
@@ -44,7 +45,7 @@ class AuthDataSourceImplTest {
             clientSecret = clientSecret
         )
 
-        assertThat(authDataSource.getState()).isEqualTo(AuthState.Authenticated(token))
+        assertThat(authDataSource.state).isEqualTo(AuthState.Authenticated(token))
     }
 
     @Test
@@ -55,7 +56,7 @@ class AuthDataSourceImplTest {
 
         authDataSource.login(authCode).subscribe()
 
-        authStateSubscriber.assertLastValueEqual(AuthState.Authenticated(authResult.accessToken))
+        authStateSubscriber.assertLastValueEqual(AuthState.Authenticated(authResult.access_token))
     }
 
     @Test
@@ -66,7 +67,7 @@ class AuthDataSourceImplTest {
 
         authDataSource.login(authCode).subscribe()
 
-        assertThat(authDataSource.getState()).isEqualTo(AuthState.Authenticated(authResult.accessToken))
+        assertThat(authDataSource.state).isEqualTo(AuthState.Authenticated(authResult.access_token))
     }
 
     @Test
@@ -77,35 +78,35 @@ class AuthDataSourceImplTest {
 
         authDataSource.login(authCode).subscribe()
 
-        verify(storage).save(AuthState.Authenticated(authResult.accessToken))
+        assertThat(storage.state).isEqualTo(AuthState.Authenticated(authResult.access_token))
     }
 
     @Test
     fun `when login anonymous then state is anonymous`() {
         authDataSource.loginAnonymous()
 
-        assertThat(authDataSource.getState()).isEqualTo(AuthState.Anonymous)
+        assertThat(authDataSource.state).isEqualTo(AuthState.Anonymous)
     }
 
     @Test
     fun `when login anonymous then state is saved to storage`() {
         authDataSource.loginAnonymous()
 
-        verify(storage).save(AuthState.Anonymous)
+        assertThat(storage.state).isEqualTo(AuthState.Anonymous)
     }
 
     @Test
     fun `when logout then state is anonymous`() {
         authDataSource.logout()
 
-        assertThat(authDataSource.getState()).isEqualTo(AuthState.Unauthenticated)
+        assertThat(authDataSource.state).isEqualTo(AuthState.Unauthenticated)
     }
 
     @Test
     fun `when logout then state is saved to storage`() {
         authDataSource.loginAnonymous()
 
-        verify(storage).save(AuthState.Anonymous)
+        assertThat(storage.state).isEqualTo(AuthState.Anonymous)
     }
 
     private fun createAccessTokenRequest() = AccessToken("access token", "", "", "")

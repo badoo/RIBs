@@ -2,11 +2,10 @@ package com.badoo.ribs.example.auth
 
 import android.util.Log
 import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.ObservableSource
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Observable
 
 interface AuthStateStorage {
-    val authUpdates: ObservableSource<AuthState>
+    val authUpdates: Observable<AuthState>
     var state: AuthState
 }
 
@@ -17,8 +16,7 @@ class AuthStateStorageImpl(
         persistence.restore()
     )
 
-    override val authUpdates: ObservableSource<AuthState> =
-        stateRelay.observeOn(AndroidSchedulers.mainThread())
+    override val authUpdates: Observable<AuthState> = stateRelay
     override var state: AuthState
         get() {
             val authState = stateRelay.value

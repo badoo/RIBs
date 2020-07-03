@@ -11,29 +11,17 @@ class LoginBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): Login {
         val customisation = buildParams.getOrDefault(Login.Customisation())
         val feature = LoginFeature(dependency.authCodeDataSource, dependency.authDataSource)
-        val interactor = interactor(buildParams, feature)
+        val interactor = LoginInteractor(
+            buildParams = buildParams,
+            feature = feature,
+            activityStarter = dependency.activityStarter()
+        )
 
-        return node(buildParams, customisation, interactor)
+        return LoginNode(
+            buildParams = buildParams,
+            plugins = listOf(interactor)
+        )
     }
 
 
-    private fun interactor(
-        buildParams: BuildParams<*>,
-        feature: LoginFeature
-    ) =
-        LoginInteractor(
-            buildParams = buildParams,
-            feature = feature
-        )
-
-    private fun node(
-        buildParams: BuildParams<Nothing?>,
-        customisation: Login.Customisation,
-        interactor: LoginInteractor
-    ) =
-        LoginNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = listOf(interactor)
-        )
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
+import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
@@ -70,6 +71,8 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
                 override val authCodeDataSource: AuthCodeDataSource = this@RootActivity
 
                 override fun portal(): Portal.OtherSide = portal
+
+                override fun activityStarter(): ActivityStarter = activityStarter
             }
         ).build(buildContext)
     }

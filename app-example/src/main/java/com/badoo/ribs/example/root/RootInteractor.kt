@@ -11,6 +11,7 @@ import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.Logg
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedOut
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.replace
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 
 internal class RootInteractor(
@@ -23,7 +24,10 @@ internal class RootInteractor(
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
-            bind(authDataSource.authUpdates to authStatConsumer)
+            bind(
+                authDataSource
+                    .authUpdates.observeOn(AndroidSchedulers.mainThread()) to authStatConsumer
+            )
         }
     }
 

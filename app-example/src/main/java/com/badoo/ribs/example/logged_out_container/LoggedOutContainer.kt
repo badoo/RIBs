@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.logged_out_container
 
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
@@ -12,7 +13,7 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
 interface LoggedOutContainer : Rib, Connectable<Input, Output> {
 
-    interface Dependency {
+    interface Dependency : CanProvideActivityStarter {
         val authDataSource: AuthDataSource
         val authCodeDataSource: AuthCodeDataSource
     }

@@ -46,6 +46,7 @@ class MenuRibTest {
     @Before
     fun setUp() {
         rib.node.onAttach()
+        rib.node.onCreateView(mock())
         rib.node.onAttachToView()
         rib.node.onStart()
         rib.node.onResume()

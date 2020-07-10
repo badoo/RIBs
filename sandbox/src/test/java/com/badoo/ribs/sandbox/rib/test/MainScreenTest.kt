@@ -95,6 +95,7 @@ class MainScreenTest {
     @Before
     fun setUp() {
         rootRib.node.onAttach()
+        rootRib.node.onCreateView(mock())
         rootRib.node.onAttachToView()
         rootRib.node.onStart()
         rootRib.node.onResume()

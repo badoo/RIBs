@@ -2,9 +2,11 @@ package com.badoo.common.ribs
 
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
@@ -57,6 +59,7 @@ class InteractorTestHelper<View : RibView>(
     private fun toAttachViewState(block: (Node<View>) -> Unit) {
         val node = nodeCreator()
         node.onAttach()
+        node.onCreateView(mock(RibView::class.java))
         node.onAttachToView()
         block(node)
         node.onDetachFromView()

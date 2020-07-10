@@ -57,7 +57,6 @@ internal class DeactivateAction<C : Parcelable>(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.EXIT,
                     addedOrRemoved = addedOrRemoved,
-                    parentViewGroup = parentNode.targetViewGroupForChild(it),
                     identifier = it.identifier,
                     view = ribView.androidView
                 )

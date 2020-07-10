@@ -15,6 +15,7 @@ import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
+import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.Compose
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.Dialogs
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
@@ -37,16 +38,11 @@ internal class SwitcherInteractor(
     private val menuListener = Consumer<Menu.Output> { output ->
             when (output) {
               is Menu.Output.MenuItemSelected -> when (output.menuItem) {
-                FooBar -> {
-                    backStack.push(Content.Foo)
-                }
-                HelloWorld -> {
-                    backStack.push(Content.Hello)
-                }
-                Dialogs -> {
-                    backStack.push(Content.DialogsExample)
-                }
-            }
+                FooBar -> backStack.push(Content.Foo)
+                HelloWorld -> backStack.push(Content.Hello)
+                Dialogs -> backStack.push(Content.DialogsExample)
+                Compose -> backStack.push(Content.Compose)
+              }
         }
     }
 
@@ -104,6 +100,7 @@ internal class SwitcherInteractor(
                 Content.Hello -> SelectMenuItem(HelloWorld)
                 Content.Foo -> SelectMenuItem(FooBar)
                 Content.DialogsExample -> SelectMenuItem(Dialogs)
+                Content.Compose -> SelectMenuItem(Compose)
                 else -> null
             }
     }

@@ -50,6 +50,7 @@ class MenuViewImpl private constructor(
     private var helloWorld: TextView = menuItem(R.id.menu_hello, MenuItem.HelloWorld)
     private var fooBar: TextView = menuItem(R.id.menu_foo, MenuItem.FooBar)
     private var dialogs: TextView = menuItem(R.id.menu_dialogs, MenuItem.Dialogs)
+    private var compose: TextView = menuItem(R.id.menu_compose, MenuItem.Compose)
 
     fun menuItem(id: Int, menuItem: MenuItem) : TextView =
         androidView.findViewById<TextView>(id).apply {
@@ -57,7 +58,7 @@ class MenuViewImpl private constructor(
         }
 
     override fun accept(vm: ViewModel) {
-        listOf(helloWorld, fooBar, dialogs).forEach {
+        listOf(helloWorld, fooBar, dialogs, compose).forEach {
             it.setTextColor(ContextCompat.getColor(androidView.context, R.color.material_grey_600))
         }
 
@@ -66,6 +67,7 @@ class MenuViewImpl private constructor(
                 MenuItem.HelloWorld -> helloWorld
                 MenuItem.FooBar -> fooBar
                 MenuItem.Dialogs -> dialogs
+                MenuItem.Compose -> compose
             }.apply {
                 setTextColor(ContextCompat.getColor(context, R.color.material_blue_grey_950))
             }

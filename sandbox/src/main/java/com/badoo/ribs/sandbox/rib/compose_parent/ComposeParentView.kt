@@ -2,17 +2,17 @@ package com.badoo.ribs.sandbox.rib.compose_parent
 
 import android.content.Context
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.compose.Composable
-import androidx.compose.Recomposer
+import androidx.compose.MutableState
+import androidx.compose.mutableStateOf
 import androidx.ui.core.Modifier
-import androidx.ui.core.setContent
 import androidx.ui.foundation.Box
 import androidx.ui.foundation.Text
 import androidx.ui.layout.Column
 import androidx.ui.layout.padding
 import androidx.ui.unit.Dp
-import androidx.ui.viewinterop.AndroidView
+import com.badoo.ribs.compose.ComposeRibView
+import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -29,8 +29,7 @@ interface ComposeParentView : RibView,
     sealed class Event
 
     data class ViewModel(
-        val childView: @Composable() () -> Unit = {},
-        val menuView: @Composable() () -> Unit = { Menu() }
+        val someNumber: Int = 0
     )
 
     interface Factory : ViewFactory<Nothing?, ComposeParentView>
@@ -39,57 +38,39 @@ interface ComposeParentView : RibView,
 
 class ComposeParentViewImpl private constructor(
     context: Context,
-    private val composable: @Composable() (ViewModel) -> Unit,
     private val events: PublishRelay<ComposeParentView.Event> = PublishRelay.create()
-) : ComposeParentView,
+) : ComposeRibView(context),
+    ComposeParentView,
     ObservableSource<ComposeParentView.Event> by events,
     Consumer<ViewModel> {
 
-    class Factory(
-        private val composable: @Composable() (ViewModel) -> Unit = { Content(it) }
-    ) : ComposeParentView.Factory {
+    class Factory() : ComposeParentView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> ComposeParentView = {
             ComposeParentViewImpl(
-                it.context,
-                composable
+                it.context
             )
         }
     }
 
-    override val androidView: ViewGroup = FrameLayout(context)
-    private val container: ViewGroup = FrameLayout(context)
+    private var viewModel: MutableState<ViewModel> = mutableStateOf(ViewModel())
+    private var content: MutableState<ComposeView?> = mutableStateOf(null)
+
+    override val composable: @Composable() () -> Unit = {
+        Column {
+            Text(text = "ComposeParentView")
+            Text(text = "Own viewModel: ${viewModel.value}")
+            Text(text = "Child:")
+            Box(modifier = Modifier.padding(all = Dp(40f))) {
+                content.value?.invoke()
+            }
+            Text(text = "Here be menu")
+        }
+    }
 
     override fun accept(vm: ViewModel) {
-        androidView.setContent(Recomposer.current()) {
-            composable(vm)
-        }
+        viewModel.value = vm
     }
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        container
-
-    override fun onChildViewAttached() {
-        accept(
-            ViewModel(
-                childView = { AndroidView(view = container) }
-            )
-        )
-    }
-}
-
-@Composable
-fun Content(vm: ViewModel) {
-    Column {
-        Text(text = "ComposeParentView")
-        Text(text = "Child:")
-        Box(modifier = Modifier.padding(all = Dp(40f))) {
-            vm.childView()
-        }
-        vm.menuView()
-    }
-}
-
-@Composable
-fun Menu() {
-    Text(text = "Here be menu")
+    override fun targetForChild(child: Node<*>): MutableState<ComposeView?> =
+        content
 }

@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
@@ -36,7 +37,8 @@ interface DialogExampleView : RibView,
 class DialogExampleViewImpl  private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : DialogExampleView,
+) : AndroidRibView(),
+    DialogExampleView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 

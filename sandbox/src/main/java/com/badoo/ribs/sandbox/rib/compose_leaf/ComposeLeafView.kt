@@ -2,12 +2,12 @@ package com.badoo.ribs.sandbox.rib.compose_leaf
 
 import android.content.Context
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.compose.Composable
-import androidx.compose.Recomposer
-import androidx.ui.core.setContent
+import androidx.compose.MutableState
+import androidx.compose.mutableStateOf
 import androidx.ui.foundation.Text
 import androidx.ui.layout.Column
+import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.Event
@@ -32,35 +32,29 @@ interface ComposeLeafView : RibView,
 
 class ComposeLeafViewImpl private constructor(
     context: Context,
-    private val composable: @Composable() (ViewModel) -> Unit,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : ComposeLeafView,
+) : ComposeRibView(context),
+    ComposeLeafView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
-    class Factory(
-        private val composable: @Composable() (ViewModel) -> Unit = { Content(it) }
-    ) : ComposeLeafView.Factory {
+    class Factory : ComposeLeafView.Factory {
         override fun invoke(deps: Nothing?): (ViewGroup) -> ComposeLeafView = {
             ComposeLeafViewImpl(
-                it.context,
-                composable
+                it.context
             )
         }
     }
 
-    override val androidView: ViewGroup = FrameLayout(context)
+    private var viewModel: MutableState<ViewModel> = mutableStateOf(ViewModel())
 
     override fun accept(vm: ViewModel) {
-        androidView.setContent(Recomposer.current()) {
-            composable(vm)
-        }
+        viewModel.value = vm
     }
-}
 
-@Composable
-fun Content(vm: ViewModel) {
-    Column {
-        Text(text = "ComposeLeafView: ${vm.text}")
+    override val composable: @Composable() () -> Unit = {
+        Column {
+            Text(text = "ComposeLeafView: ${viewModel.value.text}")
+        }
     }
 }

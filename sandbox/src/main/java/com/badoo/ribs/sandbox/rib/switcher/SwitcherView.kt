@@ -7,6 +7,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.MenuNode
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
@@ -41,7 +42,8 @@ class SwitcherViewImpl private constructor(
     override val androidView: ViewGroup,
     private val coffeeMachine: CoffeeMachine,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : SwitcherView,
+) : AndroidRibView(),
+    SwitcherView,
     ObservableSource<Event> by events {
 
     class Factory(
@@ -71,10 +73,9 @@ class SwitcherViewImpl private constructor(
     override fun accept(vm: ViewModel) {
     }
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup? =
+    override fun getParentViewForChild(child: Node<*>): ViewGroup =
         when (child) {
             is MenuNode -> menuContainer
-//            is Blocker -> blockerContainer
             else -> contentContainer
         }
 }

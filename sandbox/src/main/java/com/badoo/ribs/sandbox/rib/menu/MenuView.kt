@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.menu.MenuView.Event
@@ -32,7 +33,8 @@ interface MenuView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
 class MenuViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : MenuView,
+) : AndroidRibView(),
+    MenuView,
     ObservableSource<Event> by events {
 
     class Factory(

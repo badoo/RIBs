@@ -6,6 +6,7 @@ import android.widget.Button
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumView.Event
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumView.ViewModel
@@ -32,7 +33,8 @@ interface LoremIpsumView : RibView,
 class LoremIpsumViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : LoremIpsumView,
+) : AndroidRibView(),
+    LoremIpsumView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 

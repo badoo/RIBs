@@ -10,6 +10,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.badoo.ribs.android.attach
+import com.badoo.ribs.android.detach
 import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.lifecycle.LifecycleManager
@@ -70,6 +72,9 @@ open class Node<V : RibView>(
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
 
+    val isRoot: Boolean =
+        ancestryInfo == AncestryInfo.Root
+
     /**
      * This is the logical parent of the current [Node] (i.e. the one that created it).
      *
@@ -99,7 +104,7 @@ open class Node<V : RibView>(
         viewFactory == null
 
     internal open var view: V? = null
-    internal var parentViewGroup: ViewGroup? = null
+    private var rootHost: RibView? = null
 
     internal open var savedViewState: SparseArray<Parcelable> =
         savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
@@ -109,6 +114,10 @@ open class Node<V : RibView>(
 
     private var isPendingViewDetach: Boolean = false
     private var isPendingDetach: Boolean = false
+
+    private val isActive: Boolean
+        get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
+
 
     fun getChildren(): List<Node<*>> =
         children.toList()
@@ -122,77 +131,62 @@ open class Node<V : RibView>(
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onCreate() }
     }
 
+    private fun onChildCreated(child: Node<*>) {
+        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildCreated(child) }
+    }
+
     @CallSuper
     open fun onAttach() {
         lifecycleManager.onCreateRib()
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach(lifecycleManager.ribLifecycle.lifecycle) }
     }
 
-    fun attachToView(parentViewGroup: ViewGroup) {
-        detachFromView()
-        this.parentViewGroup = parentViewGroup
-        isAttachedToView = true
-
-        if (!isViewless) {
-            createView(parentViewGroup)?.let {
-                parentViewGroup.attach(it)
-            }
-        }
-
-        lifecycleManager.onCreateView()
-        view?.let { view ->
-            plugins.filterIsInstance<ViewAware<V>>().forEach {
-                it.onViewCreated(view, lifecycleManager.viewLifecycle!!.lifecycle)
-            }
-        }
-        plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onAttachToView(parentViewGroup) }
-    }
-
-    private fun createView(parentViewGroup: ViewGroup): V? {
+    fun onCreateView(parentViewGroup: ViewGroup): V? {
+        if (isRoot) rootHost = parentViewGroup
         if (view == null) {
             view = viewFactory?.invoke(parentViewGroup)
+            view?.let { view ->
+                view.androidView.restoreHierarchyState(savedViewState)
+                lifecycleManager.onViewCreated()
+                plugins.filterIsInstance<ViewAware<V>>().forEach {
+                    it.onViewCreated(view, lifecycleManager.viewLifecycle!!.lifecycle)
+                }
+            }
         }
 
         return view
     }
 
-    private fun ViewGroup.attach(view: V) {
-        addView(view.androidView)
-        view.androidView.restoreHierarchyState(savedViewState)
-    }
-
-    internal fun createChildView(child: Node<*>) {
+    fun onAttachToView() {
         if (isAttachedToView) {
-            child.createView(
-                // parentViewGroup is guaranteed to be non-null if and only if view is attached
-                (view?.getParentViewForChild(child) ?: parentViewGroup!!)
+            RIBs.errorHandler.handleNonFatalError(
+                "View is already attached to some view, it should be detached first. RIB: $this",
+                RuntimeException("View is already attached to some view, it should be detached first. RIB: $this")
             )
         }
+        isAttachedToView = true
+        lifecycleManager.onAttachToView()
+        plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onAttachToView() }
     }
 
-    fun detachFromView() {
+    fun onDetachFromView() {
         if (isAttachedToView) {
-            plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onDetachFromView(parentViewGroup!!) }
-            lifecycleManager.onDestroyView()
-
-            if (!isViewless) {
-                parentViewGroup!!.removeView(view!!.androidView)
-            }
-
-            view = null
+            plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onDetachFromView() }
+            lifecycleManager.onDetachFromView()
+            saveViewState()
             isAttachedToView = false
-            this.parentViewGroup = null
             isPendingViewDetach = false
+            rootHost = null
+            view = null
         }
     }
 
     open fun onDetach() {
-        if (isAttachedToView) {
+        if (view != null) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
                 RuntimeException("View was not detached before node detach! RIB: $this")
             )
-            detachFromView()
         }
 
         lifecycleManager.onDestroyRib()
@@ -204,10 +198,6 @@ open class Node<V : RibView>(
 
         detachSignal.accept(Unit)
         isPendingDetach = false
-    }
-
-    fun onChildCreated(child: Node<*>) {
-        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildCreated(child) }
     }
 
     /**
@@ -226,7 +216,7 @@ open class Node<V : RibView>(
     }
 
     private fun verifyNotRoot(child: Node<*>) {
-        if (child.ancestryInfo is AncestryInfo.Root) {
+        if (child.isRoot) {
             val message = "A node that is attached as a child should not have a root BuildContext."
             RIBs.errorHandler.handleNonFatalError(
                 errorMessage = message,
@@ -236,30 +226,38 @@ open class Node<V : RibView>(
     }
 
     fun attachChildView(child: Node<*>) {
-        if (isAttachedToView) {
-            val target = targetViewGroupForChild(child)
-            child.attachToView(target)
-
-            if (!isViewless) {
-                view!!.onChildViewAttached()
-            }
-
-            plugins.filterIsInstance<SubtreeViewChangeAware>().forEach { it.onAttachChildView(child) }
-        }
+        attachChildView(child, true)
     }
 
-    internal fun targetViewGroupForChild(child: Node<*>): ViewGroup {
-        return when {
-            // parentViewGroup is guaranteed to be non-null if and only if view is attached
-            isViewless -> parentViewGroup!!
-            else -> view!!.getParentViewForChild(child) ?: parentViewGroup!!
+    private fun attachChildView(child: Node<*>, notifyPlugins: Boolean) {
+        if (isAttachedToView) {
+            view?.let { it.attachChild(child) }
+                ?: parent?.attachChildView(child, false)
+                ?: rootHost?.attachChild(child)
+                ?: error("No view, no parent, and no root host should be technically impossible")
+
+            if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
+                .forEach { it.onAttachChildView(child) }
         }
     }
 
     fun detachChildView(child: Node<*>) {
-        child.detachFromView()
-        plugins.filterIsInstance<SubtreeViewChangeAware>().forEach { it.onDetachChildView(child) }
+        detachChildView(child, true)
     }
+
+    private fun detachChildView(child: Node<*>, notifyPlugins: Boolean) {
+        if (isAttachedToView) {
+            view?.let { it.detachChild(child) }
+                ?: parent?.detachChildView(child, false)
+                ?: rootHost!!.detachChild(child)
+                ?: error("No view, no parent, and no root host should be technically impossible")
+
+            if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
+                .forEach { it.onDetachChildView(child) }
+        }
+    }
+
+
 
     /**
      * Detaches the node from this parent. NOTE: No consumers of
@@ -328,14 +326,8 @@ open class Node<V : RibView>(
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =
         children
-            .filter { it.isAttachedToView && !(it.isPendingDetach || it.isPendingViewDetach ) }
+            .filter { it.isActive }
             .any { it.handleBackPress() }
-
-    fun saveViewState() {
-        view?.let {
-            it.androidView.saveHierarchyState(savedViewState)
-        }
-    }
 
     open fun onSaveInstanceState(outState: Bundle) {
         outState.putSerializable(Identifier.KEY_UUID, identifier.uuid)
@@ -345,6 +337,12 @@ open class Node<V : RibView>(
         val bundle = Bundle()
         bundle.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
         outState.putBundle(BUNDLE_KEY, bundle)
+    }
+
+    fun saveViewState() {
+        view?.let {
+            it.androidView.saveHierarchyState(savedViewState)
+        }
     }
 
     fun onLowMemory() {

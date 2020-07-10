@@ -79,7 +79,7 @@ internal class LifecycleManager(
     }
 
     /**
-     * This is intentionally not propagated to children, they are triggered by router
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
     fun onCreateRib() {
         if (owner.isViewless) {
@@ -92,33 +92,34 @@ internal class LifecycleManager(
     }
 
     /**
-     * This is intentionally not propagated to children, they are triggered by router
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
     fun onDestroyRib() {
         ribLifecycle.onDestroy()
     }
 
-    /**
-     * This is intentionally not propagated to children, they are triggered by router
-     */
-    fun onCreateView() {
+    fun onViewCreated() {
         viewLifecycle = CappedLifecycle(externalLifecycle)
         viewLifecycle!!.onCreate()
+    }
 
+    /**
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
+     */
+    fun onAttachToView() {
         if (!owner.isViewless) {
             // If isViewless, it's already RESUMED in onAttach()
             ribLifecycle.onStart()
             ribLifecycle.onResume()
+            viewLifecycle!!.onStart()
+            viewLifecycle!!.onResume()
         }
-
-        viewLifecycle!!.onStart()
-        viewLifecycle!!.onResume()
     }
 
     /**
-     * This is intentionally not propagated to children, they are triggered by router
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
-    fun onDestroyView() {
+    fun onDetachFromView() {
         if (owner.isViewless) {
             // Implication: if RIB is viewless, we're keeping it resumed capped by external lifecycle only
             return

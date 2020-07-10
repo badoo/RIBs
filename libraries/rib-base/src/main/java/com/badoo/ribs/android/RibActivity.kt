@@ -55,10 +55,9 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         super.onCreate(savedInstanceState)
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
-        root = createRib(savedInstanceState).apply {
-            node.onAttach()
-            node.attachToView(rootViewGroup)
-        }
+        root = createRib(savedInstanceState)
+        root.node.onAttach()
+        rootViewGroup.attach(root.node)
 
         if (intent?.action == Intent.ACTION_VIEW) {
             handleDeepLink(intent)
@@ -115,7 +114,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
     override fun onDestroy() {
         super.onDestroy()
         dialogs.values.forEach { it.dismiss() }
-        root.node.detachFromView()
+        rootViewGroup.detach(root.node)
         root.node.onDetach()
     }
 

@@ -7,8 +7,8 @@ interface RibView {
 
     val androidView: ViewGroup
 
-    fun getParentViewForChild(child: Node<*>): ViewGroup? =
-        androidView
+    fun attachChild(child: Node<*>) // TODO consider Rib instead?
 
-    fun onChildViewAttached() {}
+    fun detachChild(child: Node<*>) // TODO consider Rib instead?
 }
+

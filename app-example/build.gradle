@@ -52,13 +52,20 @@ android {
     }
 
 }
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 dependencies {
     implementation deps.external.kotlinStdlib
 
     implementation deps.android.appCompat
-    implementation deps.android.constraintLayout
     implementation deps.android.design
+    implementation deps.android.constraintLayout
+    implementation deps.android.recyclerView
+    implementation deps.external.coil
 
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
@@ -69,9 +76,20 @@ dependencies {
     implementation deps.retrofit.okhttp
     implementation deps.retrofit.okhttpLoggingInterceptor
 
+    implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-portal")
+
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
+    implementation deps.external.mviCoreDiff
+
     testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
+    testImplementation project(":libraries:rib-base-test")
+
+    debugImplementation project(":libraries:rib-base-test-activity")
+    androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner

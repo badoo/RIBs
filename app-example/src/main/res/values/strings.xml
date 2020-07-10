@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Example app</string>
+    <string name="welcome_heading">Welcome</string>
+    <string name="welcome_login">Login</string>
+    <string name="welcome_register">Register</string>
+    <string name="welcome_login_anonymous">Continue as guest</string>
+    <string name="retry">Retry</string>
+    <string name="initial_loading_error">Something went wrong :(</string>
+    <string name="next_page_loading_error">Something went wrong :(</string>
 </resources>

@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.badoo.ribs.android.attach
+import com.badoo.ribs.android.detach
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
@@ -84,9 +86,8 @@ internal class Adapter<T : Parcelable>(
     }
 
     override fun activate(routing: Routing<T>, child: Node<*>) {
-        holders[routing.identifier]?.get()?.let { holder ->
-            child.attachToView(holder.itemView as FrameLayout)
-        } ?: errorHandler.handleNonFatalError("Holder is gone! Routing: $routing, child: $child")
+        viewForRouting(routing)?.attach(child)
+            ?: errorHandler.handleNonFatalError("Holder is gone! Routing: $routing, child: $child")
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -107,6 +108,9 @@ internal class Adapter<T : Parcelable>(
 
     override fun deactivate(routing: Routing<T>, child: Node<*>) {
         child.saveViewState()
-        child.detachFromView()
+        viewForRouting(routing)?.detach(child)
     }
+
+    private fun viewForRouting(routing: Routing<T>): ViewGroup? =
+        holders[routing.identifier]?.get()?.itemView as FrameLayout
 }

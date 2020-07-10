@@ -10,6 +10,7 @@ import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
@@ -94,7 +95,7 @@ class MainScreenTest {
     @Before
     fun setUp() {
         rootRib.node.onAttach()
-        rootRib.node.attachToView(mock())
+        rootRib.node.onAttachToView()
         rootRib.node.onStart()
         rootRib.node.onResume()
 

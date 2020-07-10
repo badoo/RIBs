@@ -1,8 +1,9 @@
 package com.badoo.ribs.core.helper
 
-import android.view.ViewGroup
+import com.badoo.ribs.core.view.RibView
 
-class TestviewFactory: (RibView) -> TestView {
-    override fun invoke(p1: ViewGroup): TestView =
+class TestViewFactory: (RibView) -> TestView {
+
+    override fun invoke(p1: RibView): TestView =
         TestView()
 }

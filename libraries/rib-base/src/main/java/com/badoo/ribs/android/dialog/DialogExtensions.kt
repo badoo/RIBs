@@ -3,8 +3,7 @@ package com.badoo.ribs.android.dialog
 import android.content.Context
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
-import com.badoo.ribs.android.attach
-import com.badoo.ribs.android.detach
+import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
 
@@ -40,15 +39,17 @@ private fun <Event : Any> AlertDialog.Builder.setCancelable(dialog: Dialog<Event
 private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
     dialog.rib?.let {
         setView(object : FrameLayout(context) {
+            val host = AndroidRibViewHost(this)
+
             override fun onAttachedToWindow() {
                 super.onAttachedToWindow()
-                it.node.onCreateView(this)
-                attach(it.node)
+                it.node.onCreateView(host)
+                host.attachChild(it.node)
             }
 
             override fun onDetachedFromWindow() {
                 super.onDetachedFromWindow()
-                detach(it.node)
+                host.detachChild(it.node)
             }
         })
     }

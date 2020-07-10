@@ -8,7 +8,7 @@ import androidx.compose.Recomposer
 import androidx.compose.mutableStateOf
 import androidx.ui.core.setContent
 import androidx.ui.viewinterop.AndroidView
-import com.badoo.ribs.android.attach
+import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
@@ -38,7 +38,7 @@ abstract class ComposeRibView(
     override fun attachChild(child: Node<*>) {
         val target = targetForChild(child)
 
-        when (val childView = child.onCreateView(androidView)) {
+        when (val childView = child.onCreateView(this)) {
             is ComposeRibView ->{
                 child.onAttachToView()
                 target.value = childView.composable
@@ -46,7 +46,7 @@ abstract class ComposeRibView(
 
             else -> {
                 val innerContainer = FrameLayout(context)
-                innerContainer.attach(child)
+                AndroidRibViewHost(innerContainer).attachChild(child)
                 target.value = { AndroidView(innerContainer) }
             }
         }

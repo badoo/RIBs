@@ -3,15 +3,12 @@ package com.badoo.ribs.core
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.badoo.ribs.android.attach
-import com.badoo.ribs.android.detach
 import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.lifecycle.LifecycleManager
@@ -51,7 +48,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
     val buildParams: BuildParams<*>,
-    private val viewFactory: ((ViewGroup) -> V?)?,
+    private val viewFactory: ((RibView) -> V?)?,
     private val plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
 
@@ -141,10 +138,10 @@ open class Node<V : RibView>(
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach(lifecycleManager.ribLifecycle.lifecycle) }
     }
 
-    fun onCreateView(parentViewGroup: ViewGroup): V? {
-        if (isRoot) rootHost = parentViewGroup
+    fun onCreateView(parentView: RibView): V? {
+        if (isRoot) rootHost = parentView
         if (view == null) {
-            view = viewFactory?.invoke(parentViewGroup)
+            view = viewFactory?.invoke(parentView)
             view?.let { view ->
                 view.androidView.restoreHierarchyState(savedViewState)
                 lifecycleManager.onViewCreated()

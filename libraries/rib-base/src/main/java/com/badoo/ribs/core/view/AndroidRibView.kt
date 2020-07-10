@@ -1,8 +1,6 @@
 package com.badoo.ribs.core.view
 
 import android.view.ViewGroup
-import com.badoo.ribs.android.attach
-import com.badoo.ribs.android.detach
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.Plugin
 
@@ -13,7 +11,9 @@ abstract class AndroidRibView : RibView {
 
     override fun attachChild(child: Node<*>) {
         val target = getParentViewForChild(child)
-        target.attach(child)
+        child.onCreateView(this)
+        child.view?.let { target.addView(it.androidView) }
+        child.onAttachToView()
         child.plugins<AndroidViewLifecycleAware>().forEach {
             it.onAttachToView(target)
         }
@@ -21,7 +21,8 @@ abstract class AndroidRibView : RibView {
 
     override fun detachChild(child: Node<*>) {
         val target = getParentViewForChild(child)
-        target.detach(child)
+        child.view?.let { target.removeView(it.androidView) }
+        child.onDetachFromView()
         child.plugins<AndroidViewLifecycleAware>().forEach {
             it.onDetachFromView(target)
         }

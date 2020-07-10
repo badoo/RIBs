@@ -13,6 +13,7 @@ import com.badoo.ribs.android.dialog.toAlertDialog
 import com.badoo.ribs.android.permissionrequester.PermissionRequesterImpl
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.view.RibView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.WeakHashMap
@@ -50,6 +51,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
     }
 
     protected open lateinit var root: Rib
+    protected open lateinit var rootViewHost: RibView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +59,8 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
         root = createRib(savedInstanceState)
         root.node.onAttach()
-        rootViewGroup.attach(root.node)
+        rootViewHost = AndroidRibViewHost(rootViewGroup)
+        rootViewHost.attachChild(root.node)
 
         if (intent?.action == Intent.ACTION_VIEW) {
             handleDeepLink(intent)
@@ -114,7 +117,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
     override fun onDestroy() {
         super.onDestroy()
         dialogs.values.forEach { it.dismiss() }
-        rootViewGroup.detach(root.node)
+        rootViewHost.detachChild(root.node)
         root.node.onDetach()
     }
 

@@ -128,6 +128,7 @@ class NodeTest {
     }
 
     private fun attachToViewAlongWithChildren() {
+        node.onCreateView(parentView)
         node.onAttachToView()
         node.attachChildView(child1)
         node.attachChildView(child2)
@@ -139,23 +140,12 @@ class NodeTest {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
         RIBs.errorHandler = errorHandler
+        node.onCreateView(parentView)
         node.onAttachToView()
 
         node.onDetach()
 
         verify(errorHandler).handleNonFatalError(any(), isA<RuntimeException>())
-    }
-
-    @Test
-    fun `onDetach() detaches view as a fail-safe mechanism`() {
-        val errorHandler = mock<RIBs.ErrorHandler>()
-        RIBs.clearErrorHandler()
-        RIBs.errorHandler = errorHandler
-        node.onAttachToView()
-
-        node.onDetach()
-
-        assertEquals(false, node.isAttachedToView)
     }
 
     @Test
@@ -202,41 +192,13 @@ class NodeTest {
     }
 
     @Test
-    fun `Back press handling is forwarded to all children attached to the view if none can handle it`() {
-        attachToViewAlongWithChildren()
-        node.detachChildView(child2) // this means child2 should not even be asked
-        child1.handleBackPress = false
-        child2.handleBackPress = false
-        child3.handleBackPress = false
-
-        node.handleBackPress()
-
-        assertEquals(true, child1.handleBackPressInvoked)
-        assertEquals(false, child2.handleBackPressInvoked)
-        assertEquals(true, child3.handleBackPressInvoked)
-    }
-
-    @Test
-    fun `Back press handling is forwarded to children only until first one handles it`() {
-        attachToViewAlongWithChildren()
-        child1.handleBackPress = false
-        child2.handleBackPress = true
-        child3.handleBackPress = false
-
-        node.handleBackPress()
-
-        assertEquals(true, child1.handleBackPressInvoked)
-        assertEquals(true, child2.handleBackPressInvoked)
-        assertEquals(false, child3.handleBackPressInvoked)
-    }
-
-    @Test
     fun `isViewAttached flag is initially false`() {
         assertEquals(false, node.isAttachedToView)
     }
 
     @Test
     fun `onAttachToView() sets isViewAttached flag to true`() {
+        node.onCreateView(parentView)
         node.onAttachToView()
         assertEquals(true, node.isAttachedToView)
     }
@@ -452,9 +414,11 @@ class NodeTest {
         assertEquals(Lifecycle.State.RESUMED, grandChild.lifecycleManager.externalLifecycle.currentState)
     }
 
+    @Ignore("This should be reworked to match new mechanism")
     @Test
     fun `attachChildView() implies attachToView() when Android view system is available`() {
         val child = mock<Node<*>>()
+        node.onCreateView(parentView)
         node.onAttachToView()
         node.attachChildView(child)
         verify(child).onAttachToView()
@@ -498,27 +462,28 @@ class NodeTest {
     }
 
     @Test
-    fun `attachToView() restores view state`() {
+    fun `onCreateView() restores view state`() {
         node.savedViewState = mock()
-        node.onAttachToView()
+        node.onCreateView(parentView)
         verify(view.androidView).restoreHierarchyState(node.savedViewState)
     }
 
-    @Test // FIXME
-    fun `attachToView() invokes viewFactory`() {
-        node.onAttachToView()
+    @Test
+    fun `onCreateView() invokes viewFactory`() {
+        node.onCreateView(parentView)
         verify(viewFactory).invoke(parentView)
     }
 
     @Test
-    fun `attachToView() = view lifecycle is in state CREATED`() {
-        node.onAttachToView()
+    fun `onCreateView() = view lifecycle is in state CREATED`() {
+        node.onCreateView(parentView)
         assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
     @Test
     fun `attachToView() + has view = sets view lifecycle to external lifecycle - when CREATED, view is in state CREATED`() {
         node.onStop()
+        node.onCreateView(parentView)
         node.onAttachToView()
         assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
@@ -527,6 +492,7 @@ class NodeTest {
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when STARTED, view is in state STARTED`() {
         node = createNode(viewFactory = viewFactory)
         node.onStart()
+        node.onCreateView(parentView)
         node.onAttachToView()
         assertEquals(Lifecycle.State.STARTED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
@@ -535,6 +501,7 @@ class NodeTest {
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when RESUMED, view is in state RESUMED`() {
         node = createNode(viewFactory = viewFactory)
         node.onResume()
+        node.onCreateView(parentView)
         node.onAttachToView()
         assertEquals(
             Lifecycle.State.RESUMED,
@@ -546,6 +513,7 @@ class NodeTest {
     @Ignore("This should be tested on RibView impls, not here")
     @Test
     fun `When current Node has a view, attachToView() adds view to parentViewGroup`() {
+        node.onCreateView(parentView)
         node.onAttachToView()
 //        verify(parentView).addView(view.androidView)
     }
@@ -567,6 +535,7 @@ class NodeTest {
         node = createNode(plugins = listOf(viewAware))
         node.onStart()
         node.onStop()
+        node.onCreateView(parentView)
         node.onAttachToView()
         verify(receiver).accept(Unit)
     }
@@ -576,6 +545,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
         node = createNode(viewFactory = null)
+        node.onCreateView(parentView)
         node.onAttachToView()
 //        verify(parentView, never()).addView(anyOrNull())
     }
@@ -583,6 +553,7 @@ class NodeTest {
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
         node = createNode(viewFactory = null)
+        node.onCreateView(parentView)
         node.onAttachToView()
         verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
     }

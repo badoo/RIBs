@@ -48,7 +48,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView>(
     val buildParams: BuildParams<*>,
-    private val viewFactory: ((RibView) -> V?)?,
+    private val viewFactory: ((RibView) -> V?)?, // TODO V? vs V
     private val plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
 
@@ -155,15 +155,23 @@ open class Node<V : RibView>(
     }
 
     fun onAttachToView() {
+        onAttachToViewChecks()
+        isAttachedToView = true
+        lifecycleManager.onAttachToView()
+        plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onAttachToView() }
+    }
+
+    private fun onAttachToViewChecks() {
+        if (!isViewless && view == null) {
+            error("Trying to run onAttachToView() expecting a view, but view wasn't created")
+        }
+
         if (isAttachedToView) {
             RIBs.errorHandler.handleNonFatalError(
                 "View is already attached to some view, it should be detached first. RIB: $this",
                 RuntimeException("View is already attached to some view, it should be detached first. RIB: $this")
             )
         }
-        isAttachedToView = true
-        lifecycleManager.onAttachToView()
-        plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onAttachToView() }
     }
 
     fun onDetachFromView() {

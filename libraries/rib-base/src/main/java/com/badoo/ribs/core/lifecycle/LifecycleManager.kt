@@ -108,6 +108,9 @@ internal class LifecycleManager(
      */
     fun onAttachToView() {
         if (!owner.isViewless) {
+            if (viewLifecycle == null) {
+                error("Trying to attach, but view was not created")
+            }
             // If isViewless, it's already RESUMED in onAttach()
             ribLifecycle.onStart()
             ribLifecycle.onResume()

@@ -15,7 +15,7 @@ class NodePluginSubtreeViewChangeAwareTest : NodePluginTest() {
         val (node, plugins) = testPlugins<SubtreeViewChangeAware>()
         val childNode = createChildNode(parent = node)
 
-        // TODO test should express this as an expectation:
+        node.onCreateView(parentView)
         node.onAttachToView()
         node.attachChildView(childNode)
 
@@ -29,6 +29,8 @@ class NodePluginSubtreeViewChangeAwareTest : NodePluginTest() {
         val (node, plugins) = testPlugins<SubtreeViewChangeAware>()
         val childNode = createChildNode(parent = node)
 
+        node.onCreateView(parentView)
+        node.onAttachToView()
         node.detachChildView(childNode)
 
         plugins.forEach {

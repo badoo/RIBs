@@ -17,7 +17,7 @@ class NodePluginViewAwareTest : NodePluginTest() {
     fun `ViewAware plugins receive onViewCreated()`() {
         val (node, plugins) = testPlugins<ViewAware<TestView>>()
 
-        node.onCreateView(mock())
+        node.onCreateView(parentView)
 
         plugins.forEach {
             verify(it).onViewCreated(any(), eq(node.lifecycleManager.viewLifecycle!!.lifecycle))

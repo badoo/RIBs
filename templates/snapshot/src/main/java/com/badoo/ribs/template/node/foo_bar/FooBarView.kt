@@ -36,9 +36,9 @@ class FooBarViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_foo_bar
     ) : FooBarView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
+        override fun invoke(deps: Nothing?): (RibView) -> FooBarView = {
             FooBarViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

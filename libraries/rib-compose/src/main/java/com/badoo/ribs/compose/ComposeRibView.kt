@@ -13,7 +13,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
 abstract class ComposeRibView(
-    val context: Context
+    override val context: Context
 ) : RibView {
 
     abstract val composable: ComposeView

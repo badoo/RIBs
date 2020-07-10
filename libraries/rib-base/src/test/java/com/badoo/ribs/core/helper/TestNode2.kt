@@ -6,7 +6,7 @@ import com.nhaarman.mockitokotlin2.mock
 
 class TestNode2(
     buildParams: BuildParams<*> = testBuildParams(),
-    viewFactory: ((ViewGroup) -> TestView?)? = mock()
+    viewFactory: ((RibView) -> TestView?)? = mock()
 ) : TestNode(
     buildParams = buildParams,
     viewFactory = viewFactory

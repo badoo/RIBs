@@ -11,7 +11,7 @@ import com.badoo.ribs.template.leaf_view_only.foo_bar.FooBar.Output
 
 class FooBarNode internal constructor(
     buildParams: BuildParams<*>,
-    viewFactory: ((ViewGroup) -> FooBarView?)?,
+    viewFactory: ((RibView) -> FooBarView?)?,
     plugins: List<Plugin> = emptyList(),
     connector: NodeConnector<Input, Output> = NodeConnector()
 ) : Node<FooBarView>(

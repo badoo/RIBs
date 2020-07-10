@@ -40,9 +40,9 @@ class MenuViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_menu
     ) : MenuView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+        override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
             MenuViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

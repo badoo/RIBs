@@ -38,9 +38,9 @@ class HelloWorldViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_hello_world
     ) : HelloWorldView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
+        override fun invoke(deps: Nothing?): (RibView) -> HelloWorldView = {
             HelloWorldViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

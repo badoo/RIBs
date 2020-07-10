@@ -41,9 +41,9 @@ class LoremIpsumViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_lorem_ipsum
     ) : LoremIpsumView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> LoremIpsumView = {
+        override fun invoke(deps: Nothing?): (RibView) -> LoremIpsumView = {
             LoremIpsumViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

@@ -42,9 +42,9 @@ class SmallViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_small
     ) : SmallView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> SmallView = {
+        override fun invoke(deps: Nothing?): (RibView) -> SmallView = {
             SmallViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

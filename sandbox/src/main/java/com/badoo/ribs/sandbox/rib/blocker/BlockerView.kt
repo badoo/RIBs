@@ -40,9 +40,9 @@ class BlockerViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_blocker
     ) : BlockerView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> BlockerView = {
+        override fun invoke(deps: Nothing?): (RibView) -> BlockerView = {
             BlockerViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

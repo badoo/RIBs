@@ -42,9 +42,9 @@ class OptionSelectorViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_option_selector
     ) : OptionSelectorView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> OptionSelectorView = {
+        override fun invoke(deps: Nothing?): (RibView) -> OptionSelectorView = {
             OptionSelectorViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

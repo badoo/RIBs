@@ -49,9 +49,9 @@ class SwitcherViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_switcher
     ) : SwitcherView.Factory {
-        override fun invoke(deps: SwitcherView.Dependency): (ViewGroup) -> SwitcherView = {
+        override fun invoke(deps: SwitcherView.Dependency): (RibView) -> SwitcherView = {
             SwitcherViewImpl(
-                inflate(it, layoutRes),
+                it.inflate(layoutRes),
                 deps.coffeeMachine()
             )
         }

@@ -17,7 +17,7 @@ private val buildParams = BuildParams.Empty()
 
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<*, View>,
-    val viewFactory: ((ViewGroup) -> View?)? = null
+    val viewFactory: ((RibView) -> View?)? = null
 ) {
 
     var nodeCreator: () -> Node<View> = {

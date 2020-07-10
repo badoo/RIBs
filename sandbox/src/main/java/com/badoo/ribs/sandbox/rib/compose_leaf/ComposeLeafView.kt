@@ -39,7 +39,7 @@ class ComposeLeafViewImpl private constructor(
     Consumer<ViewModel> {
 
     class Factory : ComposeLeafView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> ComposeLeafView = {
+        override fun invoke(deps: Nothing?): (RibView) -> ComposeLeafView = {
             ComposeLeafViewImpl(
                 it.context
             )

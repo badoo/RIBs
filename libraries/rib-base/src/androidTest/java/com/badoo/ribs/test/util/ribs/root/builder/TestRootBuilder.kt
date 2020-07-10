@@ -19,7 +19,7 @@ class TestRootBuilder(
         return TestNode(
             buildParams = buildParams,
             viewFactory = object : ViewFactory<Nothing?, TestRootView> {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> TestRootView = {
+                override fun invoke(deps: Nothing?): (RibView) -> TestRootView = {
                     TestRootViewImpl(it.context)
                 }
             },

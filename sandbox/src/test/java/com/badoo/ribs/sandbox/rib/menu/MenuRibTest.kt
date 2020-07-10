@@ -33,7 +33,7 @@ class MenuRibTest {
     private val customisation = RibCustomisationDirectoryImpl().apply {
         put(Menu.Customisation::class, mock {
             on { viewFactory } doReturn object : MenuView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+                override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
                     menuView
                 }
             }

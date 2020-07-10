@@ -38,9 +38,9 @@ class PortalOverlayTestViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_portal_overlay_test
     ) : PortalOverlayTestView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> PortalOverlayTestView = {
+        override fun invoke(deps: Nothing?): (RibView) -> PortalOverlayTestView = {
             PortalOverlayTestViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

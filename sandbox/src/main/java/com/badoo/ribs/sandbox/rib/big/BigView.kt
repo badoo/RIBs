@@ -41,9 +41,9 @@ class BigViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_big
     ) : BigView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> BigView = {
+        override fun invoke(deps: Nothing?): (RibView) -> BigView = {
             BigViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

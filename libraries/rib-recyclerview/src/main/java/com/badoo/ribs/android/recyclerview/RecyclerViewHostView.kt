@@ -25,11 +25,11 @@ internal class RecyclerViewHostViewImpl private constructor(
     RecyclerViewHostView {
 
     class Factory: RecyclerViewHostView.Factory {
-        override fun invoke(deps: Dependency): (ViewGroup) -> RecyclerViewHostView = {
+        override fun invoke(deps: Dependency): (RibView) -> RecyclerViewHostView = {
             RecyclerViewHostViewImpl(
-                androidView = deps.recyclerViewFactory().invoke(it.context).apply {
+                androidView = deps.recyclerViewFactory().invoke(it.androidView.context).apply {
                     adapter = deps.adapter()
-                    layoutManager = deps.layoutManagerFactory().invoke(it.context)
+                    layoutManager = deps.layoutManagerFactory().invoke(it.androidView.context)
                 }
             )
         }

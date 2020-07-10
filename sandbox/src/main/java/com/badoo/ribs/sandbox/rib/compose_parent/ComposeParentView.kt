@@ -45,7 +45,7 @@ class ComposeParentViewImpl private constructor(
     Consumer<ViewModel> {
 
     class Factory() : ComposeParentView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> ComposeParentView = {
+        override fun invoke(deps: Nothing?): (RibView) -> ComposeParentView = {
             ComposeParentViewImpl(
                 it.context
             )

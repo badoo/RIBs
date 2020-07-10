@@ -9,7 +9,7 @@ import com.nhaarman.mockitokotlin2.mock
 
 open class TestNode(
     buildParams: BuildParams<*> = testBuildParams(),
-    viewFactory: ((ViewGroup) -> TestView?)? = TestViewFactory(),
+    viewFactory: ((RibView) -> TestView?)? = TestViewFactory(),
     router: Router<*> = mock(),
     plugins: List<Plugin> = emptyList()
 ) : Node<TestView>(

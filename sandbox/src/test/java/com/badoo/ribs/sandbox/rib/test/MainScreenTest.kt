@@ -55,35 +55,35 @@ class MainScreenTest {
         .apply {
         put(Menu.Customisation::class, mock {
             on { viewFactory } doReturn object : MenuView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+                override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
                     menuView
                 }
             }
         })
         put(Switcher.Customisation::class, mock {
             on { viewFactory } doReturn object : SwitcherView.Factory {
-                override fun invoke(deps: SwitcherView.Dependency): (ViewGroup) -> SwitcherView = {
+                override fun invoke(deps: SwitcherView.Dependency): (RibView) -> SwitcherView = {
                     switcherView
                 }
             }
         })
         put(DialogExample.Customisation::class, mock {
             on { viewFactory } doReturn object : DialogExampleView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> DialogExampleView = {
+                override fun invoke(deps: Nothing?): (RibView) -> DialogExampleView = {
                     dialogExampleView
                 }
             }
         })
         put(FooBar.Customisation::class, mock {
             on { viewFactory } doReturn object : FooBarView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
+                override fun invoke(deps: Nothing?): (RibView) -> FooBarView = {
                     fooBarView
                 }
             }
         })
         put(HelloWorld.Customisation::class, mock {
             on { viewFactory } doReturn object : HelloWorldView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
+                override fun invoke(deps: Nothing?): (RibView) -> HelloWorldView = {
                     helloWorldView
                 }
             }

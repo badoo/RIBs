@@ -45,9 +45,9 @@ class DialogExampleViewImpl  private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_dialog_example
     ) : DialogExampleView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> DialogExampleView = {
+        override fun invoke(deps: Nothing?): (RibView) -> DialogExampleView = {
             DialogExampleViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

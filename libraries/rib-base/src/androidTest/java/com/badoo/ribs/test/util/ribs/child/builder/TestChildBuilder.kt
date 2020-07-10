@@ -20,7 +20,7 @@ class TestChildBuilder : SimpleBuilder<TestNode<TestChildView>>() {
         return TestNode(
             buildParams = buildParams,
             viewFactory = object : ViewFactory<Nothing?, TestChildView> {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> TestChildView = {
+                override fun invoke(deps: Nothing?): (RibView) -> TestChildView = {
                     TestChildViewImpl(it.context)
                 }
             },

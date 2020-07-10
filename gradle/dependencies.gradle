@@ -47,7 +47,7 @@ def build = [
     intellijPlugin: "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.4.2",
     kotlinIdeaPlugin: "org.jetbrains.kotlin:${versions.intellij_kotlin}",
     gradlePlugins: [
-        android: 'com.android.tools.build:gradle:4.2.0-alpha01',
+        android: 'com.android.tools.build:gradle:4.2.0-alpha04',
         kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
         gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
         mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.8.0',

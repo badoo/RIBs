@@ -6,6 +6,7 @@ import android.widget.Button
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.tutorials.tutorial1.R
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.tutorials.tutorial1.rib.hello_world.HelloWorldView.ViewModel
@@ -31,7 +32,8 @@ interface HelloWorldView : RibView,
 class HelloWorldViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : HelloWorldView,
+) : AndroidRibView(),
+    HelloWorldView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 

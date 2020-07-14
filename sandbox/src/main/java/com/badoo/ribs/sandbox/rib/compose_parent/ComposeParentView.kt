@@ -1,7 +1,6 @@
 package com.badoo.ribs.sandbox.rib.compose_parent
 
 import android.content.Context
-import android.view.ViewGroup
 import androidx.compose.Composable
 import androidx.compose.MutableState
 import androidx.compose.mutableStateOf

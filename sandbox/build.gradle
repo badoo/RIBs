@@ -25,13 +25,15 @@ android {
         }
     }
 
-    buildFeatures {
-        compose true
-    }
+    if (useCompose) {
+        buildFeatures {
+            compose true
+        }
 
-    composeOptions {
-        kotlinCompilerVersion "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
-        kotlinCompilerExtensionVersion "0.1.0-dev14"
+        composeOptions {
+            kotlinCompilerVersion "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
+            kotlinCompilerExtensionVersion "0.1.0-dev14"
+        }
     }
 }
 
@@ -68,9 +70,11 @@ dependencies {
     implementation deps.external.rxandroid2
 
     implementation project(":libraries:rib-base")
-    implementation project(":libraries:rib-compose")
     implementation project(":libraries:rib-portal")
     implementation project(":libraries:rib-recyclerview")
+    if (useCompose) {
+        implementation project(":libraries:rib-compose")
+    }
 
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.junit

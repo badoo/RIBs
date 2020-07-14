@@ -1,8 +1,16 @@
+def props = new Properties()
+def propsFile = file("local.properties")
+if (propsFile.exists()) {
+    propsFile.withInputStream { props.load(it) }
+    if (props.getProperty("useCompose")) {
+        include ':libraries:rib-compose'
+    }
+}
+
 include ':app-example'
 include ':libraries:rib-base'
 include ':libraries:rib-base-test'
 include ':libraries:rib-base-test-activity'
-include ':libraries:rib-compose'
 include ':libraries:rib-debug-utils'
 include ':libraries:rib-portal'
 include ':libraries:rib-recyclerview'
@@ -17,7 +25,7 @@ include ':sandbox'
 //include ':templates:release-0.20'
 //include ':templates:release-0.21'
 //include ':templates:release-0.22'
-//include ':templates:snapshot'
+include ':templates:snapshot'
 //include ':tooling:rib-intellij-plugin'
 include ':tutorials:tutorial1'
 include ':tutorials:tutorial2'

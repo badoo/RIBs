@@ -4,6 +4,7 @@ if (propsFile.exists()) {
     propsFile.withInputStream { props.load(it) }
     if (props.getProperty("useCompose")) {
         include ':libraries:rib-compose'
+        include ':sandbox-compose'
     }
 }
 

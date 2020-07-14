@@ -5,6 +5,7 @@ import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.template.R
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView.Event
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView.ViewModel
@@ -29,7 +30,8 @@ interface FooBarView : RibView,
 class FooBarViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : FooBarView,
+) : AndroidRibView(),
+    FooBarView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 

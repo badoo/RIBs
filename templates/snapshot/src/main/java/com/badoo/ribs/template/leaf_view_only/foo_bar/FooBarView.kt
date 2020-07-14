@@ -3,6 +3,7 @@ package com.badoo.ribs.template.leaf_view_only.foo_bar
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.template.R
@@ -29,7 +30,8 @@ interface FooBarView : RibView,
 class FooBarViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : FooBarView,
+) : AndroidRibView(),
+    FooBarView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 

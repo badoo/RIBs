@@ -7,6 +7,7 @@ def versions = [
     kotlin: '1.3.72',
     mviCore: '1.2.4',
     robolectric: '4.2',
+    compose: '0.1.0-dev14',
 
     materialVersion:'1.1.0', // https://github.com/material-components/material-components-android/releases
     androidxAnnotationVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
@@ -76,6 +77,15 @@ def android = [
     rules: "androidx.test:rules:${versions.androidxTestVersion}"
 ]
 
+def compose = [
+    runtime: "androidx.compose:compose-runtime:${versions.compose}",
+    uiCore: "androidx.ui:ui-core:${versions.compose}",
+    uiLayout: "androidx.ui:ui-layout:${versions.compose}",
+    uiMaterial: "androidx.ui:ui-material:${versions.compose}",
+    uiTooling: "androidx.ui:ui-tooling:${versions.compose}",
+    uiFoundation: "androidx.ui:ui-foundation:${versions.compose}"
+]
+
 def test = [
     junit: "junit:junit:4.12",
     mockito: "org.mockito:mockito-core:2.24.0",
@@ -120,6 +130,7 @@ def retrofit = [
 ext.deps = [
     "apt": apt,
     "build": build,
+    "compose": compose,
     "external": external,
     "android": android,
     "test": test,

@@ -2,8 +2,6 @@ package com.badoo.ribs.sandbox.rib.switcher.routing
 
 import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.blocker.BlockerBuilder
-import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeaf
-import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafBuilder
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParent
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentBuilder
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
@@ -29,7 +27,6 @@ internal open class SwitcherChildBuilders(
             subtreeDeps
         )
     val blocker = BlockerBuilder(subtreeDeps)
-    val composeLeaf = ComposeLeafBuilder(subtreeDeps)
     val composeParent = ComposeParentBuilder(subtreeDeps)
 
     class SubtreeDependency(
@@ -40,7 +37,6 @@ internal open class SwitcherChildBuilders(
         FooBar.Dependency,
         DialogExample.Dependency,
         Blocker.Dependency,
-        ComposeLeaf.Dependency,
         ComposeParent.Dependency {
 
     }

@@ -1,14 +1,12 @@
-configureAndroidApp(project)
+configureAndroidLibrary(project)
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.badoo.ribs.sandbox"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -22,17 +20,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    if (useCompose) {
-        buildFeatures {
-            compose true
-        }
-
-        composeOptions {
-            kotlinCompilerVersion "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
-            kotlinCompilerExtensionVersion "0.1.0-dev14"
         }
     }
 }
@@ -65,21 +52,6 @@ dependencies {
     implementation deps.external.rxandroid2
 
     implementation project(":libraries:rib-base")
-    implementation project(":libraries:rib-portal")
-    implementation project(":libraries:rib-recyclerview")
-
-    if (useCompose) {
-        implementation project(":libraries:rib-compose")
-        implementation project(":sandbox-compose")
-        implementation deps.compose.runtime
-        implementation deps.compose.uiCore
-        implementation deps.compose.uiLayout
-        implementation deps.compose.uiMaterial
-        implementation deps.compose.uiTooling
-        implementation deps.compose.uiFoundation
-    } else {
-        implementation project(":sandbox-compose-placeholder")
-    }
 
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.junit

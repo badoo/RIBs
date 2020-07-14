@@ -8,6 +8,7 @@ import coil.transform.CircleCropTransformation
 import com.badoo.mvicore.ModelWatcher
 import com.badoo.mvicore.modelWatcher
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -37,7 +38,8 @@ interface AppBarView : RibView,
 class AppBarViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : AppBarView,
+) : AndroidRibView(),
+    AppBarView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
@@ -57,9 +59,9 @@ class AppBarViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_app_bar
     ) : AppBarView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> AppBarView = {
+        override fun invoke(deps: Nothing?): (RibView) -> AppBarView = {
             AppBarViewImpl(
-                androidView = inflate(it, layoutRes)
+                androidView = it.inflate(layoutRes)
             )
         }
     }

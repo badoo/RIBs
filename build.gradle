@@ -1,4 +1,5 @@
 buildscript {
+    apply from: 'gradle/compose.gradle'
     apply from: 'gradle/dependencies.gradle'
 
     repositories {
@@ -19,6 +20,7 @@ buildscript {
     }
 }
 
+apply from: 'gradle/compose.gradle'
 apply from: 'gradle/dependencies.gradle'
 apply from: 'gradle/utils.gradle'
 

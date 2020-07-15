@@ -1,5 +1,3 @@
-apply from: 'gradle/compose.gradle'
-
 def versions = [
     dagger: '2.22.1',
     intellij: '2019.2.4',

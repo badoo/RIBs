@@ -39,7 +39,13 @@ subprojects {
     }
 
     repositories {
-        jcenter()
+        jcenter {
+            content {
+                // just allow to include kotlinx projects
+                // detekt needs 'kotlinx-html' for the html report
+                includeGroup "org.jetbrains.kotlinx"
+            }
+        }
         maven { url deps.build.gradlePluginsUrl }
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }

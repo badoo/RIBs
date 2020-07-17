@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
-import com.badoo.ribs.android.activitystarter.ActivityStarterImpl
+import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
-import com.badoo.ribs.android.permissionrequester.PermissionRequesterImpl
+import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
 class TestActivity : AppCompatActivity() {
@@ -14,23 +14,23 @@ class TestActivity : AppCompatActivity() {
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
     val activityStarter: ActivityStarter
-        get() = _activityStarter
+        get() = activityBoundary
 
     val permissionRequester: PermissionRequester
-        get() = _permissionRequester
+        get() = permissionRequestBoundary
 
     var ignoreActivityStarts: Boolean = false
     var lastStartedRequestCode: Int = -1
 
-    private val _activityStarter: ActivityStarterImpl by lazy {
-        ActivityStarterImpl(
+    private val activityBoundary: ActivityBoundary by lazy {
+        ActivityBoundary(
             activity = this,
             requestCodeRegistry = requestCodeRegistry
         )
     }
 
-    private val _permissionRequester: PermissionRequesterImpl by lazy {
-        PermissionRequesterImpl(
+    private val permissionRequestBoundary: PermissionRequestBoundary by lazy {
+        PermissionRequestBoundary(
             activity = this,
             requestCodeRegistry = requestCodeRegistry
         )
@@ -54,10 +54,10 @@ class TestActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        _activityStarter.onActivityResult(requestCode, resultCode, data)
+        activityBoundary.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
-        _permissionRequester.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionRequestBoundary.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
 }

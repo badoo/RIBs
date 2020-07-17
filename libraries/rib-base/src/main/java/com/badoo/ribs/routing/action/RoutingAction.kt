@@ -6,7 +6,7 @@ import com.badoo.ribs.core.modality.BuildContext
 
 interface RoutingAction {
 
-    val nbNodesToBuild: Int
+    val numberOfNodes: Int
 
     /**
      * Guaranteed by framework to receive a list of nbNodesToBuild elements
@@ -25,7 +25,7 @@ interface RoutingAction {
 
     companion object {
         fun noop(): RoutingAction = object : RoutingAction {
-            override val nbNodesToBuild: Int = 0
+            override val numberOfNodes: Int = 0
         }
     }
 }

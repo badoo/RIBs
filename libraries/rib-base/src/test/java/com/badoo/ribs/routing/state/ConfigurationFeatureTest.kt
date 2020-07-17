@@ -117,7 +117,7 @@ class ConfigurationFeatureTest {
 
             private fun List<() -> Rib>.toRoutingAction(nbNodes: Int): RoutingAction =
                 mock {
-                    on { nbNodesToBuild } doReturn nbNodes
+                    on { numberOfNodes } doReturn nbNodes
                     on { buildNodes(anyList()) } doAnswer {
                         this@toRoutingAction.map {
                             factory -> factory.invoke()

@@ -38,7 +38,7 @@ class RoutingContextTest {
 
     // Default
     private val defaultRoutingAction = mock<RoutingAction> {
-        on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
+        on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn ribs
     }
     private val defaultResolver = mock<RoutingResolver<Parcelable>> {
@@ -48,7 +48,7 @@ class RoutingContextTest {
     // With Anchor
     private val mockAnchor: Node<*> = createMockNode()
     private val routingActionWithAnchor = mock<RoutingAction> {
-        on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
+        on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }

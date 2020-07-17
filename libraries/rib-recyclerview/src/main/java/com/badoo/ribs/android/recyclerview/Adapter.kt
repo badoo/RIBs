@@ -46,13 +46,13 @@ internal class Adapter<T : Parcelable>(
         when (state.lastCommand) {
             null -> { /* No-op when restored from TimeCapsule or genuinely empty state */ }
             is Input.Add -> {
-                eagerAdd(state.items.last())
+                addIfEager(state.items.last())
                 notifyItemInserted(state.items.lastIndex)
             }
         }
     }
 
-    private fun eagerAdd(entry: Entry<T>) {
+    private fun addIfEager(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
             routingSource.add(entry.element, entry.identifier)
         }

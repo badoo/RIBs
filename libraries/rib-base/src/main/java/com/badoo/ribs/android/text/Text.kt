@@ -9,16 +9,16 @@ import android.content.Context
  */
 interface Text {
 
-    fun resolve(context: Context): String
+    fun resolve(context: Context): CharSequence
 
     class Plain(private val string: String): Text {
-        override fun resolve(context: Context): String =
+        override fun resolve(context: Context): CharSequence =
             string
     }
 
     class Resource(private val resId: Int, private vararg val formatArgs: Any) :
         Text {
-        override fun resolve(context: Context): String =
+        override fun resolve(context: Context): CharSequence =
             context.resources.getString(resId, *formatArgs)
     }
 }

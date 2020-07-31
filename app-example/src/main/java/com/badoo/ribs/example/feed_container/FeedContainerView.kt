@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -18,23 +19,24 @@ interface FeedContainerView : RibView {
 
 class FeedContainerViewImpl private constructor(
     override val androidView: ViewGroup
-) : FeedContainerView {
+) : AndroidRibView(),
+    FeedContainerView {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_feed_container
     ) : FeedContainerView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> FeedContainerView = {
+        override fun invoke(deps: Nothing?): (RibView) -> FeedContainerView = {
             FeedContainerViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }
 
     private val photoFeedContainer = findViewById<ViewGroup>(R.id.photoFeedContainer)
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup? =
+    override fun getParentViewForChild(child: Node<*>): ViewGroup =
         when (child) {
             is PhotoFeed -> photoFeedContainer
-            else -> null
+            else -> super.getParentViewForChild(child)
         }
 }

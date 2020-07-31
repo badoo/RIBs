@@ -11,7 +11,7 @@ import com.nhaarman.mockitokotlin2.mock
 class TestNode<V : RibView>(
     buildParams: BuildParams<*> = BuildParams.Empty(),
     router: Router<*> = mock(),
-    viewFactory: ((ViewGroup) -> V?)? = mock(),
+    viewFactory: ((RibView) -> V?)? = mock(),
     interactor: Interactor<*, V> = mock()
 ) : Node<V>(
     buildParams = buildParams,

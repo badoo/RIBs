@@ -3,9 +3,9 @@ package com.badoo.ribs.sandbox.rib.foo_bar.viewplugin
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import com.badoo.ribs.core.plugin.ViewLifecycleAware
+import com.badoo.ribs.core.view.AndroidRibView
 
-class ParentLongClickListener : ViewLifecycleAware {
+class ParentLongClickListener : AndroidRibView.AndroidViewLifecycleAware {
 
     private val listener = View.OnLongClickListener {
         Log.d("ParentLongClickListener", "onLongClick")

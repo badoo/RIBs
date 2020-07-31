@@ -1,13 +1,14 @@
 package com.badoo.ribs.core
 
 import android.view.ViewGroup
-import com.badoo.ribs.core.modality.AncestryInfo
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -16,17 +17,17 @@ import org.junit.Before
 open class NodePluginTest {
     protected lateinit var view: TestView
     protected lateinit var androidView: ViewGroup
-    protected lateinit var parentViewGroup: ViewGroup
+    protected lateinit var parentView: RibView
     protected lateinit var viewFactory: TestViewFactory
 
-    interface TestViewFactory : (ViewGroup) -> TestView
+    interface TestViewFactory : (RibView) -> TestView
 
     @Before
     open fun setUp() {
-        parentViewGroup = mock()
+        parentView = mock()
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
-        viewFactory = mock { on { invoke(parentViewGroup) } doReturn view }
+        viewFactory = mock { on { invoke(parentView) } doReturn view }
     }
 
     protected inline fun <reified T : Plugin> testPlugins(nbPlugins: Int = 3): Pair<Node<TestView>, List<T>> =

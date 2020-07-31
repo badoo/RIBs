@@ -75,11 +75,11 @@ abstract class Router<C : Parcelable>(
         binder.bind(routingSource.changes(hasSavedState) to routingStatePool)
     }
 
-    override fun onAttachToView(parentViewGroup: ViewGroup) {
+    override fun onAttachToView() {
         routingStatePool.accept(WakeUp())
     }
 
-    override fun onDetachFromView(parentViewGroup: ViewGroup) {
+    override fun onDetachFromView() {
         routingStatePool.accept(Sleep())
     }
 

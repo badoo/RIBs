@@ -1,8 +1,8 @@
 package com.badoo.ribs.test.util.ribs.child.builder
 
-import android.view.ViewGroup
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildInteractor
@@ -20,7 +20,7 @@ class TestChildBuilder : SimpleBuilder<TestNode<TestChildView>>() {
         return TestNode(
             buildParams = buildParams,
             viewFactory = object : ViewFactory<Nothing?, TestChildView> {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> TestChildView = {
+                override fun invoke(deps: Nothing?): (RibView) -> TestChildView = {
                     TestChildViewImpl(it.context)
                 }
             },

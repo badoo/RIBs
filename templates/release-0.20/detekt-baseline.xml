@@ -1,5 +1,92 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <Blacklist timestamp="1553003757809"></Blacklist>
-  <Whitelist timestamp="1553003757809"></Whitelist>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:FooBarInteractorTest.kt$FooBarInteractorTest${ }</ID>
+    <ID>EmptyFunctionBlock:FooBarRouterTest.kt$FooBarRouterTest${ }</ID>
+    <ID>EmptyFunctionBlock:FooBarView.kt$FooBarViewImpl${ }</ID>
+    <ID>EmptyFunctionBlock:FooBarWorkflowTest.kt$FooBarWorkflowTest${ }</ID>
+    <ID>LongParameterList:FooBarInteractor.kt$FooBarInteractor$( buildParams: BuildParams&lt;*&gt;, private val router: FooBarRouter, private val input: ObservableSource&lt;FooBar.Input&gt;, private val output: Consumer&lt;FooBar.Output&gt;, private val feature: FooBarFeature )</ID>
+    <ID>NotImplementedDeclaration:FooBarTest.kt$FooBarTest$TODO("Write UI tests")</ID>
+    <ID>NotImplementedDeclaration:InputToWish.kt$InputToWish$TODO("Implement FooBarInputToWish mapping")</ID>
+    <ID>NotImplementedDeclaration:NewsToOutput.kt$NewsToOutput$TODO("Implement FooBarNewsToOutput mapping")</ID>
+    <ID>NotImplementedDeclaration:StateToViewModel.kt$StateToViewModel$TODO("Implement StateToViewModel mapping")</ID>
+    <ID>NotImplementedDeclaration:ViewEventToWish.kt$ViewEventToWish$TODO("Implement FooBarViewEventToWish mapping")</ID>
+    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.leaf_view_only.foo_bar</ID>
+    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.template.leaf.foo_bar.analytics</ID>
+    <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.template.node.foo_bar.analytics</ID>
+    <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.template.node_dagger.foo_bar.analytics</ID>
+    <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.analytics</ID>
+    <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.template.leaf_view_only.foo_bar</ID>
+    <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.template.node_dagger.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarComponent.kt$package com.badoo.ribs.template.node_dagger.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarComponent.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarFeature.kt$package com.badoo.ribs.template.leaf.foo_bar.feature</ID>
+    <ID>PackageNaming:FooBarFeature.kt$package com.badoo.ribs.template.node.foo_bar.feature</ID>
+    <ID>PackageNaming:FooBarFeature.kt$package com.badoo.ribs.template.node_dagger.foo_bar.feature</ID>
+    <ID>PackageNaming:FooBarFeature.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.feature</ID>
+    <ID>PackageNaming:FooBarInteractor.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractor.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractor.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractor.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractorTest.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractorTest.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractorTest.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractorTest.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarModule.kt$package com.badoo.ribs.template.node_dagger.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarModule.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarNode.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarNode.kt$package com.badoo.ribs.template.leaf_view_only.foo_bar</ID>
+    <ID>PackageNaming:FooBarNode.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarNode.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarNode.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarRouter.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarRouter.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarRouter.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarRouterTest.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarRouterTest.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarRouterTest.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarScope.kt$package com.badoo.ribs.template.node_dagger.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarScope.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder</ID>
+    <ID>PackageNaming:FooBarTest.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarTest.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarTest.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarTest.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarView.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarView.kt$package com.badoo.ribs.template.leaf_view_only.foo_bar</ID>
+    <ID>PackageNaming:FooBarView.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarView.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarView.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarWorkflowTest.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarWorkflowTest.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarWorkflowTest.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarWorkflowTest.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.template.leaf.foo_bar.mapper</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.template.node.foo_bar.mapper</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.template.node_dagger.foo_bar.mapper</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.mapper</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.template.leaf.foo_bar.mapper</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.template.node.foo_bar.mapper</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.template.node_dagger.foo_bar.mapper</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.mapper</ID>
+    <ID>PackageNaming:StateToViewModel.kt$package com.badoo.ribs.template.leaf.foo_bar.mapper</ID>
+    <ID>PackageNaming:StateToViewModel.kt$package com.badoo.ribs.template.node.foo_bar.mapper</ID>
+    <ID>PackageNaming:StateToViewModel.kt$package com.badoo.ribs.template.node_dagger.foo_bar.mapper</ID>
+    <ID>PackageNaming:StateToViewModel.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.template.leaf.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.template.node.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.template.node_dagger.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.template.leaf.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.template.node.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.template.node_dagger.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar.mapper</ID>
+  </CurrentIssues>
 </SmellBaseline>

@@ -1,0 +1,60 @@
+package com.badoo.ribs.sandbox.rib.compose_leaf
+
+import android.content.Context
+import android.view.ViewGroup
+import androidx.compose.Composable
+import androidx.compose.MutableState
+import androidx.compose.mutableStateOf
+import androidx.ui.foundation.Text
+import androidx.ui.layout.Column
+import com.badoo.ribs.compose.ComposeRibView
+import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.Event
+import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.ViewModel
+import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.ObservableSource
+import io.reactivex.functions.Consumer
+
+interface ComposeLeafView : RibView,
+    ObservableSource<Event>,
+    Consumer<ViewModel> {
+
+    sealed class Event
+
+    data class ViewModel(
+        val text: String = "Initial view model text"
+    )
+
+    interface Factory : ViewFactory<Nothing?, ComposeLeafView>
+}
+
+
+class ComposeLeafViewImpl private constructor(
+    context: Context,
+    private val events: PublishRelay<Event> = PublishRelay.create()
+) : ComposeRibView(context),
+    ComposeLeafView,
+    ObservableSource<Event> by events,
+    Consumer<ViewModel> {
+
+    class Factory : ComposeLeafView.Factory {
+        override fun invoke(deps: Nothing?): (RibView) -> ComposeLeafView = {
+            ComposeLeafViewImpl(
+                it.context
+            )
+        }
+    }
+
+    private var viewModel: MutableState<ViewModel> = mutableStateOf(ViewModel())
+
+    override fun accept(vm: ViewModel) {
+        viewModel.value = vm
+    }
+
+    override val composable: @Composable() () -> Unit = {
+        Column {
+            Text(text = "ComposeLeafView: ${viewModel.value.text}")
+        }
+    }
+}

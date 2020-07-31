@@ -2,6 +2,7 @@ package com.badoo.ribs.sandbox.rib.menu
 
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import androidx.test.rule.ActivityTestRule
+import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
@@ -31,7 +32,11 @@ class MenuViewTest {
     @Before
     fun setUp() {
         runOnUiThread {
-            menuView = MenuViewImpl.Factory()(null).invoke(activityRule.activity.findViewById(android.R.id.content))
+            menuView = MenuViewImpl.Factory()(null).invoke(
+                AndroidRibViewHost(
+                    activityRule.activity.findViewById(android.R.id.content)
+                )
+            )
             activityRule.activity.setContentView(menuView.androidView)
         }
     }

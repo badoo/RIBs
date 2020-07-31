@@ -20,6 +20,7 @@ import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.ViewAware
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.util.RIBs
@@ -40,6 +41,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -47,12 +49,12 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class NodeTest {
 
-    interface TestViewFactory : (ViewGroup) -> TestView
+    interface TestViewFactory : (RibView) -> TestView
 
     private lateinit var node: Node<TestView>
     private lateinit var view: TestView
     private lateinit var androidView: ViewGroup
-    private lateinit var parentViewGroup: ViewGroup
+    private lateinit var parentView: RibView
     private lateinit var someViewGroup1: ViewGroup
     private lateinit var someViewGroup2: ViewGroup
     private lateinit var someViewGroup3: ViewGroup
@@ -68,13 +70,13 @@ class NodeTest {
 
     @Before
     fun setUp() {
-        parentViewGroup = mock()
+        parentView = mock()
         someViewGroup1 = mock()
         someViewGroup2 = mock()
         someViewGroup3 = mock()
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
-        viewFactory = mock { on { invoke(parentViewGroup) } doReturn view }
+        viewFactory = mock { on { invoke(parentView) } doReturn view }
         router = mock()
         interactor = mock()
         node = createNode(viewFactory = viewFactory)
@@ -126,7 +128,8 @@ class NodeTest {
     }
 
     private fun attachToViewAlongWithChildren() {
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
         node.attachChildView(child1)
         node.attachChildView(child2)
         node.attachChildView(child3)
@@ -137,23 +140,12 @@ class NodeTest {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
         RIBs.errorHandler = errorHandler
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
 
         node.onDetach()
 
         verify(errorHandler).handleNonFatalError(any(), isA<RuntimeException>())
-    }
-
-    @Test
-    fun `onDetach() detaches view as a fail-safe mechanism`() {
-        val errorHandler = mock<RIBs.ErrorHandler>()
-        RIBs.clearErrorHandler()
-        RIBs.errorHandler = errorHandler
-        node.attachToView(parentViewGroup)
-
-        node.onDetach()
-
-        assertEquals(false, node.isAttachedToView)
     }
 
     @Test
@@ -200,49 +192,20 @@ class NodeTest {
     }
 
     @Test
-    fun `Back press handling is forwarded to all children attached to the view if none can handle it`() {
-        attachToViewAlongWithChildren()
-        node.detachChildView(child2) // this means child2 should not even be asked
-        child1.handleBackPress = false
-        child2.handleBackPress = false
-        child3.handleBackPress = false
-
-        node.handleBackPress()
-
-        assertEquals(true, child1.handleBackPressInvoked)
-        assertEquals(false, child2.handleBackPressInvoked)
-        assertEquals(true, child3.handleBackPressInvoked)
-    }
-
-    @Test
-    fun `Back press handling is forwarded to children only until first one handles it`() {
-        attachToViewAlongWithChildren()
-        child1.handleBackPress = false
-        child2.handleBackPress = true
-        child3.handleBackPress = false
-
-        node.handleBackPress()
-
-        assertEquals(true, child1.handleBackPressInvoked)
-        assertEquals(true, child2.handleBackPressInvoked)
-        assertEquals(false, child3.handleBackPressInvoked)
-    }
-
-    @Test
     fun `isViewAttached flag is initially false`() {
         assertEquals(false, node.isAttachedToView)
     }
 
     @Test
-    fun `attachToView() sets isViewAttached flag to true`() {
-        node.attachToView(parentViewGroup)
+    fun `onAttachToView() sets isViewAttached flag to true`() {
+        node.onCreateView(parentView)
+        node.onAttachToView()
         assertEquals(true, node.isAttachedToView)
     }
 
     @Test
-    fun `detachFromView() resets isViewAttached flag to false`() {
-        node.attachToView(parentViewGroup)
-        node.detachFromView()
+    fun `onDetachFromView() resets isViewAttached flag to false`() {
+        node.onDetachFromView()
         assertEquals(false, node.isAttachedToView)
     }
 
@@ -269,17 +232,21 @@ class NodeTest {
         return mocks
     }
 
+    // FIXME rework
+    @Ignore("This should be tested on RibView impls, not here")
     @Test
     fun `attachChildView() results in children added to parentViewGroup given Router does not define something else `() {
-        whenever(view.getParentViewForChild(any())).thenReturn(null)
+//        whenever(view.getParentViewForChild(any())).thenReturn(null)
         val mocks = createAndAttachChildMocks(3)
-        node.attachToView(parentViewGroup)
+        node.onAttachToView()
         mocks.forEach {
             node.attachChildView(it)
-            verify(it).attachToView(parentViewGroup)
+            verify(it).onAttachToView()
         }
     }
 
+    // FIXME rework
+    @Ignore("This should be tested on RibView impls, not here")
     @Test
     fun `attachToView() results in children added to target defined by View`() {
         val n1 = TestNode() // identifier = object : RandomOtherNode1 {}
@@ -287,15 +254,15 @@ class NodeTest {
         val n3 = TestNode() // identifier = object : RandomOtherNode3 {}
         val testNodes = listOf(n1, n2, n3)
 
-        whenever(view.getParentViewForChild(n1)).thenReturn(someViewGroup1)
-        whenever(view.getParentViewForChild(n2)).thenReturn(someViewGroup2)
-        whenever(view.getParentViewForChild(n3)).thenReturn(someViewGroup3)
+//        whenever(view.getParentViewForChild(n1)).thenReturn(someViewGroup1)
+//        whenever(view.getParentViewForChild(n2)).thenReturn(someViewGroup2)
+//        whenever(view.getParentViewForChild(n3)).thenReturn(someViewGroup3)
 
-        node.attachToView(parentViewGroup)
+        node.onAttachToView()
         testNodes.forEach { node.attachChildView(it) }
-        assertEquals(someViewGroup1, n1.parentViewGroup)
-        assertEquals(someViewGroup2, n2.parentViewGroup)
-        assertEquals(someViewGroup3, n3.parentViewGroup)
+        assertEquals(someViewGroup1, TODO("n1.parentViewGroup"))
+        assertEquals(someViewGroup2, TODO("n2.parentViewGroup"))
+        assertEquals(someViewGroup3, TODO("n3.parentViewGroup"))
     }
 
     @Test
@@ -306,7 +273,7 @@ class NodeTest {
             buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         node.attachChildNode(child)
-        verify(childViewFactory, never()).invoke(parentViewGroup)
+        verify(childViewFactory, never()).invoke(parentView)
     }
 
     @Test
@@ -447,12 +414,14 @@ class NodeTest {
         assertEquals(Lifecycle.State.RESUMED, grandChild.lifecycleManager.externalLifecycle.currentState)
     }
 
+    @Ignore("This should be reworked to match new mechanism")
     @Test
     fun `attachChildView() implies attachToView() when Android view system is available`() {
         val child = mock<Node<*>>()
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
         node.attachChildView(child)
-        verify(child).attachToView(parentViewGroup)
+        verify(child).onAttachToView()
     }
 
     @Test
@@ -493,28 +462,29 @@ class NodeTest {
     }
 
     @Test
-    fun `attachToView() restores view state`() {
+    fun `onCreateView() restores view state`() {
         node.savedViewState = mock()
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
         verify(view.androidView).restoreHierarchyState(node.savedViewState)
     }
 
     @Test
-    fun `attachToView() invokes viewFactory`() {
-        node.attachToView(parentViewGroup)
-        verify(viewFactory).invoke(parentViewGroup)
+    fun `onCreateView() invokes viewFactory`() {
+        node.onCreateView(parentView)
+        verify(viewFactory).invoke(parentView)
     }
 
     @Test
-    fun `attachToView() = view lifecycle is in state CREATED`() {
-        node.attachToView(parentViewGroup)
+    fun `onCreateView() = view lifecycle is in state CREATED`() {
+        node.onCreateView(parentView)
         assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
     @Test
     fun `attachToView() + has view = sets view lifecycle to external lifecycle - when CREATED, view is in state CREATED`() {
         node.onStop()
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
         assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
@@ -522,7 +492,8 @@ class NodeTest {
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when STARTED, view is in state STARTED`() {
         node = createNode(viewFactory = viewFactory)
         node.onStart()
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
         assertEquals(Lifecycle.State.STARTED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
     }
 
@@ -530,17 +501,21 @@ class NodeTest {
     fun `attachToView() + has view =  sets view lifecycle to external lifecycle - when RESUMED, view is in state RESUMED`() {
         node = createNode(viewFactory = viewFactory)
         node.onResume()
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
         assertEquals(
             Lifecycle.State.RESUMED,
             node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
         )
     }
 
+    // FIXME rework
+    @Ignore("This should be tested on RibView impls, not here")
     @Test
     fun `When current Node has a view, attachToView() adds view to parentViewGroup`() {
-        node.attachToView(parentViewGroup)
-        verify(parentViewGroup).addView(view.androidView)
+        node.onCreateView(parentView)
+        node.onAttachToView()
+//        verify(parentView).addView(view.androidView)
     }
 
     @Test
@@ -560,21 +535,26 @@ class NodeTest {
         node = createNode(plugins = listOf(viewAware))
         node.onStart()
         node.onStop()
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
         verify(receiver).accept(Unit)
     }
 
+    // FIXME rework
+    @Ignore("This should be tested on RibView impls, not here")
     @Test
     fun `When current Node doesn't have a view, attachToView() does not add anything to parentViewGroup`() {
         node = createNode(viewFactory = null)
-        node.attachToView(parentViewGroup)
-        verify(parentViewGroup, never()).addView(anyOrNull())
+        node.onCreateView(parentView)
+        node.onAttachToView()
+//        verify(parentView, never()).addView(anyOrNull())
     }
 
     @Test
     fun `When current Node doesn't have a view, attachToView() does not notify Interactor of view creation`() {
         node = createNode(viewFactory = null)
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
         verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
     }
 
@@ -664,7 +644,7 @@ class NodeTest {
     @Test
     fun `When a child node has a root BuildContext, attachChildNode() invokes error handler`() {
         node = createNode(viewFactory = null)
-        node.attachToView(parentViewGroup)
+        node.onAttachToView()
 
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
@@ -678,7 +658,7 @@ class NodeTest {
     @Test
     fun `When a child node has a child BuildContext, attachChildNode() does not invoke any error`() {
         node = createNode(viewFactory = null)
-        node.attachToView(parentViewGroup)
+        node.onAttachToView()
 
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()

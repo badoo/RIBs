@@ -37,4 +37,14 @@
         android:gravity="center"
         android:text="Dialogs" />
 
+    <TextView
+        android:id="@+id/menu_compose"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="Compose" />
+
 </LinearLayout>

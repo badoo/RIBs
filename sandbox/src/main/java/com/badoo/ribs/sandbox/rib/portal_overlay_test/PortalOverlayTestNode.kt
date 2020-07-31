@@ -1,13 +1,13 @@
 package com.badoo.ribs.sandbox.rib.portal_overlay_test
 
-import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.view.RibView
 
 class PortalOverlayTestNode(
     buildParams: BuildParams<*>,
-    viewFactory: ((ViewGroup) -> PortalOverlayTestView?)?,
+    viewFactory: ((RibView) -> PortalOverlayTestView?)?,
     plugins: List<Plugin>
 ) : Node<PortalOverlayTestView>(
     buildParams = buildParams,

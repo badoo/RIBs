@@ -7,6 +7,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.big.BigView.Event
 import com.badoo.ribs.sandbox.rib.big.BigView.ViewModel
@@ -32,16 +33,17 @@ interface BigView : RibView,
 class BigViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : BigView,
+) : AndroidRibView(),
+    BigView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_big
     ) : BigView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> BigView = {
+        override fun invoke(deps: Nothing?): (RibView) -> BigView = {
             BigViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }
@@ -53,9 +55,9 @@ class BigViewImpl private constructor(
         idText.text = vm.text
     }
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup? =
+    override fun getParentViewForChild(child: Node<*>): ViewGroup =
         when (child) {
             is Small -> smallContainer
-            else -> null
+            else -> super.getParentViewForChild(child)
         }
 }

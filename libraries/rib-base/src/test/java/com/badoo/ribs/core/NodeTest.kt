@@ -121,8 +121,10 @@ class NodeTest {
             ),
             viewFactory = null
         )
-        allChildren = listOf(child1, child2, child3)
-        node.children.addAll(allChildren)
+
+        node.attachChildNode(child1)
+        node.attachChildNode(child2)
+        node.attachChildNode(child3)
     }
 
     private fun attachToViewAlongWithChildren() {
@@ -264,8 +266,11 @@ class NodeTest {
                 }
             )
         }
-        node.children.clear()
-        node.children.addAll(mocks)
+
+        mocks.forEach {
+            node.attachChildNode(it)
+        }
+
         return mocks
     }
 

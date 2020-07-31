@@ -70,6 +70,9 @@ open class Node<V : RibView>(
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
 
+    val tag: String =
+        this::class.java.name
+
     /**
      * This is the logical parent of the current [Node] (i.e. the one that created it).
      *
@@ -88,8 +91,10 @@ open class Node<V : RibView>(
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     val detachSignal = BehaviorRelay.create<Unit>()
 
-    val tag: String = this::class.java.name
-    val children = CopyOnWriteArrayList<Node<*>>()
+    private val _children: MutableList<Node<*>> = mutableListOf()
+    val children: List<Node<*>>
+        get() = _children
+
     private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
     val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
 
@@ -109,9 +114,6 @@ open class Node<V : RibView>(
 
     private var isPendingViewDetach: Boolean = false
     private var isPendingDetach: Boolean = false
-
-    fun getChildren(): List<Node<*>> =
-        children.toList()
 
     init {
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
@@ -218,7 +220,7 @@ open class Node<V : RibView>(
     @MainThread
     internal fun attachChildNode(child: Node<*>) {
         verifyNotRoot(child)
-        children.add(child)
+        _children.add(child)
         lifecycleManager.onAttachChild(child)
         child.onAttach()
         childrenAttachesRelay.accept(child)
@@ -266,7 +268,7 @@ open class Node<V : RibView>(
     @MainThread
     internal fun detachChildNode(child: Node<*>) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChild(child) }
-        children.remove(child)
+        _children.remove(child)
         child.onDetach()
     }
 

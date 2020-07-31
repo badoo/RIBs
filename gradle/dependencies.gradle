@@ -91,7 +91,6 @@ def external = [
     rxjava2: "io.reactivex.rxjava2:rxjava:2.2.6",
     rxrelay2: "com.jakewharton.rxrelay2:rxrelay:2.1.0",
     rxandroid2: "io.reactivex.rxjava2:rxandroid:2.1.1",
-    reactiveStreams: "org.reactivestreams:reactive-streams:1.0.0",
     roboelectricBase: "org.robolectric:robolectric:${versions.robolectric}",
     rxbinding: 'com.jakewharton.rxbinding2:rxbinding:2.2.0',
     leakcanaryDebug: 'com.squareup.leakcanary:leakcanary-android:1.6.3',

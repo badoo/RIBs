@@ -14,7 +14,7 @@ import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
-class PermissionRequesterImpl(
+class PermissionRequestBoundary(
     private val activity: AppCompatActivity,
     requestCodeRegistry: RequestCodeRegistry
 ) : RequestCodeBasedEventStreamImpl<RequestPermissionsEvent>(requestCodeRegistry),

@@ -20,11 +20,7 @@ abstract class Builder<P, T : Rib> {
     fun build(buildContext: BuildContext, payload: P): T {
         val buildParams = BuildParams(
             payload = payload,
-            buildContext = buildContext,
-            identifier = Rib.Identifier(
-                uuid = buildContext.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID
-                    ?: UUID.randomUUID()
-            )
+            buildContext = buildContext
         )
         return build(buildParams).also { rib ->
             rib.node.plugins<RibAware<T>>().forEach { plugin ->

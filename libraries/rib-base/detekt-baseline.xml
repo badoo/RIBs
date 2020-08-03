@@ -1,14 +1,114 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <Blacklist timestamp="1553003760756"></Blacklist>
-  <Whitelist timestamp="1553006439211">
-    <ID>LargeClass:Node.kt$Node&lt;V : RibView&gt;</ID>
-    <ID>LongMethod:BackStackManager.kt$BackStackManager.ActorImpl$override fun invoke(state: State&lt;C&gt;, action: Action&lt;C&gt;): Observable&lt;out Effect&lt;C&gt;&gt;</ID>
-    <ID>LongMethod:BackStackRibConnector.kt$BackStackRibConnector$fun goTo(backStackElement: BackStackElement&lt;C&gt;): BackStackElement&lt;C&gt;</ID>
-    <ID>LongMethod:PermissionRequesterImpl.kt$PermissionRequesterImpl$override fun onRequestPermissionsResult( requestCode: Int, permissions: Array&lt;out String&gt;, grantResults: IntArray )</ID>
-    <ID>LongMethod:PermissionRequesterImpl.kt$PermissionRequesterImpl$private fun onPermissionRequestFinished( id: Int, requestCode: Int, permissions: Array&lt;out String&gt;, grantResults: IntArray )</ID>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:ActivateAction.kt$ActivateAction${ }</ID>
+    <ID>EmptyFunctionBlock:AddAction.kt$AddAction${ }</ID>
+    <ID>EmptyFunctionBlock:NoOpDialogLauncher.kt$NoOpDialogLauncher${ }</ID>
+    <ID>EmptyFunctionBlock:RIBs.kt$RIBs.DefaultErrorHandler${}</ID>
+    <ID>EmptyFunctionBlock:RemoveAction.kt$RemoveAction${ }</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivitiesWithCollisionThatReturnsOkResultAndRestart_returnsOkResultCode()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivityThatReturnsCancelledResult_returnsCancelledResultCode()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivityThatReturnsIntentData_returnsIntentData()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivityThatReturnsOkResultAndRestart_returnsOkResultCode()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivityThatReturnsOkResult_returnsOkResultCode()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivityWhenWeHaveMultipleIdentifiers_returnsResultEventOnlyForOne()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startsTargetActivity()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivity_intentDataIsDeliveredToTargetActivity()</ID>
+    <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivity_startsTargetActivity()</ID>
+    <ID>FunctionNaming:BuildParams.kt$BuildParams.Companion$ fun Empty()</ID>
+    <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun multipleInitial_multiplePermanent()</ID>
+    <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun multipleInitial_noPermanent()</ID>
+    <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun noInitial_noPermanent()</ID>
+    <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun noInitial_singlePermanent()</ID>
+    <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun singleInitial_noPermanent()</ID>
+    <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun singleInitial_singlePermanent()</ID>
+    <ID>FunctionNaming:PushOneTest.kt$PushOneTest$@Test fun noPermanent_singleInitial_pushContent()</ID>
+    <ID>FunctionNaming:PushOneTest.kt$PushOneTest$@Test fun noPermanent_singleInitial_pushOverlay()</ID>
+    <ID>FunctionNaming:PushOneTest.kt$PushOneTest$@Test fun singlePermanent_singleInitial_pushContent()</ID>
+    <ID>FunctionNaming:PushOneTest.kt$PushOneTest$@Test fun singlePermanent_singleInitial_pushOverlay()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun multiplePermanent_singleInitial_pushContent_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun multiplePermanent_singleInitial_pushContent_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun noPermanent_singleInitial_pushContent_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun noPermanent_singleInitial_pushContent_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun noPermanent_singleInitial_pushOverlay_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOnePauseTest.kt$PushTwoPopOnePauseTest$@Test fun noPermanent_singleInitial_pushOverlay_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun multiplePermanent_singleInitial_pushContent_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun multiplePermanent_singleInitial_pushContent_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun noPermanent_singleInitial_pushContent_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun noPermanent_singleInitial_pushContent_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun noPermanent_singleInitial_pushOverlay_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneStopTest.kt$PushTwoPopOneStopTest$@Test fun noPermanent_singleInitial_pushOverlay_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun multiplePermanent_singleInitial_pushContent_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun multiplePermanent_singleInitial_pushContent_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun noPermanent_singleInitial_pushContent_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun noPermanent_singleInitial_pushContent_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun noPermanent_singleInitial_pushOverlay_pushContent_pop()</ID>
+    <ID>FunctionNaming:PushTwoPopOneTest.kt$PushTwoPopOneTest$@Test fun noPermanent_singleInitial_pushOverlay_pushOverlay_pop()</ID>
+    <ID>FunctionNaming:PushTwoTest.kt$PushTwoTest$@Test fun multiplePermanent_singleInitial_pushContent_pushContent()</ID>
+    <ID>FunctionNaming:PushTwoTest.kt$PushTwoTest$@Test fun multiplePermanent_singleInitial_pushContent_pushOverlay()</ID>
+    <ID>FunctionNaming:PushTwoTest.kt$PushTwoTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushOverlay()</ID>
+    <ID>FunctionNaming:PushTwoTest.kt$PushTwoTest$@Test fun noPermanent_singleInitial_pushContent_pushContent()</ID>
+    <ID>FunctionNaming:PushTwoTest.kt$PushTwoTest$@Test fun noPermanent_singleInitial_pushContent_pushOverlay()</ID>
+    <ID>FunctionNaming:PushTwoTest.kt$PushTwoTest$@Test fun noPermanent_singleInitial_pushOverlay_pushOverlay()</ID>
+    <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun multiplePermanent_singleInitial_pushContent_pushContent_restart()</ID>
+    <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun multiplePermanent_singleInitial_pushContent_pushOverlay_restart()</ID>
+    <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun multiplePermanent_singleInitial_pushOverlay_pushOverlay_restart()</ID>
+    <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun noPermanent_singleInitial_pushContent_pushContent_restart()</ID>
+    <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun noPermanent_singleInitial_pushContent_pushOverlay_restart()</ID>
+    <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun noPermanent_singleInitial_pushOverlay_pushOverlay_restart()</ID>
+    <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityDestroyed_lifecycleEventsAreDispatched()</ID>
+    <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityDestroyed_nodeIsDetached()</ID>
+    <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityDestroyed_viewIsDetached()</ID>
+    <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityResumed_lifecycleEventsAreDispatched()</ID>
+    <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityResumed_nodeIsAttached()</ID>
+    <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityResumed_viewIsAttached()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:BackStackFeature.kt$BackStackFeature$override fun subscribe(observer: Observer&lt;in RoutingHistory&lt;C&gt;&gt;)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:BuildContext.kt$BuildContext.Companion$ fun root( savedInstanceState: Bundle?, customisations: RibCustomisationDirectory = RibCustomisationDirectoryImpl(), rootPlugins: List&lt;Plugin&gt; = emptyList() )</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:BuildParams.kt$BuildParams.Companion$ fun Empty()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Empty.kt$Empty$override fun subscribe(observer: Observer&lt;in RoutingHistory&lt;C&gt;&gt;)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:EndValues.kt$EndValues$fun reverse()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:EndValues.kt$EndValues$val difference = to - from</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Node.kt$Node$val children = CopyOnWriteArrayList&lt;Node&lt;*&gt;&gt;()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Node.kt$Node$val detachSignal = BehaviorRelay.create&lt;Unit&gt;()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:OngoingTransition.kt$OngoingTransition$var descriptor = descriptor private set</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Pool.kt$Pool$override fun subscribe(observer: Observer&lt;in RoutingHistory&lt;C&gt;&gt;)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RibActivity.kt$RibActivity$override fun onRequestPermissionsResult(requestCode: Int, permissions: Array&lt;out String&gt;, grantResults: IntArray)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RoutingContext.kt$RoutingContext.Resolved$fun saveInstanceState()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RoutingContext.kt$RoutingContext.Resolved$override fun withActivationState(activationState: ActivationState)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RoutingContext.kt$RoutingContext.Unresolved$override fun withActivationState(activationState: ActivationState)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RoutingSource.kt$RoutingSource.Companion$fun &lt;C : Parcelable&gt; empty()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RoutingSource.kt$RoutingSource.Companion$fun &lt;C : Parcelable&gt; permanent(permanents: Iterable&lt;C&gt;)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RoutingSource.kt$RoutingSource.Companion$fun &lt;C : Parcelable&gt; permanent(vararg permanents: C)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Transition.kt$Transition.Companion$fun from(valueAnimator: ValueAnimator, reverseHolder: ReverseHolder = ReverseHolder())</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Transition.kt$Transition.Companion$fun multiple(vararg transitions: Collection&lt;Transition?&gt;)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:TransitionDescriptor.kt$TransitionDescriptor$fun isContinuationOf(other: TransitionDescriptor)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:TransitionDescriptor.kt$TransitionDescriptor$fun isReverseOf(other: TransitionDescriptor)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:TransitionDescriptor.kt$TransitionDescriptor.Companion$val None = TransitionDescriptor( null, null )</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:TransitionHandler.kt$TransitionHandler.Companion$fun &lt;C&gt; multiple(vararg transitionhandlers: TransitionHandler&lt;C&gt;)</ID>
+    <ID>LongMethod:ConfigurationFeatureTest.kt$ConfigurationFeatureTest$@Before fun setUp()</ID>
+    <ID>LongParameterList:ActivateAction.kt$ActivateAction$( private val emitter: EffectEmitter&lt;C&gt;, private val routing: Routing&lt;C&gt;, private var item: Resolved&lt;C&gt;, private val parentNode: Node&lt;*&gt;, private val activator: RoutingActivator&lt;C&gt;, private val addedOrRemoved: Boolean, private val globalActivationLevel: RoutingContext.ActivationState )</ID>
+    <ID>LongParameterList:DeactivateAction.kt$DeactivateAction$( private val emitter: EffectEmitter&lt;C&gt;, private val routing: Routing&lt;C&gt;, private var item: Resolved&lt;C&gt;, private val parentNode: Node&lt;*&gt;, private val activator: RoutingActivator&lt;C&gt;, private val addedOrRemoved: Boolean, private val targetActivationState: ActivationState = INACTIVE )</ID>
+    <ID>LongParameterList:OngoingTransition.kt$OngoingTransition$( descriptor: TransitionDescriptor, val direction: TransitionDirection, private val transitionPair: TransitionPair, private var actions: List&lt;ReversibleAction&lt;C&gt;&gt;, private val transitionElements: List&lt;TransitionElement&lt;C&gt;&gt;, private val emitter: EffectEmitter&lt;C&gt; )</ID>
+    <ID>LongParameterList:RoutingStatePool.kt$RoutingStatePool$( timeCapsule: TimeCapsule&lt;SavedState&lt;C&gt;&gt;, resolver: RoutingResolver&lt;C&gt;, activator: RoutingActivator&lt;C&gt;, parentNode: Node&lt;*&gt;, transitionHandler: TransitionHandler&lt;C&gt;? )</ID>
+    <ID>LongParameterList:Slider.kt$Slider$( private val gravity: Gravity = Gravity.LEFT, private val animationContainer: AnimationContainer = AnimationContainer.RootView, private val duration: Long = defaultDuration, private val interpolator: Interpolator = defaultInterpolator, private val condition: (TransitionElement&lt;out T&gt;) -&gt; Boolean = { true } )</ID>
+    <ID>LongParameterList:TabSwitcher.kt$TabSwitcher$( private val tabsOrder: List&lt;T&gt;, private val animationContainer: AnimationContainer = AnimationContainer.Parent, private val duration: Long = defaultDuration, private val interpolator: Interpolator = defaultInterpolator, private val condition: (TransitionElement&lt;out T&gt;) -&gt; Boolean = { true } )</ID>
+    <ID>LongParameterList:TransitionElement.kt$TransitionElement$( val configuration: C, val direction: TransitionDirection, val addedOrRemoved: Boolean, val identifier: Rib.Identifier, val view: View, val progressEvaluator: MultiProgressEvaluator = MultiProgressEvaluator() )</ID>
     <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$0x0000FFFF</ID>
     <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$4</ID>
-    <ID>MaxLineLength:BackStackManager.kt$BackStackManager.ActorImpl$private fun switchToNew(backStack: List&lt;BackStackElement&lt;C&gt;&gt;, newConfiguration: C, detachStrategy: BackStackRibConnector.DetachStrategy): Pair&lt;BackStackElement&lt;C&gt;?, BackStackElement&lt;C&gt;&gt;</ID>
-  </Whitelist>
+    <ID>MandatoryBracesIfStatements:Actor.kt$Actor$lookup</ID>
+    <ID>TopLevelPropertyNaming:Defaults.kt$internal const val defaultDuration: Long = 300</ID>
+    <ID>UnusedImports:FirstActivity.kt$import androidx.appcompat.app.AppCompatActivity</ID>
+    <ID>UnusedImports:NodePluginViewAwareTest.kt$import com.nhaarman.mockitokotlin2.mock</ID>
+    <ID>UnusedImports:NodeTest.kt$import com.nhaarman.mockitokotlin2.whenever</ID>
+    <ID>UnusedImports:Router.kt$import android.view.ViewGroup</ID>
+    <ID>VariableNaming:RouterTest.kt$RouterTest$private lateinit var childNodeC2_1: Node&lt;*&gt;</ID>
+    <ID>VariableNaming:RouterTest.kt$RouterTest$private lateinit var childNodeC2_2: Node&lt;*&gt;</ID>
+  </CurrentIssues>
 </SmellBaseline>

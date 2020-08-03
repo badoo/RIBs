@@ -23,9 +23,7 @@ class DialogExampleRouterTest {
                 buildParams = BuildParams.Empty(),
                 routingSource = Empty(),
                 dialogLauncher = mock(),
-                simpleDialog = mock(),
-                lazyDialog = mock(),
-                ribDialog = mock()
+                dialogs = mock()
             )
     }
 

@@ -15,7 +15,7 @@ class SwitcherBuilder(
     private val dependency: Switcher.Dependency
 ) : SimpleBuilder<SwitcherNode>() {
 
-    private val builders = SwitcherChildBuilders(dependency)
+    private val builders by lazy { SwitcherChildBuilders(dependency) }
     private val dialogToTestOverlay = DialogToTestOverlay()
     private val viewDependency: SwitcherView.Dependency =
         object : SwitcherView.Dependency {
@@ -42,7 +42,7 @@ class SwitcherBuilder(
     private fun backStack(buildParams: BuildParams<Nothing?>): BackStackFeature<Configuration> =
         BackStackFeature(
             buildParams = buildParams,
-            initialConfiguration = Content.Hello
+            initialConfiguration = Content.Foo
         )
 
     private fun interactor(

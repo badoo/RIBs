@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.menu.MenuView.Event
@@ -32,15 +33,16 @@ interface MenuView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
 class MenuViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : MenuView,
+) : AndroidRibView(),
+    MenuView,
     ObservableSource<Event> by events {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_menu
     ) : MenuView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+        override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
             MenuViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }
@@ -48,6 +50,7 @@ class MenuViewImpl private constructor(
     private var helloWorld: TextView = menuItem(R.id.menu_hello, MenuItem.HelloWorld)
     private var fooBar: TextView = menuItem(R.id.menu_foo, MenuItem.FooBar)
     private var dialogs: TextView = menuItem(R.id.menu_dialogs, MenuItem.Dialogs)
+    private var compose: TextView = menuItem(R.id.menu_compose, MenuItem.Compose)
 
     fun menuItem(id: Int, menuItem: MenuItem) : TextView =
         androidView.findViewById<TextView>(id).apply {
@@ -55,7 +58,7 @@ class MenuViewImpl private constructor(
         }
 
     override fun accept(vm: ViewModel) {
-        listOf(helloWorld, fooBar, dialogs).forEach {
+        listOf(helloWorld, fooBar, dialogs, compose).forEach {
             it.setTextColor(ContextCompat.getColor(androidView.context, R.color.material_grey_600))
         }
 
@@ -64,6 +67,7 @@ class MenuViewImpl private constructor(
                 MenuItem.HelloWorld -> helloWorld
                 MenuItem.FooBar -> fooBar
                 MenuItem.Dialogs -> dialogs
+                MenuItem.Compose -> compose
             }.apply {
                 setTextColor(ContextCompat.getColor(context, R.color.material_blue_grey_950))
             }

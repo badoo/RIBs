@@ -19,7 +19,8 @@ class SwitcherTransitionHandler(duration: Long): TransitionHandler.Multiple<Swit
             tabsOrder = listOf(
                 SwitcherRouter.Configuration.Content.Hello,
                 SwitcherRouter.Configuration.Content.Foo,
-                SwitcherRouter.Configuration.Content.DialogsExample
+                SwitcherRouter.Configuration.Content.DialogsExample,
+                SwitcherRouter.Configuration.Content.Compose
             )
         ),
 

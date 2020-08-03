@@ -5,8 +5,8 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.Portal
-import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration
-import com.badoo.ribs.sandbox.rib.small.SmallRouter.Configuration.FullScreen
+import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration
+import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration.FullScreen
 import com.badoo.ribs.sandbox.rib.small.SmallView.Event
 import com.badoo.ribs.sandbox.rib.small.SmallView.ViewModel
 import io.reactivex.functions.Consumer

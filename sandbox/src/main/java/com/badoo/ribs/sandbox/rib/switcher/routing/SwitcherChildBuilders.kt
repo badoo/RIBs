@@ -2,8 +2,10 @@ package com.badoo.ribs.sandbox.rib.switcher.routing
 
 import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.blocker.BlockerBuilder
+import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParent
+import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentBuilder
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
-import com.badoo.ribs.sandbox.rib.dialog_example.builder.DialogExampleBuilder
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleBuilder
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarBuilder
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
@@ -20,8 +22,12 @@ internal open class SwitcherChildBuilders(
     val menu = MenuBuilder(subtreeDeps)
     val helloWorld = HelloWorldBuilder(subtreeDeps)
     val fooBar = FooBarBuilder(subtreeDeps)
-    val dialogExample = DialogExampleBuilder(subtreeDeps)
+    val dialogExample =
+        DialogExampleBuilder(
+            subtreeDeps
+        )
     val blocker = BlockerBuilder(subtreeDeps)
+    val composeParent = ComposeParentBuilder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: Switcher.Dependency
@@ -30,10 +36,8 @@ internal open class SwitcherChildBuilders(
         HelloWorld.Dependency,
         FooBar.Dependency,
         DialogExample.Dependency,
-        Blocker.Dependency {
+        Blocker.Dependency,
+        ComposeParent.Dependency {
 
     }
 }
-
-
-

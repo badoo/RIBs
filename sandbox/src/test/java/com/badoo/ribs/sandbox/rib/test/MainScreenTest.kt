@@ -10,6 +10,7 @@ import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
@@ -55,35 +56,35 @@ class MainScreenTest {
         .apply {
         put(Menu.Customisation::class, mock {
             on { viewFactory } doReturn object : MenuView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+                override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
                     menuView
                 }
             }
         })
         put(Switcher.Customisation::class, mock {
             on { viewFactory } doReturn object : SwitcherView.Factory {
-                override fun invoke(deps: SwitcherView.Dependency): (ViewGroup) -> SwitcherView = {
+                override fun invoke(deps: SwitcherView.Dependency): (RibView) -> SwitcherView = {
                     switcherView
                 }
             }
         })
         put(DialogExample.Customisation::class, mock {
             on { viewFactory } doReturn object : DialogExampleView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> DialogExampleView = {
+                override fun invoke(deps: Nothing?): (RibView) -> DialogExampleView = {
                     dialogExampleView
                 }
             }
         })
         put(FooBar.Customisation::class, mock {
             on { viewFactory } doReturn object : FooBarView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> FooBarView = {
+                override fun invoke(deps: Nothing?): (RibView) -> FooBarView = {
                     fooBarView
                 }
             }
         })
         put(HelloWorld.Customisation::class, mock {
             on { viewFactory } doReturn object : HelloWorldView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> HelloWorldView = {
+                override fun invoke(deps: Nothing?): (RibView) -> HelloWorldView = {
                     helloWorldView
                 }
             }
@@ -94,7 +95,8 @@ class MainScreenTest {
     @Before
     fun setUp() {
         rootRib.node.onAttach()
-        rootRib.node.attachToView(mock())
+        rootRib.node.onCreateView(mock())
+        rootRib.node.onAttachToView()
         rootRib.node.onStart()
         rootRib.node.onResume()
 

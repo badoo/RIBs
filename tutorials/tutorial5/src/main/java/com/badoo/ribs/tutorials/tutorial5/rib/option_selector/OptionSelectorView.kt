@@ -13,6 +13,7 @@ import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.ViewModel
 import com.badoo.ribs.android.text.Text
+import com.badoo.ribs.core.view.AndroidRibView
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -35,16 +36,17 @@ interface OptionSelectorView : RibView,
 class OptionSelectorViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : OptionSelectorView,
+) : AndroidRibView(),
+    OptionSelectorView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_option_selector
     ) : OptionSelectorView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> OptionSelectorView = {
+        override fun invoke(deps: Nothing?): (RibView) -> OptionSelectorView = {
             OptionSelectorViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

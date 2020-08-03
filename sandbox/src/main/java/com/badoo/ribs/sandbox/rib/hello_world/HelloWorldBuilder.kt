@@ -2,14 +2,15 @@ package com.badoo.ribs.sandbox.rib.hello_world
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature
-import com.badoo.ribs.sandbox.rib.small.Small
-import com.badoo.ribs.sandbox.rib.small.builder.SmallBuilder
+import com.badoo.ribs.sandbox.rib.hello_world.routing.HelloWorldChildBuilders
+import com.badoo.ribs.sandbox.rib.hello_world.routing.HelloWorldRouter
 
 class HelloWorldBuilder(
     private val dependency: HelloWorld.Dependency
 ) : SimpleBuilder<HelloWorld>() {
+
+    private val builders by lazy { HelloWorldChildBuilders(dependency) }
 
     override fun build(buildParams: BuildParams<Nothing?>): HelloWorld {
         val customisation = buildParams.getOrDefault(HelloWorld.Customisation())
@@ -20,9 +21,8 @@ class HelloWorldBuilder(
             activityStarter = dependency.activityStarter()
         )
         val router = HelloWorldRouter(
-            buildParams,
-            interactor,
-            smallBuilder()
+            buildParams = buildParams,
+            builders = builders
         )
 
         return HelloWorldNode(
@@ -34,10 +34,4 @@ class HelloWorldBuilder(
             )
         )
     }
-
-    private fun smallBuilder(): SmallBuilder =
-        SmallBuilder(
-            object : Small.Dependency,
-                CanProvidePortal by dependency { }
-        )
 }

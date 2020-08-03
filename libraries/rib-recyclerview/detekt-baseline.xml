@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongParameterList:Adapter.kt$Adapter$( private val hostingStrategy: RecyclerViewHost.HostingStrategy, initialEntries: List&lt;Entry&lt;T&gt;&gt;? = null, private val routingSource: Pool&lt;T&gt;, private val feature: RecyclerViewHostFeature&lt;T&gt;, private val viewHolderLayoutParams: FrameLayout.LayoutParams )</ID>
+    <ID>LongParameterList:RecyclerViewHostNode.kt$RecyclerViewHostNode$( buildParams: BuildParams&lt;Nothing?&gt;, plugins: List&lt;Plugin&gt;, private val viewDeps: RecyclerViewHostView.Dependency, private val timeCapsule: AndroidTimeCapsule, private val adapter: Adapter&lt;T&gt;, private val connector: NodeConnector&lt;Input&lt;T&gt;, Nothing&gt; = NodeConnector() )</ID>
+    <ID>UnusedImports:RecyclerViewHostView.kt$import android.view.ViewGroup</ID>
+  </CurrentIssues>
+</SmellBaseline>

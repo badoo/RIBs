@@ -1,13 +1,13 @@
 package com.badoo.ribs.sandbox.rib.big
 
-import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.view.RibView
 
 class BigNode(
     buildParams: BuildParams<*>,
-    viewFactory: ((ViewGroup) -> BigView?)?,
+    viewFactory: ((RibView) -> BigView?)?,
     plugins: List<Plugin>
 ) : Node<BigView>(
     buildParams = buildParams,

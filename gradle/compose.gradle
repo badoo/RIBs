@@ -1,0 +1,9 @@
+def props = new Properties()
+def propsFile = file("local.properties")
+def useCompose
+if (propsFile.exists()) {
+    propsFile.withInputStream { props.load(it) }
+    useCompose = props.getProperty("useCompose")
+}
+
+ext.useCompose = useCompose

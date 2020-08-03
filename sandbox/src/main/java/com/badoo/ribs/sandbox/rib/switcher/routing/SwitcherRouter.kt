@@ -44,6 +44,7 @@ class SwitcherRouter internal constructor(
             @Parcelize object Hello : Content()
             @Parcelize object Foo : Content()
             @Parcelize object DialogsExample : Content()
+            @Parcelize object Compose : Content()
             @Parcelize object Blocker : Content()
         }
         sealed class Overlay : Configuration() {
@@ -68,6 +69,10 @@ class SwitcherRouter internal constructor(
                 is Content.DialogsExample -> composite(
                     attach {  dialogExample.build(it) },
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
+                )
+                is Content.Compose -> composite(
+                    attach { composeParent.build(it) },
+                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.Compose)) }
                 )
                 is Content.Blocker -> attach { blocker.build(it) }
                 is Overlay.Dialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogToTestOverlay)

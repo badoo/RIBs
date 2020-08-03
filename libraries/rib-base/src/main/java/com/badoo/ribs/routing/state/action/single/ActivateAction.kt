@@ -77,7 +77,6 @@ internal class ActivateAction<C : Parcelable>(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.ENTER,
                     addedOrRemoved = addedOrRemoved,
-                    parentViewGroup = parentNode.targetViewGroupForChild(it),
                     identifier = it.identifier,
                     view = ribView.androidView
                 )

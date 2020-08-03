@@ -8,11 +8,9 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
-import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.app.OtherActivity
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.sandbox.rib.hello_world.analytics.HelloWorldAnalytics
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature
@@ -26,9 +24,8 @@ class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>,
     private val feature: HelloWorldFeature,
     private val activityStarter: ActivityStarter
-) : BackStackInteractor<HelloWorld, HelloWorldView, Configuration>(
-    buildParams = buildParams,
-    initialConfiguration = Content.Default
+) : Interactor<HelloWorld, HelloWorldView>(
+    buildParams = buildParams
 ) {
 
     companion object {

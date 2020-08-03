@@ -20,8 +20,6 @@ import com.badoo.ribs.routing.source.backstack.operation.Remove
 import com.badoo.ribs.routing.source.backstack.operation.canPop
 import com.badoo.ribs.routing.source.backstack.operation.canPopOverlay
 import com.badoo.ribs.routing.source.backstack.operation.pop
-import io.reactivex.Observable.empty
-import io.reactivex.Observable.just
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.functions.Consumer
@@ -41,7 +39,7 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
  * @see BackStackFeature.Operation for supported operations
  * @see BackStackFeature.initializeBackstack for operations emitted during initialisation
  * @see BackStackFeature.accept for logic deciding whether an operation should be carried out
- * @see BackStackFeature.reduceEvent for the implementation of applying state changes
+ * @see BackStackFeature.apply for the implementation of applying state changes
  */
 class BackStackFeature<C : Parcelable> internal constructor(
     private val initialConfiguration: C,
@@ -88,9 +86,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         if(state.backStack.isEmpty()) {
             emit(
                 state.apply(
-                    NewRoot(
-                        initialConfiguration
-                    )
+                    NewRoot(initialConfiguration)
                 )
             )
         }
@@ -168,8 +164,8 @@ class BackStackFeature<C : Parcelable> internal constructor(
     }
 
     /**
-     * Checks if the required operations are to be executed based on the current [State].
-     * Emits corresponding [Effect]s if the answer is yes.
+     * Checks if the required operations are to be executed based on the current [BackStackFeatureState].
+     * Emits corresponding [BackStackFeatureState]s if the answer is yes.
      */
     override fun accept(operation: Operation<C>) {
         if (operation.backStackOperation.isApplicable(state.backStack)) {
@@ -179,8 +175,9 @@ class BackStackFeature<C : Parcelable> internal constructor(
         }
     }
 
-    override fun subscribe(observer: Observer<in RoutingHistory<C>>) =
+    override fun subscribe(observer: Observer<in RoutingHistory<C>>) {
         wrap().subscribe(observer)
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

@@ -1,12 +1,12 @@
 package com.badoo.ribs.core.state
 
 abstract class Store<State>(
-    initialState: State,
-    private val relay: Relay<State> = Relay()
-) : Source<State> by relay, Cancellable {
+    initialState: State
+) : Source<State>, Cancellable {
     private var isCancelled = false
     var state: State = initialState
         private set
+    private val relay: Relay<State> = Relay()
 
     protected fun emit(value: State) {
         if (isCancelled) return
@@ -17,6 +17,11 @@ abstract class Store<State>(
 
     override fun cancel() {
         isCancelled = true
+    }
+
+    override fun observe(callback: (State) -> Unit): Cancellable {
+        callback(state)
+        return relay.observe(callback)
     }
 }
 

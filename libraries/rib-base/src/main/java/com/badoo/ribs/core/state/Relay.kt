@@ -6,7 +6,7 @@ interface Source<out T> {
     fun observe(callback: (T) -> Unit): Cancellable
 }
 
-interface Emittable<in T> {
+interface Emitter<in T> {
     fun emit(value: T)
 }
 
@@ -23,7 +23,7 @@ interface Cancellable {
     }
 }
 
-class Relay<T> : Source<T>, Emittable<T> {
+class Relay<T> : Source<T>, Emitter<T> {
     private val listeners: MutableList<(T) -> Unit> = mutableListOf()
 
     override fun emit(value: T) {

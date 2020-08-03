@@ -34,7 +34,6 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * The main structure element of the system.

@@ -4,7 +4,6 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.RibAware
-import java.util.UUID
 
 /**
  * Responsible for building a [Rib]. Dependencies available compile-time should be provided via the

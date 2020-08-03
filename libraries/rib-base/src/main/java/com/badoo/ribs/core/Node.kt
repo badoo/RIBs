@@ -118,10 +118,6 @@ open class Node<V : RibView>(
     private val isActive: Boolean
         get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
 
-
-    fun getChildren(): List<Node<*>> =
-        children.toList()
-
     init {
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }

@@ -2,11 +2,11 @@ package com.badoo.ribs.routing.state
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.Routing.Identifier
 import com.badoo.ribs.routing.action.RoutingAction
@@ -61,8 +61,8 @@ class ConfigurationFeatureTest {
         @Parcelize object ContentExternal2 : Configuration()
     }
 
-    private lateinit var emptyTimeCapsule: TimeCapsule<SavedState<Configuration>>
-    private lateinit var restoredTimeCapsule: TimeCapsule<SavedState<Configuration>>
+    private lateinit var emptyTimeCapsule: TimeCapsule
+    private lateinit var restoredTimeCapsule: TimeCapsule
     private lateinit var poolInTimeCapsule: Map<Routing<Configuration>, Unresolved<Configuration>>
 
     private lateinit var feature: RoutingStatePool<Configuration>
@@ -215,7 +215,7 @@ class ConfigurationFeatureTest {
 
     private val routingActivator: RoutingActivator<Configuration> = mock()
 
-    private fun createFeature(timeCapsule: TimeCapsule<SavedState<Configuration>>): RoutingStatePool<Configuration> {
+    private fun createFeature(timeCapsule: TimeCapsule): RoutingStatePool<Configuration> {
         return RoutingStatePool(
             timeCapsule = timeCapsule,
             resolver = resolver,

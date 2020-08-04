@@ -3,7 +3,6 @@ package com.badoo.ribs.routing.router
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.NodeAware
@@ -11,6 +10,7 @@ import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
@@ -38,7 +38,7 @@ abstract class Router<C : Parcelable>(
     SubtreeBackPressHandler by routingSource {
 
     private val disposables = CompositeDisposable()
-    private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
+    private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
 
     private lateinit var routingStatePool: RoutingStatePool<C>

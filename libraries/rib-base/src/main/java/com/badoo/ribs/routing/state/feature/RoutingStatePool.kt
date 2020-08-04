@@ -1,10 +1,10 @@
 package com.badoo.ribs.routing.state.feature
 
 import android.os.Parcelable
-import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.annotation.OutdatedDocumentation
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.state.AsyncStore
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.core.state.wrap
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
@@ -26,7 +26,7 @@ import io.reactivex.Observer
 import io.reactivex.functions.Consumer
 
 private val timeCapsuleKey = RoutingStatePool::class.java.name
-private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
+private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
     (get<SavedState<C>>(timeCapsuleKey)
         ?.let { it.toWorkingState() }
         ?: WorkingState())
@@ -49,7 +49,7 @@ private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingS
  */
 @OutdatedDocumentation
 internal class RoutingStatePool<C : Parcelable>(
-    timeCapsule: TimeCapsule<SavedState<C>>,
+    timeCapsule: TimeCapsule,
     resolver: RoutingResolver<C>,
     activator: RoutingActivator<C>,
     parentNode: Node<*>,

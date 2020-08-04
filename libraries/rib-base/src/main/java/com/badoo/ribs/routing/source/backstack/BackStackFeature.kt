@@ -2,10 +2,9 @@ package com.badoo.ribs.routing.source.backstack
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.state.Store
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.core.state.wrap
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
@@ -25,7 +24,7 @@ import io.reactivex.Observer
 import io.reactivex.functions.Consumer
 
 private val timeCapsuleKey = BackStackFeature::class.java.name
-private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(): BackStackFeatureState<C> =
+private fun <C : Parcelable> TimeCapsule.initialState(): BackStackFeatureState<C> =
     (get(timeCapsuleKey) ?: BackStackFeatureState())
 
 /**
@@ -34,7 +33,7 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
  * It will maintain a [RoutingHistory] such the last, and only the last [RoutingHistoryElement] is
  * set to active [RoutingHistoryElement.Activation.ACTIVE].
  *
- * Elements are persisted to Bundle (see [AndroidTimeCapsule]) and restored automatically.
+ * Elements are persisted to Bundle (see [TimeCapsule]) and restored automatically.
  *
  * @see BackStackFeature.Operation for supported operations
  * @see BackStackFeature.initializeBackstack for operations emitted during initialisation
@@ -43,7 +42,7 @@ private fun <C : Parcelable> TimeCapsule<BackStackFeatureState<C>>.initialState(
  */
 class BackStackFeature<C : Parcelable> internal constructor(
     private val initialConfiguration: C,
-    private val timeCapsule: AndroidTimeCapsule
+    private val timeCapsule: TimeCapsule
 ) : Store<BackStackFeatureState<C>>(timeCapsule.initialState()),
     Consumer<Operation<C>>,
     RoutingSource<C> {
@@ -68,7 +67,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         buildParams: BuildParams<*>
     ) : this(
         initialConfiguration,
-        AndroidTimeCapsule(buildParams.savedInstanceState)
+        TimeCapsule(buildParams.savedInstanceState)
     )
 
     init {

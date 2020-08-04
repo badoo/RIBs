@@ -1,15 +1,25 @@
 package com.badoo.ribs.core.state
 
-abstract class Store<State>(
+internal abstract class Store<State>(
     initialState: State
 ) : Source<State>, Cancellable {
+    private val initThread = Thread.currentThread()
+
     private var isCancelled = false
     var state: State = initialState
         private set
+
     private val relay: Relay<State> = Relay()
 
     protected fun emit(value: State) {
         if (isCancelled) return
+
+        if (initThread != Thread.currentThread()) {
+            throw SameThreadVerificationException(
+                "Emit should be called on the same thread on which store is initialized. " +
+                    "Current: ${Thread.currentThread().name}, initial: ${initThread.name}."
+            )
+        }
 
         this.state = value
         relay.emit(value)
@@ -25,7 +35,7 @@ abstract class Store<State>(
     }
 }
 
-abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(initialState) {
+internal abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(initialState) {
     private val eventRelay = Relay<Event>()
     private val cancellable = eventRelay.observe {
         emit(reduceEvent(it, state))
@@ -42,3 +52,5 @@ abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(init
         cancellable.cancel()
     }
 }
+
+class SameThreadVerificationException(message: String) : IllegalStateException(message)

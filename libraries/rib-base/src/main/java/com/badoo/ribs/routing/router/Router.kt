@@ -2,10 +2,8 @@ package com.badoo.ribs.routing.router
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.NodeAware
@@ -38,7 +36,6 @@ abstract class Router<C : Parcelable>(
     SavesInstanceState,
     SubtreeBackPressHandler by routingSource {
 
-    private val binder = Binder()
     private val disposables = CompositeDisposable()
     private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
@@ -72,7 +69,9 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
-        binder.bind(routingSource.changes(hasSavedState) to routingStatePool)
+        disposables.add(
+            routingSource.changes(hasSavedState).subscribe(routingStatePool)
+        )
     }
 
     override fun onAttachToView() {
@@ -85,7 +84,6 @@ abstract class Router<C : Parcelable>(
 
     override fun onDetach() {
         // TODO consider extending Disposables plugin
-        binder.dispose()
-        routingStatePool.dispose()
+        disposables.dispose()
     }
 }

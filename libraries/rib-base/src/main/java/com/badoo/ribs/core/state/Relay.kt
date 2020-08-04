@@ -2,15 +2,15 @@ package com.badoo.ribs.core.state
 
 import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
 
-interface Source<out T> {
+internal interface Source<out T> {
     fun observe(callback: (T) -> Unit): Cancellable
 }
 
-interface Emitter<in T> {
+internal interface Emitter<in T> {
     fun emit(value: T)
 }
 
-interface Cancellable {
+internal interface Cancellable {
     fun cancel()
 
     companion object {
@@ -23,7 +23,7 @@ interface Cancellable {
     }
 }
 
-class Relay<T> : Source<T>, Emitter<T> {
+internal class Relay<T> : Source<T>, Emitter<T> {
     private val listeners: MutableList<(T) -> Unit> = mutableListOf()
 
     override fun emit(value: T) {

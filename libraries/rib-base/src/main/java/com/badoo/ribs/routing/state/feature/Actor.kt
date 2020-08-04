@@ -31,7 +31,7 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 /**
  * Executes side-effects of state update.
  */
-@SuppressWarnings("LargeClass") // TODO extract
+@SuppressWarnings("LargeClass", "LongParameterList") // TODO extract
 internal class Actor<C : Parcelable>(
     private val resolver: RoutingResolver<C>,
     private val activator: RoutingActivator<C>,

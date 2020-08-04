@@ -31,7 +31,6 @@ internal class SaveInstanceStateAction<C : Parcelable> : PoolAction<C> {
                 (value as Resolved<C>).saveInstanceState()
             }
 
-        params.emitter.onNext(Effect.Global.SaveInstanceState(updatedElements = updatedElements))
-        params.emitter.onComplete()
+        params.emitter.invoke(Effect.Global.SaveInstanceState(updatedElements = updatedElements))
     }
 }

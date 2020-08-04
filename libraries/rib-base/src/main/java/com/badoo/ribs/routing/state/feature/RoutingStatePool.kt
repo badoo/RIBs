@@ -1,28 +1,29 @@
 package com.badoo.ribs.routing.state.feature
 
 import android.os.Parcelable
-import com.badoo.mvicore.element.Bootstrapper
-import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.element.TimeCapsule
-import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.annotation.OutdatedDocumentation
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.state.AsyncStore
+import com.badoo.ribs.core.state.wrap
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
-import com.badoo.ribs.routing.state.changeset.RoutingCommand
-import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
+import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
-import com.badoo.ribs.routing.resolver.RoutingResolver
+import com.badoo.ribs.routing.state.changeset.RoutingCommand
+import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
+import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect
-import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.state.feature.state.SavedState
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
-import io.reactivex.Observable
+import io.reactivex.ObservableSource
+import io.reactivex.Observer
+import io.reactivex.functions.Consumer
 
 private val timeCapsuleKey = RoutingStatePool::class.java.name
 private fun <C : Parcelable> TimeCapsule<SavedState<C>>.initialState(): WorkingState<C> =
@@ -53,31 +54,33 @@ internal class RoutingStatePool<C : Parcelable>(
     activator: RoutingActivator<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
-) : ActorReducerFeature<Transaction<C>, Effect<C>, WorkingState<C>, Nothing>(
-    initialState = timeCapsule.initialState<C>(),
-    bootstrapper = BootStrapperImpl(timeCapsule.initialState<C>()),
-    actor = Actor(
+) : AsyncStore<Effect<C>, WorkingState<C>>(initialState = timeCapsule.initialState<C>()),
+    Consumer<Transaction<C>>,
+    ObservableSource<WorkingState<C>> {
+
+    private val actor = Actor(
         resolver = resolver,
         activator = activator,
         parentNode = parentNode,
-        transitionHandler = transitionHandler
-    ),
-    reducer = ReducerImpl()
-) {
+        transitionHandler = transitionHandler,
+        effectEmitter = ::emitEvent
+    )
+
     init {
+        initialize()
         timeCapsule.register(timeCapsuleKey) { state.toSavedState() }
     }
 
     sealed class Effect<C : Parcelable> {
-        sealed class Global<C : Parcelable>: Effect<C>() {
-            class WakeUp<C : Parcelable>: Global<C>()
-            class Sleep<C : Parcelable>: Global<C>()
+        sealed class Global<C : Parcelable> : Effect<C>() {
+            class WakeUp<C : Parcelable> : Global<C>()
+            class Sleep<C : Parcelable> : Global<C>()
             class SaveInstanceState<C : Parcelable>(
                 val updatedElements: Map<Routing<C>, Resolved<C>>
-            ): Global<C>()
+            ) : Global<C>()
         }
 
-        sealed class Individual<C : Parcelable>: Effect<C>() {
+        sealed class Individual<C : Parcelable> : Effect<C>() {
             abstract val key: Routing<C>
 
             class Added<C : Parcelable>(
@@ -126,86 +129,81 @@ internal class RoutingStatePool<C : Parcelable>(
         ) : Effect<C>()
     }
 
-    class BootStrapperImpl<C : Parcelable>(
-        private val initialState: WorkingState<C>
-    ) : Bootstrapper<Transaction<C>> {
-
-        override fun invoke(): Observable<Transaction<C>> =
-            when {
-                initialState.pool.isNotEmpty() -> Observable.just(
-                    Transaction.RoutingChange(
-                        descriptor = TransitionDescriptor.None,
-                        changeset = initialState.pool
-                            .filter { it.value.activationState == SLEEPING }
-                            .map { Add(it.key) }
-                    )
+    private fun initialize() {
+        if (state.pool.isNotEmpty()) {
+            accept(
+                Transaction.RoutingChange(
+                    descriptor = TransitionDescriptor.None,
+                    changeset = state.pool
+                        .filter { it.value.activationState == SLEEPING }
+                        .map { Add(it.key) }
                 )
-                else -> Observable.empty()
-            }
-    }
-
-    /**
-     * Creates a new [WorkingState] based on the old one, plus the applied [Effect].
-     *
-     * Involves changing [WorkingState.activationLevel] in case of [Effect.Global],
-     * and replacing elements of the [WorkingState.pool] changed by actions in [ActorImpl].
-     */
-    class ReducerImpl<C : Parcelable> : Reducer<WorkingState<C>, Effect<C>> {
-        override fun invoke(state: WorkingState<C>, effect: Effect<C>): WorkingState<C> =
-            when (effect) {
-                is Effect.Global -> state.global(effect)
-                is Effect.Individual -> state.individual(effect)
-                is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
-                is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
-            }
-
-        private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =
-            when (effect) {
-                is Effect.Global.Sleep -> copy(
-                    activationLevel = SLEEPING
-                )
-                is Effect.Global.WakeUp -> copy(
-                    activationLevel = ACTIVE
-                )
-                is Effect.Global.SaveInstanceState -> copy(
-                    pool = pool + effect.updatedElements
-                )
-            }
-
-        private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
-            val key = effect.key
-
-            return when (effect) {
-                is Effect.Individual.Added -> copy(
-                    pool = pool.plus(key to effect.updatedElement)
-                )
-                is Effect.Individual.Removed -> copy(
-                    pool = pool.minus(key)
-                )
-                is Effect.Individual.Activated -> copy(
-                    pool = pool.minus(key).plus(key to effect.updatedElement)
-                )
-                is Effect.Individual.Deactivated -> copy(
-                    pool = pool.minus(key).plus(key to effect.updatedElement)
-                )
-                is Effect.Individual.PendingDeactivateTrue -> copy(
-                    pendingDeactivate = pendingDeactivate + effect.key
-                )
-                is Effect.Individual.PendingDeactivateFalse -> copy(
-                    pendingDeactivate = pendingDeactivate - effect.key
-                )
-                is Effect.Individual.PendingRemovalTrue -> copy(
-                    pendingRemoval = pendingRemoval + effect.key
-                )
-                is Effect.Individual.PendingRemovalFalse -> copy(
-                    pendingRemoval = pendingRemoval - effect.key
-                )
-            }
+            )
         }
     }
 
-    override fun dispose() {
-        super.dispose()
+    override fun accept(transaction: Transaction<C>) {
+        actor.invoke(state, transaction)
+    }
+
+    override fun reduceEvent(effect: Effect<C>, state: WorkingState<C>): WorkingState<C> =
+        when (effect) {
+            is Effect.Global -> state.global(effect)
+            is Effect.Individual -> state.individual(effect)
+            is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
+            is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
+        }
+
+    private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =
+        when (effect) {
+            is Effect.Global.Sleep -> copy(
+                activationLevel = SLEEPING
+            )
+            is Effect.Global.WakeUp -> copy(
+                activationLevel = ACTIVE
+            )
+            is Effect.Global.SaveInstanceState -> copy(
+                pool = pool + effect.updatedElements
+            )
+        }
+
+    private fun WorkingState<C>.individual(effect: Effect.Individual<C>): WorkingState<C> {
+        val key = effect.key
+
+        return when (effect) {
+            is Effect.Individual.Added -> copy(
+                pool = pool.plus(key to effect.updatedElement)
+            )
+            is Effect.Individual.Removed -> copy(
+                pool = pool.minus(key)
+            )
+            is Effect.Individual.Activated -> copy(
+                pool = pool.minus(key).plus(key to effect.updatedElement)
+            )
+            is Effect.Individual.Deactivated -> copy(
+                pool = pool.minus(key).plus(key to effect.updatedElement)
+            )
+            is Effect.Individual.PendingDeactivateTrue -> copy(
+                pendingDeactivate = pendingDeactivate + effect.key
+            )
+            is Effect.Individual.PendingDeactivateFalse -> copy(
+                pendingDeactivate = pendingDeactivate - effect.key
+            )
+            is Effect.Individual.PendingRemovalTrue -> copy(
+                pendingRemoval = pendingRemoval + effect.key
+            )
+            is Effect.Individual.PendingRemovalFalse -> copy(
+                pendingRemoval = pendingRemoval - effect.key
+            )
+        }
+    }
+
+    override fun subscribe(observer: Observer<in WorkingState<C>>) {
+        wrap().subscribe(observer)
+    }
+
+    override fun cancel() {
+        super.cancel()
         state.ongoingTransitions.forEach {
             it.dispose()
         }

@@ -2,16 +2,16 @@ package com.badoo.ribs.routing.state.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
+import com.badoo.ribs.routing.state.feature.EffectEmitter
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.Deactivated
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingDeactivateTrue
-import com.badoo.ribs.routing.state.feature.EffectEmitter
-import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 
@@ -68,14 +68,14 @@ internal class DeactivateAction<C : Parcelable>(
         if (canExecute || forceExecute) {
             item.routingAction.cleanup()
             activator.onTransitionDeactivate(routing, item.nodes)
-            emitter.onNext(PendingDeactivateTrue(routing))
+            emitter.invoke(PendingDeactivateTrue(routing))
         }
     }
 
     override fun onFinish(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             activator.deactivate(routing, item.nodes)
-            emitter.onNext(Deactivated(routing, item.copy(activationState = targetActivationState)))
+            emitter.invoke(Deactivated(routing, item.copy(activationState = targetActivationState)))
         }
     }
 }

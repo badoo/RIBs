@@ -2,13 +2,13 @@ package com.badoo.ribs.routing.state.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
+import com.badoo.ribs.routing.state.feature.EffectEmitter
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingRemovalTrue
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.Removed
-import com.badoo.ribs.routing.state.feature.EffectEmitter
-import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.transition.TransitionElement
 
 /**
@@ -42,11 +42,11 @@ internal class RemoveAction<C : Parcelable>(
 
     override fun onTransition(forceExecute: Boolean) {
         activator.onTransitionRemove(routing, item.nodes)
-        emitter.onNext(PendingRemovalTrue(routing))
+        emitter.invoke(PendingRemovalTrue(routing))
     }
 
     override fun onFinish(forceExecute: Boolean) {
         activator.remove(routing, item.nodes)
-        emitter.onNext(Removed(routing, item))
+        emitter.invoke(Removed(routing, item))
     }
 }

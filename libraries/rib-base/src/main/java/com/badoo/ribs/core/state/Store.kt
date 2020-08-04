@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.state
 
-internal abstract class Store<State>(
+abstract class Store<State>(
     initialState: State
 ) : Source<State>, Cancellable {
     private val initThread = Thread.currentThread()
@@ -41,7 +41,7 @@ internal abstract class Store<State>(
     }
 }
 
-internal abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(initialState) {
+abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(initialState) {
     private val eventRelay = Relay<Event>()
     private val cancellable = eventRelay.observe {
         emit(reduceEvent(it, state))

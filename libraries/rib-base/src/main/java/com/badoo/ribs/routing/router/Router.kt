@@ -23,6 +23,7 @@ import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposables
 
 abstract class Router<C : Parcelable>(
     buildParams: BuildParams<*>,
@@ -59,7 +60,7 @@ abstract class Router<C : Parcelable>(
             transitionHandler = transitionHandler
         )
 
-        disposables.add(routingStatePool)
+        disposables.add(Disposables.fromAction { routingStatePool.cancel() })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -2,15 +2,15 @@ package com.badoo.ribs.core.state
 
 import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
 
-internal interface Source<out T> {
+interface Source<out T> {
     fun observe(callback: (T) -> Unit): Cancellable
 }
 
-internal interface Emitter<in T> {
+interface Emitter<in T> {
     fun emit(value: T)
 }
 
-internal interface Cancellable {
+interface Cancellable {
     fun cancel()
 
     companion object {

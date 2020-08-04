@@ -14,15 +14,19 @@ internal abstract class Store<State>(
     protected fun emit(value: State) {
         if (isCancelled) return
 
-        if (initThread != Thread.currentThread()) {
-            throw SameThreadVerificationException(
-                "Emit should be called on the same thread on which store is initialized. " +
-                    "Current: ${Thread.currentThread().name}, initial: ${initThread.name}."
-            )
-        }
+        verifyThread()
 
         this.state = value
         relay.emit(value)
+    }
+
+    private fun verifyThread() {
+        if (initThread != Thread.currentThread()) {
+            throw SameThreadVerificationException(
+                "Store functions should be called on the same thread where store is initialized. " +
+                    "Current: ${Thread.currentThread().name}, initial: ${initThread.name}."
+            )
+        }
     }
 
     override fun cancel() {
@@ -30,6 +34,8 @@ internal abstract class Store<State>(
     }
 
     override fun observe(callback: (State) -> Unit): Cancellable {
+        verifyThread()
+
         callback(state)
         return relay.observe(callback)
     }

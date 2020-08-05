@@ -2,16 +2,16 @@ package com.badoo.ribs.routing.state.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
+import com.badoo.ribs.routing.state.feature.EffectEmitter
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingDeactivateFalse
-import com.badoo.ribs.routing.state.feature.EffectEmitter
-import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 
@@ -58,7 +58,7 @@ internal class ActivateAction<C : Parcelable>(
 
         // The least we can do is to mark correct state, this is regardless of executing transitions
         if (!itemAlreadyActivated) {
-            emitter.onNext(
+            emitter.invoke(
                 Effect.Individual.Activated(routing, item.copy(activationState = globalActivationLevel))
             )
         }
@@ -88,7 +88,7 @@ internal class ActivateAction<C : Parcelable>(
         if (canExecute || forceExecute) {
             item.routingAction.execute()
             activator.onTransitionActivate(routing, item.nodes)
-            emitter.onNext(PendingDeactivateFalse(routing))
+            emitter.invoke(PendingDeactivateFalse(routing))
         }
     }
 

@@ -37,7 +37,6 @@ internal class WakeUpAction<C : Parcelable> : PoolAction<C> {
             action.onFinish()
         }
 
-        params.emitter.onNext(Global.WakeUp())
-        params.emitter.onComplete()
+        params.emitter.invoke(Global.WakeUp())
     }
 }

@@ -17,5 +17,7 @@ class TimeCapsule(private val savedState: Bundle?) {
         stateSuppliers[key.toString()] = stateSupplier
     }
 
-    fun saveState(outState: Bundle) = stateSuppliers.forEach { entry -> outState.putParcelable(entry.key, entry.value()) }
+    fun saveState(outState: Bundle) {
+        stateSuppliers.forEach { entry -> outState.putParcelable(entry.key, entry.value()) }
+    }
 }

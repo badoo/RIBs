@@ -48,6 +48,7 @@ private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
  * the view is available.
  */
 @OutdatedDocumentation
+@Suppress("LongParameterList")
 internal class RoutingStatePool<C : Parcelable>(
     timeCapsule: TimeCapsule,
     resolver: RoutingResolver<C>,

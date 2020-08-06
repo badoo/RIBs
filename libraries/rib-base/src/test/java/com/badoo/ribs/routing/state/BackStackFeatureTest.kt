@@ -1,17 +1,17 @@
 package com.badoo.ribs.routing.state
 
-import com.badoo.mvicore.android.AndroidTimeCapsule
 import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
-import com.badoo.ribs.routing.source.backstack.BackStackFeatureState
-import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
-import com.badoo.ribs.routing.state.feature.operation.asBackStackElements
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
+import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStackFeatureState
+import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
+import com.badoo.ribs.routing.state.feature.operation.asBackStackElements
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -31,8 +31,8 @@ class BackStackFeatureTest {
         private val initialConfiguration = C1
     }
 
-    private lateinit var timeCapsuleEmpty: AndroidTimeCapsule
-    private lateinit var timeCapsuleWithContent: AndroidTimeCapsule
+    private lateinit var timeCapsuleEmpty: TimeCapsule
+    private lateinit var timeCapsuleWithContent: TimeCapsule
     private lateinit var backstackInTimeCapsule: List<RoutingHistoryElement<Configuration>>
     private lateinit var backStackFeature: BackStackFeature<Configuration>
 
@@ -52,7 +52,7 @@ class BackStackFeatureTest {
         setupBackStackManager(timeCapsuleEmpty)
     }
 
-    private fun setupBackStackManager(timeCapsule: AndroidTimeCapsule) {
+    private fun setupBackStackManager(timeCapsule: TimeCapsule) {
         backStackFeature =
             BackStackFeature(
                 initialConfiguration = initialConfiguration,

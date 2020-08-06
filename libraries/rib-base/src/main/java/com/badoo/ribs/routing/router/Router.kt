@@ -2,10 +2,7 @@ package com.badoo.ribs.routing.router
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.NodeAware
@@ -13,6 +10,7 @@ import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
@@ -25,6 +23,7 @@ import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposables
 
 abstract class Router<C : Parcelable>(
     buildParams: BuildParams<*>,
@@ -38,9 +37,8 @@ abstract class Router<C : Parcelable>(
     SavesInstanceState,
     SubtreeBackPressHandler by routingSource {
 
-    private val binder = Binder()
     private val disposables = CompositeDisposable()
-    private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
+    private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
 
     private lateinit var routingStatePool: RoutingStatePool<C>
@@ -62,7 +60,7 @@ abstract class Router<C : Parcelable>(
             transitionHandler = transitionHandler
         )
 
-        disposables.add(routingStatePool)
+        disposables.add(Disposables.fromAction { routingStatePool.cancel() })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -72,7 +70,9 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
-        binder.bind(routingSource.changes(hasSavedState) to routingStatePool)
+        disposables.add(
+            routingSource.changes(hasSavedState).subscribe(routingStatePool)
+        )
     }
 
     override fun onAttachToView() {
@@ -85,7 +85,6 @@ abstract class Router<C : Parcelable>(
 
     override fun onDetach() {
         // TODO consider extending Disposables plugin
-        binder.dispose()
-        routingStatePool.dispose()
+        disposables.dispose()
     }
 }

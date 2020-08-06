@@ -39,7 +39,6 @@ internal class SleepAction<C : Parcelable> : PoolAction<C> {
             action.onFinish()
         }
 
-        params.emitter.onNext(Effect.Global.Sleep())
-        params.emitter.onComplete()
+        params.emitter.invoke(Effect.Global.Sleep())
     }
 }

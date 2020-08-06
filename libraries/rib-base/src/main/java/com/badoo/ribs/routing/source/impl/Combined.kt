@@ -2,12 +2,14 @@ package com.badoo.ribs.routing.source.impl
 
 import android.os.Bundle
 import android.os.Parcelable
+import com.badoo.ribs.core.state.Cancellable
+import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
+import com.badoo.ribs.core.state.wrap
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.RoutingSource
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.functions.BiFunction
 import java.util.ArrayDeque
 
@@ -26,8 +28,8 @@ internal data class Combined<C : Parcelable>(
     }
 
     private val combined = Observable.combineLatest(
-        first,
-        second,
+        first.wrap(),
+        second.wrap(),
         BiFunction<RoutingHistory<C>, RoutingHistory<C>, RoutingHistory<C>> { source1, source2 ->
             CombinedHistory(
                 source1,
@@ -42,8 +44,9 @@ internal data class Combined<C : Parcelable>(
             second.baseLineState(fromRestored)
         )
 
-    override fun subscribe(observer: Observer<in RoutingHistory<C>>) {
-        combined.subscribe(observer)
+    override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable {
+        val disposable = combined.subscribe(callback)
+        return cancellableOf { disposable.dispose() }
     }
 
     override fun remove(identifier: Routing.Identifier) {

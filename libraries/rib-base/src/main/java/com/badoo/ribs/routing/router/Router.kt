@@ -70,8 +70,9 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
+        val cancellable = routingSource.changes(hasSavedState).observe(routingStatePool::accept)
         disposables.add(
-            routingSource.changes(hasSavedState).subscribe(routingStatePool)
+            Disposables.fromAction { cancellable.cancel() }
         )
     }
 

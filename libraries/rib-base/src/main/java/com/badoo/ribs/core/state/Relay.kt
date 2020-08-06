@@ -21,6 +21,10 @@ interface Cancellable {
                 }
             }
     }
+
+    object Empty : Cancellable {
+        override fun cancel() { }
+    }
 }
 
 class CompositeCancellable : Cancellable {
@@ -34,6 +38,7 @@ class CompositeCancellable : Cancellable {
         items.clear()
     }
 }
+
 
 internal class Relay<T> : Source<T>, Emitter<T> {
     private val listeners: MutableList<(T) -> Unit> = mutableListOf()

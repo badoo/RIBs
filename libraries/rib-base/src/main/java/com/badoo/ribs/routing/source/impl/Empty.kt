@@ -18,5 +18,5 @@ class Empty<C : Parcelable> : RoutingSource<C> {
     }
 
     override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable =
-        Cancellable.cancellableOf {  }
+        Cancellable.Empty
 }

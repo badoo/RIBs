@@ -2,7 +2,6 @@ package com.badoo.ribs.routing.source.impl
 
 import android.os.Parcelable
 import com.badoo.ribs.core.state.Cancellable
-import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
@@ -47,6 +46,6 @@ class Permanent<C : Parcelable>(
 
     override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable {
         callback(permanentHistory)
-        return cancellableOf {  }
+        return Cancellable.Empty
     }
 }

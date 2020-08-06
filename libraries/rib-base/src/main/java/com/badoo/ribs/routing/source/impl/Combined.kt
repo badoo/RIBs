@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.state.Cancellable
 import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
-import com.badoo.ribs.core.state.wrap
+import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.RoutingSource
-import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 import java.util.ArrayDeque
 
 internal data class Combined<C : Parcelable>(
@@ -27,16 +25,32 @@ internal data class Combined<C : Parcelable>(
             ConcatIterator(first.iterator()) + second.iterator()
     }
 
-    private val combined = Observable.combineLatest(
-        first.wrap(),
-        second.wrap(),
-        BiFunction<RoutingHistory<C>, RoutingHistory<C>, RoutingHistory<C>> { source1, source2 ->
-            CombinedHistory(
-                source1,
-                source2
-            )
+    private val combined = object : Source<RoutingHistory<C>> {
+        override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable {
+            var firstHistory: RoutingHistory<C>? = null
+            var secondHistory: RoutingHistory<C>? = null
+
+            fun emitIfComplete() {
+                if (firstHistory != null && secondHistory != null) {
+                    callback(CombinedHistory(firstHistory!!, secondHistory!!))
+                }
+            }
+
+            val cancellable1 = first.observe {
+                firstHistory = it
+                emitIfComplete()
+            }
+            val cancellable2 = second.observe {
+                secondHistory = it
+                emitIfComplete()
+            }
+
+            return cancellableOf {
+                cancellable1.cancel()
+                cancellable2.cancel()
+            }
         }
-    )
+    }
 
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
         CombinedHistory(
@@ -44,10 +58,8 @@ internal data class Combined<C : Parcelable>(
             second.baseLineState(fromRestored)
         )
 
-    override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable {
-        val disposable = combined.subscribe(callback)
-        return cancellableOf { disposable.dispose() }
-    }
+    override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable =
+        combined.observe(callback)
 
     override fun remove(identifier: Routing.Identifier) {
         first.remove(identifier)

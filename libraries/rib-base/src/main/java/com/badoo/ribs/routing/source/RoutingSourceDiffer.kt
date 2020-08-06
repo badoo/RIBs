@@ -18,14 +18,19 @@ import com.badoo.ribs.util.RIBs
  */
 internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): Source<Transaction<C>> =
     object : Source<Transaction<C>> {
-        private var previous = baseLineState(fromRestored)
-
-        override fun observe(callback: (Transaction<C>) -> Unit): Cancellable =
-            this@changes.observe {
-                diffState(it, callback)
+        override fun observe(callback: (Transaction<C>) -> Unit): Cancellable {
+            var previous = baseLineState(fromRestored)
+            return this@changes.observe {
+                diffState(previous, it, callback)
+                previous = it
             }
+        }
 
-        private fun diffState(current: RoutingHistory<C>, reportChange: (Transaction<C>) -> Unit) {
+        private fun diffState(
+            previous: RoutingHistory<C>,
+            current: RoutingHistory<C>,
+            reportChange: (Transaction<C>) -> Unit
+        ) {
             current.ensureUniqueIds()
 
             val commands =
@@ -45,8 +50,6 @@ internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): S
                     )
                 )
             }
-
-            previous = current
         }
     }
 

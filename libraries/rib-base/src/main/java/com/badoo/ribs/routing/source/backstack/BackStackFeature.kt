@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.state.Cancellable
+import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.core.state.Store
 import com.badoo.ribs.core.state.TimeCapsule
-import com.badoo.ribs.core.state.wrap
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
@@ -19,7 +19,6 @@ import com.badoo.ribs.routing.source.backstack.operation.Remove
 import com.badoo.ribs.routing.source.backstack.operation.canPop
 import com.badoo.ribs.routing.source.backstack.operation.canPopOverlay
 import com.badoo.ribs.routing.source.backstack.operation.pop
-import io.reactivex.ObservableSource
 
 private val timeCapsuleKey = BackStackFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule.initialState(): BackStackFeatureState<C> =
@@ -121,21 +120,25 @@ class BackStackFeature<C : Parcelable> internal constructor(
             }
     }
 
-    val activeConfiguration: ObservableSource<C> =
-        store.wrap()
-            .map {
-                it.backStack
-                    .last()
-                    .routing
-                    .configuration
+    val activeConfiguration: Source<C> =
+        object : Source<C> {
+            override fun observe(callback: (C) -> Unit): Cancellable {
+                callback(initialConfiguration)
+                return store.observe {
+                    callback(
+                        it.backStack.last()
+                            .routing
+                            .configuration
+                    )
+                }
             }
-            .startWith(initialConfiguration)
+        }
 
     val state: BackStackFeatureState<C>
         get() = store.state
 
     fun popBackStack(): Boolean = // TODO rename
-        if (store.state.backStack.canPop) {
+        if (state.backStack.canPop) {
             pop()
             true
         } else {
@@ -143,7 +146,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         }
 
     fun popOverlay(): Boolean =
-        if (store.state.backStack.canPopOverlay) {
+        if (state.backStack.canPopOverlay) {
             pop()
             true
         } else {
@@ -169,7 +172,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
      * Emits corresponding [BackStackFeatureState]s if the answer is yes.
      */
     fun accept(operation: Operation<C>) {
-        if (operation.backStackOperation.isApplicable(store.state.backStack)) {
+        if (operation.backStackOperation.isApplicable(state.backStack)) {
             store.accept(operation.backStackOperation)
         }
     }

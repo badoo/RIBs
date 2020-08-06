@@ -10,6 +10,7 @@ import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
+import com.badoo.ribs.core.state.CompositeCancellable
 import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
@@ -22,8 +23,6 @@ import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.SaveInstance
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposables
 
 abstract class Router<C : Parcelable>(
     buildParams: BuildParams<*>,
@@ -37,7 +36,7 @@ abstract class Router<C : Parcelable>(
     SavesInstanceState,
     SubtreeBackPressHandler by routingSource {
 
-    private val disposables = CompositeDisposable()
+    private val cancellable = CompositeCancellable()
     private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
 
@@ -60,7 +59,7 @@ abstract class Router<C : Parcelable>(
             transitionHandler = transitionHandler
         )
 
-        disposables.add(Disposables.fromAction { routingStatePool.cancel() })
+        cancellable += routingStatePool
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -70,10 +69,7 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onAttach(nodeLifecycle: Lifecycle) {
-        val cancellable = routingSource.changes(hasSavedState).observe(routingStatePool::accept)
-        disposables.add(
-            Disposables.fromAction { cancellable.cancel() }
-        )
+        cancellable += routingSource.changes(hasSavedState).observe(routingStatePool::accept)
     }
 
     override fun onAttachToView() {
@@ -86,6 +82,6 @@ abstract class Router<C : Parcelable>(
 
     override fun onDetach() {
         // TODO consider extending Disposables plugin
-        disposables.dispose()
+        cancellable.cancel()
     }
 }

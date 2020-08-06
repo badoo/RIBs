@@ -3,8 +3,7 @@ package com.badoo.ribs.routing.source.impl
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.state.Cancellable
-import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
-import com.badoo.ribs.core.state.Source
+import com.badoo.ribs.core.state.combineLatest
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
@@ -25,32 +24,7 @@ internal data class Combined<C : Parcelable>(
             ConcatIterator(first.iterator()) + second.iterator()
     }
 
-    private val combined = object : Source<RoutingHistory<C>> {
-        override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable {
-            var firstHistory: RoutingHistory<C>? = null
-            var secondHistory: RoutingHistory<C>? = null
-
-            fun emitIfComplete() {
-                if (firstHistory != null && secondHistory != null) {
-                    callback(CombinedHistory(firstHistory!!, secondHistory!!))
-                }
-            }
-
-            val cancellable1 = first.observe {
-                firstHistory = it
-                emitIfComplete()
-            }
-            val cancellable2 = second.observe {
-                secondHistory = it
-                emitIfComplete()
-            }
-
-            return cancellableOf {
-                cancellable1.cancel()
-                cancellable2.cancel()
-            }
-        }
-    }
+    private val combined = combineLatest(first, second, ::CombinedHistory)
 
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
         CombinedHistory(

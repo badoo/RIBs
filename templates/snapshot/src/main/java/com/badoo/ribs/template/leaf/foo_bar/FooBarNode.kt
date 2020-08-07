@@ -5,6 +5,7 @@ import com.badoo.ribs.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.template.leaf.foo_bar.FooBar.Input
 import com.badoo.ribs.template.leaf.foo_bar.FooBar.Output
@@ -33,8 +34,8 @@ class FooBarNode internal constructor(
      */
 
     override fun businessLogicOperation(): Single<FooBar> =
-        executeWorkflow {
+        executeWorkflow<FooBar> {
             // todo e.g. push wish to feature / trigger input / output
             // feature.accept()
-        }
+        }.rx2()
 }

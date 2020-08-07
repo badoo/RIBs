@@ -219,9 +219,6 @@ class NodeTest {
         }
         val mocks = mutableListOf<Node<*>>()
         for (i in 0 until n) {
-//            val mockNode = mock<Node<*>>()
-//            whenever(mockNode.identifier).thenReturn(identifiers[i])
-//            mocks.add(mockNode)
             mocks.add(
                 mock {
                     on { identifier }.thenReturn(identifiers[i])
@@ -231,7 +228,7 @@ class NodeTest {
         }
 
         mocks.forEach {
-            node.attachChildNode(it)
+            node._children.add(it)
         }
 
         return mocks

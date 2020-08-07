@@ -92,7 +92,7 @@ open class Node<V : RibView>(
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     val detachSignal = BehaviorRelay.create<Unit>()
 
-    private val _children: MutableList<Node<*>> = mutableListOf()
+    internal val _children: MutableList<Node<*>> = mutableListOf()
     val children: List<Node<*>>
         get() = _children
 
@@ -196,7 +196,7 @@ open class Node<V : RibView>(
         lifecycleManager.onDestroyRib()
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDetach() }
 
-        for (child in children) {
+        for (child in children.toList()) {
             detachChildNode(child)
         }
 

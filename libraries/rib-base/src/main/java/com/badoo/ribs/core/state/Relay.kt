@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.state
 
 import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
+import java.util.concurrent.CopyOnWriteArrayList
 
 interface Source<out T> {
     fun observe(callback: (T) -> Unit): Cancellable
@@ -41,7 +42,7 @@ class CompositeCancellable(vararg cancellables: Cancellable) : Cancellable {
 
 
 internal class Relay<T> : Source<T>, Emitter<T> {
-    private val listeners: MutableList<(T) -> Unit> = mutableListOf()
+    private val listeners: MutableList<(T) -> Unit> = CopyOnWriteArrayList()
 
     override fun emit(value: T) {
         listeners.forEach { it.invoke(value) }

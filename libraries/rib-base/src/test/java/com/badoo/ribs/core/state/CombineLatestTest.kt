@@ -3,7 +3,7 @@ package com.badoo.ribs.core.state
 import io.reactivex.observers.TestObserver
 import org.junit.Test
 
-class ComplexSourceTest {
+class CombineLatestTest {
     @Test
     fun `combineLatest does not emit values when none emitted from sources`() {
         val relay1 = Relay<String>()

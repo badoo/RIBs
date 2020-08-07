@@ -75,7 +75,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
          * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
          */
         private fun initializeBackstack() {
-            if(state.backStack.isEmpty()) {
+            if (state.backStack.isEmpty()) {
                 accept(NewRoot(initialConfiguration))
             }
         }

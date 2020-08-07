@@ -2,11 +2,15 @@ package com.badoo.ribs.core.state
 
 fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: Source<B>, combination: (A, B) -> C): Source<C> =
     object : Source<C> {
+        /**
+         * The internal state (first / second values) should be recreated for each new call to observer
+         * Otherwise new subscriptions will not start from empty state but will share values, which is not desirable
+         */
         override fun observe(callback: (C) -> Unit): Cancellable {
             var firstValue: A? = null
             var secondValue: B? = null
 
-            fun emitIfComplete() {
+            fun emitCombined() {
                 if (firstValue != null && secondValue != null) {
                     callback(combination(firstValue!!, secondValue!!))
                 }
@@ -14,11 +18,11 @@ fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: Source<B>, 
 
             val cancellable1 = source1.observe {
                 firstValue = it
-                emitIfComplete()
+                emitCombined()
             }
             val cancellable2 = source2.observe {
                 secondValue = it
-                emitIfComplete()
+                emitCombined()
             }
 
             return Cancellable.cancellableOf {

@@ -27,8 +27,8 @@ interface Cancellable {
     }
 }
 
-class CompositeCancellable : Cancellable {
-    private val items = mutableListOf<Cancellable>()
+class CompositeCancellable(vararg cancellables: Cancellable) : Cancellable {
+    private val items = mutableListOf(*cancellables)
     operator fun plusAssign(item: Cancellable) {
         items += item
     }
@@ -50,5 +50,26 @@ internal class Relay<T> : Source<T>, Emitter<T> {
     override fun observe(callback: (T) -> Unit): Cancellable {
         listeners += callback
         return cancellableOf { listeners -= callback }
+    }
+
+    class Behavior<T>(
+        initialValue: T? = null,
+        private val internal: Relay<T> = Relay()
+    ): Source<T>, Emitter<T> {
+        var value: T? = initialValue
+            private set
+
+        override fun emit(value: T) {
+            this.value = value
+            internal.emit(value)
+        }
+
+        override fun observe(callback: (T) -> Unit): Cancellable {
+            val currentValue = value
+            if (currentValue != null) {
+                callback(currentValue)
+            }
+            return internal.observe(callback)
+        }
     }
 }

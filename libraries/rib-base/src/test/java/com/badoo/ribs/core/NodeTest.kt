@@ -20,6 +20,8 @@ import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.ViewAware
+import com.badoo.ribs.core.state.SingleSource
+import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
@@ -33,8 +35,6 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 import org.junit.After
@@ -562,9 +562,9 @@ class NodeTest {
     fun `executeWorkflow executes action on subscribe`() {
         var actionInvoked = false
         val action = { actionInvoked = true }
-        val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
+        val workflow: SingleSource<Node<*>> = node.executeWorkflowInternal(action)
         val testObserver = TestObserver<Node<*>>()
-        workflow.subscribe(testObserver)
+        workflow.rx2().subscribe(testObserver)
 
         assertEquals(true, actionInvoked)
         testObserver.assertValue(node)
@@ -577,9 +577,9 @@ class NodeTest {
 
         var actionInvoked = false
         val action = { actionInvoked = true }
-        val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
+        val workflow: SingleSource<Node<*>> = node.executeWorkflowInternal(action)
         val testObserver = TestObserver<Node<*>>()
-        workflow.subscribe(testObserver)
+        workflow.rx2().subscribe(testObserver)
 
         assertEquals(false, actionInvoked)
         testObserver.assertNever(node)
@@ -590,9 +590,9 @@ class NodeTest {
     fun `attachWorkflow executes action on subscribe`() {
         var actionInvoked = false
         val action = { actionInvoked = true }
-        val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
+        val workflow: SingleSource<TestNode> = node.attachWorkflowInternal(action)
         val testObserver = TestObserver<TestNode>()
-        workflow.subscribe(testObserver)
+        workflow.rx2().subscribe(testObserver)
 
         assertEquals(true, actionInvoked)
         testObserver.assertValue(child3)
@@ -605,9 +605,9 @@ class NodeTest {
 
         var actionInvoked = false
         val action = { actionInvoked = true }
-        val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
+        val workflow: SingleSource<TestNode> = node.attachWorkflowInternal(action)
         val testObserver = TestObserver<TestNode>()
-        workflow.subscribe(testObserver)
+        workflow.rx2().subscribe(testObserver)
 
         assertEquals(false, actionInvoked)
         testObserver.assertNever(child1)
@@ -618,12 +618,12 @@ class NodeTest {
 
     @Test
     fun `waitForChildAttached emits expected child immediately if it's already attached`() {
-        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
+        val workflow: SingleSource<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = TestObserver<TestNode2>()
         val testChildNode = TestNode2(buildParams = testBuildParams(ancestryInfo = childAncestry))
 
         node.attachChildNode(testChildNode)
-        workflow.subscribe(testObserver)
+        workflow.rx2().subscribe(testObserver)
 
         testObserver.assertValue(testChildNode)
         testObserver.assertComplete()
@@ -633,9 +633,9 @@ class NodeTest {
     fun `waitForChildAttached never executes action on lifecycle terminate before subscribe`() {
         node.onDetach()
 
-        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
+        val workflow: SingleSource<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = TestObserver<TestNode2>()
-        workflow.subscribe(testObserver)
+        workflow.rx2().subscribe(testObserver)
 
         testObserver.assertNoValues()
         testObserver.assertNotComplete()

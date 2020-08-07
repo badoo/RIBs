@@ -7,6 +7,8 @@ import com.badoo.ribs.core.state.Cancellable
 import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.core.state.Store
 import com.badoo.ribs.core.state.TimeCapsule
+import com.badoo.ribs.core.state.map
+import com.badoo.ribs.core.state.startWith
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
@@ -121,18 +123,13 @@ class BackStackFeature<C : Parcelable> internal constructor(
     }
 
     val activeConfiguration: Source<C> =
-        object : Source<C> {
-            override fun observe(callback: (C) -> Unit): Cancellable {
-                callback(initialConfiguration)
-                return store.observe {
-                    callback(
-                        it.backStack.last()
-                            .routing
-                            .configuration
-                    )
-                }
+        store
+            .map {
+                it.backStack.last()
+                    .routing
+                    .configuration
             }
-        }
+            .startWith(initialConfiguration)
 
     val state: BackStackFeatureState<C>
         get() = store.state

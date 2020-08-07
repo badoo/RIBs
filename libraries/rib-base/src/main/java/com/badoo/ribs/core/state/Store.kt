@@ -6,17 +6,15 @@ abstract class Store<State>(
     private val initThread = Thread.currentThread()
 
     private var isCancelled = false
-    var state: State = initialState
-        private set
+    private val relay: Relay.Behavior<State> = Relay.Behavior(initialState)
 
-    private val relay: Relay<State> = Relay()
+    val state: State get() = relay.value!!
 
     protected fun emit(value: State) {
         if (isCancelled) return
 
         verifyThread()
 
-        this.state = value
         relay.emit(value)
     }
 
@@ -36,7 +34,6 @@ abstract class Store<State>(
     override fun observe(callback: (State) -> Unit): Cancellable {
         verifyThread()
 
-        callback(state)
         return relay.observe(callback)
     }
 }

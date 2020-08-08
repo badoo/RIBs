@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LibraryCodeMustSpecifyReturnType:Portal.kt$Portal.OtherSide.Companion$/** * For testing purposes only. */ val NOOP = object : OtherSide { override fun showContent(remoteNode: Node&lt;*&gt;, remoteConfiguration: Parcelable) {} override fun showOverlay(remoteNode: Node&lt;*&gt;, remoteConfiguration: Parcelable) {} }</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -5,11 +5,11 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 
 @ExperimentalApi
-class PortalBuilder(
+class RxPortalBuilder(
     private val dependency: Portal.Dependency
-) : SimpleBuilder<Portal>() {
+) : SimpleBuilder<RxPortal>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): Portal {
+    override fun build(buildParams: BuildParams<Nothing?>): RxPortal {
         val interactor = PortalInteractor(
             buildParams = buildParams
         )
@@ -20,12 +20,13 @@ class PortalBuilder(
             transitionHandler = dependency.transitionHandler()
         )
 
-        return PortalNode(
+        return RxPortalNode(
             buildParams = buildParams,
             plugins = listOf(
                 interactor,
                 router
-            )
+            ),
+            backStack = interactor.backStack
         )
     }
 }

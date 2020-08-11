@@ -1,7 +1,6 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
 import android.util.Log
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
@@ -12,6 +11,7 @@ import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
+import com.badoo.ribs.workflows.rx.RxWorkflowNode
 import io.reactivex.Single
 
 class SwitcherNode internal constructor(
@@ -19,7 +19,7 @@ class SwitcherNode internal constructor(
     viewFactory: ((RibView) -> SwitcherView?)?,
     plugins: List<Plugin>,
     private val backStack: BackStackFeature<Configuration>
-) : Node<SwitcherView>(
+) : RxWorkflowNode<SwitcherView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins

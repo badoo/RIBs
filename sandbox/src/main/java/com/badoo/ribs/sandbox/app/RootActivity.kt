@@ -10,8 +10,9 @@ import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.portal.Portal
-import com.badoo.ribs.portal.PortalBuilder
 import com.badoo.ribs.portal.PortalRouter
+import com.badoo.ribs.portal.RxPortal
+import com.badoo.ribs.portal.RxPortalBuilder
 import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.transition.handler.CrossFader
@@ -38,10 +39,10 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    private lateinit var workflowRoot: Portal
+    private lateinit var workflowRoot: RxPortal
 
     override fun createRib(savedInstanceState: Bundle?) =
-        PortalBuilder(
+        RxPortalBuilder(
             object : Portal.Dependency {
                 override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction =
                     { portal ->

@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 
-class PortalInteractor(
+internal class PortalInteractor(
     buildParams: BuildParams<Nothing?>
 ) : BackStackInteractor<Portal, Nothing, Configuration>(
     buildParams = buildParams,

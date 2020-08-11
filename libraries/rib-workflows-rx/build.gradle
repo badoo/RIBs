@@ -7,23 +7,11 @@ androidExtensions {
     experimental = true
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
-    }
-}
-
 dependencies {
-    api deps.android.appCompat
-
-    implementation deps.apt.javaxInject
-
-    implementation deps.android.recyclerView
-    implementation deps.android.lifecycleCommon
-    compileOnly deps.android.annotations
     implementation deps.external.kotlinStdlib
-    // FIXME only needed because of PortalInteractor : BackStackInteractor has Disposables:
+    implementation deps.external.rxrelay2
     implementation deps.external.rxjava2
+
     implementation project(":libraries:rib-base")
 
     testImplementation deps.android.annotations

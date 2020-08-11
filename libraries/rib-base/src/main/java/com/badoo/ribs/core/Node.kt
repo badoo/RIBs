@@ -16,29 +16,13 @@ import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.core.plugin.AndroidLifecycleAware
-import com.badoo.ribs.core.plugin.BackPressHandler
-import com.badoo.ribs.core.plugin.NodeAware
-import com.badoo.ribs.core.plugin.NodeLifecycleAware
-import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.plugin.SavesInstanceState
-import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import com.badoo.ribs.core.plugin.SubtreeChangeAware
-import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
-import com.badoo.ribs.core.plugin.SystemAware
-import com.badoo.ribs.core.plugin.ViewAware
-import com.badoo.ribs.core.plugin.ViewLifecycleAware
-import com.badoo.ribs.core.state.Relay
-import com.badoo.ribs.core.state.SingleSource
-import com.badoo.ribs.core.state.Source
-import com.badoo.ribs.core.state.filter
-import com.badoo.ribs.core.state.first
-import com.badoo.ribs.core.state.fromSource
-import com.badoo.ribs.core.state.just
-import com.badoo.ribs.core.state.single
-import com.badoo.ribs.core.state.takeUntil
+import com.badoo.ribs.core.plugin.*
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.util.RIBs
+import com.jakewharton.rxrelay2.BehaviorRelay
+import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.Observable
+import io.reactivex.Single
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -93,13 +77,12 @@ open class Node<V : RibView>(
 
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
-    private val internalDetachSignal = Relay.Behavior<Unit>()
-    val detachSignal: Source<Unit> = internalDetachSignal
+    val detachSignal = BehaviorRelay.create<Unit>()
 
     val tag: String = this::class.java.name
     val children = CopyOnWriteArrayList<Node<*>>()
-    private val childrenAttachesRelay: Relay<Node<*>> = Relay()
-    val childrenAttaches: Source<Node<*>> = childrenAttachesRelay
+    private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
+    val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
 
     internal open val lifecycleManager = LifecycleManager(this)
 
@@ -207,7 +190,7 @@ open class Node<V : RibView>(
             detachChildNode(child)
         }
 
-        internalDetachSignal.emit(Unit)
+        detachSignal.accept(Unit)
         isPendingDetach = false
     }
 
@@ -222,7 +205,7 @@ open class Node<V : RibView>(
         children.add(child)
         lifecycleManager.onAttachChild(child)
         child.onAttach()
-        childrenAttachesRelay.emit(child)
+        childrenAttachesRelay.accept(child)
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onAttachChild(child) }
     }
 
@@ -395,17 +378,16 @@ open class Node<V : RibView>(
      */
     protected inline fun <reified T> executeWorkflow(
         crossinline action: () -> Unit
-    ): SingleSource<T> =
-        single {
+    ): Single<T> = Single.fromCallable {
             action()
             this as T
         }
-        .takeUntil(detachSignal)
+        .takeUntil(detachSignal.firstOrError())
 
     @VisibleForTesting
     internal inline fun <reified T> executeWorkflowInternal(
         crossinline action: () -> Unit
-    ) : SingleSource<T> = executeWorkflow(action)
+    ) : Single<T> = executeWorkflow(action)
 
     /**
      * Executes an action and transitions to another workflow element
@@ -417,27 +399,30 @@ open class Node<V : RibView>(
     @SuppressWarnings("LongMethod")
     protected inline fun <reified T> attachWorkflow(
         crossinline action: () -> Unit
-    ): SingleSource<T> = single {
+    ): Single<T> = Single.fromCallable {
             action()
             val childNodesOfExpectedType = children.filterIsInstance<T>()
             if (childNodesOfExpectedType.isEmpty()) {
-                throw IllegalStateException(
-                    "Expected child of type [${T::class.java}] was not found after executing action. " +
-                        "Check that your action actually results in the expected child. " +
-                        "Child count: ${children.size}. " +
-                        "Last child is: [${children.lastOrNull()}]. " +
-                        "All children: $children"
+                Single.error<T>(
+                    IllegalStateException(
+                        "Expected child of type [${T::class.java}] was not found after executing action. " +
+                            "Check that your action actually results in the expected child. " +
+                            "Child count: ${children.size}. " +
+                            "Last child is: [${children.lastOrNull()}]. " +
+                            "All children: $children"
+                    )
                 )
             } else {
-                childNodesOfExpectedType.last()
+                Single.just(childNodesOfExpectedType.last())
             }
         }
-        .takeUntil(detachSignal)
+        .flatMap { it }
+        .takeUntil(detachSignal.firstOrError())
 
     @VisibleForTesting
     internal inline fun <reified T> attachWorkflowInternal(
         crossinline action: () -> Unit
-    ) : SingleSource<T> = attachWorkflow(action)
+    ) : Single<T> = attachWorkflow(action)
 
     /**
      * Waits until a certain child is attached and returns it as the expected workflow element, or
@@ -445,20 +430,19 @@ open class Node<V : RibView>(
      *
      * @return the child as the expected workflow element
      */
-    protected inline fun <reified T> waitForChildAttached(): SingleSource<T> =
-        fromSource {
-            children.filterIsInstance<T>().let { childNodesOfExpectedType ->
-                if (childNodesOfExpectedType.isEmpty()) {
-                    childrenAttaches.filter { it is T } as Source<T>
-                } else {
-                    just { childNodesOfExpectedType.last() }
-                }
+    protected inline fun <reified T> waitForChildAttached(): Single<T> =
+        Single.fromCallable {
+            val childNodesOfExpectedType = children.filterIsInstance<T>()
+            if (childNodesOfExpectedType.isEmpty()) {
+                childrenAttaches.ofType(T::class.java).firstOrError()
+            } else {
+                Single.just(childNodesOfExpectedType.last())
             }
         }
-        .first()
-        .takeUntil(detachSignal)
+        .flatMap { it }
+        .takeUntil(detachSignal.firstOrError())
 
     @VisibleForTesting
-    internal inline fun <reified T> waitForChildAttachedInternal() : SingleSource<T> =
+    internal inline fun <reified T> waitForChildAttachedInternal() : Single<T> =
         waitForChildAttached()
 }

@@ -1,6 +1,6 @@
 package com.badoo.ribs.core.state
 
-fun <T> just(producer: () -> T): Source<T> =
+internal fun <T> just(producer: () -> T): Source<T> =
     object : Source<T> {
         override fun observe(callback: (T) -> Unit): Cancellable {
             callback(producer())
@@ -40,13 +40,13 @@ internal fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: So
         }
     }
 
-fun <T, R> Source<T>.map(transform: (T) -> R): Source<R> =
+internal fun <T, R> Source<T>.map(transform: (T) -> R): Source<R> =
     object : Source<R> {
         override fun observe(callback: (R) -> Unit): Cancellable =
             this@map.observe { callback(transform(it)) }
     }
 
-fun <T> Source<T>.filter(predicate: (T) -> Boolean): Source<T> =
+internal fun <T> Source<T>.filter(predicate: (T) -> Boolean): Source<T> =
     object : Source<T> {
         override fun observe(callback: (T) -> Unit): Cancellable =
             this@filter.observe {
@@ -54,36 +54,10 @@ fun <T> Source<T>.filter(predicate: (T) -> Boolean): Source<T> =
             }
     }
 
-fun <T> Source<T>.startWith(value: T): Source<T> =
+internal fun <T> Source<T>.startWith(value: T): Source<T> =
     object : Source<T> {
         override fun observe(callback: (T) -> Unit): Cancellable {
             callback(value)
             return this@startWith.observe(callback)
         }
     }
-
-fun <T> fromSource(sourceProducer: () -> Source<T>): Source<T> =
-    object : Source<T> {
-        override fun observe(callback: (T) -> Unit): Cancellable =
-            sourceProducer().observe(callback)
-    }
-
-internal class TakeUntilSource<T, R>(private val upstream: Source<T>, private val termination: Source<R>): Source<T> {
-    override fun observe(callback: (T) -> Unit): Cancellable {
-        var isCancelled = false
-        var upstreamCancellable: Cancellable? = null
-
-        val terminationCancellable = termination.first().observe {
-            isCancelled = true
-            upstreamCancellable?.cancel()
-        }
-
-        return if (!isCancelled) {
-            upstreamCancellable = upstream.observe(callback)
-            CompositeCancellable(upstreamCancellable, terminationCancellable)
-        } else {
-            terminationCancellable.cancel()
-            Cancellable.Empty
-        }
-    }
-}

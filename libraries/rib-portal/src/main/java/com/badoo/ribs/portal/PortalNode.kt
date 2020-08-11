@@ -5,7 +5,6 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
@@ -23,12 +22,12 @@ internal class PortalNode(
 ), Portal {
 
     override fun showDefault(): Single<Rib> =
-        attachWorkflow<Rib>{
+        attachWorkflow {
             backStack.push(Content.Default)
-        }.rx2()
+        }
 
     override fun showInPortal(ancestryInfo: AncestryInfo): Single<Rib> =
-        attachWorkflow<Rib> {
+        attachWorkflow {
             backStack.push(Content.Portal(ancestryInfo.routingChain))
-        }.rx2()
+        }
 }

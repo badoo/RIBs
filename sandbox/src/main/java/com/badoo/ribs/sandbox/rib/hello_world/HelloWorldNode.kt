@@ -6,7 +6,6 @@ import com.badoo.ribs.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Input
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Output
@@ -24,7 +23,7 @@ class HelloWorldNode(
 ), HelloWorld, Connectable<Input, Output> by connector {
 
     override fun somethingSomethingDarkSide(): Single<HelloWorld> =
-        executeWorkflow<HelloWorld> {
+        executeWorkflow {
             Log.d("WORKFLOW", "Hello world / somethingSomethingDarkSide")
-        }.rx2()
+        }
 }

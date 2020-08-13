@@ -49,7 +49,6 @@ class NodeTest {
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode
     private lateinit var root1: TestNode
-    private lateinit var allChildren: List<Node<*>>
     private lateinit var childAncestry: AncestryInfo
 
     @Before
@@ -111,14 +110,6 @@ class NodeTest {
         node.attachChildNode(child1)
         node.attachChildNode(child2)
         node.attachChildNode(child3)
-    }
-
-    private fun attachToViewAlongWithChildren() {
-        node.onCreateView(parentView)
-        node.onAttachToView()
-        node.attachChildView(child1)
-        node.attachChildView(child2)
-        node.attachChildView(child3)
     }
 
     @Test

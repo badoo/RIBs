@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.util.SparseArray
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -76,7 +77,8 @@ open class Node<V : RibView>(
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
 
-    private val _children: CopyOnWriteArrayList<Node<*>> = CopyOnWriteArrayList()
+    @VisibleForTesting
+    internal val _children: CopyOnWriteArrayList<Node<*>> = CopyOnWriteArrayList()
     val children: List<Node<*>>
         get() = _children
 

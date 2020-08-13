@@ -49,8 +49,7 @@ class GreetingsContainerInteractor(
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<Configuration, Configuration, Nothing, Nothing>(
     savedInstanceState = savedInstanceState,
-    router = router,
-    disposables = null
+    router = router
 ) {
 
     internal val helloWorldOutputConsumer: Consumer<HelloWorld.Output> = Consumer {
@@ -296,8 +295,7 @@ class GreetingsContainerInteractor(
     output: Consumer<GreetingsContainer.Output>
 ) : Interactor<Configuration, Configuration, Nothing, Nothing>(
     savedInstanceState = savedInstanceState,
-    router = router,
-    disposables = null
+    router = router
 ) {
     // Add this:
     internal val helloWorldInputSource: Relay<HelloWorld.Input> = BehaviorRelay.create()

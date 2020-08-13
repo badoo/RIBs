@@ -6,6 +6,5 @@ import com.badoo.ribs.core.modality.BuildParams
 class TestChildInteractor(
     buildParams: BuildParams<Nothing?>
 ) : Interactor<TestChild, TestChildView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 )

@@ -56,8 +56,7 @@ class HelloWorldInteractor(
     router: Router<Configuration, Nothing, Content, Nothing, HelloWorldView>
 ) : Interactor<Configuration, Content, Nothing, HelloWorldView>(
     savedInstanceState = savedInstanceState,
-    router = router,
-    disposables = null
+    router = router
 ) {
 
     override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {

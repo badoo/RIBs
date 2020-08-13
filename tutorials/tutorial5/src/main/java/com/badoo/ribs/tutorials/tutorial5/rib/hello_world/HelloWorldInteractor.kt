@@ -7,9 +7,7 @@ import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.R
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Config
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Input
-import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Output
+import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.*
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.tutorials.tutorial5.util.User
@@ -23,8 +21,7 @@ class HelloWorldInteractor(
     private val output: Consumer<Output>,
     buildParams: BuildParams<Nothing?>
 ) : Interactor<HelloWorld, HelloWorldView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     private var currentButtonText = config.buttonText

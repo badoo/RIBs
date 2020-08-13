@@ -3,9 +3,9 @@ package com.badoo.ribs.android.permissionrequester
 import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.CheckPermissionsResult
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.Cancelled
@@ -14,7 +14,7 @@ import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
-class PermissionRequesterImpl(
+class PermissionRequestBoundary(
     private val activity: AppCompatActivity,
     requestCodeRegistry: RequestCodeRegistry
 ) : RequestCodeBasedEventStreamImpl<RequestPermissionsEvent>(requestCodeRegistry),

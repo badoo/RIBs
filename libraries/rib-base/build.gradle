@@ -10,13 +10,9 @@ androidExtensions {
 dependencies {
     api deps.android.appCompat
 
-    implementation deps.apt.javaxInject
-
-    implementation deps.android.recyclerView
     implementation deps.android.lifecycleCommon
     compileOnly deps.android.annotations
     implementation deps.external.kotlinStdlib
-    implementation deps.external.reactiveStreams
     implementation deps.external.rxrelay2
     implementation deps.external.rxjava2
 

@@ -16,7 +16,7 @@ class DialogRoutingAction<Event : Any, C : Parcelable>(
     private val dialog: Dialog<Event>
 ) : RoutingAction {
 
-    override val nbNodesToBuild: Int = 1
+    override val numberOfNodes: Int = 1
 
     override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib> =
         dialog.buildNodes(buildContexts.first())

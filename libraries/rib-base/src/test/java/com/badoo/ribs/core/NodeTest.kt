@@ -107,8 +107,10 @@ class NodeTest {
             ),
             viewFactory = null
         )
-        allChildren = listOf(child1, child2, child3)
-        node.children.addAll(allChildren)
+
+        node.attachChildNode(child1)
+        node.attachChildNode(child2)
+        node.attachChildNode(child3)
     }
 
     private fun attachToViewAlongWithChildren() {
@@ -201,9 +203,6 @@ class NodeTest {
         }
         val mocks = mutableListOf<Node<*>>()
         for (i in 0 until n) {
-//            val mockNode = mock<Node<*>>()
-//            whenever(mockNode.identifier).thenReturn(identifiers[i])
-//            mocks.add(mockNode)
             mocks.add(
                 mock {
                     on { identifier }.thenReturn(identifiers[i])
@@ -211,8 +210,11 @@ class NodeTest {
                 }
             )
         }
-        node.children.clear()
-        node.children.addAll(mocks)
+
+        mocks.forEach {
+            node._children.add(it)
+        }
+
         return mocks
     }
 

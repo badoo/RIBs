@@ -10,16 +10,10 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.action.RoutingAction
 import com.badoo.ribs.routing.resolver.RoutingResolver
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.*
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.RoutingContext.Unresolved
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -38,7 +32,7 @@ class RoutingContextTest {
 
     // Default
     private val defaultRoutingAction = mock<RoutingAction> {
-        on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
+        on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn ribs
     }
     private val defaultResolver = mock<RoutingResolver<Parcelable>> {
@@ -48,7 +42,7 @@ class RoutingContextTest {
     // With Anchor
     private val mockAnchor: Node<*> = createMockNode()
     private val routingActionWithAnchor = mock<RoutingAction> {
-        on { nbNodesToBuild } doReturn NB_EXPECTED_NODES
+        on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
     }

@@ -13,8 +13,8 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.source.impl.Pool
 import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer
@@ -49,13 +49,13 @@ internal class Adapter<T : Parcelable>(
         when (state.lastCommand) {
             null -> { /* No-op when restored from TimeCapsule or genuinely empty state */ }
             is Input.Add -> {
-                eagerAdd(state.items.last())
+                addIfEager(state.items.last())
                 notifyItemInserted(state.items.lastIndex)
             }
         }
     }
 
-    private fun eagerAdd(entry: Entry<T>) {
+    private fun addIfEager(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
             routingSource.add(entry.element, entry.identifier)
         }

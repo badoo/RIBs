@@ -7,7 +7,7 @@ class CompositeRoutingAction(
     private vararg val routingActions: RoutingAction
 ) : RoutingAction {
 
-    override val nbNodesToBuild: Int = routingActions.fold(0) { acc, r -> acc + r.nbNodesToBuild }
+    override val numberOfNodes: Int = routingActions.sumBy { it.numberOfNodes }
 
     constructor(routingActions: List<RoutingAction>) : this(*routingActions.toTypedArray())
 

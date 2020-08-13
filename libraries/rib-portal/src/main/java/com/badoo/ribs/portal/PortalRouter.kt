@@ -36,7 +36,7 @@ class PortalRouter(
             @Parcelize data class Portal(val routingChain: List<Routing<out Parcelable>>) : Content()
         }
         sealed class Overlay : Configuration() {
-            @Parcelize data class Portal(val configurationChain: List<Routing<out Parcelable>>) : Overlay()
+            @Parcelize data class Portal(val routingChain: List<Routing<out Parcelable>>) : Overlay()
         }
     }
 
@@ -44,7 +44,7 @@ class PortalRouter(
         when (val configuration = routing.configuration) {
             is Content.Default -> defaultRoutingAction
             is Content.Portal -> configuration.routingChain.resolve()
-            is Overlay.Portal -> configuration.configurationChain.resolve()
+            is Overlay.Portal -> configuration.routingChain.resolve()
         }
 
     // TODO probably needs to change from List<Parcelable> to List<AncestryInfo>,

@@ -81,7 +81,7 @@ private fun <Event : Any> AlertDialog.setButtonClickListeners(dialog: Dialog<Eve
     // Workaround so that pressing button will not close dialog automatically. Let business
     // logic decide what to do instead.
     setOnShowListener {
-        (it as AlertDialog).apply {
+        (it as? AlertDialog)?.apply {
             configureButtonClick(AlertDialog.BUTTON_POSITIVE, dialog, dialog.buttons?.positive, onClose)
             configureButtonClick(AlertDialog.BUTTON_NEGATIVE, dialog, dialog.buttons?.negative, onClose)
             configureButtonClick(AlertDialog.BUTTON_NEUTRAL, dialog, dialog.buttons?.neutral, onClose)

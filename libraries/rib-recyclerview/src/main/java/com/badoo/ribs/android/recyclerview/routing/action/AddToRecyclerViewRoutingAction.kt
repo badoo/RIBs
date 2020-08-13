@@ -10,7 +10,7 @@ open class AddToRecyclerViewRoutingAction(
     private val ribFactory: RibFactory
 ) : RoutingAction {
 
-    override val nbNodesToBuild: Int = 1
+    override val numberOfNodes: Int = 1
 
     override fun buildNodes(buildContexts: List<BuildContext>): List<Rib> =
         listOf(

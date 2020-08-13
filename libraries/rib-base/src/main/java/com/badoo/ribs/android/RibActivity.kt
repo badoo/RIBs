@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
-import com.badoo.ribs.android.activitystarter.ActivityStarterImpl
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.dialog.toAlertDialog
-import com.badoo.ribs.android.permissionrequester.PermissionRequesterImpl
+import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import java.util.WeakHashMap
+import java.util.*
 
 /**
  * Helper class for root [Rib] integration.
@@ -36,19 +37,25 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
-    val activityStarter: ActivityStarterImpl by lazy {
-        ActivityStarterImpl(
+    private val activityBoundary: ActivityBoundary by lazy {
+        ActivityBoundary(
             activity = this,
             requestCodeRegistry = requestCodeRegistry
         )
     }
 
-    val permissionRequester: PermissionRequesterImpl by lazy {
-        PermissionRequesterImpl(
+    val activityStarter: ActivityStarter
+        get() = activityBoundary
+
+    private val permissionRequestBoundary: PermissionRequestBoundary by lazy {
+        PermissionRequestBoundary(
             activity = this,
             requestCodeRegistry = requestCodeRegistry
         )
     }
+
+    val permissionRequester: PermissionRequester
+        get() = permissionRequestBoundary
 
     protected open lateinit var root: Rib
     protected open lateinit var rootViewHost: RibView
@@ -128,11 +135,11 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        activityStarter.onActivityResult(requestCode, resultCode, data)
+        activityBoundary.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
-        permissionRequester.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionRequestBoundary.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
     override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
         dialogs[dialog] = dialog.toAlertDialog(this, onClose).also {

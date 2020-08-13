@@ -3,7 +3,7 @@ package com.badoo.ribs.debug
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.util.RIBs
 
-object NodeDebugUtils {
+object TreePrinter {
 
     private const val ARM_RIGHT = "└── "
     private const val INTERSECTION = "├── "

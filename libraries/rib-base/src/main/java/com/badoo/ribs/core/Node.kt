@@ -53,6 +53,9 @@ open class Node<V : RibView>(
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
 
+    val tag: String =
+        this::class.java.name
+
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
@@ -73,8 +76,9 @@ open class Node<V : RibView>(
     private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
 
-    val tag: String = this::class.java.name
-    val children = CopyOnWriteArrayList<Node<*>>()
+    private val _children: CopyOnWriteArrayList<Node<*>> = CopyOnWriteArrayList()
+    val children: List<Node<*>>
+        get() = _children
 
     internal open val lifecycleManager = LifecycleManager(this)
 
@@ -92,13 +96,8 @@ open class Node<V : RibView>(
 
     private var isPendingViewDetach: Boolean = false
     private var isPendingDetach: Boolean = false
-
     private val isActive: Boolean
         get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
-
-
-    fun getChildren(): List<Node<*>> =
-        children.toList()
 
     init {
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
@@ -178,7 +177,7 @@ open class Node<V : RibView>(
         lifecycleManager.onDestroyRib()
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDetach() }
 
-        for (child in children) {
+        for (child in children.toList()) {
             detachChildNode(child)
         }
 
@@ -193,7 +192,7 @@ open class Node<V : RibView>(
     @MainThread
     fun attachChildNode(child: Node<*>) {
         verifyNotRoot(child)
-        children.add(child)
+        _children.add(child)
         lifecycleManager.onAttachChild(child)
         child.onAttach()
         onAttachChildNode(child)
@@ -257,7 +256,7 @@ open class Node<V : RibView>(
     @MainThread
     fun detachChildNode(child: Node<*>) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChild(child) }
-        children.remove(child)
+        _children.remove(child)
         child.onDetach()
     }
 

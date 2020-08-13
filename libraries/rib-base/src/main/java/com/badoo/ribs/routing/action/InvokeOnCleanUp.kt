@@ -4,7 +4,7 @@ class InvokeOnCleanup(
     private val block: () -> Unit
 ) : RoutingAction {
 
-    override val nbNodesToBuild: Int = 0
+    override val numberOfNodes: Int = 0
 
     override fun cleanup() {
         block()

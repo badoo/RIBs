@@ -3,14 +3,14 @@
 package com.badoo.ribs.core.modality
 
 import android.os.Bundle
-import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.plugin.Plugin
 
 /**
  * Holds information passed by the framework to affect modality of the same Node depending on context.
  */
-data class BuildContext internal constructor(
+data class BuildContext(
     val ancestryInfo: AncestryInfo,
     val activationMode: ActivationMode = ActivationMode.ATTACH_TO_PARENT,
     val savedInstanceState: Bundle?,

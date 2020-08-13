@@ -191,7 +191,7 @@ open class Node<V : RibView>(
      * @param child the [Node] to be attached.
      */
     @MainThread
-    internal fun attachChildNode(child: Node<*>) {
+    fun attachChildNode(child: Node<*>) {
         verifyNotRoot(child)
         children.add(child)
         lifecycleManager.onAttachChild(child)
@@ -255,7 +255,7 @@ open class Node<V : RibView>(
      * @param child the [Node] to be detached.
      */
     @MainThread
-    internal fun detachChildNode(child: Node<*>) {
+    fun detachChildNode(child: Node<*>) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChild(child) }
         children.remove(child)
         child.onDetach()

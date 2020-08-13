@@ -3,7 +3,6 @@ package com.badoo.ribs.rx
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.rx.Disposables.Companion.disposeOnDetach
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.disposables.Disposable

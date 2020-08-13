@@ -2,6 +2,7 @@ package com.badoo.ribs.template.leaf.foo_bar
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.rx.disposeOnDetach
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 
 class FooBarBuilder(
@@ -13,7 +14,7 @@ class FooBarBuilder(
         val feature = feature()
         val interactor = interactor(buildParams, feature)
 
-        return node(buildParams, customisation, interactor)
+        return node(buildParams, customisation, feature, interactor)
     }
 
     private fun feature() =
@@ -31,11 +32,12 @@ class FooBarBuilder(
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation,
+        feature: FooBarFeature,
         interactor: FooBarInteractor
     ) =
         FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            plugins = listOf(interactor)
+            plugins = listOf(interactor, disposeOnDetach(feature))
         )
 }

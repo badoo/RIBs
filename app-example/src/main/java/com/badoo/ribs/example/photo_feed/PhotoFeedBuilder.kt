@@ -3,7 +3,7 @@ package com.badoo.ribs.example.photo_feed
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.photo_feed.feature.PhotoFeedFeature
-import com.badoo.ribs.rx.Disposables.Companion.disposeOnDetach
+import com.badoo.ribs.rx.disposeOnDetach
 
 class PhotoFeedBuilder(
     private val dependency: PhotoFeed.Dependency

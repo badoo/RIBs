@@ -8,18 +8,13 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.template.leaf.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
-import com.badoo.ribs.template.leaf.foo_bar.mapper.InputToWish
-import com.badoo.ribs.template.leaf.foo_bar.mapper.NewsToOutput
-import com.badoo.ribs.template.leaf.foo_bar.mapper.StateToViewModel
-import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToAnalyticsEvent
-import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToWish
+import com.badoo.ribs.template.leaf.foo_bar.mapper.*
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
     private val feature: FooBarFeature
 ) : Interactor<FooBar, FooBarView>(
-    buildParams = buildParams,
-    disposables = feature
+    buildParams = buildParams
 ) {
 
     override fun onAttach(nodeLifecycle: Lifecycle) {

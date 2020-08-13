@@ -10,7 +10,11 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.template.node.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
-import com.badoo.ribs.template.node.foo_bar.mapper.*
+import com.badoo.ribs.template.node.foo_bar.mapper.InputToWish
+import com.badoo.ribs.template.node.foo_bar.mapper.NewsToOutput
+import com.badoo.ribs.template.node.foo_bar.mapper.StateToViewModel
+import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToAnalyticsEvent
+import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToWish
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
 internal class FooBarInteractor(

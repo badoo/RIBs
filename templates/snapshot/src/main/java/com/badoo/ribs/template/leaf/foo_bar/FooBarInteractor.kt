@@ -8,7 +8,11 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.template.leaf.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
-import com.badoo.ribs.template.leaf.foo_bar.mapper.*
+import com.badoo.ribs.template.leaf.foo_bar.mapper.InputToWish
+import com.badoo.ribs.template.leaf.foo_bar.mapper.NewsToOutput
+import com.badoo.ribs.template.leaf.foo_bar.mapper.StateToViewModel
+import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToAnalyticsEvent
+import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToWish
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,

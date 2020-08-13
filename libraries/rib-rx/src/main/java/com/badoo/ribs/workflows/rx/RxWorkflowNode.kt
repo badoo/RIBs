@@ -22,7 +22,7 @@ open class RxWorkflowNode<V : RibView>(
 
     private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
     val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
-    val detachSignal = BehaviorRelay.create<Unit>()
+    val detachSignal: BehaviorRelay<Unit> = BehaviorRelay.create()
 
     override fun onAttachChildNode(child: Node<*>) {
         super.onAttachChildNode(child)

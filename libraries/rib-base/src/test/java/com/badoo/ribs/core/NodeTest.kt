@@ -203,7 +203,7 @@ class NodeTest {
         }
 
         mocks.forEach {
-            node._children.add(it)
+            node.children.add(it)
         }
 
         return mocks

@@ -11,7 +11,10 @@ import java.util.UUID
 
 fun testBuildParams(
     savedInstanceState: Bundle? = null,
-    ancestryInfo: AncestryInfo? = null
+    ancestryInfo: AncestryInfo? = null,
+    identifier: Rib.Identifier = Rib.Identifier(
+        uuid = UUID.randomUUID()
+    )
 ) = BuildParams<Nothing?>(
     payload = null,
     buildContext = if (ancestryInfo == null) {
@@ -23,7 +26,5 @@ fun testBuildParams(
             savedInstanceState = savedInstanceState,
             customisations = RibCustomisationDirectoryImpl()
     )},
-    identifier = Rib.Identifier(
-        uuid = UUID.randomUUID()
-    )
+    identifier = identifier
 )

@@ -34,7 +34,6 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.Single
-import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * The main structure element of the system.
@@ -69,6 +68,9 @@ open class Node<V : RibView>(
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
 
+    val tag: String =
+        this::class.java.name
+
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
@@ -90,8 +92,10 @@ open class Node<V : RibView>(
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
     val detachSignal = BehaviorRelay.create<Unit>()
 
-    val tag: String = this::class.java.name
-    val children = CopyOnWriteArrayList<Node<*>>()
+    internal val _children: MutableList<Node<*>> = mutableListOf()
+    val children: List<Node<*>>
+        get() = _children
+
     private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
     val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
 
@@ -111,13 +115,8 @@ open class Node<V : RibView>(
 
     private var isPendingViewDetach: Boolean = false
     private var isPendingDetach: Boolean = false
-
     private val isActive: Boolean
         get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
-
-
-    fun getChildren(): List<Node<*>> =
-        children.toList()
 
     init {
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
@@ -197,7 +196,7 @@ open class Node<V : RibView>(
         lifecycleManager.onDestroyRib()
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDetach() }
 
-        for (child in children) {
+        for (child in children.toList()) {
             detachChildNode(child)
         }
 
@@ -213,7 +212,7 @@ open class Node<V : RibView>(
     @MainThread
     internal fun attachChildNode(child: Node<*>) {
         verifyNotRoot(child)
-        children.add(child)
+        _children.add(child)
         lifecycleManager.onAttachChild(child)
         child.onAttach()
         childrenAttachesRelay.accept(child)
@@ -274,7 +273,7 @@ open class Node<V : RibView>(
     @MainThread
     internal fun detachChildNode(child: Node<*>) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChild(child) }
-        children.remove(child)
+        _children.remove(child)
         child.onDetach()
     }
 

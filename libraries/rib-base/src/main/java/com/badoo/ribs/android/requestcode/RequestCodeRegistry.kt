@@ -4,6 +4,18 @@ import android.os.Bundle
 import java.util.HashMap
 import kotlin.math.pow
 
+/**
+ * Provides request code generation and lookup.
+ *
+ * Clients can use this to create a request code unique to the RequestCodeRegistry
+ * instance (i.e. the whole app if the same instance is reused) while providing only:
+ *  - locally unique request code
+ *  - globally unique string identifier
+ *
+ * The idea is that you shouldn't have to come up with "random" numbers for request codes in your
+ * components. Instead, use sensible numbers starting from 1, only unique locally to your component,
+ * and let this class do the rest to ensure global uniqueness.
+ */
 class RequestCodeRegistry constructor(
     initialState: Bundle?,
     private val nbLowerBitsForIds: Int = 4

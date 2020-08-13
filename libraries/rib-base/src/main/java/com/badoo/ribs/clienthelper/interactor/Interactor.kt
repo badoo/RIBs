@@ -26,6 +26,12 @@ abstract class Interactor<R : Rib, V : RibView>(
     SavesInstanceState,
     RequestCodeClient {
 
+    /**
+     * This will be used to make your locally unique request codes unique to the whole app
+     *
+     * The idea is that you can use Android request codes starting from 1, 2, 3, ... instead of "random"
+     * numbers, and they only need to be unique globally in combination with the value of this field.
+     */
     override val requestCodeClientId: String
         get() = buildParams.identifier.toString()
 

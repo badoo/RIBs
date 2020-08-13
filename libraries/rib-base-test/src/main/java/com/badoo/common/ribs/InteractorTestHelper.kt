@@ -16,12 +16,11 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 
-private val buildParams = BuildParams.Empty()
-
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<*, View>,
     val viewFactory: ((RibView) -> View?)? = null
 ) {
+    private val buildParams = BuildParams.Empty()
 
     var nodeCreator: () -> Node<View> = {
         Node(

@@ -19,7 +19,7 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import kotlinx.android.parcel.Parcelize
 
 @ExperimentalApi
-class PortalRouter internal constructor(
+class PortalRouter(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
     private val defaultRoutingAction: RoutingAction,

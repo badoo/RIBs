@@ -1,8 +1,12 @@
 package com.badoo.ribs.routing.transition.handler
 
 import android.view.animation.Interpolator
-import com.badoo.ribs.routing.transition.*
+import com.badoo.ribs.routing.transition.Transition
+import com.badoo.ribs.routing.transition.TransitionDirection
+import com.badoo.ribs.routing.transition.TransitionElement
+import com.badoo.ribs.routing.transition.TransitionPair
 import com.badoo.ribs.routing.transition.effect.fade.fade
+import com.badoo.ribs.routing.transition.invoke
 
 
 open class CrossFader<T>(

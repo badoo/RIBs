@@ -6,7 +6,6 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
-import io.reactivex.disposables.Disposable
 
 /**
  * Helper class for easier migration.
@@ -15,20 +14,16 @@ import io.reactivex.disposables.Disposable
  */
 abstract class BackStackInteractor<R : Rib, V : RibView, C : Parcelable>(
     buildParams: BuildParams<*>,
-    disposables: Disposable? = null,
     val backStack: BackStackFeature<C>
 ) : Interactor<R, V>(
-    buildParams = buildParams,
-    disposables = disposables
+    buildParams = buildParams
 ), RoutingSource<C> by backStack {
 
     constructor(
         buildParams: BuildParams<*>,
-        initialConfiguration: C,
-        disposables: Disposable? = null
+        initialConfiguration: C
     ) : this(
         buildParams = buildParams,
-        disposables = disposables,
         backStack = BackStackFeature(
             initialConfiguration = initialConfiguration,
             buildParams = buildParams

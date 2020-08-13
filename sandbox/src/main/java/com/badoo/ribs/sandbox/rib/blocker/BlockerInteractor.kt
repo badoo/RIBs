@@ -10,8 +10,7 @@ import com.badoo.ribs.sandbox.rib.blocker.mapper.ViewEventToOutput
 class BlockerInteractor(
     buildParams: BuildParams<Nothing?>
 ) : Interactor<Blocker, BlockerView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     override fun onViewCreated(view: BlockerView, viewLifecycle: Lifecycle) {

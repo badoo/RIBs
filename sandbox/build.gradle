@@ -67,7 +67,7 @@ dependencies {
     implementation project(":libraries:rib-base")
     implementation project(":libraries:rib-portal-rx")
     implementation project(":libraries:rib-recyclerview")
-    implementation project(":libraries:rib-workflows-rx")
+    implementation project(":libraries:rib-rx")
 
     if (useCompose) {
         implementation project(":libraries:rib-compose")

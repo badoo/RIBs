@@ -15,8 +15,7 @@ internal class PhotoFeedInteractor(
     buildParams: BuildParams<*>,
     private val feature: PhotoFeedFeature
 ) : Interactor<PhotoFeed, PhotoFeedView>(
-    buildParams = buildParams,
-    disposables = feature
+    buildParams = buildParams
 ) {
 
     override fun onViewCreated(view: PhotoFeedView, viewLifecycle: Lifecycle) {

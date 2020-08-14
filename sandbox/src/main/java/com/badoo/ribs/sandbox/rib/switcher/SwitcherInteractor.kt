@@ -80,16 +80,19 @@ internal class SwitcherInteractor(
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
-                is Menu -> {
-                    bind(child.output to menuListener)
-                    bind(backStack.activeConfiguration.rx2() to child.input using ConfigurationToMenuInput)
-                }
-                is Blocker -> {
-                    bind(child.output to blockerOutputConsumer)
-                }
+                is Menu -> bind(child.output to menuListener)
+                is Blocker -> bind(child.output to blockerOutputConsumer)
+            }
+        }
+    }
+
+    override fun onChildAttached(child: Node<*>) {
+        child.lifecycle.createDestroy {
+            when (child) {
+                is Menu -> bind(backStack.activeConfiguration.rx2() to child.input using ConfigurationToMenuInput)
             }
         }
     }

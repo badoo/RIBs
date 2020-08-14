@@ -1,7 +1,7 @@
 package com.badoo.ribs.android.requestcode
 
 import android.os.Bundle
-import java.util.HashMap
+import java.util.*
 import kotlin.math.pow
 
 /**

@@ -1,9 +1,9 @@
 package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
+import com.badoo.ribs.core.state.Relay
+import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.util.RIBs
-import com.jakewharton.rxrelay2.PublishRelay
-import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observable
 
 abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
@@ -16,6 +16,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         ensureSubject(id)
 
         return events.getValue(id)
+            .rx2()
             .doOnDispose { cleanup(id) }
             .hide()
     }
@@ -24,7 +25,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         var subjectJustCreated = false
 
         if (!events.containsKey(id)) {
-            events[id] = PublishRelay.create()
+            events[id] = Relay()
             subjectJustCreated = true
         }
 
@@ -45,7 +46,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
             RIBs.errorHandler.handleNoRequestCodeListenersError(externalRequestCode, internalRequestCode, id, event)
         }
 
-        events.getValue(id).accept(event)
+        events.getValue(id).emit(event)
     }
 
     protected fun Int.toInternalRequestCode() =

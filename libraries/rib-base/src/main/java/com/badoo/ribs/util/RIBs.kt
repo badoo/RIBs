@@ -29,7 +29,7 @@ object RIBs {
         }
 
     @VisibleForTesting
-    internal fun clearErrorHandler() {
+    fun clearErrorHandler() {
         _errorHandler = null
     }
 

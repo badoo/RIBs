@@ -12,8 +12,7 @@ class TestRootInteractor(
     buildParams: BuildParams<Nothing?>,
     private val viewLifecycleObserver: TestObserver<Lifecycle.Event>
 ) : Interactor<TestRoot, TestRootView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     override fun onViewCreated(view: TestRootView, viewLifecycle: Lifecycle) {

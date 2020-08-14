@@ -3,25 +3,24 @@ package com.badoo.ribs.routing.source.backstack
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.state.Cancellable
+import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.core.state.Store
 import com.badoo.ribs.core.state.TimeCapsule
-import com.badoo.ribs.core.state.wrap
+import com.badoo.ribs.core.state.map
+import com.badoo.ribs.core.state.startWith
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.routing.source.backstack.BackStackFeature.Operation
 import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
 import com.badoo.ribs.routing.source.backstack.operation.NewRoot
 import com.badoo.ribs.routing.source.backstack.operation.Remove
 import com.badoo.ribs.routing.source.backstack.operation.canPop
 import com.badoo.ribs.routing.source.backstack.operation.canPopOverlay
 import com.badoo.ribs.routing.source.backstack.operation.pop
-import io.reactivex.ObservableSource
-import io.reactivex.Observer
-import io.reactivex.functions.Consumer
 
 private val timeCapsuleKey = BackStackFeature::class.java.name
 private fun <C : Parcelable> TimeCapsule.initialState(): BackStackFeatureState<C> =
@@ -43,24 +42,11 @@ private fun <C : Parcelable> TimeCapsule.initialState(): BackStackFeatureState<C
 class BackStackFeature<C : Parcelable> internal constructor(
     private val initialConfiguration: C,
     private val timeCapsule: TimeCapsule
-) : Store<BackStackFeatureState<C>>(timeCapsule.initialState()),
-    Consumer<Operation<C>>,
-    RoutingSource<C> {
-
+) : RoutingSource<C> {
     /**
      * The back stack operation this [BackStackFeature] supports.
      */
     data class Operation<C : Parcelable>(val backStackOperation: BackStackOperation<C>)
-
-    val activeConfiguration: ObservableSource<C> =
-        wrap()
-            .map {
-                it.backStack
-                    .last()
-                    .routing
-                    .configuration
-            }
-            .startWith(initialConfiguration)
 
     constructor(
         initialConfiguration: C, // TODO consider 2nd constructor with RoutingHistoryElement<C>
@@ -70,67 +56,83 @@ class BackStackFeature<C : Parcelable> internal constructor(
         TimeCapsule(buildParams.savedInstanceState)
     )
 
-    init {
-        timeCapsule.register(timeCapsuleKey) { state }
-        initializeBackstack()
-    }
-
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
         timeCapsule.initialState()
 
-    /**
-     * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
-     */
-    private fun initializeBackstack() {
-        if(state.backStack.isEmpty()) {
+    private val store = object : Store<BackStackFeatureState<C>>(timeCapsule.initialState()) {
+        init {
+            timeCapsule.register(timeCapsuleKey) { state }
+            initializeBackstack()
+        }
+
+        fun accept(operation: BackStackOperation<C>) {
             emit(
-                state.apply(
-                    NewRoot(initialConfiguration)
+                state.apply(operation)
+            )
+        }
+
+        /**
+         * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
+         */
+        private fun initializeBackstack() {
+            if (state.backStack.isEmpty()) {
+                accept(NewRoot(initialConfiguration))
+            }
+        }
+
+        /**
+         * Creates a new [BackStackFeatureState] based on the old one + the applied [BackStackOperation]
+         */
+        private fun BackStackFeatureState<C>.apply(operation: BackStackOperation<C>): BackStackFeatureState<C> {
+            val updated = operation
+                .invoke(backStack)
+                .applyBackStackMaintenance()
+
+            return copy(backStack = updated)
+        }
+
+        // TODO add unit test checking id uniqueness
+        private fun BackStack<C>.applyBackStackMaintenance(): BackStack<C> =
+            mapIndexed { index, element ->
+                element.copy(
+                    activation = if (index == lastIndex) ACTIVE else INACTIVE,
+                    routing = routingWithCorrectId(element, index),
+                    overlays = overlaysWithCorrectId(element, index)
                 )
-            )
-        }
-    }
+            }
 
-    /**
-     * Creates a new [BackStackFeatureState] based on the old one + the applied [BackStackOperation]
-     */
-    private fun BackStackFeatureState<C>.apply(operation: BackStackOperation<C>): BackStackFeatureState<C> {
-        val updated = operation
-            .invoke(backStack)
-            .applyBackStackMaintenance()
-
-        return copy(backStack = updated)
-    }
-
-    // TODO add unit test checking id uniqueness
-    private fun BackStack<C>.applyBackStackMaintenance(): BackStack<C> =
-        mapIndexed { index, element ->
-            element.copy(
-                activation = if (index == lastIndex) ACTIVE else INACTIVE,
-                routing = routingWithCorrectId(element, index),
-                overlays = overlaysWithCorrectId(element, index)
-            )
-        }
-
-    private fun routingWithCorrectId(element: RoutingHistoryElement<C>, index: Int): Routing<C> =
-        element.routing.copy(
-            identifier = contentIdForPosition(
-                index,
-                element.routing.configuration
-            )
-        )
-
-    private fun overlaysWithCorrectId(element: RoutingHistoryElement<C>, index: Int): List<Routing<C>> =
-        element.overlays.mapIndexed { overlayIndex, overlay ->
-            overlay.copy(
-                identifier = overlayIdForPosition(
+        private fun routingWithCorrectId(element: RoutingHistoryElement<C>, index: Int): Routing<C> =
+            element.routing.copy(
+                identifier = contentIdForPosition(
                     index,
-                    element.routing.configuration,
-                    overlayIndex,
-                    overlay.configuration
+                    element.routing.configuration
                 )
             )
-        }
+
+        private fun overlaysWithCorrectId(element: RoutingHistoryElement<C>, index: Int): List<Routing<C>> =
+            element.overlays.mapIndexed { overlayIndex, overlay ->
+                overlay.copy(
+                    identifier = overlayIdForPosition(
+                        index,
+                        element.routing.configuration,
+                        overlayIndex,
+                        overlay.configuration
+                    )
+                )
+            }
+    }
+
+    val activeConfiguration: Source<C> =
+        store
+            .map {
+                it.backStack.last()
+                    .routing
+                    .configuration
+            }
+            .startWith(initialConfiguration)
+
+    val state: BackStackFeatureState<C>
+        get() = store.state
 
     fun popBackStack(): Boolean = // TODO rename
         if (state.backStack.canPop) {
@@ -166,17 +168,14 @@ class BackStackFeature<C : Parcelable> internal constructor(
      * Checks if the required operations are to be executed based on the current [BackStackFeatureState].
      * Emits corresponding [BackStackFeatureState]s if the answer is yes.
      */
-    override fun accept(operation: Operation<C>) {
+    fun accept(operation: Operation<C>) {
         if (operation.backStackOperation.isApplicable(state.backStack)) {
-            emit(
-                state.apply(operation.backStackOperation)
-            )
+            store.accept(operation.backStackOperation)
         }
     }
 
-    override fun subscribe(observer: Observer<in RoutingHistory<C>>) {
-        wrap().subscribe(observer)
-    }
+    override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable =
+        store.observe(callback)
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

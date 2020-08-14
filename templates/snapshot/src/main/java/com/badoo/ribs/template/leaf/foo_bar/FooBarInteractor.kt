@@ -18,8 +18,7 @@ internal class FooBarInteractor(
     buildParams: BuildParams<*>,
     private val feature: FooBarFeature
 ) : Interactor<FooBar, FooBarView>(
-    buildParams = buildParams,
-    disposables = feature
+    buildParams = buildParams
 ) {
 
     override fun onAttach(nodeLifecycle: Lifecycle) {

@@ -1,13 +1,12 @@
 package com.badoo.ribs.routing.source.impl
 
 import android.os.Parcelable
+import com.badoo.ribs.core.state.Cancellable
+import com.badoo.ribs.core.state.Relay
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.RoutingSource
-import com.jakewharton.rxrelay2.BehaviorRelay
-import com.jakewharton.rxrelay2.Relay
-import io.reactivex.Observer
 import java.util.UUID
 
 class Pool<C : Parcelable>(
@@ -19,12 +18,7 @@ class Pool<C : Parcelable>(
             elements.values
         )
 
-    private val states: Relay<RoutingHistory<C>> =
-        BehaviorRelay.createDefault(
-            RoutingHistory.from(
-                current
-            )
-        )
+    private val states: Relay<RoutingHistory<C>> = Relay()
 
     // FIXME save/restore to bundle to support correct baseLineState
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
@@ -98,9 +92,11 @@ class Pool<C : Parcelable>(
     }
 
     private fun updateState() {
-        states.accept(current)
+        states.emit(current)
     }
 
-    override fun subscribe(observer: Observer<in RoutingHistory<C>>) =
-        states.subscribe(observer)
+    override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable {
+        callback(current)
+        return states.observe(callback)
+    }
 }

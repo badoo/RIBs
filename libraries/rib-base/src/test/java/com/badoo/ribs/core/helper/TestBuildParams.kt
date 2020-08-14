@@ -7,7 +7,7 @@ import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
-import java.util.UUID
+import java.util.*
 
 fun testBuildParams(
     savedInstanceState: Bundle? = null,

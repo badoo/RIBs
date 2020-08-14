@@ -11,7 +11,6 @@ import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestNode
-import com.badoo.ribs.core.helper.TestNode2
 import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
@@ -33,10 +32,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Single
 import io.reactivex.functions.Consumer
-import io.reactivex.observers.TestObserver
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -65,7 +61,6 @@ class NodeTest {
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode
     private lateinit var root1: TestNode
-    private lateinit var allChildren: List<Node<*>>
     private lateinit var childAncestry: AncestryInfo
 
     @Before
@@ -127,14 +122,6 @@ class NodeTest {
         node.attachChildNode(child1)
         node.attachChildNode(child2)
         node.attachChildNode(child3)
-    }
-
-    private fun attachToViewAlongWithChildren() {
-        node.onCreateView(parentView)
-        node.onAttachToView()
-        node.attachChildView(child1)
-        node.attachChildView(child2)
-        node.attachChildView(child3)
     }
 
     @Test
@@ -558,89 +545,6 @@ class NodeTest {
         node.onCreateView(parentView)
         node.onAttachToView()
         verify(interactor, never()).onViewCreated(anyOrNull(), anyOrNull())
-    }
-
-    @Test
-    fun `executeWorkflow executes action on subscribe`() {
-        var actionInvoked = false
-        val action = { actionInvoked = true }
-        val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
-        val testObserver = TestObserver<Node<*>>()
-        workflow.subscribe(testObserver)
-
-        assertEquals(true, actionInvoked)
-        testObserver.assertValue(node)
-        testObserver.assertComplete()
-    }
-
-    @Test
-    fun `executeWorkflow never executes action on lifecycle terminate before subscribe`() {
-        node.onDetach()
-
-        var actionInvoked = false
-        val action = { actionInvoked = true }
-        val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
-        val testObserver = TestObserver<Node<*>>()
-        workflow.subscribe(testObserver)
-
-        assertEquals(false, actionInvoked)
-        testObserver.assertNever(node)
-        testObserver.assertNotComplete()
-    }
-
-    @Test
-    fun `attachWorkflow executes action on subscribe`() {
-        var actionInvoked = false
-        val action = { actionInvoked = true }
-        val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
-        val testObserver = TestObserver<TestNode>()
-        workflow.subscribe(testObserver)
-
-        assertEquals(true, actionInvoked)
-        testObserver.assertValue(child3)
-        testObserver.assertComplete()
-    }
-
-    @Test
-    fun `attachWorkflow never executes action on lifecycle terminate before subscribe`() {
-        node.onDetach()
-
-        var actionInvoked = false
-        val action = { actionInvoked = true }
-        val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
-        val testObserver = TestObserver<TestNode>()
-        workflow.subscribe(testObserver)
-
-        assertEquals(false, actionInvoked)
-        testObserver.assertNever(child1)
-        testObserver.assertNever(child2)
-        testObserver.assertNever(child3)
-        testObserver.assertNotComplete()
-    }
-
-    @Test
-    fun `waitForChildAttached emits expected child immediately if it's already attached`() {
-        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
-        val testObserver = TestObserver<TestNode2>()
-        val testChildNode = TestNode2(buildParams = testBuildParams(ancestryInfo = childAncestry))
-
-        node.attachChildNode(testChildNode)
-        workflow.subscribe(testObserver)
-
-        testObserver.assertValue(testChildNode)
-        testObserver.assertComplete()
-    }
-
-    @Test
-    fun `waitForChildAttached never executes action on lifecycle terminate before subscribe`() {
-        node.onDetach()
-
-        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
-        val testObserver = TestObserver<TestNode2>()
-        workflow.subscribe(testObserver)
-
-        testObserver.assertNoValues()
-        testObserver.assertNotComplete()
     }
 
     @Test

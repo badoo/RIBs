@@ -3,10 +3,10 @@ package com.badoo.ribs.test.util
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
-import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
 class TestActivity : AppCompatActivity() {

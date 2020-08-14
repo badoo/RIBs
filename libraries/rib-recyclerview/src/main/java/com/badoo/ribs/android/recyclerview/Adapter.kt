@@ -13,8 +13,8 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.source.impl.Pool
 import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer

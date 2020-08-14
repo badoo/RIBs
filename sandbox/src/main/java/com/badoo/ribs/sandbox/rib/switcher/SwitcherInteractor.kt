@@ -8,6 +8,7 @@ import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.pop
 import com.badoo.ribs.routing.source.backstack.operation.push
@@ -31,8 +32,7 @@ internal class SwitcherInteractor(
     private val backStack: BackStackFeature<Configuration>,
     private val dialogToTestOverlay: DialogToTestOverlay
 ) : Interactor<Switcher, SwitcherView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     private val menuListener = Consumer<Menu.Output> { output ->
@@ -85,7 +85,7 @@ internal class SwitcherInteractor(
             when (child) {
                 is Menu -> {
                     bind(child.output to menuListener)
-                    bind(backStack.activeConfiguration to child.input using ConfigurationToMenuInput)
+                    bind(backStack.activeConfiguration.rx2() to child.input using ConfigurationToMenuInput)
                 }
                 is Blocker -> {
                     bind(child.output to blockerOutputConsumer)

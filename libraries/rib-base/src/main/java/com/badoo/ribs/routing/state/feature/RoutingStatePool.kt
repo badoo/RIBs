@@ -5,7 +5,6 @@ import com.badoo.ribs.annotation.OutdatedDocumentation
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.state.AsyncStore
 import com.badoo.ribs.core.state.TimeCapsule
-import com.badoo.ribs.core.state.wrap
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
@@ -21,9 +20,6 @@ import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect
 import com.badoo.ribs.routing.state.feature.state.SavedState
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import io.reactivex.ObservableSource
-import io.reactivex.Observer
-import io.reactivex.functions.Consumer
 
 private val timeCapsuleKey = RoutingStatePool::class.java.name
 private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
@@ -55,9 +51,7 @@ internal class RoutingStatePool<C : Parcelable>(
     activator: RoutingActivator<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
-) : AsyncStore<Effect<C>, WorkingState<C>>(initialState = timeCapsule.initialState<C>()),
-    Consumer<Transaction<C>>,
-    ObservableSource<WorkingState<C>> {
+) : AsyncStore<Effect<C>, WorkingState<C>>(initialState = timeCapsule.initialState<C>()) {
 
     private val actor = Actor(
         resolver = resolver,
@@ -143,7 +137,7 @@ internal class RoutingStatePool<C : Parcelable>(
         }
     }
 
-    override fun accept(transaction: Transaction<C>) {
+    fun accept(transaction: Transaction<C>) {
         actor.invoke(state, transaction)
     }
 
@@ -197,10 +191,6 @@ internal class RoutingStatePool<C : Parcelable>(
                 pendingRemoval = pendingRemoval - effect.key
             )
         }
-    }
-
-    override fun subscribe(observer: Observer<in WorkingState<C>>) {
-        wrap().subscribe(observer)
     }
 
     override fun cancel() {

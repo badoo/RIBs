@@ -30,7 +30,6 @@ import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.util.RIBs
-import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * The main structure element of the system.
@@ -89,7 +88,7 @@ open class Node<V : RibView>(
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
 
     @VisibleForTesting
-    internal val _children: MutableList<Node<*>> = CopyOnWriteArrayList()
+    internal val _children: MutableList<Node<*>> = mutableListOf()
     val children: List<Node<*>> get() = _children
 
     internal open val lifecycleManager = LifecycleManager(this)

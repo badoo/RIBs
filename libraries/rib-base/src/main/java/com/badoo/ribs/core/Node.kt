@@ -89,7 +89,8 @@ open class Node<V : RibView>(
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
 
     @VisibleForTesting
-    val children: MutableList<Node<*>> = CopyOnWriteArrayList()
+    internal val _children: MutableList<Node<*>> = CopyOnWriteArrayList()
+    val children: List<Node<*>> get() = _children
 
     internal open val lifecycleManager = LifecycleManager(this)
 
@@ -203,7 +204,7 @@ open class Node<V : RibView>(
     @MainThread
     fun attachChildNode(child: Node<*>) {
         verifyNotRoot(child)
-        children.add(child)
+        _children.add(child)
         lifecycleManager.onAttachChild(child)
         child.onAttach()
         onAttachChildNode(child)
@@ -267,7 +268,7 @@ open class Node<V : RibView>(
     @MainThread
     fun detachChildNode(child: Node<*>) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChild(child) }
-        children.remove(child)
+        _children.remove(child)
         child.onDetach()
     }
 

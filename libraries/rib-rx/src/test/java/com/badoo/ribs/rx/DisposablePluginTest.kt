@@ -19,7 +19,7 @@ class DisposablePluginTest {
         node = Node<Nothing>(
             buildParams = BuildParams(null, BuildContext.root(null)),
             plugins = listOf(
-                disposeOnDetach(disposables)
+                disposables(disposables)
             ),
             viewFactory = null
         )

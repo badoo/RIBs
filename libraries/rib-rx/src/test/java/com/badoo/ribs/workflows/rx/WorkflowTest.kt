@@ -32,7 +32,6 @@ class WorkflowTest {
     private lateinit var child1: TestNode
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode
-    private lateinit var allChildren: List<Node<*>>
     private lateinit var childAncestry: AncestryInfo
 
     @Before
@@ -81,8 +80,9 @@ class WorkflowTest {
             ),
             viewFactory = null
         )
-        allChildren = listOf(child1, child2, child3)
-        node.children.addAll(allChildren)
+        node.attachChildNode(child1)
+        node.attachChildNode(child2)
+        node.attachChildNode(child3)
     }
 
     @Test

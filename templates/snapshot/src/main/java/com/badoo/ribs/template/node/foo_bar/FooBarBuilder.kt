@@ -6,7 +6,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
-import com.badoo.ribs.rx.disposeOnDetach
+import com.badoo.ribs.rx.disposables
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
@@ -68,6 +68,6 @@ class FooBarBuilder(
     ) = FooBarNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
-        plugins = listOf(interactor, router, disposeOnDetach(feature))
+        plugins = listOf(interactor, router, disposables(feature))
     )
 }

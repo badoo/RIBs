@@ -3,7 +3,7 @@ package com.badoo.ribs.template.node_dagger_build_param.foo_bar.builder
 
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
-import com.badoo.ribs.rx.disposeOnDetach
+import com.badoo.ribs.rx.disposables
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.FooBar
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.FooBarInteractor
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.FooBarNode
@@ -88,6 +88,6 @@ internal object FooBarModule {
     ) : FooBarNode = FooBarNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
-        plugins = listOf(interactor, router, disposeOnDetach(feature))
+        plugins = listOf(interactor, router, disposables(feature))
     )
 }

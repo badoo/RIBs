@@ -9,7 +9,12 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
-import com.badoo.ribs.core.helper.*
+import com.badoo.ribs.core.helper.AnyConfiguration
+import com.badoo.ribs.core.helper.TestNode
+import com.badoo.ribs.core.helper.TestRib
+import com.badoo.ribs.core.helper.TestRouter
+import com.badoo.ribs.core.helper.TestView
+import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
@@ -19,7 +24,14 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.isA
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import io.reactivex.functions.Consumer
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -203,7 +215,7 @@ class NodeTest {
         }
 
         mocks.forEach {
-            node.children.add(it)
+            node._children.add(it)
         }
 
         return mocks

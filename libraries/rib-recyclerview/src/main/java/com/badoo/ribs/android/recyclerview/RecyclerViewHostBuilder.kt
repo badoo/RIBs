@@ -7,7 +7,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.router.RouterByDelegate
 import com.badoo.ribs.routing.source.impl.Pool
-import com.badoo.ribs.rx.disposeOnDetach
+import com.badoo.ribs.rx.disposables
 
 @ExperimentalApi
 class RecyclerViewHostBuilder<T : Parcelable>(
@@ -59,7 +59,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
             plugins = listOf(
                 router,
                 interactor,
-                disposeOnDetach(feature)
+                disposables(feature)
             ),
             viewDeps =  viewDeps,
             timeCapsule = timeCapsule,

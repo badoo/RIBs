@@ -5,7 +5,7 @@ import com.badoo.ribs.core.plugin.Plugin
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-internal class Disposables(disposables: List<Disposable>) : NodeLifecycleAware {
+private class Disposables(disposables: List<Disposable>) : NodeLifecycleAware {
     private val disposable = CompositeDisposable(disposables)
 
     override fun onDetach() {
@@ -14,5 +14,5 @@ internal class Disposables(disposables: List<Disposable>) : NodeLifecycleAware {
     }
 }
 
-fun disposeOnDetach(vararg disposables: Disposable): Plugin =
+fun disposables(vararg disposables: Disposable): Plugin =
     Disposables(disposables.toList())

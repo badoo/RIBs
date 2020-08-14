@@ -2,7 +2,7 @@ package com.badoo.ribs.template.leaf.foo_bar
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.rx.disposeOnDetach
+import com.badoo.ribs.rx.disposables
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 
 class FooBarBuilder(
@@ -38,6 +38,6 @@ class FooBarBuilder(
         FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            plugins = listOf(interactor, disposeOnDetach(feature))
+            plugins = listOf(interactor, disposables(feature))
         )
 }

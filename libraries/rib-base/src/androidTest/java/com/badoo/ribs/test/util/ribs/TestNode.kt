@@ -21,15 +21,15 @@ class TestNode<V: RibView>(
     var isAttached: Boolean = false
         private set
 
-    override fun onAttach() {
-        super.onAttach()
+    override fun onCreate() {
+        super.onCreate()
         isAttached = true
     }
 
     fun getRouter() = router
 
-    override fun onDetach() {
-        super.onDetach()
+    override fun onDestroy() {
+        super.onDestroy()
         isAttached = false
     }
 }

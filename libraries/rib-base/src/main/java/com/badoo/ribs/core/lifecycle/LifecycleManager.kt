@@ -81,7 +81,7 @@ internal class LifecycleManager(
     /**
      * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
-    fun onCreateRib() {
+    fun onCreate() {
         if (owner.isViewless) {
             // RIBs without view will always be at: min(RESUMED, external)
             ribLifecycle.onResume()
@@ -94,7 +94,7 @@ internal class LifecycleManager(
     /**
      * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
-    fun onDestroyRib() {
+    fun onDestroy() {
         ribLifecycle.onDestroy()
     }
 

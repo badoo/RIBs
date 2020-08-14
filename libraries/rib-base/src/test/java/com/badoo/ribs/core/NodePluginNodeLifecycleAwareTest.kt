@@ -14,14 +14,14 @@ import org.robolectric.RobolectricTestRunner
 class NodePluginNodeLifecycleAwareTest : NodePluginTest() {
 
     @Test
-    fun `NodeLifecycleAware plugins receive onCreate() when created`() {
+    fun `NodeLifecycleAware plugins receive onBuild() when created`() {
         val plugins = List<NodeLifecycleAware>(3) { mock() }
         val builder = TestBuilder(plugins)
 
         builder.build(BuildContext.root(null))
 
         plugins.forEach {
-            verify(it).onCreate()
+            verify(it).onBuild()
         }
     }
 
@@ -29,10 +29,10 @@ class NodePluginNodeLifecycleAwareTest : NodePluginTest() {
     fun `NodeLifecycleAware plugins receive onAttach()`() {
         val (node, plugins) = testPlugins<NodeLifecycleAware>()
 
-        node.onAttach()
+        node.onCreate()
 
         plugins.forEach {
-            verify(it).onAttach(eq(node.lifecycleManager.ribLifecycle.lifecycle))
+            verify(it).onCreate(eq(node.lifecycleManager.ribLifecycle.lifecycle))
         }
     }
 
@@ -40,10 +40,10 @@ class NodePluginNodeLifecycleAwareTest : NodePluginTest() {
     fun `NodeLifecycleAware plugins receive onDetach()`() {
         val (node, plugins) = testPlugins<NodeLifecycleAware>()
 
-        node.onDetach()
+        node.onDestroy()
 
         plugins.forEach {
-            verify(it).onDetach()
+            verify(it).onDestroy()
         }
     }
 }

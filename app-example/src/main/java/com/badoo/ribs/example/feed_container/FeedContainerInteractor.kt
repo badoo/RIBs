@@ -13,7 +13,7 @@ internal class FeedContainerInteractor(
     buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
         }
     }
@@ -23,7 +23,7 @@ internal class FeedContainerInteractor(
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         /**
          * TODO bind children here and delete this comment block.
          *
@@ -31,7 +31,7 @@ internal class FeedContainerInteractor(
          *  so it's safe to setup listening to their output before they start emitting.
          *
          *  On the other hand, they're not ready to receive inputs yet. Usually this is alright.
-         *  If it's a requirement though, create those bindings in [onAttachChild]
+         *  If it's a requirement though, create those bindings in [onChildAttached]
          */
         // child.lifecycle.createDestroy {
         // when (child) {

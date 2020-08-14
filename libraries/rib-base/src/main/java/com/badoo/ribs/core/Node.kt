@@ -114,19 +114,19 @@ open class Node<V : RibView>(
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
-    internal fun onCreate() {
-        parent?.onChildCreated(this)
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onCreate() }
+    internal fun onBuild() {
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onBuild() }
+        parent?.onChildBuilt(this)
     }
 
-    private fun onChildCreated(child: Node<*>) {
-        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildCreated(child) }
+    private fun onChildBuilt(child: Node<*>) {
+        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildBuilt(child) }
     }
 
     @CallSuper
-    open fun onAttach() {
-        lifecycleManager.onCreateRib()
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach(lifecycleManager.ribLifecycle.lifecycle) }
+    open fun onCreate() {
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
+        lifecycleManager.onCreate()
     }
 
     fun onCreateView(parentView: RibView): V? {
@@ -177,7 +177,7 @@ open class Node<V : RibView>(
         }
     }
 
-    open fun onDetach() {
+    open fun onDestroy() {
         if (view != null) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
@@ -185,8 +185,8 @@ open class Node<V : RibView>(
             )
         }
 
-        lifecycleManager.onDestroyRib()
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDetach() }
+        lifecycleManager.onDestroy()
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDestroy() }
 
         for (child in children.toList()) {
             detachChildNode(child)
@@ -205,9 +205,9 @@ open class Node<V : RibView>(
         verifyNotRoot(child)
         _children.add(child)
         lifecycleManager.onAttachChild(child)
-        child.onAttach()
+        child.onCreate()
         onAttachChildNode(child)
-        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onAttachChild(child) }
+        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildAttached(child) }
     }
 
     open fun onAttachChildNode(child: Node<*>) {
@@ -266,9 +266,9 @@ open class Node<V : RibView>(
      */
     @MainThread
     fun detachChildNode(child: Node<*>) {
-        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onDetachChild(child) }
+        plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildDetached(child) }
         _children.remove(child)
-        child.onDetach()
+        child.onDestroy()
     }
 
     internal fun markPendingViewDetach(isPendingViewDetach: Boolean) {

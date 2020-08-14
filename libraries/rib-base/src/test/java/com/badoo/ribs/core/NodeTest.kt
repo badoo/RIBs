@@ -125,14 +125,14 @@ class NodeTest {
     }
 
     @Test
-    fun `onDetach() verifies view has been detached`() {
+    fun `onDestroy() verifies view has been detached`() {
         val errorHandler = mock<RIBs.ErrorHandler>()
         RIBs.clearErrorHandler()
         RIBs.errorHandler = errorHandler
         node.onCreateView(parentView)
         node.onAttachToView()
 
-        node.onDetach()
+        node.onDestroy()
 
         verify(errorHandler).handleNonFatalError(any(), isA<RuntimeException>())
     }
@@ -266,8 +266,8 @@ class NodeTest {
     }
 
     @Test
-    fun `onAttach() results in lifecycle of node going to CREATED`() {
-        node.onAttach()
+    fun `onCreate() results in lifecycle of node going to CREATED`() {
+        node.onCreate()
         assertEquals(Lifecycle.State.CREATED, node.lifecycle.currentState)
     }
 

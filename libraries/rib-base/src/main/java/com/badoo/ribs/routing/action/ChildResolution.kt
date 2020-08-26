@@ -3,7 +3,7 @@ package com.badoo.ribs.routing.action
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 
-open class AttachRibResolution(
+open class ChildResolution(
     private val ribFactory: RibFactory
 ) : Resolution {
 
@@ -18,6 +18,6 @@ open class AttachRibResolution(
 
     companion object {
         fun attach(ribFactory: RibFactory): Resolution =
-            AttachRibResolution(ribFactory)
+            ChildResolution(ribFactory)
     }
 }

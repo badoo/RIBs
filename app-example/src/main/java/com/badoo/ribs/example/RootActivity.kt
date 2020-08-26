@@ -16,7 +16,7 @@ import com.badoo.ribs.example.root.Root
 import com.badoo.ribs.example.root.RootBuilder
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
-import com.badoo.ribs.routing.action.AttachRibResolution.Companion.attach
+import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
 import com.badoo.ribs.routing.action.Resolution
 
 @ExperimentalApi

@@ -3,7 +3,7 @@ package com.badoo.ribs.portal
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.action.AttachRibResolution.Companion.attach
+import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Default

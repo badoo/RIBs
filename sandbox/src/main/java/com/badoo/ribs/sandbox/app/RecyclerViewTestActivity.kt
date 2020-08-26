@@ -16,7 +16,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
-import com.badoo.ribs.android.recyclerview.routing.action.AddToRecyclerViewResolution.Companion.recyclerView
+import com.badoo.ribs.android.recyclerview.routing.action.RecyclerViewItemResolution.Companion.recyclerView
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root

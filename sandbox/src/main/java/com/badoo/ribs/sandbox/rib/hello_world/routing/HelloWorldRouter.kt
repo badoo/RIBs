@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.hello_world.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AttachRibResolution.Companion.attach
+import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
 import com.badoo.ribs.routing.action.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent

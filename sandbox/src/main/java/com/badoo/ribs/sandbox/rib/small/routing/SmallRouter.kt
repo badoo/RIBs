@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.small.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AnchoredAttachResolution.Companion.anchor
+import com.badoo.ribs.routing.action.AnchoredChildResolution.Companion.anchor
 import com.badoo.ribs.routing.action.Resolution
 import com.badoo.ribs.routing.action.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router

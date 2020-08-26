@@ -5,7 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration.Content
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AttachRibResolution.Companion.attach
+import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
 import com.badoo.ribs.routing.action.Resolution
 import com.badoo.ribs.routing.action.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router

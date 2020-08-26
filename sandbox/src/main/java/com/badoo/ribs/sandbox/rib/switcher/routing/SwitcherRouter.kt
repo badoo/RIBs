@@ -5,7 +5,7 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.dialog.routing.action.DialogResolution.Companion.showDialog
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AttachRibResolution.Companion.attach
+import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
 import com.badoo.ribs.routing.action.CompositeResolution.Companion.composite
 import com.badoo.ribs.routing.action.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.routing.action.Resolution

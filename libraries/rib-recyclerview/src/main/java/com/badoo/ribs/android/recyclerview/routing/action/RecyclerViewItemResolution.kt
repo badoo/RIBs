@@ -6,7 +6,7 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.action.RibFactory
 import com.badoo.ribs.routing.action.Resolution
 
-open class AddToRecyclerViewResolution(
+open class RecyclerViewItemResolution(
     private val ribFactory: RibFactory
 ) : Resolution {
 
@@ -23,7 +23,7 @@ open class AddToRecyclerViewResolution(
 
     companion object {
         fun recyclerView(ribFactory: RibFactory): Resolution =
-            AddToRecyclerViewResolution(
+            RecyclerViewItemResolution(
                 ribFactory
             )
     }

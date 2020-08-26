@@ -16,8 +16,8 @@ import com.badoo.ribs.example.root.Root
 import com.badoo.ribs.example.root.RootBuilder
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
-import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.Resolution
 
 @ExperimentalApi
 class RootActivity : RibActivity() {

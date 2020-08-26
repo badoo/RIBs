@@ -7,7 +7,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.util.RIBs

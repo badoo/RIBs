@@ -13,8 +13,8 @@ import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalRouter
 import com.badoo.ribs.portal.RxPortal
 import com.badoo.ribs.portal.RxPortalBuilder
-import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.CrossFader
 import com.badoo.ribs.routing.transition.handler.Slider
 import com.badoo.ribs.routing.transition.handler.TransitionHandler

@@ -8,7 +8,7 @@ import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.*
 import com.badoo.ribs.routing.state.RoutingContext.Resolved

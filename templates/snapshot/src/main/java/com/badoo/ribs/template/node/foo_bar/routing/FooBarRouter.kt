@@ -3,8 +3,8 @@ package com.badoo.ribs.template.node.foo_bar.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.Resolution
-import com.badoo.ribs.routing.action.Resolution.Companion.noop
+import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler

@@ -3,7 +3,7 @@ package com.badoo.ribs.routing.state.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE

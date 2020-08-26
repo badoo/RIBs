@@ -3,7 +3,7 @@ package com.badoo.ribs.core.helper
 import android.os.Parcelable
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.Routing
 import com.nhaarman.mockitokotlin2.mock

@@ -2,7 +2,7 @@ package com.badoo.ribs.routing.state.changeset
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.state.action.single.ActionFactory
 import com.badoo.ribs.routing.state.action.single.ActivateAction
 import com.badoo.ribs.routing.state.action.single.AddAction

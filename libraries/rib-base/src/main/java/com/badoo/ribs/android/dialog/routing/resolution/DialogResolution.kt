@@ -1,4 +1,4 @@
-package com.badoo.ribs.android.dialog.routing.action
+package com.badoo.ribs.android.dialog.routing.resolution
 
 import android.os.Parcelable
 import com.badoo.ribs.android.dialog.Dialog
@@ -6,7 +6,7 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.source.RoutingSource
 
 class DialogResolution<Event : Any, C : Parcelable>(

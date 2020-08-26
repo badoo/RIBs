@@ -3,8 +3,8 @@ package com.badoo.ribs.tutorials.tutorial4.rib.greetings_container
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.tutorials.tutorial4.rib.greetings_container.GreetingsContainerRouter.Configuration

@@ -1,4 +1,4 @@
-package com.badoo.ribs.routing.action
+package com.badoo.ribs.routing.resolution
 
 import com.badoo.ribs.core.Node
 

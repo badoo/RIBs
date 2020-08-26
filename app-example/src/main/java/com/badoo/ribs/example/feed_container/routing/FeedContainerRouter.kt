@@ -5,9 +5,9 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration
 import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration.Permanent
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.ChildResolution.Companion.attach
-import com.badoo.ribs.routing.action.Resolution
-import com.badoo.ribs.routing.action.Resolution.Companion.noop
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.routing.transition.handler.TransitionHandler

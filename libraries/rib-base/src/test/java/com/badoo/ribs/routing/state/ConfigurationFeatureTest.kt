@@ -9,7 +9,7 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.Routing.Identifier
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.*

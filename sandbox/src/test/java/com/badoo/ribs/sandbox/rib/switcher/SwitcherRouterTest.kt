@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.routing.action.DialogResolution
+import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing

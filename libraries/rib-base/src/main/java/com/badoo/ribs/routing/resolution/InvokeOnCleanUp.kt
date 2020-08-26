@@ -1,4 +1,4 @@
-package com.badoo.ribs.routing.action
+package com.badoo.ribs.routing.resolution
 
 class InvokeOnCleanup(
     private val block: () -> Unit

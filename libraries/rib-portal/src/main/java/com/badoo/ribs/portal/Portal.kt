@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
 @ExperimentalApi

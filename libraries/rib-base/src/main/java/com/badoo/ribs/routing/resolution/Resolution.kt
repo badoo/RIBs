@@ -6,6 +6,9 @@ import com.badoo.ribs.core.modality.BuildContext
 
 interface Resolution {
 
+    val anchor: Node<*>?
+        get() = null
+
     val numberOfNodes: Int
 
     /**
@@ -19,9 +22,6 @@ interface Resolution {
 
     fun cleanup() {
     }
-
-    fun anchor(): Node<*>? =
-        null
 
     companion object {
         fun noop(): Resolution = object : Resolution {

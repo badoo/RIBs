@@ -13,7 +13,7 @@ import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalRouter
 import com.badoo.ribs.portal.RxPortal
 import com.badoo.ribs.portal.RxPortalBuilder
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.CrossFader
 import com.badoo.ribs.routing.transition.handler.Slider
@@ -46,7 +46,7 @@ class RootActivity : RibActivity() {
             object : Portal.Dependency {
                 override fun defaultRoutingAction(): (Portal.OtherSide) -> Resolution =
                     { portal ->
-                        attach { buildSwitcherNode(portal, it) }
+                        child { buildSwitcherNode(portal, it) }
                     }
 
                 override fun transitionHandler(): TransitionHandler<PortalRouter.Configuration>? =

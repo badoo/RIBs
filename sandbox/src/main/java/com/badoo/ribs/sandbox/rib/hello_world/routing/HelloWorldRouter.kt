@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.hello_world.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
@@ -27,7 +27,7 @@ class HelloWorldRouter internal constructor(
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                Small -> attach { small.build(it) }
+                Small -> child { small.build(it) }
             }
         }
 }

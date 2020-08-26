@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.big.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
@@ -28,7 +28,7 @@ class BigRouter internal constructor(
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                Permanent.Small -> attach { small.build(it) }
+                Permanent.Small -> child { small.build(it) }
             }
         }
 }

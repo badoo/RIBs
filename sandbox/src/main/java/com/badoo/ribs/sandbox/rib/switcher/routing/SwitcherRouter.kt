@@ -5,7 +5,7 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution.Companion.showDialog
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.CompositeResolution.Companion.composite
 import com.badoo.ribs.routing.resolution.InvokeOnExecute.Companion.execute
 import com.badoo.ribs.routing.resolution.Resolution
@@ -57,24 +57,24 @@ class SwitcherRouter internal constructor(
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                is Permanent.Menu -> attach { menu.build(it) }
+                is Permanent.Menu -> child { menu.build(it) }
                 is Content.Hello -> composite(
-                    attach { helloWorld.build(it) },
+                    child { helloWorld.build(it) },
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.HelloWorld)) }
                 )
                 is Content.Foo -> composite(
-                    attach { fooBar.build(it) },
+                    child { fooBar.build(it) },
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.FooBar)) }
                 )
                 is Content.DialogsExample -> composite(
-                    attach {  dialogExample.build(it) },
+                    child {  dialogExample.build(it) },
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
                 )
                 is Content.Compose -> composite(
-                    attach { composeParent.build(it) },
+                    child { composeParent.build(it) },
                     execute { menuUpdater.accept(SelectMenuItem(MenuItem.Compose)) }
                 )
-                is Content.Blocker -> attach { blocker.build(it) }
+                is Content.Blocker -> child { blocker.build(it) }
                 is Overlay.Dialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogToTestOverlay)
             }
         }

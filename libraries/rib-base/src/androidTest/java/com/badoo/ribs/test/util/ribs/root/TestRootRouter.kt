@@ -3,7 +3,7 @@ package com.badoo.ribs.test.util.ribs.root
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.resolution.RibFactory
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.CompositeResolution.Companion.composite
 import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution.Companion.showDialog
 import com.badoo.ribs.routing.resolution.Resolution
@@ -58,15 +58,15 @@ class TestRootRouter(
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
-            Permanent.Permanent1 -> attach(builderPermanent1)
-            Permanent.Permanent2 -> attach(builderPermanent2)
+            Permanent.Permanent1 -> child(builderPermanent1)
+            Permanent.Permanent2 -> child(builderPermanent2)
             Content.NoOp -> noop()
-            Content.AttachNode1 -> attach(builder1)
-            Content.AttachNode2 -> attach(builder2)
-            Content.AttachNode3 -> attach(builder3)
+            Content.AttachNode1 -> child(builder1)
+            Content.AttachNode2 -> child(builder2)
+            Content.AttachNode3 -> child(builder3)
             Content.AttachNode1And2 -> composite(
-                attach(builder1),
-                attach(builder2)
+                child(builder1),
+                child(builder2)
             )
             Overlay.AttachNode1AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder1))
             Overlay.AttachNode2AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder2))

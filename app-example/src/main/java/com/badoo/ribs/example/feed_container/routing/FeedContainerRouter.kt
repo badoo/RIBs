@@ -5,7 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration
 import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration.Permanent
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.attach
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
@@ -36,7 +36,7 @@ class FeedContainerRouter internal constructor(
         with(builders) {
             when (routing.configuration) {
                 is Permanent.AppBar -> noop()
-                is Permanent.PhotoFeed -> attach { photoFeedBuilder.build(it) }
+                is Permanent.PhotoFeed -> child { photoFeedBuilder.build(it) }
             }
         }
 }

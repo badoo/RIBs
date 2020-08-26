@@ -17,7 +17,7 @@ open class ChildResolution(
         )
 
     companion object {
-        fun attach(ribFactory: RibFactory): Resolution =
+        fun child(ribFactory: RibFactory): Resolution =
             ChildResolution(ribFactory)
     }
 }

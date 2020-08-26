@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction
+import com.badoo.ribs.android.dialog.routing.action.DialogResolution
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
@@ -125,6 +125,6 @@ class SwitcherRouterTest {
     fun `Overlay_Dialog configuration resolves to DialogRoutingAction`() {
         val routingAction = router.resolve(Routing(configuration = Overlay.Dialog)).apply { execute() }
 
-        assertThat(routingAction).isInstanceOf(DialogRoutingAction::class.java)
+        assertThat(routingAction).isInstanceOf(DialogResolution::class.java)
     }
 }

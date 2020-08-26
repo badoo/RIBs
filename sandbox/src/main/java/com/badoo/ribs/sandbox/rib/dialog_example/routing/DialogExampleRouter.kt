@@ -2,11 +2,11 @@ package com.badoo.ribs.sandbox.rib.dialog_example.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction.Companion.showDialog
+import com.badoo.ribs.android.dialog.routing.action.DialogResolution.Companion.showDialog
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
-import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.action.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
@@ -37,7 +37,7 @@ class DialogExampleRouter(
     }
 
     // TODO consider configuration id as second parameter
-    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+    override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
             is Content.Default -> noop()
             // TODO can be done with factory to remove first 3 params and make it simpler

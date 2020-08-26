@@ -16,12 +16,12 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input.Add
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostBuilder
-import com.badoo.ribs.android.recyclerview.routing.action.AddToRecyclerViewRoutingAction.Companion.recyclerView
+import com.badoo.ribs.android.recyclerview.routing.action.AddToRecyclerViewResolution.Companion.recyclerView
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.Resolution
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
@@ -81,7 +81,7 @@ class RecyclerViewTestActivity : RibActivity() {
 
     private val resolver = object :
         RoutingResolver<Item> {
-        override fun resolve(routing: Routing<Item>): RoutingAction =
+        override fun resolve(routing: Routing<Item>): Resolution =
             when (routing.configuration) {
                 Item.LoremIpsumItem -> recyclerView { loremIpsumBuilder.build(it) }
                 Item.FooBarItem -> recyclerView { fooBarBuilder.build(it) }

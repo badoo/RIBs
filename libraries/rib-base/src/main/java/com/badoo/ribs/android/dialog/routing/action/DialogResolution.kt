@@ -6,15 +6,15 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.Resolution
 import com.badoo.ribs.routing.source.RoutingSource
 
-class DialogRoutingAction<Event : Any, C : Parcelable>(
+class DialogResolution<Event : Any, C : Parcelable>(
     private val routingSource: RoutingSource<C>,
     private val routingElementId: Routing.Identifier,
     private val dialogLauncher: DialogLauncher,
     private val dialog: Dialog<Event>
-) : RoutingAction {
+) : Resolution {
 
     override val numberOfNodes: Int = 1
 
@@ -37,7 +37,7 @@ class DialogRoutingAction<Event : Any, C : Parcelable>(
             routingElementId: Routing.Identifier,
             dialogLauncher: DialogLauncher,
             dialog: Dialog<*>
-        ): RoutingAction =
-            DialogRoutingAction(routingSource, routingElementId, dialogLauncher, dialog)
+        ): Resolution =
+            DialogResolution(routingSource, routingElementId, dialogLauncher, dialog)
     }
 }

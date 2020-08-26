@@ -2,10 +2,10 @@ package com.badoo.ribs.routing.action
 
 import com.badoo.ribs.core.Node
 
-class AnchoredAttachRoutingAction(
+class AnchoredAttachResolution(
     private val anchor: Node<*>,
     ribFactory: RibFactory
-) : AttachRibRoutingAction(
+) : AttachRibResolution(
     ribFactory = ribFactory
 ) {
 
@@ -13,8 +13,8 @@ class AnchoredAttachRoutingAction(
         anchor
 
     companion object {
-        fun anchor(anchor: Node<*>, ribFactory: RibFactory): RoutingAction =
-                AnchoredAttachRoutingAction(
+        fun anchor(anchor: Node<*>, ribFactory: RibFactory): Resolution =
+                AnchoredAttachResolution(
                     anchor = anchor,
                     ribFactory = ribFactory
                 )

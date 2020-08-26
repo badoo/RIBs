@@ -3,9 +3,9 @@ package com.badoo.ribs.routing.action
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 
-open class AttachRibRoutingAction(
+open class AttachRibResolution(
     private val ribFactory: RibFactory
-) : RoutingAction {
+) : Resolution {
 
     override val numberOfNodes: Int = 1
 
@@ -17,7 +17,7 @@ open class AttachRibRoutingAction(
         )
 
     companion object {
-        fun attach(ribFactory: RibFactory): RoutingAction =
-            AttachRibRoutingAction(ribFactory)
+        fun attach(ribFactory: RibFactory): Resolution =
+            AttachRibResolution(ribFactory)
     }
 }

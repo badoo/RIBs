@@ -3,11 +3,11 @@ package com.badoo.ribs.test.util.ribs.root
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.action.RibFactory
-import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.routing.action.CompositeRoutingAction.Companion.composite
-import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction.Companion.showDialog
-import com.badoo.ribs.routing.action.RoutingAction
-import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.routing.action.AttachRibResolution.Companion.attach
+import com.badoo.ribs.routing.action.CompositeResolution.Companion.composite
+import com.badoo.ribs.android.dialog.routing.action.DialogResolution.Companion.showDialog
+import com.badoo.ribs.routing.action.Resolution
+import com.badoo.ribs.routing.action.Resolution.Companion.noop
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
@@ -56,7 +56,7 @@ class TestRootRouter(
         }
     }
 
-    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+    override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
             Permanent.Permanent1 -> attach(builderPermanent1)
             Permanent.Permanent2 -> attach(builderPermanent2)

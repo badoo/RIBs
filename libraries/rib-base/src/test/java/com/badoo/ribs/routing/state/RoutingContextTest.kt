@@ -8,7 +8,7 @@ import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.Resolution
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.*
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
@@ -31,7 +31,7 @@ class RoutingContextTest {
     }
 
     // Default
-    private val defaultRoutingAction = mock<RoutingAction> {
+    private val defaultRoutingAction = mock<Resolution> {
         on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn ribs
     }
@@ -41,7 +41,7 @@ class RoutingContextTest {
 
     // With Anchor
     private val mockAnchor: Node<*> = createMockNode()
-    private val routingActionWithAnchor = mock<RoutingAction> {
+    private val routingActionWithAnchor = mock<Resolution> {
         on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn nodes
         on { anchor() } doReturn mockAnchor
@@ -115,7 +115,7 @@ class RoutingContextTest {
         val parentNode = createMockNode()
         val unresolved = Unresolved<Parcelable>(mock(), mock())
         val resolved = unresolved.resolve(defaultResolver, parentNode)
-        assertEquals(defaultRoutingAction, resolved.routingAction)
+        assertEquals(defaultRoutingAction, resolved.resolution)
     }
 
     @Test
@@ -160,7 +160,7 @@ class RoutingContextTest {
 
     private fun verifyBuildNodesCalledCorrectly(
         resolver: RoutingResolver<Parcelable>,
-        routingAction: RoutingAction,
+        resolution: Resolution,
         expectedParent: Node<*>,
         parentNode: Node<*>,
         nbExpectedNodes: Int,
@@ -175,7 +175,7 @@ class RoutingContextTest {
         val expectedAncestryInfo = AncestryInfo.Child(expectedParent, resolved.routing)
 
         argumentCaptor<List<BuildContext>>().apply {
-            verify(routingAction).buildNodes(capture())
+            verify(resolution).buildNodes(capture())
             val list = firstValue
             assertEquals(nbExpectedNodes, list.size)
 

@@ -16,8 +16,8 @@ import com.badoo.ribs.example.root.Root
 import com.badoo.ribs.example.root.RootBuilder
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
-import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.action.AttachRibResolution.Companion.attach
+import com.badoo.ribs.routing.action.Resolution
 
 @ExperimentalApi
 class RootActivity : RibActivity() {
@@ -32,7 +32,7 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?): Rib =
         PortalBuilder(
             object : Portal.Dependency {
-                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction =
+                override fun defaultRoutingAction(): (Portal.OtherSide) -> Resolution =
                     { portal ->
                         attach { buildRootNode(portal, it) }
                     }

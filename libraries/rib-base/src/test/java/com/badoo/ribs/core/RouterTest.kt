@@ -71,7 +71,7 @@ class RouterTest {
 
     @Test
     fun `Save instance state call reaches child nodes`() {
-        router.onAttach(mock())
+        router.onCreate(mock())
         router.onSaveInstanceState(mock())
         verify(childNodeC2_1).onSaveInstanceState(any())
         verify(childNodeC2_2).onSaveInstanceState(any())

@@ -31,12 +31,12 @@ class RoutingContextTest {
     }
 
     // Default
-    private val defaultRoutingAction = mock<Resolution> {
+    private val defaultResolution = mock<Resolution> {
         on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn ribs
     }
     private val defaultResolver = mock<RoutingResolver<Parcelable>> {
-        on { resolve(any()) } doReturn defaultRoutingAction
+        on { resolve(any()) } doReturn defaultResolution
     }
 
     // With Anchor
@@ -44,7 +44,7 @@ class RoutingContextTest {
     private val routingActionWithAnchor = mock<Resolution> {
         on { numberOfNodes } doReturn NB_EXPECTED_NODES
         on { buildNodes(any()) } doReturn nodes
-        on { anchor() } doReturn mockAnchor
+        on { anchor } doReturn mockAnchor
     }
     private val resolverWithAnchor = mock<RoutingResolver<Parcelable>> {
         on { resolve(any()) } doReturn routingActionWithAnchor
@@ -115,7 +115,7 @@ class RoutingContextTest {
         val parentNode = createMockNode()
         val unresolved = Unresolved<Parcelable>(mock(), mock())
         val resolved = unresolved.resolve(defaultResolver, parentNode)
-        assertEquals(defaultRoutingAction, resolved.resolution)
+        assertEquals(defaultResolution, resolved.resolution)
     }
 
     @Test
@@ -123,7 +123,7 @@ class RoutingContextTest {
         val parentNode = createMockNode()
         verifyBuildNodesCalledCorrectly(
             defaultResolver,
-            defaultRoutingAction,
+            defaultResolution,
             parentNode,
             parentNode,
             NB_EXPECTED_NODES,
@@ -149,7 +149,7 @@ class RoutingContextTest {
         val parentNode = createMockNode()
         verifyBuildNodesCalledCorrectly(
             defaultResolver,
-            defaultRoutingAction,
+            defaultResolution,
             parentNode,
             parentNode,
             NB_EXPECTED_NODES,

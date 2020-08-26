@@ -23,13 +23,13 @@ class PortalRouterTest {
     @Before
     fun setUp() {
         node3 = TestNode()
-        node2 = TestNode(router = TestRouter(routingActionForC3 = child { node3 }))
-        node1 = TestNode(router = TestRouter(routingActionForC2 = child { node2 }))
+        node2 = TestNode(router = TestRouter(resolutionForC3 = child { node3 }))
+        node1 = TestNode(router = TestRouter(resolutionForC2 = child { node2 }))
 
         router = PortalRouter(
             buildParams = BuildParams.Empty(),
             routingSource = Empty(),
-            defaultRoutingAction = child { node1 }
+            defaultResolution = child { node1 }
         )
     }
 

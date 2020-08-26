@@ -16,7 +16,7 @@ abstract class BasePortalBuilder<T : Portal>(
         val router = PortalRouter(
             buildParams = buildParams,
             routingSource = interactor,
-            defaultRoutingAction = dependency.defaultRoutingAction().invoke(interactor),
+            defaultResolution = dependency.defaultResolution().invoke(interactor),
             transitionHandler = dependency.transitionHandler()
         )
 

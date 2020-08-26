@@ -46,14 +46,14 @@ class RouterTest {
 
         router = TestRouter(
             initialConfiguration = TestRouter.Configuration.C2,
-            routingActionForC1 = resolutionForC1,
-            routingActionForC2 = resolutionForC2,
-            routingActionForC3 = resolutionForC3,
-            routingActionForC4 = resolutionForC4,
-            routingActionForC5 = resolutionForC5,
-            routingActionForO1 = mock(),
-            routingActionForO2 = mock(),
-            routingActionForO3 = mock()
+            resolutionForC1 = resolutionForC1,
+            resolutionForC2 = resolutionForC2,
+            resolutionForC3 = resolutionForC3,
+            resolutionForC4 = resolutionForC4,
+            resolutionForC5 = resolutionForC5,
+            resolutionForO1 = mock(),
+            resolutionForO2 = mock(),
+            resolutionForO3 = mock()
         )
 
         node = mock(defaultAnswer = Answers.RETURNS_MOCKS)

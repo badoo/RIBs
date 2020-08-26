@@ -44,7 +44,7 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?) =
         RxPortalBuilder(
             object : Portal.Dependency {
-                override fun defaultRoutingAction(): (Portal.OtherSide) -> Resolution =
+                override fun defaultResolution(): (Portal.OtherSide) -> Resolution =
                     { portal ->
                         child { buildSwitcherNode(portal, it) }
                     }

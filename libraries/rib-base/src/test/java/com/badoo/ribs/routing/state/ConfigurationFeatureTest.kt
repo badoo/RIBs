@@ -169,7 +169,7 @@ class ConfigurationFeatureTest {
             routingContentExternal2
         )
 
-        val poolInTimeCapsule = mapOf(
+        val poolInTimeCapsule = hashMapOf(
             routingsforTimeCapsule[0] to Unresolved(SLEEPING, routingsforTimeCapsule[0], helperPermanent1.bundles),
             routingsforTimeCapsule[1] to Unresolved(SLEEPING, routingsforTimeCapsule[1], helperPermanent2.bundles),
 

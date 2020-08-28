@@ -44,13 +44,15 @@ import com.badoo.ribs.util.RIBs
 open class Node<V : RibView>(
     val buildParams: BuildParams<*>,
     private val viewFactory: ((RibView) -> V?)?, // TODO V? vs V
-    private val plugins: List<Plugin> = emptyList()
+    plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
 
     companion object {
         internal const val BUNDLE_KEY = "Node"
         internal const val KEY_VIEW_STATE = "view.state"
     }
+
+    val plugins: List<Plugin> = plugins + buildParams.buildContext.plugins
 
     final override val node: Node<V>
         get() = this
@@ -111,7 +113,7 @@ open class Node<V : RibView>(
         get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
 
     init {
-        plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
+        this.plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
     internal fun onBuild() {

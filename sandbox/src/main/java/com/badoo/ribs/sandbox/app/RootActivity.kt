@@ -9,6 +9,8 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.core.plugin.utils.debug.DebugControlsHost
+import com.badoo.ribs.core.plugin.utils.debug.GrowthDirection
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalRouter
 import com.badoo.ribs.portal.RxPortal
@@ -18,6 +20,7 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.CrossFader
 import com.badoo.ribs.routing.transition.handler.Slider
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
@@ -73,7 +76,16 @@ class RootActivity : RibActivity() {
                     ).build(buildContext)
                 }
             }
-        ).build(root(savedInstanceState, AppRibCustomisations)).also {
+        ).build(root(
+            savedInstanceState = savedInstanceState,
+            customisations = AppRibCustomisations,
+            rootPlugins = listOfNotNull(
+                DebugControlsHost(
+                    viewGroupForChildren = { findViewById(R.id.debug_controls_host) },
+                    growthDirection = GrowthDirection.BOTTOM
+                ).takeIf { BuildConfig.DEBUG }
+            )
+        )).also {
             workflowRoot = it
         }
 

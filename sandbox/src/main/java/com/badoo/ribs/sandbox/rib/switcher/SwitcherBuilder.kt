@@ -2,6 +2,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.plugin.utils.logger.Logger
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
@@ -34,9 +35,10 @@ class SwitcherBuilder(
             viewFactory = customisation.viewFactory(viewDependency),
             backStack = backStack,
             plugins = listOfNotNull(
-                interactor,
+                Logger<Switcher>().takeIf { BuildConfig.DEBUG },
+                SwitcherDebugControls().takeIf { BuildConfig.DEBUG },
                 router,
-                SwitcherDebugControls().takeIf { BuildConfig.DEBUG }
+                interactor
             )
         )
     }

@@ -52,8 +52,6 @@ open class Node<V : RibView>(
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
-    val plugins: List<Plugin> = plugins + buildParams.buildContext.plugins
-
     final override val node: Node<V>
         get() = this
 
@@ -82,6 +80,8 @@ open class Node<V : RibView>(
             is AncestryInfo.Root -> null
             is AncestryInfo.Child -> ancestryInfo.anchor
         }
+
+    val plugins: List<Plugin> = buildContext.defaultPlugins(this) + plugins
 
     internal open val activationMode: ActivationMode =
         buildContext.activationMode

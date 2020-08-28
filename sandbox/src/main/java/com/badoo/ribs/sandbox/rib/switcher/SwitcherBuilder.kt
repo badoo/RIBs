@@ -35,10 +35,9 @@ class SwitcherBuilder(
             viewFactory = customisation.viewFactory(viewDependency),
             backStack = backStack,
             plugins = listOfNotNull(
-                Logger<Switcher>().takeIf { BuildConfig.DEBUG },
-                SwitcherDebugControls().takeIf { BuildConfig.DEBUG },
                 router,
-                interactor
+                interactor,
+                SwitcherDebugControls().takeIf { BuildConfig.DEBUG }
             )
         )
     }

@@ -7,10 +7,13 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.core.modality.AncestryInfo
+import com.badoo.ribs.core.modality.AncestryInfo.Root
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.plugin.utils.debug.DebugControlsHost
 import com.badoo.ribs.core.plugin.utils.debug.GrowthDirection
+import com.badoo.ribs.core.plugin.utils.logger.Logger
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalRouter
 import com.badoo.ribs.portal.RxPortal
@@ -79,12 +82,16 @@ class RootActivity : RibActivity() {
         ).build(root(
             savedInstanceState = savedInstanceState,
             customisations = AppRibCustomisations,
-            rootPlugins = listOfNotNull(
-                DebugControlsHost(
-                    viewGroupForChildren = { findViewById(R.id.debug_controls_host) },
-                    growthDirection = GrowthDirection.BOTTOM
-                ).takeIf { BuildConfig.DEBUG }
-            )
+            defaultPlugins = { node ->
+                listOfNotNull(
+                    Logger<Switcher>()
+                        .takeIf { BuildConfig.DEBUG },
+                    DebugControlsHost(
+                        viewGroupForChildren = { findViewById(R.id.debug_controls_host) },
+                        growthDirection = GrowthDirection.BOTTOM
+                    ).takeIf { BuildConfig.DEBUG && node.isRoot }
+                ).takeIf { BuildConfig.DEBUG } ?: emptyList()
+            }
         )).also {
             workflowRoot = it
         }

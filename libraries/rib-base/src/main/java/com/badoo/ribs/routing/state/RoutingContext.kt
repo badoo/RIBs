@@ -143,7 +143,8 @@ internal sealed class RoutingContext<C : Parcelable> {
                 savedInstanceState = null,
                 customisations = parentNode.buildContext.customisations.getSubDirectoryOrSelf(
                     parentNode::class
-                )
+                ),
+                defaultPlugins = parentNode.buildContext.defaultPlugins
             )
 
         override fun withActivationState(activationState: ActivationState) =

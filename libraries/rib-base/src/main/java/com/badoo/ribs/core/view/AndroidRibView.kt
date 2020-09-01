@@ -1,10 +1,15 @@
 package com.badoo.ribs.core.view
 
+import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.Plugin
 
 abstract class AndroidRibView : RibView {
+
+    fun <T : View> findViewById(@IdRes id: Int): T =
+        androidView.findViewById(id)
 
     protected open fun getParentViewForChild(child: Node<*>): ViewGroup =
         androidView

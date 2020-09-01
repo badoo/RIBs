@@ -31,7 +31,7 @@ internal class Adapter<T : Parcelable>(
     Consumer<RecyclerViewHostFeature.State<T>>,
     ChildActivator<T> {
 
-    private val holders: MutableMap<Routing.Identifier, WeakReference<ViewHolder>> = mutableMapOf()
+    private val holders: MutableMap<Routing.Identifier, WeakReference<ViewHolder>> = hashMapOf()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var identifier: Routing.Identifier? = null

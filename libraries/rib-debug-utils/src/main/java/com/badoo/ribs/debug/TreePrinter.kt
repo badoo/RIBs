@@ -8,7 +8,7 @@ object TreePrinter {
     val FORMAT_SIMPLE: (Node<*>) -> String = { it.javaClass.simpleName }
     val FORMAT_SIMPLE_INSTANCE: (Node<*>) -> String = { "${it.javaClass.simpleName} @${System.identityHashCode(it)}"}
 
-    private const val ROOT = "* "
+    private const val ACTIVE = "* "
     private const val ARM_RIGHT = "└── "
     private const val INTERSECTION = "├── "
     private const val LINE = "│   "
@@ -27,12 +27,16 @@ object TreePrinter {
         prefix: String,
         isTail: Boolean
     ) {
-        val currentPrefix = when {
-            node.isRoot -> ROOT
+        val structurePrefix = when {
+            node.isRoot -> ""
             isTail -> ARM_RIGHT
             else -> INTERSECTION
         }
-        RIBs.errorHandler.handleDebugMessage("$prefix$currentPrefix${toString.invoke(node)}")
+        val active = when {
+            node.isActive -> ACTIVE
+            else -> ""
+        }
+        RIBs.errorHandler.handleDebugMessage("$prefix$structurePrefix$active${toString.invoke(node)}")
 
         val children = node.children
         node.children.forEachIndexed { idx, child ->

@@ -109,7 +109,7 @@ open class Node<V : RibView>(
 
     private var isPendingViewDetach: Boolean = false
     private var isPendingDetach: Boolean = false
-    private val isActive: Boolean
+    val isActive: Boolean
         get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
 
     init {

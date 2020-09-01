@@ -15,7 +15,7 @@ internal class RecyclerViewHostInteractor<T : Parcelable>(
     buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature to adapter) // TODO consider viewLifecycle
             bind(rib.input to feature)

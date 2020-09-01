@@ -13,7 +13,7 @@ class FooBarWorkflowTest {
     fun setup() {
         workflow = FooBarBuilder(object : FooBar.Dependency {
         }).build(BuildContext.root(savedInstanceState = null)).also {
-            it.node.onAttach()
+            it.node.onCreate()
         }
     }
 

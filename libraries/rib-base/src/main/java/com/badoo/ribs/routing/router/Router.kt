@@ -68,7 +68,7 @@ abstract class Router<C : Parcelable>(
         timeCapsule.saveState(outState)
     }
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         cancellable += routingSource.changes(hasSavedState).observe(routingStatePool::accept)
     }
 
@@ -80,7 +80,7 @@ abstract class Router<C : Parcelable>(
         routingStatePool.accept(Sleep())
     }
 
-    override fun onDetach() {
+    override fun onDestroy() {
         // TODO consider extending Disposables plugin
         cancellable.cancel()
     }

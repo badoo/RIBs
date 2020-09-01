@@ -18,7 +18,7 @@ class MenuInteractor(
     buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(rib.input to feature using InputToState)
         }

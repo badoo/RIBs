@@ -29,8 +29,8 @@ open class RxWorkflowNode<V : RibView>(
         childrenAttachesRelay.accept(child)
     }
 
-    override fun onDetach() {
-        super.onDetach()
+    override fun onDestroy() {
+        super.onDestroy()
         detachSignal.accept(Unit)
     }
 

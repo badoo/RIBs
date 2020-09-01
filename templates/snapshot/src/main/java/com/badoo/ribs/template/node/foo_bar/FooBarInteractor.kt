@@ -26,7 +26,7 @@ internal class FooBarInteractor(
     backStack = backStack
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature.news to rib.output using NewsToOutput)
             bind(rib.input to feature using InputToWish)
@@ -41,7 +41,7 @@ internal class FooBarInteractor(
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         /**
          * TODO bind children here and delete this comment block.
          *
@@ -49,7 +49,7 @@ internal class FooBarInteractor(
          *  so it's safe to setup listening to their output before they start emitting.
          *
          *  On the other hand, they're not ready to receive inputs yet. Usually this is alright.
-         *  If it's a requirement though, create those bindings in [onAttachChild]
+         *  If it's a requirement though, create those bindings in [onChildAttached]
          */
         // child.lifecycle.createDestroy {
             // when (child) {

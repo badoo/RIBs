@@ -58,12 +58,12 @@ class InteractorTestHelper<View : RibView>(
 
     private fun toAttachViewState(block: (Node<View>) -> Unit) {
         val node = nodeCreator()
-        node.onAttach()
+        node.onCreate()
         node.onCreateView(mock(RibView::class.java))
         node.onAttachToView()
         block(node)
         node.onDetachFromView()
-        node.onDetach()
+        node.onDestroy()
     }
 
     companion object {

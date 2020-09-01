@@ -3,7 +3,6 @@ package com.badoo.ribs.sandbox.rib.test
 import android.app.Activity.RESULT_OK
 import android.app.Instrumentation
 import android.content.Intent
-import android.view.ViewGroup
 import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
@@ -94,7 +93,7 @@ class MainScreenTest {
 
     @Before
     fun setUp() {
-        rootRib.node.onAttach()
+        rootRib.node.onCreate()
         rootRib.node.onCreateView(mock())
         rootRib.node.onAttachToView()
         rootRib.node.onStart()

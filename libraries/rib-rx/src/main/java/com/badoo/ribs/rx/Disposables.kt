@@ -8,8 +8,8 @@ import io.reactivex.disposables.Disposable
 private class Disposables(disposables: List<Disposable>) : NodeLifecycleAware {
     private val disposable = CompositeDisposable(disposables)
 
-    override fun onDetach() {
-        super.onDetach()
+    override fun onDestroy() {
+        super.onDestroy()
         disposable.dispose()
     }
 }

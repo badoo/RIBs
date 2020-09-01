@@ -31,7 +31,7 @@ class NodePluginSubtreeChangeAwareTest : NodePluginTest() {
         val child = builder.build(buildContext)
 
         plugins.forEach {
-            verify(it).onChildCreated(eq(child.node))
+            verify(it).onChildBuilt(eq(child.node))
         }
     }
 
@@ -43,7 +43,7 @@ class NodePluginSubtreeChangeAwareTest : NodePluginTest() {
         node.attachChildNode(childNode)
 
         plugins.forEach {
-            verify(it).onAttachChild(eq(childNode))
+            verify(it).onChildAttached(eq(childNode))
         }
     }
 
@@ -55,7 +55,7 @@ class NodePluginSubtreeChangeAwareTest : NodePluginTest() {
         node.detachChildNode(childNode)
 
         plugins.forEach {
-            verify(it).onDetachChild(eq(childNode))
+            verify(it).onChildDetached(eq(childNode))
         }
     }
 }

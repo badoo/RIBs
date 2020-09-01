@@ -44,7 +44,7 @@ class DialogExampleInteractor internal constructor(
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
                 is LoremIpsum -> bind(child.output to loremIpsumOutputConsumer)

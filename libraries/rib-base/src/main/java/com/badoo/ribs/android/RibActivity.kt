@@ -65,7 +65,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
         root = createRib(savedInstanceState)
-        root.node.onAttach()
+        root.node.onCreate()
         rootViewHost = AndroidRibViewHost(rootViewGroup)
         rootViewHost.attachChild(root.node)
 
@@ -125,7 +125,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         super.onDestroy()
         dialogs.values.forEach { it.dismiss() }
         rootViewHost.detachChild(root.node)
-        root.node.onDetach()
+        root.node.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -136,6 +136,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         activityBoundary.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =

@@ -1,6 +1,5 @@
 package com.badoo.ribs.sandbox.rib.menu
 
-import android.view.ViewGroup
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.view.RibView
@@ -45,7 +44,7 @@ class MenuRibTest {
 
     @Before
     fun setUp() {
-        rib.node.onAttach()
+        rib.node.onCreate()
         rib.node.onCreateView(mock())
         rib.node.onAttachToView()
         rib.node.onStart()

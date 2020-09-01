@@ -21,7 +21,7 @@ internal class FooBarInteractor(
     buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature.news to rib.output using NewsToOutput)
             bind(rib.input to feature using InputToWish)

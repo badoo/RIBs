@@ -1,6 +1,5 @@
 package com.badoo.ribs.sandbox.rib.util
 
-import android.view.ViewGroup
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
@@ -22,13 +21,13 @@ class TestNode<V : RibView>(
     var isAttached: Boolean = false
         private set
 
-    override fun onAttach() {
-        super.onAttach()
+    override fun onCreate() {
+        super.onCreate()
         isAttached = true
     }
 
-    override fun onDetach() {
-        super.onDetach()
+    override fun onDestroy() {
+        super.onDestroy()
         isAttached = false
     }
 }

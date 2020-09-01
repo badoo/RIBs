@@ -21,11 +21,11 @@ interface NodeAware : Plugin {
 }
 
 interface NodeLifecycleAware : Plugin {
-    fun onCreate() {}
+    fun onBuild() {}
 
-    fun onAttach(nodeLifecycle: Lifecycle) {}
+    fun onCreate(nodeLifecycle: Lifecycle) {}
 
-    fun onDetach() {}
+    fun onDestroy() {}
 }
 
 interface ViewAware<V : RibView> : Plugin {
@@ -39,11 +39,11 @@ interface ViewLifecycleAware : Plugin {
 }
 
 interface SubtreeChangeAware : Plugin {
-    fun onChildCreated(child: Node<*>) {}
+    fun onChildBuilt(child: Node<*>) {}
 
-    fun onAttachChild(child: Node<*>) {}
+    fun onChildAttached(child: Node<*>) {}
 
-    fun onDetachChild(child: Node<*>) {}
+    fun onChildDetached(child: Node<*>) {}
 }
 
 interface SubtreeViewChangeAware : Plugin {

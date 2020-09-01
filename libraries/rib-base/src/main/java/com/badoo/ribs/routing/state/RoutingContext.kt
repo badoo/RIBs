@@ -7,7 +7,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.util.RIBs
@@ -93,7 +93,7 @@ internal sealed class RoutingContext<C : Parcelable> {
         }
 
         /**
-         * Resolves and sets the associated [RoutingAction], builds associated [Node]s
+         * Resolves and sets the associated [Resolution], builds associated [Node]s
          */
         override fun resolve(
             resolver: RoutingResolver<C>,
@@ -105,7 +105,7 @@ internal sealed class RoutingContext<C : Parcelable> {
                 activationState = activationState,
                 routing = routing,
                 bundles = bundles,
-                routingAction = routingAction,
+                resolution = routingAction,
                 nodes = buildNodes(routingAction, parentNode)
             )
         }
@@ -113,31 +113,31 @@ internal sealed class RoutingContext<C : Parcelable> {
         override fun shrink(): Unresolved<C> =
             this
 
-        private fun buildNodes(routingAction: RoutingAction, parentNode: Node<*>): List<Node<*>> {
-            if (bundles.isNotEmpty() && bundles.size != routingAction.numberOfNodes) {
+        private fun buildNodes(resolution: Resolution, parentNode: Node<*>): List<Node<*>> {
+            if (bundles.isNotEmpty() && bundles.size != resolution.numberOfNodes) {
                 RIBs.errorHandler.handleNonFatalError(
-                    "Bundles size ${bundles.size} don't match expected nodes count ${routingAction.numberOfNodes}"
+                    "Bundles size ${bundles.size} don't match expected nodes count ${resolution.numberOfNodes}"
                 )
             }
-            val template = createBuildContext(routingAction, parentNode)
-            val buildContexts = List(routingAction.numberOfNodes) {
+            val template = createBuildContext(resolution, parentNode)
+            val buildContexts = List(resolution.numberOfNodes) {
                 template.copy(
                     savedInstanceState = bundles.getOrNull(it)
                 )
             }
 
-            return routingAction.buildNodes(
+            return resolution.buildNodes(
                 buildContexts = buildContexts
             ).map { it.node }
         }
 
         private fun createBuildContext(
-            routingAction: RoutingAction,
+            resolution: Resolution,
             parentNode: Node<*>
         ): BuildContext =
             BuildContext(
                 ancestryInfo = AncestryInfo.Child(
-                    anchor = routingAction.anchor() ?: parentNode,
+                    anchor = resolution.anchor ?: parentNode,
                     creatorRouting = routing
                 ),
                 savedInstanceState = null,
@@ -161,14 +161,14 @@ internal sealed class RoutingContext<C : Parcelable> {
     }
 
     /**
-     * Represents [RoutingContext] that has its [RoutingAction] resolved, its [Node]s built
+     * Represents [RoutingContext] that has its [Resolution] resolved, its [Node]s built
      * and attached to a parentNode.
      */
     data class Resolved<C : Parcelable>(
         override val activationState: ActivationState,
         override val routing: Routing<C>,
         var bundles: List<Bundle>,
-        val routingAction: RoutingAction,
+        val resolution: Resolution,
         val nodes: List<Node<*>>
     ) : RoutingContext<C>() {
 

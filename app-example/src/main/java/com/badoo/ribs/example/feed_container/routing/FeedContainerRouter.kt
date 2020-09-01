@@ -5,9 +5,9 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration
 import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter.Configuration.Permanent
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.routing.action.RoutingAction
-import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
+import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
@@ -32,11 +32,11 @@ class FeedContainerRouter internal constructor(
         }
     }
 
-    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+    override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
                 is Permanent.AppBar -> noop()
-                is Permanent.PhotoFeed -> attach { photoFeedBuilder.build(it) }
+                is Permanent.PhotoFeed -> child { photoFeedBuilder.build(it) }
             }
         }
 }

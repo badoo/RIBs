@@ -3,7 +3,7 @@ package com.badoo.ribs.portal
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Default
@@ -23,13 +23,13 @@ class PortalRouterTest {
     @Before
     fun setUp() {
         node3 = TestNode()
-        node2 = TestNode(router = TestRouter(routingActionForC3 = attach { node3 }))
-        node1 = TestNode(router = TestRouter(routingActionForC2 = attach { node2 }))
+        node2 = TestNode(router = TestRouter(resolutionForC3 = child { node3 }))
+        node1 = TestNode(router = TestRouter(resolutionForC2 = child { node2 }))
 
         router = PortalRouter(
             buildParams = BuildParams.Empty(),
             routingSource = Empty(),
-            defaultRoutingAction = attach { node1 }
+            defaultResolution = child { node1 }
         )
     }
 

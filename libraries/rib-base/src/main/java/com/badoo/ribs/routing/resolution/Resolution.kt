@@ -1,10 +1,13 @@
-package com.badoo.ribs.routing.action
+package com.badoo.ribs.routing.resolution
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 
-interface RoutingAction {
+interface Resolution {
+
+    val anchor: Node<*>?
+        get() = null
 
     val numberOfNodes: Int
 
@@ -20,11 +23,8 @@ interface RoutingAction {
     fun cleanup() {
     }
 
-    fun anchor(): Node<*>? =
-        null
-
     companion object {
-        fun noop(): RoutingAction = object : RoutingAction {
+        fun noop(): Resolution = object : Resolution {
             override val numberOfNodes: Int = 0
         }
     }

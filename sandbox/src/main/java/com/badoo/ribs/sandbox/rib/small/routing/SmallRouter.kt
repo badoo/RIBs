@@ -3,9 +3,9 @@ package com.badoo.ribs.sandbox.rib.small.routing
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AnchoredAttachRoutingAction.Companion.anchor
-import com.badoo.ribs.routing.action.RoutingAction
-import com.badoo.ribs.routing.action.RoutingAction.Companion.noop
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.remoteChild
+import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration
@@ -31,12 +31,12 @@ class SmallRouter internal constructor(
         }
     }
 
-    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+    override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
                 Content.Default -> noop()
-                FullScreen.ShowBig -> anchor(node) { big.build(it) }
-                FullScreen.ShowOverlay -> anchor(node) { portalOverlay.build(it) }
+                FullScreen.ShowBig -> remoteChild(anchor = node) { big.build(it) }
+                FullScreen.ShowOverlay -> remoteChild(anchor = node) { portalOverlay.build(it) }
             }
         }
 

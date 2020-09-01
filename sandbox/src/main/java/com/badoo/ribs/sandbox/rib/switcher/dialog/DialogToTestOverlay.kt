@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.switcher.dialog
 
 import com.badoo.ribs.android.text.Text
-import com.badoo.ribs.routing.action.RibFactory
+import com.badoo.ribs.routing.resolution.RibFactory
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.dialog.Dialog.Event.Positive

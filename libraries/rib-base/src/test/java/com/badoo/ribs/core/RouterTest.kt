@@ -2,7 +2,7 @@ package com.badoo.ribs.core
 
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
@@ -19,11 +19,11 @@ import org.robolectric.RobolectricTestRunner
 class RouterTest {
 
     private lateinit var router: TestRouter
-    private lateinit var routingActionForC1: RoutingAction
-    private lateinit var routingActionForC2: RoutingAction
-    private lateinit var routingActionForC3: RoutingAction
-    private lateinit var routingActionForC4: RoutingAction
-    private lateinit var routingActionForC5: RoutingAction
+    private lateinit var resolutionForC1: Resolution
+    private lateinit var resolutionForC2: Resolution
+    private lateinit var resolutionForC3: Resolution
+    private lateinit var resolutionForC4: Resolution
+    private lateinit var resolutionForC5: Resolution
     private lateinit var node: Node<TestView>
     private lateinit var childNodeC2_1: Node<*>
     private lateinit var childNodeC2_2: Node<*>
@@ -35,25 +35,25 @@ class RouterTest {
         childNodeC2_1 = mock()
         childNodeC2_2 = mock()
 
-        routingActionForC2 = mock { on { buildNodes(any())} doReturn listOf(
+        resolutionForC2 = mock { on { buildNodes(any())} doReturn listOf(
             childNodeC2_1.toRib(),
             childNodeC2_2.toRib())
         }
-        routingActionForC1 = mock()
-        routingActionForC3 = mock()
-        routingActionForC4 = mock()
-        routingActionForC5 = mock()
+        resolutionForC1 = mock()
+        resolutionForC3 = mock()
+        resolutionForC4 = mock()
+        resolutionForC5 = mock()
 
         router = TestRouter(
             initialConfiguration = TestRouter.Configuration.C2,
-            routingActionForC1 = routingActionForC1,
-            routingActionForC2 = routingActionForC2,
-            routingActionForC3 = routingActionForC3,
-            routingActionForC4 = routingActionForC4,
-            routingActionForC5 = routingActionForC5,
-            routingActionForO1 = mock(),
-            routingActionForO2 = mock(),
-            routingActionForO3 = mock()
+            resolutionForC1 = resolutionForC1,
+            resolutionForC2 = resolutionForC2,
+            resolutionForC3 = resolutionForC3,
+            resolutionForC4 = resolutionForC4,
+            resolutionForC5 = resolutionForC5,
+            resolutionForO1 = mock(),
+            resolutionForO2 = mock(),
+            resolutionForO3 = mock()
         )
 
         node = mock(defaultAnswer = Answers.RETURNS_MOCKS)

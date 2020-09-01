@@ -1,8 +1,8 @@
-package com.badoo.ribs.routing.action
+package com.badoo.ribs.routing.resolution
 
 class InvokeOnExecute(
     private val block: () -> Unit
-) : RoutingAction {
+) : Resolution {
 
     override val numberOfNodes: Int = 0
 
@@ -11,7 +11,7 @@ class InvokeOnExecute(
     }
 
     companion object {
-        fun execute(onInvoke: () -> Unit): RoutingAction =
+        fun execute(onInvoke: () -> Unit): Resolution =
             InvokeOnExecute(onInvoke)
     }
 }

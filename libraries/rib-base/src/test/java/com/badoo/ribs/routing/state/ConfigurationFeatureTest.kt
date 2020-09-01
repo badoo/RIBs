@@ -9,7 +9,7 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.Routing.Identifier
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.*
@@ -66,7 +66,7 @@ class ConfigurationFeatureTest {
         val nodes: List<Node<Nothing>>,
         val bundles: List<Bundle>,
         val nodeFactories: List<() -> Rib>,
-        val routingAction: RoutingAction
+        val resolution: Resolution
     ) {
         companion object {
             fun create(routing: Routing<Configuration>, nbNodes: Int, viewActivationMode: ActivationMode): ConfigurationTestHelper {
@@ -79,14 +79,14 @@ class ConfigurationFeatureTest {
                 }
                 val bundles = MutableList(nbNodes) { mock<Bundle>() }
                 val factories = nodes.toFactory()
-                val routingAction: RoutingAction = factories.toRoutingAction(nbNodes)
+                val resolution: Resolution = factories.toRoutingAction(nbNodes)
 
                 return ConfigurationTestHelper(
                     routing = routing,
                     nodes = nodes,
                     bundles = bundles,
                     nodeFactories = factories,
-                    routingAction = routingAction
+                    resolution = resolution
                 )
             }
 
@@ -99,7 +99,7 @@ class ConfigurationFeatureTest {
                     }
                 }
 
-            private fun List<() -> Rib>.toRoutingAction(nbNodes: Int): RoutingAction =
+            private fun List<() -> Rib>.toRoutingAction(nbNodes: Int): Resolution =
                 mock {
                     on { numberOfNodes } doReturn nbNodes
                     on { buildNodes(anyList()) } doAnswer {
@@ -155,7 +155,7 @@ class ConfigurationFeatureTest {
 
         resolver = mock {
             helpers.forEach { helper ->
-                on { resolve(helper.routing) } doReturn helper.routingAction
+                on { resolve(helper.routing) } doReturn helper.resolution
             }
         }
 
@@ -266,8 +266,8 @@ class ConfigurationFeatureTest {
     fun `On first WakeUp after init, ALL initial configuration are activated - associated RoutingActions are executed`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        verify(helperPermanent1.routingAction).execute()
-        verify(helperPermanent2.routingAction).execute()
+        verify(helperPermanent1.resolution).execute()
+        verify(helperPermanent2.resolution).execute()
     }
 
     @Test
@@ -320,11 +320,11 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously ACTIVE configurations are activated - associated RoutingActions are executed`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        verify(helperPermanent1.routingAction).execute()
-        verify(helperPermanent2.routingAction).execute()
-        verify(helperContentViewParented1.routingAction).execute()
-        verify(helperContentViewParented2.routingAction).execute()
-        verify(helperContentExternal1.routingAction).execute()
+        verify(helperPermanent1.resolution).execute()
+        verify(helperPermanent2.resolution).execute()
+        verify(helperContentViewParented1.resolution).execute()
+        verify(helperContentViewParented2.resolution).execute()
+        verify(helperContentExternal1.resolution).execute()
     }
 
     @Test
@@ -370,8 +370,8 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously INACTIVE configurations are NOT activated - associated RoutingActions are NOT executed`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        verify(helperContentViewParented3.routingAction, never()).execute()
-        verify(helperContentExternal2.routingAction, never()).execute()
+        verify(helperContentViewParented3.resolution, never()).execute()
+        verify(helperContentExternal2.resolution, never()).execute()
     }
 
     @Test
@@ -462,7 +462,7 @@ class ConfigurationFeatureTest {
         feature.accept(Transaction.from(
             Add(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction, never()).execute()
+        verify(helperContentViewParented1.resolution, never()).execute()
     }
     // endregion
 
@@ -474,7 +474,7 @@ class ConfigurationFeatureTest {
             Add(helperContentViewParented1.routing),
             Activate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction, never()).execute()
+        verify(helperContentViewParented1.resolution, never()).execute()
     }
 
     @Test
@@ -496,7 +496,7 @@ class ConfigurationFeatureTest {
             Activate(helperContentViewParented1.routing)
         ))
         feature.accept(WakeUp())
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.resolution).execute()
     }
 
     @Test
@@ -518,7 +518,7 @@ class ConfigurationFeatureTest {
             Add(helperContentViewParented1.routing),
             Activate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.resolution).execute()
     }
 
     @Test
@@ -545,7 +545,7 @@ class ConfigurationFeatureTest {
         feature.accept(Transaction.from(
             Activate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction, times(1)).execute()
+        verify(helperContentViewParented1.resolution, times(1)).execute()
     }
 
     @Test
@@ -571,7 +571,7 @@ class ConfigurationFeatureTest {
             Add(helperContentViewParented1.routing),
             Deactivate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction).cleanup()
+        verify(helperContentViewParented1.resolution).cleanup()
     }
 
     /**
@@ -657,7 +657,7 @@ class ConfigurationFeatureTest {
         clearInvocations(parentNode)
         feature.accept(Sleep())
 
-        verify(helperContentViewParented1.routingAction).cleanup()
+        verify(helperContentViewParented1.resolution).cleanup()
     }
 
     /**
@@ -722,10 +722,10 @@ class ConfigurationFeatureTest {
             Activate(helperContentViewParented1.routing)
         ))
         feature.accept(Sleep())
-        clearInvocations(helperContentViewParented1.routingAction)
+        clearInvocations(helperContentViewParented1.resolution)
         feature.accept(WakeUp())
 
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.resolution).execute()
     }
 
     @Test

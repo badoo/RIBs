@@ -1,8 +1,8 @@
-package com.badoo.ribs.routing.action
+package com.badoo.ribs.routing.resolution
 
 class InvokeOnCleanup(
     private val block: () -> Unit
-) : RoutingAction {
+) : Resolution {
 
     override val numberOfNodes: Int = 0
 
@@ -11,7 +11,7 @@ class InvokeOnCleanup(
     }
 
     companion object {
-        fun cleanup(onLeave: () -> Unit): RoutingAction =
+        fun cleanup(onLeave: () -> Unit): Resolution =
             InvokeOnCleanup(onLeave)
     }
 }

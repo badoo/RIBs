@@ -7,8 +7,6 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
-import com.badoo.ribs.core.modality.AncestryInfo
-import com.badoo.ribs.core.modality.AncestryInfo.Root
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.plugin.utils.debug.DebugControlsHost

@@ -65,6 +65,7 @@ dependencies {
     implementation deps.external.rxandroid2
 
     implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-debug-utils")
     implementation project(":libraries:rib-portal-rx")
     implementation project(":libraries:rib-recyclerview")
     implementation project(":libraries:rib-rx")

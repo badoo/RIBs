@@ -2,7 +2,6 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.core.plugin.utils.logger.Logger
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay

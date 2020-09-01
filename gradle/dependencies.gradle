@@ -28,6 +28,7 @@ def versions = [
     androidxTestUiAutoVersion:'2.2.0',
     retrofitVersion: '2.8.1',
     okhttp: '3.14.7',
+    leakCanary: '2.4'
 ]
 
 def apt = [
@@ -114,6 +115,7 @@ def external = [
     apacheCommons: 'org.apache.commons:commons-lang3:3.0',
     gson: 'com.google.code.gson:gson:2.8.5',
     coil: 'io.coil-kt:coil:0.11.0',
+    leakCanary: "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
 ]
 
 def retrofit = [

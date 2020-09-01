@@ -90,7 +90,7 @@ class RootActivity : RibActivity() {
                     listOfNotNull(
                         createLeakDetector(),
                         createLogger(),
-                        createDebugControlHost().takeIf { node.isRoot }
+                        if (node.isRoot) createDebugControlHost() else null
                     )
                 } else emptyList()
             }

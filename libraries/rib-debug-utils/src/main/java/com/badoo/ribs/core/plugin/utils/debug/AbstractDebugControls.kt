@@ -12,6 +12,7 @@ import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 
+@SuppressWarnings("LongParameterList")
 abstract class AbstractDebugControls<T : Rib> internal constructor(
     private val viewFactory: ((ViewGroup) -> View)? = null,
     private var viewGroupForChildren: (() -> ViewGroup)? = null,

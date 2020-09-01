@@ -25,6 +25,7 @@ interface LoggingPolicy {
     /**
      * Allows what you tell it to, denies everything else by default
      */
+    @SuppressWarnings("LongParameterList")
     class AllowList(
         override val logOnBuild: Boolean = false,
         override val logOnAttach: Boolean = false,
@@ -50,6 +51,7 @@ interface LoggingPolicy {
     /**
      * Denies what you tell it to, allows everything else by default
      */
+    @SuppressWarnings("LongParameterList")
     class DenyList(
         override val logOnBuild: Boolean = true,
         override val logOnAttach: Boolean = true,

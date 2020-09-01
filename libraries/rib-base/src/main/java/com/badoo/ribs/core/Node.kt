@@ -246,7 +246,7 @@ open class Node<V : RibView>(
     }
 
     private fun detachChildView(child: Node<*>, notifyPlugins: Boolean) {
-        if (isAttachedToView) {
+        if (isAttachedToView && child.isAttachedToView) {
             view?.let { it.detachChild(child) }
                 ?: parent?.detachChildView(child, false)
                 ?: rootHost!!.detachChild(child)

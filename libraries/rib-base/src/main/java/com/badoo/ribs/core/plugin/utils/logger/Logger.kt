@@ -34,16 +34,16 @@ class Logger<T : Rib>(
     BackPressHandler,
     SubtreeBackPressHandler {
 
-    override fun onCreate() {
-        if (policy.logOnCreate) log(rib, "onCreate")
+    override fun onBuild() {
+        if (policy.logOnBuild) log(rib, "onBuild")
     }
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
-        if (policy.logOnAttach) log(rib, "onAttach")
+    override fun onCreate(nodeLifecycle: Lifecycle) {
+        if (policy.logOnAttach) log(rib, "onCreate")
     }
 
-    override fun onDetach() {
-        if (policy.logOnDetach) log(rib, "onDetach")
+    override fun onDestroy() {
+        if (policy.logOnDestroy) log(rib, "onDestroy")
     }
 
     override fun onAttachToView() {
@@ -51,19 +51,19 @@ class Logger<T : Rib>(
     }
 
     override fun onDetachFromView() {
-        if (policy.logOnDetachFromView) log(rib, "")
+        if (policy.logOnDetachFromView) log(rib, "onDetachFromView")
     }
 
-    override fun onChildCreated(child: Node<*>) {
-        if (policy.logOnChildCreated) log(rib, "onChildCreated: $child")
+    override fun onChildBuilt(child: Node<*>) {
+        if (policy.logOnChildBuilt) log(rib, "onChildBuilt: $child")
     }
 
-    override fun onAttachChild(child: Node<*>) {
-        if (policy.logOnAttachChild) log(rib, "onAttachChild: $child")
+    override fun onChildAttached(child: Node<*>) {
+        if (policy.logOnChildAttached) log(rib, "onChildAttached: $child")
     }
 
-    override fun onDetachChild(child: Node<*>) {
-        if (policy.logOnDetachChild) log(rib, "onDetachChild: $child")
+    override fun onChildDetached(child: Node<*>) {
+        if (policy.logOnChildDetached) log(rib, "onChildDetached: $child")
     }
 
     override fun onAttachChildView(child: Node<*>) {

@@ -2,14 +2,14 @@ package com.badoo.ribs.core.plugin.utils.logger
 
 interface LoggingPolicy {
 
-    val logOnCreate: Boolean
+    val logOnBuild: Boolean
     val logOnAttach: Boolean
-    val logOnDetach: Boolean
+    val logOnDestroy: Boolean
     val logOnAttachToView: Boolean
     val logOnDetachFromView: Boolean
-    val logOnChildCreated: Boolean
-    val logOnAttachChild: Boolean
-    val logOnDetachChild: Boolean
+    val logOnChildBuilt: Boolean
+    val logOnChildAttached: Boolean
+    val logOnChildDetached: Boolean
     val logOnAttachChildView: Boolean
     val logOnDetachChildView: Boolean
     val logOnStart: Boolean
@@ -26,14 +26,14 @@ interface LoggingPolicy {
      * Allows what you tell it to, denies everything else by default
      */
     class AllowList(
-        override val logOnCreate: Boolean = false,
+        override val logOnBuild: Boolean = false,
         override val logOnAttach: Boolean = false,
-        override val logOnDetach: Boolean = false,
+        override val logOnDestroy: Boolean = false,
         override val logOnAttachToView: Boolean = false,
         override val logOnDetachFromView: Boolean = false,
-        override val logOnChildCreated: Boolean = false,
-        override val logOnAttachChild: Boolean = false,
-        override val logOnDetachChild: Boolean = false,
+        override val logOnChildBuilt: Boolean = false,
+        override val logOnChildAttached: Boolean = false,
+        override val logOnChildDetached: Boolean = false,
         override val logOnAttachChildView: Boolean = false,
         override val logOnDetachChildView: Boolean = false,
         override val logOnStart: Boolean = false,
@@ -51,14 +51,14 @@ interface LoggingPolicy {
      * Denies what you tell it to, allows everything else by default
      */
     class DenyList(
-        override val logOnCreate: Boolean = true,
+        override val logOnBuild: Boolean = true,
         override val logOnAttach: Boolean = true,
-        override val logOnDetach: Boolean = true,
+        override val logOnDestroy: Boolean = true,
         override val logOnAttachToView: Boolean = true,
         override val logOnDetachFromView: Boolean = true,
-        override val logOnChildCreated: Boolean = true,
-        override val logOnAttachChild: Boolean = true,
-        override val logOnDetachChild: Boolean = true,
+        override val logOnChildBuilt: Boolean = true,
+        override val logOnChildAttached: Boolean = true,
+        override val logOnChildDetached: Boolean = true,
         override val logOnAttachChildView: Boolean = true,
         override val logOnDetachChildView: Boolean = true,
         override val logOnStart: Boolean = true,

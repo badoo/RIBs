@@ -12,6 +12,7 @@ import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.plugin.utils.debug.DebugControlsHost
 import com.badoo.ribs.core.plugin.utils.debug.GrowthDirection
 import com.badoo.ribs.core.plugin.utils.logger.Logger
+import com.badoo.ribs.debug.TreePrinter
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalRouter
 import com.badoo.ribs.portal.RxPortal
@@ -86,7 +87,8 @@ class RootActivity : RibActivity() {
                         .takeIf { BuildConfig.DEBUG },
                     DebugControlsHost(
                         viewGroupForChildren = { findViewById(R.id.debug_controls_host) },
-                        growthDirection = GrowthDirection.BOTTOM
+                        growthDirection = GrowthDirection.BOTTOM,
+                        defaultTreePrinterFormat = TreePrinter.FORMAT_SIMPLE
                     ).takeIf { BuildConfig.DEBUG && node.isRoot }
                 ).takeIf { BuildConfig.DEBUG } ?: emptyList()
             }

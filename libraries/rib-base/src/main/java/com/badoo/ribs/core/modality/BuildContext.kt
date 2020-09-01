@@ -26,7 +26,7 @@ data class BuildContext(
             savedInstanceState: Bundle?,
             customisations: RibCustomisationDirectory = RibCustomisationDirectoryImpl(),
             defaultPlugins: (Node<*>) -> List<Plugin> = { emptyList() }
-        ) =
+        ): BuildContext =
             BuildContext(
                 ancestryInfo = AncestryInfo.Root,
                 savedInstanceState = savedInstanceState,

@@ -29,6 +29,7 @@ class BackStackFeatureTest {
 
     companion object {
         private val initialConfiguration = C1
+        private const val ID = 100
     }
 
     private lateinit var timeCapsuleEmpty: TimeCapsule
@@ -46,7 +47,8 @@ class BackStackFeatureTest {
         timeCapsuleEmpty = mock()
         timeCapsuleWithContent = mock {
             on { get<BackStackFeatureState<Configuration>>(BackStackFeature::class.java.name) } doReturn BackStackFeatureState(
-                backstackInTimeCapsule
+                id = ID,
+                backStack = backstackInTimeCapsule
             )
         }
         setupBackStackManager(timeCapsuleEmpty)

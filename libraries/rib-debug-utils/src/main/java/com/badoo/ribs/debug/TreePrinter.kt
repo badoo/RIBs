@@ -5,33 +5,46 @@ import com.badoo.ribs.util.RIBs
 
 object TreePrinter {
 
+    val FORMAT_SIMPLE: (Node<*>) -> String = { it.javaClass.simpleName }
+    val FORMAT_SIMPLE_INSTANCE: (Node<*>) -> String = { "${it.javaClass.simpleName} @${System.identityHashCode(it)}"}
+
+    private const val ACTIVE = "* "
     private const val ARM_RIGHT = "└── "
     private const val INTERSECTION = "├── "
     private const val LINE = "│   "
     private const val SPACE = "    "
 
-    fun printNodeSubtree(node: Node<*>) {
-        printNodeSubtree(node, "", true)
+    fun printNodeSubtree(
+        node: Node<*>,
+        toString: (Node<*>) -> String = FORMAT_SIMPLE_INSTANCE
+    ) {
+        printNodeSubtree(node, toString, "", true)
     }
 
-    private fun printNodeSubtree(node: Node<*>, prefix: String, isTail: Boolean) {
-        RIBs.errorHandler.handleDebugMessage(prefix + (if (isTail) ARM_RIGHT else INTERSECTION) + node.tag)
+    private fun printNodeSubtree(
+        node: Node<*>,
+        toString: (Node<*>) -> String,
+        prefix: String,
+        isTail: Boolean
+    ) {
+        val structurePrefix = when {
+            node.isRoot -> ""
+            isTail -> ARM_RIGHT
+            else -> INTERSECTION
+        }
+        val active = when {
+            node.isActive -> ACTIVE
+            else -> ""
+        }
+        RIBs.errorHandler.handleDebugMessage("$prefix$structurePrefix$active${toString.invoke(node)}")
 
         val children = node.children
-
-        for (i in 0 until children.size - 1) {
+        node.children.forEachIndexed { idx, child ->
             printNodeSubtree(
-                children[i],
+                child,
+                toString,
                 prefix + if (isTail) SPACE else LINE,
-                false
-            )
-        }
-
-        if (node.children.isNotEmpty()) {
-            printNodeSubtree(
-                node.children.last(),
-                prefix + if (isTail) SPACE else LINE,
-                true
+                idx == children.lastIndex
             )
         }
     }

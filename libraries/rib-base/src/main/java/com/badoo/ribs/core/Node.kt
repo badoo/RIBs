@@ -44,7 +44,7 @@ import com.badoo.ribs.util.RIBs
 open class Node<V : RibView>(
     val buildParams: BuildParams<*>,
     private val viewFactory: ((RibView) -> V?)?, // TODO V? vs V
-    private val plugins: List<Plugin> = emptyList()
+    plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
 
     companion object {
@@ -81,6 +81,8 @@ open class Node<V : RibView>(
             is AncestryInfo.Child -> ancestryInfo.anchor
         }
 
+    val plugins: List<Plugin> = buildContext.defaultPlugins(this) + plugins
+
     internal open val activationMode: ActivationMode =
         buildContext.activationMode
 
@@ -107,11 +109,11 @@ open class Node<V : RibView>(
 
     private var isPendingViewDetach: Boolean = false
     private var isPendingDetach: Boolean = false
-    private val isActive: Boolean
+    val isActive: Boolean
         get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
 
     init {
-        plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
+        this.plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
     internal fun onBuild() {
@@ -244,7 +246,7 @@ open class Node<V : RibView>(
     }
 
     private fun detachChildView(child: Node<*>, notifyPlugins: Boolean) {
-        if (isAttachedToView) {
+        if (isAttachedToView && child.isAttachedToView) {
             view?.let { it.detachChild(child) }
                 ?: parent?.detachChildView(child, false)
                 ?: rootHost!!.detachChild(child)

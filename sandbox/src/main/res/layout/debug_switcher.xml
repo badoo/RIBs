@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/debug_switcher"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:orientation="vertical"
+    android:layout_gravity="top"
+    android:gravity="top"
+    android:background="#799">
+
+    <Button
+        android:id="@+id/workflow_hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Routing: Hello" />
+
+    <Button
+        android:id="@+id/workflow_foo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Routing: Foo" />
+
+</LinearLayout>

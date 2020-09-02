@@ -2,6 +2,7 @@ package com.badoo.ribs.sandbox.rib.hello_world
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature
 import com.badoo.ribs.sandbox.rib.hello_world.routing.HelloWorldChildBuilders
 import com.badoo.ribs.sandbox.rib.hello_world.routing.HelloWorldRouter
@@ -28,9 +29,10 @@ class HelloWorldBuilder(
         return HelloWorldNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            plugins =  listOf(
+            plugins =  listOfNotNull(
                 interactor,
-                router
+                router,
+                HelloDebugControls().takeIf { BuildConfig.DEBUG }
             )
         )
     }

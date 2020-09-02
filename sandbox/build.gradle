@@ -63,8 +63,10 @@ dependencies {
     implementation deps.external.mviCoreAndroid
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
+    implementation deps.external.leakCanary // use debugImplementation in real life apps
 
     implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-debug-utils")
     implementation project(":libraries:rib-portal-rx")
     implementation project(":libraries:rib-recyclerview")
     implementation project(":libraries:rib-rx")

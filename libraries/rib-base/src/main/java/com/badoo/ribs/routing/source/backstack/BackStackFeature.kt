@@ -187,6 +187,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
     internal fun contentIdForPosition(id: Int, position: Int, content: C): Routing.Identifier =
         Routing.Identifier("Back stack $id #$position = $content")
 
+    @SuppressWarnings("LongParameterList")
     internal fun overlayIdForPosition(id: Int, position: Int, content: C, overlayIndex: Int, overlay: C): Routing.Identifier =
         Routing.Identifier("Back stack $id overlay #$position.$overlayIndex = $content.$overlay")
 }

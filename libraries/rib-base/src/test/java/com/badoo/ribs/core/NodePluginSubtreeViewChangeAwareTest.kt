@@ -31,6 +31,7 @@ class NodePluginSubtreeViewChangeAwareTest : NodePluginTest() {
 
         node.onCreateView(parentView)
         node.onAttachToView()
+        childNode.onAttachToView()
         node.detachChildView(childNode)
 
         plugins.forEach {

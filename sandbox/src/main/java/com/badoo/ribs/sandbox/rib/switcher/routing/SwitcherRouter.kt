@@ -52,28 +52,14 @@ class SwitcherRouter internal constructor(
         }
     }
 
-    internal val menuUpdater = PublishRelay.create<Menu.Input>()
-
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
                 is Permanent.Menu -> child { menu.build(it) }
-                is Content.Hello -> composite(
-                    child { helloWorld.build(it) },
-                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.HelloWorld)) }
-                )
-                is Content.Foo -> composite(
-                    child { fooBar.build(it) },
-                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.FooBar)) }
-                )
-                is Content.DialogsExample -> composite(
-                    child {  dialogExample.build(it) },
-                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
-                )
-                is Content.Compose -> composite(
-                    child { composeParent.build(it) },
-                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.Compose)) }
-                )
+                is Content.Hello -> child { helloWorld.build(it) }
+                is Content.Foo -> child { fooBar.build(it) }
+                is Content.DialogsExample -> child {  dialogExample.build(it) }
+                is Content.Compose -> child { composeParent.build(it) }
                 is Content.Blocker -> child { blocker.build(it) }
                 is Overlay.Dialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogToTestOverlay)
             }

@@ -36,13 +36,16 @@ internal class SwitcherInteractor(
 ) {
 
     private val menuListener = Consumer<Menu.Output> { output ->
-            when (output) {
-              is Menu.Output.MenuItemSelected -> when (output.menuItem) {
-                FooBar -> backStack.push(Content.Foo)
-                HelloWorld -> backStack.push(Content.Hello)
-                Dialogs -> backStack.push(Content.DialogsExample)
-                Compose -> backStack.push(Content.Compose)
-              }
+        when (output) {
+            is Menu.Output.MenuItemSelected ->
+                backStack.push(
+                    when (output.menuItem) {
+                        FooBar -> Content.Foo
+                        HelloWorld -> Content.Hello
+                        Dialogs -> Content.DialogsExample
+                        Compose -> Content.Compose
+                    }
+                )
         }
     }
 

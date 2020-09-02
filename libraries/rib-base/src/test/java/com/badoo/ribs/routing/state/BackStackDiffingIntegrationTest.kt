@@ -30,6 +30,10 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration as C
 
 class BackStackDiffingIntegrationTest {
 
+    companion object {
+        private const val ID = 100
+    }
+
     private lateinit var backStack: BackStackFeature<C>
 
     @Before
@@ -43,13 +47,13 @@ class BackStackDiffingIntegrationTest {
     fun routing(position: Int, content: C): Routing<C> =
         Routing(
             configuration = content,
-            identifier = backStack.contentIdForPosition(position, content)
+            identifier = backStack.contentIdForPosition(ID, position, content)
         )
 
     fun overlay(position: Int, content: C, overlayIndex: Int, overlay: C): Routing<C> =
         Routing(
             configuration = overlay,
-            identifier = backStack.overlayIdForPosition(position, content, overlayIndex, overlay)
+            identifier = backStack.overlayIdForPosition(ID, position, content, overlayIndex, overlay)
         )
 
     @Test

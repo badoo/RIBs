@@ -20,13 +20,13 @@ open class RxWorkflowNode<V : RibView>(
     plugins = plugins
 ) {
 
-    private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
-    val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
+    private val childrenAttachesRelay: PublishRelay<Node<*>>? = PublishRelay.create()
+    val childrenAttaches: Observable<Node<*>>?= childrenAttachesRelay?.hide()
     val detachSignal: BehaviorRelay<Unit> = BehaviorRelay.create()
 
     override fun onAttachChildNode(child: Node<*>) {
         super.onAttachChildNode(child)
-        childrenAttachesRelay.accept(child)
+        childrenAttachesRelay?.accept(child)
     }
 
     override fun onDestroy() {
@@ -97,7 +97,7 @@ open class RxWorkflowNode<V : RibView>(
         Single.fromCallable {
             val childNodesOfExpectedType = children.filterIsInstance<T>()
             if (childNodesOfExpectedType.isEmpty()) {
-                childrenAttaches.ofType(T::class.java).firstOrError()
+                childrenAttaches?.ofType(T::class.java)?.firstOrError()
             } else {
                 Single.just(childNodesOfExpectedType.last())
             }

@@ -103,7 +103,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
 
         private fun routingWithCorrectId(element: RoutingHistoryElement<C>, index: Int): Routing<C> =
             element.routing.copy(
-                identifier = contentIdForPosition(
+                identifier = state.contentIdForPosition(
                     index,
                     element.routing.configuration
                 )
@@ -112,7 +112,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         private fun overlaysWithCorrectId(element: RoutingHistoryElement<C>, index: Int): List<Routing<C>> =
             element.overlays.mapIndexed { overlayIndex, overlay ->
                 overlay.copy(
-                    identifier = overlayIdForPosition(
+                    identifier = state.overlayIdForPosition(
                         index,
                         element.routing.configuration,
                         overlayIndex,
@@ -181,10 +181,4 @@ class BackStackFeature<C : Parcelable> internal constructor(
         super.onSaveInstanceState(outState)
         timeCapsule.saveState(outState)
     }
-
-    internal fun contentIdForPosition(position: Int, content: C): Routing.Identifier =
-        Routing.Identifier("Back stack ${System.identityHashCode(this)} #$position = $content")
-
-    internal fun overlayIdForPosition(position: Int, content: C, overlayIndex: Int, overlay: C): Routing.Identifier =
-        Routing.Identifier("Back stack ${System.identityHashCode(this)} overlay #$position.$overlayIndex = $content.$overlay")
 }

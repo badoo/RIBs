@@ -1,6 +1,5 @@
 package com.badoo.ribs.routing.state
 
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
@@ -9,15 +8,18 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryDiffer
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.contentIdForPosition
 import com.badoo.ribs.routing.source.backstack.operation.newRoot
 import com.badoo.ribs.routing.source.backstack.operation.pop
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import com.badoo.ribs.routing.source.backstack.operation.singleTop
+import com.badoo.ribs.routing.source.backstack.overlayIdForPosition
 import com.badoo.ribs.routing.state.changeset.RoutingCommand
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Activate
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
@@ -43,13 +45,13 @@ class BackStackDiffingIntegrationTest {
     fun routing(position: Int, content: C): Routing<C> =
         Routing(
             configuration = content,
-            identifier = backStack.contentIdForPosition(position, content)
+            identifier = backStack.state.contentIdForPosition(position, content)
         )
 
     fun overlay(position: Int, content: C, overlayIndex: Int, overlay: C): Routing<C> =
         Routing(
             configuration = overlay,
-            identifier = backStack.overlayIdForPosition(position, content, overlayIndex, overlay)
+            identifier = backStack.state.overlayIdForPosition(position, content, overlayIndex, overlay)
         )
 
     @Test

@@ -7,6 +7,6 @@ internal object ViewEventToWish : (Event) -> Wish? {
 
     override fun invoke(event: Event): Wish? =
         when (event) {
-            is Event.LikeClicked -> Wish.LikePhoto
+            is Event.LikeClicked -> Wish.LikeOrUnlikePhoto
         }
 }

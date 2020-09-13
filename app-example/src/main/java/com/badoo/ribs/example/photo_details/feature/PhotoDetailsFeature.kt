@@ -5,8 +5,6 @@ import com.badoo.mvicore.element.Bootstrapper
 import com.badoo.mvicore.element.NewsPublisher
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.feature.ActorReducerFeature
-import com.badoo.ribs.example.auth.AuthDataSource
-import com.badoo.ribs.example.auth.AuthState.Authenticated
 import com.badoo.ribs.example.extensions.toObservable
 import com.badoo.ribs.example.network.model.Photo
 import com.badoo.ribs.example.photo_details.PhotoDetailsDataSource
@@ -18,14 +16,13 @@ import io.reactivex.Observable
 
 internal class PhotoDetailsFeature(
     photoId: String,
-    photoDetailsDataSource: PhotoDetailsDataSource,
-    authDataSource: AuthDataSource
+    photoDetailsDataSource: PhotoDetailsDataSource
 ) : ActorReducerFeature<Wish, Effect, State, News>(
     initialState = State.Loading,
     bootstrapper = BootStrapperImpl(),
-    actor = ActorImpl(photoDetailsDataSource, photoId, authDataSource),
+    actor = ActorImpl(photoDetailsDataSource, photoId),
     reducer = ReducerImpl(),
-    newsPublisher = NewsPublisherImpl(authDataSource)
+    newsPublisher = NewsPublisherImpl()
 ) {
 
 
@@ -36,11 +33,11 @@ internal class PhotoDetailsFeature(
 
     sealed class Wish {
         object LoadPhoto : Wish()
-        object LikePhoto : Wish()
+        object LikeOrUnlikePhoto : Wish()
     }
 
     sealed class Effect {
-        object LoadingStarted : Effect()
+        object LoadingPhotoStarted : Effect()
         data class PhotoLoaded(val detail: Photo) : Effect()
         object LikeSent : Effect()
         object UnlikeSent : Effect()
@@ -48,7 +45,7 @@ internal class PhotoDetailsFeature(
     }
 
     sealed class News {
-        object ShowLogin : News()
+        object LikeOrUnlikeFailed : News()
     }
 
     class BootStrapperImpl : Bootstrapper<Wish> {
@@ -57,22 +54,20 @@ internal class PhotoDetailsFeature(
 
     class ActorImpl(
         private val photoDetailsDataSource: PhotoDetailsDataSource,
-        private val photoId: String,
-        private val authDataSource: AuthDataSource
+        private val photoId: String
     ) : Actor<State, Wish, Effect> {
         override fun invoke(state: State, wish: Wish): Observable<Effect> =
             when (wish) {
                 Wish.LoadPhoto -> photoDetailsDataSource.getPhoto(photoId)
                     .map<Effect> { Effect.PhotoLoaded(it) }
                     .toObservable()
-                    .startWith(Effect.LoadingStarted)
-                Wish.LikePhoto -> likeOrDislikePhoto(state)
+                    .startWith(Effect.LoadingPhotoStarted)
+                Wish.LikeOrUnlikePhoto -> togglePhotoLike(state)
             }
 
-        private fun likeOrDislikePhoto(state: State): Observable<Effect> =
-            when {
-                state !is State.Loaded -> Observable.empty()
-                authDataSource.getState() !is Authenticated -> Effect.LikeNotSent.toObservable()
+        private fun togglePhotoLike(state: State): Observable<Effect> =
+            when (state) {
+                !is State.Loaded -> Observable.empty()
                 else -> {
                     if (state.detail.likedByUser) {
                         unlikePhoto()
@@ -85,20 +80,22 @@ internal class PhotoDetailsFeature(
         private fun likePhoto(): Observable<Effect> {
             return photoDetailsDataSource.likePhoto(photoId)
                 .toObservable<Effect>()
-                .startWith(Effect.LikeSent)
+                .map<Effect> { Effect.LikeSent }
+                .onErrorReturnItem(Effect.LikeNotSent)
         }
 
         private fun unlikePhoto(): Observable<Effect> {
             return photoDetailsDataSource.unlikePhoto(photoId)
                 .toObservable<Effect>()
-                .startWith(Effect.UnlikeSent)
+                .map<Effect> { Effect.UnlikeSent }
+                .onErrorReturnItem(Effect.LikeNotSent)
         }
     }
 
     class ReducerImpl : Reducer<State, Effect> {
         override fun invoke(state: State, effect: Effect): State =
             when (effect) {
-                is Effect.LoadingStarted -> State.Loading
+                is Effect.LoadingPhotoStarted -> State.Loading
                 is Effect.PhotoLoaded -> State.Loaded(effect.detail)
                 is Effect.LikeSent -> likeState(state, true)
                 is Effect.UnlikeSent -> likeState(state, false)
@@ -114,12 +111,10 @@ internal class PhotoDetailsFeature(
         }
     }
 
-    class NewsPublisherImpl(
-        private val authDataSource: AuthDataSource
-    ) : NewsPublisher<Wish, Effect, State, News> {
+    class NewsPublisherImpl : NewsPublisher<Wish, Effect, State, News> {
         override fun invoke(wish: Wish, effect: Effect, state: State): News? =
             when (effect) {
-                is Effect.LikeNotSent -> News.ShowLogin
+                is Effect.LikeNotSent -> News.LikeOrUnlikeFailed
                 else -> null
             }
     }

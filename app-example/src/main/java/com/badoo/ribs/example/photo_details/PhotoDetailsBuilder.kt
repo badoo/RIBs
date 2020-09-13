@@ -24,14 +24,12 @@ class PhotoDetailsBuilder(
         )
         val feature = PhotoDetailsFeature(
             buildParams.payload.photoId,
-            dependency.photoDetailsDataSource,
-            dependency.authDataSource
+            dependency.photoDetailsDataSource
         )
         val interactor = PhotoDetailsInteractor(
             buildParams = buildParams,
             backStack = backStack,
-            feature = feature,
-            portal = dependency.portal()
+            feature = feature
         )
         val router = PhotoDetailsRouter(
             buildParams = buildParams,

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 data class Photo(
     val id: String,
-    @Json(name = "created_at") val createdAt: String,
+    @Json(name = "created_at") val createdAt: String?,
     val width: Int,
     val height: Int,
     val color: String?,

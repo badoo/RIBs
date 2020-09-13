@@ -21,7 +21,9 @@ class PhotoDetailsDataSourceImpl(private val api: UnsplashApi) : PhotoDetailsDat
 
     override fun likePhoto(id: String): Completable =
         api.likePhoto(id)
+            .observeOn(AndroidSchedulers.mainThread())
 
     override fun unlikePhoto(id: String): Completable =
         api.unlikePhoto(id)
+            .observeOn(AndroidSchedulers.mainThread())
 }

@@ -26,7 +26,7 @@ internal class FeedContainerInteractor(
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
                 is PhotoFeed -> bind(child.output to rib.output using FeedOutputToContainerOutput)

@@ -6,7 +6,6 @@ import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRoute
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration.Content
 import com.badoo.ribs.example.photo_details.PhotoDetailsBuilder
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AttachRibRoutingAction
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router

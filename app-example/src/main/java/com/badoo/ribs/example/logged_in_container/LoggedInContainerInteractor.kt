@@ -27,13 +27,14 @@ internal class LoggedInContainerInteractor(
             )
         }
     }
+
     override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
 
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
                 is FeedContainer -> bind(child.output to photoFeedOutputConsumer)

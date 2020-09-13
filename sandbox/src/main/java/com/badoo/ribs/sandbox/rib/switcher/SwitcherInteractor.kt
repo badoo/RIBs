@@ -8,6 +8,7 @@ import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.pop
 import com.badoo.ribs.routing.source.backstack.operation.push
@@ -15,6 +16,7 @@ import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
+import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.Compose
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.Dialogs
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
@@ -30,23 +32,20 @@ internal class SwitcherInteractor(
     private val backStack: BackStackFeature<Configuration>,
     private val dialogToTestOverlay: DialogToTestOverlay
 ) : Interactor<Switcher, SwitcherView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     private val menuListener = Consumer<Menu.Output> { output ->
-            when (output) {
-              is Menu.Output.MenuItemSelected -> when (output.menuItem) {
-                FooBar -> {
-                    backStack.push(Content.Foo)
-                }
-                HelloWorld -> {
-                    backStack.push(Content.Hello)
-                }
-                Dialogs -> {
-                    backStack.push(Content.DialogsExample)
-                }
-            }
+        when (output) {
+            is Menu.Output.MenuItemSelected ->
+                backStack.push(
+                    when (output.menuItem) {
+                        FooBar -> Content.Foo
+                        HelloWorld -> Content.Hello
+                        Dialogs -> Content.DialogsExample
+                        Compose -> Content.Compose
+                    }
+                )
         }
     }
 
@@ -84,16 +83,19 @@ internal class SwitcherInteractor(
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
-                is Menu -> {
-                    bind(child.output to menuListener)
-                    bind(backStack.activeConfiguration to child.input using ConfigurationToMenuInput)
-                }
-                is Blocker -> {
-                    bind(child.output to blockerOutputConsumer)
-                }
+                is Menu -> bind(child.output to menuListener)
+                is Blocker -> bind(child.output to blockerOutputConsumer)
+            }
+        }
+    }
+
+    override fun onChildAttached(child: Node<*>) {
+        child.lifecycle.createDestroy {
+            when (child) {
+                is Menu -> bind(backStack.activeConfiguration.rx2() to child.input using ConfigurationToMenuInput)
             }
         }
     }
@@ -104,6 +106,7 @@ internal class SwitcherInteractor(
                 Content.Hello -> SelectMenuItem(HelloWorld)
                 Content.Foo -> SelectMenuItem(FooBar)
                 Content.DialogsExample -> SelectMenuItem(Dialogs)
+                Content.Compose -> SelectMenuItem(Compose)
                 else -> null
             }
     }

@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.small.SmallView.Event
 import com.badoo.ribs.sandbox.rib.small.SmallView.ViewModel
@@ -34,15 +35,16 @@ interface SmallView : RibView,
 class SmallViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : SmallView,
+) : AndroidRibView(),
+    SmallView,
     ObservableSource<Event> by events {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_small
     ) : SmallView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> SmallView = {
+        override fun invoke(deps: Nothing?): (RibView) -> SmallView = {
             SmallViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

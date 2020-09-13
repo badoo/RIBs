@@ -24,6 +24,7 @@ interface Menu : Rib, Connectable<Input, Output> {
         @Parcelize object HelloWorld : MenuItem()
         @Parcelize object FooBar : MenuItem()
         @Parcelize object Dialogs : MenuItem()
+        @Parcelize object Compose : MenuItem()
 
     }
 

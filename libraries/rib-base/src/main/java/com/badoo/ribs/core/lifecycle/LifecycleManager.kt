@@ -79,9 +79,9 @@ internal class LifecycleManager(
     }
 
     /**
-     * This is intentionally not propagated to children, they are triggered by router
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
-    fun onCreateRib() {
+    fun onCreate() {
         if (owner.isViewless) {
             // RIBs without view will always be at: min(RESUMED, external)
             ribLifecycle.onResume()
@@ -92,33 +92,37 @@ internal class LifecycleManager(
     }
 
     /**
-     * This is intentionally not propagated to children, they are triggered by router
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
-    fun onDestroyRib() {
+    fun onDestroy() {
         ribLifecycle.onDestroy()
     }
 
-    /**
-     * This is intentionally not propagated to children, they are triggered by router
-     */
-    fun onCreateView() {
+    fun onViewCreated() {
         viewLifecycle = CappedLifecycle(externalLifecycle)
         viewLifecycle!!.onCreate()
-
-        if (!owner.isViewless) {
-            // If isViewless, it's already RESUMED in onAttach()
-            ribLifecycle.onStart()
-            ribLifecycle.onResume()
-        }
-
-        viewLifecycle!!.onStart()
-        viewLifecycle!!.onResume()
     }
 
     /**
-     * This is intentionally not propagated to children, they are triggered by router
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
      */
-    fun onDestroyView() {
+    fun onAttachToView() {
+        if (!owner.isViewless) {
+            if (viewLifecycle == null) {
+                error("Trying to attach, but view was not created")
+            }
+            // If isViewless, it's already RESUMED in onAttach()
+            ribLifecycle.onStart()
+            ribLifecycle.onResume()
+            viewLifecycle!!.onStart()
+            viewLifecycle!!.onResume()
+        }
+    }
+
+    /**
+     * This is intentionally not propagated to children, they are triggered by routing mechanisms
+     */
+    fun onDetachFromView() {
         if (owner.isViewless) {
             // Implication: if RIB is viewless, we're keeping it resumed capped by external lifecycle only
             return

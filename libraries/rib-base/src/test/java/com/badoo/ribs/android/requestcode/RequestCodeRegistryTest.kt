@@ -103,7 +103,6 @@ class RequestCodeRegistryTest {
 
     @Test(expected = RequestCodeDoesntFitInMask::class)
     fun `When request code is larger than what would fit in mask, exception is thrown`() {
-        val code = MAX_REQUEST_CODE
         requestCodeRegistry.generateRequestCode("", MAX_REQUEST_CODE + 1)
     }
 

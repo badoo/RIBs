@@ -5,6 +5,7 @@ def versions = [
     kotlin: '1.3.72',
     mviCore: '1.2.4',
     robolectric: '4.2',
+    compose: '0.1.0-dev14',
 
     materialVersion:'1.1.0', // https://github.com/material-components/material-components-android/releases
     androidxAnnotationVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
@@ -27,6 +28,7 @@ def versions = [
     androidxTestUiAutoVersion:'2.2.0',
     retrofitVersion: '2.8.1',
     okhttp: '3.14.7',
+    leakCanary: '2.4'
 ]
 
 def apt = [
@@ -36,6 +38,13 @@ def apt = [
     javaxInject: "javax.inject:javax.inject:1",
 ]
 
+def agp
+if (useCompose) {
+    agp = 'com.android.tools.build:gradle:4.2.0-alpha04'
+} else {
+    agp = 'com.android.tools.build:gradle:4.0.0'
+}
+
 def build = [
     compileSdkVersion: 28,
     gradlePluginsUrl : "https://plugins.gradle.org/m2/",
@@ -44,14 +53,14 @@ def build = [
     targetSdkVersion: 28,
     guava: "com.google.guava:guava:20.0",
     commonsLang: "commons-lang:commons-lang:2.6",
-    intellijPlugin: "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.4.2",
+    intellijPlugin: "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.4.21",
     kotlinIdeaPlugin: "org.jetbrains.kotlin:${versions.intellij_kotlin}",
     gradlePlugins: [
-        android: 'com.android.tools.build:gradle:3.4.0',
+        android: agp,
         kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
         gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
         mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.8.0',
-        detekt: 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0-RC14',
+        detekt: 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.10.0',
     ]
 ]
 
@@ -65,6 +74,15 @@ def android = [
     runner: "androidx.test:runner:${versions.androidxTestVersion}",
     recyclerView: "androidx.recyclerview:recyclerview:${versions.androidxRecyclerViewVersion}",
     rules: "androidx.test:rules:${versions.androidxTestVersion}"
+]
+
+def compose = [
+    runtime: "androidx.compose:compose-runtime:${versions.compose}",
+    uiCore: "androidx.ui:ui-core:${versions.compose}",
+    uiLayout: "androidx.ui:ui-layout:${versions.compose}",
+    uiMaterial: "androidx.ui:ui-material:${versions.compose}",
+    uiTooling: "androidx.ui:ui-tooling:${versions.compose}",
+    uiFoundation: "androidx.ui:ui-foundation:${versions.compose}"
 ]
 
 def test = [
@@ -91,13 +109,13 @@ def external = [
     rxjava2: "io.reactivex.rxjava2:rxjava:2.2.6",
     rxrelay2: "com.jakewharton.rxrelay2:rxrelay:2.1.0",
     rxandroid2: "io.reactivex.rxjava2:rxandroid:2.1.1",
-    reactiveStreams: "org.reactivestreams:reactive-streams:1.0.0",
     roboelectricBase: "org.robolectric:robolectric:${versions.robolectric}",
     rxbinding: 'com.jakewharton.rxbinding2:rxbinding:2.2.0',
     leakcanaryDebug: 'com.squareup.leakcanary:leakcanary-android:1.6.3',
     apacheCommons: 'org.apache.commons:commons-lang3:3.0',
     gson: 'com.google.code.gson:gson:2.8.5',
     coil: 'io.coil-kt:coil:0.11.0',
+    leakCanary: "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
 ]
 
 def retrofit = [
@@ -111,6 +129,7 @@ def retrofit = [
 ext.deps = [
     "apt": apt,
     "build": build,
+    "compose": compose,
     "external": external,
     "android": android,
     "test": test,

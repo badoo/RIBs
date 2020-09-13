@@ -29,7 +29,7 @@ object RIBs {
         }
 
     @VisibleForTesting
-    internal fun clearErrorHandler() {
+    fun clearErrorHandler() {
         _errorHandler = null
     }
 
@@ -110,6 +110,8 @@ object RIBs {
 
         override fun handleNonFatalWarning(warningMessage: String, throwable: Throwable?) {}
 
-        override fun handleDebugMessage(format: String, vararg args: Any) {}
+        override fun handleDebugMessage(format: String, vararg args: Any) {
+            Log.d(TAG, format.format(args))
+        }
     }
 }

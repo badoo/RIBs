@@ -14,9 +14,7 @@ class DialogExampleInteractorTest {
     fun setup() {
         interactor = DialogExampleInteractor(
             buildParams = BuildParams.Empty(),
-            simpleDialog = mock(),
-            lazyDialog = mock(),
-            ribDialog = mock()
+            dialogs = mock()
         )
     }
 

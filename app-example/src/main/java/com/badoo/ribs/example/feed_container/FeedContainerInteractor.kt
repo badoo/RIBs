@@ -16,7 +16,7 @@ internal class FeedContainerInteractor(
     buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
         }
     }

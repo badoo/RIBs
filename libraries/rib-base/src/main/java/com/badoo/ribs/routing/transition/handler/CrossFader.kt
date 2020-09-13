@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.transition.effect.fade.fade
 import com.badoo.ribs.routing.transition.invoke
 
 
-class CrossFader<T>(
+open class CrossFader<T>(
     private val duration: Long = defaultDuration,
     private val interpolator: Interpolator = defaultInterpolator,
     private val condition: (TransitionElement<out T>) -> Boolean = { true }

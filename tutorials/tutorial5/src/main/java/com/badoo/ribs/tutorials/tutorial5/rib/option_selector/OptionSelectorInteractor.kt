@@ -16,8 +16,7 @@ class OptionSelectorInteractor(
     private val output: Consumer<Output>,
     options: List<Text>
 ) : Interactor<OptionSelector, OptionSelectorView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     private val initialViewModel = ViewModel(

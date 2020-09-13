@@ -9,12 +9,10 @@ class DefaultChildActivator<C : Parcelable>(
 ) : ChildActivator<C> {
 
     override fun activate(routing: Routing<C>, child: Node<*>) {
-        parentNode.createChildView(child)
         parentNode.attachChildView(child)
     }
 
     override fun deactivate(routing: Routing<C>, child: Node<*>) {
-        child.saveViewState()
         parentNode.detachChildView(child)
     }
 }

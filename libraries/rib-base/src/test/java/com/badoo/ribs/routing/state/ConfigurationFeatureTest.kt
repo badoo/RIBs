@@ -2,44 +2,28 @@ package com.badoo.ribs.routing.state
 
 import android.os.Bundle
 import android.os.Parcelable
-import com.badoo.mvicore.element.TimeCapsule
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.Routing.Identifier
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
-import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.ContentExternal1
-import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.ContentExternal2
-import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.ContentViewParented1
-import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.ContentViewParented2
-import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.ContentViewParented3
-import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.Permanent1
-import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.Permanent2
+import com.badoo.ribs.routing.state.ConfigurationFeatureTest.Configuration.*
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.RoutingContext.Unresolved
-import com.badoo.ribs.routing.state.changeset.RoutingCommand.Activate
-import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
-import com.badoo.ribs.routing.state.changeset.RoutingCommand.Deactivate
-import com.badoo.ribs.routing.state.changeset.RoutingCommand.Remove
+import com.badoo.ribs.routing.state.changeset.RoutingCommand.*
 import com.badoo.ribs.routing.state.feature.RoutingStatePool
 import com.badoo.ribs.routing.state.feature.Transaction
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.state.feature.state.SavedState
-import com.nhaarman.mockitokotlin2.clearInvocations
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import kotlinx.android.parcel.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -61,8 +45,8 @@ class ConfigurationFeatureTest {
         @Parcelize object ContentExternal2 : Configuration()
     }
 
-    private lateinit var emptyTimeCapsule: TimeCapsule<SavedState<Configuration>>
-    private lateinit var restoredTimeCapsule: TimeCapsule<SavedState<Configuration>>
+    private lateinit var emptyTimeCapsule: TimeCapsule
+    private lateinit var restoredTimeCapsule: TimeCapsule
     private lateinit var poolInTimeCapsule: Map<Routing<Configuration>, Unresolved<Configuration>>
 
     private lateinit var feature: RoutingStatePool<Configuration>
@@ -82,7 +66,7 @@ class ConfigurationFeatureTest {
         val nodes: List<Node<Nothing>>,
         val bundles: List<Bundle>,
         val nodeFactories: List<() -> Rib>,
-        val routingAction: RoutingAction
+        val resolution: Resolution
     ) {
         companion object {
             fun create(routing: Routing<Configuration>, nbNodes: Int, viewActivationMode: ActivationMode): ConfigurationTestHelper {
@@ -95,14 +79,14 @@ class ConfigurationFeatureTest {
                 }
                 val bundles = MutableList(nbNodes) { mock<Bundle>() }
                 val factories = nodes.toFactory()
-                val routingAction: RoutingAction = factories.toRoutingAction(nbNodes)
+                val resolution: Resolution = factories.toRoutingAction(nbNodes)
 
                 return ConfigurationTestHelper(
                     routing = routing,
                     nodes = nodes,
                     bundles = bundles,
                     nodeFactories = factories,
-                    routingAction = routingAction
+                    resolution = resolution
                 )
             }
 
@@ -115,9 +99,9 @@ class ConfigurationFeatureTest {
                     }
                 }
 
-            private fun List<() -> Rib>.toRoutingAction(nbNodes: Int): RoutingAction =
+            private fun List<() -> Rib>.toRoutingAction(nbNodes: Int): Resolution =
                 mock {
-                    on { nbNodesToBuild } doReturn nbNodes
+                    on { numberOfNodes } doReturn nbNodes
                     on { buildNodes(anyList()) } doAnswer {
                         this@toRoutingAction.map {
                             factory -> factory.invoke()
@@ -171,7 +155,7 @@ class ConfigurationFeatureTest {
 
         resolver = mock {
             helpers.forEach { helper ->
-                on { resolve(helper.routing) } doReturn helper.routingAction
+                on { resolve(helper.routing) } doReturn helper.resolution
             }
         }
 
@@ -185,7 +169,7 @@ class ConfigurationFeatureTest {
             routingContentExternal2
         )
 
-        val poolInTimeCapsule = mapOf(
+        val poolInTimeCapsule = hashMapOf(
             routingsforTimeCapsule[0] to Unresolved(SLEEPING, routingsforTimeCapsule[0], helperPermanent1.bundles),
             routingsforTimeCapsule[1] to Unresolved(SLEEPING, routingsforTimeCapsule[1], helperPermanent2.bundles),
 
@@ -215,7 +199,7 @@ class ConfigurationFeatureTest {
 
     private val routingActivator: RoutingActivator<Configuration> = mock()
 
-    private fun createFeature(timeCapsule: TimeCapsule<SavedState<Configuration>>): RoutingStatePool<Configuration> {
+    private fun createFeature(timeCapsule: TimeCapsule): RoutingStatePool<Configuration> {
         return RoutingStatePool(
             timeCapsule = timeCapsule,
             resolver = resolver,
@@ -282,8 +266,8 @@ class ConfigurationFeatureTest {
     fun `On first WakeUp after init, ALL initial configuration are activated - associated RoutingActions are executed`() {
         createEmptyFeature()
         feature.accept(WakeUp())
-        verify(helperPermanent1.routingAction).execute()
-        verify(helperPermanent2.routingAction).execute()
+        verify(helperPermanent1.resolution).execute()
+        verify(helperPermanent2.resolution).execute()
     }
 
     @Test
@@ -336,11 +320,11 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously ACTIVE configurations are activated - associated RoutingActions are executed`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        verify(helperPermanent1.routingAction).execute()
-        verify(helperPermanent2.routingAction).execute()
-        verify(helperContentViewParented1.routingAction).execute()
-        verify(helperContentViewParented2.routingAction).execute()
-        verify(helperContentExternal1.routingAction).execute()
+        verify(helperPermanent1.resolution).execute()
+        verify(helperPermanent2.resolution).execute()
+        verify(helperContentViewParented1.resolution).execute()
+        verify(helperContentViewParented2.resolution).execute()
+        verify(helperContentExternal1.resolution).execute()
     }
 
     @Test
@@ -386,8 +370,8 @@ class ConfigurationFeatureTest {
     fun `On WakeUp after init from TimeCapsule, ALL previously INACTIVE configurations are NOT activated - associated RoutingActions are NOT executed`() {
         createRestoredFeature()
         feature.accept(WakeUp())
-        verify(helperContentViewParented3.routingAction, never()).execute()
-        verify(helperContentExternal2.routingAction, never()).execute()
+        verify(helperContentViewParented3.resolution, never()).execute()
+        verify(helperContentExternal2.resolution, never()).execute()
     }
 
     @Test
@@ -478,7 +462,7 @@ class ConfigurationFeatureTest {
         feature.accept(Transaction.from(
             Add(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction, never()).execute()
+        verify(helperContentViewParented1.resolution, never()).execute()
     }
     // endregion
 
@@ -490,7 +474,7 @@ class ConfigurationFeatureTest {
             Add(helperContentViewParented1.routing),
             Activate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction, never()).execute()
+        verify(helperContentViewParented1.resolution, never()).execute()
     }
 
     @Test
@@ -512,7 +496,7 @@ class ConfigurationFeatureTest {
             Activate(helperContentViewParented1.routing)
         ))
         feature.accept(WakeUp())
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.resolution).execute()
     }
 
     @Test
@@ -534,7 +518,7 @@ class ConfigurationFeatureTest {
             Add(helperContentViewParented1.routing),
             Activate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.resolution).execute()
     }
 
     @Test
@@ -561,7 +545,7 @@ class ConfigurationFeatureTest {
         feature.accept(Transaction.from(
             Activate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction, times(1)).execute()
+        verify(helperContentViewParented1.resolution, times(1)).execute()
     }
 
     @Test
@@ -587,7 +571,7 @@ class ConfigurationFeatureTest {
             Add(helperContentViewParented1.routing),
             Deactivate(helperContentViewParented1.routing)
         ))
-        verify(helperContentViewParented1.routingAction).cleanup()
+        verify(helperContentViewParented1.resolution).cleanup()
     }
 
     /**
@@ -673,7 +657,7 @@ class ConfigurationFeatureTest {
         clearInvocations(parentNode)
         feature.accept(Sleep())
 
-        verify(helperContentViewParented1.routingAction).cleanup()
+        verify(helperContentViewParented1.resolution).cleanup()
     }
 
     /**
@@ -738,10 +722,10 @@ class ConfigurationFeatureTest {
             Activate(helperContentViewParented1.routing)
         ))
         feature.accept(Sleep())
-        clearInvocations(helperContentViewParented1.routingAction)
+        clearInvocations(helperContentViewParented1.resolution)
         feature.accept(WakeUp())
 
-        verify(helperContentViewParented1.routingAction).execute()
+        verify(helperContentViewParented1.resolution).execute()
     }
 
     @Test

@@ -2,7 +2,7 @@ package com.badoo.ribs.routing.state.changeset
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.state.action.single.ActionFactory
 import com.badoo.ribs.routing.state.action.single.ActivateAction
 import com.badoo.ribs.routing.state.action.single.AddAction
@@ -18,7 +18,7 @@ import com.badoo.ribs.routing.Routing
  * The command object holds only the data necessary to resolve the [RoutingContext] that the
  * command needs to be executed on on a logical level.
  *
- * Associated actions that need to be executed (resulting in [RoutingAction] and
+ * Associated actions that need to be executed (resulting in [Resolution] and
  * [Node] manipulations) are to be found in the associated Actions created by [ActionFactory].
  */
 internal sealed class RoutingCommand<C : Parcelable> {

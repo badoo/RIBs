@@ -14,9 +14,7 @@ import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLaz
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
-import com.badoo.ribs.sandbox.rib.dialog_example.dialog.LazyDialog
-import com.badoo.ribs.sandbox.rib.dialog_example.dialog.RibDialog
-import com.badoo.ribs.sandbox.rib.dialog_example.dialog.SimpleDialog
+import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Overlay
@@ -26,9 +24,7 @@ import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor internal constructor(
     buildParams: BuildParams<Nothing?>,
-    private val simpleDialog: SimpleDialog,
-    private val lazyDialog: LazyDialog,
-    private val ribDialog: RibDialog
+    private val dialogs: Dialogs
 ) : BackStackInteractor<DialogExample, DialogExampleView, Configuration>(
     buildParams = buildParams,
     initialConfiguration = Content.Default
@@ -42,13 +38,13 @@ class DialogExampleInteractor internal constructor(
         viewLifecycle.startStop {
             bind(dummyViewInput to view)
             bind(view to viewEventConsumer)
-            bind(simpleDialog to dialogEventConsumer)
-            bind(lazyDialog to dialogEventConsumer)
-            bind(ribDialog to dialogEventConsumer)
+            bind(dialogs.simpleDialog to dialogEventConsumer)
+            bind(dialogs.lazyDialog to dialogEventConsumer)
+            bind(dialogs.ribDialog to dialogEventConsumer)
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
                 is LoremIpsum -> bind(child.output to loremIpsumOutputConsumer)
@@ -69,7 +65,7 @@ class DialogExampleInteractor internal constructor(
     }
 
     private fun initLazyDialog() {
-        with(lazyDialog) {
+        with(dialogs.lazyDialog) {
             title = Text.Plain("Lazy dialog title")
             message = Text.Plain("Lazy dialog message")
             buttons {

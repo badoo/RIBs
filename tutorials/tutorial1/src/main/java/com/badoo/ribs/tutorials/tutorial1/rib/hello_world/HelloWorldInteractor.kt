@@ -12,8 +12,7 @@ class HelloWorldInteractor(
     buildParams: BuildParams<Nothing?>,
     private val output: Consumer<HelloWorld.Output>
 ) : Interactor<HelloWorld, HelloWorldView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     override fun onViewCreated(view: HelloWorldView, viewLifecycle: Lifecycle) {

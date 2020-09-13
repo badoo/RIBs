@@ -1,0 +1,34 @@
+configureAndroidLibrary(project)
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation deps.external.kotlinStdlib
+    implementation deps.external.rxrelay2
+    implementation deps.external.rxjava2
+
+    implementation project(":libraries:rib-base")
+
+    testImplementation deps.android.annotations
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockito
+    testImplementation deps.test.assertj
+    testImplementation deps.external.roboelectricBase
+    testImplementation deps.test.mockitoKotlin
+
+    androidTestImplementation deps.test.junit
+    androidTestImplementation deps.test.assertj
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.espressoIntents
+    androidTestImplementation deps.androidTest.runner
+    androidTestImplementation deps.androidTest.rules
+    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation project(':libraries:rib-base-test-activity')
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -1,38 +1,8 @@
-autoCorrect: false
-failFast: false
-
-test-pattern: # Configure exclusions for test sources
-  active: true
-  patterns: # Test file regexes
-    - '.*/test/.*'
-    - '.*Test.kt'
-    - '.*Spec.kt'
-  exclude-rule-sets:
-    - 'comments'
-  exclude-rules:
-    - 'NamingRules'
-    - 'WildcardImport'
-    - 'MagicNumber'
-    - 'MaxLineLength'
-    - 'LateinitUsage'
-    - 'StringLiteralDuplication'
-
 build:
   maxIssues: 0
-  weights:
-    complexity: 2
-    formatting: 1
-    LongParameterList: 1
-    comments: 1
 
 processors:
   active: false
-
-console-reports:
-  active: true
-
-output-reports:
-  active: true
 
 potential-bugs:
   active: true
@@ -42,8 +12,6 @@ potential-bugs:
     active: false
   EqualsWithHashCodeExist:
     active: true
-  InvalidLoopCondition:
-    active: false
   WrongEqualsTypeParameter:
     active: false
   IteratorHasNextCallsNextMethod:
@@ -85,7 +53,8 @@ exceptions:
     active: false
   TooGenericExceptionCaught:
     active: true
-    exceptions:
+    excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
+    exceptionNames:
       - ArrayIndexOutOfBoundsException
       - Error
       - Exception
@@ -97,7 +66,8 @@ exceptions:
       - Throwable
   TooGenericExceptionThrown:
     active: true
-    exceptions:
+    excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
+    exceptionNames:
       - Error
       - Exception
       - NullPointerException
@@ -106,7 +76,7 @@ exceptions:
   InstanceOfCheckForException:
     active: false
   NotImplementedDeclaration:
-    active: false
+    active: true
   ThrowingExceptionsWithoutMessageOrCause:
     active: true
     exceptions: 'IllegalArgumentException,IllegalStateException,IOException'
@@ -158,16 +128,18 @@ complexity:
   active: true
   LongMethod:
     active: true
-    threshold: 30
+    threshold: 60
   NestedBlockDepth:
     active: true
     threshold: 4 # TODO: create custom rule that doesn't count run/let/apply/etc.
   LongParameterList:
+    excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
     active: true
-    threshold: 5
+    functionThreshold: 5
+    constructorThreshold: 5
   LargeClass:
     active: true
-    threshold: 150
+    threshold: 600
   ComplexInterface:
     active: false
     threshold: 10
@@ -180,7 +152,6 @@ complexity:
     threshold: 5
   TooManyFunctions:
     active: false
-    threshold: 10
   ComplexCondition:
     active: true
     threshold: 5
@@ -193,12 +164,48 @@ complexity:
     excludeStringsWithLessThan5Characters: true
     ignoreStringsRegex: '$^'
 
-code-smell:
+naming:
   active: true
-  FeatureEnvy:
-    threshold: 0.5
-    weight: 0.45
-    base: 0.5
+  PackageNaming:
+    active: true
+    packagePattern: '^[a-z]+(\.[a-z][a-z0-9_]*)*$'
+  ClassNaming:
+    active: true
+    classPattern: '[A-Z$][a-zA-Z$0-9]*'
+  EnumNaming:
+    active: true
+    enumEntryPattern: '^[A-Z$][a-zA-Z_$0-9]*$'
+  FunctionNaming:
+    active: true
+    functionPattern: '^([a-z$][a-zA-Z$0-9]*)|(`.*`)$'
+  VariableNaming:
+    active: true
+    variablePattern: '^(_)?[a-z$][a-zA-Z$0-9]*$'
+  TopLevelPropertyNaming:
+    active: true
+    constantPattern: '[A-Z][_A-Z0-9]*'
+    propertyPattern: '[A-Za-z][_A-Za-z0-9]*'
+    privatePropertyPattern: '_?[A-Za-z][_A-Za-z0-9]*'
+  VariableMaxLength:
+    active: false
+    maximumVariableNameLength: 30
+  VariableMinLength:
+    active: false
+    minimumVariableNameLength: 3
+  ForbiddenClassName:
+    active: false
+    forbiddenName: ''
+  InvalidPackageDeclaration:
+    active: true
+  FunctionMaxLength:
+    active: false
+    maximumFunctionNameLength: 30
+  FunctionMinLength:
+    active: false
+    minimumFunctionNameLength: 3
+  MemberNameEqualsClassName:
+    active: false
+    ignoreOverridden: true
 
 style:
   active: true
@@ -218,24 +225,22 @@ style:
     active: false
   EqualsNullCall:
     active: false
+  EqualsOnSignatureLine:
+    active: true
   ForbiddenComment:
     active: true
-    values: 'STOPSHIP:'
+    values: 'STOPSHIP'
   ForbiddenImport:
     active: false
     imports: ''
-  PackageDeclarationStyle:
-    active: true
   LoopWithTooManyJumpStatements:
     active: true
     maxJumpCount: 1
-  MethodNameEqualsClassName:
-    active: false
-    ignoreOverriddenFunction: true
   ModifierOrder:
     active: true
   MagicNumber:
     active: true
+    excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
     ignoreNumbers: '-1,0,1,2'
     ignoreHashCodeFunction: false
     ignorePropertyDeclaration: false
@@ -245,47 +250,16 @@ style:
     ignoreNamedArgument: true
     ignoreEnums: false
   WildcardImport:
+    excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
     active: true
   SafeCast:
     active: true
   MaxLineLength:
     active: true
+    excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt"
     maxLineLength: 160
     excludePackageStatements: false
     excludeImportStatements: false
-  PackageNaming:
-    active: true
-    packagePattern: '^[a-z]+(\.[a-z][a-z0-9]*)*$'
-  ClassNaming:
-    active: true
-    classPattern: '[A-Z$][a-zA-Z$0-9]*'
-  EnumNaming:
-    active: true
-    enumEntryPattern: '^[A-Z$][a-zA-Z_$0-9]*$'
-  FunctionNaming:
-    active: true
-    functionPattern: '^([a-z$][a-zA-Z$0-9]*)|(`.*`)$'
-  FunctionMaxLength:
-    active: false
-    maximumFunctionNameLength: 30
-  FunctionMinLength:
-    active: false
-    minimumFunctionNameLength: 3
-  VariableNaming:
-    active: true
-    variablePattern: '^(_)?[a-z$][a-zA-Z$0-9]*$'
-  ConstantNaming:
-    active: true
-    constantPattern: '^([A-Z_]*|serialVersionUID)$'
-  VariableMaxLength:
-    active: false
-    maximumVariableNameLength: 30
-  VariableMinLength:
-    active: false
-    minimumVariableNameLength: 3
-  ForbiddenClassName:
-    active: false
-    forbiddenName: ''
   ProtectedMemberInFinalClass:
     active: false
   SerialVersionUIDInSerializableClass:
@@ -305,8 +279,6 @@ style:
     active: false
   OptionalUnit:
     active: true
-  OptionalReturnKeyword:
-    active: true
   ExpressionBodySyntax:
     active: true
   UnusedImports:
@@ -319,9 +291,15 @@ style:
     active: true
     ignoreOverridableFunction: true
     excludedFunctions: 'describeContents'
+  LibraryCodeMustSpecifyReturnType:
+    active: true
+    excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt,**/*InstrumentationTestUtils/**"
+  MandatoryBracesIfStatements:
+    active: true
 
 comments:
   active: true
+  excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt,**/*InstrumentationTestUtils/**"
   CommentOverPrivateFunction:
     active: false
   CommentOverPrivateProperty:

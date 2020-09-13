@@ -5,14 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.EAGER
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.HostingStrategy.LAZY
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State.Entry
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.routing.activator.ChildActivator
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.source.impl.Pool
 import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer
@@ -29,10 +31,11 @@ internal class Adapter<T : Parcelable>(
     Consumer<RecyclerViewHostFeature.State<T>>,
     ChildActivator<T> {
 
-    private val holders: MutableMap<Routing.Identifier, WeakReference<ViewHolder>> = mutableMapOf()
+    private val holders: MutableMap<Routing.Identifier, WeakReference<ViewHolder>> = hashMapOf()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var identifier: Routing.Identifier? = null
+        var host: RibView = AndroidRibViewHost(itemView as FrameLayout)
     }
 
     private var items: List<Entry<T>> = initialEntries ?: emptyList()
@@ -46,13 +49,13 @@ internal class Adapter<T : Parcelable>(
         when (state.lastCommand) {
             null -> { /* No-op when restored from TimeCapsule or genuinely empty state */ }
             is Input.Add -> {
-                eagerAdd(state.items.last())
+                addIfEager(state.items.last())
                 notifyItemInserted(state.items.lastIndex)
             }
         }
     }
 
-    private fun eagerAdd(entry: Entry<T>) {
+    private fun addIfEager(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
             routingSource.add(entry.element, entry.identifier)
         }
@@ -84,9 +87,8 @@ internal class Adapter<T : Parcelable>(
     }
 
     override fun activate(routing: Routing<T>, child: Node<*>) {
-        holders[routing.identifier]?.get()?.let { holder ->
-            child.attachToView(holder.itemView as FrameLayout)
-        } ?: errorHandler.handleNonFatalError("Holder is gone! Routing: $routing, child: $child")
+        viewForRouting(routing)?.attachChild(child)
+            ?: errorHandler.handleNonFatalError("Holder is gone! Routing: $routing, child: $child")
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -107,6 +109,9 @@ internal class Adapter<T : Parcelable>(
 
     override fun deactivate(routing: Routing<T>, child: Node<*>) {
         child.saveViewState()
-        child.detachFromView()
+        viewForRouting(routing)?.detachChild(child)
     }
+
+    private fun viewForRouting(routing: Routing<T>): RibView? =
+        holders[routing.identifier]?.get()?.host
 }

@@ -1,4 +1,5 @@
 buildscript {
+    apply from: 'gradle/compose.gradle'
     apply from: 'gradle/dependencies.gradle'
 
     repositories {
@@ -6,6 +7,9 @@ buildscript {
         google()
         maven {
             url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap/"
         }
     }
     dependencies {
@@ -16,6 +20,7 @@ buildscript {
     }
 }
 
+apply from: 'gradle/compose.gradle'
 apply from: 'gradle/dependencies.gradle'
 apply from: 'gradle/utils.gradle'
 
@@ -26,14 +31,33 @@ subprojects {
             maven { url deps.build.gradlePluginsUrl }
             maven { url "https://maven.google.com" }
             maven { url "https://plugins.gradle.org/m2/" }
+
+            maven {
+                url "https://dl.bintray.com/kotlin/kotlin-eap/"
+            }
         }
     }
 
     repositories {
-        jcenter()
+        jcenter {
+            content {
+                // just allow to include kotlinx projects
+                // detekt needs 'kotlinx-html' for the html report
+                includeGroup "org.jetbrains.kotlinx"
+            }
+        }
         maven { url deps.build.gradlePluginsUrl }
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
+
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap/"
+        }
+    }
+
+    configurations.all {
+        resolutionStrategy.eachDependency {
+        }
     }
 }
 

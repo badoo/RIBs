@@ -21,7 +21,7 @@ internal class RootInteractor(
     buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(authDataSource.authUpdates to authStatConsumer)
         }

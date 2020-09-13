@@ -13,10 +13,11 @@ class NodePluginViewLifecycleAwareTest : NodePluginTest() {
     fun `ViewLifecycleAware plugins receive onAttachToView()`() {
         val (node, plugins) = testPlugins<ViewLifecycleAware>()
 
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
+        node.onAttachToView()
 
         plugins.forEach {
-            verify(it).onAttachToView(parentViewGroup)
+            verify(it).onAttachToView()
         }
     }
 
@@ -24,11 +25,12 @@ class NodePluginViewLifecycleAwareTest : NodePluginTest() {
     fun `ViewLifecycleAware plugins receive onDetachFromView()`() {
         val (node, plugins) = testPlugins<ViewLifecycleAware>()
 
-        node.attachToView(parentViewGroup)
-        node.detachFromView()
+        node.onCreateView(parentView)
+        node.onAttachToView()
+        node.onDetachFromView()
 
         plugins.forEach {
-            verify(it).onDetachFromView(parentViewGroup)
+            verify(it).onDetachFromView()
         }
     }
 }

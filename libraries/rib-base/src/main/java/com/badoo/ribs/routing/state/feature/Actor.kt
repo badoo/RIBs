@@ -3,7 +3,6 @@ package com.badoo.ribs.routing.state.feature
 import android.os.Handler
 import android.os.Parcelable
 import android.view.View
-import com.badoo.mvicore.element.Actor as MviCoreActor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
@@ -14,6 +13,9 @@ import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.action.TransactionExecutionParams
 import com.badoo.ribs.routing.state.action.single.ReversibleAction
+import com.badoo.ribs.routing.state.changeset.RoutingCommand
+import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
+import com.badoo.ribs.routing.state.changeset.addedOrRemoved
 import com.badoo.ribs.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.routing.state.exception.KeyNotFoundInPoolException
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand
@@ -22,43 +24,37 @@ import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.state.feature.state.withDefaults
 import com.badoo.ribs.routing.state.mutablePoolOf
 import com.badoo.ribs.routing.state.toMutablePool
-import com.badoo.ribs.routing.state.changeset.RoutingCommand
-import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
-import com.badoo.ribs.routing.state.changeset.addedOrRemoved
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import io.reactivex.Observable
 
 /**
  * Executes side-effects of state update.
  */
-@SuppressWarnings("LargeClass") // TODO extract
+@SuppressWarnings("LargeClass", "LongParameterList") // TODO extract
 internal class Actor<C : Parcelable>(
     private val resolver: RoutingResolver<C>,
     private val activator: RoutingActivator<C>,
     private val parentNode: Node<*>,
-    private val transitionHandler: TransitionHandler<C>?
-) : MviCoreActor<WorkingState<C>, Transaction<C>, RoutingStatePool.Effect<C>> {
+    private val transitionHandler: TransitionHandler<C>?,
+    private val effectEmitter: EffectEmitter<C>
+) {
 
     private val handler = Handler()
 
-    override fun invoke(
-        state: WorkingState<C>,
-        transaction: Transaction<C>
-    ): Observable<RoutingStatePool.Effect<C>> =
+    fun invoke(state: WorkingState<C>, transaction: Transaction<C>){
         when (transaction) {
             is PoolCommand -> processPoolCommand(state, transaction)
             is RoutingChange -> processRoutingChange(state, transaction)
         }
+    }
 
     private fun processPoolCommand(
         state: WorkingState<C>,
         transaction: PoolCommand<C>
-    ): Observable<RoutingStatePool.Effect<C>> =
-        Observable.create { emitter ->
-            transaction.action.execute(state, createParams(emitter, state, emptyMap(), transaction))
-        }
+    ) {
+        transaction.action.execute(state, createParams(effectEmitter, state, emptyMap(), transaction))
+    }
 
     private enum class NewTransitionsExecution {
         ABORT, CONTINUE
@@ -67,34 +63,31 @@ internal class Actor<C : Parcelable>(
     private fun processRoutingChange(
         state: WorkingState<C>,
         transaction: RoutingChange<C>
-    ): Observable<RoutingStatePool.Effect<C>> =
-        Observable.create { emitter ->
-            val commands = transaction.changeset
-            val defaultElements = createDefaultElements(state, commands)
-            val params = createParams(
-                emitter = emitter,
-                state = state.withDefaults(defaultElements),
-                defaultElements = defaultElements,
-                transaction = transaction
-            )
+    ) {
+        val commands = transaction.changeset
+        val defaultElements = createDefaultElements(state, commands)
+        val params = createParams(
+            emitter = effectEmitter,
+            state = state.withDefaults(defaultElements),
+            defaultElements = defaultElements,
+            transaction = transaction
+        )
 
-            if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
-                emitter.onComplete()
-                return@create
-            }
-
-            val actions = createActions(commands, params)
-            actions.forEach { it.onBeforeTransition() }
-            val transitionElements = actions.flatMap { it.transitionElements }
-
-            if (params.globalActivationLevel == SLEEPING || transitionHandler == null) {
-                actions.forEach { it.onTransition() }
-                actions.forEach { it.onFinish() }
-                emitter.onComplete()
-            } else {
-                beginTransitions(transaction.descriptor, transitionElements, emitter, actions)
-            }
+        if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
+            return
         }
+
+        val actions = createActions(commands, params)
+        actions.forEach { it.onBeforeTransition() }
+        val transitionElements = actions.flatMap { it.transitionElements }
+
+        if (params.globalActivationLevel == SLEEPING || transitionHandler == null) {
+            actions.forEach { it.onTransition() }
+            actions.forEach { it.onFinish() }
+        } else {
+            beginTransitions(transaction.descriptor, transitionElements, effectEmitter, actions)
+        }
+    }
 
     private fun checkOngoingTransitions(
         state: WorkingState<C>,

@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -50,16 +51,17 @@ interface PhotoFeedView : RibView,
 class PhotoFeedViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : PhotoFeedView,
+) : AndroidRibView(),
+    PhotoFeedView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_photo_feed
     ) : PhotoFeedView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> PhotoFeedView = {
+        override fun invoke(deps: Nothing?): (RibView) -> PhotoFeedView = {
             PhotoFeedViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

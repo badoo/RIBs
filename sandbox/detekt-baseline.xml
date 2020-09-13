@@ -1,5 +1,115 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <Blacklist timestamp="1553003756346"></Blacklist>
-  <Whitelist timestamp="1553006436282"></Whitelist>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:BlockerView.kt$BlockerViewImpl${ }</ID>
+    <ID>EmptyFunctionBlock:DialogExampleInteractorTest.kt$DialogExampleInteractorTest${ }</ID>
+    <ID>EmptyFunctionBlock:DialogExampleRouterTest.kt$DialogExampleRouterTest${ }</ID>
+    <ID>EmptyFunctionBlock:DialogExampleTest.kt$DialogExampleTest${ }</ID>
+    <ID>EmptyFunctionBlock:FooBarInteractorTest.kt$FooBarInteractorTest${ }</ID>
+    <ID>EmptyFunctionBlock:LoremIpsumInteractorTest.kt$LoremIpsumInteractorTest${ }</ID>
+    <ID>EmptyFunctionBlock:LoremIpsumView.kt$LoremIpsumViewImpl${ }</ID>
+    <ID>EmptyFunctionBlock:PortalOverlayTestView.kt$PortalOverlayTestViewImpl${ }</ID>
+    <ID>EmptyFunctionBlock:SwitcherView.kt$SwitcherViewImpl${ }</ID>
+    <ID>FunctionNaming:MainScreenTest.kt$MainScreenTest$@Test fun openHelloSectionAndClickButton_displaysReturnedDataFromActivity()</ID>
+    <ID>FunctionNaming:MainScreenTest.kt$MainScreenTest$@Test fun openHelloSectionAndClickButton_launchesActivity()</ID>
+    <ID>FunctionNaming:MenuRibTest.kt$MenuRibTest$@Test fun itemClickUiEvent_producesSelectOutput()</ID>
+    <ID>FunctionNaming:MenuRibTest.kt$MenuRibTest$@Test fun selectItemInputTwoTimes_viewModelContainsOnlyLastSelection()</ID>
+    <ID>FunctionNaming:MenuRibTest.kt$MenuRibTest$@Test fun selectItemInput_selectsItem()</ID>
+    <ID>FunctionNaming:MenuTest.kt$MenuTest$@Test fun clickOnItem_doesNotSelectItem()</ID>
+    <ID>FunctionNaming:MenuTest.kt$MenuTest$@Test fun initialState_noSelectedElements()</ID>
+    <ID>FunctionNaming:MenuTest.kt$MenuTest$@Test fun itemClick_producesSelectOutput()</ID>
+    <ID>FunctionNaming:MenuTest.kt$MenuTest$@Test fun selectItemInputTwoTimes_displaysOnlyLastSelection()</ID>
+    <ID>FunctionNaming:MenuTest.kt$MenuTest$@Test fun selectItemInput_selectsItem()</ID>
+    <ID>FunctionNaming:MenuViewTest.kt$MenuViewTest$@Test fun bindViewModelTwoTimes_displaysOnlyLastSelection()</ID>
+    <ID>FunctionNaming:MenuViewTest.kt$MenuViewTest$@Test fun clickOnItem_doesNotSelectItem()</ID>
+    <ID>FunctionNaming:MenuViewTest.kt$MenuViewTest$@Test fun emptySelectItem_noSelectedElements()</ID>
+    <ID>FunctionNaming:MenuViewTest.kt$MenuViewTest$@Test fun itemClick_producesSelectOutput()</ID>
+    <ID>FunctionNaming:MenuViewTest.kt$MenuViewTest$@Test fun viewModelWithSelectedItem_selectsItem()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:BigChildBuilders.kt$BigChildBuilders$val small = SmallBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:DialogExampleChildBuilders.kt$DialogExampleChildBuilders$val loremIpsum = LoremIpsumBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Dialogs.kt$Dialogs$val lazyDialog = LazyDialog()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Dialogs.kt$Dialogs$val ribDialog = RibDialog( builders.loremIpsum )</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:Dialogs.kt$Dialogs$val simpleDialog = SimpleDialog()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:HelloWorldChildBuilders.kt$HelloWorldChildBuilders$val small = SmallBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:OtherActivity.kt$OtherActivity.Companion$const val KEY_INCOMING = "incoming"</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:OtherActivity.kt$OtherActivity.Companion$const val KEY_RETURNED_DATA = "foo"</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RootActivity.kt$RootActivity$override fun createRib(savedInstanceState: Bundle?)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SmallChildBuilders.kt$SmallChildBuilders$val big = BigBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SmallChildBuilders.kt$SmallChildBuilders$val portalOverlay = PortalOverlayTestBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SwitcherChildBuilders.kt$SwitcherChildBuilders$val blocker = BlockerBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SwitcherChildBuilders.kt$SwitcherChildBuilders$val composeParent = ComposeParentBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SwitcherChildBuilders.kt$SwitcherChildBuilders$val dialogExample = DialogExampleBuilder( subtreeDeps )</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SwitcherChildBuilders.kt$SwitcherChildBuilders$val fooBar = FooBarBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SwitcherChildBuilders.kt$SwitcherChildBuilders$val helloWorld = HelloWorldBuilder(subtreeDeps)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:SwitcherChildBuilders.kt$SwitcherChildBuilders$val menu = MenuBuilder(subtreeDeps)</ID>
+    <ID>LongParameterList:SwitcherRouter.kt$SwitcherRouter$( buildParams: BuildParams&lt;Nothing?&gt;, routingSource: RoutingSource&lt;Configuration&gt;, transitionHandler: TransitionHandler&lt;Configuration&gt;? = null, private val builders: SwitcherChildBuilders, private val dialogLauncher: DialogLauncher, private val dialogToTestOverlay: DialogToTestOverlay )</ID>
+    <ID>NewLineAtEndOfFile:RxExtensions.kt$com.badoo.ribs.sandbox.rib.util.RxExtensions.kt</ID>
+    <ID>NotImplementedDeclaration:InputToWish.kt$InputToWish$TODO("Implement FooBarInputToWish mapping")</ID>
+    <ID>NotImplementedDeclaration:InputToWish.kt$InputToWish$TODO("Implement HelloWorldInputToWish mapping")</ID>
+    <ID>NotImplementedDeclaration:NewsToOutput.kt$NewsToOutput$TODO("Implement FooBarNewsToOutput mapping")</ID>
+    <ID>NotImplementedDeclaration:NewsToOutput.kt$NewsToOutput$TODO("Implement HelloWorldNewsToOutput mapping")</ID>
+    <ID>NotImplementedDeclaration:TestPermissionRequester.kt$TestPermissionRequester$TODO()</ID>
+    <ID>NotImplementedDeclaration:ViewEventToWish.kt$ViewEventToWish$TODO("Implement FooBarViewEventToWish mapping")</ID>
+    <ID>NotImplementedDeclaration:ViewEventToWish.kt$ViewEventToWish$TODO("Implement HelloWorldViewEventToWish mapping")</ID>
+    <ID>PackageNaming:DialogExample.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleBuilder.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleChildBuilders.kt$package com.badoo.ribs.sandbox.rib.dialog_example.routing</ID>
+    <ID>PackageNaming:DialogExampleInteractor.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleInteractorTest.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleNode.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleRouter.kt$package com.badoo.ribs.sandbox.rib.dialog_example.routing</ID>
+    <ID>PackageNaming:DialogExampleRouterTest.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleTest.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleView.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:Dialogs.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.sandbox.rib.foo_bar.analytics</ID>
+    <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarFeature.kt$package com.badoo.ribs.sandbox.rib.foo_bar.feature</ID>
+    <ID>PackageNaming:FooBarInteractor.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractorTest.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarNode.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarView.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:HelloWorld.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldAnalytics.kt$package com.badoo.ribs.sandbox.rib.hello_world.analytics</ID>
+    <ID>PackageNaming:HelloWorldBuilder.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldChildBuilders.kt$package com.badoo.ribs.sandbox.rib.hello_world.routing</ID>
+    <ID>PackageNaming:HelloWorldFeature.kt$package com.badoo.ribs.sandbox.rib.hello_world.feature</ID>
+    <ID>PackageNaming:HelloWorldInteractor.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldNode.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldRouter.kt$package com.badoo.ribs.sandbox.rib.hello_world.routing</ID>
+    <ID>PackageNaming:HelloWorldTest.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldTestDeferred.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldView.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>PackageNaming:LazyDialog.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:LoremIpsum.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumBuilder.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumInteractor.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumInteractorTest.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumNode.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumTest.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumView.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>PackageNaming:ParentLongClickListener.kt$package com.badoo.ribs.sandbox.rib.foo_bar.viewplugin</ID>
+    <ID>PackageNaming:PortalOverlayTest.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestBuilder.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestInteractor.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestNode.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestView.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:RibDialog.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:SimpleDialog.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>PackageNaming:ViewEventToOutput.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>UnusedImports:MainScreenTest.kt$import android.view.ViewGroup</ID>
+    <ID>UnusedImports:MenuRibTest.kt$import android.view.ViewGroup</ID>
+    <ID>UnusedImports:Small.kt$import com.badoo.ribs.sandbox.rib.big.Big</ID>
+    <ID>UnusedImports:TestNode.kt$import android.view.ViewGroup</ID>
+  </CurrentIssues>
 </SmellBaseline>

@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
-import com.badoo.ribs.clienthelper.interactor.Interactor
+import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.template.node_dagger.foo_bar.analytics.FooBarAnalytics
@@ -19,13 +19,13 @@ import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter.Configur
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
     private val feature: FooBarFeature,
-    private val backStack: BackStackFeature<Configuration>
-) : Interactor<FooBar, FooBarView>(
+    backStack: BackStackFeature<Configuration>
+) : BackStackInteractor<FooBar, FooBarView, Configuration>(
     buildParams = buildParams,
-    disposables = feature
+    backStack = backStack
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature.news to rib.output using NewsToOutput)
             bind(rib.input to feature using InputToWish)

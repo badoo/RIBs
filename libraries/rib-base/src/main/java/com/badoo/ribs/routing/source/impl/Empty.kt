@@ -1,11 +1,10 @@
 package com.badoo.ribs.routing.source.impl
 
 import android.os.Parcelable
+import com.badoo.ribs.core.state.Cancellable
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.source.RoutingSource
-import io.reactivex.Observable
-import io.reactivex.Observer
 
 class Empty<C : Parcelable> : RoutingSource<C> {
 
@@ -18,7 +17,6 @@ class Empty<C : Parcelable> : RoutingSource<C> {
         // no-op -- it's empty
     }
 
-    override fun subscribe(observer: Observer<in RoutingHistory<C>>) =
-        Observable.empty<RoutingHistory<C>>()
-            .subscribe(observer)
+    override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable =
+        Cancellable.Empty
 }

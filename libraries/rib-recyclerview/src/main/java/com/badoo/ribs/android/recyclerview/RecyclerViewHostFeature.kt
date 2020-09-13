@@ -10,7 +10,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State
 import com.badoo.ribs.routing.Routing
 import io.reactivex.Observable
 import kotlinx.android.parcel.Parcelize
-import java.util.UUID
+import java.util.*
 
 private val timeCapsuleKey = "RecyclerViewHostFeature"
 private fun <T : Parcelable> TimeCapsule<State<T>>.initialState(): State<T> =
@@ -35,7 +35,6 @@ internal class RecyclerViewHostFeature<T : Parcelable>(
 
     @Parcelize
     data class State<T : Parcelable>(
-//        val nextKey: Int = 1000,
         val items: List<Entry<T>> = emptyList(),
         val lastCommand: Input<T>? = null
     ) : Parcelable {

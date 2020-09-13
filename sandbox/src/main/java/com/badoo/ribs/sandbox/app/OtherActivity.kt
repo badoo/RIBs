@@ -3,11 +3,10 @@ package com.badoo.ribs.sandbox.app
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import com.badoo.ribs.sandbox.R
-import kotlinx.android.synthetic.main.activity_other.fab
-import kotlinx.android.synthetic.main.activity_other.toolbar
 
 class OtherActivity : AppCompatActivity() {
 
@@ -20,12 +19,12 @@ class OtherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
 
         findViewById<TextView>(R.id.incoming_data).text = intent.extras?.getString(KEY_INCOMING)
 
-        fab.setOnClickListener {
+        findViewById<View>(R.id.fab).setOnClickListener {
             setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_RETURNED_DATA, RETURNED_DATA) })
             finish()
         }

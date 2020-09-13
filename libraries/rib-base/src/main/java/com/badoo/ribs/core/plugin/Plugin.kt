@@ -1,7 +1,6 @@
 package com.badoo.ribs.core.plugin
 
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -22,11 +21,11 @@ interface NodeAware : Plugin {
 }
 
 interface NodeLifecycleAware : Plugin {
-    fun onCreate() {}
+    fun onBuild() {}
 
-    fun onAttach(nodeLifecycle: Lifecycle) {}
+    fun onCreate(nodeLifecycle: Lifecycle) {}
 
-    fun onDetach() {}
+    fun onDestroy() {}
 }
 
 interface ViewAware<V : RibView> : Plugin {
@@ -34,17 +33,17 @@ interface ViewAware<V : RibView> : Plugin {
 }
 
 interface ViewLifecycleAware : Plugin {
-    fun onAttachToView(parentViewGroup: ViewGroup) {}
+    fun onAttachToView() {}
 
-    fun onDetachFromView(parentViewGroup: ViewGroup) {}
+    fun onDetachFromView() {}
 }
 
 interface SubtreeChangeAware : Plugin {
-    fun onChildCreated(child: Node<*>) {}
+    fun onChildBuilt(child: Node<*>) {}
 
-    fun onAttachChild(child: Node<*>) {}
+    fun onChildAttached(child: Node<*>) {}
 
-    fun onDetachChild(child: Node<*>) {}
+    fun onChildDetached(child: Node<*>) {}
 }
 
 interface SubtreeViewChangeAware : Plugin {

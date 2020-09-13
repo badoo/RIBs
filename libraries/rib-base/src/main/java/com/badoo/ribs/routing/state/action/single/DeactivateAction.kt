@@ -2,21 +2,21 @@ package com.badoo.ribs.routing.state.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
+import com.badoo.ribs.routing.state.feature.EffectEmitter
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.Deactivated
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingDeactivateTrue
-import com.badoo.ribs.routing.state.feature.EffectEmitter
-import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 
 /**
- * Detaches views of associated [Node]s to a parentNode, and cleans up the associated [RoutingAction].
+ * Detaches views of associated [Node]s to a parentNode, and cleans up the associated [Resolution].
  *
  * Will not detach the [Node]s on the logical level, they are kept alive without their views.
  */
@@ -57,7 +57,6 @@ internal class DeactivateAction<C : Parcelable>(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.EXIT,
                     addedOrRemoved = addedOrRemoved,
-                    parentViewGroup = parentNode.targetViewGroupForChild(it),
                     identifier = it.identifier,
                     view = ribView.androidView
                 )
@@ -67,16 +66,16 @@ internal class DeactivateAction<C : Parcelable>(
 
     override fun onTransition(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
-            item.routingAction.cleanup()
+            item.resolution.cleanup()
             activator.onTransitionDeactivate(routing, item.nodes)
-            emitter.onNext(PendingDeactivateTrue(routing))
+            emitter.invoke(PendingDeactivateTrue(routing))
         }
     }
 
     override fun onFinish(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
             activator.deactivate(routing, item.nodes)
-            emitter.onNext(Deactivated(routing, item.copy(activationState = targetActivationState)))
+            emitter.invoke(Deactivated(routing, item.copy(activationState = targetActivationState)))
         }
     }
 }

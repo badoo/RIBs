@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
@@ -28,15 +29,16 @@ interface WelcomeView : RibView,
 class WelcomeViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : WelcomeView,
+) : AndroidRibView(),
+    WelcomeView,
     ObservableSource<Event> by events {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_welcome
     ) : WelcomeView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> WelcomeView = {
+        override fun invoke(deps: Nothing?): (RibView) -> WelcomeView = {
             WelcomeViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

@@ -2,21 +2,21 @@ package com.badoo.ribs.routing.state.action.single
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
+import com.badoo.ribs.routing.state.feature.EffectEmitter
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingDeactivateFalse
-import com.badoo.ribs.routing.state.feature.EffectEmitter
-import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 
 /**
- * Attaches views of associated [Node]s to a parentNode, and executes the associated [RoutingAction].
+ * Attaches views of associated [Node]s to a parentNode, and executes the associated [Resolution].
  *
  * The [Node]s are expected to be already added to the parentNode on a logical level.
  */
@@ -58,7 +58,7 @@ internal class ActivateAction<C : Parcelable>(
 
         // The least we can do is to mark correct state, this is regardless of executing transitions
         if (!itemAlreadyActivated) {
-            emitter.onNext(
+            emitter.invoke(
                 Effect.Individual.Activated(routing, item.copy(activationState = globalActivationLevel))
             )
         }
@@ -77,7 +77,6 @@ internal class ActivateAction<C : Parcelable>(
                     configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
                     direction = TransitionDirection.ENTER,
                     addedOrRemoved = addedOrRemoved,
-                    parentViewGroup = parentNode.targetViewGroupForChild(it),
                     identifier = it.identifier,
                     view = ribView.androidView
                 )
@@ -87,9 +86,9 @@ internal class ActivateAction<C : Parcelable>(
 
     override fun onTransition(forceExecute: Boolean) {
         if (canExecute || forceExecute) {
-            item.routingAction.execute()
+            item.resolution.execute()
             activator.onTransitionActivate(routing, item.nodes)
-            emitter.onNext(PendingDeactivateFalse(routing))
+            emitter.invoke(PendingDeactivateFalse(routing))
         }
     }
 

@@ -1,12 +1,12 @@
 package com.badoo.ribs.routing.source.impl
 
 import android.os.Parcelable
+import com.badoo.ribs.core.state.Cancellable
+import com.badoo.ribs.core.state.just
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.RoutingSource
-import io.reactivex.Observable
-import io.reactivex.Observer
 
 class Permanent<C : Parcelable>(
     permanents: Iterable<C>
@@ -26,10 +26,8 @@ class Permanent<C : Parcelable>(
         }
 
     private val permanentHistory =
-        Observable.just(
-            RoutingHistory.from(
-                routingElements
-            )
+        RoutingHistory.from(
+            routingElements
         )
 
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
@@ -47,8 +45,6 @@ class Permanent<C : Parcelable>(
         // no-op -- it's permanent!
     }
 
-    override fun subscribe(observer: Observer<in RoutingHistory<C>>) {
-        permanentHistory
-            .subscribe(observer)
-    }
+    override fun observe(callback: (RoutingHistory<C>) -> Unit): Cancellable =
+        just { permanentHistory }.observe(callback)
 }

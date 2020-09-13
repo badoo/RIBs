@@ -12,11 +12,10 @@ internal class RecyclerViewHostInteractor<T : Parcelable>(
     private val feature: RecyclerViewHostFeature<T>,
     private val adapter: Adapter<T>
 ) : Interactor<RecyclerViewHost<T>, RibView>(
-    buildParams = buildParams,
-    disposables = feature
+    buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature to adapter) // TODO consider viewLifecycle
             bind(rib.input to feature)

@@ -11,7 +11,7 @@ import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.portal.PortalRouter.Configuration.Overlay
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
@@ -19,10 +19,10 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import kotlinx.android.parcel.Parcelize
 
 @ExperimentalApi
-class PortalRouter internal constructor(
+class PortalRouter(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
-    private val defaultRoutingAction: RoutingAction,
+    private val defaultResolution: Resolution,
     transitionHandler: TransitionHandler<Configuration>? = null
 ): Router<Configuration>(
     buildParams = buildParams,
@@ -36,30 +36,30 @@ class PortalRouter internal constructor(
             @Parcelize data class Portal(val routingChain: List<Routing<out Parcelable>>) : Content()
         }
         sealed class Overlay : Configuration() {
-            @Parcelize data class Portal(val configurationChain: List<Routing<out Parcelable>>) : Overlay()
+            @Parcelize data class Portal(val routingChain: List<Routing<out Parcelable>>) : Overlay()
         }
     }
 
-    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+    override fun resolve(routing: Routing<Configuration>): Resolution =
         when (val configuration = routing.configuration) {
-            is Content.Default -> defaultRoutingAction
+            is Content.Default -> defaultResolution
             is Content.Portal -> configuration.routingChain.resolve()
-            is Overlay.Portal -> configuration.configurationChain.resolve()
+            is Overlay.Portal -> configuration.routingChain.resolve()
         }
 
     // TODO probably needs to change from List<Parcelable> to List<AncestryInfo>,
     //  so that extra info can be added too. See below for details.
-    private fun List<Routing<out Parcelable>>.resolve(): RoutingAction {
+    private fun List<Routing<out Parcelable>>.resolve(): Resolution {
         // TODO grab first from real root (now should be possible) -- currently works only if PortalRouter is in the root rib
         var targetRouter: RoutingResolver<Parcelable> = this@PortalRouter as RoutingResolver<Parcelable>
-        var routingAction: RoutingAction = targetRouter.resolve(first() as Routing<Parcelable>)
+        var resolution: Resolution = targetRouter.resolve(first() as Routing<Parcelable>)
 
         drop(1).forEach { element ->
             val bundles = emptyList<Bundle?>()
 
             // TODO don't build it again if already available as child.
             //  This probably means storing Node identifier in addition to (Parcelable) configuration.
-            val ribs = buildStep(routingAction)
+            val ribs = buildStep(resolution)
 
             // TODO having 0 nodes is an impossible scenario, but having more than 1 can be valid.
             //  Solution is again to store Node identifiers & Bundles that help picking the correct one.
@@ -69,14 +69,14 @@ class PortalRouter internal constructor(
                 targetRouter = it
             } ?: throw IllegalStateException("Invalid chain of parents. This should never happen. Chain: $this")
 
-            routingAction = targetRouter.resolve(element as Routing<Parcelable>)
+            resolution = targetRouter.resolve(element as Routing<Parcelable>)
         }
 
-        return routingAction
+        return resolution
     }
 
-    private fun buildStep(routingAction: RoutingAction): List<Rib> {
-        return routingAction.buildNodes(
+    private fun buildStep(resolution: Resolution): List<Rib> {
+        return resolution.buildNodes(
             listOf(
                 // we'll be discarding these Nodes, it doesn't matter
                 BuildContext.root(

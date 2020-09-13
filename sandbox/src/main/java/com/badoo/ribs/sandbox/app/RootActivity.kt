@@ -2,6 +2,7 @@ package com.badoo.ribs.sandbox.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
@@ -9,14 +10,22 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.plugin.utils.debug.DebugControlsHost
+import com.badoo.ribs.core.plugin.utils.debug.GrowthDirection
+import com.badoo.ribs.core.plugin.utils.logger.Logger
+import com.badoo.ribs.core.plugin.utils.memoryleak.LeakDetector
+import com.badoo.ribs.debug.TreePrinter
 import com.badoo.ribs.portal.Portal
-import com.badoo.ribs.portal.PortalBuilder
 import com.badoo.ribs.portal.PortalRouter
-import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.portal.RxPortal
+import com.badoo.ribs.portal.RxPortalBuilder
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.CrossFader
 import com.badoo.ribs.routing.transition.handler.Slider
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
@@ -26,6 +35,7 @@ import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
+import leakcanary.AppWatcher
 
 /** The sample app's single activity */
 class RootActivity : RibActivity() {
@@ -38,14 +48,14 @@ class RootActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    private lateinit var workflowRoot: Portal
+    private lateinit var workflowRoot: RxPortal
 
     override fun createRib(savedInstanceState: Bundle?) =
-        PortalBuilder(
+        RxPortalBuilder(
             object : Portal.Dependency {
-                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction =
+                override fun defaultResolution(): (Portal.OtherSide) -> Resolution =
                     { portal ->
-                        attach { buildSwitcherNode(portal, it) }
+                        child { buildSwitcherNode(portal, it) }
                     }
 
                 override fun transitionHandler(): TransitionHandler<PortalRouter.Configuration>? =
@@ -72,9 +82,40 @@ class RootActivity : RibActivity() {
                     ).build(buildContext)
                 }
             }
-        ).build(root(savedInstanceState, AppRibCustomisations)).also {
+        ).build(root(
+            savedInstanceState = savedInstanceState,
+            customisations = AppRibCustomisations,
+            defaultPlugins = { node ->
+                if (BuildConfig.DEBUG) {
+                    listOfNotNull(
+                        createLeakDetector(),
+                        createLogger(),
+                        if (node.isRoot) createDebugControlHost() else null
+                    )
+                } else emptyList()
+            }
+        )).also {
             workflowRoot = it
         }
+
+    private fun createLogger(): Plugin = Logger<Switcher>(
+        log = { rib, event ->
+            Log.d("Rib Logger", "$rib: $event")
+        }
+    )
+
+    private fun createLeakDetector(): Plugin = LeakDetector(
+        watcher = { obj, msg ->
+            AppWatcher.objectWatcher.watch(obj, msg)
+        }
+    )
+
+    private fun createDebugControlHost(): Plugin =
+        DebugControlsHost(
+            viewGroupForChildren = { findViewById(R.id.debug_controls_host) },
+            growthDirection = GrowthDirection.BOTTOM,
+            defaultTreePrinterFormat = TreePrinter.FORMAT_SIMPLE
+        )
 
     override val workflowFactory: (Intent) -> Observable<*>? = {
         when {
@@ -90,7 +131,7 @@ class RootActivity : RibActivity() {
 
     private fun executeWorkflow1(): Observable<*> =
         switcher()
-            .flatMap { it.attachHelloWorld()}
+            .flatMap { it.attachHelloWorld() }
             .toObservable()
 
     @SuppressWarnings("OptionalUnit")

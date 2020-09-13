@@ -23,8 +23,7 @@ class HelloWorldInteractor(
     private val output: Consumer<Output>,
     buildParams: BuildParams<Nothing?>
 ) : Interactor<HelloWorld, HelloWorldView>(
-    buildParams = buildParams,
-    disposables = null
+    buildParams = buildParams
 ) {
 
     private var currentButtonText = config.buttonText

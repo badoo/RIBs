@@ -1,13 +1,14 @@
 package com.badoo.ribs.routing.source
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.state.feature.Transaction
-import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
+import com.badoo.ribs.core.state.Cancellable
+import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryDiffer
+import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
+import com.badoo.ribs.routing.state.feature.Transaction
 import com.badoo.ribs.util.RIBs
-import io.reactivex.Observable
 
 /**
  * Takes two consecutive [RoutingHistory] emissions, and calculates their difference as a set of
@@ -15,12 +16,21 @@ import io.reactivex.Observable
  *
  * @see [RoutingHistoryDiffer.diff]
  */
-internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): Observable<Transaction<C>> =
-    Observable.wrap(this)
-        .startWith(baseLineState(fromRestored))
-        .buffer(2, 1)
-        .filter { it.size == 2 } // In case a source has onComplete() before emitting 2 elements
-        .flatMap { (previous, current) ->
+internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): Source<Transaction<C>> =
+    object : Source<Transaction<C>> {
+        override fun observe(callback: (Transaction<C>) -> Unit): Cancellable {
+            var previous = baseLineState(fromRestored)
+            return this@changes.observe {
+                diffState(previous, it, callback)
+                previous = it
+            }
+        }
+
+        private fun diffState(
+            previous: RoutingHistory<C>,
+            current: RoutingHistory<C>,
+            reportChange: (Transaction<C>) -> Unit
+        ) {
             current.ensureUniqueIds()
 
             val commands =
@@ -28,8 +38,9 @@ internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): O
                     previous,
                     current
                 )
-            when {
-                commands.isNotEmpty() -> Observable.just(
+
+            if (commands.isNotEmpty()) {
+                reportChange(
                     Transaction.RoutingChange(
                         descriptor = TransitionDescriptor(
                             from = previous,
@@ -38,9 +49,9 @@ internal fun <C : Parcelable> RoutingSource<C>.changes(fromRestored: Boolean): O
                         changeset = commands.toList() // TODO consider to rename ListOfCommands to SetOfCommands?
                     )
                 )
-                else -> Observable.empty()
             }
         }
+    }
 
 internal fun <C : Parcelable> RoutingHistory<C>.ensureUniqueIds() {
     val ids = mutableSetOf<Routing.Identifier>()

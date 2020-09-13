@@ -13,8 +13,8 @@ internal class LoggedInContainerChildBuilders(
 ) {
     private val subtreeDeps = SubtreeDeps(dependency)
 
-    val photoFeedBuilder = FeedContainerBuilder(subtreeDeps)
-    val photoDetailsBuilder = PhotoDetailsBuilder(subtreeDeps)
+    val photoFeedBuilder: FeedContainerBuilder = FeedContainerBuilder(subtreeDeps)
+    val photoDetailsBuilder: PhotoDetailsBuilder = PhotoDetailsBuilder(subtreeDeps)
 
     private class SubtreeDeps(dependency: LoggedInContainer.Dependency) :
         LoggedInContainer.Dependency by dependency,

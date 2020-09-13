@@ -3,10 +3,10 @@ package com.badoo.ribs.routing.state.feature
 import android.os.Handler
 import android.os.Parcelable
 import com.badoo.ribs.routing.state.action.single.ReversibleAction
+import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.TransitionPair
-import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 
 internal class OngoingTransition<C : Parcelable>(
     descriptor: TransitionDescriptor,
@@ -36,7 +36,7 @@ internal class OngoingTransition<C : Parcelable>(
 
     fun start() {
         actions.forEach { it.onTransition() }
-        emitter.onNext(
+        emitter.invoke(
             RoutingStatePool.Effect.TransitionStarted(
                 this
             )
@@ -49,12 +49,11 @@ internal class OngoingTransition<C : Parcelable>(
     private fun finish() {
         handler.removeCallbacks(checkFinishedRunnable)
         actions.forEach { it.onFinish() }
-        emitter.onNext(
+        emitter.invoke(
             RoutingStatePool.Effect.TransitionFinished(
                 this
             )
         )
-        emitter.onComplete()
     }
 
     fun jumpToEnd() {

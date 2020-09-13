@@ -29,8 +29,8 @@ internal class RecyclerViewHostNode<T : Parcelable>(
         timeCapsule.saveState(outState)
     }
 
-    override fun onDetach() {
+    override fun onDestroy() {
         adapter.onDestroy()
-        super.onDetach()
+        super.onDestroy()
     }
 }

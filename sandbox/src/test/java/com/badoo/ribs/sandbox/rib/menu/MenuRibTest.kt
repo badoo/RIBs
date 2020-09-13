@@ -1,8 +1,8 @@
 package com.badoo.ribs.sandbox.rib.menu
 
-import android.view.ViewGroup
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
@@ -33,7 +33,7 @@ class MenuRibTest {
     private val customisation = RibCustomisationDirectoryImpl().apply {
         put(Menu.Customisation::class, mock {
             on { viewFactory } doReturn object : MenuView.Factory {
-                override fun invoke(deps: Nothing?): (ViewGroup) -> MenuView = {
+                override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
                     menuView
                 }
             }
@@ -44,8 +44,9 @@ class MenuRibTest {
 
     @Before
     fun setUp() {
-        rib.node.onAttach()
-        rib.node.attachToView(mock())
+        rib.node.onCreate()
+        rib.node.onCreateView(mock())
+        rib.node.onAttachToView()
         rib.node.onStart()
         rib.node.onResume()
     }

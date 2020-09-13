@@ -4,7 +4,6 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.RibAware
-import java.util.UUID
 
 /**
  * Responsible for building a [Rib]. Dependencies available compile-time should be provided via the
@@ -20,18 +19,14 @@ abstract class Builder<P, T : Rib> {
     fun build(buildContext: BuildContext, payload: P): T {
         val buildParams = BuildParams(
             payload = payload,
-            buildContext = buildContext,
-            identifier = Rib.Identifier(
-                uuid = buildContext.savedInstanceState?.getSerializable(Rib.Identifier.KEY_UUID) as? UUID
-                    ?: UUID.randomUUID()
-            )
+            buildContext = buildContext
         )
         return build(buildParams).also { rib ->
             rib.node.plugins<RibAware<T>>().forEach { plugin ->
                 plugin.init(rib)
             }
 
-            rib.node.onCreate()
+            rib.node.onBuild()
         }
     }
 

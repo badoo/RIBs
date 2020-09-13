@@ -5,7 +5,6 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature
 import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature.News
@@ -24,11 +23,10 @@ internal class PhotoDetailsInteractor(
     private val feature: PhotoDetailsFeature,
     private val portal: Portal.OtherSide
 ) : Interactor<PhotoDetails, PhotoDetailsView>(
-    buildParams = buildParams,
-    disposables = feature
+    buildParams = buildParams
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature.news to rib.output using NewsToOutput)
             bind(feature.news to newsConsumer)
@@ -46,23 +44,5 @@ internal class PhotoDetailsInteractor(
         when (news) {
             is News.ShowLogin -> portal.showContent(node, Content.Login)
         }
-
-    }
-
-    override fun onChildCreated(child: Node<*>) {
-        /**
-         * TODO bind children here and delete this comment block.
-         *
-         *  At this point children haven't set their own bindings yet,
-         *  so it's safe to setup listening to their output before they start emitting.
-         *
-         *  On the other hand, they're not ready to receive inputs yet. Usually this is alright.
-         *  If it's a requirement though, create those bindings in [onAttachChild]
-         */
-        // child.lifecycle.createDestroy {
-        // when (child) {
-        // is Child1 -> bind(child.output to someConsumer)
-        // }
-        // }
     }
 }

@@ -16,12 +16,11 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 
-private val buildParams = BuildParams.Empty()
-
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<*, View>,
-    val viewFactory: ((ViewGroup) -> View?)? = null
+    val viewFactory: ((RibView) -> View?)? = null
 ) {
+    private val buildParams = BuildParams.Empty()
 
     var nodeCreator: () -> Node<View> = {
         Node(
@@ -59,11 +58,12 @@ class InteractorTestHelper<View : RibView>(
 
     private fun toAttachViewState(block: (Node<View>) -> Unit) {
         val node = nodeCreator()
-        node.onAttach()
-        node.attachToView(mock(ViewGroup::class.java))
+        node.onCreate()
+        node.onCreateView(mock(RibView::class.java))
+        node.onAttachToView()
         block(node)
-        node.detachFromView()
-        node.onDetach()
+        node.onDetachFromView()
+        node.onDestroy()
     }
 
     companion object {

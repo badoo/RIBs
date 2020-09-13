@@ -19,7 +19,6 @@ internal class LoggedInContainerInteractor(
 ) : Interactor<LoggedInContainer, Nothing>(
     buildParams = buildParams
 ) {
-
     private val photoFeedOutputConsumer = Consumer<FeedContainer.Output> { output ->
         when (output) {
             is FeedContainer.Output.PhotoClicked -> portal.showContent(
@@ -29,13 +28,13 @@ internal class LoggedInContainerInteractor(
         }
     }
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
 
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
                 is FeedContainer -> bind(child.output to photoFeedOutputConsumer)

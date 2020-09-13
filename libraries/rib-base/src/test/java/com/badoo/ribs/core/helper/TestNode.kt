@@ -1,15 +1,15 @@
 package com.badoo.ribs.core.helper
 
-import android.view.ViewGroup
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.routing.router.Router
 import com.nhaarman.mockitokotlin2.mock
 
 open class TestNode(
     buildParams: BuildParams<*> = testBuildParams(),
-    viewFactory: ((ViewGroup) -> TestView?)? = TestViewFactory(),
+    viewFactory: ((RibView) -> TestView?)? = TestViewFactory(),
     router: Router<*> = mock(),
     plugins: List<Plugin> = emptyList()
 ) : Node<TestView>(
@@ -25,7 +25,7 @@ open class TestNode(
         false
 
     fun makeActive(isActive: Boolean) {
-        attachToView(mock())
+        onAttachToView()
         markPendingDetach(!isActive)
         markPendingViewDetach(!isActive)
     }

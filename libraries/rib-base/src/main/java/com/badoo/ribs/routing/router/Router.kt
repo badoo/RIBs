@@ -2,10 +2,7 @@ package com.badoo.ribs.routing.router
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.AndroidTimeCapsule
-import com.badoo.mvicore.binder.Binder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.NodeAware
@@ -13,6 +10,8 @@ import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
+import com.badoo.ribs.core.state.CompositeCancellable
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
@@ -24,7 +23,6 @@ import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.SaveInstance
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import io.reactivex.disposables.CompositeDisposable
 
 abstract class Router<C : Parcelable>(
     buildParams: BuildParams<*>,
@@ -38,9 +36,8 @@ abstract class Router<C : Parcelable>(
     SavesInstanceState,
     SubtreeBackPressHandler by routingSource {
 
-    private val binder = Binder()
-    private val disposables = CompositeDisposable()
-    private val timeCapsule: AndroidTimeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
+    private val cancellable = CompositeCancellable()
+    private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
 
     private lateinit var routingStatePool: RoutingStatePool<C>
@@ -62,7 +59,7 @@ abstract class Router<C : Parcelable>(
             transitionHandler = transitionHandler
         )
 
-        disposables.add(routingStatePool)
+        cancellable += routingStatePool
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -71,21 +68,20 @@ abstract class Router<C : Parcelable>(
         timeCapsule.saveState(outState)
     }
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
-        binder.bind(routingSource.changes(hasSavedState) to routingStatePool)
+    override fun onCreate(nodeLifecycle: Lifecycle) {
+        cancellable += routingSource.changes(hasSavedState).observe(routingStatePool::accept)
     }
 
-    override fun onAttachToView(parentViewGroup: ViewGroup) {
+    override fun onAttachToView() {
         routingStatePool.accept(WakeUp())
     }
 
-    override fun onDetachFromView(parentViewGroup: ViewGroup) {
+    override fun onDetachFromView() {
         routingStatePool.accept(Sleep())
     }
 
-    override fun onDetach() {
+    override fun onDestroy() {
         // TODO consider extending Disposables plugin
-        binder.dispose()
-        routingStatePool.dispose()
+        cancellable.cancel()
     }
 }

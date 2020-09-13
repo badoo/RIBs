@@ -3,12 +3,12 @@ package com.badoo.ribs.routing.source
 import android.os.Parcelable
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
+import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.source.impl.Combined
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.routing.source.impl.Permanent
-import io.reactivex.ObservableSource
 
 /**
  * Represents a source that emits [RoutingHistory].
@@ -19,7 +19,7 @@ import io.reactivex.ObservableSource
  * Implementations will be notified to save their state.
  */
 interface RoutingSource<C : Parcelable> :
-    ObservableSource<RoutingHistory<C>>,
+    Source<RoutingHistory<C>>,
     SubtreeBackPressHandler,
     SavesInstanceState {
 

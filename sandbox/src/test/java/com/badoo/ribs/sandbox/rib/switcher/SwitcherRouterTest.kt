@@ -1,20 +1,17 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction
+import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.impl.Empty
-import com.badoo.ribs.sandbox.rib.menu.Menu
-import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherChildBuilders
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
-import com.badoo.ribs.sandbox.rib.util.subscribeOnTestObserver
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -71,15 +68,6 @@ class SwitcherRouterTest {
     }
 
     @Test
-    fun `Content_Hello configuration triggers menu update with correct MenuItem`() {
-        val observer = router.menuUpdater.subscribeOnTestObserver()
-        val routingAction = router.resolve(Routing(configuration = Content.Hello))
-        routingAction.execute()
-
-        observer.assertValue(Menu.Input.SelectMenuItem(MenuItem.HelloWorld))
-    }
-
-    @Test
     fun `Content_Foo configuration resolves to correct Node`() {
         val routingAction = router.resolve(Routing(configuration = Content.Foo)).apply { execute() }
         routingAction.buildNodes(listOf(root(null)))
@@ -88,29 +76,11 @@ class SwitcherRouterTest {
     }
 
     @Test
-    fun `Content_Foo configuration triggers menu update with correct MenuItem`() {
-        val observer = router.menuUpdater.subscribeOnTestObserver()
-        val routingAction = router.resolve(Routing(configuration = Content.Foo))
-        routingAction.execute()
-
-        observer.assertValue(Menu.Input.SelectMenuItem(MenuItem.FooBar))
-    }
-
-    @Test
     fun `Content_DialogsExample configuration resolves to correct Node`() {
         val routingAction = router.resolve(Routing(configuration = Content.DialogsExample)).apply { execute() }
         routingAction.buildNodes(listOf(root(null)))
 
         verify(builders.dialogExample).build(any())
-    }
-
-    @Test
-    fun `Content_DialogsExample configuration triggers menu update with correct MenuItem`() {
-        val observer = router.menuUpdater.subscribeOnTestObserver()
-        val routingAction = router.resolve(Routing(configuration = Content.DialogsExample))
-        routingAction.execute()
-
-        observer.assertValue(Menu.Input.SelectMenuItem(MenuItem.Dialogs))
     }
 
     @Test
@@ -125,6 +95,6 @@ class SwitcherRouterTest {
     fun `Overlay_Dialog configuration resolves to DialogRoutingAction`() {
         val routingAction = router.resolve(Routing(configuration = Overlay.Dialog)).apply { execute() }
 
-        assertThat(routingAction).isInstanceOf(DialogRoutingAction::class.java)
+        assertThat(routingAction).isInstanceOf(DialogResolution::class.java)
     }
 }

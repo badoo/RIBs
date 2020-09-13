@@ -4,6 +4,7 @@ import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.plugin.ViewAware
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,7 +17,7 @@ class NodePluginViewAwareTest : NodePluginTest() {
     fun `ViewAware plugins receive onViewCreated()`() {
         val (node, plugins) = testPlugins<ViewAware<TestView>>()
 
-        node.attachToView(parentViewGroup)
+        node.onCreateView(parentView)
 
         plugins.forEach {
             verify(it).onViewCreated(any(), eq(node.lifecycleManager.viewLifecycle!!.lifecycle))

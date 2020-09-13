@@ -3,7 +3,7 @@ package com.badoo.ribs.core.helper
 import android.os.Parcelable
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.Routing
 import com.nhaarman.mockitokotlin2.mock
@@ -12,15 +12,15 @@ import kotlinx.android.parcel.Parcelize
 class TestRouter(
     buildParams: BuildParams<Nothing?> = testBuildParams(),
     initialConfiguration: Configuration = Configuration.C1,
-    private val routingActionForC1: RoutingAction = mock(),
-    private val routingActionForC2: RoutingAction = mock(),
-    private val routingActionForC3: RoutingAction = mock(),
-    private val routingActionForC4: RoutingAction = mock(),
-    private val routingActionForC5: RoutingAction = mock(),
-    private val routingActionForC6: RoutingAction = mock(),
-    private val routingActionForO1: RoutingAction = mock(),
-    private val routingActionForO2: RoutingAction = mock(),
-    private val routingActionForO3: RoutingAction = mock()
+    private val resolutionForC1: Resolution = mock(),
+    private val resolutionForC2: Resolution = mock(),
+    private val resolutionForC3: Resolution = mock(),
+    private val resolutionForC4: Resolution = mock(),
+    private val resolutionForC5: Resolution = mock(),
+    private val resolutionForC6: Resolution = mock(),
+    private val resolutionForO1: Resolution = mock(),
+    private val resolutionForO2: Resolution = mock(),
+    private val resolutionForO3: Resolution = mock()
 ) : Router<TestRouter.Configuration>(
     buildParams = buildParams,
     routingSource = BackStackFeature(
@@ -44,16 +44,16 @@ class TestRouter(
         @Parcelize object O3 : Configuration() { override fun toString(): String = "O3" }
     }
 
-    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+    override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
-            is Configuration.C1 -> routingActionForC1
-            is Configuration.C2 -> routingActionForC2
-            is Configuration.C3 -> routingActionForC3
-            is Configuration.C4 -> routingActionForC4
-            is Configuration.C5 -> routingActionForC5
-            is Configuration.C6 -> routingActionForC6
-            is Configuration.O1 -> routingActionForO1
-            is Configuration.O2 -> routingActionForO2
-            is Configuration.O3 -> routingActionForO3
+            is Configuration.C1 -> resolutionForC1
+            is Configuration.C2 -> resolutionForC2
+            is Configuration.C3 -> resolutionForC3
+            is Configuration.C4 -> resolutionForC4
+            is Configuration.C5 -> resolutionForC5
+            is Configuration.C6 -> resolutionForC6
+            is Configuration.O1 -> resolutionForO1
+            is Configuration.O2 -> resolutionForO2
+            is Configuration.O3 -> resolutionForO3
         }
 }

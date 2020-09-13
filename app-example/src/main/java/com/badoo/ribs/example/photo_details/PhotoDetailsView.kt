@@ -10,10 +10,10 @@ import androidx.annotation.LayoutRes
 import androidx.constraintlayout.widget.Group
 import coil.api.load
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.extensions.findViewById
 import com.badoo.ribs.example.network.model.Photo
 import com.badoo.ribs.example.photo_details.PhotoDetailsView.Event
 import com.badoo.ribs.example.photo_details.PhotoDetailsView.ViewModel
@@ -42,16 +42,17 @@ interface PhotoDetailsView : RibView,
 class PhotoDetailsViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : PhotoDetailsView,
+) : AndroidRibView(),
+    PhotoDetailsView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_photo_details
     ) : PhotoDetailsView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> PhotoDetailsView = {
+        override fun invoke(deps: Nothing?): (RibView) -> PhotoDetailsView = {
             PhotoDetailsViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

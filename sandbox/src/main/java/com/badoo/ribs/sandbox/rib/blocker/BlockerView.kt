@@ -6,6 +6,7 @@ import android.widget.Button
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.blocker.BlockerView.Event
 import com.badoo.ribs.sandbox.rib.blocker.BlockerView.ViewModel
@@ -31,16 +32,17 @@ interface BlockerView : RibView,
 class BlockerViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : BlockerView,
+) : AndroidRibView(),
+    BlockerView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_blocker
     ) : BlockerView.Factory {
-        override fun invoke(deps: Nothing?): (ViewGroup) -> BlockerView = {
+        override fun invoke(deps: Nothing?): (RibView) -> BlockerView = {
             BlockerViewImpl(
-                inflate(it, layoutRes)
+                it.inflate(layoutRes)
             )
         }
     }

@@ -1,21 +1,25 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <Blacklist timestamp="1553003766188"></Blacklist>
-  <Whitelist timestamp="1553003766188">
-    <ID>ExpressionBodySyntax:StringUtils.kt${ return StringUtils.replaceEach(this, replacements.fromArray, replacements.toArray) }</ID>
-    <ID>LongMethod:GenerateRibDialog.kt$GenerateRibDialog$private fun createConstraints( row: Int, column: Int, fill: Int = FILL_NONE, horizontalSizePolicy: Int = SIZEPOLICY_FIXED, verticalSizePolicy: Int = SIZEPOLICY_FIXED, preferredSize: Dimension? = null )</ID>
-    <ID>LongMethod:GenerateRibDialog.kt$GenerateRibDialog$private fun populateTokenInputs(tokens: List&lt;Token&gt;)</ID>
-    <ID>LongMethod:GenerateTemplateAction.kt$GenerateTemplateAction$override fun onGenerateClicked(tokenValues: Map&lt;String, String&gt;, templateId: String)</ID>
-    <ID>LongMethod:ResourceUtils.kt$ fun KClass&lt;*&gt;.getResourceListing(path: String): Array&lt;String&gt;</ID>
-    <ID>LongMethod:TemplateFilesProvider.kt$TemplateFilesProvider$private fun load(): Map&lt;String, Map&lt;SourceSet, List&lt;ResourceTemplateFile&gt;&gt;&gt;</ID>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ExpressionBodySyntax:ReplacementsUtilsTest.kt$ReplacementsUtilsTest.TestCase$return "when source value = $sourceValue, target value = $targetValue expects replacements = ${expectedReplacements.joinToString()}"</ID>
+    <ID>ExpressionBodySyntax:StringUtils.kt$return StringUtils.replaceEach(this, replacements.fromArray, replacements.toArray)</ID>
+    <ID>ExpressionBodySyntax:TemplateFilesProviderTest.kt$TemplateFilesProviderTest$return TestResourceProvider(files)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:IndexUtils.kt$fun PsiDirectory.topLevelScope()</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RibIconProvider.kt$RibIcons$val GENERATE_RIB_ICON = IconLoader.getIcon("/icons/generate_rib.png", RibIcons::class.java)</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RibIndexer.kt$RibIndexer.Companion$const val RIB_NAME_KEY = "com.badoo.ribs.index.ribName"</ID>
+    <ID>LibraryCodeMustSpecifyReturnType:RibIndexer.kt$RibIndexer.Companion$val INDEX_ID = ID.create&lt;String, String?&gt;(RibIndexer::class.java.canonicalName)</ID>
     <ID>LongParameterList:CreateTemplateReplacements.kt$(templatePackage: String, targetPackage: String, templateModulePackage: String, targetModulePackage: String, tokens: Map&lt;String, Token&gt;, tokenValues: Map&lt;String, String&gt;)</ID>
     <ID>LongParameterList:GenerateRibDialog.kt$GenerateRibDialog$( row: Int, column: Int, fill: Int = FILL_NONE, horizontalSizePolicy: Int = SIZEPOLICY_FIXED, verticalSizePolicy: Int = SIZEPOLICY_FIXED, preferredSize: Dimension? = null )</ID>
+    <ID>LongParameterList:RenameRibDialog.kt$RenameRibDialog$( project: Project, private val directory: PsiDirectory, private val sourceSetDirectoriesProvider: SourceSetDirectoriesProvider, private val packageWrapper: PackageWrapper, private val ribName: String )</ID>
+    <ID>LongParameterList:Template.kt$Template$( val id: String, val name: String, val modulePackage: String, val sourcePackage: String, val tokens: List&lt;Token&gt; )</ID>
     <ID>MagicNumber:GenerateRibDialog.kt$GenerateRibDialog$150</ID>
     <ID>MagicNumber:GenerateRibDialog.kt$GenerateRibDialog$30</ID>
     <ID>MagicNumber:GenerateRibDialog.kt$GenerateRibDialog$50</ID>
     <ID>MagicNumber:ResourceUtils.kt$5</ID>
-    <ID>NewLineAtEndOfFile:ResourceUtils.kt$com.badoo.ribs.plugin.util.ResourceUtils.kt</ID>
+    <ID>MandatoryBracesIfStatements:ReplacementsUtils.kt$isFirst = false</ID>
+    <ID>NewLineAtEndOfFile:TemplateFilesProviderTest.kt$com.badoo.ribs.plugin.template.TemplateFilesProviderTest.kt</ID>
+    <ID>NewLineAtEndOfFile:TemplateReplacementsGeneratorTest.kt$com.badoo.ribs.plugin.generator.TemplateReplacementsGeneratorTest.kt</ID>
     <ID>ReturnCount:GenerateTemplateAction.kt$GenerateTemplateAction$private fun isAvailable(dataContext: DataContext): Boolean</ID>
-    <ID>WildcardImport:GenerateRibDialog.kt$import javax.swing.*</ID>
-  </Whitelist>
+  </CurrentIssues>
 </SmellBaseline>

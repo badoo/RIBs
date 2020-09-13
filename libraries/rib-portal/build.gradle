@@ -22,11 +22,6 @@ dependencies {
     implementation deps.android.lifecycleCommon
     compileOnly deps.android.annotations
     implementation deps.external.kotlinStdlib
-    implementation deps.external.mviCore
-    implementation deps.external.mviCoreAndroid
-    implementation deps.external.reactiveStreams
-    implementation deps.external.rxrelay2
-    implementation deps.external.rxjava2
     implementation project(":libraries:rib-base")
 
     testImplementation deps.android.annotations

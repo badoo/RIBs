@@ -15,7 +15,7 @@ import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.RequestPermissionsBut
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.ViewModel
 import com.badoo.ribs.sandbox.rib.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.sandbox.rib.foo_bar.mapper.ViewEventToAnalyticsEvent
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
 class FooBarInteractor(
@@ -29,7 +29,7 @@ class FooBarInteractor(
         private const val REQUEST_CODE_CAMERA = 1
     }
 
-    private val dummyViewInput = PublishRelay.create<FooBarView.ViewModel>()
+    private val dummyViewInput = BehaviorRelay.create<ViewModel>()
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {

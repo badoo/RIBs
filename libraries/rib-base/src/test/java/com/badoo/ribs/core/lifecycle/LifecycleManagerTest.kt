@@ -37,7 +37,7 @@ class LifecycleManagerTest {
     @Test
     fun `onAttachChild() implies child inherits external lifecycle`() {
         val expected = RESUMED
-        lifecycleManager.externalLifecycle.markState(expected)
+        lifecycleManager.externalLifecycle.currentState = expected
         lifecycleManager.onAttachChild(child1)
 
         val actual = child1.lifecycleManager.externalLifecycle.currentState
@@ -51,7 +51,7 @@ class LifecycleManagerTest {
         child1.attachChildNode(grandChild)
 
         val expected = RESUMED
-        lifecycleManager.externalLifecycle.markState(expected)
+        lifecycleManager.externalLifecycle.currentState = expected
         lifecycleManager.onAttachChild(child1)
 
         val actual = grandChild.lifecycleManager.externalLifecycle.currentState

@@ -18,7 +18,7 @@ class FooBarWorkflowTest {
             buildContext = root(savedInstanceState = null),
             payload = FooBarBuilder.Params(someField = 3)
         ).also {
-            it.node.onAttach()
+            it.node.onCreate()
         }
     }
 

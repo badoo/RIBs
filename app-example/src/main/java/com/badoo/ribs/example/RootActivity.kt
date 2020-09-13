@@ -19,8 +19,8 @@ import com.badoo.ribs.example.root.Root
 import com.badoo.ribs.example.root.RootBuilder
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
-import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
+import com.badoo.ribs.routing.resolution.Resolution
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observable
@@ -40,9 +40,9 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
     override fun createRib(savedInstanceState: Bundle?): Rib =
         PortalBuilder(
             object : Portal.Dependency {
-                override fun defaultRoutingAction(): (Portal.OtherSide) -> RoutingAction =
+                override fun defaultResolution(): (Portal.OtherSide) -> Resolution =
                     { portal ->
-                        attach { buildRootNode(portal, it) }
+                        child { buildRootNode(portal, it) }
                     }
 
             }

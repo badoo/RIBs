@@ -2,26 +2,20 @@ package com.badoo.ribs.sandbox.rib.switcher.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.routing.action.DialogRoutingAction.Companion.showDialog
+import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution.Companion.showDialog
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
-import com.badoo.ribs.routing.action.CompositeRoutingAction.Companion.composite
-import com.badoo.ribs.routing.action.InvokeOnExecute.Companion.execute
-import com.badoo.ribs.routing.action.RoutingAction
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.sandbox.rib.menu.Menu
-import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
-import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
-import com.jakewharton.rxrelay2.PublishRelay
 import kotlinx.android.parcel.Parcelize
 
 class SwitcherRouter internal constructor(
@@ -44,6 +38,7 @@ class SwitcherRouter internal constructor(
             @Parcelize object Hello : Content()
             @Parcelize object Foo : Content()
             @Parcelize object DialogsExample : Content()
+            @Parcelize object Compose : Content()
             @Parcelize object Blocker : Content()
         }
         sealed class Overlay : Configuration() {
@@ -51,25 +46,15 @@ class SwitcherRouter internal constructor(
         }
     }
 
-    internal val menuUpdater = PublishRelay.create<Menu.Input>()
-
-    override fun resolve(routing: Routing<Configuration>): RoutingAction =
+    override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                is Permanent.Menu -> attach { menu.build(it) }
-                is Content.Hello -> composite(
-                    attach { helloWorld.build(it) },
-                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.HelloWorld)) }
-                )
-                is Content.Foo -> composite(
-                    attach { fooBar.build(it) },
-                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.FooBar)) }
-                )
-                is Content.DialogsExample -> composite(
-                    attach {  dialogExample.build(it) },
-                    execute { menuUpdater.accept(SelectMenuItem(MenuItem.Dialogs)) }
-                )
-                is Content.Blocker -> attach { blocker.build(it) }
+                is Permanent.Menu -> child { menu.build(it) }
+                is Content.Hello -> child { helloWorld.build(it) }
+                is Content.Foo -> child { fooBar.build(it) }
+                is Content.DialogsExample -> child {  dialogExample.build(it) }
+                is Content.Compose -> child { composeParent.build(it) }
+                is Content.Blocker -> child { blocker.build(it) }
                 is Overlay.Dialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogToTestOverlay)
             }
         }

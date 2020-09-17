@@ -12,6 +12,7 @@ import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.Logg
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedOut
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.Login
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
@@ -40,7 +41,7 @@ internal class RootInteractor(
     }
     private val networkErrorsConsumer = Consumer<NetworkError> { error ->
         when (error) {
-            is NetworkError.Unauthorized -> backStack.replace(Login)
+            is NetworkError.Unauthorized -> backStack.push(Login)
         }
     }
 }

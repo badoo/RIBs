@@ -376,4 +376,17 @@ open class Node<V : RibView>(
 
         return null
     }
+
+    inline fun <reified P> pluginRoot(): P? {
+        var found: P? = null
+        var current: Node<*>? = parent
+
+        while (current != null) {
+            val plugin = current.plugin<P>()
+            if (plugin != null) found = plugin
+            current = current.parent
+        }
+
+        return found
+    }
 }

@@ -8,7 +8,7 @@ If you're using Activities to plug your tree into, you can use and extend
 the ```RibActivity``` class found in the ```rib-base``` module.
 
 It's ```abstract``` and will require you to:
-  1. define a root viewgroup (where to attach the root of your tree)
+  1. define a root ViewGroup (where to attach the root of your tree)
   2. implement building your root RIB.
 
 ```RibActivity``` does all the rest for you, and should provide an easy way to get started:

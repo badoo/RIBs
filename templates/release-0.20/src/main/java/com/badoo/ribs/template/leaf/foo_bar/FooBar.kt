@@ -9,8 +9,8 @@ import io.reactivex.functions.Consumer
 interface FooBar : Rib {
 
     interface Dependency {
-        fun fooBarInput(): ObservableSource<Input>
-        fun fooBarOutput(): Consumer<Output>
+        val fooBarInput: ObservableSource<Input>
+        val fooBarOutput: Consumer<Output>
     }
 
     sealed class Input

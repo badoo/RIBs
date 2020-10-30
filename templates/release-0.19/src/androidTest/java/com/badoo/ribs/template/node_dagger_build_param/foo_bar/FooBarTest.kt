@@ -18,8 +18,8 @@ class FooBarTest {
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         FooBarBuilder(object : FooBar.Dependency {
-            override fun fooBarInput(): ObservableSource<FooBar.Input> = empty()
-            override fun fooBarOutput(): Consumer<FooBar.Output> = Consumer {}
+            override val fooBarInput: ObservableSource<FooBar.Input> = empty()
+            override val fooBarOutput: Consumer<FooBar.Output> = Consumer {}
         }).build(
             buildContext = root(savedInstanceState),
             payload = FooBarBuilder.Params(0)

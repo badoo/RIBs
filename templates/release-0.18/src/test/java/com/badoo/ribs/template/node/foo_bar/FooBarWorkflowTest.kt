@@ -16,8 +16,8 @@ class FooBarWorkflowTest {
     @Before
     fun setup() {
         workflow = FooBarBuilder(object : FooBar.Dependency {
-            override fun fooBarInput(): ObservableSource<FooBar.Input> = mock()
-            override fun fooBarOutput(): Consumer<FooBar.Output> = mock()
+            override val fooBarInput: ObservableSource<FooBar.Input> = mock()
+            override val fooBarOutput: Consumer<FooBar.Output> = mock()
             override fun ribCustomisation(): RibCustomisationDirectory = mock()
         }).build(BuildContext.root(savedInstanceState = null)).also {
             it.node.onAttach()

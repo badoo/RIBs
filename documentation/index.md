@@ -34,47 +34,38 @@
 - [Adding a view](helloworld/view.md)
 - [Adding business logic]](helloworld/businesslogic.md)
 
-## Routing
+## Tree structure 101
 
-- Base concepts
-- Resolving routing
-- Manipulating routing
-- Transitions
-
-## App mechanisms
-
+- Routing
+- Back stack
+- When the back stack is not enough
 - Navigation
-- Deep link workflows
+- Transitions
+- Child dependencies
 - Communication between Nodes
+- Deep link workflows
 
 ## Modality & reuse
-
-- Root vs child
+// - Root vs child
 - Compile-time vs build-time dependencies
 - Customisations
-
-## Advanced routing
-
-- When the back stack is not enough
-
-## Bumble's approach
-- Unidirectional dataflow, Binder
-- Interactor
-- Reactive views
-
-## Extras
-
-- Node plugins
-- Tooling
-- Template plugin
-
-## Testing
 
 ## Android support
 
 - Dialogs
 - Launching external Activities
 - Permission requests
+
+## Extras
+- Bumble's approach
+    - Unidirectional dataflow, Binder
+    - Interactor
+    - Reactive views
+- Demo app
+- Tooling
+- Template plugin
+
+## Testing
 
 ## Experimental features
 

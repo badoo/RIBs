@@ -35,7 +35,7 @@ class FooBarRouter internal constructor(
             when (routing.configuration) {
                 // TODO implement all branches
                 //  to attach children use:
-                //  Content.Child1 -> attach { child.build(it) }
+                //  Content.Child1 -> child { child.build(it) }
                 is Content.Default -> noop()
             }
         }

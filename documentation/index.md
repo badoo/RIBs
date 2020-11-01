@@ -36,17 +36,18 @@
 
 ## Tree structure 101
 
-- Routing
+- [Routing](routing/routing.md)
 - Back stack
 - When the back stack is not enough
 - Navigation
 - Transitions
-- Child dependencies
+- Child builders & dependencies
 - Communication between Nodes
+    - when to handle locally / bubble up
 - Deep link workflows
 
 ## Modality & reuse
-// - Root vs child
+- Build context
 - Compile-time vs build-time dependencies
 - Customisations
 

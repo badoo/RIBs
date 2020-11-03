@@ -4,7 +4,7 @@
 
 In simple terms, routing describes the state of local navigation in your tree of Nodes.
 
-This in practice mostly overlaps with which child ```Nodes``` are added to a parent ```Node``` at any given moment.
+In practice, this mostly overlaps with which child ```Nodes``` are added to a parent ```Node``` at any given moment.
 
 The combination of these local, stateful navigation concerns uniquely describe the state of your whole application.
 
@@ -45,17 +45,40 @@ sealed class Configuration {
 }
 ```
 
-## A sneak peak at routing changes
+## Goal: triggering routing changes
 
-TODO simple example: set(Configuration.MyProfile)
-TODO simple routing source
-TODO stateful! needs to be repetable
+
+What we want to achieve is that we can say something like this in code:
+
+```kotlin
+router.set(Configuration.MyProfile)
+```
+
+Or even manipulate the routing with a back stack:
+```kotlin
+router.push(Screen1)
+router.push(Screen2)
+router.pop()
+```
+
+ℹ️ _Note: actual operations can be different. We'll see this in the next chapters._
+
+Also, we want this to be stateful, so that the framework persists and restores the state of routing (along with its history!) for us.
+
+It would be a lot more difficult to achieve this without these simple "labels" that we declare in our ```Configuration``` sealed classes! Thankfully, with a slight change we can make them Parcelable:
+
+ ```kotlin
+ sealed class Configuration : Parcelable {
+   @Parcelize object MyProfile : Configuration()
+   @Parcelize object ActivityFeed : Configuration()
+   @Parcelize object Messages : Configuration()
+ }
+ ```
+
+Great! Now the framework can persist and restore a simple list (or other data structure) of them easily. But how should the framework understand what each of them represent?
+
 
 ## Resolving routing
-
-Now that we've defined the possible children to our current ```Node```, it's time to tell the framework what they mean. 
-
-After all, we'll want to manipulate only these simple tokens (the elements of our ```Configuration``` sealed classes), and we'll want the framework to do the rest for us: building, attaching, detaching, destroying corresponding ```Nodes``` for us automatically.
 
 Let's have a brief look at the ```Router``` class in the framework:
 
@@ -63,7 +86,7 @@ Let's have a brief look at the ```Router``` class in the framework:
 abstract class Router<C : Parcelable> // <-- C is our Configuration type
 ```
 
-```Router``` also implements the ```RoutingResolver``` interface:
+```Router``` implements the ```RoutingResolver``` interface:
 
 ```kotlin
 interface RoutingResolver<C : Parcelable> {
@@ -73,18 +96,16 @@ interface RoutingResolver<C : Parcelable> {
 
 ```Router``` doesn't define an implementation for this method (being an ```abstract``` class), so this will be our job in our client code.
 
-It's probably easier to see this in an example!
+Let's see an example!
 
 ```kotlin
 internal class MainScreenRouter(
-    routingSource: RoutingSource<Configuration> = TODO() // <-- we'll talk about this shortly
     /* remainder omitted */
 ): Router<Configuration>( // <-- this is our sealed class Configuration from above
-    routingSource = routingSource
     /* remainder omitted */
 ) {
     // These are Builders for other RIBs, and are best created via DI.
-    // Now kept here for demonstration purposes:
+    // Now kept here for demonstration purposes only:
     private val myProfileBuilder: MyProfileBuilder = TODO()
     private val activityFeedBuilder: ActivityFeedBuilder = TODO()
     private val messagesBuilder: MessagesBuilder = TODO()
@@ -121,30 +142,7 @@ On the one hand, you can always define the whole possible set of routings based 
 
 On the other hand, since now there's a finite set, we can cover all the possibilities with exhaustive Kotlin ```when``` expressions, and can do the construction ourselves.
 
-**This means, that the framework can ask our client code to construct children, and we can use non-empty arg constructors in a natural and compile-time safe way.**
+**This means, that the framework can expect our client code to be able to construct all children, and we can use non-empty arg constructors in a natural and compile-time safe way.**
 
 No ```FragmentFactory``` or other hacks are needed.
-
-
-## Manipulating routing
-
-TODO cut this
-// Now that we've covered how to define and how to resolve possible routings, let's see how to trigger a change in the current routing.
-//
-// Remember this part of the snippet?
-// ```kotlin
-// internal class MainScreenRouter(
-//     routingSource: RoutingSource<Configuration> = TODO() // <-- we'll talk about this shortly
-// ): Router<Configuration>(
-//     routingSource = routingSource
-// )
-// ```
-//
-// The ```RoutingSource``` type here is our source of information for the ```Router```.
-//
-// It's something the framework can observe to detect changes in the current routing. In practice, we will want to:
-//  1. have an implementation of it passed to our business logic, so that we can manipulate it on one end
-//  2. have the same instance passed to our ```Router``` so that it can observe the changes on the other end
-
-See the next chapter for an implementation of the ```RoutingSource``` you might already be familiar with: the [Back stack](backstack.md)
 

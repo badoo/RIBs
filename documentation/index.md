@@ -37,6 +37,7 @@
 ## Tree structure 101
 
 - [Routing](routing/routing.md)
+- [Resolving routing](routing/resolving-routing.md)
 - Back stack
 - When the back stack is not enough
 - Navigation

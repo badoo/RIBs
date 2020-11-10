@@ -30,15 +30,15 @@
 - [Plugins](basics/plugins.md)
 
 ## Hello world!
-- [Hello world!](helloworld/helloworld.md)
+- [Hello world!](helloworld/hello-world.md)
 - [Adding a view](helloworld/view.md)
-- [Adding business logic]](helloworld/businesslogic.md)
+- [Adding business logic](helloworld/business-logic.md)
 
 ## Tree structure 101
 
 - [Routing](routing/routing.md)
 - [Resolving routing](routing/resolving-routing.md)
-- [Back stack](routing/backstack.md)
+- [Back stack](routing/back-stack.md)
 - When the back stack is not enough
 - Transitions
 - Child builders & dependencies

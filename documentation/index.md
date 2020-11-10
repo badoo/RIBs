@@ -38,9 +38,8 @@
 
 - [Routing](routing/routing.md)
 - [Resolving routing](routing/resolving-routing.md)
-- Back stack
+- [Back stack](routing/backstack.md)
 - When the back stack is not enough
-- Navigation
 - Transitions
 - Child builders & dependencies
 - Communication between Nodes

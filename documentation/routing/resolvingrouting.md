@@ -74,10 +74,9 @@ It would be a lot more difficult to achieve this without these simple labels tha
  }
  ```
 
-Great! Now the framework can persist and restore a simple list (or other data structure) of them easily. But how should the framework understand what each of them represent?
-
-
 ## Resolving routing
+
+Great! Now the framework can persist and restore a simple list (or other data structure) of them easily. But how should the framework understand what each of them represent?
 
 Let's have a brief look at the ```Router``` class in the framework:
 

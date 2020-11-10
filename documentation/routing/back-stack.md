@@ -24,17 +24,17 @@ Letters represent configurations.
 ### .push()
 
 ```kotlin
-// back stack == [A, B, C] 
+T0: [A, B, C]
 backStack.push(D)
-// back stack == [A, B, C, D] 
+T1: [A, B, C, D]
 ```
 
 ### .replace()
 
 ```kotlin
-// back stack == [A, B, C] 
+T0: [A, B, C]
 backStack.replace(D)
-// back stack == [A, B, D] 
+T1: [A, B, D]
 ```
 
 
@@ -42,24 +42,24 @@ backStack.replace(D)
 
 Base case: removes last element
 ```kotlin
-// back stack == [A, B, C] 
+T0: [A, B, C]
 backStack.pop()
-// back stack == [A, B] 
+T1: [A, B]
 ```
 
 The last element cannot be popped though:
 ```kotlin
-// back stack == [A] 
+T0: [A]
 backStack.pop()
-// back stack == [A] 
+T1: [A]
 ```
 
 
 ### .newRoot()
 ```kotlin
-// back stack == [A, B, C] 
+T0: [A, B, C]
 backStack.newRoot(D)
-// back stack == [D] 
+T1: [D]
 ```
 
 
@@ -70,9 +70,9 @@ Case: argument is not found in the back stack
 Result: .singleTop() acts as .push()
 
 ```kotlin
-// back stack == [A, B, C, D]
+T0: [A, B, C, D]
 backStack.singleTop(E)
-// back stack == [A, B, C, D, E]
+T1: [A, B, C, D, E]
 ```
 
 
@@ -81,9 +81,9 @@ Case: argument is found in the back stack
 Result: .singleTop() acts as a sequence of .pop() operations, going back to the found element
 
 ```
-// back stack == [A, B, C, D]
+T0: [A, B, C, D]
 backStack.singleTop(B)
-// back stack == [A, B]
+T1: [A, B]
 ```
 
 Case: argument is found in the back stack by its type, but not equals
@@ -91,9 +91,9 @@ Case: argument is found in the back stack by its type, but not equals
 Result: .singleTop() acts as a sequence of .pop() operations, going back to the found element, followed by a .replace() operation to the argument value
 
 ```
-// back stack == [A, B, C, D]
+T0: [A, B, C, D]
 backStack.singleTop(B*)
-// back stack == [A, B*]
+T1: [A, B*]
 ```
 
 ## Custom back stack operations
@@ -137,8 +137,70 @@ fun <C : Parcelable> BackStackFeature<C>.push(configuration: C) {
 }
 ```
 
+## Overlays
 
-## Usage example
+As we said so far, it's only the ```Node``` associated with the last element in the back stack that is ever active on the screen.
+
+However, there are cases where you can't represent the proper navigation state with the above approach, most notably when you have some overlay (dialog, bottom sheet, etc.) on the screen. In these cases, you need both the overlay and the content beneath it to be active on the screen at the same time: otherwise the content would just be removed if it's no longer the last element in the back stack.
+
+The back stack supports overlays for this case
+
+### Rules of overlays
+- Any element in the back stack can have an associated list of overlays
+- There can be more than one overlay in that list
+- If an operation removes the base element, all the overlays are removed too
+- If an operations pushes the base element back to the stack, all of them are removed from the screen; upon restoration, all of them gets restored
+
+### Related operations
+- ```.pushOverlay()``` adds a new overlay to the base element
+- ```.popOverlay()``` removes the last overlay (if there's any)
+- ```.pop()``` will remove any overlays before popping the base element
+
+### Behaviour examples
+
+```kotlin
+T0: [A, B, C, D]
+
+backStack.pushOverlay(O1)
+
+T1: [A, B, C, D, E]
+                 +
+                 O1
+
+backStack.pushOverlay(O2)
+
+T2: [A, B, C, D, E]
+                 +
+                 O1
+                 O2
+
+backStack.push(F)
+
+T3: [A, B, C, D, E, F]
+                 +
+                 O1
+                 O2
+
+backStack.popOverlay()
+
+T4: no change (F didn't contain overlays)
+
+backStack.pop()
+
+T5: [A, B, C, D, E]     // Indentical to T2
+                 +
+                 O1
+                 O2
+
+backStack.pop()
+
+T6: [A, B, C, D, E]     // Indentical to T1
+                 +
+                 O1
+
+```
+
+## Putting the pieces together
 
 So at this point, we have:
 
@@ -253,8 +315,7 @@ T1: [A, B, C]
 - D is removed, the associated Node is destroyed
 ```
 
-
-
+While the above behaviour is default, you can implement a different one with a custom routing source (see next chapter).
 
 
 

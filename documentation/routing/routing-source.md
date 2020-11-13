@@ -1,5 +1,7 @@
 # Routing sources
 
+// TODO: Permanent
+
 ## General idea
 
 - active / inactive

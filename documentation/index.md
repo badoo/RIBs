@@ -46,6 +46,12 @@
     - when to handle locally / bubble up
 - Deep link workflows
 
+## Transition animations
+
+- [Quick start](transitions/transitions-quick-start.md)
+- [Custom transitions](transitions/custom-transitions.md)
+- [Transition reversal](transitions/transition-reversal.md)
+
 ## Modality & reuse
 - Build context
 - Compile-time vs build-time dependencies

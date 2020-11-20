@@ -130,7 +130,7 @@ What's happening here?
 
 ## A parallel with Fragments
 
-We can draw a parallel here with ```Fragments```: you could add nested ```Fragments``` to each other, much the same way as you can can a nested ```Node``` structure.
+We can draw a parallel here with ```Fragments```: you could add nested ```Fragments``` to each other, much the same way as you can with a nested ```Node``` structure.
 
 The key difference is that while you can add _any_ ```Fragment``` to a ```FragmentManager```, using the above approach to routing, you will only have a pre-defined, finite set of possible children to any ```Node```.
 

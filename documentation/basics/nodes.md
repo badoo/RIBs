@@ -19,7 +19,7 @@ Node as a base class provides these functionalities:
 
 
 ## Client code specific functionality
-Furthermore, your Node child class can build on top of the to implement any operations defined in the current RIB's interface. These operations are the public API of your RIB as a whole, hiding the implementation details inside. 
+Your Node is the implementatino of the current RIB's main interface. Any operations defined there are the public API of your RIB. To implement them, your ```Node``` should only delegate to other internal pieces living in your RIB, hiding these implementation details.
 
 See more in [Workflows]().
 

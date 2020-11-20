@@ -71,7 +71,6 @@ class HelloWorldBuilder(
         )
     }
 }
-
 ```
 
 ## That's it!

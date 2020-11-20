@@ -36,14 +36,13 @@
 
 ## Tree structure 101
 
-- [Routing](routing/routing.md)
-- [Resolving routing](routing/resolving-routing.md)
-- [Back stack](routing/back-stack.md)
+- [Happy little trees](tree-structure-101/happy-little-trees.md)
+- [Routing](tree-structure-101/routing.md)
+- [Resolving routing](tree-structure-101/resolving-routing.md)
+- [Back stack](tree-structure-101/back-stack.md)
 - When the back stack is not enough
-- Transitions
 - Child builders & dependencies
-- Communication between Nodes
-    - when to handle locally / bubble up
+- [Communication between Nodes](tree-structure-101/communication-between-nodes.md)
 - Deep link workflows
 
 ## Transition animations
@@ -52,10 +51,10 @@
 - [Custom transitions](transitions/custom-transitions.md)
 - [Transition reversal](transitions/transition-reversal.md)
 
-## Modality & reuse
-- Build context
-- Compile-time vs build-time dependencies
-- Customisations
+## Reusability
+- Philosophy of reuse
+- [Build-time dependencies](reuse/build-time-dependencies.md)
+- [Customisations](reuse/customisations.md)
 
 ## Android support
 
@@ -73,6 +72,8 @@
 - Template plugin
 
 ## Testing
+
+- Testing best practices
 
 ## Experimental features
 

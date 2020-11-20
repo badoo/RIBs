@@ -149,7 +149,7 @@ The back stack supports overlays for this case
 - Any element in the back stack can have an associated list of overlays
 - There can be more than one overlay in that list
 - If an operation removes the base element, all the overlays are removed too
-- If an operations pushes the base element back to the stack, all of them are removed from the screen; upon restoration, all of them gets restored
+- If an operation pushes the base element back to the stack, all of them are removed from the screen; upon restoration, all of them get restored
 
 ### Related operations
 - ```.pushOverlay()``` adds a new overlay to the base element
@@ -261,7 +261,7 @@ As a result, ```Interactor``` and ```Router``` are decoupled: one is manipulatin
 
 One thing to know about the back stack, is that child ```Nodes``` which were created as a result of resolving ```Configurations``` stay alive until either:
 
-- they associted ```Configuration``` is removed from the back stack by an operation (e.g. ```.pop()```, ```.replace()```, ```.newRoot()```, etc.), or
+- their associted ```Configuration``` is removed from the back stack by an operation (e.g. ```.pop()```, ```.replace()```, ```.newRoot()```, etc.), or
 - the system goes through a save / restore cycle
 
 

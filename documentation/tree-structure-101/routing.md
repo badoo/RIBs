@@ -4,7 +4,7 @@
 
 [screenshot – card swiping game]()
 
-In this example, we have a bottom menu on this screenwith three options: ```My profile```, ```Card swiping game```, ```Messages```. Pressing any of them would show the corresponding screen in the content area. Since we're building our application by building a tree of single-responsibility ```Nodes```, we can represent this with the following structure:
+In this example, we have a bottom menu on this screen with three options: ```My profile```, ```Card swiping game```, ```Messages```. Pressing any of them would show the corresponding screen in the content area. Since we're building our application by building a tree of single-responsibility ```Nodes```, we can represent this with the following structure:
 
 [diagram – container]()
 
@@ -52,7 +52,7 @@ This, among other things, also solves an age old problem of navigation in a shar
 
 Routing describes the state of local navigation in your tree of Nodes.
 
-The combination of these local, stateful navigation concerns uniquely describe the state of your whole application. 
+The combination of these local, stateful navigation concerns uniquely describes the state of your whole application. 
 
 In RIBs, routing is both stateful and persistent, automatically handled by the framework.
 

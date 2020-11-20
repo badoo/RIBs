@@ -17,28 +17,23 @@ This is similar to Fragments, however, the typical nesting level of ```Node``` t
 The topmost ```Node``` in the tree.
 
 #### Leaf Node
-A ```Node``` without any further children.
+A ```Node``` without any further children. 
+
+#### Container
+A ```Node``` with children whose only responsibility is to coordinate between them. This allows both the children and the container to each keep a single responsibility. Containers usually have a ```Router```.
 
 ### Plugin
-A generic piece of functionality that can be plugged into a Node. 
+A generic piece of functionality that can be added into a Node. 
 
-Typically you will want to implement any architectural patterns and other moving parts as plugins. See more in [Plugins]  
+Typically you will want to implement any extra concerns, any architectural patterns, or other moving parts as plugins. See more in [Plugins](plugins.md)
 
 ### Builder
 A class to build a ```Node``` from its dependencies.
 
-See more in [Building]
+See more in [Hello world!](../hello-world/hello-world.md)
 
 ### View
 Reponsible for rendering a ViewModel and triggering events, nothing more. Since it's just an interface, can also be customised or mocked when testing.
-
-### Interactor
-An opinionated (and completely optional) ```Plugin``` to implement business logic in a RIB pattern.
-
-Usually a class to facilitate interaction:
-- connects other decoupled pieces (e.g state machines, view)
-- reacts to child Node outputs / feeds input to child ```Nodes```
-- controls routing 
 
 ### Router
 An optional but handy ```Plugin``` to manipulate which child ```Nodes``` should be active. 

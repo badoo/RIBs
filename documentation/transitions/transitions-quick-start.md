@@ -19,7 +19,7 @@ The passed in ```TransitionHandler``` is automatically invoked upon every change
 
 ## Quick start: framework provided transitions
 
-There are framework provided implementations of ```TransitionHandler````. If you're looking for a quick start, it's literally a matter of seconds adding any of the below to your ```Router``` and seeing them in action.
+There are framework provided implementations of ```TransitionHandler```. If you're looking for a quick start, it's literally a matter of seconds adding any of the below to your ```Router``` and seeing them in action.
 
 
 ### ```CrossFader```
@@ -39,7 +39,7 @@ Customisation options:
 - The ```View``` of the ```Node``` associated with the entering configuration slides in
 
 Customisation options:
-- gravity of the exiting transition (a reverse value is used for the entering transition automaticallh)
+- gravity of the exiting transition (a reverse value is used for the entering transition automatically)
 - animation container
 - duration
 - interpolator

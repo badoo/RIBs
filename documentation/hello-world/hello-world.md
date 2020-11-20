@@ -105,7 +105,6 @@ class HelloRibsActivity : RibActivity() {
         return helloWorld
     }
 }
-
 ```
 
 What's happening here:

@@ -1,5 +1,10 @@
 # Routing
 
+## Suggested read
+
+⚠️ Before you proceed, make sure you've read:
+- [Happy little trees](happy-little-trees.md)
+
 ## What's routing?
 
 [screenshot – card swiping game]()

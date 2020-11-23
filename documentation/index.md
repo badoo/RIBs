@@ -52,7 +52,6 @@
 - [Transition reversal](transitions/transition-reversal.md)
 
 ## Reusability
-- Philosophy of reuse
 - [Build-time dependencies](reuse/build-time-dependencies.md)
 - [Customisations](reuse/customisations.md)
 

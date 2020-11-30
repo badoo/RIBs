@@ -19,9 +19,3 @@ class HelloWorldBuilder(
     }
 }
 
-fun bla() {
-val helloWorldBuilder = HelloWorldBuilder(object : HelloWorld.Dependency {})
-val helloWorld = helloWorldBuilder.build(
-    BuildContext.root(savedInstanceState = null)
-)
-}

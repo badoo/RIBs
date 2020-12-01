@@ -1,6 +1,9 @@
 package com.badoo.ribs.routing.state.changeset
 
+import kotlin.random.Random
+
 internal data class TransitionDescriptor(
+    val id: Int = Random.nextInt(),
     val from: Any?,
     val to: Any?
 ) {
@@ -19,8 +22,8 @@ internal data class TransitionDescriptor(
     companion object {
         val None =
             TransitionDescriptor(
-                null,
-                null
+                from = null,
+                to = null
             )
     }
 }

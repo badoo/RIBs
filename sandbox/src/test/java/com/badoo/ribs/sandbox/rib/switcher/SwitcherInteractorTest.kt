@@ -33,7 +33,8 @@ class SwitcherInteractorTest {
         interactor = SwitcherInteractor(
             buildParams = BuildParams.Empty(),
             backStack = backStack,
-            dialogToTestOverlay = dialogToTestOverlay
+            dialogToTestOverlay = dialogToTestOverlay,
+            transitionSettled = { true }
         )
 
         interactorTestHelper = InteractorTestHelper.create(interactor, viewEventRelay)

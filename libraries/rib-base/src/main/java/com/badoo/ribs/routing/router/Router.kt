@@ -11,11 +11,15 @@ import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.state.CompositeCancellable
+import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.core.state.TimeCapsule
+import com.badoo.ribs.core.state.map
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
+import com.badoo.ribs.routing.router.Router.TransitionState.IN_TRANSITION
+import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.changes
 import com.badoo.ribs.routing.state.feature.RoutingStatePool
@@ -35,6 +39,20 @@ abstract class Router<C : Parcelable>(
     ViewLifecycleAware,
     SavesInstanceState,
     SubtreeBackPressHandler by routingSource {
+
+    enum class TransitionState {
+        SETTLED, IN_TRANSITION;
+
+        val isSettled: Boolean
+            get() = this == SETTLED
+    }
+
+    var transitionState: TransitionState = SETTLED
+        private set
+
+    val transitionStates: Source<TransitionState> =
+        routingStatePool
+            .map { if (it.ongoingTransitions.isEmpty()) SETTLED else IN_TRANSITION }
 
     private val cancellable = CompositeCancellable()
     private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
@@ -69,7 +87,13 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onCreate(nodeLifecycle: Lifecycle) {
-        cancellable += routingSource.changes(hasSavedState).observe(routingStatePool::accept)
+        cancellable += routingSource
+            .changes(hasSavedState)
+            .observe(routingStatePool::accept)
+
+        cancellable += routingStatePool
+            .map { if (it.ongoingTransitions.isEmpty()) SETTLED else IN_TRANSITION }
+            .observe { transitionState = it }
     }
 
     override fun onAttachToView() {

@@ -11,6 +11,7 @@ import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.state.CompositeCancellable
+import com.badoo.ribs.core.state.Relay
 import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.core.state.map
@@ -50,10 +51,8 @@ abstract class Router<C : Parcelable>(
     var transitionState: TransitionState = SETTLED
         private set
 
-    val transitionStates: Source<TransitionState> by lazy {
-        routingStatePool
-            .map { if (it.ongoingTransitions.isEmpty()) SETTLED else IN_TRANSITION }
-    }
+    private val transitionStatesRelay: Relay<TransitionState> = Relay()
+    val transitionStates: Source<TransitionState> = transitionStatesRelay
     
     private val cancellable = CompositeCancellable()
     private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
@@ -94,7 +93,10 @@ abstract class Router<C : Parcelable>(
 
         cancellable += routingStatePool
             .map { if (it.ongoingTransitions.isEmpty()) SETTLED else IN_TRANSITION }
-            .observe { transitionState = it }
+            .observe {
+                transitionState = it
+                transitionStatesRelay.emit(it)
+            }
     }
 
     override fun onAttachToView() {

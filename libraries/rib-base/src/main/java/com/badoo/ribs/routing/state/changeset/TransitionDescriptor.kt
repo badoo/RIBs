@@ -20,7 +20,7 @@ internal data class TransitionDescriptor(
         )
 
     companion object {
-        val None =
+        val None: TransitionDescriptor =
             TransitionDescriptor(
                 from = null,
                 to = null

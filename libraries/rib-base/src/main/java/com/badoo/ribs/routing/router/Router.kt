@@ -50,10 +50,11 @@ abstract class Router<C : Parcelable>(
     var transitionState: TransitionState = SETTLED
         private set
 
-    val transitionStates: Source<TransitionState> =
+    val transitionStates: Source<TransitionState> by lazy {
         routingStatePool
             .map { if (it.ongoingTransitions.isEmpty()) SETTLED else IN_TRANSITION }
-
+    }
+    
     private val cancellable = CompositeCancellable()
     private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null

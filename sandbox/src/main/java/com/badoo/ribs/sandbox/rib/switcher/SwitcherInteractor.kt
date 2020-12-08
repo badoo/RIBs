@@ -11,7 +11,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.routing.router.Router
-import com.badoo.ribs.routing.router.Router.TransitionState.*
+import com.badoo.ribs.routing.router.Router.TransitionState.IN_TRANSITION
+import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.pop
 import com.badoo.ribs.routing.source.backstack.operation.push
@@ -29,10 +30,10 @@ import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
-import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
+@SuppressWarnings("LongParameterList")
 internal class SwitcherInteractor(
     buildParams: BuildParams<*>,
     private val backStack: BackStackFeature<Configuration>,

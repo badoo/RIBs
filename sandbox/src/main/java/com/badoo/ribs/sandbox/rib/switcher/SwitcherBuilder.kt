@@ -57,6 +57,7 @@ class SwitcherBuilder(
         SwitcherInteractor(
             buildParams = buildParams,
             backStack = backStack,
+            transitions = router.transitionStates.rx2().distinctUntilChanged(),
             transitionSettled = { router.transitionState.isSettled },
             dialogToTestOverlay = dialogToTestOverlay
         )

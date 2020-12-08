@@ -46,7 +46,7 @@ internal class SwitcherInteractor(
     private val menuListener = Consumer<Menu.Output> { output ->
         when (output) {
             is Menu.Output.MenuItemSelected -> {
-                if (!transitionSettled()) {
+                if (transitionSettled()) {
                     backStack.push(
                         when (output.menuItem) {
                             FooBar -> Content.Foo

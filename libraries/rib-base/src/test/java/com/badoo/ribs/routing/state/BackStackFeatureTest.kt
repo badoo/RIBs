@@ -9,8 +9,7 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.routing.source.backstack.State
-import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
+import com.badoo.ribs.routing.source.backstack.BackStack.State
 import com.badoo.ribs.routing.state.feature.operation.asBackStackElements
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
@@ -94,7 +93,7 @@ class BackStackFeatureTest {
             elementsOperation = { newBackStack }
         )
 
-        backStack.accept(BackStack.Operation(backStackOperation))
+        backStack.accept(backStackOperation)
 
         val expected = newBackStack.map { it.routing.configuration }
         val actual = backStack.state.elements.map { it.routing.configuration }
@@ -111,7 +110,7 @@ class BackStackFeatureTest {
             elementsOperation = { newBackStack }
         )
 
-        backStack.accept(BackStack.Operation(backStackOperation))
+        backStack.accept(backStackOperation)
 
         assertEquals(oldBackStack, backStack.state.elements)
     }
@@ -120,8 +119,8 @@ class BackStackFeatureTest {
     private fun backStackOperation(
         isApplicable: (Elements<Configuration>) -> Boolean = { true },
         elementsOperation: (Elements<Configuration>) -> Elements<Configuration> = { it }
-    ): BackStackOperation<Configuration> =
-        mock<BackStackOperation<Configuration>>().apply {
+    ): BackStack.Operation<Configuration> =
+        mock<BackStack.Operation<Configuration>>().apply {
             whenever(this.isApplicable(any())).thenAnswer { isApplicable(it.arguments[0] as Elements<Configuration>) }
             whenever(this.invoke(any())).thenAnswer { elementsOperation(it.arguments[0] as Elements<Configuration>) }
         }

@@ -13,7 +13,7 @@ import com.badoo.ribs.routing.source.backstack.Elements
  */
 data class PushOverlay<C : Parcelable>(
     private val configuration: C
-) : BackStackOperation<C> {
+) : BackStack.Operation<C> {
 
     override fun isApplicable(elements: Elements<C>): Boolean =
         elements.isNotEmpty() && configuration != elements.currentOverlay
@@ -36,5 +36,5 @@ data class PushOverlay<C : Parcelable>(
 }
 
 fun <C : Parcelable> BackStack<C>.pushOverlay(configuration: C) {
-    accept(BackStack.Operation(PushOverlay(configuration)))
+    accept(PushOverlay(configuration))
 }

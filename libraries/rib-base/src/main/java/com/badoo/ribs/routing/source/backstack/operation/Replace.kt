@@ -13,7 +13,8 @@ import com.badoo.ribs.routing.source.backstack.Elements
  */
 data class Replace<C : Parcelable>(
     private val configuration: C
-) : BackStackOperation<C> {
+) : BackStack.Operation<C> {
+
     override fun isApplicable(elements: Elements<C>): Boolean =
         configuration != elements.lastOrNull()?.routing?.configuration
 
@@ -24,6 +25,6 @@ data class Replace<C : Parcelable>(
 }
 
 fun <C : Parcelable> BackStack<C>.replace(configuration: C) {
-    accept(BackStack.Operation(Replace(configuration)))
+    accept(Replace(configuration))
 }
 

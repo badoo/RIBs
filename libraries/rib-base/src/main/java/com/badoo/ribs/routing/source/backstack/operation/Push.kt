@@ -13,7 +13,8 @@ import com.badoo.ribs.routing.source.backstack.Elements
  */
 data class Push<C : Parcelable>(
     private val configuration: C
-) : BackStackOperation<C> {
+) : BackStack.Operation<C> {
+
     override fun isApplicable(elements: Elements<C>): Boolean =
         configuration != elements.current?.configuration
 
@@ -25,5 +26,5 @@ data class Push<C : Parcelable>(
 }
 
 fun <C : Parcelable> BackStack<C>.push(configuration: C) {
-    accept(BackStack.Operation(Push(configuration)))
+    accept(Push(configuration))
 }

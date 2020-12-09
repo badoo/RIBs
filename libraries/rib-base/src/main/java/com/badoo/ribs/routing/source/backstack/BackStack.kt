@@ -15,7 +15,6 @@ import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
 import com.badoo.ribs.routing.source.backstack.operation.NewRoot
 import com.badoo.ribs.routing.source.backstack.operation.Remove
 import com.badoo.ribs.routing.source.backstack.operation.canPop
@@ -59,10 +58,9 @@ class BackStack<C : Parcelable> internal constructor(
             elements.iterator()
     }
 
-    /**
-     * The back stack operation this [BackStack] supports.
-     */
-    data class Operation<C : Parcelable>(val backStackOperation: BackStackOperation<C>)
+    interface Operation<C : Parcelable> : (Elements<C>) -> Elements<C> {
+        fun isApplicable(elements: Elements<C>): Boolean
+    }
 
     constructor(
         initialConfiguration: C, // TODO consider 2nd constructor with RoutingHistoryElement<C>
@@ -81,7 +79,7 @@ class BackStack<C : Parcelable> internal constructor(
             initializeBackstack()
         }
 
-        fun accept(operation: BackStackOperation<C>) {
+        fun accept(operation: Operation<C>) {
             emit(
                 state.apply(operation)
             )
@@ -99,7 +97,7 @@ class BackStack<C : Parcelable> internal constructor(
         /**
          * Creates a new [State] based on the old one + the applied [BackStackOperation]
          */
-        private fun State<C>.apply(operation: BackStackOperation<C>): State<C> {
+        private fun State<C>.apply(operation: Operation<C>): State<C> {
             val updated = operation
                 .invoke(elements)
                 .applyBackStackMaintenance()
@@ -173,11 +171,7 @@ class BackStack<C : Parcelable> internal constructor(
         popBackStack()
 
     override fun remove(identifier: Routing.Identifier) {
-        accept(
-            Operation(
-                Remove(identifier)
-            )
-        )
+        accept(Remove(identifier))
     }
 
     /**
@@ -185,8 +179,8 @@ class BackStack<C : Parcelable> internal constructor(
      * Emits corresponding [State]s if the answer is yes.
      */
     fun accept(operation: Operation<C>) {
-        if (operation.backStackOperation.isApplicable(state.elements)) {
-            store.accept(operation.backStackOperation)
+        if (operation.isApplicable(state.elements)) {
+            store.accept(operation)
         }
     }
 

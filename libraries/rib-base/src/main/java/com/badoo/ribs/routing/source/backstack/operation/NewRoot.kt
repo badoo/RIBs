@@ -8,7 +8,7 @@ import com.badoo.ribs.routing.source.backstack.Elements
 
 data class NewRoot<C : Parcelable>(
     private val configuration: C
-) : BackStackOperation<C> {
+) : BackStack.Operation<C> {
 
     //We shouldn't change root if root configuration same but backStack contains overlays
     override fun isApplicable(elements: Elements<C>): Boolean =
@@ -19,6 +19,6 @@ data class NewRoot<C : Parcelable>(
 }
 
 fun <C : Parcelable> BackStack<C>.newRoot(configuration: C) {
-    accept(BackStack.Operation(NewRoot(configuration)))
+    accept(NewRoot(configuration))
 }
 

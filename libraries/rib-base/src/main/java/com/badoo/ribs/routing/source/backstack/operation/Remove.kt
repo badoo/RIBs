@@ -13,7 +13,7 @@ import com.badoo.ribs.routing.source.backstack.Elements
  */
 class Remove<C : Parcelable>(
     private val identifier: Routing.Identifier
-) : BackStackOperation<C> {
+) : BackStack.Operation<C> {
 
     override fun isApplicable(elements: Elements<C>): Boolean =
         elements.hasContentWithIdentifier() ||
@@ -69,5 +69,5 @@ class Remove<C : Parcelable>(
 
 
 fun <C : Parcelable> BackStack<C>.remove(identifier: Routing.Identifier) {
-    accept(BackStack.Operation(Remove(identifier)))
+    accept(Remove(identifier))
 }

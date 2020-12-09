@@ -1,10 +1,9 @@
 package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.routing.source.backstack.BackStack.Operation
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.Elements
 
 /**
@@ -16,7 +15,8 @@ import com.badoo.ribs.routing.source.backstack.Elements
  */
 data class SingleTop<C : Parcelable>(
     private val configuration: C
-) : BackStackOperation<C> {
+) : BackStack.Operation<C> {
+
     override fun isApplicable(elements: Elements<C>): Boolean =
         true
 
@@ -63,5 +63,5 @@ data class SingleTop<C : Parcelable>(
 }
 
 fun <C : Parcelable> BackStack<C>.singleTop(configuration: C) {
-    accept(Operation(SingleTop(configuration)))
+    accept(SingleTop(configuration))
 }

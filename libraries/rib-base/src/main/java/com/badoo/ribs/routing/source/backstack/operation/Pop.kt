@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.source.backstack.Elements
  * [A, B, C] + Pop = [A, B]  // no overlays
  * [A, B, C {O1}] + Pop = [A, B, C]  // overlays are popped first
  */
-class Pop<C : Parcelable> : BackStackOperation<C> {
+class Pop<C : Parcelable> : BackStack.Operation<C> {
 
     override fun invoke(elements: Elements<C>): Elements<C> =
         when {
@@ -46,5 +46,5 @@ internal val <C : Parcelable> Elements<C>.canPopOverlay: Boolean
     get() = lastOrNull()?.overlays?.isNotEmpty() == true
 
 fun <C : Parcelable> BackStack<C>.pop() {
-    accept(BackStack.Operation(Pop()))
+    accept(Pop())
 }

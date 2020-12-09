@@ -22,7 +22,7 @@ import com.badoo.ribs.routing.source.backstack.operation.canPop
 import com.badoo.ribs.routing.source.backstack.operation.canPopOverlay
 import com.badoo.ribs.routing.source.backstack.operation.pop
 
-private val timeCapsuleKey = BackStackFeature::class.java.name
+private val timeCapsuleKey = BackStack::class.java.name
 private fun <C : Parcelable> TimeCapsule.initialState(): BackStackFeatureState<C> =
     (get(timeCapsuleKey) ?: BackStackFeatureState())
 
@@ -34,17 +34,17 @@ private fun <C : Parcelable> TimeCapsule.initialState(): BackStackFeatureState<C
  *
  * Elements are persisted to Bundle (see [TimeCapsule]) and restored automatically.
  *
- * @see BackStackFeature.Operation for supported operations
- * @see BackStackFeature.initializeBackstack for operations emitted during initialisation
- * @see BackStackFeature.accept for logic deciding whether an operation should be carried out
- * @see BackStackFeature.apply for the implementation of applying state changes
+ * @see BackStack.Operation for supported operations
+ * @see BackStack.accept for logic deciding whether an operation should be carried out
+ * @see BackStack.store.apply for the implementation of applying state changes
+ * @see BackStack.store.initializeBackstack for operations emitted during initialisation
  */
-class BackStackFeature<C : Parcelable> internal constructor(
+class BackStack<C : Parcelable> internal constructor(
     private val initialConfiguration: C,
     private val timeCapsule: TimeCapsule
 ) : RoutingSource<C> {
     /**
-     * The back stack operation this [BackStackFeature] supports.
+     * The back stack operation this [BackStack] supports.
      */
     data class Operation<C : Parcelable>(val backStackOperation: BackStackOperation<C>)
 
@@ -72,7 +72,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         }
 
         /**
-         * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
+         * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStack]
          */
         private fun initializeBackstack() {
             if (state.elements.isEmpty()) {

@@ -1,8 +1,8 @@
 package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
-import com.badoo.ribs.routing.source.backstack.BackStackFeature.Operation
+import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.BackStack.Operation
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements
@@ -62,6 +62,6 @@ data class SingleTop<C : Parcelable>(
     }
 }
 
-fun <C : Parcelable> BackStackFeature<C>.singleTop(configuration: C) {
+fun <C : Parcelable> BackStack<C>.singleTop(configuration: C) {
     accept(Operation(SingleTop(configuration)))
 }

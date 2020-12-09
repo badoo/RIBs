@@ -8,7 +8,7 @@ import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.BackStackFeatureState
 import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
 import com.badoo.ribs.routing.state.feature.operation.asBackStackElements
@@ -35,7 +35,7 @@ class BackStackFeatureTest {
     private lateinit var timeCapsuleEmpty: TimeCapsule
     private lateinit var timeCapsuleWithContent: TimeCapsule
     private lateinit var backstackInTimeCapsule: List<RoutingHistoryElement<Configuration>>
-    private lateinit var backStackFeature: BackStackFeature<Configuration>
+    private lateinit var backStack: BackStack<Configuration>
 
     @Before
     fun setUp() {
@@ -46,7 +46,7 @@ class BackStackFeatureTest {
 
         timeCapsuleEmpty = mock()
         timeCapsuleWithContent = mock {
-            on { get<BackStackFeatureState<Configuration>>(BackStackFeature::class.java.name) } doReturn BackStackFeatureState(
+            on { get<BackStackFeatureState<Configuration>>(BackStack::class.java.name) } doReturn BackStackFeatureState(
                 id = ID,
                 elements = backstackInTimeCapsule
             )
@@ -55,8 +55,8 @@ class BackStackFeatureTest {
     }
 
     private fun setupBackStackManager(timeCapsule: TimeCapsule) {
-        backStackFeature =
-            BackStackFeature(
+        backStack =
+            BackStack(
                 initialConfiguration = initialConfiguration,
                 timeCapsule = timeCapsule
             )
@@ -64,24 +64,24 @@ class BackStackFeatureTest {
 
     @Test
     fun `Initial back stack contains only one element`() {
-        assertThat(backStackFeature.state.elements, hasSize(1))
+        assertThat(backStack.state.elements, hasSize(1))
     }
 
     @Test
     fun `Initial state matches initial configuration`() {
-        assertEquals(initialConfiguration, backStackFeature.state.current!!.routing.configuration)
+        assertEquals(initialConfiguration, backStack.state.current!!.routing.configuration)
     }
 
     @Test
     fun `After state restoration back stack matches the one in the time capsule`() {
         setupBackStackManager(timeCapsuleWithContent)
-        assertEquals(backstackInTimeCapsule, backStackFeature.state.elements)
+        assertEquals(backstackInTimeCapsule, backStack.state.elements)
     }
 
     @Test
     fun `Back stack state's current() references last item`() {
         setupBackStackManager(timeCapsuleWithContent)
-        assertEquals(backstackInTimeCapsule.last(), backStackFeature.state.current)
+        assertEquals(backstackInTimeCapsule.last(), backStack.state.current)
     }
 
     @Test
@@ -94,26 +94,26 @@ class BackStackFeatureTest {
             elementsOperation = { newBackStack }
         )
 
-        backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
+        backStack.accept(BackStack.Operation(backStackOperation))
 
         val expected = newBackStack.map { it.routing.configuration }
-        val actual = backStackFeature.state.elements.map { it.routing.configuration }
+        val actual = backStack.state.elements.map { it.routing.configuration }
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `State is not updated when operation is not applicable`() {
-        val oldBackStack = backStackFeature.state.elements
+        val oldBackStack = backStack.state.elements
         val newBackStack = listOf(C2, C3).asBackStackElements(true)
         val backStackOperation = backStackOperation(
             isApplicable = { false },
             elementsOperation = { newBackStack }
         )
 
-        backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
+        backStack.accept(BackStack.Operation(backStackOperation))
 
-        assertEquals(oldBackStack, backStackFeature.state.elements)
+        assertEquals(oldBackStack, backStack.state.elements)
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -1,7 +1,7 @@
 package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements
@@ -35,6 +35,6 @@ data class PushOverlay<C : Parcelable>(
         toMutableList().apply { set(lastIndex, replacement) }
 }
 
-fun <C : Parcelable> BackStackFeature<C>.pushOverlay(configuration: C) {
-    accept(BackStackFeature.Operation(PushOverlay(configuration)))
+fun <C : Parcelable> BackStack<C>.pushOverlay(configuration: C) {
+    accept(BackStack.Operation(PushOverlay(configuration)))
 }

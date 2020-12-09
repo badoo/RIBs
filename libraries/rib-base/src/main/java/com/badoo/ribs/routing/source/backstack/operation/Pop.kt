@@ -1,7 +1,7 @@
 package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements
 
@@ -45,6 +45,6 @@ internal val <C : Parcelable> Elements<C>.canPop: Boolean
 internal val <C : Parcelable> Elements<C>.canPopOverlay: Boolean
     get() = lastOrNull()?.overlays?.isNotEmpty() == true
 
-fun <C : Parcelable> BackStackFeature<C>.pop() {
-    accept(BackStackFeature.Operation(Pop()))
+fun <C : Parcelable> BackStack<C>.pop() {
+    accept(BackStack.Operation(Pop()))
 }

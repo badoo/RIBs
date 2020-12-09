@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
@@ -21,7 +21,7 @@ import org.junit.Test
 
 class SwitcherInteractorTest {
 
-    private val backStack: BackStackFeature<Configuration> = mock()
+    private val backStack: BackStack<Configuration> = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val viewEventRelay = PublishRelay.create<Event>()

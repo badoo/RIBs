@@ -2,7 +2,7 @@ package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements
 
@@ -68,6 +68,6 @@ class Remove<C : Parcelable>(
 }
 
 
-fun <C : Parcelable> BackStackFeature<C>.remove(identifier: Routing.Identifier) {
-    accept(BackStackFeature.Operation(Remove(identifier)))
+fun <C : Parcelable> BackStack<C>.remove(identifier: Routing.Identifier) {
+    accept(BackStack.Operation(Remove(identifier)))
 }

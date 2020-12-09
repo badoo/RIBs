@@ -1,5 +1,6 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
@@ -9,6 +10,9 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.state.rx2
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.router.Router.TransitionState.IN_TRANSITION
+import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pop
 import com.badoo.ribs.routing.source.backstack.operation.push
@@ -21,31 +25,40 @@ import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.Dialogs
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
+import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.ViewModel
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
+import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
+@SuppressWarnings("LongParameterList")
 internal class SwitcherInteractor(
     buildParams: BuildParams<*>,
     private val backStack: BackStack<Configuration>,
-    private val dialogToTestOverlay: DialogToTestOverlay
+    private val dialogToTestOverlay: DialogToTestOverlay,
+    private val transitions: ObservableSource<Router.TransitionState>,
+    private val transitionSettled: () -> Boolean
 ) : Interactor<Switcher, SwitcherView>(
     buildParams = buildParams
 ) {
-
     private val menuListener = Consumer<Menu.Output> { output ->
         when (output) {
-            is Menu.Output.MenuItemSelected ->
-                backStack.push(
-                    when (output.menuItem) {
-                        FooBar -> Content.Foo
-                        HelloWorld -> Content.Hello
-                        Dialogs -> Content.DialogsExample
-                        Compose -> Content.Compose
-                    }
-                )
+            is Menu.Output.MenuItemSelected -> {
+                if (transitionSettled()) {
+                    backStack.push(
+                        when (output.menuItem) {
+                            FooBar -> Content.Foo
+                            HelloWorld -> Content.Hello
+                            Dialogs -> Content.DialogsExample
+                            Compose -> Content.Compose
+                        }
+                    )
+                } else {
+                    Log.d("SwitcherInteractor", "Menu output suppressed by running transition")
+                }
+            }
         }
     }
 
@@ -75,11 +88,19 @@ internal class SwitcherInteractor(
         }
     }
 
+    private val transitionStateToViewModel : (Router.TransitionState) -> ViewModel = {
+        when (it) {
+            SETTLED -> ViewModel(uiFrozen = false)
+            IN_TRANSITION -> ViewModel(uiFrozen = true)
+        }
+    }
+
     override fun onViewCreated(view: SwitcherView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
         viewLifecycle.startStop {
             bind(view to viewEventConsumer)
             bind(dialogToTestOverlay to dialogEventConsumer)
+            bind(transitions to view using transitionStateToViewModel)
         }
     }
 

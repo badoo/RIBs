@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.Elements
 
 /**
  * Operation:
@@ -15,23 +15,23 @@ data class PushOverlay<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
 
-    override fun isApplicable(backStack: BackStack<C>): Boolean =
-        backStack.isNotEmpty() && configuration != backStack.currentOverlay
+    override fun isApplicable(elements: Elements<C>): Boolean =
+        elements.isNotEmpty() && configuration != elements.currentOverlay
 
-    override fun invoke(backStack: BackStack<C>): BackStack<C> =
-        backStack.replaceLastWith(
-            backStack.last().copy(
-                overlays = backStack.last().overlays + Routing(configuration)
+    override fun invoke(elements: Elements<C>): Elements<C> =
+        elements.replaceLastWith(
+            elements.last().copy(
+                overlays = elements.last().overlays + Routing(configuration)
             )
         )
 
-    private val BackStack<C>.current: RoutingHistoryElement<C>?
+    private val Elements<C>.current: RoutingHistoryElement<C>?
         get() = this.lastOrNull()
 
-    private val BackStack<C>.currentOverlay: C?
+    private val Elements<C>.currentOverlay: C?
         get() = current?.overlays?.lastOrNull()?.configuration
 
-    private fun BackStack<C>.replaceLastWith(replacement: RoutingHistoryElement<C>): BackStack<C> =
+    private fun Elements<C>.replaceLastWith(replacement: RoutingHistoryElement<C>): Elements<C> =
         toMutableList().apply { set(lastIndex, replacement) }
 }
 

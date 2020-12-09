@@ -11,14 +11,14 @@ import kotlin.random.Random
 @Parcelize
 data class BackStackFeatureState<C : Parcelable>(
     val id: Int = Random.nextInt(),
-    val backStack: BackStack<C> = emptyList()
+    val elements: Elements<C> = emptyList()
 ) : Parcelable, RoutingHistory<C> {
 
     val current: RoutingHistoryElement<C>?
-        get() = backStack.lastOrNull()
+        get() = elements.lastOrNull()
 
     override fun iterator(): Iterator<RoutingHistoryElement<C>> =
-        backStack.iterator()
+        elements.iterator()
 }
 
 

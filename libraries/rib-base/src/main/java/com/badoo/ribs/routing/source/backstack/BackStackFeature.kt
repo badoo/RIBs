@@ -75,7 +75,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
          * Automatically sets [initialConfiguration] as [NewRoot] when initialising the [BackStackFeature]
          */
         private fun initializeBackstack() {
-            if (state.backStack.isEmpty()) {
+            if (state.elements.isEmpty()) {
                 accept(NewRoot(initialConfiguration))
             }
         }
@@ -85,14 +85,14 @@ class BackStackFeature<C : Parcelable> internal constructor(
          */
         private fun BackStackFeatureState<C>.apply(operation: BackStackOperation<C>): BackStackFeatureState<C> {
             val updated = operation
-                .invoke(backStack)
+                .invoke(elements)
                 .applyBackStackMaintenance()
 
-            return copy(backStack = updated)
+            return copy(elements = updated)
         }
 
         // TODO add unit test checking id uniqueness
-        private fun BackStack<C>.applyBackStackMaintenance(): BackStack<C> =
+        private fun Elements<C>.applyBackStackMaintenance(): Elements<C> =
             mapIndexed { index, element ->
                 element.copy(
                     activation = if (index == lastIndex) ACTIVE else INACTIVE,
@@ -125,7 +125,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
     val activeConfiguration: Source<C> =
         store
             .map {
-                it.backStack.last()
+                it.elements.last()
                     .routing
                     .configuration
             }
@@ -135,7 +135,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         get() = store.state
 
     fun popBackStack(): Boolean = // TODO rename
-        if (state.backStack.canPop) {
+        if (state.elements.canPop) {
             pop()
             true
         } else {
@@ -143,7 +143,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
         }
 
     fun popOverlay(): Boolean =
-        if (state.backStack.canPopOverlay) {
+        if (state.elements.canPopOverlay) {
             pop()
             true
         } else {
@@ -169,7 +169,7 @@ class BackStackFeature<C : Parcelable> internal constructor(
      * Emits corresponding [BackStackFeatureState]s if the answer is yes.
      */
     fun accept(operation: Operation<C>) {
-        if (operation.backStackOperation.isApplicable(state.backStack)) {
+        if (operation.backStackOperation.isApplicable(state.elements)) {
             store.accept(operation.backStackOperation)
         }
     }

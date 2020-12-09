@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.Elements
 
 /**
  * Operation:
@@ -14,11 +14,11 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 data class Replace<C : Parcelable>(
     private val configuration: C
 ) : BackStackOperation<C> {
-    override fun isApplicable(backStack: BackStack<C>): Boolean =
-        configuration != backStack.lastOrNull()?.routing?.configuration
+    override fun isApplicable(elements: Elements<C>): Boolean =
+        configuration != elements.lastOrNull()?.routing?.configuration
 
-    override fun invoke(backStack: BackStack<C>): BackStack<C> =
-        backStack.dropLast(1) + RoutingHistoryElement(
+    override fun invoke(elements: Elements<C>): Elements<C> =
+        elements.dropLast(1) + RoutingHistoryElement(
             routing = Routing(configuration)
         )
 }

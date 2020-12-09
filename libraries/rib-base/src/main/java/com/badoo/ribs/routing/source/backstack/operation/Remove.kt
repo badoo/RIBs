@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.Elements
 
 /**
  * Operation:
@@ -15,36 +15,36 @@ class Remove<C : Parcelable>(
     private val identifier: Routing.Identifier
 ) : BackStackOperation<C> {
 
-    override fun isApplicable(backStack: BackStack<C>): Boolean =
-        backStack.hasContentWithIdentifier() ||
-        backStack.hasOverlayWithIdentifier()
+    override fun isApplicable(elements: Elements<C>): Boolean =
+        elements.hasContentWithIdentifier() ||
+        elements.hasOverlayWithIdentifier()
 
-    private fun BackStack<C>.hasContentWithIdentifier() =
+    private fun Elements<C>.hasContentWithIdentifier() =
         find { it.routing.identifier == identifier } != null
 
-    private fun BackStack<C>.hasOverlayWithIdentifier() =
+    private fun Elements<C>.hasOverlayWithIdentifier() =
         any { it.overlays.find { it.identifier == identifier } != null }
 
-    override fun invoke(backStack: BackStack<C>): BackStack<C> = when {
-        backStack.hasContentWithIdentifier() -> removeContent(backStack)
-        backStack.hasOverlayWithIdentifier() -> removeOverlay(backStack)
-        else -> backStack
+    override fun invoke(elements: Elements<C>): Elements<C> = when {
+        elements.hasContentWithIdentifier() -> removeContent(elements)
+        elements.hasOverlayWithIdentifier() -> removeOverlay(elements)
+        else -> elements
     }
 
-    private fun removeContent(backStack: BackStack<C>): List<RoutingHistoryElement<C>> {
-        val toRemove = backStack.find {
+    private fun removeContent(elements: Elements<C>): List<RoutingHistoryElement<C>> {
+        val toRemove = elements.find {
             it.routing.identifier == identifier
         }
 
         requireNotNull(toRemove)
-        return backStack.minus(toRemove)
+        return elements.minus(toRemove)
     }
 
-    private fun removeOverlay(backStack: BackStack<C>): MutableList<RoutingHistoryElement<C>> {
+    private fun removeOverlay(elements: Elements<C>): MutableList<RoutingHistoryElement<C>> {
         lateinit var overlayToRemove: Routing<C>
         var indexOfElementContainingOverlay: Int = -1
 
-        backStack.forEachIndexed { idx, element ->
+        elements.forEachIndexed { idx, element ->
             val found = element.overlays.find {
                 it.identifier == identifier
             }
@@ -55,8 +55,8 @@ class Remove<C : Parcelable>(
             }
         }
 
-        val element = backStack[indexOfElementContainingOverlay]
-        val mutable = backStack.toMutableList()
+        val element = elements[indexOfElementContainingOverlay]
+        val mutable = elements.toMutableList()
         val modified = element.copy(
             overlays = element.overlays.minus(overlayToRemove)
         )

@@ -7,7 +7,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.Elements
 import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.BackStackFeatureState
 import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
@@ -48,7 +48,7 @@ class BackStackFeatureTest {
         timeCapsuleWithContent = mock {
             on { get<BackStackFeatureState<Configuration>>(BackStackFeature::class.java.name) } doReturn BackStackFeatureState(
                 id = ID,
-                backStack = backstackInTimeCapsule
+                elements = backstackInTimeCapsule
             )
         }
         setupBackStackManager(timeCapsuleEmpty)
@@ -64,7 +64,7 @@ class BackStackFeatureTest {
 
     @Test
     fun `Initial back stack contains only one element`() {
-        assertThat(backStackFeature.state.backStack, hasSize(1))
+        assertThat(backStackFeature.state.elements, hasSize(1))
     }
 
     @Test
@@ -75,7 +75,7 @@ class BackStackFeatureTest {
     @Test
     fun `After state restoration back stack matches the one in the time capsule`() {
         setupBackStackManager(timeCapsuleWithContent)
-        assertEquals(backstackInTimeCapsule, backStackFeature.state.backStack)
+        assertEquals(backstackInTimeCapsule, backStackFeature.state.elements)
     }
 
     @Test
@@ -91,38 +91,38 @@ class BackStackFeatureTest {
 
         val backStackOperation = backStackOperation(
             isApplicable = { true },
-            backStackOperation = { newBackStack }
+            elementsOperation = { newBackStack }
         )
 
         backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
 
         val expected = newBackStack.map { it.routing.configuration }
-        val actual = backStackFeature.state.backStack.map { it.routing.configuration }
+        val actual = backStackFeature.state.elements.map { it.routing.configuration }
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `State is not updated when operation is not applicable`() {
-        val oldBackStack = backStackFeature.state.backStack
+        val oldBackStack = backStackFeature.state.elements
         val newBackStack = listOf(C2, C3).asBackStackElements(true)
         val backStackOperation = backStackOperation(
             isApplicable = { false },
-            backStackOperation = { newBackStack }
+            elementsOperation = { newBackStack }
         )
 
         backStackFeature.accept(BackStackFeature.Operation(backStackOperation))
 
-        assertEquals(oldBackStack, backStackFeature.state.backStack)
+        assertEquals(oldBackStack, backStackFeature.state.elements)
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun backStackOperation(
-        isApplicable: (BackStack<Configuration>) -> Boolean = { true },
-        backStackOperation: (BackStack<Configuration>) -> BackStack<Configuration> = { it }
+        isApplicable: (Elements<Configuration>) -> Boolean = { true },
+        elementsOperation: (Elements<Configuration>) -> Elements<Configuration> = { it }
     ): BackStackOperation<Configuration> =
         mock<BackStackOperation<Configuration>>().apply {
-            whenever(this.isApplicable(any())).thenAnswer { isApplicable(it.arguments[0] as BackStack<Configuration>) }
-            whenever(this.invoke(any())).thenAnswer { backStackOperation(it.arguments[0] as BackStack<Configuration>) }
+            whenever(this.isApplicable(any())).thenAnswer { isApplicable(it.arguments[0] as Elements<Configuration>) }
+            whenever(this.invoke(any())).thenAnswer { elementsOperation(it.arguments[0] as Elements<Configuration>) }
         }
 }

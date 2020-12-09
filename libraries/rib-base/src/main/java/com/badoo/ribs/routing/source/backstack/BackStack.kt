@@ -21,10 +21,12 @@ import com.badoo.ribs.routing.source.backstack.operation.Remove
 import com.badoo.ribs.routing.source.backstack.operation.canPop
 import com.badoo.ribs.routing.source.backstack.operation.canPopOverlay
 import com.badoo.ribs.routing.source.backstack.operation.pop
+import kotlinx.android.parcel.Parcelize
+import kotlin.random.Random
 
 private val timeCapsuleKey = BackStack::class.java.name
-private fun <C : Parcelable> TimeCapsule.initialState(): BackStackFeatureState<C> =
-    (get(timeCapsuleKey) ?: BackStackFeatureState())
+private fun <C : Parcelable> TimeCapsule.initialState(): BackStack.State<C> =
+    (get(timeCapsuleKey) ?: BackStack.State())
 
 /**
  * State store implementing [RoutingSource] that keeps a simple linear history of [Routing]s.
@@ -43,6 +45,20 @@ class BackStack<C : Parcelable> internal constructor(
     private val initialConfiguration: C,
     private val timeCapsule: TimeCapsule
 ) : RoutingSource<C> {
+
+    @Parcelize
+    data class State<C : Parcelable>(
+        val id: Int = Random.nextInt(),
+        val elements: Elements<C> = emptyList()
+    ) : Parcelable, RoutingHistory<C> {
+
+        val current: RoutingHistoryElement<C>?
+            get() = elements.lastOrNull()
+
+        override fun iterator(): Iterator<RoutingHistoryElement<C>> =
+            elements.iterator()
+    }
+
     /**
      * The back stack operation this [BackStack] supports.
      */
@@ -59,7 +75,7 @@ class BackStack<C : Parcelable> internal constructor(
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
         timeCapsule.initialState()
 
-    private val store = object : Store<BackStackFeatureState<C>>(timeCapsule.initialState()) {
+    private val store = object : Store<State<C>>(timeCapsule.initialState()) {
         init {
             timeCapsule.register(timeCapsuleKey) { state }
             initializeBackstack()
@@ -81,9 +97,9 @@ class BackStack<C : Parcelable> internal constructor(
         }
 
         /**
-         * Creates a new [BackStackFeatureState] based on the old one + the applied [BackStackOperation]
+         * Creates a new [State] based on the old one + the applied [BackStackOperation]
          */
-        private fun BackStackFeatureState<C>.apply(operation: BackStackOperation<C>): BackStackFeatureState<C> {
+        private fun State<C>.apply(operation: BackStackOperation<C>): State<C> {
             val updated = operation
                 .invoke(elements)
                 .applyBackStackMaintenance()
@@ -131,7 +147,7 @@ class BackStack<C : Parcelable> internal constructor(
             }
             .startWith(initialConfiguration)
 
-    val state: BackStackFeatureState<C>
+    val state: State<C>
         get() = store.state
 
     fun popBackStack(): Boolean = // TODO rename
@@ -165,8 +181,8 @@ class BackStack<C : Parcelable> internal constructor(
     }
 
     /**
-     * Checks if the required operations are to be executed based on the current [BackStackFeatureState].
-     * Emits corresponding [BackStackFeatureState]s if the answer is yes.
+     * Checks if the required operations are to be executed based on the current [State].
+     * Emits corresponding [State]s if the answer is yes.
      */
     fun accept(operation: Operation<C>) {
         if (operation.backStackOperation.isApplicable(state.elements)) {

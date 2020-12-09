@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.routing.source.backstack.BackStackFeatureState
+import com.badoo.ribs.routing.source.backstack.State
 import com.badoo.ribs.routing.source.backstack.operation.BackStackOperation
 import com.badoo.ribs.routing.state.feature.operation.asBackStackElements
 import com.nhaarman.mockitokotlin2.any
@@ -46,7 +46,7 @@ class BackStackFeatureTest {
 
         timeCapsuleEmpty = mock()
         timeCapsuleWithContent = mock {
-            on { get<BackStackFeatureState<Configuration>>(BackStack::class.java.name) } doReturn BackStackFeatureState(
+            on { get<State<Configuration>>(BackStack::class.java.name) } doReturn State(
                 id = ID,
                 elements = backstackInTimeCapsule
             )

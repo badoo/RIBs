@@ -13,7 +13,7 @@ import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.router.Router.TransitionState.IN_TRANSITION
 import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pop
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
@@ -36,7 +36,7 @@ import io.reactivex.functions.Consumer
 @SuppressWarnings("LongParameterList")
 internal class SwitcherInteractor(
     buildParams: BuildParams<*>,
-    private val backStack: BackStackFeature<Configuration>,
+    private val backStack: BackStack<Configuration>,
     private val dialogToTestOverlay: DialogToTestOverlay,
     private val transitions: ObservableSource<Router.TransitionState>,
     private val transitionSettled: () -> Boolean
@@ -94,7 +94,7 @@ internal class SwitcherInteractor(
             IN_TRANSITION -> ViewModel(uiFrozen = true)
         }
     }
-    
+
     override fun onViewCreated(view: SwitcherView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
         viewLifecycle.startStop {

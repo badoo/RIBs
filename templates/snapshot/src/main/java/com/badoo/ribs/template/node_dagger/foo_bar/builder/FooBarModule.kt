@@ -2,7 +2,7 @@
 package com.badoo.ribs.template.node_dagger.foo_bar.builder
 
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.rx.disposables
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarInteractor
@@ -28,8 +28,8 @@ internal object FooBarModule {
     @JvmStatic
     internal fun backStack(
         buildParams: BuildParams<Nothing?>
-    ): BackStackFeature<Configuration> =
-        BackStackFeature(
+    ): BackStack<Configuration> =
+        BackStack(
             buildParams = buildParams,
             initialConfiguration = Content.Default
         )
@@ -40,7 +40,7 @@ internal object FooBarModule {
     internal fun interactor(
         buildParams: BuildParams<Nothing?>,
         feature: FooBarFeature,
-        backStack: BackStackFeature<Configuration>
+        backStack: BackStack<Configuration>
     ): FooBarInteractor =
         FooBarInteractor(
             buildParams = buildParams,
@@ -64,7 +64,7 @@ internal object FooBarModule {
     internal fun router(
         buildParams: BuildParams<Nothing?>,
         builders: FooBarChildBuilders,
-        backStack: BackStackFeature<Configuration>,
+        backStack: BackStack<Configuration>,
         customisation: FooBar.Customisation
     ): FooBarRouter =
         FooBarRouter(

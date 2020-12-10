@@ -10,7 +10,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.Routing.Identifier
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.Elements
 import com.badoo.ribs.routing.source.backstack.operation.Remove
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -19,7 +19,7 @@ class RemoveTest {
 
     private lateinit var remove: Remove<Configuration>
 
-    val backStack: BackStack<Configuration> = listOf<RoutingHistoryElement<Configuration>>(
+    val elements: Elements<Configuration> = listOf<RoutingHistoryElement<Configuration>>(
         RoutingHistoryElement(
             routing = Routing<Configuration>(
                 identifier = Identifier(id = 10),
@@ -64,7 +64,7 @@ class RemoveTest {
     fun `Remove isn't applicable when identifier isn't found in history`() {
         remove = Remove(Identifier(id = -1))
 
-        val applicable = remove.isApplicable(backStack)
+        val applicable = remove.isApplicable(elements)
 
         assertThat(applicable).isEqualTo(false)
     }
@@ -73,7 +73,7 @@ class RemoveTest {
     fun `Remove is applicable when back stack has a content element with target identifier`() {
         remove = Remove(Identifier(id = 20))
 
-        val applicable = remove.isApplicable(backStack)
+        val applicable = remove.isApplicable(elements)
 
         assertThat(applicable).isEqualTo(true)
     }
@@ -82,7 +82,7 @@ class RemoveTest {
     fun `Remove is applicable when back stack has an overlay element with target identifier`() {
         remove = Remove(Identifier(id = 302))
 
-        val applicable = remove.isApplicable(backStack)
+        val applicable = remove.isApplicable(elements)
 
         assertThat(applicable).isEqualTo(true)
     }
@@ -91,8 +91,8 @@ class RemoveTest {
     fun `Remove returns original back stack if identifier isn't found`() {
         remove = Remove(Identifier(id = -1))
 
-        val result = remove.invoke(backStack)
-        val expected = backStack
+        val result = remove.invoke(elements)
+        val expected = elements
 
         assertThat(result).isEqualTo(expected)
     }
@@ -102,8 +102,8 @@ class RemoveTest {
     fun `Remove removes correct content element with target identifier`() {
         remove = Remove(Identifier(id = 20))
 
-        val result = remove.invoke(backStack)
-        val expected = listOf(backStack[0], backStack[2])
+        val result = remove.invoke(elements)
+        val expected = listOf(elements[0], elements[2])
 
         assertThat(result).isEqualTo(expected)
     }
@@ -112,11 +112,11 @@ class RemoveTest {
     fun `Remove removes correct overlay element with target identifier`() {
         remove = Remove(Identifier(id = 302))
 
-        val result = remove.invoke(backStack)
-        val expected = listOf(backStack[0], backStack[1], backStack[2].copy(
+        val result = remove.invoke(elements)
+        val expected = listOf(elements[0], elements[1], elements[2].copy(
             overlays = listOf(
-                backStack[2].overlays[0],
-                backStack[2].overlays[2]
+                elements[2].overlays[0],
+                elements[2].overlays[2]
             )
         ))
 

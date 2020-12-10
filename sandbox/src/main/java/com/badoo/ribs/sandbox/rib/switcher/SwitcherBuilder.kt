@@ -4,7 +4,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.state.rx2
 import com.badoo.ribs.routing.router.Router
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherChildBuilders
@@ -43,15 +43,15 @@ class SwitcherBuilder(
         )
     }
 
-    private fun backStack(buildParams: BuildParams<Nothing?>): BackStackFeature<Configuration> =
-        BackStackFeature(
+    private fun backStack(buildParams: BuildParams<Nothing?>): BackStack<Configuration> =
+        BackStack(
             buildParams = buildParams,
             initialConfiguration = Content.Foo
         )
 
     private fun interactor(
         buildParams: BuildParams<Nothing?>,
-        backStack: BackStackFeature<Configuration>,
+        backStack: BackStack<Configuration>,
         router: Router<*>
     ): SwitcherInteractor =
         SwitcherInteractor(
@@ -65,7 +65,7 @@ class SwitcherBuilder(
     private fun router(
         buildParams: BuildParams<Nothing?>,
         customisation: Switcher.Customisation,
-        backStack: BackStackFeature<Configuration>
+        backStack: BackStack<Configuration>
     ): SwitcherRouter =
         SwitcherRouter(
             buildParams = buildParams,

@@ -6,7 +6,7 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.template.node_dagger.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.InputToWish
@@ -19,7 +19,7 @@ import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter.Configur
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
     private val feature: FooBarFeature,
-    backStack: BackStackFeature<Configuration>
+    backStack: BackStack<Configuration>
 ) : BackStackInteractor<FooBar, FooBarView, Configuration>(
     buildParams = buildParams,
     backStack = backStack

@@ -1,8 +1,8 @@
 package com.badoo.ribs.routing.activator
 
 import android.os.Parcelable
-import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.routing.Routing
 
 internal class RoutingActivator<C : Parcelable>(
@@ -21,7 +21,7 @@ internal class RoutingActivator<C : Parcelable>(
     fun remove(routing: Routing<C>, nodes: List<Node<*>>) {
         nodes.forEach { child ->
             parentNode.detachChildView(child)
-            parentNode.detachChildNode(child)
+            parentNode.detachChildNode(child, isRecreating = false)
         }
     }
 

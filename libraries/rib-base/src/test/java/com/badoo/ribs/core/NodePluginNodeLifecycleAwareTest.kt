@@ -1,7 +1,7 @@
 package com.badoo.ribs.core
 
-import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.helper.TestBuilder
+import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
@@ -40,7 +40,7 @@ class NodePluginNodeLifecycleAwareTest : NodePluginTest() {
     fun `NodeLifecycleAware plugins receive onDetach()`() {
         val (node, plugins) = testPlugins<NodeLifecycleAware>()
 
-        node.onDestroy()
+        node.onDestroy(isRecreating = false)
 
         plugins.forEach {
             verify(it).onDestroy()

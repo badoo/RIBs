@@ -27,7 +27,7 @@ class DisposablePluginTest {
 
     @Test
     fun `onDestroy() disposes disposables`() {
-        node.onDestroy()
+        node.onDestroy(isRecreating = false)
         verify(disposables).dispose()
     }
 }

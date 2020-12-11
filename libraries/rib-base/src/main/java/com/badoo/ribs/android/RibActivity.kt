@@ -17,7 +17,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import java.util.*
+import java.util.WeakHashMap
 
 /**
  * Helper class for root [Rib] integration.
@@ -125,7 +125,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         super.onDestroy()
         dialogs.values.forEach { it.dismiss() }
         rootViewHost.detachChild(root.node)
-        root.node.onDestroy()
+        root.node.onDestroy(isRecreating = !isFinishing)
     }
 
     override fun onBackPressed() {

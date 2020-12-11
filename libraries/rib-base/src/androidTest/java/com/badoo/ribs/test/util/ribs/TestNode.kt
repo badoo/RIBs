@@ -1,18 +1,18 @@
 package com.badoo.ribs.test.util.ribs
 
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.routing.router.Router
 
-class TestNode<V: RibView>(
+class TestNode<V : RibView>(
     buildParams: BuildParams<*>,
     viewFactory: ViewFactory<Nothing?, V>,
     private val router: Router<*>,
     interactor: Interactor<*, V>
-): Node<V>(
+) : Node<V>(
     buildParams = buildParams,
     viewFactory = viewFactory(null),
     plugins = listOf(interactor, router)
@@ -28,8 +28,8 @@ class TestNode<V: RibView>(
 
     fun getRouter() = router
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(isRecreating: Boolean) {
+        super.onDestroy(isRecreating)
         isAttached = false
     }
 }

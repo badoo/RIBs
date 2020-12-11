@@ -16,6 +16,87 @@ repositories {
 }
 
 templates {
+
+    template {
+        id = 'leaf_release_0.24'
+        name = '[0.24] Leaf node'
+
+        fromProject = project(':templates:release-0.24')
+        sourcePackage = 'com.badoo.ribs.template.leaf'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
+
+    template {
+        id = 'leaf_view_only_release_0.24'
+        name = '[0.24] Leaf node (view only)'
+
+        fromProject = project(':templates:release-0.24')
+        sourcePackage = 'com.badoo.ribs.template.leaf_view_only'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
+
+    template {
+        id = 'router_node_manual_di_release_0.24'
+        name = '[0.24] Router node + Manual DI'
+
+        fromProject = project(':templates:release-0.24')
+        sourcePackage = 'com.badoo.ribs.template.node'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
+
+    template {
+        id = 'router_node_dagger_release_0.24'
+        name = '[0.24] Router node + Dagger'
+
+        fromProject = project(':templates:release-0.24')
+        sourcePackage = 'com.badoo.ribs.template.node_dagger'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
+
+    template {
+        id = 'router_node_dagger_build_param_release_0.24'
+        name = '[0.24] Router node + Dagger + BuildParam'
+
+        fromProject = project(':templates:release-0.24')
+        sourcePackage = 'com.badoo.ribs.template.node_dagger_build_param'
+        modulePackage = 'com.badoo.ribs.template'
+        resources = ['rib_foo_bar.xml']
+
+        token {
+            id = "rib_name"
+            name = "RIB name"
+            sourceValue = "FooBar"
+        }
+    }
+
     template {
         id = 'leaf_release_0.23'
         name = '[0.23] Leaf node'

@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.node_dagger.foo_bar
 
-import com.badoo.ribs.core.builder.BuildContext.Companion.root
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.template.node_dagger.foo_bar.builder.FooBarBuilder
 import org.junit.After
 import org.junit.Before

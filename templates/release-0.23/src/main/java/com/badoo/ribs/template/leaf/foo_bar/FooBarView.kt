@@ -2,9 +2,9 @@ package com.badoo.ribs.template.leaf.foo_bar
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.customisation.inflate
 import com.badoo.ribs.template.R
 import com.badoo.ribs.template.leaf.foo_bar.FooBarView.Event
 import com.badoo.ribs.template.leaf.foo_bar.FooBarView.ViewModel

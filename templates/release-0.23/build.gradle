@@ -2,7 +2,7 @@ apply from: file('../common-template.gradle')
 
 dependencies {
     final String version = '0.23.0'
-    implementation "com.github.badoo.RIBs:rib-android:$version"
+    implementation "com.github.badoo.RIBs:rib-base:$version"
     debugImplementation "com.github.badoo.RIBs:rib-base-test-activity:$version"
     androidTestImplementation "com.github.badoo.RIBs:rib-base-test:$version"
 }

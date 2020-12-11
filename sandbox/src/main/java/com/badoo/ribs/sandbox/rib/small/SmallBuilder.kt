@@ -16,7 +16,7 @@ class SmallBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): Small {
         val interactor = interactor(
             buildParams = buildParams,
-            portal = dependency.portal()
+            portal = dependency.portal
         )
         val router = router(
             buildParams = buildParams,

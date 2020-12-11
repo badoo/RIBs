@@ -1,5 +1,5 @@
 package com.badoo.ribs.android.activitystarter
 
 interface CanProvideActivityStarter {
-    fun activityStarter(): ActivityStarter
+    val activityStarter: ActivityStarter
 }

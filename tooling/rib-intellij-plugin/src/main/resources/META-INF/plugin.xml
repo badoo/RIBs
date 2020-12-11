@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.badoo.ribs.intellij-plugin</id>
     <name>RIBs</name>
-    <version>0.22.0</version>
+    <version>0.24.0</version>
     <vendor url="https://github.com/badoo" email="release@corp.badoo.com">Badoo</vendor>
 
     <description><![CDATA[
@@ -12,6 +12,16 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <strong>0.24</strong><br/>
+      <ul>
+        <li>View API update</li>
+      </ul>
+
+    <strong>0.23</strong><br/>
+      <ul>
+        <li>Package name updates</li>
+      </ul>
+
      <strong>0.22</strong><br/>
       <ul>
         <li>Routing sources</li>

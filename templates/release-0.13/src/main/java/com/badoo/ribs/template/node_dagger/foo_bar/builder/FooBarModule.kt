@@ -44,8 +44,8 @@ internal object FooBarModule {
         FooBarInteractor(
             buildParams = buildParams,
             router = router,
-            input = dependency.fooBarInput(),
-            output = dependency.fooBarOutput(),
+            input = dependency.fooBarInput,
+            output = dependency.fooBarOutput,
             feature = feature
         )
 

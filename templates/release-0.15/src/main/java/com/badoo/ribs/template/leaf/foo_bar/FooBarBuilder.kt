@@ -32,8 +32,8 @@ class FooBarBuilder(
     ) =
         FooBarInteractor(
             buildParams = buildParams,
-            input = dependency.fooBarInput(),
-            output = dependency.fooBarOutput(),
+            input = dependency.fooBarInput,
+            output = dependency.fooBarOutput,
             feature = feature
         )
 

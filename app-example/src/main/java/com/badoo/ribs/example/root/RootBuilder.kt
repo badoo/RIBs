@@ -6,7 +6,7 @@ import com.badoo.ribs.example.auth.AuthDataSourceImpl
 import com.badoo.ribs.example.root.routing.RootChildBuilders
 import com.badoo.ribs.example.root.routing.RootRouter
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 
 class RootBuilder(
     dependency: Root.Dependency
@@ -20,7 +20,7 @@ class RootBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): Root {
         val customisation = buildParams.getOrDefault(Root.Customisation())
-        val backStack = BackStackFeature<Configuration>(
+        val backStack = BackStack<Configuration>(
             buildParams = buildParams,
             initialConfiguration = Configuration.Content.LoggedOut
         )

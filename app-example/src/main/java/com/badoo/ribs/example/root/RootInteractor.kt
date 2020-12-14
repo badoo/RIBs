@@ -9,13 +9,13 @@ import com.badoo.ribs.example.auth.AuthState
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedIn
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedOut
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import io.reactivex.functions.Consumer
 
 internal class RootInteractor(
     buildParams: BuildParams<*>,
-    private val backStack: BackStackFeature<Configuration>,
+    private val backStack: BackStack<Configuration>,
     private val authDataSource: AuthDataSource
 ) : Interactor<Root, Nothing>(
     buildParams = buildParams

@@ -5,7 +5,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 
 /**
  * Helper class for easier migration.
@@ -14,7 +14,7 @@ import com.badoo.ribs.routing.source.backstack.BackStackFeature
  */
 abstract class BackStackInteractor<R : Rib, V : RibView, C : Parcelable>(
     buildParams: BuildParams<*>,
-    val backStack: BackStackFeature<C>
+    val backStack: BackStack<C>
 ) : Interactor<R, V>(
     buildParams = buildParams
 ), RoutingSource<C> by backStack {
@@ -24,7 +24,7 @@ abstract class BackStackInteractor<R : Rib, V : RibView, C : Parcelable>(
         initialConfiguration: C
     ) : this(
         buildParams = buildParams,
-        backStack = BackStackFeature(
+        backStack = BackStack(
             initialConfiguration = initialConfiguration,
             buildParams = buildParams
         )

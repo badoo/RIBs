@@ -3,25 +3,42 @@ package com.badoo.ribs.android.activitystarter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.Fragment
 import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStreamImpl
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
 class ActivityBoundary(
-    private val activity: Activity,
+    private val activityStarterHost: ActivityStarterHost,
     requestCodeRegistry: RequestCodeRegistry
 ) : RequestCodeBasedEventStreamImpl<ActivityResultEvent>(requestCodeRegistry),
     ActivityStarter,
     ActivityResultHandler {
 
+    constructor(
+        activity: Activity,
+        requestCodeRegistry: RequestCodeRegistry
+    ) : this(
+        ActivityStarterHost.ActivityHost(activity),
+        requestCodeRegistry
+    )
+
+    constructor(
+        fragment: Fragment,
+        requestCodeRegistry: RequestCodeRegistry
+    ) : this(
+        ActivityStarterHost.FragmentHost(fragment),
+        requestCodeRegistry
+    )
+
     override fun startActivity(createIntent: Context.() -> Intent) {
-        activity.startActivity(activity.createIntent())
+        activityStarterHost.startActivity(activityStarterHost.context.createIntent(), null)
     }
 
     override fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent) {
-        activity.startActivityForResult(
-            activity.createIntent(),
+        activityStarterHost.startActivity(
+            activityStarterHost.context.createIntent(),
             client.forgeExternalRequestCode(requestCode)
         )
     }

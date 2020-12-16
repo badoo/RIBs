@@ -8,17 +8,14 @@ import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
+import com.badoo.ribs.android.dialog.DialogLauncher
 
 class RibTestActivity : RibActivity(),
     CanProvideActivityStarter,
     CanProvidePermissionRequester,
     CanProvideDialogLauncher {
 
-    override fun activityStarter() = activityStarter
-
-    override fun permissionRequester() = permissionRequester
-
-    override fun dialogLauncher() = this
+    override val dialogLauncher: DialogLauncher = this
 
     override val rootViewGroup: ViewGroup
         get() = findViewById(android.R.id.content)

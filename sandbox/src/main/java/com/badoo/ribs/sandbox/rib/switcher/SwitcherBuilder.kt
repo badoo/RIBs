@@ -72,7 +72,7 @@ class SwitcherBuilder(
             routingSource = backStack,
             transitionHandler = customisation.transitionHandler,
             builders = builders,
-            dialogLauncher = dependency.dialogLauncher(),
+            dialogLauncher = dependency.dialogLauncher,
             dialogToTestOverlay = dialogToTestOverlay
         )
 }

@@ -81,6 +81,6 @@ jobs:
             - name: Instrumentation tests
               uses: reactivecircus/android-emulator-runner@v2
               with:
-                  api-level: ${{ matrix.api-level }}
-                  arch: x86
+                  api-level: 29
+                  arch: x86_64
                   script: ./gradlew connectedCheck

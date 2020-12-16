@@ -9,10 +9,36 @@ interface RibView {
     val androidView: ViewGroup
 
     val context: Context
-        get() =  androidView.context
+        get() = androidView.context
 
-    fun attachChild(child: Node<*>) // TODO consider Rib instead?
+    /**
+     * Shortcut, see overloaded version
+     */
+    fun attachChild(child: Node<*>) {
+        attachChild(child, child)
+    }
 
-    fun detachChild(child: Node<*>) // TODO consider Rib instead?
+    /**
+     * Attach a child to this view.
+     *
+     * @param child The actual child to attach. Might be deeper in the tree if intermediary steps
+     * don't have their own view to attach it to.
+     * @param virtual The Node to do checks on when deciding where to attach [child]. This allows
+     * the current view to stay decoupled from [child] but still attach any descendants of [virtual]
+     * correctly, without having to care whether [virtual] has its own view or not.
+     */
+    fun attachChild(child: Node<*>, virtual: Node<*>)
+
+    /**
+     * Shortcut, see overloaded version
+     */
+    fun detachChild(child: Node<*>) {
+        detachChild(child, child)
+    }
+
+    /**
+     * Detaches a child from this view. Acts as the opposite of [attachChild].
+     */
+    fun detachChild(child: Node<*>, virtual: Node<*>)
 }
 

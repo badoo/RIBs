@@ -63,7 +63,7 @@ class InteractorTestHelper<View : RibView>(
         node.onAttachToView()
         block(node)
         node.onDetachFromView()
-        node.onDestroy()
+        node.onDestroy(isRecreating = false)
     }
 
     companion object {

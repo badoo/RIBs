@@ -39,7 +39,7 @@ class DialogExampleBuilder(
         DialogExampleRouter(
             buildParams = buildParams,
             routingSource = interactor,
-            dialogLauncher = dependency.dialogLauncher(),
+            dialogLauncher = dependency.dialogLauncher,
             dialogs = dialogs
         )
 

@@ -14,9 +14,8 @@ class DialogExampleTest {
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-        DialogExampleBuilder(object :
-            DialogExample.Dependency {
-            override fun dialogLauncher(): DialogLauncher = ribTestActivity
+        DialogExampleBuilder(object : DialogExample.Dependency {
+            override val dialogLauncher: DialogLauncher = ribTestActivity
         }).build(root(savedInstanceState))
 
     @Test

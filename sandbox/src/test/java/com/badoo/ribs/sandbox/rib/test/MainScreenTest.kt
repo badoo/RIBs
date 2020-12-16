@@ -136,7 +136,7 @@ class MainScreenTest {
                 CanProvideDialogLauncher by dependencies,
                 CanProvidePortal by dependencies {
 
-                override fun coffeeMachine(): CoffeeMachine = mock()
+                override val coffeeMachine: CoffeeMachine = mock()
             }
         ).build(
             root(

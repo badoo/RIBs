@@ -19,9 +19,9 @@ import io.reactivex.observers.TestObserver
 interface TestRoot : Rib {
 
     interface Dependency {
-        fun viewLifecycleObserver(): TestObserver<Lifecycle.Event>
-        fun nodeLifecycleObserver(): TestObserver<Lifecycle.Event>
-        fun router(): TestRootRouter
+        val viewLifecycleObserver: TestObserver<Lifecycle.Event>
+        val nodeLifecycleObserver: TestObserver<Lifecycle.Event>
+        val router: TestRootRouter
     }
 
     class Provider(
@@ -72,9 +72,9 @@ interface TestRoot : Rib {
 
             val node = TestRootBuilder(
                 object : Dependency {
-                    override fun viewLifecycleObserver() = viewLifecycleObserver
-                    override fun nodeLifecycleObserver() = nodeLifecycleObserver
-                    override fun router() = router
+                    override val viewLifecycleObserver = this@Provider.viewLifecycleObserver
+                    override val nodeLifecycleObserver = this@Provider.nodeLifecycleObserver
+                    override val router = router
 
                 }
             ).build(

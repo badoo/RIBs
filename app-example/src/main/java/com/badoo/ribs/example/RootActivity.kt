@@ -32,7 +32,7 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?): Rib =
         PortalBuilder(
             object : Portal.Dependency {
-                override fun defaultResolution(): (Portal.OtherSide) -> Resolution =
+                override val defaultResolution: (Portal.OtherSide) -> Resolution =
                     { portal ->
                         child { buildRootNode(portal, it) }
                     }

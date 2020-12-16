@@ -28,7 +28,8 @@ interface Portal : Rib {
 
     @ExperimentalApi
     interface Dependency {
-        fun defaultResolution(): (OtherSide) -> Resolution
-        fun transitionHandler(): TransitionHandler<PortalRouter.Configuration>? = null
+        val defaultResolution: (OtherSide) -> Resolution
+        val transitionHandler: TransitionHandler<PortalRouter.Configuration>?
+            get() = null
     }
 }

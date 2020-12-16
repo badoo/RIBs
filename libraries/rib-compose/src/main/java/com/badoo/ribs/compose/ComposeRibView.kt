@@ -35,8 +35,8 @@ abstract class ComposeRibView(
     protected open fun targetForChild(child: Node<*>): MutableState<ComposeView?> =
         mutableStateOf(null)
 
-    override fun attachChild(child: Node<*>) {
-        val target = targetForChild(child)
+    override fun attachChild(child: Node<*>, virtual: Node<*>) {
+        val target = targetForChild(virtual)
 
         when (val childView = child.onCreateView(this)) {
             is ComposeRibView ->{
@@ -52,8 +52,8 @@ abstract class ComposeRibView(
         }
     }
 
-    override fun detachChild(child: Node<*>) {
+    override fun detachChild(child: Node<*>, virtual: Node<*>) {
         child.onDetachFromView()
-        targetForChild(child).value = null
+        targetForChild(virtual).value = null
     }
 }

@@ -68,9 +68,6 @@ jobs:
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
-        strategy:
-            matrix:
-                api-level: [22,25,29]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -83,4 +80,4 @@ jobs:
               with:
                   api-level: 29
                   arch: x86_64
-                  script: ./gradlew connectedCheck
+                  script: ./gradlew connectedCheck --stacktrace

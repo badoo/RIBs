@@ -7,7 +7,7 @@ import com.badoo.ribs.android.lifecycle.helper.NodeState
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.test.util.ribs.TestNode
@@ -33,14 +33,14 @@ abstract class BaseNodesTest {
     protected fun test(
         setup: When,
         expectedState: ExpectedState,
-        testBlock: (BackStackFeature<TestRootRouter.Configuration>, TestNode<*>) -> Unit
+        testBlock: (BackStack<TestRootRouter.Configuration>, TestNode<*>) -> Unit
     ) {
         val rootProvider = TestRoot.Provider(
             initialConfiguration = setup.initialConfiguration,
             permanentParts = setup.permanentParts
         )
 
-        var backStack: BackStackFeature<TestRootRouter.Configuration>? = null
+        var backStack: BackStack<TestRootRouter.Configuration>? = null
 
         ribsRule.start { activity, savedInstanceState ->
             val buildParams = BuildParams(
@@ -52,7 +52,7 @@ abstract class BaseNodesTest {
             )
 
             // SameThreadVerifier will check if it was created on the same thread it will be used on
-            backStack = BackStackFeature(
+            backStack = BackStack(
                 buildParams = buildParams,
                 initialConfiguration = setup.initialConfiguration
             )
@@ -69,7 +69,7 @@ abstract class BaseNodesTest {
         rootProvider.makeAssertions(expectedState)
     }
 
-    protected fun BackStackFeature<TestRootRouter.Configuration>.pushIt(configuration: TestRootRouter.Configuration) {
+    protected fun BackStack<TestRootRouter.Configuration>.pushIt(configuration: TestRootRouter.Configuration) {
         when (configuration) {
             is TestRootRouter.Configuration.Content -> push(configuration)
             is TestRootRouter.Configuration.Overlay -> pushOverlay(configuration)

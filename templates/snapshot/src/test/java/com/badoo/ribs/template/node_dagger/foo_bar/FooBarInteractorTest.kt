@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.node_dagger.foo_bar
 
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter.Configuration
 import com.nhaarman.mockitokotlin2.mock
@@ -13,7 +13,7 @@ class FooBarInteractorTest {
 
     private val buildParams: BuildParams<Nothing?> = mock()
     private val feature: FooBarFeature = mock()
-    private val backStack: BackStackFeature<Configuration> = mock()
+    private val backStack: BackStack<Configuration> = mock()
     private lateinit var interactor: FooBarInteractor
 
     @Before

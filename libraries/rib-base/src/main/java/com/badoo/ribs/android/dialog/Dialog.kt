@@ -15,7 +15,7 @@ abstract class Dialog<T : Any> private constructor(
     var title: Text? = null
     var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
-    internal var buttons: ButtonsConfig<T>? = null
+    var buttons: ButtonsConfig<T>? = null
     private var ribFactory: RibFactory? = null
     internal var rib: Rib? = null
 
@@ -39,9 +39,9 @@ abstract class Dialog<T : Any> private constructor(
     class ButtonsConfig<T : Any>(
         factory: ButtonsConfig<T>.() -> Unit
     ) {
-        internal var positive: ButtonConfig<T>? = null
-        internal var negative: ButtonConfig<T>? = null
-        internal var neutral: ButtonConfig<T>? = null
+        var positive: ButtonConfig<T>? = null
+        var negative: ButtonConfig<T>? = null
+        var neutral: ButtonConfig<T>? = null
 
         init {
             factory()

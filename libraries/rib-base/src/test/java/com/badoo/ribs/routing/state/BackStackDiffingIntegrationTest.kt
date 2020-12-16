@@ -11,7 +11,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryDiffer
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.contentIdForPosition
 import com.badoo.ribs.routing.source.backstack.operation.newRoot
 import com.badoo.ribs.routing.source.backstack.operation.pop
@@ -32,11 +32,11 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration as C
 
 class BackStackDiffingIntegrationTest {
 
-    private lateinit var backStack: BackStackFeature<C>
+    private lateinit var backStack: BackStack<C>
 
     @Before
     fun setUp() {
-        backStack = BackStackFeature<C>(
+        backStack = BackStack<C>(
             initialConfiguration = C1,
             buildParams = BuildParams.Empty()
         )

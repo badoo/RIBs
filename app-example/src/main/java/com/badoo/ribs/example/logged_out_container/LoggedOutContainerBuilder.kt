@@ -5,7 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerChildBuilders
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration.Content
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 
 class LoggedOutContainerBuilder(
     private val dependency: LoggedOutContainer.Dependency
@@ -15,7 +15,7 @@ class LoggedOutContainerBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): LoggedOutContainer {
         val customisation = buildParams.getOrDefault(LoggedOutContainer.Customisation())
-        val backStack = BackStackFeature<LoggedOutContainerRouter.Configuration>(
+        val backStack = BackStack<LoggedOutContainerRouter.Configuration>(
             buildParams = buildParams,
             initialConfiguration = Content.Welcome
         )

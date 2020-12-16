@@ -26,8 +26,8 @@ class TestNode<V : RibView>(
         isAttached = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(isRecreating: Boolean) {
+        super.onDestroy(isRecreating)
         isAttached = false
     }
 }

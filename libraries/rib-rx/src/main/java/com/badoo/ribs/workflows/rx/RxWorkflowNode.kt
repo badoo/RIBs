@@ -14,14 +14,14 @@ open class RxWorkflowNode<V : RibView>(
     buildParams: BuildParams<*>,
     viewFactory: ((RibView) -> V?)?,
     plugins: List<Plugin> = emptyList()
-): Node<V>(
+) : Node<V>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
 ) {
 
     private val childrenAttachesRelay: PublishRelay<Node<*>>? = PublishRelay.create()
-    val childrenAttaches: Observable<Node<*>>?= childrenAttachesRelay?.hide()
+    val childrenAttaches: Observable<Node<*>>? = childrenAttachesRelay?.hide()
     val detachSignal: BehaviorRelay<Unit> = BehaviorRelay.create()
 
     override fun onAttachChildNode(child: Node<*>) {
@@ -29,8 +29,8 @@ open class RxWorkflowNode<V : RibView>(
         childrenAttachesRelay?.accept(child)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(isRecreating: Boolean) {
+        super.onDestroy(isRecreating)
         detachSignal.accept(Unit)
     }
 
@@ -50,7 +50,7 @@ open class RxWorkflowNode<V : RibView>(
     @VisibleForTesting
     internal inline fun <reified T> executeWorkflowInternal(
         crossinline action: () -> Unit
-    ) : Single<T> = executeWorkflow(action)
+    ): Single<T> = executeWorkflow(action)
 
     /**
      * Executes an action and transitions to another workflow element
@@ -85,7 +85,7 @@ open class RxWorkflowNode<V : RibView>(
     @VisibleForTesting
     internal inline fun <reified T> attachWorkflowInternal(
         crossinline action: () -> Unit
-    ) : Single<T> = attachWorkflow(action)
+    ): Single<T> = attachWorkflow(action)
 
     /**
      * Waits until a certain child is attached and returns it as the expected workflow element, or
@@ -106,6 +106,6 @@ open class RxWorkflowNode<V : RibView>(
             .takeUntil(detachSignal.firstOrError())
 
     @VisibleForTesting
-    internal inline fun <reified T> waitForChildAttachedInternal() : Single<T> =
+    internal inline fun <reified T> waitForChildAttachedInternal(): Single<T> =
         waitForChildAttached()
 }

@@ -23,10 +23,10 @@ class TestRootBuilder(
                     TestRootViewImpl(it.context)
                 }
             },
-            router = dependency.router(),
+            router = dependency.router,
             interactor = TestRootInteractor(
                 buildParams = buildParams,
-                viewLifecycleObserver = dependency.viewLifecycleObserver()
+                viewLifecycleObserver = dependency.viewLifecycleObserver
             )
         )
     }

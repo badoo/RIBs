@@ -24,21 +24,21 @@ class RecyclerViewHostBuilder<T : Parcelable>(
 
         val feature = RecyclerViewHostFeature(
             timeCapsule = timeCapsule,
-            initialElements = dependency.initialElements()
+            initialElements = dependency.initialElements
         )
 
         val adapter = Adapter(
-            hostingStrategy = dependency.hostingStrategy(),
+            hostingStrategy = dependency.hostingStrategy,
             initialEntries = feature.state.items,
             routingSource = routingSource,
             feature = feature,
-            viewHolderLayoutParams = dependency.viewHolderLayoutParams()
+            viewHolderLayoutParams = dependency.viewHolderLayoutParams
         )
 
         val router = RouterByDelegate(
             buildParams = buildParams,
             routingSource = routingSource,
-            resolver = dependency.resolver(),
+            resolver = dependency.resolver,
             clientChildActivator = adapter
         )
 
@@ -50,8 +50,8 @@ class RecyclerViewHostBuilder<T : Parcelable>(
 
         val viewDeps = object : RecyclerViewHostView.Dependency {
             override fun adapter(): Adapter<*> = adapter
-            override fun recyclerViewFactory(): RecyclerViewFactory = dependency.recyclerViewFactory()
-            override fun layoutManagerFactory(): LayoutManagerFactory = dependency.layoutManagerFactory()
+            override fun recyclerViewFactory(): RecyclerViewFactory = dependency.recyclerViewFactory
+            override fun layoutManagerFactory(): LayoutManagerFactory = dependency.layoutManagerFactory
         }
 
         return RecyclerViewHostNode(

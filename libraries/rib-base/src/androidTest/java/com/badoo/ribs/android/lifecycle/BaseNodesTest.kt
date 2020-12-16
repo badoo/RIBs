@@ -59,7 +59,7 @@ abstract class BaseNodesTest {
 
             rootProvider.create(
                 buildParams = buildParams,
-                dialogLauncher = activity.dialogLauncher(),
+                dialogLauncher = activity.dialogLauncher,
                 savedInstanceState = savedInstanceState,
                 routingSource = backStack!!
             )

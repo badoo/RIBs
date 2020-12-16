@@ -12,7 +12,7 @@ class FooBarBuilder(
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
         val interactor = FooBarInteractor(
             buildParams = buildParams,
-            permissionRequester = dependency.permissionRequester()
+            permissionRequester = dependency.permissionRequester
         )
 
         return FooBarNode(

@@ -22,6 +22,7 @@ import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.any
@@ -62,6 +63,7 @@ class NodeTest {
     private lateinit var child3: TestNode
     private lateinit var root1: TestNode
     private lateinit var childAncestry: AncestryInfo
+    private lateinit var retainedInstanceStore: RetainedInstanceStore
 
     @Before
     fun setUp() {
@@ -74,6 +76,7 @@ class NodeTest {
         viewFactory = mock { on { invoke(parentView) } doReturn view }
         router = mock()
         interactor = mock()
+        retainedInstanceStore = mock()
         node = createNode(viewFactory = viewFactory)
         childAncestry = AncestryInfo.Child(node, Routing(AnyConfiguration))
 
@@ -91,7 +94,8 @@ class NodeTest {
     ): Node<TestView> = Node(
         buildParams = buildParams,
         viewFactory = viewFactory,
-        plugins = plugins
+        plugins = plugins,
+        retainedInstanceStore = retainedInstanceStore
     )
 
     @After
@@ -132,7 +136,7 @@ class NodeTest {
         node.onCreateView(parentView)
         node.onAttachToView()
 
-        node.onDestroy()
+        node.onDestroy(isRecreating = false)
 
         verify(errorHandler).handleNonFatalError(any(), isA<RuntimeException>())
     }
@@ -198,7 +202,10 @@ class NodeTest {
         assertEquals(false, node.isAttachedToView)
     }
 
-    private fun createAndAttachChildMocks(n: Int, identifiers: MutableList<Rib.Identifier> = mutableListOf()): List<Node<*>> {
+    private fun createAndAttachChildMocks(
+        n: Int,
+        identifiers: MutableList<Rib.Identifier> = mutableListOf()
+    ): List<Node<*>> {
         if (identifiers.isEmpty()) {
             for (i in 0 until n) {
                 identifiers.add(testBuildParams().identifier)
@@ -574,5 +581,19 @@ class NodeTest {
 
         verify(errorHandler, never()).handleNonFatalError(any(), isA<RootNodeAttachedAsChildException>())
         verifyNoMoreInteractions(errorHandler)
+    }
+
+    @Test
+    fun `When current Node is destroyed and is not going to be recreated, clears RetainedInstanceStore`() {
+        node.onDestroy(isRecreating = false)
+
+        verify(retainedInstanceStore).removeAll(node.identifier)
+    }
+
+    @Test
+    fun `When current Node is destroyed and is going to be recreated, keeps RetainedInstanceStore`() {
+        node.onDestroy(isRecreating = true)
+
+        verify(retainedInstanceStore, never()).removeAll(node.identifier)
     }
 }

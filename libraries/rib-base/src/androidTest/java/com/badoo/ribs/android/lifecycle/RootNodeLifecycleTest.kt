@@ -17,7 +17,7 @@ class RootNodeLifecycleTest {
     val ribsRule = RibsRule { activity, savedInstanceState ->
         provider.create(
             buildParams = BuildParams.Empty(),
-            dialogLauncher = activity.dialogLauncher(),
+            dialogLauncher = activity.dialogLauncher,
             savedInstanceState = savedInstanceState
         )
     }

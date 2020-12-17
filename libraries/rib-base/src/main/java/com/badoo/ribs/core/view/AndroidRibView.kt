@@ -11,11 +11,11 @@ abstract class AndroidRibView : RibView {
     fun <T : View> findViewById(@IdRes id: Int): T =
         androidView.findViewById(id)
 
-    protected open fun getParentViewForChild(child: Node<*>): ViewGroup =
+    protected open fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
         androidView
 
-    override fun attachChild(child: Node<*>, virtual: Node<*>) {
-        val target = getParentViewForChild(virtual)
+    override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
+        val target = getParentViewForSubtree(subtreeOf)
         child.onCreateView(this)
         child.view?.let { target.addView(it.androidView) }
         child.onAttachToView()
@@ -24,8 +24,8 @@ abstract class AndroidRibView : RibView {
         }
     }
 
-    override fun detachChild(child: Node<*>, virtual: Node<*>) {
-        val target = getParentViewForChild(virtual)
+    override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
+        val target = getParentViewForSubtree(subtreeOf)
         child.view?.let { target.removeView(it.androidView) }
         child.onDetachFromView()
         child.plugins<AndroidViewLifecycleAware>().forEach {

@@ -240,9 +240,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         attachChildView(child, child, true)
     }
 
-    private fun attachChildView(child: Node<*>, virtual: Node<*>, notifyPlugins: Boolean) {
+    private fun attachChildView(child: Node<*>, subtreeOf: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView) {
-            view?.let { it.attachChild(child, virtual) }
+            view?.let { it.attachChild(child, subtreeOf) }
                 ?: parent?.attachChildView(child, this, false)
                 ?: rootHost?.attachChild(child, this)
                 ?: error("No view, no parent, and no root host should be technically impossible")

@@ -75,8 +75,8 @@ class SwitcherViewImpl private constructor(
         Log.d("SwitcherViewImpl", "UI frozen: ${vm.uiFrozen}")
     }
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup =
-        when (child) {
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        when (subtreeOf) {
             is MenuNode -> menuContainer
             else -> contentContainer
         }

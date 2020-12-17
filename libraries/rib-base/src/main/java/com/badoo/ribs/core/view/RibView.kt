@@ -23,11 +23,12 @@ interface RibView {
      *
      * @param child The actual child to attach. Might be deeper in the tree if intermediary steps
      * don't have their own view to attach it to.
-     * @param virtual The Node to do checks on when deciding where to attach [child]. This allows
-     * the current view to stay decoupled from [child] but still attach any descendants of [virtual]
-     * correctly, without having to care whether [virtual] has its own view or not.
+     * @param subtreeOf The Node to do checks on when deciding where to attach [child]. This allows
+     * the current view to stay decoupled from [child] but still attach any descendants of [subtreeOf]
+     * correctly, without having to care whether [subtreeOf] (and any other intermediary Node) has
+     * its own view or not.
      */
-    fun attachChild(child: Node<*>, virtual: Node<*>)
+    fun attachChild(child: Node<*>, subtreeOf: Node<*>)
 
     /**
      * Shortcut, see overloaded version
@@ -39,6 +40,6 @@ interface RibView {
     /**
      * Detaches a child from this view. Acts as the opposite of [attachChild].
      */
-    fun detachChild(child: Node<*>, virtual: Node<*>)
+    fun detachChild(child: Node<*>, subtreeOf: Node<*>)
 }
 

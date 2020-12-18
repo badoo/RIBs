@@ -247,14 +247,14 @@ open class Node<V : RibView>(
     }
 
     fun detachChildView(child: Node<*>) {
-        detachChildView(child, true)
+        detachChildView(child, child, true)
     }
 
-    private fun detachChildView(child: Node<*>, notifyPlugins: Boolean) {
+    private fun detachChildView(child: Node<*>, virtual: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView) {
             view?.let { it.detachChild(child) }
-                ?: parent?.detachChildView(child, false)
-                ?: rootHost!!.detachChild(child)
+                ?: parent?.detachChildView(child, this, false)
+                ?: rootHost!!.detachChild(child, this)
                 ?: error("No view, no parent, and no root host should be technically impossible")
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()

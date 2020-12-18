@@ -252,7 +252,7 @@ open class Node<V : RibView>(
 
     private fun detachChildView(child: Node<*>, virtual: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView) {
-            view?.let { it.detachChild(child) }
+            view?.let { it.detachChild(child, virtual) }
                 ?: parent?.detachChildView(child, this, false)
                 ?: rootHost!!.detachChild(child, this)
                 ?: error("No view, no parent, and no root host should be technically impossible")

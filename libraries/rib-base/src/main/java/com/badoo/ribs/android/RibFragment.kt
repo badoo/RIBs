@@ -6,23 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.toAlertDialog
+import com.badoo.ribs.android.dialog.DialogLauncherImpl
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
-import java.util.WeakHashMap
 
+/**
+ * Helper class for root [Rib] integration.
+ *
+ * Also offers base functionality to satisfy dependencies of Android-related functionality
+ * down the tree:
+ * - [DialogLauncher]
+ * - [ActivityStarter]
+ * - [PermissionRequester]
+ *
+ * Feel free to not extend this and use your own integration point - in this case,
+ * don't forget to take a look here what methods needs to be forwarded to the root Node.
+ */
 abstract class RibFragment : Fragment(), DialogLauncher {
 
-    private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> = WeakHashMap()
+    private val dialogs by lazy(LazyThreadSafetyMode.NONE) { DialogLauncherImpl(requireContext()) }
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
     private lateinit var activityBoundary: ActivityBoundary
@@ -107,17 +117,16 @@ abstract class RibFragment : Fragment(), DialogLauncher {
 
     override fun onDestroy() {
         super.onDestroy()
-        root.node.onDestroy()
+        dialogs.hideAll()
+        root.node.onDestroy(isRecreating = true) // TODO Implement via ViewModel
     }
 
     override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
-        dialogs[dialog] = dialog.toAlertDialog(requireContext(), onClose).also {
-            it.show()
-        }
+        dialogs.show(dialog, onClose)
     }
 
     override fun hide(dialog: Dialog<*>) {
-        dialogs[dialog]?.dismiss()
+        dialogs.hide(dialog)
     }
 
 }

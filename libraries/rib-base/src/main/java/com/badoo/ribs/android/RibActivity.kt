@@ -3,13 +3,12 @@ package com.badoo.ribs.android
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.toAlertDialog
+import com.badoo.ribs.android.dialog.DialogLauncherImpl
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
@@ -17,7 +16,6 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import java.util.WeakHashMap
 
 /**
  * Helper class for root [Rib] integration.
@@ -26,14 +24,15 @@ import java.util.WeakHashMap
  * down the tree:
  * - [DialogLauncher]
  * - [ActivityStarter]
+ * - [PermissionRequester]
  *
  * Feel free to not extend this and use your own integration point - in this case,
  * don't forget to take a look here what methods needs to be forwarded to the root Node.
  */
 abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
-    private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> =
-        WeakHashMap()
+    @Suppress("LeakingThis") // Leaking context only
+    private val dialogs = DialogLauncherImpl(this)
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
@@ -123,7 +122,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     override fun onDestroy() {
         super.onDestroy()
-        dialogs.values.forEach { it.dismiss() }
+        dialogs.hideAll()
         rootViewHost.detachChild(root.node)
         root.node.onDestroy(isRecreating = !isFinishing)
     }
@@ -143,12 +142,10 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         permissionRequestBoundary.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
     override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
-        dialogs[dialog] = dialog.toAlertDialog(this, onClose).also {
-            it.show()
-        }
+        dialogs.show(dialog, onClose)
     }
 
     override fun hide(dialog: Dialog<*>) {
-        dialogs[dialog]?.dismiss()
+        dialogs.hide(dialog)
     }
 }

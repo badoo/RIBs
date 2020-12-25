@@ -1,10 +1,13 @@
 ext.configureAndroidLibrary = { project ->
     project.apply plugin: 'com.android.library'
+    project.apply plugin: 'kotlin-android'
     configureAndroidModule(project)
 }
 
 ext.configureAndroidApp = { project ->
     project.apply plugin: 'com.android.application'
+    project.apply plugin: 'kotlin-android'
+    project.apply plugin: 'kotlin-android-extensions'
     configureAndroidModule(project)
 }
 
@@ -25,6 +28,10 @@ private def configureAndroidModule(Project project) {
         }
 
         testOptions.unitTests.includeAndroidResources = true
+
+        project.afterEvaluate {
+            project.android.kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
     }
 }
 

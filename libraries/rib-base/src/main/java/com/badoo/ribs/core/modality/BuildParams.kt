@@ -6,6 +6,7 @@ import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
 import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import java.util.UUID
+import kotlin.reflect.KClass
 
 
 /**
@@ -40,7 +41,10 @@ class BuildParams<T>(
         )
     }
 
-    fun <T : RibCustomisation> getOrDefault(defaultCustomisation: T) : T =
+    fun <T : RibCustomisation> get(key: KClass<T>): T? =
+        buildContext.customisations.getRecursively(key)
+
+    fun <T : RibCustomisation> getOrDefault(defaultCustomisation: T): T =
         buildContext.customisations.getRecursivelyOrDefault(defaultCustomisation)
 
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.Dialog
@@ -15,6 +16,7 @@ import com.badoo.ribs.android.dialog.DialogLauncherImpl
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
+import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 
@@ -33,6 +35,7 @@ import com.badoo.ribs.core.view.RibView
 abstract class RibFragment : Fragment(), DialogLauncher {
 
     private val dialogs by lazy(LazyThreadSafetyMode.NONE) { DialogLauncherImpl(requireContext()) }
+    private val retainedInstanceViewModel by viewModels<RetainedInstanceStoreViewModel>()
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
     private lateinit var activityBoundary: ActivityBoundary
@@ -54,6 +57,7 @@ abstract class RibFragment : Fragment(), DialogLauncher {
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
         activityBoundary = ActivityBoundary(this, requestCodeRegistry)
         permissionRequestBoundary = PermissionRequestBoundary(this, requestCodeRegistry)
+        retainedInstanceViewModel // initialize
         root = createRib(savedInstanceState)
         root.node.onCreate()
     }
@@ -118,7 +122,7 @@ abstract class RibFragment : Fragment(), DialogLauncher {
     override fun onDestroy() {
         super.onDestroy()
         dialogs.hideAll()
-        root.node.onDestroy(isRecreating = true) // TODO Implement via ViewModel
+        root.node.onDestroy(isRecreating = !retainedInstanceViewModel.isCleared)
     }
 
     override fun show(dialog: Dialog<*>, onClose: () -> Unit) {

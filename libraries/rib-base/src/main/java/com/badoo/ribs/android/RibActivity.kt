@@ -3,6 +3,7 @@ package com.badoo.ribs.android
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
@@ -12,6 +13,7 @@ import com.badoo.ribs.android.dialog.DialogLauncherImpl
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
+import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import io.reactivex.Observable
@@ -33,6 +35,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
 
     @Suppress("LeakingThis") // Leaking context only
     private val dialogs = DialogLauncherImpl(this)
+    private val retainedInstanceViewModel by viewModels<RetainedInstanceStoreViewModel>()
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry
 
@@ -62,6 +65,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
+        retainedInstanceViewModel // initialize
 
         root = createRib(savedInstanceState)
         root.node.onCreate()
@@ -124,7 +128,7 @@ abstract class RibActivity : AppCompatActivity(), DialogLauncher {
         super.onDestroy()
         dialogs.hideAll()
         rootViewHost.detachChild(root.node)
-        root.node.onDestroy(isRecreating = !isFinishing)
+        root.node.onDestroy(isRecreating = !retainedInstanceViewModel.isCleared)
     }
 
     override fun onBackPressed() {

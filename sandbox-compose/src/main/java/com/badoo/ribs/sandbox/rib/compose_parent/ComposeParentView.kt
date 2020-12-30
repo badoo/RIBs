@@ -70,6 +70,6 @@ class ComposeParentViewImpl private constructor(
         viewModel.value = vm
     }
 
-    override fun targetForChild(child: Node<*>): MutableState<ComposeView?> =
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
         content
 }

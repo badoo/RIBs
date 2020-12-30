@@ -237,14 +237,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun attachChildView(child: Node<*>) {
-        attachChildView(child, true)
+        attachChildView(child, child, true)
     }
 
-    private fun attachChildView(child: Node<*>, notifyPlugins: Boolean) {
+    private fun attachChildView(child: Node<*>, subtreeOf: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView) {
-            view?.let { it.attachChild(child) }
-                ?: parent?.attachChildView(child, false)
-                ?: rootHost?.attachChild(child)
+            view?.let { it.attachChild(child, subtreeOf) }
+                ?: parent?.attachChildView(child, this, false)
+                ?: rootHost?.attachChild(child, this)
                 ?: error("No view, no parent, and no root host should be technically impossible")
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
@@ -253,14 +253,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun detachChildView(child: Node<*>) {
-        detachChildView(child, true)
+        detachChildView(child, child, true)
     }
 
-    private fun detachChildView(child: Node<*>, notifyPlugins: Boolean) {
+    private fun detachChildView(child: Node<*>, subtreeOf: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView && child.isAttachedToView) {
-            view?.let { it.detachChild(child) }
-                ?: parent?.detachChildView(child, false)
-                ?: rootHost!!.detachChild(child)
+            view?.let { it.detachChild(child, subtreeOf) }
+                ?: parent?.detachChildView(child, this, false)
+                ?: rootHost!!.detachChild(child, this)
                 ?: error("No view, no parent, and no root host should be technically impossible")
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()

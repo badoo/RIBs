@@ -22,8 +22,9 @@ interface PermissionRequesterHost {
         override fun shouldShowRationale(permission: String): Boolean =
             ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
 
-        override fun requestPermissions(requestCode: Int, permissions: Array<String>) =
+        override fun requestPermissions(requestCode: Int, permissions: Array<String>) {
             ActivityCompat.requestPermissions(activity, permissions, requestCode)
+        }
 
     }
 
@@ -35,8 +36,9 @@ interface PermissionRequesterHost {
         override fun shouldShowRationale(permission: String): Boolean =
             fragment.shouldShowRequestPermissionRationale(permission)
 
-        override fun requestPermissions(requestCode: Int, permissions: Array<String>) =
+        override fun requestPermissions(requestCode: Int, permissions: Array<String>) {
             fragment.requestPermissions(permissions, requestCode)
+        }
 
     }
 

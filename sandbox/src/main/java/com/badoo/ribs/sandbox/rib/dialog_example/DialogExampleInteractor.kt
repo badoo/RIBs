@@ -10,6 +10,7 @@ import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
+import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
@@ -69,7 +70,7 @@ class DialogExampleInteractor internal constructor(
 
     private fun initLazyDialog() {
         with(dialogs.lazyDialog) {
-            title = Text.Plain("Lazy dialog title")
+            title = Text.Resource(R.string.lazy_dialog_title)
             message = Text.Plain("Lazy dialog message")
             buttons {
                 neutral(Text.Plain("Lazy neutral button"), Dialog.Event.Neutral)

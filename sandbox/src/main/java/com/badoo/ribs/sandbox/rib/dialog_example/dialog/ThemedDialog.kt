@@ -11,7 +11,7 @@ import com.badoo.ribs.sandbox.R
 
 class ThemedDialog : Dialog<Dialog.Event>({
     // Inject (Smart)Resources in constructor to resolve texts if needed
-    title = Text.Plain("Themed dialog")
+    title = Text.Resource(R.string.show_themed_dialog)
     message = Text.Plain("Lorem ipsum dolor sit amet")
     buttons {
         positive(Text.Plain("Yay!"), Positive)

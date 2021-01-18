@@ -13,4 +13,6 @@
     <string name="show_rib_dialog">RIB dialog</string>
     <string name="show_blocker">Show blocker in parent</string>
     <string name="close">Close</string>
+    <string name="a_title_you_wish">A title if you wish</string>
+    <string name="lazy_dialog_title">Lazy dialog title</string>
 </resources>

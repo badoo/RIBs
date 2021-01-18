@@ -24,11 +24,11 @@
     </style>
 
     <style name="AppTheme.ThemedDialog.Negative" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">#f00</item>
+        <item name="android:textColor">@color/red</item>
     </style>
 
     <style name="AppTheme.ThemedDialog.Positive" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">#00f</item>
+        <item name="android:textColor">@color/blue</item>
     </style>
 
 </resources>

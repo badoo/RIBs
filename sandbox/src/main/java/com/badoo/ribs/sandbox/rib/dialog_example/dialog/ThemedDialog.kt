@@ -9,16 +9,16 @@ import com.badoo.ribs.android.dialog.Dialog.Event.Positive
 import com.badoo.ribs.sandbox.R
 
 
-class ThemeDialog : Dialog<Dialog.Event>({
+class ThemedDialog : Dialog<Dialog.Event>({
     // Inject (Smart)Resources in constructor to resolve texts if needed
-    title = Text.Plain("Theme dialog")
+    title = Text.Plain("Themed dialog")
     message = Text.Plain("Lorem ipsum dolor sit amet")
     buttons {
         positive(Text.Plain("Yay!"), Positive)
         negative(Text.Plain("No way"), Negative)
         neutral(Text.Plain("Meh?"), Neutral)
     }
-    themeResId = R.style.AppTheme_ThemeDialog
+    themeResId = R.style.AppTheme_ThemedDialog
 
     cancellationPolicy = Cancellable(
         event = Event.Cancelled,

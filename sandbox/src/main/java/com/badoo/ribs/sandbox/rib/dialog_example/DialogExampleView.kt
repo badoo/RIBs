@@ -13,7 +13,7 @@ import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowThemeDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowThemedDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
@@ -24,7 +24,7 @@ interface DialogExampleView : RibView,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object ShowThemeDialogClicked : Event()
+        object ShowThemedDialogClicked : Event()
         object ShowSimpleDialogClicked : Event()
         object ShowLazyDialogClicked : Event()
         object ShowRibDialogClicked : Event()
@@ -55,14 +55,14 @@ class DialogExampleViewImpl  private constructor(
         }
     }
 
-    private val showThemeDialog: Button = androidView.findViewById(R.id.show_theme_dialog)
     private val showSimpleDialog: Button = androidView.findViewById(R.id.show_simple_dialog)
+    private val showThemedDialog: Button = androidView.findViewById(R.id.show_themed_dialog)
     private val showRibDialog: Button = androidView.findViewById(R.id.show_rib_dialog)
     private val showLazyDialog: Button = androidView.findViewById(R.id.show_lazy_dialog)
     private val text: TextView = androidView.findViewById(R.id.dialogs_example_debug)
 
     init {
-        showThemeDialog.setOnClickListener { events.accept(ShowThemeDialogClicked) }
+        showThemedDialog.setOnClickListener { events.accept(ShowThemedDialogClicked) }
         showSimpleDialog.setOnClickListener { events.accept(ShowSimpleDialogClicked) }
         showLazyDialog.setOnClickListener { events.accept(ShowLazyDialogClicked) }
         showRibDialog.setOnClickListener { events.accept(ShowRibDialogClicked) }

@@ -7,8 +7,8 @@
     <string name="check_permissions">Check permissions</string>
     <string name="request_permissions">Request permissions</string>
     <string name="random_button">Random button in a RIB</string>
-    <string name="show_theme_dialog">Simple theme dialog</string>
     <string name="show_simple_dialog">Simple dialog</string>
+    <string name="show_themed_dialog">Themed dialog</string>
     <string name="show_lazy_dialog">Lazy dialog</string>
     <string name="show_rib_dialog">RIB dialog</string>
     <string name="show_blocker">Show blocker in parent</string>

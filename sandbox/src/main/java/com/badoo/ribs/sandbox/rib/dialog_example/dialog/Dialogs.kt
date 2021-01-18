@@ -6,7 +6,7 @@ import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleChildBuild
 class Dialogs internal constructor(
     builders: DialogExampleChildBuilders
 ) {
-    val themeDialog: Dialog<Dialog.Event> = ThemeDialog()
+    val themedDialog: Dialog<Dialog.Event> = ThemedDialog()
     val simpleDialog: Dialog<Dialog.Event> = SimpleDialog()
     val lazyDialog: Dialog<Dialog.Event> = LazyDialog()
     val ribDialog: Dialog<Dialog.Event> = RibDialog(

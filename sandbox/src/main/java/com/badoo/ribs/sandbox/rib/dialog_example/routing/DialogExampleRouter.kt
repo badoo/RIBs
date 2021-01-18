@@ -30,7 +30,7 @@ class DialogExampleRouter(
             @Parcelize object Default : Content()
         }
         sealed class Overlay : Configuration() {
-            @Parcelize object ThemeDialog : Overlay()
+            @Parcelize object ThemedDialog : Overlay()
             @Parcelize object SimpleDialog : Overlay()
             @Parcelize object LazyDialog : Overlay()
             @Parcelize object RibDialog : Overlay()
@@ -42,7 +42,7 @@ class DialogExampleRouter(
         when (routing.configuration) {
             is Content.Default -> noop()
             // TODO can be done with factory to remove first 3 params and make it simpler
-            is Overlay.ThemeDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.themeDialog)
+            is Overlay.ThemedDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.themedDialog)
             is Overlay.SimpleDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.simpleDialog)
             is Overlay.LazyDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.lazyDialog)
             is Overlay.RibDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.ribDialog)

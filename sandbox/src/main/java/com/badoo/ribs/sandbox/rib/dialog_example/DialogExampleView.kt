@@ -10,8 +10,7 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.*
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
@@ -22,6 +21,7 @@ interface DialogExampleView : RibView,
     Consumer<ViewModel> {
 
     sealed class Event {
+        object ShowThemeDialogClicked : Event()
         object ShowSimpleDialogClicked : Event()
         object ShowLazyDialog : Event()
         object ShowRibDialogClicked : Event()
@@ -52,14 +52,16 @@ class DialogExampleViewImpl  private constructor(
         }
     }
 
+    private val showThemeDialog: Button = androidView.findViewById(R.id.show_theme_dialog)
     private val showSimpleDialog: Button = androidView.findViewById(R.id.show_simple_dialog)
     private val showRibDialog: Button = androidView.findViewById(R.id.show_rib_dialog)
     private val showLazyDialog: Button = androidView.findViewById(R.id.show_lazy_dialog)
     private val text: TextView = androidView.findViewById(R.id.dialogs_example_debug)
 
     init {
+        showThemeDialog.setOnClickListener { events.accept(ShowThemeDialogClicked) }
         showSimpleDialog.setOnClickListener { events.accept(ShowSimpleDialogClicked) }
-        showLazyDialog.setOnClickListener { events.accept(Event.ShowLazyDialog) }
+        showLazyDialog.setOnClickListener { events.accept(ShowLazyDialog) }
         showRibDialog.setOnClickListener { events.accept(ShowRibDialogClicked) }
     }
 

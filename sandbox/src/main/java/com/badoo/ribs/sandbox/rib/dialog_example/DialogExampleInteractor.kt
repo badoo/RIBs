@@ -10,9 +10,7 @@ import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.*
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
@@ -38,6 +36,7 @@ class DialogExampleInteractor internal constructor(
         viewLifecycle.startStop {
             bind(dummyViewInput to view)
             bind(view to viewEventConsumer)
+            bind(dialogs.themeDialog to dialogEventConsumer)
             bind(dialogs.simpleDialog to dialogEventConsumer)
             bind(dialogs.lazyDialog to dialogEventConsumer)
             bind(dialogs.ribDialog to dialogEventConsumer)
@@ -54,6 +53,7 @@ class DialogExampleInteractor internal constructor(
 
     private val viewEventConsumer: Consumer<DialogExampleView.Event> = Consumer {
         when (it) {
+            ShowThemeDialogClicked -> backStack.pushOverlay(Overlay.ThemeDialog)
             ShowSimpleDialogClicked -> backStack.pushOverlay(Overlay.SimpleDialog)
             ShowLazyDialog -> {
                 initLazyDialog()

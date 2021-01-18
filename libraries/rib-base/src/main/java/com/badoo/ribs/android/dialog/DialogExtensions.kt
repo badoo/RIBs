@@ -7,19 +7,23 @@ import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
 
-fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> Unit) : AlertDialog =
-    AlertDialog.Builder(context)
-        .apply {
-            setCancelable(this@toAlertDialog, onClose)
-            setRib(this@toAlertDialog, context)
-            setTexts(this@toAlertDialog)
-            setButtons(this@toAlertDialog)
-        }
-        .create()
-        .apply {
-            setCanceledOnTouchOutside(this@toAlertDialog)
-            setButtonClickListeners(this@toAlertDialog, onClose)
-        }
+fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> Unit): AlertDialog {
+    val builder = themeResId?.let { AlertDialog.Builder(context, it) }
+            ?: AlertDialog.Builder(context)
+
+    return builder
+            .apply {
+                setCancelable(this@toAlertDialog, onClose)
+                setRib(this@toAlertDialog, context)
+                setTexts(this@toAlertDialog)
+                setButtons(this@toAlertDialog)
+            }
+            .create()
+            .apply {
+                setCanceledOnTouchOutside(this@toAlertDialog)
+                setButtonClickListeners(this@toAlertDialog, onClose)
+            }
+}
 
 private fun <Event : Any> AlertDialog.Builder.setCancelable(dialog: Dialog<Event>, onClose: () -> Unit) {
     when (val policy = dialog.cancellationPolicy) {

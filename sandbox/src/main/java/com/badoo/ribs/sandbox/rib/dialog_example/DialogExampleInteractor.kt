@@ -10,7 +10,10 @@ import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.*
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowThemeDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
@@ -55,7 +58,7 @@ class DialogExampleInteractor internal constructor(
         when (it) {
             ShowThemeDialogClicked -> backStack.pushOverlay(Overlay.ThemeDialog)
             ShowSimpleDialogClicked -> backStack.pushOverlay(Overlay.SimpleDialog)
-            ShowLazyDialog -> {
+            ShowLazyDialogClicked -> {
                 initLazyDialog()
                 backStack.pushOverlay(Overlay.LazyDialog)
             }

@@ -8,8 +8,11 @@
     <string name="request_permissions">Request permissions</string>
     <string name="random_button">Random button in a RIB</string>
     <string name="show_simple_dialog">Simple dialog</string>
+    <string name="show_themed_dialog">Themed dialog</string>
     <string name="show_lazy_dialog">Lazy dialog</string>
     <string name="show_rib_dialog">RIB dialog</string>
     <string name="show_blocker">Show blocker in parent</string>
     <string name="close">Close</string>
+    <string name="a_title_you_wish">A title if you wish</string>
+    <string name="lazy_dialog_title">Lazy dialog title</string>
 </resources>

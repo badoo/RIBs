@@ -15,7 +15,7 @@ class DialogExampleTest {
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         DialogExampleBuilder(object : DialogExample.Dependency {
-            override val dialogLauncher: DialogLauncher = ribTestActivity
+            override val dialogLauncher: DialogLauncher = ribTestActivity.integrationPoint
         }).build(root(savedInstanceState))
 
     @Test

@@ -24,7 +24,8 @@ import io.reactivex.disposables.CompositeDisposable
  */
 abstract class RibActivity : AppCompatActivity() {
 
-    protected lateinit var integrationPoint: ActivityIntegrationPoint
+    lateinit var integrationPoint: ActivityIntegrationPoint
+        protected set
 
     abstract val rootViewGroup: ViewGroup
 
@@ -35,9 +36,11 @@ abstract class RibActivity : AppCompatActivity() {
         integrationPoint = ActivityIntegrationPoint(
             activity = this,
             savedInstanceState = savedInstanceState,
-            rootViewGroup = rootViewGroup,
-            root = createRib(savedInstanceState)
+            rootViewGroup = rootViewGroup
         )
+
+        val root = createRib(savedInstanceState)
+        integrationPoint.attach(root)
 
         if (intent?.action == Intent.ACTION_VIEW) {
             handleDeepLink(intent)

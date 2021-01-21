@@ -8,13 +8,11 @@ import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
-import com.badoo.ribs.core.Rib
 
 class ActivityIntegrationPoint(
     private val activity: AppCompatActivity,
     savedInstanceState: Bundle?,
-    rootViewGroup: ViewGroup,
-    override val root: Rib
+    rootViewGroup: ViewGroup
 ) : IntegrationPoint(
     lifecycleOwner = activity,
     savedInstanceState = savedInstanceState,
@@ -27,8 +25,9 @@ class ActivityIntegrationPoint(
         )
     }
 
-    override val activityStarter: ActivityStarter
-        get() = activityBoundary
+    override val activityStarter: ActivityStarter by lazy {
+        activityBoundary
+    }
 
     private val permissionRequestBoundary: PermissionRequestBoundary by lazy {
         PermissionRequestBoundary(
@@ -37,8 +36,9 @@ class ActivityIntegrationPoint(
         )
     }
 
-    override val permissionRequester: PermissionRequester
-        get() = permissionRequestBoundary
+    override val permissionRequester: PermissionRequester by lazy {
+        permissionRequestBoundary
+    }
 
     override val isFinishing: Boolean
         get() = activity.isFinishing

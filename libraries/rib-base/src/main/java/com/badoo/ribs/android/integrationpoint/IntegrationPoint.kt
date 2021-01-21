@@ -17,7 +17,7 @@ import com.badoo.ribs.core.view.RibView
 import java.util.WeakHashMap
 
 abstract class IntegrationPoint(
-    lifecycleOwner: LifecycleOwner,
+    private val lifecycleOwner: LifecycleOwner,
     val savedInstanceState: Bundle?,
     internal val rootViewHost: RibView
 ) : DialogLauncher {
@@ -32,8 +32,6 @@ abstract class IntegrationPoint(
         rootViewHost = AndroidRibViewHost(rootViewGroup)
     )
 
-    protected abstract val root: Rib
-
     protected abstract val isFinishing: Boolean
 
     protected val requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
@@ -45,7 +43,19 @@ abstract class IntegrationPoint(
     private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> =
         WeakHashMap()
 
-    init {
+    private var _root: Rib? = null
+    private val root: Rib
+        get() = _root ?: error("Root has not been initialised. Did you forget to call attach?")
+
+    fun attach(root: Rib) {
+        if (_root != null) error("A root has already been attached to this integration point")
+        if (!root.node.isRoot) error("Trying to attach non-root Node")
+        this._root = root
+        root.node.integrationPoint = this
+        subscribeToLifecycle()
+    }
+
+    fun subscribeToLifecycle() {
         lifecycleOwner.lifecycle.subscribe(
             onCreate = ::onCreate,
             onStart = ::onStart,
@@ -57,7 +67,6 @@ abstract class IntegrationPoint(
     }
 
     private fun onCreate() {
-        root.node.integrationPoint = this
         root.node.onCreate()
         rootViewHost.attachChild(root.node)
     }

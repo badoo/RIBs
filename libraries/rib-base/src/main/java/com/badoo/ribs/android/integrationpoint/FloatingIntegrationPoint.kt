@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 
 class FloatingIntegrationPoint : IntegrationPoint(
@@ -21,9 +20,6 @@ class FloatingIntegrationPoint : IntegrationPoint(
             "This is fine during tests with limited scope, but it looks like the code that leads here " +
             "requires interfacing with a valid implementation."
     }
-
-    override val root: Rib
-        get() = error(ERROR)
 
     override val activityStarter: ActivityStarter
         get() = error(ERROR)

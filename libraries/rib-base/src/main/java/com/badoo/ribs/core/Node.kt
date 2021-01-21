@@ -9,6 +9,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.badoo.ribs.android.integrationpoint.FloatingIntegrationPoint
+import com.badoo.ribs.android.integrationpoint.IntegrationPoint
 import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.lifecycle.LifecycleManager
@@ -68,6 +70,13 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     internal val buildContext: BuildContext =
         buildParams.buildContext
+
+    var integrationPoint: IntegrationPoint = FloatingIntegrationPoint()
+        internal set
+        get() {
+            return if (isRoot) field
+            else parent?.integrationPoint ?: error("Non-root Node should have a parent")
+        }
 
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
@@ -244,8 +253,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         if (isAttachedToView) {
             view?.let { it.attachChild(child, subtreeOf) }
                 ?: parent?.attachChildView(child, this, false)
-                ?: rootHost?.attachChild(child, this)
-                ?: error("No view, no parent, and no root host should be technically impossible")
+                ?: integrationPoint.rootViewHost.attachChild(child, this)
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onAttachChildView(child) }

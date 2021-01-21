@@ -17,7 +17,7 @@ class RootNodeLifecycleTest {
     val ribsRule = RibsRule { activity, savedInstanceState ->
         provider.create(
             buildParams = BuildParams.Empty(),
-            dialogLauncher = activity.dialogLauncher,
+            dialogLauncher = activity.integrationPoint, // TODO reconsider if we need direct dependency at all
             savedInstanceState = savedInstanceState
         )
     }

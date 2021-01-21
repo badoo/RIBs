@@ -9,10 +9,6 @@ open class RibCustomisationDirectoryImpl(
 
     private val map: MutableMap<Any, Any> = hashMapOf()
 
-    inline fun <reified T : Any> put(value: T) {
-        put(T::class, value)
-    }
-
     override fun <T : RibCustomisation> put(key: KClass<T>, value: T) {
         map[key] = value
     }
@@ -31,7 +27,7 @@ open class RibCustomisationDirectoryImpl(
         map[key] as? T
 
     override fun <T : RibCustomisation> getRecursively(key: KClass<T>): T? =
-       get(key) ?: parent?.get(key)
+        get(key) ?: parent?.get(key)
 
     override fun <T : Rib> putSubDirectory(key: KClass<T>, value: RibCustomisationDirectory) {
         map[key] = value

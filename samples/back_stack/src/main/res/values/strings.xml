@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Back stack</string>
+    <string name="push">Push</string>
+    <string name="replace">Replace</string>
+    <string name="pop">Pop</string>
+    <string name="new_root">New root</string>
+    <string name="single_top">Single top</string>
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="c">C</string>
+    <string name="d">D</string>
+    <string name="e">E</string>
+    <string name="f">F</string>
+    <string name="i_am_the_parent">I am the parent</string>
+    <string name="i_am_content_a">I am content A</string>
+    <string name="i_am_content_b">I am content B</string>
+    <string name="i_am_content_c">I am content C</string>
+    <string name="i_am_content_d">I am content D</string>
+    <string name="i_am_overlay_e">I am overlay E</string>
+    <string name="i_am_overlay_f">I am overlay F</string>
+    <string name="overlay">Overlay</string>
+    <string name="content">Content</string>
+    <string name="back_stack_with_args">Back stack = %1s</string>
+    <string name="please_select_a_content">Please select a Content option</string>
+    <string name="please_select_an_overlay">Please select an Overlay option</string>
+</resources>

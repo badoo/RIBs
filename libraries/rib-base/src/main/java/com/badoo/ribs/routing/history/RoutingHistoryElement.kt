@@ -19,7 +19,7 @@ import kotlinx.android.parcel.Parcelize
 data class RoutingHistoryElement<C : Parcelable>(
     val routing: Routing<C>,
     internal val activation: Activation = INACTIVE,
-    internal val overlays: List<Routing<C>> = emptyList()
+    val overlays: List<Routing<C>> = emptyList()
 ) : Parcelable {
 
     enum class Activation {

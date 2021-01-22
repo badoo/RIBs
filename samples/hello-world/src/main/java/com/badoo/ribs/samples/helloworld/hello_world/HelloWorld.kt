@@ -1,4 +1,4 @@
-package com.samples.helloworld.hello_world
+package com.badoo.ribs.samples.helloworld.hello_world
 
 import com.badoo.ribs.core.Rib
 

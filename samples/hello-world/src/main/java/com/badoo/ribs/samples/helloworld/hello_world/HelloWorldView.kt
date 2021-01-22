@@ -1,4 +1,4 @@
-package com.samples.helloworld.hello_world
+package com.badoo.ribs.samples.helloworld.hello_world
 
 import android.view.ViewGroup
 import android.widget.Button
@@ -8,8 +8,8 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.samples.helloworld.R
 import com.google.android.material.snackbar.Snackbar
-import com.samples.helloworld.R
 
 interface HelloWorldView : RibView {
 

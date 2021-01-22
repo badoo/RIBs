@@ -1,4 +1,4 @@
-package com.samples.helloworld.hello_world
+package com.badoo.ribs.samples.helloworld.hello_world
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.android.subscribe

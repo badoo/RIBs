@@ -1,4 +1,4 @@
-package com.samples.helloworld
+package com.badoo.ribs.samples.helloworld
 
 import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
@@ -9,15 +9,15 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.samples.helloworld.hello_world.HelloWorld
-import com.samples.helloworld.hello_world.builder.HelloWorldBuilder
+import com.badoo.ribs.samples.helloworld.hello_world.HelloWorld
+import com.badoo.ribs.samples.helloworld.hello_world.builder.HelloWorldBuilder
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test
 
 private const val HELLO_WORLD_NAME = "world"
 
-class DialogExampleTest {
+class HelloWorldTest {
 
     @get:Rule
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }

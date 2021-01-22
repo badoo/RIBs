@@ -1,13 +1,13 @@
-package com.samples.helloworld.hello_world.builder
+package com.badoo.ribs.samples.helloworld.hello_world.builder
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.samples.helloworld.hello_world.HelloWorld
-import com.samples.helloworld.hello_world.HelloWorldNode
-import com.samples.helloworld.hello_world.HelloWorldPresenter
-import com.samples.helloworld.hello_world.HelloWorldPresenterImpl
-import com.samples.helloworld.hello_world.HelloWorldView
-import com.samples.helloworld.hello_world.HelloWorldViewImpl
+import com.badoo.ribs.samples.helloworld.hello_world.HelloWorld
+import com.badoo.ribs.samples.helloworld.hello_world.HelloWorldNode
+import com.badoo.ribs.samples.helloworld.hello_world.HelloWorldPresenter
+import com.badoo.ribs.samples.helloworld.hello_world.HelloWorldPresenterImpl
+import com.badoo.ribs.samples.helloworld.hello_world.HelloWorldView
+import com.badoo.ribs.samples.helloworld.hello_world.HelloWorldViewImpl
 
 class HelloWorldBuilder(
     private val dependency: HelloWorld.Dependency

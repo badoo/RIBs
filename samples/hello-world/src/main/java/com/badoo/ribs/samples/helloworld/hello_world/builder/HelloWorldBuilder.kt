@@ -19,6 +19,7 @@ class HelloWorldBuilder(
             override val presenter: HelloWorldPresenter = presenter
         }
         return HelloWorldNode(
+            buildParams = buildParams,
             viewFactory = HelloWorldViewImpl.Factory().invoke(deps = viewDependencies),
             plugins = listOf(presenter)
         )

@@ -6,10 +6,11 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 
 internal class HelloWorldNode(
+    buildParams: BuildParams<*>,
     viewFactory: ((RibView) -> HelloWorldView?)?,
     plugins: List<Plugin>
 ) : Node<HelloWorldView>(
-    buildParams = BuildParams.Empty(),
+    buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
 ), HelloWorld

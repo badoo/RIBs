@@ -7,7 +7,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.samples.simplerouting.R
 import com.badoo.ribs.samples.simplerouting.simple_routing_parent.SimpleRoutingParent
 import com.badoo.ribs.samples.simplerouting.simple_routing_parent.builder.SimpleRoutingParentBuilder
 import org.junit.Rule

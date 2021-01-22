@@ -11,8 +11,8 @@ internal open class SimpleRoutingParentChildBuilders(
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    val child1 = SimpleRoutingChild1Builder(subtreeDeps)
-    val child2 = SimpleRoutingChild2Builder(subtreeDeps)
+    val child1: SimpleRoutingChild1Builder = SimpleRoutingChild1Builder(subtreeDeps)
+    val child2: SimpleRoutingChild2Builder = SimpleRoutingChild2Builder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: SimpleRoutingParent.Dependency

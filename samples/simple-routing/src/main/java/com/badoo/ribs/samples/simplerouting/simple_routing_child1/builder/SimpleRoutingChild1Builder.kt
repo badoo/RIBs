@@ -8,8 +8,6 @@ import com.badoo.ribs.samples.simplerouting.simple_routing_child1.SimpleRoutingC
 import com.badoo.ribs.samples.simplerouting.simple_routing_child1.SimpleRoutingChild1ViewImpl
 import com.badoo.ribs.samples.simplerouting.simple_routing_child1.routing.SimpleRoutingChild1ChildBuilders
 import com.badoo.ribs.samples.simplerouting.simple_routing_child1.routing.SimpleRoutingChild1Router
-import com.badoo.ribs.samples.simplerouting.simple_routing_parent.routing.SimpleRoutingParentChildBuilders
-import com.badoo.ribs.samples.simplerouting.simple_routing_parent.routing.SimpleRoutingParentRouter
 
 class SimpleRoutingChild1Builder(
     private val dependency: SimpleRoutingChild1.Dependency

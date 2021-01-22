@@ -6,7 +6,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.samples.back_stack"
+        applicationId "com.badoo.ribs.samples.back_stack"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

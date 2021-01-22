@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.samples.back_stack">
+    package="com.badoo.ribs.samples.back_stack">
 
     <application
         android:allowBackup="true"

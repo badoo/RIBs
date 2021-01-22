@@ -1,4 +1,4 @@
-package com.samples.plugins.plugins_demo
+package com.badoo.ribs.samples.plugins.plugins_demo
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams

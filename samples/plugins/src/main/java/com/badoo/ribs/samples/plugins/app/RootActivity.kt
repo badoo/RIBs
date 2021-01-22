@@ -1,4 +1,4 @@
-package com.samples.plugins.app
+package com.badoo.ribs.samples.plugins.app
 
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +9,10 @@ import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.utils.logger.Logger
 import com.badoo.ribs.core.plugin.utils.memoryleak.LeakDetector
-import com.samples.plugins.BuildConfig
-import com.samples.plugins.R
-import com.samples.plugins.plugins_demo.PluginsDemo
-import com.samples.plugins.plugins_demo.PluginsDemoBuilder
+import com.badoo.ribs.samples.plugins.BuildConfig
+import com.badoo.ribs.samples.plugins.R
+import com.badoo.ribs.samples.plugins.plugins_demo.PluginsDemo
+import com.badoo.ribs.samples.plugins.plugins_demo.PluginsDemoBuilder
 import leakcanary.AppWatcher
 
 class RootActivity : RibActivity() {

@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.integrationpoint.FragmentIntegrationPoint
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
-import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 import com.badoo.ribs.core.Rib
 
 /**
@@ -29,8 +27,6 @@ import com.badoo.ribs.core.Rib
  */
 abstract class RibFragment : Fragment() {
 
-    private val retainedInstanceViewModel by viewModels<RetainedInstanceStoreViewModel>()
-
     lateinit var integrationPoint: FragmentIntegrationPoint
         protected set
 
@@ -42,7 +38,6 @@ abstract class RibFragment : Fragment() {
             fragment = this,
             savedInstanceState = savedInstanceState
         )
-        retainedInstanceViewModel // initialize
 
         val root = createRib(savedInstanceState)
         integrationPoint.attach(root)

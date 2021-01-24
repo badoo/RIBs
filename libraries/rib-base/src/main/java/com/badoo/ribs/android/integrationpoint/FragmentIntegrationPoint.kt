@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 
 class FragmentIntegrationPoint(
     private val fragment: Fragment,
@@ -30,6 +32,7 @@ class FragmentIntegrationPoint(
 ) {
     private val activityBoundary = ActivityBoundary(fragment, requestCodeRegistry)
     private val permissionRequestBoundary = PermissionRequestBoundary(fragment, requestCodeRegistry)
+    private val retainedInstanceViewModel by fragment.viewModels<RetainedInstanceStoreViewModel>()
 
     override val activityStarter: ActivityStarter
         get() = activityBoundary
@@ -38,7 +41,11 @@ class FragmentIntegrationPoint(
         get() = permissionRequestBoundary
 
     override val isFinishing: Boolean
-        get() = true // TODO Implement later
+        get() = retainedInstanceViewModel.isCleared
+
+    init {
+        retainedInstanceViewModel // initialize ViewModel
+    }
 
     override fun handleUpNavigation() {
         fragment.requireActivity().onNavigateUp()

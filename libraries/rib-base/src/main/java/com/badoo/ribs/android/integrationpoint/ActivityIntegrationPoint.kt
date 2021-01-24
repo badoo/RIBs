@@ -3,6 +3,7 @@ package com.badoo.ribs.android.integrationpoint
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
+import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 
 class ActivityIntegrationPoint(
     private val activity: AppCompatActivity,
@@ -23,6 +25,7 @@ class ActivityIntegrationPoint(
 ) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
     private val permissionRequestBoundary = PermissionRequestBoundary(activity, requestCodeRegistry)
+    private val retainedInstanceViewModel by activity.viewModels<RetainedInstanceStoreViewModel>()
 
     override val activityStarter: ActivityStarter
         get() = activityBoundary
@@ -30,7 +33,11 @@ class ActivityIntegrationPoint(
         get() = permissionRequestBoundary
 
     override val isFinishing: Boolean
-        get() = activity.isFinishing
+        get() = retainedInstanceViewModel.isCleared
+
+    init {
+        retainedInstanceViewModel // initialize ViewModel
+    }
 
     override fun handleUpNavigation() {
         activity.onNavigateUp()

@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.MutableLiveData
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Node
@@ -11,8 +12,9 @@ import com.badoo.ribs.core.view.RibView
 
 class FloatingIntegrationPoint : IntegrationPoint(
     lifecycleOwner = NoLifecycle(),
+    viewLifecycleOwner = MutableLiveData(NoLifecycle()),
     savedInstanceState = null,
-    rootViewHost = NoopRibView()
+    rootViewHostFactory = { NoopRibView() }
 ) {
     companion object {
         private const val ERROR = "You're accessing a FloatingIntegrationPoint. " +

@@ -253,7 +253,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         if (isAttachedToView) {
             view?.let { it.attachChild(child, subtreeOf) }
                 ?: parent?.attachChildView(child, this, false)
-                ?: integrationPoint.rootViewHost.attachChild(child, this)
+                ?: integrationPoint.rootViewHost?.attachChild(child, this)
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onAttachChildView(child) }

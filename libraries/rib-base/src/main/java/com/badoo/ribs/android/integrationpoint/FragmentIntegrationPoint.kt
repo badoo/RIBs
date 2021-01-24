@@ -2,38 +2,46 @@ package com.badoo.ribs.android.integrationpoint
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
+import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 
-class ActivityIntegrationPoint(
-    private val activity: AppCompatActivity,
+class FragmentIntegrationPoint(
+    private val fragment: Fragment,
     savedInstanceState: Bundle?,
-    rootViewGroup: ViewGroup
+    private val ribHostViewProvider: (View?) -> ViewGroup? = {
+        if (it != null) {
+            require(it is ViewGroup)
+            it
+        } else {
+            null
+        }
+    }
 ) : IntegrationPoint(
-    lifecycleOwner = activity,
-    viewLifecycleOwner = MutableLiveData<LifecycleOwner>(activity),
+    lifecycleOwner = fragment,
+    viewLifecycleOwner = fragment.viewLifecycleOwnerLiveData,
     savedInstanceState = savedInstanceState,
-    rootViewGroup = rootViewGroup
+    rootViewHostFactory = { ribHostViewProvider(fragment.requireView())?.let(::AndroidRibViewHost) }
 ) {
-    private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
-    private val permissionRequestBoundary = PermissionRequestBoundary(activity, requestCodeRegistry)
+    private val activityBoundary = ActivityBoundary(fragment, requestCodeRegistry)
+    private val permissionRequestBoundary = PermissionRequestBoundary(fragment, requestCodeRegistry)
 
     override val activityStarter: ActivityStarter
         get() = activityBoundary
+
     override val permissionRequester: PermissionRequester
         get() = permissionRequestBoundary
 
     override val isFinishing: Boolean
-        get() = activity.isFinishing
+        get() = true // TODO Implement later
 
     override fun handleUpNavigation() {
-        activity.onNavigateUp()
+        fragment.requireActivity().onNavigateUp()
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

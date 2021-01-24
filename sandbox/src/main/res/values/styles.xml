@@ -17,4 +17,18 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.ThemedDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="dialogCornerRadius">20dp</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.ThemedDialog.Negative</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.ThemedDialog.Positive</item>
+    </style>
+
+    <style name="AppTheme.ThemedDialog.Negative" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="AppTheme.ThemedDialog.Positive" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
 </resources>

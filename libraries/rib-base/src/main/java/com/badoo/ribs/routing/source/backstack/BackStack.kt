@@ -8,7 +8,6 @@ import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.core.state.Store
 import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.core.state.map
-import com.badoo.ribs.core.state.startWith
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
@@ -143,7 +142,6 @@ class BackStack<C : Parcelable> internal constructor(
                     .routing
                     .configuration
             }
-            .startWith(initialConfiguration)
 
     val state: State<C>
         get() = store.state

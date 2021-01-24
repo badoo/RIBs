@@ -10,9 +10,11 @@ import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
-import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialog
+import com.badoo.ribs.sandbox.R
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowThemedDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
@@ -38,6 +40,7 @@ class DialogExampleInteractor internal constructor(
         viewLifecycle.startStop {
             bind(dummyViewInput to view)
             bind(view to viewEventConsumer)
+            bind(dialogs.themedDialog to dialogEventConsumer)
             bind(dialogs.simpleDialog to dialogEventConsumer)
             bind(dialogs.lazyDialog to dialogEventConsumer)
             bind(dialogs.ribDialog to dialogEventConsumer)
@@ -54,8 +57,9 @@ class DialogExampleInteractor internal constructor(
 
     private val viewEventConsumer: Consumer<DialogExampleView.Event> = Consumer {
         when (it) {
+            ShowThemedDialogClicked -> backStack.pushOverlay(Overlay.ThemedDialog)
             ShowSimpleDialogClicked -> backStack.pushOverlay(Overlay.SimpleDialog)
-            ShowLazyDialog -> {
+            ShowLazyDialogClicked -> {
                 initLazyDialog()
                 backStack.pushOverlay(Overlay.LazyDialog)
             }
@@ -66,7 +70,7 @@ class DialogExampleInteractor internal constructor(
 
     private fun initLazyDialog() {
         with(dialogs.lazyDialog) {
-            title = Text.Plain("Lazy dialog title")
+            title = Text.Resource(R.string.lazy_dialog_title)
             message = Text.Plain("Lazy dialog message")
             buttons {
                 neutral(Text.Plain("Lazy neutral button"), Dialog.Event.Neutral)

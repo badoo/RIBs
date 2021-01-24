@@ -53,7 +53,7 @@ class RecyclerViewTestActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     private val fooBarBuilder = FooBarBuilder(object : FooBar.Dependency {
-        override val permissionRequester: PermissionRequester = this@RecyclerViewTestActivity.permissionRequester
+        override val permissionRequester: PermissionRequester = integrationPoint.permissionRequester
     })
 
     private val loremIpsumBuilder = LoremIpsumBuilder(object : LoremIpsum.Dependency {})
@@ -71,9 +71,9 @@ class RecyclerViewTestActivity : RibActivity() {
     private val switcherBuilder =
         SwitcherBuilder(
             object : Switcher.Dependency {
-                override val activityStarter: ActivityStarter = this@RecyclerViewTestActivity.activityStarter
-                override val permissionRequester: PermissionRequester = this@RecyclerViewTestActivity.permissionRequester
-                override val dialogLauncher: DialogLauncher = this@RecyclerViewTestActivity
+                override val activityStarter: ActivityStarter = integrationPoint.activityStarter
+                override val permissionRequester: PermissionRequester = integrationPoint.permissionRequester
+                override val dialogLauncher: DialogLauncher = integrationPoint
                 override val coffeeMachine: CoffeeMachine = StupidCoffeeMachine()
                 override val portal: com.badoo.ribs.portal.Portal.OtherSide = noopPortal
             }

@@ -28,9 +28,6 @@
     <ID>FunctionNaming:MenuViewTest.kt$MenuViewTest$@Test fun viewModelWithSelectedItem_selectsItem()</ID>
     <ID>LibraryCodeMustSpecifyReturnType:BigChildBuilders.kt$BigChildBuilders$val small = SmallBuilder(subtreeDeps)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:DialogExampleChildBuilders.kt$DialogExampleChildBuilders$val loremIpsum = LoremIpsumBuilder(subtreeDeps)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:Dialogs.kt$Dialogs$val lazyDialog = LazyDialog()</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:Dialogs.kt$Dialogs$val ribDialog = RibDialog( builders.loremIpsum )</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:Dialogs.kt$Dialogs$val simpleDialog = SimpleDialog()</ID>
     <ID>LibraryCodeMustSpecifyReturnType:HelloWorldChildBuilders.kt$HelloWorldChildBuilders$val small = SmallBuilder(subtreeDeps)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:OtherActivity.kt$OtherActivity.Companion$const val KEY_INCOMING = "incoming"</ID>
     <ID>LibraryCodeMustSpecifyReturnType:OtherActivity.kt$OtherActivity.Companion$const val KEY_RETURNED_DATA = "foo"</ID>

@@ -70,9 +70,9 @@ class RootActivity : RibActivity() {
                 ): Switcher {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
-                            override val activityStarter: ActivityStarter = this@RootActivity.activityStarter
-                            override val permissionRequester: PermissionRequester = this@RootActivity.permissionRequester
-                            override val dialogLauncher: DialogLauncher = this@RootActivity
+                            override val activityStarter: ActivityStarter = integrationPoint.activityStarter
+                            override val permissionRequester: PermissionRequester = integrationPoint.permissionRequester
+                            override val dialogLauncher: DialogLauncher = integrationPoint
                             override val coffeeMachine: CoffeeMachine = StupidCoffeeMachine()
                             override val portal: Portal.OtherSide =
                                 portal

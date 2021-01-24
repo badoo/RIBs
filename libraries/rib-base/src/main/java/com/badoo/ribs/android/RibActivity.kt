@@ -76,4 +76,11 @@ abstract class RibActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
         integrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+    override fun onBackPressed() {
+        if (!integrationPoint.handleBackPress()) {
+            super.onBackPressed()
+        }
+    }
+
 }

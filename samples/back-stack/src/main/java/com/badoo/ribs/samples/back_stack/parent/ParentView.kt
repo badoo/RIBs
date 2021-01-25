@@ -74,7 +74,7 @@ class ParentViewImpl private constructor(
         }
     }
 
-    private val contentContainer: ViewGroup = androidView.findViewById(R.id.content_container)
+    private val contentContainer: ViewGroup = androidView.findViewById(R.id.children_container)
 
     private val backStackTextView: TextView = androidView.findViewById(R.id.back_stack_text)
 

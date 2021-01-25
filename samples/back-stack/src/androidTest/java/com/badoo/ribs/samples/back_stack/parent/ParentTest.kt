@@ -27,7 +27,7 @@ class ParentTest {
 
     @Test
     fun showsA() {
-        isViewDisplayed(R.string.i_am_content_a)
+        isViewDisplayed(R.string.i_am_child_a)
 
         isBackStackMatched("A")
     }
@@ -36,7 +36,7 @@ class ParentTest {
     fun pushContent() {
         pushContent(R.id.b_radio_button)
 
-        isViewDisplayed(R.string.i_am_content_b)
+        isViewDisplayed(R.string.i_am_child_b)
 
         isBackStackMatched("A, B")
     }
@@ -47,7 +47,7 @@ class ParentTest {
 
         replaceContent(R.id.c_radio_button)
 
-        isViewDisplayed(R.string.i_am_content_c)
+        isViewDisplayed(R.string.i_am_child_c)
 
         isBackStackMatched("A, C")
     }
@@ -58,7 +58,7 @@ class ParentTest {
 
         popContentStack()
 
-        isViewDisplayed(R.string.i_am_content_a)
+        isViewDisplayed(R.string.i_am_child_a)
 
         isBackStackMatched("A")
     }
@@ -73,7 +73,7 @@ class ParentTest {
 
         newRootContent(R.id.c_radio_button)
 
-        isViewDisplayed(R.string.i_am_content_c)
+        isViewDisplayed(R.string.i_am_child_c)
 
         isBackStackMatched("C")
     }
@@ -88,7 +88,7 @@ class ParentTest {
 
         singleTopContent(R.id.b_radio_button)
 
-        isViewDisplayed(R.string.i_am_content_b)
+        isViewDisplayed(R.string.i_am_child_b)
 
         isBackStackMatched("A, B")
     }
@@ -105,11 +105,11 @@ class ParentTest {
 
         pushOverlay(R.id.f_radio_button)
 
-        isViewDisplayed(R.string.i_am_content_b)
+        isViewDisplayed(R.string.i_am_child_b)
 
-        isViewDisplayed(R.string.i_am_overlay_e)
+        isViewDisplayed(R.string.i_am_child_e)
 
-        isViewDisplayed(R.string.i_am_overlay_f)
+        isViewDisplayed(R.string.i_am_child_f)
 
         isBackStackMatched("A, B + {E, F}")
     }
@@ -124,9 +124,9 @@ class ParentTest {
 
         popOverlayStack()
 
-        isViewDisplayed(R.string.i_am_content_b)
+        isViewDisplayed(R.string.i_am_child_b)
 
-        isViewDisplayed(R.string.i_am_overlay_e)
+        isViewDisplayed(R.string.i_am_child_e)
 
         isBackStackMatched("A, B + {E}")
     }
@@ -141,7 +141,7 @@ class ParentTest {
 
         popOverlayStack()
 
-        isViewDisplayed(R.string.i_am_content_c)
+        isViewDisplayed(R.string.i_am_child_c)
 
         isBackStackMatched("A, B + {E}, C")
     }
@@ -154,7 +154,7 @@ class ParentTest {
 
         popContentStack()
 
-        isViewDisplayed(R.string.i_am_content_b)
+        isViewDisplayed(R.string.i_am_child_b)
 
         isBackStackMatched("A, B")
     }

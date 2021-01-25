@@ -1,17 +1,17 @@
 package com.badoo.ribs.samples.back_stack.parent.routing
 
-import com.badoo.ribs.samples.back_stack.content.content_a.ContentA
-import com.badoo.ribs.samples.back_stack.content.content_a.ContentABuilder
-import com.badoo.ribs.samples.back_stack.content.content_b.ContentB
-import com.badoo.ribs.samples.back_stack.content.content_b.ContentBBuilder
-import com.badoo.ribs.samples.back_stack.content.content_c.ContentC
-import com.badoo.ribs.samples.back_stack.content.content_c.ContentCBuilder
-import com.badoo.ribs.samples.back_stack.content.content_d.ContentD
-import com.badoo.ribs.samples.back_stack.content.content_d.ContentDBuilder
-import com.badoo.ribs.samples.back_stack.overlay.overlay_e.OverlayE
-import com.badoo.ribs.samples.back_stack.overlay.overlay_e.OverlayEBuilder
-import com.badoo.ribs.samples.back_stack.overlay.overlay_f.OverlayF
-import com.badoo.ribs.samples.back_stack.overlay.overlay_f.OverlayFBuilder
+import com.badoo.ribs.samples.back_stack.childrens.child_a.ChildA
+import com.badoo.ribs.samples.back_stack.childrens.child_a.ChildABuilder
+import com.badoo.ribs.samples.back_stack.childrens.child_b.ChildB
+import com.badoo.ribs.samples.back_stack.childrens.child_b.ChildBBuilder
+import com.badoo.ribs.samples.back_stack.childrens.child_c.ChildC
+import com.badoo.ribs.samples.back_stack.childrens.child_c.ChildCBuilder
+import com.badoo.ribs.samples.back_stack.childrens.child_d.ChildD
+import com.badoo.ribs.samples.back_stack.childrens.child_d.ChildDBuilder
+import com.badoo.ribs.samples.back_stack.childrens.child_e.ChildE
+import com.badoo.ribs.samples.back_stack.childrens.child_e.ChildEBuilder
+import com.badoo.ribs.samples.back_stack.childrens.child_f.ChildF
+import com.badoo.ribs.samples.back_stack.childrens.child_f.ChildFBuilder
 import com.badoo.ribs.samples.back_stack.parent.Parent
 
 internal open class ParentChildBuilders(
@@ -20,23 +20,23 @@ internal open class ParentChildBuilders(
 
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    val contentA = ContentABuilder(subtreeDeps)
-    val contentB = ContentBBuilder(subtreeDeps)
-    val contentC = ContentCBuilder(subtreeDeps)
-    val contentD = ContentDBuilder(subtreeDeps)
+    val contentA = ChildABuilder(subtreeDeps)
+    val contentB = ChildBBuilder(subtreeDeps)
+    val contentC = ChildCBuilder(subtreeDeps)
+    val contentD = ChildDBuilder(subtreeDeps)
 
-    val overlayE = OverlayEBuilder(subtreeDeps)
-    val overlayF = OverlayFBuilder(subtreeDeps)
+    val overlayE = ChildEBuilder(subtreeDeps)
+    val overlayF = ChildFBuilder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: Parent.Dependency
     ) : Parent.Dependency by dependency,
-        ContentA.Dependency,
-        ContentD.Dependency,
-        ContentB.Dependency,
-        ContentC.Dependency,
-        OverlayE.Dependency,
-        OverlayF.Dependency
+        ChildA.Dependency,
+        ChildD.Dependency,
+        ChildB.Dependency,
+        ChildC.Dependency,
+        ChildE.Dependency,
+        ChildF.Dependency
 
 }
 

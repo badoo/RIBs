@@ -12,12 +12,12 @@
     <string name="e">E</string>
     <string name="f">F</string>
     <string name="i_am_the_parent">I am the parent</string>
-    <string name="i_am_content_a">I am content A</string>
-    <string name="i_am_content_b">I am content B</string>
-    <string name="i_am_content_c">I am content C</string>
-    <string name="i_am_content_d">I am content D</string>
-    <string name="i_am_overlay_e">I am overlay E</string>
-    <string name="i_am_overlay_f">I am overlay F</string>
+    <string name="i_am_child_a">I am child A</string>
+    <string name="i_am_child_b">I am child B</string>
+    <string name="i_am_child_c">I am child C</string>
+    <string name="i_am_child_d">I am child D</string>
+    <string name="i_am_child_e">I am child E</string>
+    <string name="i_am_child_f">I am child F</string>
     <string name="overlay">Overlay</string>
     <string name="content">Content</string>
     <string name="back_stack_with_args">Back stack = %1s</string>

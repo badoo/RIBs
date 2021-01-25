@@ -9,17 +9,14 @@ import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import com.badoo.ribs.routing.source.backstack.operation.singleTop
+import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.ContentAction
+import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.OverlayAction
 import com.badoo.ribs.samples.back_stack.parent.routing.ParentRouter
+import com.badoo.ribs.samples.back_stack.parent.routing.ParentRouter.Configuration.Content
+import com.badoo.ribs.samples.back_stack.parent.routing.ParentRouter.Configuration.Overlay
 
-typealias ViewEventContent = ParentView.Event.RoutingContent.Content
-typealias ViewEventOverlay = ParentView.Event.RoutingOverlay.Overlay
-
-typealias RouterConfigurationContentA = ParentRouter.Configuration.Content.A
-typealias RouterConfigurationContentB = ParentRouter.Configuration.Content.B
-typealias RouterConfigurationContentC = ParentRouter.Configuration.Content.C
-typealias RouterConfigurationContentD = ParentRouter.Configuration.Content.D
-typealias RouterConfigurationOverlayE = ParentRouter.Configuration.Overlay.E
-typealias RouterConfigurationOverlayF = ParentRouter.Configuration.Overlay.F
+typealias ViewEventContent = ContentAction.Content
+typealias ViewEventOverlay = OverlayAction.Overlay
 
 interface ParentPresenter {
 
@@ -51,14 +48,14 @@ internal class ParentPresenterImpl(
 
     override fun onEventClicked(event: ParentView.Event) {
         when (event) {
-            is ParentView.Event.RoutingContent.Pop -> backStack.popBackStack()
-            is ParentView.Event.RoutingContent.Push -> backStack.push(event.content.mapToRouterContent())
-            is ParentView.Event.RoutingContent.Replace -> backStack.replace(event.content.mapToRouterContent())
-            is ParentView.Event.RoutingContent.NewRoot -> backStack.newRoot(event.content.mapToRouterContent())
-            is ParentView.Event.RoutingContent.SingleTop -> backStack.singleTop(event.content.mapToRouterContent())
+            is ContentAction.Pop -> backStack.popBackStack()
+            is ContentAction.Push -> backStack.push(event.content.toConfiguration())
+            is ContentAction.Replace -> backStack.replace(event.content.toConfiguration())
+            is ContentAction.NewRoot -> backStack.newRoot(event.content.toConfiguration())
+            is ContentAction.SingleTop -> backStack.singleTop(event.content.toConfiguration())
 
-            is ParentView.Event.RoutingOverlay.Pop -> backStack.popOverlay()
-            is ParentView.Event.RoutingOverlay.Push -> backStack.pushOverlay(event.overlay.mapToRouterOverlay())
+            is OverlayAction.Pop -> backStack.popOverlay()
+            is OverlayAction.Push -> backStack.pushOverlay(event.overlay.toConfiguration())
         }
     }
 
@@ -73,16 +70,16 @@ internal class ParentPresenterImpl(
             }
         }.toString()
 
-    private fun ViewEventContent.mapToRouterContent(): ParentRouter.Configuration = when (this) {
-        ViewEventContent.A -> RouterConfigurationContentA
-        ViewEventContent.B -> RouterConfigurationContentB
-        ViewEventContent.C -> RouterConfigurationContentC
-        ViewEventContent.D -> RouterConfigurationContentD
+    private fun ViewEventContent.toConfiguration(): ParentRouter.Configuration = when (this) {
+        ViewEventContent.A -> Content.A
+        ViewEventContent.B -> Content.B
+        ViewEventContent.C -> Content.C
+        ViewEventContent.D -> Content.D
     }
 
-    private fun ViewEventOverlay.mapToRouterOverlay(): ParentRouter.Configuration = when (this) {
-        ViewEventOverlay.E -> RouterConfigurationOverlayE
-        ViewEventOverlay.F -> RouterConfigurationOverlayF
+    private fun ViewEventOverlay.toConfiguration(): ParentRouter.Configuration = when (this) {
+        ViewEventOverlay.E -> Overlay.E
+        ViewEventOverlay.F -> Overlay.F
     }
 
 }

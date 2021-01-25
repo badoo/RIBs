@@ -13,10 +13,10 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.google.android.material.snackbar.Snackbar
 import com.badoo.ribs.samples.back_stack.R
-import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.RoutingContent
-import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.RoutingContent.Content
-import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.RoutingOverlay
-import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.RoutingOverlay.Overlay
+import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.ContentAction
+import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.ContentAction.Content
+import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.OverlayAction
+import com.badoo.ribs.samples.back_stack.parent.ParentView.Event.OverlayAction.Overlay
 
 interface ParentView : RibView {
 
@@ -24,26 +24,26 @@ interface ParentView : RibView {
 
     sealed class Event {
 
-        sealed class RoutingContent : Event() {
+        sealed class ContentAction : Event() {
             enum class Content {
                 A, B, C, D
             }
 
-            object Pop : RoutingContent()
+            object Pop : ContentAction()
 
-            data class Push(val content: Content) : RoutingContent()
-            data class Replace(val content: Content) : RoutingContent()
-            data class NewRoot(val content: Content) : RoutingContent()
-            data class SingleTop(val content: Content) : RoutingContent()
+            data class Push(val content: Content) : ContentAction()
+            data class Replace(val content: Content) : ContentAction()
+            data class NewRoot(val content: Content) : ContentAction()
+            data class SingleTop(val content: Content) : ContentAction()
         }
 
-        sealed class RoutingOverlay : Event() {
+        sealed class OverlayAction : Event() {
             enum class Overlay {
                 E, F
             }
 
-            object Pop : RoutingOverlay()
-            data class Push(val overlay: Overlay) : RoutingOverlay()
+            object Pop : OverlayAction()
+            data class Push(val overlay: Overlay) : OverlayAction()
         }
 
     }
@@ -96,14 +96,14 @@ class ParentViewImpl private constructor(
     private val popOverlayButton: Button = androidView.findViewById(R.id.pop_overlay_button)
 
     init {
-        popContentButton.setOnClickListener { onEventClicked(RoutingContent.Pop) }
-        pushContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(RoutingContent.Push(it)) } }
-        replaceContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(RoutingContent.Replace(it)) } }
-        newRootContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(RoutingContent.NewRoot(it)) } }
-        singleTopContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(RoutingContent.SingleTop(it)) } }
+        popContentButton.setOnClickListener { onEventClicked(ContentAction.Pop) }
+        pushContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.Push(it)) } }
+        replaceContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.Replace(it)) } }
+        newRootContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.NewRoot(it)) } }
+        singleTopContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.SingleTop(it)) } }
 
-        popOverlayButton.setOnClickListener { onEventClicked(RoutingOverlay.Pop) }
-        pushOverlayButton.setOnClickListener { getOverlaySelectedRadioButton { onEventClicked(RoutingOverlay.Push(it)) } }
+        popOverlayButton.setOnClickListener { onEventClicked(OverlayAction.Pop) }
+        pushOverlayButton.setOnClickListener { getOverlaySelectedRadioButton { onEventClicked(OverlayAction.Push(it)) } }
     }
 
     private fun getContentSelectedRadioButton(onClick: (Content) -> Unit) {
@@ -132,6 +132,7 @@ class ParentViewImpl private constructor(
         presenter.onEventClicked(event)
     }
 
-    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup = contentContainer
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        contentContainer
 
 }

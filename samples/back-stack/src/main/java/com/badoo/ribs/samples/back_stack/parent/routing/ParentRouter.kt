@@ -40,13 +40,15 @@ class ParentRouter internal constructor(
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
-        when (routing.configuration) {
-            A -> child { builders.contentA.build(it) }
-            B -> child { builders.contentB.build(it) }
-            C -> child { builders.contentC.build(it) }
-            D -> child { builders.contentD.build(it) }
-            E -> child { builders.overlayE.build(it) }
-            F -> child { builders.overlayF.build(it) }
+        with(builders) {
+            when (routing.configuration) {
+                A -> child { contentA.build(it) }
+                B -> child { contentB.build(it) }
+                C -> child { contentC.build(it) }
+                D -> child { contentD.build(it) }
+                E -> child { overlayE.build(it) }
+                F -> child { overlayF.build(it) }
+            }
         }
 
 }

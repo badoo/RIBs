@@ -1,14 +1,5 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>LibraryCodeMustSpecifyReturnType:ParentChildBuilders.kt$ParentChildBuilders$val contentA = ContentABuilder(subtreeDeps)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:ParentChildBuilders.kt$ParentChildBuilders$val contentB = ContentBBuilder(subtreeDeps)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:ParentChildBuilders.kt$ParentChildBuilders$val contentC = ContentCBuilder(subtreeDeps)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:ParentChildBuilders.kt$ParentChildBuilders$val contentD = ContentDBuilder(subtreeDeps)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:ParentChildBuilders.kt$ParentChildBuilders$val overlayE = OverlayEBuilder(subtreeDeps)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:ParentChildBuilders.kt$ParentChildBuilders$val overlayF = OverlayFBuilder(subtreeDeps)</ID>
-    <ID>NewLineAtEndOfFile:ParentPresenter.kt$com.badoo.ribs.samples.back_stack.parent.ParentPresenter.kt</ID>
-    <ID>NewLineAtEndOfFile:RootActivity.kt$com.badoo.ribs.samples.back_stack.app.RootActivity.kt</ID>
-  </CurrentIssues>
+  <CurrentIssues></CurrentIssues>
 </SmellBaseline>

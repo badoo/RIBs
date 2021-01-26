@@ -20,13 +20,12 @@ internal open class ParentChildBuilders(
 
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    val contentA = ChildABuilder(subtreeDeps)
-    val contentB = ChildBBuilder(subtreeDeps)
-    val contentC = ChildCBuilder(subtreeDeps)
-    val contentD = ChildDBuilder(subtreeDeps)
-
-    val overlayE = ChildEBuilder(subtreeDeps)
-    val overlayF = ChildFBuilder(subtreeDeps)
+    val childA: ChildABuilder = ChildABuilder(subtreeDeps)
+    val childB: ChildBBuilder = ChildBBuilder(subtreeDeps)
+    val childC: ChildCBuilder = ChildCBuilder(subtreeDeps)
+    val childD: ChildDBuilder = ChildDBuilder(subtreeDeps)
+    val childE: ChildEBuilder = ChildEBuilder(subtreeDeps)
+    val childF: ChildFBuilder = ChildFBuilder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: Parent.Dependency

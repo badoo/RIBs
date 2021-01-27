@@ -6,8 +6,8 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.back_stack.R
-import com.badoo.ribs.samples.back_stack.parent.Parent
-import com.badoo.ribs.samples.back_stack.parent.ParentBuilder
+import com.badoo.ribs.samples.back_stack.rib.parent.Parent
+import com.badoo.ribs.samples.back_stack.rib.parent.ParentBuilder
 
 class RootActivity : RibActivity() {
 

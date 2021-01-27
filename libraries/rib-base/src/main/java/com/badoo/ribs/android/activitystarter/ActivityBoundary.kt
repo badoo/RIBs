@@ -33,11 +33,15 @@ class ActivityBoundary(
     )
 
     override fun startActivity(createIntent: Context.() -> Intent) {
-        activityStarterHost.startActivity(activityStarterHost.context.createIntent(), null)
+        activityStarterHost.startActivity(activityStarterHost.context.createIntent())
     }
 
-    override fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent) {
-        activityStarterHost.startActivity(
+    override fun startActivityForResult(
+        client: RequestCodeClient,
+        requestCode: Int,
+        createIntent: Context.() -> Intent
+    ) {
+        activityStarterHost.startActivityForResult(
             activityStarterHost.context.createIntent(),
             client.forgeExternalRequestCode(requestCode)
         )

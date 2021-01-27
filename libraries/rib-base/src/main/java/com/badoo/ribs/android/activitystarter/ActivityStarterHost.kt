@@ -9,18 +9,20 @@ interface ActivityStarterHost {
 
     val context: Context
 
-    fun startActivity(intent: Intent, requestCode: Int?)
+    fun startActivity(intent: Intent)
+
+    fun startActivityForResult(intent: Intent, requestCode: Int)
 
     class ActivityHost(private val activity: Activity) : ActivityStarterHost {
         override val context: Context
             get() = activity
 
-        override fun startActivity(intent: Intent, requestCode: Int?) {
-            if (requestCode != null) {
-                activity.startActivityForResult(intent, requestCode)
-            } else {
-                activity.startActivity(intent)
-            }
+        override fun startActivity(intent: Intent) {
+            activity.startActivity(intent)
+        }
+
+        override fun startActivityForResult(intent: Intent, requestCode: Int) {
+            activity.startActivityForResult(intent, requestCode)
         }
     }
 
@@ -28,12 +30,12 @@ interface ActivityStarterHost {
         override val context: Context
             get() = fragment.requireContext()
 
-        override fun startActivity(intent: Intent, requestCode: Int?) {
-            if (requestCode != null) {
-                fragment.startActivityForResult(intent, requestCode)
-            } else {
-                fragment.startActivity(intent)
-            }
+        override fun startActivity(intent: Intent) {
+            fragment.startActivity(intent)
+        }
+
+        override fun startActivityForResult(intent: Intent, requestCode: Int) {
+            fragment.startActivityForResult(intent, requestCode)
         }
     }
 

@@ -85,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/teal_200"
+            android:checked="true"
             android:text="@string/b" />
 
         <RadioButton
@@ -194,6 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/teal_200"
+            android:checked="true"
             android:text="@string/e" />
 
         <RadioButton

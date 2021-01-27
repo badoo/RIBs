@@ -21,6 +21,4 @@
     <string name="overlay">Overlay</string>
     <string name="content">Content</string>
     <string name="back_stack_with_args">Back stack = %1s</string>
-    <string name="please_select_a_content">Please select a Content option</string>
-    <string name="please_select_an_overlay">Please select an Overlay option</string>
 </resources>

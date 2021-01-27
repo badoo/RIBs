@@ -11,7 +11,6 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import com.google.android.material.snackbar.Snackbar
 import com.badoo.ribs.samples.back_stack.R
 import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Child
 import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Content
@@ -90,40 +89,34 @@ class ParentViewImpl private constructor(
     private val popOverlayButton: Button = androidView.findViewById(R.id.pop_overlay_button)
 
     init {
-        popContentButton.setOnClickListener { onEventClicked(Content.Pop) }
-        pushContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.Push(it)) } }
-        replaceContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.Replace(it)) } }
-        newRootContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.NewRoot(it)) } }
-        singleTopContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.SingleTop(it)) } }
+        popContentButton.setOnClickListener { presenter.trigger(Content.Pop) }
+        pushContentButton.setOnClickListener { presenter.trigger(Content.Push(contentSelectedChild)) }
+        replaceContentButton.setOnClickListener { presenter.trigger(Content.Replace(contentSelectedChild)) }
+        newRootContentButton.setOnClickListener { presenter.trigger(Content.NewRoot(contentSelectedChild)) }
+        singleTopContentButton.setOnClickListener { presenter.trigger(Content.SingleTop(contentSelectedChild)) }
 
-        popOverlayButton.setOnClickListener { onEventClicked(Overlay.Pop) }
-        pushOverlayButton.setOnClickListener { getOverlaySelectedRadioButton { onEventClicked(Overlay.Push(it)) } }
+        popOverlayButton.setOnClickListener { presenter.trigger(Overlay.Pop) }
+        pushOverlayButton.setOnClickListener { presenter.trigger(Overlay.Push(overlaySelectedChild)) }
     }
 
-    private fun getContentSelectedRadioButton(onClick: (Child) -> Unit) {
-        when (contentRadioGroup.checkedRadioButtonId) {
-            aRadioButton.id -> onClick(Child.A)
-            bRadioButton.id -> onClick(Child.B)
-            cRadioButton.id -> onClick(Child.C)
-            dRadioButton.id -> onClick(Child.D)
-            else -> Snackbar.make(androidView, context.getString(R.string.please_select_a_content), Snackbar.LENGTH_SHORT).show()
+    private val contentSelectedChild: Child
+        get() = when (contentRadioGroup.checkedRadioButtonId) {
+            aRadioButton.id -> Child.A
+            bRadioButton.id -> Child.B
+            cRadioButton.id -> Child.C
+            dRadioButton.id -> Child.D
+            else -> throw IllegalStateException("No content radio button selected")
         }
-    }
 
-    private fun getOverlaySelectedRadioButton(onClick: (Child) -> Unit) {
-        when (overlayRadioGroup.checkedRadioButtonId) {
-            eRadioButton.id -> onClick(Child.E)
-            fRadioButton.id -> onClick(Child.F)
-            else -> Snackbar.make(androidView, context.getString(R.string.please_select_an_overlay), Snackbar.LENGTH_SHORT).show()
+    private val overlaySelectedChild: Child
+        get() = when (overlayRadioGroup.checkedRadioButtonId) {
+            eRadioButton.id -> Child.E
+            fRadioButton.id -> Child.F
+            else -> throw IllegalStateException("No overlay radio button selected")
         }
-    }
 
     override fun setBackStack(backStack: String) {
         backStackTextView.text = androidView.resources.getString(R.string.back_stack_with_args, backStack)
-    }
-
-    private fun onEventClicked(event: ParentView.Event) {
-        presenter.onEventClicked(event)
     }
 
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =

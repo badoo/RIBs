@@ -16,6 +16,7 @@ import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.util.RIBs
 import java.util.WeakHashMap
 
 abstract class IntegrationPoint(
@@ -130,7 +131,13 @@ abstract class IntegrationPoint(
     abstract fun handleUpNavigation()
 
     override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
-        val context = rootViewHost?.context ?: return
+        val context = rootViewHost?.context
+        if (context == null) {
+            RIBs.errorHandler.handleFatalError(
+                "There is no view to display dialog ${dialog::class.qualifiedName}"
+            )
+            return
+        }
         dialogs[dialog] = dialog.toAlertDialog(context, onClose).also {
             it.show()
         }

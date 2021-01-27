@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.integrationpoint.ActivityIntegrationPoint
+import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -15,9 +16,10 @@ import io.reactivex.disposables.CompositeDisposable
  * Helper class for root [Rib] integration.
  *
  * Also offers base functionality to satisfy dependencies of Android-related functionality
- * down the tree:
+ * down the tree via [integrationPoint]:
  * - [DialogLauncher]
  * - [ActivityStarter]
+ * - [PermissionRequester]
  *
  * Feel free to not extend this and use your own integration point - in this case,
  * don't forget to take a look here what methods needs to be forwarded to the root Node.
@@ -70,12 +72,18 @@ abstract class RibActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        integrationPoint.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+        integrationPoint.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) =
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         integrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
     override fun onBackPressed() {
         if (!integrationPoint.handleBackPress()) {

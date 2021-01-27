@@ -17,10 +17,14 @@ import com.badoo.ribs.core.Rib
  * Helper class for root [Rib] integration.
  *
  * Also offers base functionality to satisfy dependencies of Android-related functionality
- * down the tree:
+ * down the tree via [integrationPoint]:
  * - [DialogLauncher]
  * - [ActivityStarter]
  * - [PermissionRequester]
+ *
+ * Implementation does not handle back pressed events.
+ * Use your own back pressed handler and invoke [FragmentIntegrationPoint.handleBackPress].
+ * It uses old intercepting API and incompatible with [androidx.activity.OnBackPressedCallback].
  *
  * Feel free to not extend this and use your own integration point - in this case,
  * don't forget to take a look here what methods needs to be forwarded to the root Node.
@@ -43,7 +47,11 @@ abstract class RibFragment : Fragment() {
         integrationPoint.attach(root)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
         FrameLayout(inflater.context)
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -61,7 +69,11 @@ abstract class RibFragment : Fragment() {
         integrationPoint.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         integrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }

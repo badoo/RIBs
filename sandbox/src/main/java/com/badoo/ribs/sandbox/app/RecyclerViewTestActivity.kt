@@ -72,8 +72,9 @@ class RecyclerViewTestActivity : RibActivity() {
         SwitcherBuilder(
             object : Switcher.Dependency {
                 override val activityStarter: ActivityStarter = integrationPoint.activityStarter
-                override val permissionRequester: PermissionRequester = integrationPoint.permissionRequester
-                override val dialogLauncher: DialogLauncher = integrationPoint
+                override val permissionRequester: PermissionRequester =
+                    integrationPoint.permissionRequester
+                override val dialogLauncher: DialogLauncher = integrationPoint.dialogLauncher
                 override val coffeeMachine: CoffeeMachine = StupidCoffeeMachine()
                 override val portal: com.badoo.ribs.portal.Portal.OtherSide = noopPortal
             }

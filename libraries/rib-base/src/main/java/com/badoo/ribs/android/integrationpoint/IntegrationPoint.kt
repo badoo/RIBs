@@ -2,29 +2,24 @@ package com.badoo.ribs.android.integrationpoint
 
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityStarter
-import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.toAlertDialog
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.util.RIBs
-import java.util.WeakHashMap
 
 abstract class IntegrationPoint(
     private val lifecycleOwner: LifecycleOwner,
     private val viewLifecycleOwner: LiveData<LifecycleOwner>,
     protected val savedInstanceState: Bundle?,
     private val rootViewHostFactory: () -> RibView?
-) : DialogLauncher {
+) {
 
     constructor(
         lifecycleOwner: LifecycleOwner,
@@ -49,8 +44,7 @@ abstract class IntegrationPoint(
 
     abstract val permissionRequester: PermissionRequester
 
-    private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> =
-        WeakHashMap()
+    abstract val dialogLauncher: DialogLauncher
 
     private var _root: Rib? = null
     private val root: Rib
@@ -107,7 +101,6 @@ abstract class IntegrationPoint(
     }
 
     private fun onViewDestroy() {
-        dialogs.values.forEach { it.dismiss() }
         rootViewHost?.detachChild(root.node)
         rootViewHost = null
     }
@@ -130,20 +123,4 @@ abstract class IntegrationPoint(
 
     abstract fun handleUpNavigation()
 
-    override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
-        val context = rootViewHost?.context
-        if (context == null) {
-            RIBs.errorHandler.handleFatalError(
-                "There is no view to display dialog ${dialog::class.qualifiedName}"
-            )
-            return
-        }
-        dialogs[dialog] = dialog.toAlertDialog(context, onClose).also {
-            it.show()
-        }
-    }
-
-    override fun hide(dialog: Dialog<*>) {
-        dialogs[dialog]?.dismiss()
-    }
 }

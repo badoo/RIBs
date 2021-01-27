@@ -9,11 +9,13 @@ import androidx.fragment.app.viewModels
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
+import com.badoo.ribs.android.dialog.DefaultDialogLauncher
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 
-class FragmentIntegrationPoint(
+open class FragmentIntegrationPoint(
     private val fragment: Fragment,
     savedInstanceState: Bundle?,
     private val ribHostViewProvider: (View?) -> ViewGroup? = {
@@ -40,6 +42,9 @@ class FragmentIntegrationPoint(
     override val permissionRequester: PermissionRequester
         get() = permissionRequestBoundary
 
+    override val dialogLauncher: DialogLauncher =
+        DefaultDialogLauncher(fragment.requireContext(), fragment.lifecycle)
+
     override val isFinishing: Boolean
         get() = retainedInstanceViewModel.isCleared
 
@@ -55,7 +60,11 @@ class FragmentIntegrationPoint(
         activityBoundary.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         permissionRequestBoundary.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

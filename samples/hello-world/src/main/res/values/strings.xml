@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Hello world sample</string>
+    <string name="hello_world_text">Let\'s have a drink in the Foo Bar!</string>
+    <string name="show_count_button_text">Show count</string>
+</resources>

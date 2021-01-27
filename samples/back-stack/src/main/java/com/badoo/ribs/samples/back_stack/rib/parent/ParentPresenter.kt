@@ -9,14 +9,10 @@ import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import com.badoo.ribs.routing.source.backstack.operation.singleTop
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.ContentAction
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.OverlayAction
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Content
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Overlay
-
-typealias ViewEventContent = ContentAction.Content
-typealias ViewEventOverlay = OverlayAction.Overlay
+import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Child
+import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Content
+import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Overlay
+import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration
 
 interface ParentPresenter {
 
@@ -25,7 +21,7 @@ interface ParentPresenter {
 }
 
 internal class ParentPresenterImpl(
-    private val backStack: BackStack<ParentRouter.Configuration>
+    private val backStack: BackStack<Configuration>
 ) : ViewAware<ParentView>,
     ParentPresenter {
 
@@ -48,14 +44,13 @@ internal class ParentPresenterImpl(
 
     override fun onEventClicked(event: ParentView.Event) {
         when (event) {
-            is ContentAction.Pop -> backStack.popBackStack()
-            is ContentAction.Push -> backStack.push(event.content.toConfiguration())
-            is ContentAction.Replace -> backStack.replace(event.content.toConfiguration())
-            is ContentAction.NewRoot -> backStack.newRoot(event.content.toConfiguration())
-            is ContentAction.SingleTop -> backStack.singleTop(event.content.toConfiguration())
-
-            is OverlayAction.Pop -> backStack.popOverlay()
-            is OverlayAction.Push -> backStack.pushOverlay(event.overlay.toConfiguration())
+            is Content.Pop -> backStack.popBackStack()
+            is Content.Push -> backStack.push(event.child.toConfiguration())
+            is Content.Replace -> backStack.replace(event.child.toConfiguration())
+            is Content.NewRoot -> backStack.newRoot(event.child.toConfiguration())
+            is Content.SingleTop -> backStack.singleTop(event.child.toConfiguration())
+            is Overlay.Pop -> backStack.popOverlay()
+            is Overlay.Push -> backStack.pushOverlay(event.child.toConfiguration())
         }
     }
 
@@ -70,16 +65,13 @@ internal class ParentPresenterImpl(
             }
         }.toString()
 
-    private fun ViewEventContent.toConfiguration(): ParentRouter.Configuration = when (this) {
-        ViewEventContent.A -> Content.A
-        ViewEventContent.B -> Content.B
-        ViewEventContent.C -> Content.C
-        ViewEventContent.D -> Content.D
-    }
-
-    private fun ViewEventOverlay.toConfiguration(): ParentRouter.Configuration = when (this) {
-        ViewEventOverlay.E -> Overlay.E
-        ViewEventOverlay.F -> Overlay.F
+    private fun Child.toConfiguration(): Configuration = when (this) {
+        Child.A -> Configuration.Content.A
+        Child.B -> Configuration.Content.B
+        Child.C -> Configuration.Content.C
+        Child.D -> Configuration.Content.D
+        Child.E -> Configuration.Overlay.E
+        Child.F -> Configuration.Overlay.F
     }
 
 }

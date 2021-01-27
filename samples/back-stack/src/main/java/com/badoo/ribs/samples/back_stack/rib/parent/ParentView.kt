@@ -13,10 +13,9 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.google.android.material.snackbar.Snackbar
 import com.badoo.ribs.samples.back_stack.R
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.ContentAction
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.ContentAction.Content
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.OverlayAction
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.OverlayAction.Overlay
+import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Child
+import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Content
+import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Overlay
 
 interface ParentView : RibView {
 
@@ -24,26 +23,21 @@ interface ParentView : RibView {
 
     sealed class Event {
 
-        sealed class ContentAction : Event() {
-            enum class Content {
-                A, B, C, D
-            }
-
-            object Pop : ContentAction()
-
-            data class Push(val content: Content) : ContentAction()
-            data class Replace(val content: Content) : ContentAction()
-            data class NewRoot(val content: Content) : ContentAction()
-            data class SingleTop(val content: Content) : ContentAction()
+        enum class Child {
+            A, B, C, D, E, F
         }
 
-        sealed class OverlayAction : Event() {
-            enum class Overlay {
-                E, F
-            }
+        sealed class Content : Event() {
+            object Pop : Content()
+            data class Push(val child: Child) : Content()
+            data class Replace(val child: Child) : Content()
+            data class NewRoot(val child: Child) : Content()
+            data class SingleTop(val child: Child) : Content()
+        }
 
-            object Pop : OverlayAction()
-            data class Push(val overlay: Overlay) : OverlayAction()
+        sealed class Overlay : Event() {
+            object Pop : Overlay()
+            data class Push(val child: Child) : Overlay()
         }
 
     }
@@ -96,30 +90,30 @@ class ParentViewImpl private constructor(
     private val popOverlayButton: Button = androidView.findViewById(R.id.pop_overlay_button)
 
     init {
-        popContentButton.setOnClickListener { onEventClicked(ContentAction.Pop) }
-        pushContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.Push(it)) } }
-        replaceContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.Replace(it)) } }
-        newRootContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.NewRoot(it)) } }
-        singleTopContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(ContentAction.SingleTop(it)) } }
+        popContentButton.setOnClickListener { onEventClicked(Content.Pop) }
+        pushContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.Push(it)) } }
+        replaceContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.Replace(it)) } }
+        newRootContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.NewRoot(it)) } }
+        singleTopContentButton.setOnClickListener { getContentSelectedRadioButton { onEventClicked(Content.SingleTop(it)) } }
 
-        popOverlayButton.setOnClickListener { onEventClicked(OverlayAction.Pop) }
-        pushOverlayButton.setOnClickListener { getOverlaySelectedRadioButton { onEventClicked(OverlayAction.Push(it)) } }
+        popOverlayButton.setOnClickListener { onEventClicked(Overlay.Pop) }
+        pushOverlayButton.setOnClickListener { getOverlaySelectedRadioButton { onEventClicked(Overlay.Push(it)) } }
     }
 
-    private fun getContentSelectedRadioButton(onClick: (Content) -> Unit) {
+    private fun getContentSelectedRadioButton(onClick: (Child) -> Unit) {
         when (contentRadioGroup.checkedRadioButtonId) {
-            aRadioButton.id -> onClick(Content.A)
-            bRadioButton.id -> onClick(Content.B)
-            cRadioButton.id -> onClick(Content.C)
-            dRadioButton.id -> onClick(Content.D)
+            aRadioButton.id -> onClick(Child.A)
+            bRadioButton.id -> onClick(Child.B)
+            cRadioButton.id -> onClick(Child.C)
+            dRadioButton.id -> onClick(Child.D)
             else -> Snackbar.make(androidView, context.getString(R.string.please_select_a_content), Snackbar.LENGTH_SHORT).show()
         }
     }
 
-    private fun getOverlaySelectedRadioButton(onClick: (Overlay) -> Unit) {
+    private fun getOverlaySelectedRadioButton(onClick: (Child) -> Unit) {
         when (overlayRadioGroup.checkedRadioButtonId) {
-            eRadioButton.id -> onClick(Overlay.E)
-            fRadioButton.id -> onClick(Overlay.F)
+            eRadioButton.id -> onClick(Child.E)
+            fRadioButton.id -> onClick(Child.F)
             else -> Snackbar.make(androidView, context.getString(R.string.please_select_an_overlay), Snackbar.LENGTH_SHORT).show()
         }
     }

@@ -22,7 +22,7 @@ class HelloWorldTest {
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         HelloWorldBuilder(object : HelloWorld.Dependency {
             override val portal: Portal.OtherSide = Portal.OtherSide.NOOP
-            override val activityStarter: ActivityStarter = ribTestActivity.activityStarter
+            override val activityStarter: ActivityStarter = ribTestActivity.integrationPoint.activityStarter
         }).build(root(savedInstanceState))
 
     @Test

@@ -144,7 +144,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     @CallSuper
     open fun onCreate() {
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
+        plugins
+            .filterIsInstance<NodeLifecycleAware>()
+            .forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
         lifecycleManager.onCreate()
     }
 
@@ -251,9 +253,10 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     private fun attachChildView(child: Node<*>, subtreeOf: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView) {
-            view?.let { it.attachChild(child, subtreeOf) }
+            view?.attachChild(child, subtreeOf)
                 ?: parent?.attachChildView(child, this, false)
                 ?: integrationPoint.rootViewHost?.attachChild(child, this)
+                ?: error("No view, no parent, and no root host should be technically impossible")
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onAttachChildView(child) }
@@ -266,7 +269,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     private fun detachChildView(child: Node<*>, subtreeOf: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView && child.isAttachedToView) {
-            view?.let { it.detachChild(child, subtreeOf) }
+            view?.detachChild(child, subtreeOf)
                 ?: parent?.detachChildView(child, this, false)
                 ?: rootHost!!.detachChild(child, this)
                 ?: error("No view, no parent, and no root host should be technically impossible")

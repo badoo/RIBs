@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
-import com.badoo.ribs.android.dialog.DefaultDialogLauncher
+import com.badoo.ribs.android.dialog.AlertDialogLauncher
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
@@ -36,7 +36,7 @@ open class ActivityIntegrationPoint(
         get() = permissionRequestBoundary
 
     override val dialogLauncher: DialogLauncher =
-        DefaultDialogLauncher(activity, activity.lifecycle)
+        AlertDialogLauncher(activity, activity.lifecycle)
 
     override val isFinishing: Boolean
         get() = retainedInstanceViewModel.isCleared

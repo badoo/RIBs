@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
-import com.badoo.ribs.android.dialog.DefaultDialogLauncher
+import com.badoo.ribs.android.dialog.AlertDialogLauncher
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
@@ -43,7 +43,7 @@ open class FragmentIntegrationPoint(
         get() = permissionRequestBoundary
 
     override val dialogLauncher: DialogLauncher =
-        DefaultDialogLauncher(fragment.requireContext(), fragment.lifecycle)
+        AlertDialogLauncher(fragment.requireContext(), fragment.lifecycle)
 
     override val isFinishing: Boolean
         get() = retainedInstanceViewModel.isCleared

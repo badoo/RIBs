@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.android.subscribe
 import java.util.WeakHashMap
 
-class DefaultDialogLauncher(
+class AlertDialogLauncher(
     private val context: Context,
     lifecycle: Lifecycle
 ) : DialogLauncher {

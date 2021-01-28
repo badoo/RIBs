@@ -89,14 +89,14 @@ class ParentViewImpl private constructor(
     private val popOverlayButton: Button = androidView.findViewById(R.id.pop_overlay_button)
 
     init {
-        popContentButton.setOnClickListener { presenter.trigger(Content.Pop) }
-        pushContentButton.setOnClickListener { presenter.trigger(Content.Push(contentSelectedChild)) }
-        replaceContentButton.setOnClickListener { presenter.trigger(Content.Replace(contentSelectedChild)) }
-        newRootContentButton.setOnClickListener { presenter.trigger(Content.NewRoot(contentSelectedChild)) }
-        singleTopContentButton.setOnClickListener { presenter.trigger(Content.SingleTop(contentSelectedChild)) }
+        popContentButton.setOnClickListener { presenter.handle(Content.Pop) }
+        pushContentButton.setOnClickListener { presenter.handle(Content.Push(contentSelectedChild)) }
+        replaceContentButton.setOnClickListener { presenter.handle(Content.Replace(contentSelectedChild)) }
+        newRootContentButton.setOnClickListener { presenter.handle(Content.NewRoot(contentSelectedChild)) }
+        singleTopContentButton.setOnClickListener { presenter.handle(Content.SingleTop(contentSelectedChild)) }
 
-        popOverlayButton.setOnClickListener { presenter.trigger(Overlay.Pop) }
-        pushOverlayButton.setOnClickListener { presenter.trigger(Overlay.Push(overlaySelectedChild)) }
+        popOverlayButton.setOnClickListener { presenter.handle(Overlay.Pop) }
+        pushOverlayButton.setOnClickListener { presenter.handle(Overlay.Push(overlaySelectedChild)) }
     }
 
     private val contentSelectedChild: Child

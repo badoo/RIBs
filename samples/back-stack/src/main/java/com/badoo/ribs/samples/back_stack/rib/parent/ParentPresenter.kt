@@ -16,7 +16,7 @@ import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configu
 
 interface ParentPresenter {
 
-    fun trigger(event: ParentView.Event)
+    fun handle(event: ParentView.Event)
 
 }
 
@@ -42,7 +42,7 @@ internal class ParentPresenterImpl(
         }
     }
 
-    override fun trigger(event: ParentView.Event) {
+    override fun handle(event: ParentView.Event) {
         when (event) {
             is Content.Pop -> backStack.popBackStack()
             is Content.Push -> backStack.push(event.child.toConfiguration())

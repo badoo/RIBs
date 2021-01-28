@@ -36,12 +36,15 @@ abstract class RibFragment : Fragment() {
 
     abstract fun createRib(savedInstanceState: Bundle?): Rib
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        integrationPoint = FragmentIntegrationPoint(
+    protected open fun createIntegrationPoint(savedInstanceState: Bundle?): FragmentIntegrationPoint =
+        FragmentIntegrationPoint(
             fragment = this,
             savedInstanceState = savedInstanceState
         )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        integrationPoint = createIntegrationPoint(savedInstanceState)
 
         val root = createRib(savedInstanceState)
         integrationPoint.attach(root)

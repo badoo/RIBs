@@ -109,11 +109,19 @@ interface SubtreeBackPressHandler : Plugin {
         false
 
     /**
-     * This level is dispatched last by Node if all above priority levels failed to handle
-     * a back press.
+     * Dispatched last by Node if, is the subtree failed to handle a back press.
      *
      * Routing can use this to e.g. pop content back stack.
      */
     fun handleBackPressFallback(): Boolean =
+        false
+}
+
+interface UpNavigationHandler : Plugin {
+
+    /**
+     * Dispatched when up navigation was triggered somewhere in the subtree.
+     */
+    fun handleUpNavigation(): Boolean =
         false
 }

@@ -28,6 +28,7 @@ import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
+import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.view.RibView
@@ -343,6 +344,23 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             || delegateHandleBackPressToActiveChildren()
             || handlers.any { it.handleBackPress() }
             || subtreeHandlers.any { it.handleBackPressFallback() }
+    }
+
+    fun upNavigation() {
+        when {
+            isRoot -> integrationPoint.handleUpNavigation()
+
+            else -> parent?.handleUpNavigation()
+                ?: error("If not root, Node should have a parent")
+        }
+    }
+
+    private fun handleUpNavigation() {
+        val subtreeHandlers = plugins.filterIsInstance<UpNavigationHandler>()
+
+        if (subtreeHandlers.none { it.handleUpNavigation() }) {
+            upNavigation()
+        }
     }
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =

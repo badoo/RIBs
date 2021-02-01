@@ -3,8 +3,8 @@ package com.badoo.ribs.android.lifecycle
 import androidx.lifecycle.Lifecycle
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.finishActivitySync
+import com.badoo.ribs.test.util.ribs.root.TestRoot
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -17,7 +17,7 @@ class RootNodeLifecycleTest {
     val ribsRule = RibsRule { activity, savedInstanceState ->
         provider.create(
             buildParams = BuildParams.Empty(),
-            dialogLauncher = activity.integrationPoint, // TODO reconsider if we need direct dependency at all
+            dialogLauncher = activity.integrationPoint.dialogLauncher, // TODO reconsider if we need direct dependency at all
             savedInstanceState = savedInstanceState
         )
     }

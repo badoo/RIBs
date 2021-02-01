@@ -2,35 +2,39 @@ package com.badoo.ribs.android.integrationpoint
 
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityStarter
-import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.toAlertDialog
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
-import java.util.WeakHashMap
 
 abstract class IntegrationPoint(
     private val lifecycleOwner: LifecycleOwner,
-    val savedInstanceState: Bundle?,
-    internal val rootViewHost: RibView
-) : DialogLauncher {
+    private val viewLifecycleOwner: LiveData<LifecycleOwner>,
+    protected val savedInstanceState: Bundle?,
+    private val rootViewHostFactory: () -> RibView?
+) {
 
     constructor(
         lifecycleOwner: LifecycleOwner,
+        viewLifecycleOwner: LiveData<LifecycleOwner>,
         savedInstanceState: Bundle?,
         rootViewGroup: ViewGroup
-    ): this(
+    ) : this(
         lifecycleOwner = lifecycleOwner,
+        viewLifecycleOwner = viewLifecycleOwner,
         savedInstanceState = savedInstanceState,
-        rootViewHost = AndroidRibViewHost(rootViewGroup)
+        rootViewHostFactory = { AndroidRibViewHost(rootViewGroup) }
     )
+
+    var rootViewHost: RibView? = null
+        private set
 
     protected abstract val isFinishing: Boolean
 
@@ -40,8 +44,7 @@ abstract class IntegrationPoint(
 
     abstract val permissionRequester: PermissionRequester
 
-    private val dialogs: WeakHashMap<Dialog<*>, AlertDialog> =
-        WeakHashMap()
+    abstract val dialogLauncher: DialogLauncher
 
     private var _root: Rib? = null
     private val root: Rib
@@ -55,7 +58,7 @@ abstract class IntegrationPoint(
         subscribeToLifecycle()
     }
 
-    fun subscribeToLifecycle() {
+    private fun subscribeToLifecycle() {
         lifecycleOwner.lifecycle.subscribe(
             onCreate = ::onCreate,
             onStart = ::onStart,
@@ -64,11 +67,21 @@ abstract class IntegrationPoint(
             onStop = ::onStop,
             onDestroy = ::onDestroy
         )
+        viewLifecycleOwner.observe(lifecycleOwner, Observer { viewLifecycle ->
+            viewLifecycle.lifecycle.subscribe(
+                onCreate = ::onViewCreate,
+                onDestroy = ::onViewDestroy
+            )
+        })
     }
 
     private fun onCreate() {
         root.node.onCreate()
-        rootViewHost.attachChild(root.node)
+    }
+
+    private fun onViewCreate() {
+        rootViewHost = rootViewHostFactory()
+        rootViewHost?.attachChild(root.node)
     }
 
     private fun onStart() {
@@ -87,9 +100,12 @@ abstract class IntegrationPoint(
         root.node.onStop()
     }
 
+    private fun onViewDestroy() {
+        rootViewHost?.detachChild(root.node)
+        rootViewHost = null
+    }
+
     private fun onDestroy() {
-        dialogs.values.forEach { it.dismiss() }
-        rootViewHost.detachChild(root.node)
         root.node.onDestroy(!isFinishing)
     }
 
@@ -107,13 +123,4 @@ abstract class IntegrationPoint(
 
     abstract fun handleUpNavigation()
 
-    override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
-        dialogs[dialog] = dialog.toAlertDialog(rootViewHost.context, onClose).also {
-            it.show()
-        }
-    }
-
-    override fun hide(dialog: Dialog<*>) {
-        dialogs[dialog]?.dismiss()
-    }
 }

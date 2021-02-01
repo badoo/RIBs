@@ -2,15 +2,16 @@ package com.badoo.ribs.android
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.integrationpoint.ActivityIntegrationPoint
+import com.badoo.ribs.android.integrationpoint.FragmentIntegrationPoint
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Helper class for root [Rib] integration.
@@ -21,23 +22,24 @@ import io.reactivex.disposables.CompositeDisposable
  * - [ActivityStarter]
  * - [PermissionRequester]
  *
+ * Implementation does not handle back pressed events.
+ * Use your own back pressed handler and invoke [FragmentIntegrationPoint.handleBackPress].
+ * It uses old intercepting API and incompatible with [androidx.activity.OnBackPressedCallback].
+ *
  * Feel free to not extend this and use your own integration point - in this case,
  * don't forget to take a look here what methods needs to be forwarded to the root Node.
  */
-abstract class RibActivity : AppCompatActivity() {
+abstract class RibFragment : Fragment() {
 
-    lateinit var integrationPoint: ActivityIntegrationPoint
+    lateinit var integrationPoint: FragmentIntegrationPoint
         protected set
-
-    abstract val rootViewGroup: ViewGroup
 
     abstract fun createRib(savedInstanceState: Bundle?): Rib
 
-    protected open fun createIntegrationPoint(savedInstanceState: Bundle?): ActivityIntegrationPoint =
-        ActivityIntegrationPoint(
-            activity = this,
-            savedInstanceState = savedInstanceState,
-            rootViewGroup = rootViewGroup
+    protected open fun createIntegrationPoint(savedInstanceState: Bundle?): FragmentIntegrationPoint =
+        FragmentIntegrationPoint(
+            fragment = this,
+            savedInstanceState = savedInstanceState
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,23 +48,14 @@ abstract class RibActivity : AppCompatActivity() {
 
         val root = createRib(savedInstanceState)
         integrationPoint.attach(root)
-
-        if (intent?.action == Intent.ACTION_VIEW) {
-            handleDeepLink(intent)
-        }
     }
 
-    private val disposables = CompositeDisposable()
-
-    fun handleDeepLink(intent: Intent) {
-        workflowFactory.invoke(intent)?.let {
-            disposables.add(it.subscribe())
-        }
-    }
-
-    open val workflowFactory: (Intent) -> Observable<*>? = {
-        null
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        FrameLayout(inflater.context)
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -86,12 +79,6 @@ abstract class RibActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         integrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    override fun onBackPressed() {
-        if (!integrationPoint.handleBackPress()) {
-            super.onBackPressed()
-        }
     }
 
 }

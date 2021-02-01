@@ -59,7 +59,7 @@ abstract class BaseNodesTest {
 
             rootProvider.create(
                 buildParams = buildParams,
-                dialogLauncher = activity.integrationPoint, // TODO reconsider if we need direct dependency at all
+                dialogLauncher = activity.integrationPoint.dialogLauncher, // TODO reconsider if we need direct dependency at all
                 savedInstanceState = savedInstanceState,
                 routingSource = backStack!!
             )

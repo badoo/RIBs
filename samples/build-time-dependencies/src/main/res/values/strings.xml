@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Build Time Dependencies</string>
+    <string name="profile_id_hint">Profile ID</string>
+    <string name="build_child">Build child</string>
+</resources>

@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Back stack</string>
+    <string name="push">Push</string>
+    <string name="replace">Replace</string>
+    <string name="pop">Pop</string>
+    <string name="new_root">New root</string>
+    <string name="single_top">Single top</string>
+    <string name="a">A</string>
+    <string name="b">B</string>
+    <string name="c">C</string>
+    <string name="d">D</string>
+    <string name="e">E</string>
+    <string name="f">F</string>
+    <string name="i_am_the_parent">I am the parent</string>
+    <string name="i_am_child_a">I am child A</string>
+    <string name="i_am_child_b">I am child B</string>
+    <string name="i_am_child_c">I am child C</string>
+    <string name="i_am_child_d">I am child D</string>
+    <string name="i_am_child_e">I am child E</string>
+    <string name="i_am_child_f">I am child F</string>
+    <string name="overlay">Overlay</string>
+    <string name="content">Content</string>
+    <string name="back_stack_with_args">Back stack = %1s</string>
+</resources>

@@ -59,7 +59,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="24dp"
-                android:text="@string/child_placeholder"/>
+                android:text="@string/child_placeholder" />
 
         </FrameLayout>
 

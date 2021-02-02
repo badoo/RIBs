@@ -76,7 +76,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         internal set
         get() {
             return if (isRoot) field
-            else parent?.integrationPoint ?: error("Non-root Node should have a parent")
+            else parent?.integrationPoint ?: RIBs.errorHandler.handleFatalError(
+                "Non-root Node should have a parent"
+            )
         }
 
     val ancestryInfo: AncestryInfo =
@@ -257,7 +259,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             view?.attachChild(child, subtreeOf)
                 ?: parent?.attachChildView(child, this, false)
                 ?: integrationPoint.rootViewHost?.attachChild(child, this)
-                ?: error("No view, no parent, and no root host should be technically impossible")
+                ?: RIBs.errorHandler.handleFatalError(
+                    "No view, no parent, and no root host should be technically impossible"
+                )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onAttachChildView(child) }
@@ -273,7 +277,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             view?.detachChild(child, subtreeOf)
                 ?: parent?.detachChildView(child, this, false)
                 ?: rootHost!!.detachChild(child, this)
-                ?: error("No view, no parent, and no root host should be technically impossible")
+                ?: RIBs.errorHandler.handleFatalError(
+                    "No view, no parent, and no root host should be technically impossible"
+                )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onDetachChildView(child) }
@@ -351,7 +357,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             isRoot -> integrationPoint.handleUpNavigation()
 
             else -> parent?.handleUpNavigation()
-                ?: error("If not root, Node should have a parent")
+                ?: RIBs.errorHandler.handleNonFatalError(
+                    "Can't handle up navigation, Node is not a root and has no parent"
+                )
         }
     }
 

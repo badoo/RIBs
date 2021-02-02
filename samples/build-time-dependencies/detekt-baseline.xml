@@ -1,8 +1,5 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>FunctionNaming:BuildTimeDepsParentTest.kt$BuildTimeDepsParentTest$@Test fun givenProfileTextDisplayed_whenBuildChildWithInvalidProfileId_verifyProfileTextHidden()</ID>
-    <ID>FunctionNaming:BuildTimeDepsParentTest.kt$BuildTimeDepsParentTest$@Test fun whenBuildChildWithValidProfileId_verifyProfileTextDisplayed()</ID>
-  </CurrentIssues>
+  <CurrentIssues></CurrentIssues>
 </SmellBaseline>

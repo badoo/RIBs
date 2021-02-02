@@ -1,8 +1,9 @@
 package com.badoo.ribs.samples.buildtime.parent
 
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
+import android.widget.Spinner
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.customisation.inflate
@@ -25,19 +26,38 @@ class BuildTimeDepsParentViewImpl private constructor(
 ) : AndroidRibView(),
     BuildTimeDepsParentView {
 
-    private val profileIdEditText: EditText = androidView.findViewById(R.id.parent_profile_id_entry)
+    private val profileIdSpinner: Spinner = androidView.findViewById(R.id.parent_profile_id_spinner)
     private val buildButton: Button = androidView.findViewById(R.id.parent_profile_build_button)
     private val childContainer: ViewGroup = androidView.findViewById(R.id.parent_child_container)
+
+    init {
+        val profileContentList: List<ProfileContent> = (1..1000).map { profileId ->
+            ProfileContent(id = profileId, label = "Profile $profileId")
+        }
+
+        val adapter = ArrayAdapter(
+            context, android.R.layout.simple_spinner_item, profileContentList)
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        profileIdSpinner.adapter = adapter
+    }
 
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup = childContainer
 
     override fun setBuildChildListener(profileIdFunc: ProfileIdFunction?) {
         if (profileIdFunc != null) {
             buildButton.setOnClickListener {
-                profileIdFunc(profileIdEditText.text.toString().toIntOrNull())
+                profileIdFunc((profileIdSpinner.selectedItem as ProfileContent).id)
             }
         } else {
             buildButton.setOnClickListener(null)
+        }
+    }
+
+    class ProfileContent(val id: Int, private val label: String) {
+        override fun toString(): String {
+            return label
         }
     }
 

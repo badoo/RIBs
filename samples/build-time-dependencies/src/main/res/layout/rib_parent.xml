@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:padding="24dp">
 
-    <EditText
-        android:id="@+id/parent_profile_id_entry"
+    <Spinner
+        android:id="@+id/parent_profile_id_spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/profile_id_hint"
-        android:inputType="number"
+        android:drawSelectorOnTop="true"
+        app:layout_constraintBottom_toBottomOf="@id/parent_profile_build_button"
         app:layout_constraintEnd_toStartOf="@id/parent_profile_build_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/parent_profile_build_button" />
 
     <Button
         android:id="@+id/parent_profile_build_button"
@@ -32,6 +32,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/parent_profile_id_entry" />
+        app:layout_constraintTop_toBottomOf="@id/parent_profile_id_spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

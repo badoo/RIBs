@@ -9,9 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RIBs">
-        <activity
-            android:name="com.badoo.ribs.samples.buildtime.app.RootActivity"
-            android:windowSoftInputMode="adjustResize">
+        <activity android:name="com.badoo.ribs.samples.buildtime.app.RootActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

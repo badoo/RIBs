@@ -23,6 +23,6 @@ class BuildTimeDepsProfileTest {
     @Test
     fun verifyProfileText() {
         onView(withId(R.id.profile_label))
-            .check(matches(withText("This is the profile for user: 1")))
+            .check(matches(withText("This is the profile RIB built for user: 1")))
     }
 }

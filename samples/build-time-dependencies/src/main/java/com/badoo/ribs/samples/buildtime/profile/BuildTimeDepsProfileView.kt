@@ -22,7 +22,7 @@ class BuildTimeDepsProfileViewImpl private constructor(
     private val profileLabel: TextView = androidView.findViewById(R.id.profile_label)
 
     init {
-        profileLabel.text = "This is the profile for user: $profileId"
+        profileLabel.text = "This is the profile RIB built for user: $profileId"
     }
 
     class Factory(

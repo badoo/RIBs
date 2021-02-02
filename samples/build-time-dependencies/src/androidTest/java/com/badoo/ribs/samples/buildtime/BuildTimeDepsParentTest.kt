@@ -23,6 +23,9 @@ class BuildTimeDepsParentTest {
     @Test
     fun verifyInitialState() {
         onView(withId(R.id.profile_label)).check(doesNotExist())
+
+        onView(withText("This is a placeholder as the Profile RIB has not been created."))
+            .check(matches(isCompletelyDisplayed()))
     }
 
     @Test
@@ -31,7 +34,7 @@ class BuildTimeDepsParentTest {
         onView(withText("Profile 9")).perform(click())
         onView(withId(R.id.parent_profile_build_button)).perform(click())
 
-        onView(withText("This is the profile for user: 9"))
+        onView(withText("This is the profile RIB built for user: 9"))
             .check(matches(isCompletelyDisplayed()))
     }
 }

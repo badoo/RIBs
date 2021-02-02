@@ -31,7 +31,7 @@ class BuildTimeDepsParentViewImpl private constructor(
     private val childContainer: ViewGroup = androidView.findViewById(R.id.parent_child_container)
 
     init {
-        val profileContentList: List<ProfileContent> = (1..1000).map { profileId ->
+        val profileContentList: List<ProfileContent> = (1..PROFILE_ID_MAX).map { profileId ->
             ProfileContent(id = profileId, label = "Profile $profileId")
         }
 
@@ -56,9 +56,11 @@ class BuildTimeDepsParentViewImpl private constructor(
     }
 
     class ProfileContent(val id: Int, private val label: String) {
-        override fun toString(): String {
-            return label
-        }
+        override fun toString(): String = label
+    }
+
+    private companion object {
+        private const val PROFILE_ID_MAX = 1000
     }
 
     class Factory(

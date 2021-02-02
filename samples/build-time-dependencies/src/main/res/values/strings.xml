@@ -2,4 +2,6 @@
     <string name="app_name">Build Time Dependencies</string>
     <string name="profile_id_hint">Profile ID</string>
     <string name="build_child">Build child</string>
+    <string name="i_am_the_parent">I am the parent</string>
+    <string name="child_placeholder">This is a placeholder as the Profile RIB has not been created.</string>
 </resources>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Dialogs Sample</string>
+
+    <string name="simple_dialog_title">Simple dialog</string>
+    <string name="themed_dialog_title">Themed dialog</string>
+    <string name="lazy_dialog_title">Lazy dialog</string>
+    <string name="rib_dialog_title">RIB dialog</string>
+    <string name="dialog_text">"Lorem ipsum dolor sit amet"</string>
+    <string name="dialog_positive_button">OK</string>
+    <string name="dialog_negative_button">Cancel</string>
+    <string name="dialog_neutral_button">Whatevs</string>
+</resources>

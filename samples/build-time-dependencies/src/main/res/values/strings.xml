@@ -4,4 +4,5 @@
     <string name="build_child">Build child</string>
     <string name="i_am_the_parent">I am the parent</string>
     <string name="child_placeholder">This is a placeholder as the Profile RIB has not been created.</string>
+    <string name="profile_label">This is the profile RIB built for user: %1$d</string>
 </resources>

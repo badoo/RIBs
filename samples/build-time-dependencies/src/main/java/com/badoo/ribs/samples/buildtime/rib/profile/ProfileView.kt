@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.buildtime.profile
+package com.badoo.ribs.samples.buildtime.rib.profile
 
 import android.view.ViewGroup
 import android.widget.TextView
@@ -9,15 +9,15 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.buildtime.R
 
-interface BuildTimeDepsProfileView : RibView {
+interface ProfileView : RibView {
 
-    interface Factory : ViewFactory<Nothing?, BuildTimeDepsProfileView>
+    interface Factory : ViewFactory<Nothing?, ProfileView>
 }
 
-class BuildTimeDepsProfileViewImpl private constructor(
+class ProfileViewImpl private constructor(
     override val androidView: ViewGroup,
     profileId: Int
-) : AndroidRibView(), BuildTimeDepsProfileView {
+) : AndroidRibView(), ProfileView {
 
     private val profileLabel: TextView = androidView.findViewById(R.id.profile_label)
 
@@ -28,9 +28,9 @@ class BuildTimeDepsProfileViewImpl private constructor(
     class Factory(
         private val profileId: Int,
         @LayoutRes private val layoutRes: Int = R.layout.rib_profile
-    ) : BuildTimeDepsProfileView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> BuildTimeDepsProfileView = {
-            BuildTimeDepsProfileViewImpl(
+    ) : ProfileView.Factory {
+        override fun invoke(deps: Nothing?): (RibView) -> ProfileView = {
+            ProfileViewImpl(
                 androidView = it.inflate(layoutRes),
                 profileId = profileId
             )

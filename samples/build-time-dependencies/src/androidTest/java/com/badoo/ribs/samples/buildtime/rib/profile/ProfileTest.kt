@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.buildtime
+package com.badoo.ribs.samples.buildtime.rib.profile
 
 import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
@@ -7,18 +7,17 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.samples.buildtime.profile.BuildTimeDepsProfile
-import com.badoo.ribs.samples.buildtime.profile.builder.BuildTimeDepsProfileBuilder
+import com.badoo.ribs.samples.buildtime.R
 import org.junit.Rule
 import org.junit.Test
 
-class BuildTimeDepsProfileTest {
+class ProfileTest {
 
     @get:Rule
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        BuildTimeDepsProfileBuilder().build(root(savedInstanceState), BuildTimeDepsProfile.Params(1))
+        ProfileBuilder().build(root(savedInstanceState), Profile.Params(1))
 
     @Test
     fun verifyProfileText() {

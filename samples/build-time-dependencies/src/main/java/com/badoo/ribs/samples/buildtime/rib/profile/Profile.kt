@@ -1,8 +1,8 @@
-package com.badoo.ribs.samples.buildtime.profile
+package com.badoo.ribs.samples.buildtime.rib.profile
 
 import com.badoo.ribs.core.Rib
 
-interface BuildTimeDepsProfile : Rib {
+interface Profile : Rib {
 
     data class Params(
         val profileId: Int

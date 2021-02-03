@@ -1,16 +1,16 @@
-package com.badoo.ribs.samples.buildtime.profile
+package com.badoo.ribs.samples.buildtime.rib.build_time_deps
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 
-class BuildTimeDepsProfileNode internal constructor(
+class BuildTimeDepsNode internal constructor(
     buildParams: BuildParams<*>,
-    viewFactory: ((RibView) -> BuildTimeDepsProfileView?)?,
+    viewFactory: ((RibView) -> BuildTimeDepsView?)?,
     plugins: List<Plugin> = emptyList()
-) : Node<BuildTimeDepsProfileView>(
+) : Node<BuildTimeDepsView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), BuildTimeDepsProfile
+), BuildTimeDeps

@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.buildtime
+package com.badoo.ribs.samples.buildtime.rib.build_time_deps
 
 import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
@@ -8,17 +8,17 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.samples.buildtime.parent.builder.BuildTimeDepsParentBuilder
+import com.badoo.ribs.samples.buildtime.R
 import org.junit.Rule
 import org.junit.Test
 
-class BuildTimeDepsParentTest {
+class BuildTimeDepsTest {
 
     @get:Rule
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        BuildTimeDepsParentBuilder().build(root(savedInstanceState))
+        BuildTimeDepsBuilder().build(root(savedInstanceState))
 
     @Test
     fun verifyInitialState() {

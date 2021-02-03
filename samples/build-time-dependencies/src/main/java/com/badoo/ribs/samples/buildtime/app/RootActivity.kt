@@ -6,7 +6,7 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.buildtime.R
-import com.badoo.ribs.samples.buildtime.parent.builder.BuildTimeDepsParentBuilder
+import com.badoo.ribs.samples.buildtime.rib.build_time_deps.BuildTimeDepsBuilder
 
 class RootActivity : RibActivity() {
 
@@ -19,6 +19,6 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-        BuildTimeDepsParentBuilder()
+        BuildTimeDepsBuilder()
             .build(root(savedInstanceState))
 }

@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.buildtime.parent
+package com.badoo.ribs.samples.buildtime.rib.build_time_deps
 
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -14,17 +14,17 @@ import com.badoo.ribs.samples.buildtime.R
 
 typealias ProfileIdFunction = ((Int) -> Unit)
 
-interface BuildTimeDepsParentView : RibView {
+interface BuildTimeDepsView : RibView {
 
-    interface Factory : ViewFactory<Nothing?, BuildTimeDepsParentView>
+    interface Factory : ViewFactory<Nothing?, BuildTimeDepsView>
 
     fun setBuildChildListener(profileIdFunc: ProfileIdFunction?)
 }
 
-class BuildTimeDepsParentViewImpl private constructor(
+class BuildTimeDepsViewImpl private constructor(
     override val androidView: ViewGroup
 ) : AndroidRibView(),
-    BuildTimeDepsParentView {
+    BuildTimeDepsView {
 
     private val profileIdSpinner: Spinner = androidView.findViewById(R.id.parent_profile_id_spinner)
     private val buildButton: Button = androidView.findViewById(R.id.parent_profile_build_button)
@@ -35,15 +35,13 @@ class BuildTimeDepsParentViewImpl private constructor(
             ProfileContent(id = profileId, label = "Profile $profileId")
         }
 
-        val adapter = ArrayAdapter(
-            context, android.R.layout.simple_spinner_item, profileContentList)
-
+        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, profileContentList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
         profileIdSpinner.adapter = adapter
     }
 
-    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup = childContainer
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        childContainer
 
     override fun setBuildChildListener(profileIdFunc: ProfileIdFunction?) {
         if (profileIdFunc != null) {
@@ -60,14 +58,14 @@ class BuildTimeDepsParentViewImpl private constructor(
     }
 
     private companion object {
-        private const val PROFILE_ID_MAX = 1000
+        private const val PROFILE_ID_MAX = 10
     }
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_parent
-    ) : BuildTimeDepsParentView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> BuildTimeDepsParentView = {
-            BuildTimeDepsParentViewImpl(
+    ) : BuildTimeDepsView.Factory {
+        override fun invoke(deps: Nothing?): (RibView) -> BuildTimeDepsView = {
+            BuildTimeDepsViewImpl(
                 it.inflate(layoutRes)
             )
         }

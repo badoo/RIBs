@@ -12,17 +12,18 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.buildtime.R
 
-typealias ProfileIdFunction = ((Int) -> Unit)
-
 interface BuildTimeDepsView : RibView {
 
-    interface Factory : ViewFactory<Nothing?, BuildTimeDepsView>
+    interface Factory : ViewFactory<Dependency, BuildTimeDepsView>
 
-    fun setBuildChildListener(profileIdFunc: ProfileIdFunction?)
+    interface Dependency {
+        val presenter: BuildTimeDepsPresenter
+    }
 }
 
 class BuildTimeDepsViewImpl private constructor(
-    override val androidView: ViewGroup
+    override val androidView: ViewGroup,
+    private val presenter: BuildTimeDepsPresenter
 ) : AndroidRibView(),
     BuildTimeDepsView {
 
@@ -38,20 +39,14 @@ class BuildTimeDepsViewImpl private constructor(
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, profileContentList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         profileIdSpinner.adapter = adapter
+
+        buildButton.setOnClickListener {
+            presenter.onBuildChildClicked((profileIdSpinner.selectedItem as ProfileContent).id)
+        }
     }
 
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
         childContainer
-
-    override fun setBuildChildListener(profileIdFunc: ProfileIdFunction?) {
-        if (profileIdFunc != null) {
-            buildButton.setOnClickListener {
-                profileIdFunc((profileIdSpinner.selectedItem as ProfileContent).id)
-            }
-        } else {
-            buildButton.setOnClickListener(null)
-        }
-    }
 
     class ProfileContent(val id: Int, private val label: String) {
         override fun toString(): String = label
@@ -64,9 +59,10 @@ class BuildTimeDepsViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_parent
     ) : BuildTimeDepsView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> BuildTimeDepsView = {
+        override fun invoke(deps: BuildTimeDepsView.Dependency): (RibView) -> BuildTimeDepsView = {
             BuildTimeDepsViewImpl(
-                it.inflate(layoutRes)
+                androidView = it.inflate(layoutRes),
+                presenter = deps.presenter
             )
         }
     }

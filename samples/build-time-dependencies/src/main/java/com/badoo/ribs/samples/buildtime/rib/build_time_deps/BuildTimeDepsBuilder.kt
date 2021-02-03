@@ -13,7 +13,7 @@ class BuildTimeDepsBuilder : SimpleBuilder<BuildTimeDeps>() {
             initialConfiguration = Configuration.Default,
             buildParams = buildParams
         )
-        val interactor = BuildTimeDepsPresenter(
+        val presenter = BuildTimeDepsPresenterImpl(
             backStack = backStack
         )
         val router = BuildTimeDepsRouter(
@@ -21,10 +21,13 @@ class BuildTimeDepsBuilder : SimpleBuilder<BuildTimeDeps>() {
             routingSource = backStack,
             profileBuilder = ProfileBuilder()
         )
+        val viewDependencies = object : BuildTimeDepsView.Dependency {
+            override val presenter: BuildTimeDepsPresenter = presenter
+        }
         return BuildTimeDepsNode(
             buildParams = buildParams,
-            viewFactory = BuildTimeDepsViewImpl.Factory().invoke(null),
-            plugins = listOf(interactor, router)
+            viewFactory = BuildTimeDepsViewImpl.Factory().invoke(deps = viewDependencies),
+            plugins = listOf(presenter, router)
         )
     }
 }

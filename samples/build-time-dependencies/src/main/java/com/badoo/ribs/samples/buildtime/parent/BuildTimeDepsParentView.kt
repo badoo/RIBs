@@ -12,7 +12,7 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.buildtime.R
 
-typealias ProfileIdFunction = ((Int?) -> Unit)
+typealias ProfileIdFunction = ((Int) -> Unit)
 
 interface BuildTimeDepsParentView : RibView {
 

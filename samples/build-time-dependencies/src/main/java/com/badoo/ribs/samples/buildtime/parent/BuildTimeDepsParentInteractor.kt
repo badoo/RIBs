@@ -22,12 +22,7 @@ internal class BuildTimeDepsParentInteractor(
         viewLifecycle.subscribe(
             onCreate = {
                 view.setBuildChildListener { profileId ->
-                    if (profileId != null) {
-                        backStack.replace(ShowProfile(profileId))
-                    } else {
-                        // Typically occurs when an invalid integer was input.
-                        backStack.replace(Default)
-                    }
+                    backStack.replace(ShowProfile(profileId))
                 }
             },
             onDestroy = {

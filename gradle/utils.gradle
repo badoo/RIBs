@@ -1,6 +1,7 @@
 ext.configureAndroidLibrary = { project ->
     project.apply plugin: 'com.android.library'
     project.apply plugin: 'kotlin-android'
+    project.apply plugin: 'kotlin-android-extensions'
     configureAndroidModule(project)
 }
 

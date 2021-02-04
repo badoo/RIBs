@@ -1,14 +1,18 @@
 package com.badoo.ribs.samples.dialogs.rib
 
 import androidx.lifecycle.Lifecycle
+import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.samples.dialogs.R
 import com.badoo.ribs.samples.dialogs.dialogtypes.DialogTypes
+import com.badoo.ribs.samples.dialogs.dummy.Dummy
+import com.badoo.ribs.samples.dialogs.dummy.Dummy.Output
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Content
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Overlay
@@ -37,6 +41,14 @@ class DialogsInteractor internal constructor(
             bind(dialogs.simpleDialog to dialogEventConsumer)
             bind(dialogs.lazyDialog to dialogEventConsumer)
             bind(dialogs.ribDialog to dialogEventConsumer)
+        }
+    }
+
+    override fun onChildBuilt(child: Node<*>) {
+        child.lifecycle.createDestroy {
+            when (child) {
+                is Dummy -> bind(child.output to dummyOutputConsumer)
+            }
         }
     }
 
@@ -73,5 +85,10 @@ class DialogsInteractor internal constructor(
             Dialog.Event.Neutral -> dummyViewInput.accept(ViewModel("Dialog - Neutral clicked"))
             Dialog.Event.Cancelled -> dummyViewInput.accept(ViewModel("Dialog - Cancelled"))
         }
+    }
+
+    private val dummyOutputConsumer: Consumer<Output> = Consumer {
+        dummyViewInput.accept(ViewModel("Button Dummy RIB clicked"))
+        backStack.popBackStack()
     }
 }

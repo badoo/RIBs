@@ -1,0 +1,76 @@
+package com.badoo.ribs.samples.dialogs
+
+import android.os.Bundle
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.*
+import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.RibTestActivity
+import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.samples.dialogs.rib.Dialogs
+import com.badoo.ribs.samples.dialogs.rib.DialogsBuilder
+import org.junit.Rule
+import org.junit.Test
+
+class DialogsTest {
+
+    @get:Rule
+    val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
+
+    private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
+            DialogsBuilder(object : Dialogs.Dependency {
+                override val dialogLauncher: DialogLauncher =
+                        ribTestActivity.integrationPoint.dialogLauncher
+            }).build(root(savedInstanceState))
+
+    @Test
+    fun WHEN_simple_dialog_is_shown_THEN_verify_title_is_correct() {
+        onView(withId(R.id.dialogs_rib_simple_dialog_button)).perform(click())
+
+        onView(withText(R.string.simple_dialog_title))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun WHEN_themed_dialog_is_shown_THEN_verify_resources_are_correct() {
+        onView(withId(R.id.dialogs_rib_themed_dialog_button)).perform(click())
+
+        onView(withText(R.string.themed_dialog_title))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+
+        onView(withId(android.R.id.button1))
+                .inRoot(isDialog())
+                .check(matches(withTextColor(R.color.blue)))
+
+        onView(withId(android.R.id.button2))
+                .inRoot(isDialog())
+                .check(matches(withTextColor(R.color.red)))
+    }
+
+    @Test
+    fun WHEN_rib_dialog_is_shown_THEN_verify_resources_are_correct() {
+        onView(withId(R.id.dialogs_rib_rib_dialog_button)).perform(click())
+
+        onView(withText(R.string.dummy_rib_text))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+
+        onView(withId(R.id.dummy_rib_button))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun WHEN_lazy_dialog_is_shown_THEN_verify_title_is_correct() {
+        onView(withId(R.id.dialogs_rib_lazy_dialog_button)).perform(click())
+
+        onView(withText(R.string.lazy_dialog_title))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+    }
+}

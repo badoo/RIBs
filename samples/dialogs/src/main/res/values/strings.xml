@@ -9,4 +9,6 @@
     <string name="dialog_positive_button">OK</string>
     <string name="dialog_negative_button">Cancel</string>
     <string name="dialog_neutral_button">Whatevs</string>
+    <string name="dummy_rib_text">Dummy RIB</string>
+    <string name="dummy_button">Dummy Button</string>
 </resources>

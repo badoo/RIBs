@@ -28,7 +28,7 @@ class DialogsActivity : RibActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.dialogs_activity_root)
 
-    override fun createRib(savedInstanceState: Bundle?): Rib {
-        return DialogsBuilder(deps).build(BuildContext.root(savedInstanceState))
-    }
+    override fun createRib(savedInstanceState: Bundle?): Rib =
+            DialogsBuilder(deps).build(BuildContext.root(savedInstanceState))
 }
+

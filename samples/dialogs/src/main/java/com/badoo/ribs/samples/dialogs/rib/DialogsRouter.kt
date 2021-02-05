@@ -2,17 +2,16 @@ package com.badoo.ribs.samples.dialogs.rib
 
 import android.os.Parcelable
 import com.badoo.ribs.android.dialog.DialogLauncher
-import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution
 import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution.Companion.showDialog
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.samples.dialogs.dialogtypes.DialogTypes
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Content
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Overlay
-import com.badoo.ribs.samples.dialogs.dialogtypes.DialogTypes
 import kotlinx.android.parcel.Parcelize
 
 class DialogsRouter(

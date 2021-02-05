@@ -10,7 +10,10 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.dialogs.R
 import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.*
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowThemedDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowLazyDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowRibDialogClicked
 import com.badoo.ribs.samples.dialogs.rib.DialogsView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource

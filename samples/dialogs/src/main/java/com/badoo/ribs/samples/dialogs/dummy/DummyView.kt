@@ -53,6 +53,7 @@ class LoremIpsumViewImpl private constructor(
         button.setOnClickListener { events.accept(Event.ButtonClicked) }
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     override fun accept(vm: ViewModel) {
     }
 }

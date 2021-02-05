@@ -16,7 +16,10 @@ import com.badoo.ribs.samples.dialogs.dummy.Dummy.Output
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Content
 import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Overlay
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.*
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowThemedDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowLazyDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowRibDialogClicked
 import com.badoo.ribs.samples.dialogs.rib.DialogsView.ViewModel
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer

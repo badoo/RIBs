@@ -27,7 +27,7 @@ class DialogsTest {
             }).build(root(savedInstanceState))
 
     @Test
-    fun WHEN_simple_dialog_is_shown_THEN_verify_title_is_correct() {
+    fun whenSimpleDialogIsShownThenVerifyTitleIsCorrect() {
         onView(withId(R.id.dialogs_rib_simple_dialog_button)).perform(click())
 
         onView(withText(R.string.simple_dialog_title))
@@ -36,7 +36,7 @@ class DialogsTest {
     }
 
     @Test
-    fun WHEN_themed_dialog_is_shown_THEN_verify_resources_are_correct() {
+    fun whenThemedDialogIsShownThenVerifyResourcesAreCorrect() {
         onView(withId(R.id.dialogs_rib_themed_dialog_button)).perform(click())
 
         onView(withText(R.string.themed_dialog_title))
@@ -53,7 +53,7 @@ class DialogsTest {
     }
 
     @Test
-    fun WHEN_rib_dialog_is_shown_THEN_verify_resources_are_correct() {
+    fun whenRibDialogIsShownThenVerifyResourcesAreCorrect() {
         onView(withId(R.id.dialogs_rib_rib_dialog_button)).perform(click())
 
         onView(withText(R.string.dummy_rib_text))
@@ -66,7 +66,7 @@ class DialogsTest {
     }
 
     @Test
-    fun WHEN_lazy_dialog_is_shown_THEN_verify_title_is_correct() {
+    fun whenLazyDialogIsShownThenVerifyTitleIsCorrect() {
         onView(withId(R.id.dialogs_rib_lazy_dialog_button)).perform(click())
 
         onView(withText(R.string.lazy_dialog_title))

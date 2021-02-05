@@ -5,18 +5,18 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2Node
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2Presenter
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2ViewImpl
 
 class SimpleRoutingChild2Builder(
-    private val dependency: SimpleRoutingChild2.Dependency
+        private val dependency: SimpleRoutingChild2.Dependency
 ) : SimpleBuilder<SimpleRoutingChild2>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): SimpleRoutingChild2 {
+        val customisation = buildParams.getOrDefault(SimpleRoutingChild2.Customisation())
         val presenter = SimpleRoutingChild2Presenter()
 
         return SimpleRoutingChild2Node(
                 buildParams = buildParams,
-                viewFactory = SimpleRoutingChild2ViewImpl.Factory().invoke(deps = null),
+                viewFactory = customisation.viewFactory(null),
                 plugins = listOf(presenter)
         )
     }

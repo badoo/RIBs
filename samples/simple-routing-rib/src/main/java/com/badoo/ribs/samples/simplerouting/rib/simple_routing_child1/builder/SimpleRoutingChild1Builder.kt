@@ -5,15 +5,15 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1Node
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1Presenter
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1ViewImpl
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.routing.SimpleRoutingChild1ChildBuilders
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.routing.SimpleRoutingChild1Router
 
 class SimpleRoutingChild1Builder(
-    private val dependency: SimpleRoutingChild1.Dependency
+        private val dependency: SimpleRoutingChild1.Dependency
 ) : SimpleBuilder<SimpleRoutingChild1>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): SimpleRoutingChild1 {
+        val customisation = buildParams.getOrDefault(SimpleRoutingChild1.Customisation())
         val presenter = SimpleRoutingChild1Presenter(title = dependency.title)
         val router = SimpleRoutingChild1Router(
                 buildParams = buildParams,
@@ -21,7 +21,7 @@ class SimpleRoutingChild1Builder(
         )
         return SimpleRoutingChild1Node(
                 buildParams = buildParams,
-                viewFactory = SimpleRoutingChild1ViewImpl.Factory().invoke(deps = null),
+                viewFactory = customisation.viewFactory(null),
                 plugins = listOf(presenter, router)
         )
     }

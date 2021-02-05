@@ -28,6 +28,7 @@ import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
+import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.view.RibView
@@ -75,7 +76,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         internal set
         get() {
             return if (isRoot) field
-            else parent?.integrationPoint ?: error("Non-root Node should have a parent")
+            else parent?.integrationPoint ?: RIBs.errorHandler.handleFatalError(
+                "Non-root Node should have a parent"
+            )
         }
 
     val ancestryInfo: AncestryInfo =
@@ -256,7 +259,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             view?.attachChild(child, subtreeOf)
                 ?: parent?.attachChildView(child, this, false)
                 ?: integrationPoint.rootViewHost?.attachChild(child, this)
-                ?: error("No view, no parent, and no root host should be technically impossible")
+                ?: RIBs.errorHandler.handleFatalError(
+                    "No view, no parent, and no root host should be technically impossible"
+                )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onAttachChildView(child) }
@@ -272,7 +277,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             view?.detachChild(child, subtreeOf)
                 ?: parent?.detachChildView(child, this, false)
                 ?: rootHost!!.detachChild(child, this)
-                ?: error("No view, no parent, and no root host should be technically impossible")
+                ?: RIBs.errorHandler.handleFatalError(
+                    "No view, no parent, and no root host should be technically impossible"
+                )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onDetachChildView(child) }
@@ -343,6 +350,25 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             || delegateHandleBackPressToActiveChildren()
             || handlers.any { it.handleBackPress() }
             || subtreeHandlers.any { it.handleBackPressFallback() }
+    }
+
+    fun upNavigation() {
+        when {
+            isRoot -> integrationPoint.handleUpNavigation()
+
+            else -> parent?.handleUpNavigation()
+                ?: RIBs.errorHandler.handleNonFatalError(
+                    "Can't handle up navigation, Node is not a root and has no parent"
+                )
+        }
+    }
+
+    private fun handleUpNavigation() {
+        val subtreeHandlers = plugins.filterIsInstance<UpNavigationHandler>()
+
+        if (subtreeHandlers.none { it.handleUpNavigation() }) {
+            upNavigation()
+        }
     }
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =

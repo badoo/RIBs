@@ -15,6 +15,7 @@ import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
+import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 
 class Logger<T : Rib>(
@@ -32,7 +33,8 @@ class Logger<T : Rib>(
     SavesInstanceState,
     SystemAware,
     BackPressHandler,
-    SubtreeBackPressHandler {
+    SubtreeBackPressHandler,
+    UpNavigationHandler {
 
     override fun onBuild() {
         if (policy.logOnBuild) log(rib, "onBuild")
@@ -110,6 +112,11 @@ class Logger<T : Rib>(
 
     override fun handleBackPressFallback(): Boolean {
         if (policy.logHandleBackPressFallback) log(rib, "handleBackPressFallback")
+        return super.handleBackPressFallback()
+    }
+
+    override fun handleUpNavigation(): Boolean {
+        if (policy.logHandleUpNavigation) log(rib, "handleUpNavigation")
         return super.handleBackPressFallback()
     }
 }

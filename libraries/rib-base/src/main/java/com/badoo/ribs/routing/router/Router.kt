@@ -9,6 +9,7 @@ import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
+import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.state.CompositeCancellable
 import com.badoo.ribs.core.state.Relay
@@ -39,7 +40,8 @@ abstract class Router<C : Parcelable>(
     NodeLifecycleAware,
     ViewLifecycleAware,
     SavesInstanceState,
-    SubtreeBackPressHandler by routingSource {
+    SubtreeBackPressHandler by routingSource,
+    UpNavigationHandler by routingSource {
 
     enum class TransitionState {
         SETTLED, IN_TRANSITION;

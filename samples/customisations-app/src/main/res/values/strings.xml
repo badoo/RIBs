@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Customisations Sample App</string>
+
+    <string name="customisations_parent_text">Overridden Parent</string>
+    <string name="customisations_child1_child1_text">Overridden Child 1-1</string>
+    <string name="customisations_child1_child2_text">Overridden Child 1-2</string>
 </resources>

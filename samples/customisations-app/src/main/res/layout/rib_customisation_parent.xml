@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:gravity="center"
-        android:text="@string/parent_text"
+        android:text="@string/customisations_parent_text"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

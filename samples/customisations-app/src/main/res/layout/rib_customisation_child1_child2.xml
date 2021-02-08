@@ -10,6 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/child1_child2_text" />
+        android:text="@string/customisations_child1_child2_text" />
 
 </FrameLayout>

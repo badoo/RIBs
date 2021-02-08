@@ -35,6 +35,12 @@ dependencies {
     implementation deps.android.design
     implementation project(":samples:simple-routing-rib")
     implementation project(":libraries:rib-base")
+
+    testImplementation 'junit:junit:4.13.1'
+
+    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
 repositories {

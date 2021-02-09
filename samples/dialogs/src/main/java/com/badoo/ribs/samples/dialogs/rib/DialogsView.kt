@@ -29,15 +29,15 @@ interface DialogsView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
     }
 
     data class ViewModel(
-            val text: String
+        val text: String
     )
 
     interface Factory : ViewFactory<Nothing?, DialogsView>
 }
 
 class DialogsViewImpl private constructor(
-        override val androidView: ViewGroup,
-        private val events: PublishRelay<Event> = PublishRelay.create()
+    override val androidView: ViewGroup,
+    private val events: PublishRelay<Event> = PublishRelay.create()
 ) : AndroidRibView(), DialogsView, ObservableSource<Event> by events, Consumer<ViewModel> {
 
     class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_dialogs) : DialogsView.Factory {

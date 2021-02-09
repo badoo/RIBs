@@ -15,13 +15,13 @@ import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Overlay
 import kotlinx.android.parcel.Parcelize
 
 class DialogsRouter(
-        buildParams: BuildParams<Nothing?>,
-        routingSource: RoutingSource<Configuration>,
-        private val dialogLauncher: DialogLauncher,
-        private val dialogs: DialogTypes
+    buildParams: BuildParams<Nothing?>,
+    routingSource: RoutingSource<Configuration>,
+    private val dialogLauncher: DialogLauncher,
+    private val dialogs: DialogTypes
 ) : Router<Configuration>(
-        buildParams = buildParams,
-        routingSource = routingSource
+    buildParams = buildParams,
+    routingSource = routingSource
 ) {
 
     sealed class Configuration : Parcelable {
@@ -46,11 +46,11 @@ class DialogsRouter(
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
-            when (routing.configuration) {
-                is Content.Default -> Resolution.noop()
-                is Overlay.ThemedDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.themedDialog)
-                is Overlay.SimpleDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.simpleDialog)
-                is Overlay.LazyDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.lazyDialog)
-                is Overlay.RibDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.ribDialog)
-            }
+        when (routing.configuration) {
+            is Content.Default -> Resolution.noop()
+            is Overlay.ThemedDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.themedDialog)
+            is Overlay.SimpleDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.simpleDialog)
+            is Overlay.LazyDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.lazyDialog)
+            is Overlay.RibDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.ribDialog)
+        }
 }

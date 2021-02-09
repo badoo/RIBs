@@ -6,7 +6,7 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.samples.dialogs.dialogtypes.DialogTypes
 
 class DialogsBuilder(
-        private val deps: Dialogs.Dependency
+    private val deps: Dialogs.Dependency
 ) : SimpleBuilder<Dialogs>() {
 
     private val dialogs = DialogTypes()
@@ -14,37 +14,37 @@ class DialogsBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): Dialogs {
         val interactor = interactor(buildParams = buildParams)
         val router = router(
-                buildParams = buildParams,
-                interactor = interactor
+            buildParams = buildParams,
+            interactor = interactor
         )
         return node(
-                buildParams = buildParams,
-                customisation = buildParams.getOrDefault(Dialogs.Customisation()),
-                plugins = listOf(interactor, router)
+            buildParams = buildParams,
+            customisation = buildParams.getOrDefault(Dialogs.Customisation()),
+            plugins = listOf(interactor, router)
         )
     }
 
     private fun router(
-            buildParams: BuildParams<Nothing?>,
-            interactor: DialogsInteractor
+        buildParams: BuildParams<Nothing?>,
+        interactor: DialogsInteractor
     ): DialogsRouter =
-            DialogsRouter(
-                    buildParams = buildParams,
-                    routingSource = interactor,
-                    dialogLauncher = deps.dialogLauncher,
-                    dialogs = dialogs
-            )
+        DialogsRouter(
+            buildParams = buildParams,
+            routingSource = interactor,
+            dialogLauncher = deps.dialogLauncher,
+            dialogs = dialogs
+        )
 
     private fun interactor(buildParams: BuildParams<Nothing?>): DialogsInteractor =
-            DialogsInteractor(buildParams = buildParams, dialogs = dialogs)
+        DialogsInteractor(buildParams = buildParams, dialogs = dialogs)
 
     private fun node(
-            buildParams: BuildParams<Nothing?>,
-            customisation: Dialogs.Customisation,
-            plugins: List<Plugin>
+        buildParams: BuildParams<Nothing?>,
+        customisation: Dialogs.Customisation,
+        plugins: List<Plugin>
     ): DialogsNode = DialogsNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = plugins
+        buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
+        plugins = plugins
     )
 }

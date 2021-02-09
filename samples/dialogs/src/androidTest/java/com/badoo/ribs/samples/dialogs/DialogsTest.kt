@@ -21,18 +21,18 @@ class DialogsTest {
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-            DialogsBuilder(object : Dialogs.Dependency {
-                override val dialogLauncher: DialogLauncher =
-                        ribTestActivity.integrationPoint.dialogLauncher
-            }).build(root(savedInstanceState))
+        DialogsBuilder(object : Dialogs.Dependency {
+            override val dialogLauncher: DialogLauncher =
+                ribTestActivity.integrationPoint.dialogLauncher
+        }).build(root(savedInstanceState))
 
     @Test
     fun whenSimpleDialogIsShownThenVerifyTitleIsCorrect() {
         onView(withId(R.id.dialogs_rib_simple_dialog_button)).perform(click())
 
         onView(withText(R.string.simple_dialog_title))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -40,16 +40,16 @@ class DialogsTest {
         onView(withId(R.id.dialogs_rib_themed_dialog_button)).perform(click())
 
         onView(withText(R.string.themed_dialog_title))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
 
         onView(withId(android.R.id.button1))
-                .inRoot(isDialog())
-                .check(matches(withTextColor(R.color.blue)))
+            .inRoot(isDialog())
+            .check(matches(withTextColor(R.color.blue)))
 
         onView(withId(android.R.id.button2))
-                .inRoot(isDialog())
-                .check(matches(withTextColor(R.color.red)))
+            .inRoot(isDialog())
+            .check(matches(withTextColor(R.color.red)))
     }
 
     @Test
@@ -57,12 +57,12 @@ class DialogsTest {
         onView(withId(R.id.dialogs_rib_rib_dialog_button)).perform(click())
 
         onView(withText(R.string.dummy_rib_text))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
 
         onView(withId(R.id.dummy_rib_button))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -70,7 +70,7 @@ class DialogsTest {
         onView(withId(R.id.dialogs_rib_lazy_dialog_button)).perform(click())
 
         onView(withText(R.string.lazy_dialog_title))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
     }
 }

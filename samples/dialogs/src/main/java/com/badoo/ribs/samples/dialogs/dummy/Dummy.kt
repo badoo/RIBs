@@ -15,6 +15,6 @@ interface Dummy : Rib, Connectable<Input, Output> {
     }
 
     class Customisation(
-            val viewFactory: LoremIpsumView.Factory = LoremIpsumViewImpl.Factory()
+        val viewFactory: LoremIpsumView.Factory = LoremIpsumViewImpl.Factory()
     ) : RibCustomisation
 }

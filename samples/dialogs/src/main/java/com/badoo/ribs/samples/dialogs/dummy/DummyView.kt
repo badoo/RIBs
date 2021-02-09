@@ -8,41 +8,41 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.dummy.LoremIpsumView.Event
-import com.badoo.ribs.samples.dialogs.dummy.LoremIpsumView.ViewModel
+import com.badoo.ribs.samples.dialogs.dummy.DummyView.Event
+import com.badoo.ribs.samples.dialogs.dummy.DummyView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-interface LoremIpsumView : RibView,
-        ObservableSource<Event>,
-        Consumer<ViewModel> {
+interface DummyView : RibView,
+    ObservableSource<Event>,
+    Consumer<ViewModel> {
 
     sealed class Event {
         object ButtonClicked : Event()
     }
 
     data class ViewModel(
-            val i: Int = 0
+        val i: Int = 0
     )
 
-    interface Factory : ViewFactory<Nothing?, LoremIpsumView>
+    interface Factory : ViewFactory<Nothing?, DummyView>
 }
 
-class LoremIpsumViewImpl private constructor(
-        override val androidView: ViewGroup,
-        private val events: PublishRelay<Event> = PublishRelay.create()
+class DummyViewImpl private constructor(
+    override val androidView: ViewGroup,
+    private val events: PublishRelay<Event> = PublishRelay.create()
 ) : AndroidRibView(),
-        LoremIpsumView,
-        ObservableSource<Event> by events,
-        Consumer<ViewModel> {
+    DummyView,
+    ObservableSource<Event> by events,
+    Consumer<ViewModel> {
 
     class Factory(
-            @LayoutRes private val layoutRes: Int = R.layout.rib_dummy
-    ) : LoremIpsumView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> LoremIpsumView = {
-            LoremIpsumViewImpl(
-                    it.inflate(layoutRes)
+        @LayoutRes private val layoutRes: Int = R.layout.rib_dummy
+    ) : DummyView.Factory {
+        override fun invoke(deps: Nothing?): (RibView) -> DummyView = {
+            DummyViewImpl(
+                it.inflate(layoutRes)
             )
         }
     }

@@ -7,9 +7,9 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 
 class DummyInteractor(
-        buildParams: BuildParams<Nothing?>
+    buildParams: BuildParams<Nothing?>
 ) : Interactor<Dummy, LoremIpsumView>(
-        buildParams = buildParams
+    buildParams = buildParams
 ) {
 
     override fun onViewCreated(view: LoremIpsumView, viewLifecycle: Lifecycle) {

@@ -15,7 +15,7 @@ class TextColorMatcher constructor(private val integerMatcher: Matcher<Int>) : B
 
     override fun describeMismatch(item: Any, mismatchDescription: Description) {
         mismatchDescription.appendText("TextView with text color: " +
-                (item as TextView).currentTextColor + ", expected: ")
+            (item as TextView).currentTextColor + ", expected: ")
         integerMatcher.describeMismatch(item, mismatchDescription)
     }
 

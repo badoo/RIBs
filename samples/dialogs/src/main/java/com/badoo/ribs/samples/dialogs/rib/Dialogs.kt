@@ -9,6 +9,6 @@ interface Dialogs : Rib {
     interface Dependency : CanProvideDialogLauncher
 
     class Customisation(
-            val viewFactory: DialogsView.Factory = DialogsViewImpl.Factory()
+        val viewFactory: DialogsView.Factory = DialogsViewImpl.Factory()
     ) : RibCustomisation
 }

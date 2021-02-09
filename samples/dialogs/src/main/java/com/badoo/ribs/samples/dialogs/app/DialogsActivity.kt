@@ -15,8 +15,8 @@ class DialogsActivity : RibActivity() {
 
     private val deps = object : Dialogs.Dependency {
         override val dialogLauncher: DialogLauncher = AlertDialogLauncher(
-                this@DialogsActivity,
-                this@DialogsActivity.lifecycle
+            this@DialogsActivity,
+            this@DialogsActivity.lifecycle
         )
     }
 
@@ -29,6 +29,6 @@ class DialogsActivity : RibActivity() {
         get() = findViewById(R.id.dialogs_activity_root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-            DialogsBuilder(deps).build(BuildContext.root(savedInstanceState))
+        DialogsBuilder(deps).build(BuildContext.root(savedInstanceState))
 }
 

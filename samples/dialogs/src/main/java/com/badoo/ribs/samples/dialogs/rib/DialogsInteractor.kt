@@ -25,15 +25,15 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
 class DialogsInteractor internal constructor(
-        buildParams: BuildParams<Nothing?>,
-        private val dialogs: DialogTypes
+    buildParams: BuildParams<Nothing?>,
+    private val dialogs: DialogTypes
 ) : BackStackInteractor<Dialogs, DialogsView, Configuration>(
-        buildParams = buildParams,
-        initialConfiguration = Content.Default
+    buildParams = buildParams,
+    initialConfiguration = Content.Default
 ) {
 
     private val dummyViewInput = BehaviorRelay.createDefault(
-            ViewModel("Dialog examples")
+        ViewModel("Dialog examples")
     )
 
     override fun onViewCreated(view: DialogsView, viewLifecycle: Lifecycle) {
@@ -75,8 +75,8 @@ class DialogsInteractor internal constructor(
                 neutral(Text.Resource(R.string.dialog_neutral_button), Dialog.Event.Neutral)
             }
             cancellationPolicy = Dialog.CancellationPolicy.Cancellable(
-                    event = Dialog.Event.Cancelled,
-                    cancelOnTouchOutside = true
+                event = Dialog.Event.Cancelled,
+                cancelOnTouchOutside = true
             )
         }
     }

@@ -3,7 +3,7 @@ package com.badoo.ribs.samples.dialogs.dummy
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 
-class DummyBuilder: SimpleBuilder<Dummy>() {
+class DummyBuilder : SimpleBuilder<Dummy>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Dummy {
         val customisation = buildParams.getOrDefault(Dummy.Customisation())

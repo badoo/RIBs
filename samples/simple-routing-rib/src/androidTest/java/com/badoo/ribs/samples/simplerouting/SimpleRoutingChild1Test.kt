@@ -7,9 +7,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.samples.simplerouting.rib.R
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.builder.SimpleRoutingChild1Builder
-import com.badoo.ribs.samples.simplerouting.rib.R
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,9 +22,9 @@ class SimpleRoutingChild1Test {
 
     private fun buildRib(savedInstanceState: Bundle?) =
         SimpleRoutingChild1Builder(
-                object : SimpleRoutingChild1.Dependency {
-                    override val title: String = TITLE
-                }
+            object : SimpleRoutingChild1.Dependency {
+                override val title: String = TITLE
+            }
         ).build(root(savedInstanceState))
 
     @Test

@@ -7,7 +7,7 @@ import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRout
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2Presenter
 
 class SimpleRoutingChild2Builder(
-        private val dependency: SimpleRoutingChild2.Dependency
+    private val dependency: SimpleRoutingChild2.Dependency
 ) : SimpleBuilder<SimpleRoutingChild2>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): SimpleRoutingChild2 {
@@ -15,9 +15,9 @@ class SimpleRoutingChild2Builder(
         val presenter = SimpleRoutingChild2Presenter()
 
         return SimpleRoutingChild2Node(
-                buildParams = buildParams,
-                viewFactory = customisation.viewFactory(null),
-                plugins = listOf(presenter)
+            buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null),
+            plugins = listOf(presenter)
         )
     }
 }

@@ -20,9 +20,9 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-            SimpleRoutingParentBuilder(
-                    object : SimpleRoutingParent.Dependency {}
-            ).build(
-                    BuildContext.root(savedInstanceState)
-            )
+        SimpleRoutingParentBuilder(
+            object : SimpleRoutingParent.Dependency {}
+        ).build(
+            BuildContext.root(savedInstanceState)
+        )
 }

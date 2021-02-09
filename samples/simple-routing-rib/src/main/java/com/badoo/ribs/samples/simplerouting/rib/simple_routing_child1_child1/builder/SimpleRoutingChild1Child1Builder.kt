@@ -6,14 +6,14 @@ import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1_child1.Sim
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1_child1.SimpleRoutingChild1Child1Node
 
 class SimpleRoutingChild1Child1Builder(
-        private val dependency: SimpleRoutingChild1Child1.Dependency
+    private val dependency: SimpleRoutingChild1Child1.Dependency
 ) : SimpleBuilder<SimpleRoutingChild1Child1>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): SimpleRoutingChild1Child1 {
         val customisation = buildParams.getOrDefault(SimpleRoutingChild1Child1.Customisation())
         return SimpleRoutingChild1Child1Node(
-                buildParams = buildParams,
-                viewFactory = customisation.viewFactory(null)
+            buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null)
         )
     }
 }

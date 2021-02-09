@@ -22,7 +22,7 @@ class SimpleRoutingChild1Child2ViewImpl private constructor(
     ) : SimpleRoutingChild1Child2View.Factory {
         override fun invoke(deps: Nothing?): (RibView) -> SimpleRoutingChild1Child2View = {
             SimpleRoutingChild1Child2ViewImpl(
-                    androidView = it.inflate(layoutRes)
+                androidView = it.inflate(layoutRes)
             )
         }
     }

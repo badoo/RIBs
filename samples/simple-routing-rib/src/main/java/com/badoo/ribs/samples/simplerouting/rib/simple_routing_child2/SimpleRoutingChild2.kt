@@ -8,6 +8,6 @@ interface SimpleRoutingChild2 : Rib {
     interface Dependency
 
     class Customisation(
-            val viewFactory: SimpleRoutingChild2View.Factory = SimpleRoutingChild2ViewImpl.Factory()
+        val viewFactory: SimpleRoutingChild2View.Factory = SimpleRoutingChild2ViewImpl.Factory()
     ) : RibCustomisation
 }

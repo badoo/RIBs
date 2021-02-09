@@ -19,10 +19,10 @@ class CustomisationsActivity : RibActivity() {
         get() = findViewById(R.id.customisations_activity_root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-            SimpleRoutingParentBuilder(
-                    object : SimpleRoutingParent.Dependency {}
-            ).build(BuildContext.root(
-                    savedInstanceState = savedInstanceState,
-                    customisations = AppCustomisations
-            ))
+        SimpleRoutingParentBuilder(
+            object : SimpleRoutingParent.Dependency {}
+        ).build(BuildContext.root(
+            savedInstanceState = savedInstanceState,
+            customisations = AppCustomisations
+        ))
 }

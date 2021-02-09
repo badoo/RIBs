@@ -7,9 +7,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.samples.simplerouting.rib.R
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.SimpleRoutingParent
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.builder.SimpleRoutingParentBuilder
-import com.badoo.ribs.samples.simplerouting.rib.R
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,7 +20,7 @@ class SimpleRoutingParentTest {
 
     private fun buildRib(savedInstanceState: Bundle?) =
         SimpleRoutingParentBuilder(
-                object : SimpleRoutingParent.Dependency {}
+            object : SimpleRoutingParent.Dependency {}
         ).build(root(savedInstanceState))
 
     @Test

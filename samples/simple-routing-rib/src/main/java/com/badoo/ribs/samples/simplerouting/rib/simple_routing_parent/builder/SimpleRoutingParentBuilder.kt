@@ -8,18 +8,19 @@ import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.routing.Si
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.routing.SimpleRoutingParentRouter
 
 class SimpleRoutingParentBuilder(
-        private val dependency: SimpleRoutingParent.Dependency
+    private val dependency: SimpleRoutingParent.Dependency
 ) : SimpleBuilder<SimpleRoutingParent>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): SimpleRoutingParent {
         val customisation = buildParams.getOrDefault(SimpleRoutingParent.Customisation())
         val router = SimpleRoutingParentRouter(
-                buildParams = buildParams,
-                builders = SimpleRoutingParentChildBuilders(dependency)
+            buildParams = buildParams,
+            builders = SimpleRoutingParentChildBuilders(dependency)
         )
         return SimpleRoutingParentNode(
-                viewFactory = customisation.viewFactory(null),
-                plugins = listOf(router)
+            buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null),
+            plugins = listOf(router)
         )
     }
 }

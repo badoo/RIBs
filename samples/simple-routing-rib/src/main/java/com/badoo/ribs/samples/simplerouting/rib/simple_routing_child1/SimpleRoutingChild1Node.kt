@@ -6,9 +6,9 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 
 internal class SimpleRoutingChild1Node(
-        buildParams: BuildParams<*>,
-        viewFactory: ((RibView) -> SimpleRoutingChild1View?)?,
-        plugins: List<Plugin>
+    buildParams: BuildParams<*>,
+    viewFactory: ((RibView) -> SimpleRoutingChild1View?)?,
+    plugins: List<Plugin>
 ) : Node<SimpleRoutingChild1View>(
     buildParams = buildParams,
     viewFactory = viewFactory,

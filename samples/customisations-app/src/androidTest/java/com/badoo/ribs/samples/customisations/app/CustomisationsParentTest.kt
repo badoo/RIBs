@@ -18,16 +18,16 @@ class CustomisationsParentTest {
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-            SimpleRoutingParentBuilder(
-                    object : SimpleRoutingParent.Dependency {}
-            ).build(root(
-                    savedInstanceState = savedInstanceState,
-                    customisations = AppCustomisations
-            ))
+        SimpleRoutingParentBuilder(
+            object : SimpleRoutingParent.Dependency {}
+        ).build(root(
+            savedInstanceState = savedInstanceState,
+            customisations = AppCustomisations
+        ))
 
     @Test
     fun whenOverriddenCustomisation_thenVerifyCorrectParentTitle() {
         onView(withId(R.id.parent_title))
-                .check(matches(withText(R.string.customisations_parent_text)))
+            .check(matches(withText(R.string.customisations_parent_text)))
     }
 }

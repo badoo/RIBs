@@ -8,11 +8,11 @@ import com.badoo.ribs.core.modality.BuildParams
 
 class DummyInteractor(
     buildParams: BuildParams<Nothing?>
-) : Interactor<Dummy, LoremIpsumView>(
+) : Interactor<Dummy, DummyView>(
     buildParams = buildParams
 ) {
 
-    override fun onViewCreated(view: LoremIpsumView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: DummyView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
             bind(view to rib.output using ViewEventToOutput)
         }

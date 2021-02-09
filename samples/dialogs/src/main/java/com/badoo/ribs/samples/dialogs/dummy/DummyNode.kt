@@ -11,10 +11,10 @@ import com.badoo.ribs.samples.dialogs.dummy.Dummy.Output
 
 class DummyNode(
     buildParams: BuildParams<Nothing?>,
-    viewFactory: (RibView) -> LoremIpsumView,
+    viewFactory: (RibView) -> DummyView,
     plugins: List<Plugin> = emptyList(),
     connector: NodeConnector<Input, Output> = NodeConnector()
-) : Node<LoremIpsumView>(
+) : Node<DummyView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins

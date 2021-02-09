@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Retained Instance Store</string>
+    <string name="rotate_button_text">Rotate Screen</string>
+</resources>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Communication with child nodes #2</string>
+    <string name="label_parent">Parent with router</string>
 </resources>

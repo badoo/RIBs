@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Retained Instance Store</string>
     <string name="rotate_button_text">Rotate Screen</string>
+    <string name="demo_description">Rotate the screen by clicking the button, count will not be stopped :)</string>
+
 </resources>

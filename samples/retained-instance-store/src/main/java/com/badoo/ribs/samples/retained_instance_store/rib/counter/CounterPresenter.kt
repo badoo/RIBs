@@ -22,7 +22,7 @@ internal class CounterPresenterImpl(private val clock: Clock) : CounterPresenter
                     this@CounterPresenterImpl.view = null
                 }
         )
-        clock.starTimer()
+        clock.startTimer()
     }
 
     private fun updateCount(counter: Int) {

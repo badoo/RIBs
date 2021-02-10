@@ -8,9 +8,16 @@ class MenuBuilder(
 ) : SimpleBuilder<Menu>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Menu {
+
+        val presenter = MenuPresenterImpl()
+        val viewDeps = object : MenuView.Dependency {
+            override val presenter: MenuPresenter = presenter
+        }
+
         return MenuNode(
             buildParams = buildParams,
-            viewFactory = MenuViewImpl.Factory().invoke(deps = null)
+            viewFactory = MenuViewImpl.Factory().invoke(deps = viewDeps),
+            plugins = listOf(presenter)
         )
     }
 }

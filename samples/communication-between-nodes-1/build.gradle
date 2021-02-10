@@ -37,6 +37,8 @@ dependencies {
     implementation deps.android.design
     implementation project(":libraries:rib-base")
 
+    implementation deps.external.rxrelay2
+
     testImplementation deps.external.roboelectricBase
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'junit:junit:4.13'

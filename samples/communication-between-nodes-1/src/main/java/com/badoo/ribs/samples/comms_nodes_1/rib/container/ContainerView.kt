@@ -18,7 +18,6 @@ interface ContainerView : RibView {
     interface Factory : ViewFactory<Nothing?, ContainerView>
 }
 
-
 class ContainerViewImpl private constructor(
     override val androidView: ViewGroup
 ) : AndroidRibView(),

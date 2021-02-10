@@ -20,11 +20,12 @@ class ContainerBuilder(
 
         val backStack = backStack(buildParams)
         val router = router(buildParams, backStack, builders)
+        val presenter = ContainerPresenterImpl(backStack)
 
         return ContainerNode(
             buildParams = BuildParams.Empty(),
             viewFactory = ContainerViewImpl.Factory().invoke(deps = null),
-            plugins = listOfNotNull(router)
+            plugins = listOfNotNull(router, presenter)
         )
     }
 

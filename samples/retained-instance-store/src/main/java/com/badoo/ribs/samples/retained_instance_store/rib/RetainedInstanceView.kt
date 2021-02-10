@@ -9,13 +9,14 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.retained_instance_store.R
+import com.badoo.ribs.samples.retained_instance_store.utils.ScreenOrientationController
 
 interface RetainedInstanceView : RibView {
 
     interface Factory : ViewFactory<Dependency, RetainedInstanceView>
 
     interface Dependency {
-        val presenter: RetainedInstancePresenter
+        val orientationController: ScreenOrientationController
     }
 
     fun updateCount(count: Int)
@@ -23,7 +24,7 @@ interface RetainedInstanceView : RibView {
 
 class RetainedInstanceViewImpl private constructor(
         override val androidView: ViewGroup,
-        private val presenter: RetainedInstancePresenter
+        private val orientationController: ScreenOrientationController
 ) : AndroidRibView(), RetainedInstanceView {
 
     class Factory(
@@ -32,7 +33,7 @@ class RetainedInstanceViewImpl private constructor(
         override fun invoke(deps: RetainedInstanceView.Dependency): (RibView) -> RetainedInstanceView = {
             RetainedInstanceViewImpl(
                     androidView = it.inflate(layoutRes),
-                    presenter = deps.presenter
+                    orientationController = deps.orientationController
             )
         }
     }
@@ -41,7 +42,7 @@ class RetainedInstanceViewImpl private constructor(
     private val button: Button = androidView.findViewById(R.id.rotate_screen_button)
 
     init {
-        button.setOnClickListener { presenter.onRotateScreenClicked() }
+        button.setOnClickListener { orientationController.toggleScreenOrientation() }
     }
 
     override fun updateCount(count: Int) {

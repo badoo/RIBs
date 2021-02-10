@@ -5,6 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.retained_instance_store.rib.*
 import com.badoo.ribs.samples.retained_instance_store.rib.RetainedInstanceNode
 import com.badoo.ribs.samples.retained_instance_store.rib.RetainedInstancePresenterImpl
+import com.badoo.ribs.samples.retained_instance_store.utils.ScreenOrientationController
 import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.store.get
 
@@ -17,11 +18,12 @@ class RetainedInstanceBuilder(
 
         val retainedPresenter = RetainedInstanceStore.get(
                 owner = buildParams.identifier,
-                factory = { RetainedInstancePresenterImpl(dependency.orientationController) },
+                factory = { RetainedInstancePresenterImpl(dependency.clock) },
                 disposer = { it.dispose() }
         )
         val viewDependencies: RetainedInstanceView.Dependency = object : RetainedInstanceView.Dependency {
-            override val presenter: RetainedInstancePresenter = retainedPresenter
+            override val orientationController: ScreenOrientationController = dependency.orientationController
+
         }
 
         return RetainedInstanceNode(

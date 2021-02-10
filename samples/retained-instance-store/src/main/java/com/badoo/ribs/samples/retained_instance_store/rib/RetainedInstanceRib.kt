@@ -1,12 +1,13 @@
 package com.badoo.ribs.samples.retained_instance_store.rib
 
-import android.app.Activity
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.samples.retained_instance_store.utils.Clock
+import com.badoo.ribs.samples.retained_instance_store.utils.ScreenOrientationController
 
 interface RetainedInstanceRib : Rib {
 
     interface Dependency {
-        //TODO wrap this
-        val orientationController: Activity
+        val orientationController: ScreenOrientationController
+        val clock: Clock
     }
 }

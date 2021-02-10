@@ -6,6 +6,7 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content.*
@@ -14,10 +15,11 @@ import kotlinx.android.parcel.Parcelize
 
 class ContainerRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
+    routingSource: RoutingSource<Configuration>,
     private val builders: ContainerChildBuilders
 ) : Router<Configuration>(
     buildParams = buildParams,
-    routingSource = permanent(Menu)
+    routingSource = routingSource + permanent(Menu)
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {

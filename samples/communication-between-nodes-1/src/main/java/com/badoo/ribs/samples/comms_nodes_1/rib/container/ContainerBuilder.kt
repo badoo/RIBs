@@ -4,8 +4,11 @@ package com.badoo.ribs.samples.comms_nodes_1.rib.container
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerChildBuilders
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter
+import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration
+import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content
 
 class ContainerBuilder(
     private val dependency: Container.Dependency
@@ -15,7 +18,8 @@ class ContainerBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): Container {
 
-        val router = router(buildParams, builders)
+        val backStack = backStack(buildParams)
+        val router = router(buildParams, backStack, builders)
 
         return ContainerNode(
             buildParams = BuildParams.Empty(),
@@ -24,11 +28,19 @@ class ContainerBuilder(
         )
     }
 
+    private fun backStack(buildParams: BuildParams<Nothing?>): BackStack<Configuration> =
+        BackStack(
+            buildParams = buildParams,
+            initialConfiguration = Content.Child1
+        )
+
     private fun router(
         buildParams: BuildParams<Nothing?>,
+        backStack: BackStack<Configuration>,
         builders: ContainerChildBuilders
     ) = ContainerRouter(
         buildParams = buildParams,
-        builders = builders
+        builders = builders,
+        routingSource = backStack
     )
 }

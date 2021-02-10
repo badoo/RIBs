@@ -9,6 +9,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="light_blue_bg">#37009ABF</color>
-    <color name="purple_light_bg">#4A673AB7</color>
+    <color name="child1_background">#FF6C37</color>
+    <color name="child2_background">#009ABF</color>
+    <color name="child3_background">#767676</color>
 </resources>

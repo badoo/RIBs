@@ -2,11 +2,13 @@ package com.badoo.ribs.samples.comms_nodes_1.rib.container
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.comms_nodes_1.R
+import com.badoo.ribs.samples.comms_nodes_1.rib.menu.Menu
 
 interface ContainerView : RibView {
 
@@ -28,4 +30,12 @@ class ContainerViewImpl private constructor(
             )
         }
     }
+
+    private val menuContainer: ViewGroup = androidView.findViewById(R.id.menu_container)
+
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        when (subtreeOf) {
+            is Menu -> menuContainer
+            else -> super.getParentViewForSubtree(subtreeOf)
+        }
 }

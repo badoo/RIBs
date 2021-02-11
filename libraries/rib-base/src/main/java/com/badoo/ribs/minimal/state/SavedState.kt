@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.state
+package com.badoo.ribs.minimal.state
 
 import android.os.Bundle
 import android.os.Parcelable

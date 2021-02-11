@@ -1,6 +1,6 @@
 package com.badoo.ribs.rx2.adapter
 
-import com.badoo.ribs.core.state.Source
+import com.badoo.ribs.minimal.reactive.Source
 import io.reactivex.Observable
 
 fun <T> Source<T>.rx2(): Observable<T> =

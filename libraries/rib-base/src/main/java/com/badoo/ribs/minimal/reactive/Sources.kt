@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.state
+package com.badoo.ribs.minimal.reactive
 
 internal fun <T> just(producer: () -> T): Source<T> =
     object : Source<T> {

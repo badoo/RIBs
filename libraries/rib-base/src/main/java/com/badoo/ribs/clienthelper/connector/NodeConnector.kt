@@ -1,6 +1,6 @@
 package com.badoo.ribs.clienthelper.connector
 
-import com.badoo.ribs.core.state.Relay
+import com.badoo.ribs.minimal.reactive.Relay
 
 class NodeConnector<Input, Output>(
     override val input: Relay<Input> = Relay(),

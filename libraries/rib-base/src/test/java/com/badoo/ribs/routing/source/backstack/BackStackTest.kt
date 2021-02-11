@@ -2,7 +2,7 @@ package com.badoo.ribs.routing.source.backstack
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.core.state.Source
+import com.badoo.ribs.minimal.reactive.Source
 import com.badoo.ribs.routing.source.backstack.operation.push
 import kotlinx.android.parcel.Parcelize
 import org.junit.Assert.assertEquals

@@ -6,8 +6,8 @@ import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.BuildContext
-import com.badoo.ribs.core.state.Relay
-import com.badoo.ribs.core.state.Source
+import com.badoo.ribs.minimal.reactive.Relay
+import com.badoo.ribs.minimal.reactive.Source
 
 abstract class Dialog<T : Any> private constructor(
     factory: Dialog<T>.() -> Unit,

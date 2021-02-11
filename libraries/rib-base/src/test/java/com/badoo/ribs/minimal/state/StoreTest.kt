@@ -1,4 +1,4 @@
-package com.badoo.ribs.core.state
+package com.badoo.ribs.minimal.state
 
 import io.reactivex.observers.TestObserver
 import org.junit.Test

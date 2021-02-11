@@ -1,8 +1,8 @@
 package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import com.badoo.ribs.core.state.Relay
-import com.badoo.ribs.core.state.Source
+import com.badoo.ribs.minimal.reactive.Relay
+import com.badoo.ribs.minimal.reactive.Source
 import com.badoo.ribs.util.RIBs
 
 abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(

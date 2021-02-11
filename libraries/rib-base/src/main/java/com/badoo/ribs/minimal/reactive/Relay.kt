@@ -1,6 +1,6 @@
-package com.badoo.ribs.core.state
+package com.badoo.ribs.minimal.reactive
 
-import com.badoo.ribs.core.state.Cancellable.Companion.cancellableOf
+import com.badoo.ribs.minimal.reactive.Cancellable.Companion.cancellableOf
 
 interface Source<out T> {
     fun observe(callback: (T) -> Unit): Cancellable

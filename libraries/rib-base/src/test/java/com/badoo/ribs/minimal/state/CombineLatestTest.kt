@@ -1,5 +1,7 @@
-package com.badoo.ribs.core.state
+package com.badoo.ribs.minimal.state
 
+import com.badoo.ribs.minimal.reactive.Relay
+import com.badoo.ribs.minimal.reactive.combineLatest
 import io.reactivex.observers.TestObserver
 import org.junit.Test
 

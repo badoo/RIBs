@@ -9,8 +9,7 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.integrationpoint.ActivityIntegrationPoint
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.state.CompositeCancellable
-import com.badoo.ribs.core.state.Source
+import com.badoo.ribs.minimal.reactive.CompositeCancellable
 
 /**
  * Helper class for root [Rib] integration.

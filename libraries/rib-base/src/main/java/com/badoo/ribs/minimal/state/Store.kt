@@ -1,4 +1,8 @@
-package com.badoo.ribs.core.state
+package com.badoo.ribs.minimal.state
+
+import com.badoo.ribs.minimal.reactive.Cancellable
+import com.badoo.ribs.minimal.reactive.Relay
+import com.badoo.ribs.minimal.reactive.Source
 
 abstract class Store<State>(
     initialState: State

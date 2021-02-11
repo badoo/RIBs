@@ -8,7 +8,7 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Input
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld.Output
-import com.badoo.ribs.workflows.rx.RxWorkflowNode
+import com.badoo.ribs.rx.workflows.RxWorkflowNode
 import io.reactivex.Single
 
 class HelloWorldNode(

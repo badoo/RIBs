@@ -1,4 +1,4 @@
-package com.badoo.ribs.workflows.rx
+package com.badoo.ribs.rx.workflows
 
 import androidx.annotation.VisibleForTesting
 import com.badoo.ribs.core.Node

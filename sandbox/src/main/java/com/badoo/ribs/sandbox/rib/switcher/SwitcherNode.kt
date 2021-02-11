@@ -11,7 +11,7 @@ import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
-import com.badoo.ribs.workflows.rx.RxWorkflowNode
+import com.badoo.ribs.rx.workflows.RxWorkflowNode
 import io.reactivex.Single
 
 class SwitcherNode internal constructor(

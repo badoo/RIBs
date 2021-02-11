@@ -8,7 +8,7 @@ import com.badoo.ribs.portal.PortalRouter.Configuration
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import com.badoo.ribs.workflows.rx.RxWorkflowNode
+import com.badoo.ribs.rx.workflows.RxWorkflowNode
 import io.reactivex.Single
 
 internal class RxPortalNode(

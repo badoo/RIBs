@@ -25,6 +25,7 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.CrossFader
 import com.badoo.ribs.routing.transition.handler.Slider
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.rx2.workflows.RxWorkflowActivity
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
@@ -38,7 +39,7 @@ import io.reactivex.functions.BiFunction
 import leakcanary.AppWatcher
 
 /** The sample app's single activity */
-class RootActivity : RibActivity() {
+class RootActivity : RxWorkflowActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_root)

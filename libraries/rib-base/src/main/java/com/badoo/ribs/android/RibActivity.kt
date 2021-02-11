@@ -46,23 +46,9 @@ abstract class RibActivity : AppCompatActivity() {
 
         val root = createRib(savedInstanceState)
         integrationPoint.attach(root)
-
-        if (intent?.action == Intent.ACTION_VIEW) {
-            handleDeepLink(intent)
-        }
     }
 
     private val disposables = CompositeCancellable()
-
-    fun handleDeepLink(intent: Intent) {
-        workflowFactory.invoke(intent)?.let {
-            disposables += (it.observe {})
-        }
-    }
-
-    open val workflowFactory: (Intent) -> Source<*>? = {
-        null
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

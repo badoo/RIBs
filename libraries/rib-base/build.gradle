@@ -14,11 +14,10 @@ dependencies {
     implementation deps.android.fragment
     compileOnly deps.android.annotations
     implementation deps.external.kotlinStdlib
-    implementation deps.external.rxrelay2
-    implementation deps.external.rxjava2
 
     testImplementation deps.external.mviCore
     testImplementation deps.external.mviCoreAndroid
+    testImplementation deps.external.rxrelay2
 
     testImplementation deps.android.annotations
     testImplementation deps.test.junit

@@ -40,7 +40,7 @@ class CompositeCancellable(vararg cancellables: Cancellable) : Cancellable {
 }
 
 
-internal class Relay<T> : Source<T>, Emitter<T> {
+class Relay<T> : Source<T>, Emitter<T> {
     private val listeners: MutableList<(T) -> Unit> = mutableListOf()
 
     override fun emit(value: T) {

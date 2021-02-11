@@ -6,13 +6,13 @@ import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.BuildContext
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
+import com.badoo.ribs.core.state.Relay
+import com.badoo.ribs.core.state.Source
 
 abstract class Dialog<T : Any> private constructor(
     factory: Dialog<T>.() -> Unit,
-    private val events: PublishRelay<T>
-) : ObservableSource<T> by events {
+    private val events: Relay<T>
+) : Source<T> by events {
     var title: Text? = null
     var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
@@ -24,7 +24,7 @@ abstract class Dialog<T : Any> private constructor(
 
     constructor(factory: Dialog<T>.() -> Unit) : this(
         factory,
-        PublishRelay.create()
+        Relay()
     )
 
     init {
@@ -70,7 +70,7 @@ abstract class Dialog<T : Any> private constructor(
     }
 
     fun publish(event: T) {
-        events.accept(event)
+        events.emit(event)
     }
 
     fun buildNodes(buildContext: BuildContext): List<Rib> =

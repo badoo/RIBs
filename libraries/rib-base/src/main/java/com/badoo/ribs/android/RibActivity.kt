@@ -9,8 +9,8 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.integrationpoint.ActivityIntegrationPoint
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
+import com.badoo.ribs.core.state.CompositeCancellable
+import com.badoo.ribs.core.state.Source
 
 /**
  * Helper class for root [Rib] integration.
@@ -52,15 +52,15 @@ abstract class RibActivity : AppCompatActivity() {
         }
     }
 
-    private val disposables = CompositeDisposable()
+    private val disposables = CompositeCancellable()
 
     fun handleDeepLink(intent: Intent) {
         workflowFactory.invoke(intent)?.let {
-            disposables.add(it.subscribe())
+            disposables += (it.observe {})
         }
     }
 
-    open val workflowFactory: (Intent) -> Observable<*>? = {
+    open val workflowFactory: (Intent) -> Source<*>? = {
         null
     }
 

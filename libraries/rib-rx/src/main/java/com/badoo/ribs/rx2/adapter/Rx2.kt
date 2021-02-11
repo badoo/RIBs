@@ -1,4 +1,4 @@
-package com.badoo.ribs.rx.adapter
+package com.badoo.ribs.rx2.adapter
 
 import com.badoo.ribs.core.state.Source
 import io.reactivex.Observable

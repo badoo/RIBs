@@ -1,6 +1,6 @@
 package com.badoo.ribs.template.node_dagger.foo_bar
 
-import com.badoo.ribs.rx.clienthelper.connector.Connectable
+import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.core.customisation.RibCustomisation

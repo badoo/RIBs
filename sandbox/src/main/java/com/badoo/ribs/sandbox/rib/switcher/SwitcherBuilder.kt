@@ -4,7 +4,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.rx.adapter.rx2
+import com.badoo.ribs.rx2.adapter.rx2
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherChildBuilders

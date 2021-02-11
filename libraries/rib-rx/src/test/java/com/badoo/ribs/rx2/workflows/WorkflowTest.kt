@@ -1,4 +1,4 @@
-package com.badoo.ribs.rx.workflows
+package com.badoo.ribs.rx2.workflows
 
 import android.os.Parcelable
 import android.view.ViewGroup

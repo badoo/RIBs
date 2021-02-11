@@ -1,4 +1,4 @@
-package com.badoo.ribs.rx
+package com.badoo.ribs.rx2
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildContext

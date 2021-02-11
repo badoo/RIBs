@@ -28,7 +28,7 @@ dependencies {
 
     api project(":libraries:rib-portal")
     implementation project(":libraries:rib-base")
-    implementation project(":libraries:rib-rx")
+    implementation project(':libraries:rib-rx2')
 
     testImplementation deps.android.annotations
     testImplementation deps.test.junit

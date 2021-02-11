@@ -36,6 +36,6 @@
         app:layout_constraintBottom_toTopOf="@+id/toggle_child_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/description_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

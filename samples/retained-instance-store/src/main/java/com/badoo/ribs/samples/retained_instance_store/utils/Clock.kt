@@ -2,7 +2,6 @@ package com.badoo.ribs.samples.retained_instance_store.utils
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
@@ -18,8 +17,9 @@ interface Clock {
 
     fun bindOnTick(onTick: (counter: Int) -> Unit)
 
-    fun dispose(){
-        Log.d("Clock", "disposed")
+    fun unBindOnTick()
+
+    fun dispose() {
         stopTimer()
     }
 }
@@ -47,14 +47,18 @@ class SecondsClock : Clock {
     }
 
     override fun stopTimer() {
+        unBindOnTick()
         activeTimer?.cancel()
         counter = 0
-        onTick = null
         activeTimer = null
     }
 
     override fun bindOnTick(onTick: (counter: Int) -> Unit) {
         this.onTick = onTick
+    }
+
+    override fun unBindOnTick() {
+        onTick = null
     }
 
 }

@@ -6,11 +6,11 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 
 internal class CounterNode(
-        buildParams: BuildParams<*>,
-        viewFactory: ((RibView) -> CounterView?)?,
-        plugins: List<Plugin>
+    buildParams: BuildParams<*>,
+    viewFactory: ((RibView) -> CounterView?)?,
+    plugins: List<Plugin>
 ) : Node<CounterView>(
-        buildParams = buildParams,
-        viewFactory = viewFactory,
-        plugins = plugins
+    buildParams = buildParams,
+    viewFactory = viewFactory,
+    plugins = plugins
 ), Counter

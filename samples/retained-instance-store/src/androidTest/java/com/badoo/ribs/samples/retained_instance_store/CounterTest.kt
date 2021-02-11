@@ -3,7 +3,7 @@ package com.badoo.ribs.samples.retained_instance_store
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.test.espresso.Espresso.*
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
@@ -13,10 +13,8 @@ import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.retained_instance_store.rib.counter.Counter
 import com.badoo.ribs.samples.retained_instance_store.rib.counter.CounterBuilder
-import com.badoo.ribs.samples.retained_instance_store.utils.SecondsClock
 import org.hamcrest.Matcher
-import org.junit.Assert.*
-
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -30,10 +28,7 @@ class CounterTest {
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-            CounterBuilder(object : Counter.Dependency {
-                override val clock = SecondsClock()
-                override val isRetained = true
-            }).build(BuildContext.root(savedInstanceState))
+        CounterBuilder().build(BuildContext.root(savedInstanceState), Counter.Params(true))
 
     @Test
     fun WHEN_view_is_created_THEN_clock_output_is_shown() {

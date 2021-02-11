@@ -20,18 +20,18 @@ interface CounterView : RibView {
     fun updateCount(count: Int)
 }
 
-class CounterViewImp private constructor(
-        override val androidView: ViewGroup,
-        private val isRetained: Boolean
+class CounterViewImpl private constructor(
+    override val androidView: ViewGroup,
+    private val isRetained: Boolean
 ) : AndroidRibView(), CounterView {
 
     class Factory(
-            @LayoutRes private val layoutRes: Int = R.layout.rib_counter
+        @LayoutRes private val layoutRes: Int = R.layout.rib_counter
     ) : CounterView.Factory {
         override fun invoke(deps: CounterView.Dependency): (RibView) -> CounterView = {
-            CounterViewImp(
-                    androidView = it.inflate(layoutRes),
-                    isRetained = deps.isRetained
+            CounterViewImpl(
+                androidView = it.inflate(layoutRes),
+                isRetained = deps.isRetained
             )
         }
     }

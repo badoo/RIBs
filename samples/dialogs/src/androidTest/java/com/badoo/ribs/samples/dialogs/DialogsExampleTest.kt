@@ -49,7 +49,7 @@ class DialogsExampleTest {
 
         onView(withId(android.R.id.button2))
             .inRoot(isDialog())
-            .check(matches(withTextColor(R.color.red)))
+            .check(matches(withTextColor(R.color.pink)))
     }
 
     @Test

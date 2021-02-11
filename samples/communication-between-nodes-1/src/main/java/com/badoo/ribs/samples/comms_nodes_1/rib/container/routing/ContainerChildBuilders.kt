@@ -15,10 +15,10 @@ internal class ContainerChildBuilders(
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    val menu = MenuBuilder(subtreeDeps)
-    val child1 = Child1Builder(subtreeDeps)
-    val child2 = Child2Builder(subtreeDeps)
-    val child3 = Child3Builder(subtreeDeps)
+    val menu: MenuBuilder = MenuBuilder(subtreeDeps)
+    val child1: Child1Builder = Child1Builder(subtreeDeps)
+    val child2: Child2Builder = Child2Builder(subtreeDeps)
+    val child3: Child3Builder = Child3Builder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: Container.Dependency

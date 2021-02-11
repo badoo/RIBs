@@ -9,7 +9,9 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration
-import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content.*
+import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content.Child1
+import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content.Child2
+import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content.Child3
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Permanent.Menu
 import kotlinx.android.parcel.Parcelize
 

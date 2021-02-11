@@ -23,7 +23,7 @@ class ContainerTest {
             .build(BuildContext.root(savedInstanceState))
 
     @Test
-    fun default_showsChild1() {
+    fun default() {
         then { iSeeChild1() }
     }
 

@@ -20,14 +20,28 @@ class CustomisationsParentTest {
     private fun buildRib(savedInstanceState: Bundle?) =
         SimpleRoutingParentBuilder(
             object : SimpleRoutingParent.Dependency {}
-        ).build(root(
-            savedInstanceState = savedInstanceState,
-            customisations = AppCustomisations
-        ))
+        ).build(
+            root(
+                savedInstanceState = savedInstanceState,
+                customisations = AppCustomisations
+            )
+        )
 
     @Test
-    fun whenOverriddenCustomisation_thenVerifyCorrectParentTitle() {
+    fun whenOverriddenCustomisationThenVerifyCorrectParentTitle() {
         onView(withId(R.id.parent_title))
             .check(matches(withText(R.string.customisations_parent_text)))
+    }
+
+    @Test
+    fun whenOverriddenCustomisationThenVerifyCorrectChild1Child2Title() {
+        onView(withId(R.id.child1_child2_title))
+            .check(matches(withText(R.string.customisations_child1_child2_text)))
+    }
+
+    @Test
+    fun whenOverriddenCustomisationThenVerifyCorrectChild1Child1Title() {
+        onView(withId(R.id.child1_child1_title))
+            .check(matches(withText(R.string.customisations_child1_child1_text)))
     }
 }

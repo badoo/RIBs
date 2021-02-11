@@ -99,7 +99,7 @@ internal class SwitcherInteractor(
         super.onViewCreated(view, viewLifecycle)
         viewLifecycle.startStop {
             bind(view to viewEventConsumer)
-            bind(dialogToTestOverlay to dialogEventConsumer)
+            bind(dialogToTestOverlay.rx2() to dialogEventConsumer)
             bind(transitions to view using transitionStateToViewModel)
         }
     }

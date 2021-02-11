@@ -10,7 +10,7 @@ internal class DialogsNode(
     viewFactory: ((RibView) -> DialogsView),
     plugins: List<Plugin>
 ) : Node<DialogsView>(
-    buildParams = BuildParams.Empty(),
+    buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
 ), DialogsExample

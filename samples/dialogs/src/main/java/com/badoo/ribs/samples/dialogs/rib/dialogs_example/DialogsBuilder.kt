@@ -2,7 +2,7 @@ package com.badoo.ribs.samples.dialogs.rib.dialogs_example
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.core.plugin.Plugin
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
 
 class DialogsBuilder(
@@ -12,39 +12,24 @@ class DialogsBuilder(
     private val dialogs = Dialogs()
 
     override fun build(buildParams: BuildParams<Nothing?>): DialogsExample {
-        val interactor = interactor(buildParams = buildParams)
-        val router = router(
-            buildParams = buildParams,
-            interactor = interactor
+        val backStack: BackStack<DialogsRouter.Configuration> = BackStack(
+            initialConfiguration = DialogsRouter.Configuration.Content.Default,
+            buildParams = buildParams
         )
-        return node(
+        val presenter = DialogsPresenterImpl(dialogs, backStack)
+        val router = DialogsRouter(
             buildParams = buildParams,
-            customisation = buildParams.getOrDefault(DialogsExample.Customisation()),
-            plugins = listOf(interactor, router)
-        )
-    }
-
-    private fun router(
-        buildParams: BuildParams<Nothing?>,
-        interactor: DialogsInteractor
-    ): DialogsRouter =
-        DialogsRouter(
-            buildParams = buildParams,
-            routingSource = interactor,
+            routingSource = backStack,
             dialogLauncher = deps.dialogLauncher,
             dialogs = dialogs
         )
-
-    private fun interactor(buildParams: BuildParams<Nothing?>): DialogsInteractor =
-        DialogsInteractor(buildParams = buildParams, dialogs = dialogs)
-
-    private fun node(
-        buildParams: BuildParams<Nothing?>,
-        customisation: DialogsExample.Customisation,
-        plugins: List<Plugin>
-    ): DialogsNode = DialogsNode(
-        buildParams = buildParams,
-        viewFactory = customisation.viewFactory(null),
-        plugins = plugins
-    )
+        val viewDependencies = object : DialogsView.Dependency {
+            override val presenter: DialogsPresenter = presenter
+        }
+        return DialogsNode(
+            buildParams = buildParams,
+            viewFactory = DialogsViewImpl.Factory().invoke(viewDependencies),
+            plugins = listOf(router, presenter)
+        )
+    }
 }

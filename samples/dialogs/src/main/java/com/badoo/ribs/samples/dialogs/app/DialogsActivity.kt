@@ -8,12 +8,12 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.rib.Dialogs
-import com.badoo.ribs.samples.dialogs.rib.DialogsBuilder
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExample
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsBuilder
 
 class DialogsActivity : RibActivity() {
 
-    private val deps = object : Dialogs.Dependency {
+    private val deps = object : DialogsExample.Dependency {
         override val dialogLauncher: DialogLauncher = AlertDialogLauncher(
             this@DialogsActivity,
             this@DialogsActivity.lifecycle

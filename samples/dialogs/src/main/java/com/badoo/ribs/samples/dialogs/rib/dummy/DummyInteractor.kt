@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.dummy
+package com.badoo.ribs.samples.dialogs.rib.dummy
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop

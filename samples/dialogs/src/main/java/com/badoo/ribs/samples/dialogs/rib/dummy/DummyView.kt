@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.dummy
+package com.badoo.ribs.samples.dialogs.rib.dummy
 
 import android.view.ViewGroup
 import android.widget.Button
@@ -8,8 +8,8 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.dummy.DummyView.Event
-import com.badoo.ribs.samples.dialogs.dummy.DummyView.ViewModel
+import com.badoo.ribs.samples.dialogs.rib.dummy.DummyView.Event
+import com.badoo.ribs.samples.dialogs.rib.dummy.DummyView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

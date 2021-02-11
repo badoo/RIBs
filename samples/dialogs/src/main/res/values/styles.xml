@@ -24,7 +24,7 @@
     </style>
 
     <style name="AppTheme.ThemedDialog.Negative" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/red</item>
+        <item name="android:textColor">@color/pink</item>
     </style>
 
     <style name="AppTheme.ThemedDialog.Positive" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">

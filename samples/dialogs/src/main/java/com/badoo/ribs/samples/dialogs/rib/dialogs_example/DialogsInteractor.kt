@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.rib
+package com.badoo.ribs.samples.dialogs.rib.dialogs_example
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
@@ -10,24 +10,24 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.dialogtypes.DialogTypes
-import com.badoo.ribs.samples.dialogs.dummy.Dummy
-import com.badoo.ribs.samples.dialogs.dummy.Dummy.Output
-import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration
-import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Content
-import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Overlay
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowThemedDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowSimpleDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowLazyDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowRibDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.ViewModel
+import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Content
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Overlay
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowThemedDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowLazyDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowRibDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.ViewModel
+import com.badoo.ribs.samples.dialogs.rib.dummy.Dummy
+import com.badoo.ribs.samples.dialogs.rib.dummy.Dummy.Output
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.functions.Consumer
 
 class DialogsInteractor internal constructor(
     buildParams: BuildParams<Nothing?>,
-    private val dialogs: DialogTypes
-) : BackStackInteractor<Dialogs, DialogsView, Configuration>(
+    private val dialogs: Dialogs
+) : BackStackInteractor<DialogsExample, DialogsView, Configuration>(
     buildParams = buildParams,
     initialConfiguration = Content.Default
 ) {
@@ -72,7 +72,7 @@ class DialogsInteractor internal constructor(
             title = Text.Resource(R.string.lazy_dialog_title)
             message = Text.Resource(R.string.dialog_text)
             buttons {
-                neutral(Text.Resource(R.string.dialog_neutral_button), Dialog.Event.Neutral)
+                positive(Text.Resource(R.string.dialog_positive_button), Dialog.Event.Positive)
             }
             cancellationPolicy = Dialog.CancellationPolicy.Cancellable(
                 event = Dialog.Event.Cancelled,

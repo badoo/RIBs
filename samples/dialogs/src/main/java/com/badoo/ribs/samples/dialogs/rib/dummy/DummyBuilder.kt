@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.dummy
+package com.badoo.ribs.samples.dialogs.rib.dummy
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams

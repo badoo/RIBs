@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.rib
+package com.badoo.ribs.samples.dialogs.rib.dialogs_example
 
 import android.view.ViewGroup
 import android.widget.Button
@@ -9,12 +9,12 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowThemedDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowSimpleDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowLazyDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.Event.ShowRibDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.DialogsView.ViewModel
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowThemedDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowSimpleDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowLazyDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowRibDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer

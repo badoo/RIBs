@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.dialogtypes
+package com.badoo.ribs.samples.dialogs.dialogs
 
 import com.badoo.ribs.android.dialog.Dialog
 

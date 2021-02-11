@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.rib
+package com.badoo.ribs.samples.dialogs.rib.dialogs_example
 
 import android.os.Parcelable
 import com.badoo.ribs.android.dialog.DialogLauncher
@@ -8,17 +8,17 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.samples.dialogs.dialogtypes.DialogTypes
-import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration
-import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Content
-import com.badoo.ribs.samples.dialogs.rib.DialogsRouter.Configuration.Overlay
+import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Content
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Overlay
 import kotlinx.android.parcel.Parcelize
 
 class DialogsRouter(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
     private val dialogLauncher: DialogLauncher,
-    private val dialogs: DialogTypes
+    private val dialogs: Dialogs
 ) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource

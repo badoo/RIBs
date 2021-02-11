@@ -1,17 +1,17 @@
-package com.badoo.ribs.samples.dialogs.rib
+package com.badoo.ribs.samples.dialogs.rib.dialogs_example
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.samples.dialogs.dialogtypes.DialogTypes
+import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
 
 class DialogsBuilder(
-    private val deps: Dialogs.Dependency
-) : SimpleBuilder<Dialogs>() {
+    private val deps: DialogsExample.Dependency
+) : SimpleBuilder<DialogsExample>() {
 
-    private val dialogs = DialogTypes()
+    private val dialogs = Dialogs()
 
-    override fun build(buildParams: BuildParams<Nothing?>): Dialogs {
+    override fun build(buildParams: BuildParams<Nothing?>): DialogsExample {
         val interactor = interactor(buildParams = buildParams)
         val router = router(
             buildParams = buildParams,
@@ -19,7 +19,7 @@ class DialogsBuilder(
         )
         return node(
             buildParams = buildParams,
-            customisation = buildParams.getOrDefault(Dialogs.Customisation()),
+            customisation = buildParams.getOrDefault(DialogsExample.Customisation()),
             plugins = listOf(interactor, router)
         )
     }
@@ -40,7 +40,7 @@ class DialogsBuilder(
 
     private fun node(
         buildParams: BuildParams<Nothing?>,
-        customisation: Dialogs.Customisation,
+        customisation: DialogsExample.Customisation,
         plugins: List<Plugin>
     ): DialogsNode = DialogsNode(
         buildParams = buildParams,

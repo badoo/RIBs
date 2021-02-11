@@ -1,9 +1,9 @@
-package com.badoo.ribs.samples.dialogs.dialogtypes
+package com.badoo.ribs.samples.dialogs.dialogs
 
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.dummy.DummyBuilder
+import com.badoo.ribs.samples.dialogs.rib.dummy.DummyBuilder
 
 class RibDialog(dummyBuilder: DummyBuilder) : Dialog<Dialog.Event>(
     {

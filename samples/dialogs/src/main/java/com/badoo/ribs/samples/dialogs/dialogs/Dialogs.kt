@@ -1,9 +1,9 @@
-package com.badoo.ribs.samples.dialogs.dialogtypes
+package com.badoo.ribs.samples.dialogs.dialogs
 
 import com.badoo.ribs.android.dialog.Dialog
-import com.badoo.ribs.samples.dialogs.dummy.DummyBuilder
+import com.badoo.ribs.samples.dialogs.rib.dummy.DummyBuilder
 
-class DialogTypes {
+class Dialogs {
     val themedDialog: Dialog<Dialog.Event> = ThemedDialog()
     val simpleDialog: Dialog<Dialog.Event> = SimpleDialog()
     val lazyDialog: Dialog<Dialog.Event> = LazyDialog()

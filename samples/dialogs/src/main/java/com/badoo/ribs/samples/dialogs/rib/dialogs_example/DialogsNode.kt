@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.dialogs.rib
+package com.badoo.ribs.samples.dialogs.rib.dialogs_example
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
@@ -13,4 +13,4 @@ internal class DialogsNode(
     buildParams = BuildParams.Empty(),
     viewFactory = viewFactory,
     plugins = plugins
-), Dialogs
+), DialogsExample

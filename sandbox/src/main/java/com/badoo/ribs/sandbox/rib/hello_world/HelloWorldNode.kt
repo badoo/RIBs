@@ -1,8 +1,8 @@
 package com.badoo.ribs.sandbox.rib.hello_world
 
 import android.util.Log
-import com.badoo.ribs.clienthelper.connector.Connectable
-import com.badoo.ribs.clienthelper.connector.NodeConnector
+import com.badoo.ribs.rx.clienthelper.connector.Connectable
+import com.badoo.ribs.rx.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView

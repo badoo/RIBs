@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.welcome
 
-import com.badoo.ribs.clienthelper.connector.Connectable
+import com.badoo.ribs.rx.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.example.auth.AuthDataSource

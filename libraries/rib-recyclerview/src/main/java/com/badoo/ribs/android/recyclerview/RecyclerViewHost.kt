@@ -5,7 +5,7 @@ import android.os.Parcelable
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
-import com.badoo.ribs.clienthelper.connector.Connectable
+import com.badoo.ribs.rx.clienthelper.connector.Connectable
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.routing.resolver.RoutingResolver

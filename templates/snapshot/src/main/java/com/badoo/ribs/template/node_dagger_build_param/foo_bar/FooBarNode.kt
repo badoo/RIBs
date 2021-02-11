@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.node_dagger_build_param.foo_bar
 
-import com.badoo.ribs.clienthelper.connector.Connectable
-import com.badoo.ribs.clienthelper.connector.NodeConnector
+import com.badoo.ribs.rx.clienthelper.connector.Connectable
+import com.badoo.ribs.rx.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView

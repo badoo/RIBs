@@ -11,10 +11,9 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext
-import com.badoo.ribs.samples.retained_instance_store.rib.counter.Counter
 import com.badoo.ribs.samples.retained_instance_store.rib.counter.CounterBuilder
 import org.hamcrest.Matcher
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 
@@ -28,25 +27,43 @@ class CounterTest {
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        CounterBuilder().build(BuildContext.root(savedInstanceState), Counter.Params(true))
+        CounterBuilder().build(BuildContext.root(savedInstanceState))
 
     @Test
     fun WHEN_view_is_created_THEN_clock_output_is_shown() {
-        val seconds = onView(ViewMatchers.withId(R.id.seconds_counter)).getText()
+        val seconds = onView(ViewMatchers.withId(R.id.not_retained_seconds_counter)).getText()
         assertTrue(seconds.isNotEmpty())
     }
 
     @Test
-    fun WHEN_activity_is_recreated_GIVEN_that_store_is_retained_THEN_clock_is_not_reset() {
-        val initialSeconds = onView(ViewMatchers.withId(R.id.seconds_counter)).getText().toInt()
+    fun WHEN_view_is_created_THEN_retained_clock_output_is_shown() {
+        val seconds = onView(ViewMatchers.withId(R.id.retained_seconds_counter)).getText()
+        assertTrue(seconds.isNotEmpty())
+    }
+
+    @Test
+    fun WHEN_activity_is_recreated_GIVEN_counter_is_retained_THEN_clock_has_not_reset() {
+        val initialSeconds = onView(ViewMatchers.withId(R.id.retained_seconds_counter)).getText().toInt()
         Thread.sleep(1100)
         with(ribsRule.activity) {
             runOnUiThread {
                 recreate()
             }
         }
-        val endSeconds = onView(ViewMatchers.withId(R.id.seconds_counter)).getText().toInt()
-        assert(initialSeconds < endSeconds)
+        val endSeconds = onView(ViewMatchers.withId(R.id.retained_seconds_counter)).getText().toInt()
+        assertNotEquals(initialSeconds, endSeconds)
+    }
+
+    @Test
+    fun WHEN_activity_is_recreated_GIVEN_counter_is_not_retained_THEN_clock_has_reset() {
+        val initialSeconds = onView(ViewMatchers.withId(R.id.not_retained_seconds_counter)).getText().toInt()
+        with(ribsRule.activity) {
+            runOnUiThread {
+                recreate()
+            }
+        }
+        val endSeconds = onView(ViewMatchers.withId(R.id.not_retained_seconds_counter)).getText().toInt()
+        assertEquals(initialSeconds, endSeconds)
     }
 
     private fun ViewInteraction.getText(): String {

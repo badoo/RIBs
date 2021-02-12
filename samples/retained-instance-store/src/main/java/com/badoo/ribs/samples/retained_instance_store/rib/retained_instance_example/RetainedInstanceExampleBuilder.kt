@@ -12,7 +12,7 @@ class RetainedInstanceExampleBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): RetainedInstanceExample {
 
         val backStack: BackStack<RetainedInstanceExampleRouter.Configuration> = BackStack(
-            initialConfiguration = Content.NotRetained,
+            initialConfiguration = Content.Default,
             buildParams = buildParams
         )
         val presenter = RetainedInstanceExamplePresenterImpl(backStack)

@@ -11,45 +11,32 @@ import com.badoo.ribs.samples.retained_instance_store.R
 
 interface CounterView : RibView {
 
-    interface Factory : ViewFactory<Dependency, CounterView>
-
-    interface Dependency {
-        val isRetained: Boolean
-    }
+    interface Factory : ViewFactory<Nothing?, CounterView>
 
     fun updateCount(count: Int)
+
+    fun updateRetainedCount(count: Int)
+
 }
 
-class CounterViewImpl private constructor(
-    override val androidView: ViewGroup,
-    private val isRetained: Boolean
-) : AndroidRibView(), CounterView {
+class CounterViewImpl private constructor(override val androidView: ViewGroup) : AndroidRibView(), CounterView {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_counter
     ) : CounterView.Factory {
-        override fun invoke(deps: CounterView.Dependency): (RibView) -> CounterView = {
-            CounterViewImpl(
-                androidView = it.inflate(layoutRes),
-                isRetained = deps.isRetained
-            )
+        override fun invoke(nothing: Nothing?): (RibView) -> CounterView = {
+            CounterViewImpl(androidView = it.inflate(layoutRes))
         }
     }
 
-    private val counterView: TextView = androidView.findViewById(R.id.seconds_counter)
-    private val descriptionText = androidView.findViewById<TextView>(R.id.description_text)
-
-    init {
-        with(androidView?.resources) {
-            descriptionText.text = if (isRetained) {
-                getString(R.string.retained_description)
-            } else {
-                getString(R.string.not_retained_description)
-            }
-        }
-    }
+    private val retainedCounter: TextView = androidView.findViewById(R.id.retained_seconds_counter)
+    private val notRetainedCounter: TextView = androidView.findViewById(R.id.not_retained_seconds_counter)
 
     override fun updateCount(count: Int) {
-        counterView.text = count.toString()
+        notRetainedCounter.text = count.toString()
+    }
+
+    override fun updateRetainedCount(count: Int) {
+        retainedCounter.text = count.toString()
     }
 }

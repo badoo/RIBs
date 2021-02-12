@@ -16,12 +16,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/children_container" />
 
+
+    <TextView
+        android:id="@+id/demo_step_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/demo_step_1"
+        app:layout_constraintEnd_toStartOf="@+id/children_container"
+        app:layout_constraintStart_toStartOf="@+id/description_text"
+        app:layout_constraintTop_toBottomOf="@+id/description_text" />
+
+    <TextView
+        android:id="@+id/demo_step_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/demo_step_2"
+        app:layout_constraintEnd_toStartOf="@+id/children_container"
+        app:layout_constraintStart_toStartOf="@+id/demo_step_1"
+        app:layout_constraintTop_toBottomOf="@+id/demo_step_1" />
+
+    <TextView
+        android:id="@+id/demo_step_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/demo_step_3"
+        app:layout_constraintEnd_toStartOf="@+id/children_container"
+        app:layout_constraintStart_toStartOf="@+id/demo_step_2"
+        app:layout_constraintTop_toBottomOf="@+id/demo_step_2" />
+
     <Button
         android:id="@+id/toggle_child_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimary"
-        android:text="@string/change_mode_button_text"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/children_container"
         app:layout_constraintEnd_toEndOf="@+id/description_text"
@@ -33,7 +61,7 @@
         android:layout_height="0dp"
         android:layout_margin="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintDimensionRatio="W,4:3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

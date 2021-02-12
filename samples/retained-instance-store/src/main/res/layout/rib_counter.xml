@@ -6,25 +6,57 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/description_text"
+        android:id="@+id/not_retained_description_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/seconds_counter"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/retained_description_text"
+        app:layout_constraintEnd_toStartOf="@+id/retained_description_text"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/retained_description" />
+        app:layout_constraintTop_toTopOf="@+id/retained_description_text"
+        android:text="@string/not_retained_description" />
 
     <TextView
-        android:id="@+id/seconds_counter"
+        android:id="@+id/retained_description_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/not_retained_seconds_counter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/not_retained_description_text"
+        android:text="@string/retained_description" />
+
+    <TextView
+        android:id="@+id/retained_seconds_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="100sp"
         android:textColor="@android:color/black"
+        android:textSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/retained_description_text"
+        app:layout_constraintStart_toStartOf="@+id/retained_description_text"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10"/>
+
+
+    <TextView
+        android:id="@+id/not_retained_seconds_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="100sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/not_retained_description_text"
+        app:layout_constraintStart_toStartOf="@+id/not_retained_description_text"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

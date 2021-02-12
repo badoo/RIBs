@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Retained Instance Store</string>
-    <string name="rotate_button_text">Rotate Screen</string>
-    <string name="change_mode_button_text">Change Retained Mode</string>
-    <string name="demo_description">Use the button to toggle between retained and not-retained store. Rotate screen and see what happens!</string>
+    <string name="create_button_text">Create Counters</string>
+    <string name="destroy_button_text">Destroy Counters</string>
     <string name="retained_description">I am using a retained store.</string>
     <string name="not_retained_description">I am NOT using a retained store.</string>
+    <string name="demo_description">Suggested steps:</string>
+    <string name="demo_step_1">1. Click the button to add counters</string>
+    <string name="demo_step_2">2. Rotate the screen and see what happen</string>
+    <string name="demo_step_3">3. Destroy the counters and create them again using the button</string>
 </resources>

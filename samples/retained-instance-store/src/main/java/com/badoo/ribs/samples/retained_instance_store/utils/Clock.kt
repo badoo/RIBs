@@ -11,16 +11,16 @@ interface Clock {
 
     val elapsedTicks: Int
 
-    fun startTimer()
+    fun start()
 
-    fun stopTimer()
+    fun stop()
 
     fun bindOnTick(onTick: (counter: Int) -> Unit)
 
     fun unBindOnTick()
 
     fun dispose() {
-        stopTimer()
+        stop()
     }
 }
 
@@ -34,7 +34,7 @@ class SecondsClock : Clock {
         get() = counter
 
 
-    override fun startTimer() {
+    override fun start() {
         if (activeTimer == null) {
             val uiHandler = Handler(Looper.getMainLooper())
             activeTimer = fixedRateTimer(period = PERIOD_MS) {
@@ -46,7 +46,7 @@ class SecondsClock : Clock {
         }
     }
 
-    override fun stopTimer() {
+    override fun stop() {
         unBindOnTick()
         activeTimer?.cancel()
         counter = 0

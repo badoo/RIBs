@@ -67,6 +67,10 @@ abstract class Router<C : Parcelable>(
     override fun init(node: Node<*>) {
         this.node = node
         activator = RoutingActivator(node, clientChildActivator)
+    }
+
+    override fun onBuild() {
+        super.onBuild()
         initFeatures(node)
     }
 

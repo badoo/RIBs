@@ -16,8 +16,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 
 
-// FIXME rename
-inline fun <reified View, ViewEvent> create(
+inline fun <reified View, ViewEvent> createInteractorTestHelper(
     interactor: Interactor<*, View>,
     viewEventRelay: Relay<ViewEvent>
 ): InteractorTestHelper<View> where View : RibView, View : ObservableSource<ViewEvent> {

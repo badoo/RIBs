@@ -10,7 +10,7 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.badoo.common.ribs.mockIO
-import com.badoo.common.ribs.create
+import com.badoo.common.ribs.createInteractorTestHelper
 import io.reactivex.observers.TestObserver
 import org.junit.Before
 import org.junit.Test
@@ -32,7 +32,7 @@ class WelcomeInteractorTest {
             authDataSource = authDataSource
         )
         interactor.mockIO(outputRelay = output)
-        interactorTestHelper = create(interactor, viewEventRelay)
+        interactorTestHelper = createInteractorTestHelper(interactor, viewEventRelay)
         outputObserver = TestObserver.create()
         output.subscribe(outputObserver)
     }

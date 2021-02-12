@@ -1,11 +1,11 @@
-// FIXME package
-package com.badoo.common.ribs
+package com.badoo.common.ribs.rx
 
 import android.view.ViewGroup
-import com.badoo.ribs.rx2.clienthelper.connector.Connectable
+import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource

@@ -2,8 +2,8 @@
     <string name="app_name">Retained Instance Store</string>
     <string name="create_button_text">Add Child</string>
     <string name="destroy_button_text">Remove Child</string>
-    <string name="retained_description">I am using a retained store.</string>
-    <string name="not_retained_description">I am NOT using a retained store.</string>
+    <string name="retained_description">I am using a retained instance.</string>
+    <string name="not_retained_description">I am [NOT] using a retained instance.</string>
     <string name="demo_description">Suggested steps:</string>
     <string name="demo_step_1">1. Click the button to add a child node with counters.</string>
     <string name="demo_step_2">2. Rotate the screen and see what happens.</string>

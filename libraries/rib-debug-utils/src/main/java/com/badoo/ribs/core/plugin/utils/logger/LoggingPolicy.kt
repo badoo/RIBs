@@ -21,6 +21,7 @@ interface LoggingPolicy {
     val logHandleBackPress: Boolean
     val logHandleBackPressFirst: Boolean
     val logHandleBackPressFallback: Boolean
+    val logHandleUpNavigation: Boolean
 
     /**
      * Allows what you tell it to, denies everything else by default
@@ -45,7 +46,8 @@ interface LoggingPolicy {
         override val logOnLowMemory: Boolean = false,
         override val logHandleBackPress: Boolean = false,
         override val logHandleBackPressFirst: Boolean = false,
-        override val logHandleBackPressFallback: Boolean = false
+        override val logHandleBackPressFallback: Boolean = false,
+        override val logHandleUpNavigation: Boolean = false
     ) : LoggingPolicy
 
     /**
@@ -71,6 +73,7 @@ interface LoggingPolicy {
         override val logOnLowMemory: Boolean = true,
         override val logHandleBackPress: Boolean = true,
         override val logHandleBackPressFirst: Boolean = true,
-        override val logHandleBackPressFallback: Boolean = true
+        override val logHandleBackPressFallback: Boolean = true,
+        override val logHandleUpNavigation: Boolean = true
     ) : LoggingPolicy
 }

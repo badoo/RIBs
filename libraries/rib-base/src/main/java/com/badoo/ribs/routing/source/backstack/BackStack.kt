@@ -168,6 +168,9 @@ class BackStack<C : Parcelable> internal constructor(
     override fun handleBackPressFallback(): Boolean =
         popBackStack()
 
+    override fun handleUpNavigation(): Boolean =
+        popBackStack()
+
     override fun remove(identifier: Routing.Identifier) {
         accept(Remove(identifier))
     }

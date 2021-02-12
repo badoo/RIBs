@@ -15,6 +15,7 @@ import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLaz
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowThemedDialogClicked
+import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.Up
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
@@ -65,6 +66,7 @@ class DialogExampleInteractor internal constructor(
             }
 
             ShowRibDialogClicked -> backStack.pushOverlay(Overlay.RibDialog)
+            Up -> node.upNavigation()
         }
     }
 

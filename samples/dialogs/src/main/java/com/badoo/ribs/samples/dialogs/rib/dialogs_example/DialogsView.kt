@@ -9,14 +9,13 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowThemedDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowLazyDialogClicked
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowRibDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.ViewModel
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowThemedDialogClicked
 import io.reactivex.functions.Consumer
 
-interface DialogsView : RibView, Consumer<ViewModel> {
+interface DialogsView : RibView, Consumer<String> {
 
     sealed class Event {
         object ShowThemedDialogClicked : Event()
@@ -29,17 +28,13 @@ interface DialogsView : RibView, Consumer<ViewModel> {
         val presenter: DialogsPresenter
     }
 
-    data class ViewModel(
-        val text: String
-    )
-
     interface Factory : ViewFactory<Dependency, DialogsView>
 }
 
 class DialogsViewImpl private constructor(
     override val androidView: ViewGroup,
     private val presenter: DialogsPresenter
-) : AndroidRibView(), DialogsView, Consumer<ViewModel> {
+) : AndroidRibView(), DialogsView {
 
     class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_dialogs) : DialogsView.Factory {
 
@@ -65,7 +60,7 @@ class DialogsViewImpl private constructor(
         ribDialogButton.setOnClickListener { presenter.handle(ShowRibDialogClicked) }
     }
 
-    override fun accept(vm: ViewModel) {
-        text.text = vm.text
+    override fun accept(headerText: String) {
+        text.text = headerText
     }
 }

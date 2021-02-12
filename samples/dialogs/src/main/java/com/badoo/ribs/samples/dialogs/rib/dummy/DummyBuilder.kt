@@ -2,16 +2,19 @@ package com.badoo.ribs.samples.dialogs.rib.dummy
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.plugin.RibAwareImpl
 
 class DummyBuilder : SimpleBuilder<Dummy>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Dummy {
-        val customisation = buildParams.getOrDefault(Dummy.Customisation())
-        val interactor = DummyInteractor(buildParams = buildParams)
+        val presenter = DummyPresenterImpl(RibAwareImpl())
+        val viewDependencies = object : DummyView.Dependency {
+            override val presenter: DummyPresenter = presenter
+        }
         return DummyNode(
             buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = listOf(interactor)
+            viewFactory = DummyViewImpl.Factory().invoke(viewDependencies),
+            plugins = listOf(presenter)
         )
     }
 }

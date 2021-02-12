@@ -4,6 +4,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Content
 
 class DialogsBuilder(
     private val deps: DialogsExample.Dependency
@@ -13,7 +14,7 @@ class DialogsBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): DialogsExample {
         val backStack: BackStack<DialogsRouter.Configuration> = BackStack(
-            initialConfiguration = DialogsRouter.Configuration.Content.Default,
+            initialConfiguration = Content.Default,
             buildParams = buildParams
         )
         val presenter = DialogsPresenterImpl(dialogs, backStack)

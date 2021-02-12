@@ -1,6 +1,7 @@
 package com.badoo.ribs.samples.dialogs.rib.dummy
 
 import com.badoo.ribs.core.plugin.RibAware
+import com.badoo.ribs.core.plugin.RibAwareImpl
 
 interface DummyPresenter {
 
@@ -8,7 +9,7 @@ interface DummyPresenter {
 }
 
 internal class DummyPresenterImpl(
-    private val ribAware: RibAware<Dummy>
+    private val ribAware: RibAware<Dummy> = RibAwareImpl()
 ) : DummyPresenter, RibAware<Dummy> by ribAware {
 
     override fun handle(event: DummyView.Event) {

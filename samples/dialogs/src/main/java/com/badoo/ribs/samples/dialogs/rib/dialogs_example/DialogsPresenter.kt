@@ -19,11 +19,13 @@ import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.Show
 import com.badoo.ribs.samples.dialogs.rib.dummy.Dummy
 import io.reactivex.Observable.wrap
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 
 interface DialogsPresenter {
 
-    fun handle(event: DialogsView.Event)
+    fun handleThemedDialog(event: ShowThemedDialogClicked)
+    fun handleSimpleDialog(event: ShowSimpleDialogClicked)
+    fun handleLazyDialog(event: ShowLazyDialogClicked)
+    fun handleRibDialog(event: ShowRibDialogClicked)
 }
 
 internal class DialogsPresenterImpl(
@@ -39,10 +41,10 @@ internal class DialogsPresenterImpl(
             onCreate = {
                 this@DialogsPresenterImpl.view = view
                 disposables.apply {
-                    add(wrap(dialogs.themedDialog).subscribe(dialogEventConsumer))
-                    add(wrap(dialogs.simpleDialog).subscribe(dialogEventConsumer))
-                    add(wrap(dialogs.lazyDialog).subscribe(dialogEventConsumer))
-                    add(wrap(dialogs.ribDialog).subscribe(dialogEventConsumer))
+                    add(wrap(dialogs.themedDialog).subscribe { resolveDialogEvents(it, view) })
+                    add(wrap(dialogs.simpleDialog).subscribe { resolveDialogEvents(it, view) })
+                    add(wrap(dialogs.lazyDialog).subscribe { resolveDialogEvents(it, view) })
+                    add(wrap(dialogs.ribDialog).subscribe { resolveDialogEvents(it, view) })
                 }
             },
             onDestroy = {
@@ -56,22 +58,27 @@ internal class DialogsPresenterImpl(
         child.lifecycle.subscribe(
             onCreate = {
                 when (child) {
-                    is Dummy -> disposables.add(wrap(child.output).subscribe(dummyConsumer))
+                    is Dummy -> disposables.add(wrap(child.output).subscribe { resolveDummyOutput(view) })
                 }
             }
         )
     }
 
-    override fun handle(event: DialogsView.Event) {
-        when (event) {
-            ShowThemedDialogClicked -> backStack.pushOverlay(Overlay.ThemedDialog)
-            ShowSimpleDialogClicked -> backStack.pushOverlay(Overlay.SimpleDialog)
-            ShowLazyDialogClicked -> {
-                initLazyDialog()
-                backStack.pushOverlay(Overlay.LazyDialog)
-            }
-            ShowRibDialogClicked -> backStack.pushOverlay(Overlay.RibDialog)
-        }
+    override fun handleThemedDialog(event: ShowThemedDialogClicked) {
+        backStack.pushOverlay(Overlay.ThemedDialog)
+    }
+
+    override fun handleLazyDialog(event: ShowLazyDialogClicked) {
+        initLazyDialog()
+        backStack.pushOverlay(Overlay.LazyDialog)
+    }
+
+    override fun handleRibDialog(event: ShowRibDialogClicked) {
+        backStack.pushOverlay(Overlay.RibDialog)
+    }
+
+    override fun handleSimpleDialog(event: ShowSimpleDialogClicked) {
+        backStack.pushOverlay(Overlay.SimpleDialog)
     }
 
     private fun initLazyDialog() {
@@ -88,17 +95,17 @@ internal class DialogsPresenterImpl(
         }
     }
 
-    private val dialogEventConsumer: Consumer<Dialog.Event> = Consumer {
-        when (it) {
-            Dialog.Event.Positive -> view?.accept("Dialog - Positive clicked")
-            Dialog.Event.Negative -> view?.accept("Dialog - Negative clicked")
-            Dialog.Event.Neutral -> view?.accept("Dialog - Neutral clicked")
-            Dialog.Event.Cancelled -> view?.accept("Dialog - Cancelled")
+    private fun resolveDialogEvents(event: Dialog.Event, view: DialogsView) {
+        when (event) {
+            Dialog.Event.Positive -> view.displayText("Dialog - Positive clicked")
+            Dialog.Event.Negative -> view.displayText("Dialog - Negative clicked")
+            Dialog.Event.Neutral -> view.displayText("Dialog - Neutral clicked")
+            Dialog.Event.Cancelled -> view.displayText("Dialog - Cancelled")
         }
     }
 
-    private val dummyConsumer: Consumer<Dummy.Output> = Consumer {
-        view?.accept("Button in Dummy RIB clicked")
+    private fun resolveDummyOutput(view: DialogsView?) {
+        view?.displayText("Button in Dummy RIB clicked")
         backStack.popBackStack()
     }
 }

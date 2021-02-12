@@ -13,9 +13,8 @@ import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.Show
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowSimpleDialogClicked
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowRibDialogClicked
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowThemedDialogClicked
-import io.reactivex.functions.Consumer
 
-interface DialogsView : RibView, Consumer<String> {
+interface DialogsView : RibView {
 
     sealed class Event {
         object ShowThemedDialogClicked : Event()
@@ -29,6 +28,8 @@ interface DialogsView : RibView, Consumer<String> {
     }
 
     interface Factory : ViewFactory<Dependency, DialogsView>
+
+    fun displayText(headerText: String)
 }
 
 class DialogsViewImpl private constructor(
@@ -54,13 +55,13 @@ class DialogsViewImpl private constructor(
 
 
     init {
-        themedDialogButton.setOnClickListener { presenter.handle(ShowThemedDialogClicked) }
-        simpleDialogButton.setOnClickListener { presenter.handle(ShowSimpleDialogClicked) }
-        lazyDialogButton.setOnClickListener { presenter.handle(ShowLazyDialogClicked) }
-        ribDialogButton.setOnClickListener { presenter.handle(ShowRibDialogClicked) }
+        themedDialogButton.setOnClickListener { presenter.handleThemedDialog(ShowThemedDialogClicked) }
+        simpleDialogButton.setOnClickListener { presenter.handleSimpleDialog(ShowSimpleDialogClicked) }
+        lazyDialogButton.setOnClickListener { presenter.handleLazyDialog(ShowLazyDialogClicked) }
+        ribDialogButton.setOnClickListener { presenter.handleRibDialog(ShowRibDialogClicked) }
     }
 
-    override fun accept(headerText: String) {
+    override fun displayText(headerText: String) {
         text.text = headerText
     }
 }

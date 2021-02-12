@@ -3,36 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryPale">
 
-    <TextView
-        android:id="@+id/not_retained_description_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/retained_description_text"
-        app:layout_constraintEnd_toStartOf="@+id/retained_description_text"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/retained_description_text"
-        android:text="@string/not_retained_description" />
 
     <TextView
         android:id="@+id/retained_description_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/not_retained_seconds_counter"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/retained_description"
+        app:layout_constraintBottom_toBottomOf="@+id/not_retained_description_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/not_retained_description_text"
-        android:text="@string/retained_description" />
+        app:layout_constraintTop_toTopOf="@+id/not_retained_description_text" />
 
     <TextView
         android:id="@+id/retained_seconds_counter"
@@ -40,23 +27,52 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:textSize="100sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/not_retained_seconds_counter"
         app:layout_constraintEnd_toEndOf="@+id/retained_description_text"
         app:layout_constraintStart_toStartOf="@+id/retained_description_text"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="10"/>
-
+        app:layout_constraintTop_toTopOf="@+id/not_retained_seconds_counter"
+        tools:text="10" />
 
     <TextView
         android:id="@+id/not_retained_seconds_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:textColor="@android:color/black"
         android:textSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/not_retained_description_text"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/not_retained_description_text"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/not_retained_description_text"
         tools:text="10" />
+
+    <TextView
+        android:id="@+id/not_retained_description_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="@string/not_retained_description"
+        app:layout_constraintBottom_toTopOf="@+id/not_retained_seconds_counter"
+        app:layout_constraintEnd_toStartOf="@+id/retained_description_text"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/child_node_text"
+        app:layout_constraintBottom_toTopOf="@+id/not_retained_description_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

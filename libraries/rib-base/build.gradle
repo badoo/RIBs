@@ -26,12 +26,14 @@ dependencies {
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
 
+    androidTestImplementation deps.external.rxjava2
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.assertj
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.espressoIntents
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.rules
+    androidTestImplementation project(":libraries:rib-rx2")
     androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation project(':libraries:rib-base-test-activity')
 }

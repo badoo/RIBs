@@ -9,7 +9,6 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.integrationpoint.ActivityIntegrationPoint
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.minimal.reactive.CompositeCancellable
 
 /**
  * Helper class for root [Rib] integration.
@@ -46,9 +45,7 @@ abstract class RibActivity : AppCompatActivity() {
         val root = createRib(savedInstanceState)
         integrationPoint.attach(root)
     }
-
-    private val disposables = CompositeCancellable()
-
+    
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         integrationPoint.onSaveInstanceState(outState)

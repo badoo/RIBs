@@ -3,6 +3,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
 import com.badoo.common.ribs.InteractorTestHelper
+import com.badoo.common.ribs.create
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
 import com.badoo.ribs.routing.source.backstack.BackStack
@@ -40,7 +41,7 @@ class SwitcherInteractorTest {
             transitionSettled = { true }
         )
 
-        interactorTestHelper = InteractorTestHelper.create(interactor, viewEventRelay)
+        interactorTestHelper = create(interactor, viewEventRelay)
     }
 
     @Test

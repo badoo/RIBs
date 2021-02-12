@@ -87,6 +87,7 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
+    testImplementation project(":libraries:rib-base-test-rx2")
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

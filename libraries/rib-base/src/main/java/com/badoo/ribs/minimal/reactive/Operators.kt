@@ -1,6 +1,6 @@
 package com.badoo.ribs.minimal.reactive
 
-internal fun <T> just(producer: () -> T): Source<T> =
+fun <T> just(producer: () -> T): Source<T> =
     object : Source<T> {
         override fun observe(callback: (T) -> Unit): Cancellable {
             callback(producer())
@@ -8,7 +8,7 @@ internal fun <T> just(producer: () -> T): Source<T> =
         }
     }
 
-internal fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: Source<B>, combination: (A, B) -> C): Source<C> =
+fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: Source<B>, combination: (A, B) -> C): Source<C> =
     object : Source<C> {
         /**
          * The internal state (first / second values) should be recreated for each new call to observer
@@ -40,13 +40,13 @@ internal fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: So
         }
     }
 
-internal fun <T, R> Source<T>.map(transform: (T) -> R): Source<R> =
+fun <T, R> Source<T>.map(transform: (T) -> R): Source<R> =
     object : Source<R> {
         override fun observe(callback: (R) -> Unit): Cancellable =
             this@map.observe { callback(transform(it)) }
     }
 
-internal fun <T> Source<T>.filter(predicate: (T) -> Boolean): Source<T> =
+fun <T> Source<T>.filter(predicate: (T) -> Boolean): Source<T> =
     object : Source<T> {
         override fun observe(callback: (T) -> Unit): Cancellable =
             this@filter.observe {
@@ -54,7 +54,7 @@ internal fun <T> Source<T>.filter(predicate: (T) -> Boolean): Source<T> =
             }
     }
 
-internal fun <T> Source<T>.startWith(value: T): Source<T> =
+fun <T> Source<T>.startWith(value: T): Source<T> =
     object : Source<T> {
         override fun observe(callback: (T) -> Unit): Cancellable {
             callback(value)

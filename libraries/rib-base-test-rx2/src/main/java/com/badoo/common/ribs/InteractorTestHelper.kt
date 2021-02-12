@@ -1,3 +1,4 @@
+// FIXME package
 package com.badoo.common.ribs
 
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 
 
+// FIXME rename
 inline fun <reified View, ViewEvent> create(
     interactor: Interactor<*, View>,
     viewEventRelay: Relay<ViewEvent>

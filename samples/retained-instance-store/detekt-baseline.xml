@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EmptyDefaultConstructor:RetainedInstanceExampleBuilder.kt$RetainedInstanceExampleBuilder$( )</ID>
+    <ID>ExpressionBodySyntax:RetainedInstanceExampleBuilder.kt$RetainedInstanceExampleBuilder$return CounterBuilder()</ID>
+    <ID>ExpressionBodySyntax:RootActivity.kt$RootActivity$return RetainedInstanceExampleBuilder().build(BuildContext.root(savedInstanceState))</ID>
+    <ID>FunctionNaming:CounterTest.kt$CounterTest$@Test fun WHEN_activity_is_recreated_GIVEN_that_store_is_retained_THEN_clock_is_not_reset()</ID>
+    <ID>FunctionNaming:CounterTest.kt$CounterTest$@Test fun WHEN_view_is_created_THEN_clock_output_is_shown()</ID>
+    <ID>MagicNumber:CounterPresenter.kt$CounterPresenterImpl$100</ID>
+    <ID>NewLineAtEndOfFile:Clock.kt$com.badoo.ribs.samples.retained_instance_store.utils.Clock.kt</ID>
+    <ID>NewLineAtEndOfFile:Counter.kt$com.badoo.ribs.samples.retained_instance_store.rib.counter.Counter.kt</ID>
+    <ID>NewLineAtEndOfFile:CounterNode.kt$com.badoo.ribs.samples.retained_instance_store.rib.counter.CounterNode.kt</ID>
+    <ID>NewLineAtEndOfFile:CounterTest.kt$com.badoo.ribs.samples.retained_instance_store.CounterTest.kt</ID>
+    <ID>NewLineAtEndOfFile:RetainedInstanceExample.kt$com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExample.kt</ID>
+    <ID>NewLineAtEndOfFile:RetainedInstanceExampleView.kt$com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleView.kt</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:RetainedInstanceExamplePresenter.kt$RetainedInstanceExamplePresenterImpl$IllegalStateException()</ID>
+    <ID>WildcardImport:RetainedInstanceExampleView.kt$import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleView.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

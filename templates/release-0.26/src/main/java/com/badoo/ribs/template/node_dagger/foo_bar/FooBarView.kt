@@ -2,10 +2,10 @@ package com.badoo.ribs.template.node_dagger.foo_bar
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import com.badoo.ribs.core.customisation.inflate
-import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.customisation.inflate
+import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.template.R
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView.Event
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView.ViewModel

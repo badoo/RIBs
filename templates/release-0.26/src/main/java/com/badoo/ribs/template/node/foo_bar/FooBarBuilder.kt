@@ -5,7 +5,8 @@ package com.badoo.ribs.template.node.foo_bar
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.rx.disposables
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
@@ -23,11 +24,11 @@ class FooBarBuilder(
         val interactor = interactor(buildParams, backStack, feature)
         val router = router(buildParams, backStack, connections, customisation)
 
-        return node(buildParams, customisation, interactor, router)
+        return node(buildParams, customisation, feature, interactor, router)
     }
 
     private fun backStack(buildParams: BuildParams<*>) =
-        BackStackFeature<Configuration>(
+        BackStack<Configuration>(
             buildParams = buildParams,
             initialConfiguration = Configuration.Content.Default
         )
@@ -37,7 +38,7 @@ class FooBarBuilder(
 
     private fun interactor(
         buildParams: BuildParams<*>,
-        backStack: BackStackFeature<Configuration>,
+        backStack: BackStack<Configuration>,
         feature: FooBarFeature
     ) = FooBarInteractor(
         buildParams = buildParams,
@@ -61,11 +62,12 @@ class FooBarBuilder(
     private fun node(
         buildParams: BuildParams<*>,
         customisation: FooBar.Customisation,
+        feature: FooBarFeature,
         interactor: FooBarInteractor,
         router: FooBarRouter
     ) = FooBarNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
-        plugins = listOf(interactor, router)
+        plugins = listOf(interactor, router, disposables(feature))
     )
 }

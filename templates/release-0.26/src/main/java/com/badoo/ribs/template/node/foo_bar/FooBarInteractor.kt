@@ -4,10 +4,10 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
-import com.badoo.ribs.clienthelper.interactor.Interactor
+import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.template.node.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.mapper.InputToWish
@@ -19,14 +19,14 @@ import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
-    private val backStack: BackStackFeature<Configuration>,
+    backStack: BackStack<Configuration>,
     private val feature: FooBarFeature
-) : Interactor<FooBar, FooBarView>(
+) : BackStackInteractor<FooBar, FooBarView, Configuration>(
     buildParams = buildParams,
-    disposables = feature
+    backStack = backStack
 ) {
 
-    override fun onAttach(nodeLifecycle: Lifecycle) {
+    override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
             bind(feature.news to rib.output using NewsToOutput)
             bind(rib.input to feature using InputToWish)
@@ -41,7 +41,7 @@ internal class FooBarInteractor(
         }
     }
 
-    override fun onChildCreated(child: Node<*>) {
+    override fun onChildBuilt(child: Node<*>) {
         /**
          * TODO bind children here and delete this comment block.
          *
@@ -49,7 +49,7 @@ internal class FooBarInteractor(
          *  so it's safe to setup listening to their output before they start emitting.
          *
          *  On the other hand, they're not ready to receive inputs yet. Usually this is alright.
-         *  If it's a requirement though, create those bindings in [onAttachChild]
+         *  If it's a requirement though, create those bindings in [onChildAttached]
          */
         // child.lifecycle.createDestroy {
             // when (child) {

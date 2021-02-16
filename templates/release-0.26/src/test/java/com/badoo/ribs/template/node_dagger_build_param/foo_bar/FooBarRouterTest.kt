@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.node_dagger_build_param.foo_bar
 
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node_dagger_build_param.foo_bar.routing.FooBarRouter
 import com.nhaarman.mockitokotlin2.mock
@@ -23,7 +23,7 @@ class FooBarRouterTest {
     fun setup() {
         router = FooBarRouter(
             buildParams = buildParams,
-            routingSource = RoutingSource.empty(),
+            routingSource = Empty(),
             builders = builders
         )
     }

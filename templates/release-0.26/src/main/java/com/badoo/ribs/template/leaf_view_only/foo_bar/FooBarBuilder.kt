@@ -3,6 +3,7 @@ package com.badoo.ribs.template.leaf_view_only.foo_bar
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 
+
 class FooBarBuilder(
     private val dependency: FooBar.Dependency
 ) : SimpleBuilder<FooBar>() {

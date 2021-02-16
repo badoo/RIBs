@@ -11,14 +11,16 @@ class FooBarBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): FooBar {
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
 
-        return node(buildParams, customisation)
+        return node(
+            buildParams = buildParams,
+            customisation = customisation
+        )
     }
 
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation
-    ) =
-        FooBarNode(
+    ) = FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
             plugins = emptyList()

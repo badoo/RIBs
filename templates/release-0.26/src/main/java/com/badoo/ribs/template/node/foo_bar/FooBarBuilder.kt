@@ -4,6 +4,7 @@ package com.badoo.ribs.template.node.foo_bar
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.rx.disposables
@@ -21,10 +22,25 @@ class FooBarBuilder(
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
         val backStack = backStack(buildParams)
         val feature = feature()
-        val interactor = interactor(buildParams, backStack, feature)
-        val router = router(buildParams, backStack, connections, customisation)
+        val interactor = interactor(
+            buildParams = buildParams,
+            backStack = backStack,
+            feature = feature
+        )
+        val router = router(
+            buildParams = buildParams,
+            routingSource = backStack,
+            builders = connections,
+            customisation = customisation
+        )
 
-        return node(buildParams, customisation, feature, interactor, router)
+        return node(
+            buildParams = buildParams,
+            viewFactory = customisation.viewFactory(null),
+            feature = feature,
+            interactor = interactor,
+            router = router
+        )
     }
 
     private fun backStack(buildParams: BuildParams<*>) =
@@ -51,8 +67,7 @@ class FooBarBuilder(
         routingSource: RoutingSource<Configuration>,
         builders: FooBarChildBuilders,
         customisation: FooBar.Customisation
-    ) =
-        FooBarRouter(
+    ) = FooBarRouter(
             buildParams = buildParams,
             builders = builders,
             routingSource = routingSource,
@@ -61,13 +76,17 @@ class FooBarBuilder(
 
     private fun node(
         buildParams: BuildParams<*>,
-        customisation: FooBar.Customisation,
+        viewFactory: (RibView) -> FooBarView,
         feature: FooBarFeature,
         interactor: FooBarInteractor,
         router: FooBarRouter
     ) = FooBarNode(
         buildParams = buildParams,
-        viewFactory = customisation.viewFactory(null),
-        plugins = listOf(interactor, router, disposables(feature))
+        viewFactory = viewFactory,
+        plugins = listOf(
+            interactor,
+            router,
+            disposables(feature)
+        )
     )
 }

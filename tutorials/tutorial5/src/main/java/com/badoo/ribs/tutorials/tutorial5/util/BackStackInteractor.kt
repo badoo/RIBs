@@ -1,6 +1,7 @@
-package com.badoo.ribs.clienthelper.interactor
+package com.badoo.ribs.tutorials.tutorial5.util
 
 import android.os.Parcelable
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView

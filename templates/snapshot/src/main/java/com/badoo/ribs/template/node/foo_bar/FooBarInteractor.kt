@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
-import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
@@ -19,11 +19,10 @@ import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
-    backStack: BackStack<Configuration>,
+    private val backStack: BackStack<Configuration>,
     private val feature: FooBarFeature
-) : BackStackInteractor<FooBar, FooBarView, Configuration>(
-    buildParams = buildParams,
-    backStack = backStack
+) : Interactor<FooBar, FooBarView>(
+    buildParams = buildParams
 ) {
 
     override fun onCreate(nodeLifecycle: Lifecycle) {

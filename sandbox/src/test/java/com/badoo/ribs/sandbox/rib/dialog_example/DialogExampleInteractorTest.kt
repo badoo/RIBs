@@ -14,6 +14,7 @@ class DialogExampleInteractorTest {
     fun setup() {
         interactor = DialogExampleInteractor(
             buildParams = emptyBuildParams(),
+            backStack = mock(),
             dialogs = mock()
         )
     }

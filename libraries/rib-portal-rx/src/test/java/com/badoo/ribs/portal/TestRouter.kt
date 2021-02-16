@@ -1,16 +1,17 @@
 package com.badoo.ribs.portal
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.resolution.Resolution
-import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.test.emptyBuildParams
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 
 class TestRouter(
-    buildParams: BuildParams<Nothing?> = BuildParams.Empty(),
+    buildParams: BuildParams<Nothing?> = emptyBuildParams(),
     initialConfiguration: Configuration = Configuration.C1,
     private val resolutionForC1: Resolution = mock(),
     private val resolutionForC2: Resolution = mock(),

@@ -26,20 +26,6 @@ class BuildParams<T>(
     val savedInstanceState: Bundle?
         get() = buildContext.savedInstanceState
 
-    companion object {
-        /**
-         * Only for testing purposes. Don't use this in production code, otherwise all your Nodes
-         * will be considered Roots.
-         */
-        fun Empty() = BuildParams(
-            payload = null,
-            buildContext = BuildContext.root(
-                savedInstanceState = null,
-                customisations = RibCustomisationDirectoryImpl()
-            )
-        )
-    }
-
     fun <T : RibCustomisation> getOrDefault(defaultCustomisation: T) : T =
         buildContext.customisations.getRecursivelyOrDefault(defaultCustomisation)
 

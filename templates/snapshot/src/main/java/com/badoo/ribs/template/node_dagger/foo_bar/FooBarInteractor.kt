@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
-import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.template.node_dagger.foo_bar.analytics.FooBarAnalytics
@@ -14,15 +14,14 @@ import com.badoo.ribs.template.node_dagger.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.StateToViewModel
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.node_dagger.foo_bar.mapper.ViewEventToWish
-import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter.Configuration
+import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter
 
 internal class FooBarInteractor(
     buildParams: BuildParams<*>,
     private val feature: FooBarFeature,
-    backStack: BackStack<Configuration>
-) : BackStackInteractor<FooBar, FooBarView, Configuration>(
-    buildParams = buildParams,
-    backStack = backStack
+    private val backStack: BackStack<FooBarRouter.Configuration>
+) : Interactor<FooBar, FooBarView>(
+    buildParams = buildParams
 ) {
 
     override fun onCreate(nodeLifecycle: Lifecycle) {

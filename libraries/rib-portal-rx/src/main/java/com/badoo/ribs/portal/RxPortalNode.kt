@@ -13,8 +13,8 @@ import io.reactivex.Single
 
 internal class RxPortalNode(
     buildParams: BuildParams<*>,
-    plugins: List<Plugin>,
-    private val backStack: BackStack<Configuration>
+    private val backStack: BackStack<Configuration>,
+    plugins: List<Plugin>
 ) : RxWorkflowNode<Nothing>(
     buildParams = buildParams,
     viewFactory = null,

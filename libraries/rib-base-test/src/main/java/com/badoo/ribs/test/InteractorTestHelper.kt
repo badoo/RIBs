@@ -1,4 +1,4 @@
-package com.badoo.common.ribs
+package com.badoo.ribs.test
 
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle

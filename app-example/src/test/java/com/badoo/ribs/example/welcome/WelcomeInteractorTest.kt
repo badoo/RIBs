@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.welcome
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.common.ribs.InteractorTestHelper
-import com.badoo.common.ribs.InteractorTestHelper.Companion.mockIO
+import com.badoo.ribs.test.InteractorTestHelper
+import com.badoo.ribs.test.InteractorTestHelper.Companion.mockIO
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.welcome.Welcome.Output

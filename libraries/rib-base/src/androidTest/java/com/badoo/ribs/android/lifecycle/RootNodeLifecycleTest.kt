@@ -1,7 +1,7 @@
 package com.badoo.ribs.android.lifecycle
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.test.util.finishActivitySync
 import com.badoo.ribs.test.util.ribs.root.TestRoot

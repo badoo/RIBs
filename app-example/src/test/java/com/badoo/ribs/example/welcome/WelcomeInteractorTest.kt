@@ -1,13 +1,13 @@
 package com.badoo.ribs.example.welcome
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.common.ribs.rx.createInteractorTestHelper
 import com.badoo.common.ribs.rx.mockIO
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.welcome.Welcome.Output
 import com.badoo.ribs.example.welcome.WelcomeView.Event
+import com.badoo.ribs.test.InteractorTestHelper
+import com.badoo.ribs.test.emptyBuildParams
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -28,7 +28,7 @@ class WelcomeInteractorTest {
     @Before
     fun setup() {
         interactor = WelcomeInteractor(
-            buildParams = BuildParams.Empty(),
+            buildParams = emptyBuildParams(),
             authDataSource = authDataSource
         )
         interactor.mockIO(outputRelay = output)

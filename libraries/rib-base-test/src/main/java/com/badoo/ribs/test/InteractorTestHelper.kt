@@ -1,9 +1,8 @@
-package com.badoo.common.ribs
+package com.badoo.ribs.test
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import org.mockito.Mockito.mock
 
@@ -11,11 +10,9 @@ class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<*, View>,
     val viewFactory: ((RibView) -> View?)? = null
 ) {
-    private val buildParams = BuildParams.Empty()
-
     var nodeCreator: () -> Node<View> = {
         Node(
-            buildParams = buildParams,
+            buildParams = emptyBuildParams(),
             viewFactory = viewFactory,
             plugins = listOf(interactor)
         )

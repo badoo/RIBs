@@ -2,9 +2,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
-import com.badoo.common.ribs.InteractorTestHelper
 import com.badoo.common.ribs.rx.createInteractorTestHelper
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
@@ -14,6 +12,8 @@ import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
+import com.badoo.ribs.test.InteractorTestHelper
+import com.badoo.ribs.test.emptyBuildParams
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
@@ -34,7 +34,7 @@ class SwitcherInteractorTest {
     @Before
     fun setup() {
         interactor = SwitcherInteractor(
-            buildParams = BuildParams.Empty(),
+            buildParams = emptyBuildParams(),
             backStack = backStack,
             dialogToTestOverlay = dialogToTestOverlay,
             transitions = Observable.just(SETTLED),

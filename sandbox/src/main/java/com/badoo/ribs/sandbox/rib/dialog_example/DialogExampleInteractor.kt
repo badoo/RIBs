@@ -6,9 +6,10 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.text.Text
-import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
+import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.rx2.adapter.rx2
 import com.badoo.ribs.sandbox.R
@@ -20,7 +21,6 @@ import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.Up
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
 import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
-import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum
 import com.jakewharton.rxrelay2.BehaviorRelay
@@ -28,10 +28,10 @@ import io.reactivex.functions.Consumer
 
 class DialogExampleInteractor internal constructor(
     buildParams: BuildParams<Nothing?>,
+    private val backStack: BackStack<Configuration>,
     private val dialogs: Dialogs
-) : BackStackInteractor<DialogExample, DialogExampleView, Configuration>(
-    buildParams = buildParams,
-    initialConfiguration = Content.Default
+) : Interactor<DialogExample, DialogExampleView>(
+    buildParams = buildParams
 ) {
 
     private val dummyViewInput = BehaviorRelay.createDefault(

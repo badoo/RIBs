@@ -5,6 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.samples.retained_instance_store.rib.counter.CounterBuilder
@@ -32,7 +33,7 @@ class RetainedInstanceExampleRouter internal constructor(
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
-            Content.Default -> Resolution.noop()
+            Content.Default -> noop()
             Content.Counter -> child { counterBuilder.build(it) }
         }
 }

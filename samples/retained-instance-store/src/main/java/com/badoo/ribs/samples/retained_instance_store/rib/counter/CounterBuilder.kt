@@ -12,8 +12,16 @@ class CounterBuilder : SimpleBuilder<Counter>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Counter {
 
-        val presenter = CounterPresenterImpl(clock = SecondsClock(),
-            retainedClock = retainedClock(buildParams.identifier))
+        val clock1 = SecondsClock()
+        val clock2 =  RetainedInstanceStore.get(
+            owner = buildParams.identifier,
+            factory = { SecondsClock() },
+            disposer = { it.dispose() }
+        )
+
+        val presenter = CounterPresenterImpl(
+            clock1 = clock1,
+            clock2 = clock2)
 
         return CounterNode(
             buildParams = buildParams,
@@ -21,12 +29,4 @@ class CounterBuilder : SimpleBuilder<Counter>() {
             plugins = listOf(presenter)
         )
     }
-
-    private fun retainedClock(ownerId: Rib.Identifier) =
-        RetainedInstanceStore.get(
-            owner = ownerId,
-            factory = { SecondsClock() },
-            disposer = { it.dispose() }
-        )
-
 }

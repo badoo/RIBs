@@ -31,38 +31,38 @@ class CounterTest {
 
     @Test
     fun WHEN_view_is_created_THEN_clock_output_is_shown() {
-        val seconds = onView(ViewMatchers.withId(R.id.not_retained_seconds_counter)).getText()
+        val seconds = onView(ViewMatchers.withId(R.id.counter1)).getText()
         assertTrue(seconds.isNotEmpty())
     }
 
     @Test
     fun WHEN_view_is_created_THEN_retained_clock_output_is_shown() {
-        val seconds = onView(ViewMatchers.withId(R.id.retained_seconds_counter)).getText()
+        val seconds = onView(ViewMatchers.withId(R.id.counter2)).getText()
         assertTrue(seconds.isNotEmpty())
     }
 
     @Test
     fun WHEN_activity_is_recreated_GIVEN_counter_is_retained_THEN_clock_has_not_reset() {
-        val initialSeconds = onView(ViewMatchers.withId(R.id.retained_seconds_counter)).getText().toInt()
+        val initialSeconds = onView(ViewMatchers.withId(R.id.counter2)).getText().toInt()
         Thread.sleep(1100)
         with(ribsRule.activity) {
             runOnUiThread {
                 recreate()
             }
         }
-        val endSeconds = onView(ViewMatchers.withId(R.id.retained_seconds_counter)).getText().toInt()
+        val endSeconds = onView(ViewMatchers.withId(R.id.counter2)).getText().toInt()
         assertNotEquals(initialSeconds, endSeconds)
     }
 
     @Test
     fun WHEN_activity_is_recreated_GIVEN_counter_is_not_retained_THEN_clock_has_reset() {
-        val initialSeconds = onView(ViewMatchers.withId(R.id.not_retained_seconds_counter)).getText().toInt()
+        val initialSeconds = onView(ViewMatchers.withId(R.id.counter1)).getText().toInt()
         with(ribsRule.activity) {
             runOnUiThread {
                 recreate()
             }
         }
-        val endSeconds = onView(ViewMatchers.withId(R.id.not_retained_seconds_counter)).getText().toInt()
+        val endSeconds = onView(ViewMatchers.withId(R.id.counter1)).getText().toInt()
         assertEquals(initialSeconds, endSeconds)
     }
 

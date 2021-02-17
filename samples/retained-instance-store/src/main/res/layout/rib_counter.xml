@@ -22,19 +22,19 @@
         app:layout_constraintTop_toTopOf="@+id/not_retained_description_text" />
 
     <TextView
-        android:id="@+id/retained_seconds_counter"
+        android:id="@+id/counter2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:textSize="100sp"
-        app:layout_constraintBottom_toBottomOf="@+id/not_retained_seconds_counter"
+        app:layout_constraintBottom_toBottomOf="@+id/counter1"
         app:layout_constraintEnd_toEndOf="@+id/retained_description_text"
         app:layout_constraintStart_toStartOf="@+id/retained_description_text"
-        app:layout_constraintTop_toTopOf="@+id/not_retained_seconds_counter"
+        app:layout_constraintTop_toTopOf="@+id/counter1"
         tools:text="10" />
 
     <TextView
-        android:id="@+id/not_retained_seconds_counter"
+        android:id="@+id/counter1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -56,7 +56,7 @@
         android:layout_marginEnd="16dp"
         android:gravity="center"
         android:text="@string/not_retained_description"
-        app:layout_constraintBottom_toTopOf="@+id/not_retained_seconds_counter"
+        app:layout_constraintBottom_toTopOf="@+id/counter1"
         app:layout_constraintEnd_toStartOf="@+id/retained_description_text"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

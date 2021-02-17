@@ -29,14 +29,14 @@ class CounterViewImpl private constructor(override val androidView: ViewGroup) :
         }
     }
 
-    private val retainedCounter: TextView = androidView.findViewById(R.id.retained_seconds_counter)
-    private val notRetainedCounter: TextView = androidView.findViewById(R.id.not_retained_seconds_counter)
+    private val counter1: TextView = androidView.findViewById(R.id.counter1)
+    private val counter2: TextView = androidView.findViewById(R.id.counter2)
 
     override fun updateCount(count: Int) {
-        notRetainedCounter.text = count.toString()
+        counter1.text = count.toString()
     }
 
     override fun updateRetainedCount(count: Int) {
-        retainedCounter.text = count.toString()
+        counter2.text = count.toString()
     }
 }

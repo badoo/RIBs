@@ -1,7 +1,7 @@
 package com.badoo.common.ribs.rx
 
 import android.view.ViewGroup
-import com.badoo.common.ribs.InteractorTestHelper
+import com.badoo.ribs.test.InteractorTestHelper
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView

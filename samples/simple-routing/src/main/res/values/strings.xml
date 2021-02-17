@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">Simple routing sample</string>
-    <string name="parent_text">Parent</string>
-    <string name="child1_child1_text">Child 1-1</string>
-    <string name="child1_child2_text">Child 1-2</string>
-    <string name="child2_text">Text from child 2</string>
-</resources>

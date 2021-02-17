@@ -5,10 +5,11 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.test.emptyBuildParams
 import com.nhaarman.mockitokotlin2.mock
 
 class TestNode<V : RibView>(
-    buildParams: BuildParams<*> = BuildParams.Empty(),
+    buildParams: BuildParams<*> = emptyBuildParams(),
     router: Router<*> = mock(),
     viewFactory: ((RibView) -> V?)? = mock(),
     interactor: Interactor<*, V> = mock()

@@ -17,7 +17,6 @@ class ContainerBuilder(
     private val builders by lazy { ContainerChildBuilders(dependency) }
 
     override fun build(buildParams: BuildParams<Nothing?>): Container {
-
         val backStack = backStack(buildParams)
         val router = router(buildParams, backStack, builders)
         val presenter = ContainerPresenterImpl(backStack)

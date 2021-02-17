@@ -40,10 +40,7 @@ internal class ContainerPresenterImpl(
         backStack.push(item.toContent())
     }
 
-    private fun updateMenuItem(
-        content: Configuration,
-        child: Menu
-    ) {
+    private fun updateMenuItem(content: Configuration, child: Menu) {
         content.toMenuItem()?.let { child.input.accept(Menu.Input.SelectMenuItem(it)) }
     }
 

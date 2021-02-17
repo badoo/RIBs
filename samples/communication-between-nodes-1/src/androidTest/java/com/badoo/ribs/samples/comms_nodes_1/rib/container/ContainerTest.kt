@@ -7,9 +7,9 @@ import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.comms_nodes_1.R
+import com.badoo.ribs.test.RibsRule
 import org.junit.Rule
 import org.junit.Test
 

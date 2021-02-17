@@ -1,4 +1,4 @@
-package com.badoo.common.ribs.rx
+package com.badoo.common.ribs.rx2
 
 import android.view.ViewGroup
 import com.badoo.ribs.test.InteractorTestHelper

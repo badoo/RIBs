@@ -4,7 +4,7 @@
     android:id="@+id/rib_menu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow_500">
+    android:background="@color/light_gray">
 
     <TextView
         android:id="@+id/child1"

@@ -8,9 +8,6 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.comms_nodes_1.R
-import com.badoo.ribs.samples.comms_nodes_1.rib.child1.Child1
-import com.badoo.ribs.samples.comms_nodes_1.rib.child2.Child2
-import com.badoo.ribs.samples.comms_nodes_1.rib.child3.Child3
 import com.badoo.ribs.samples.comms_nodes_1.rib.menu.Menu
 
 interface ContainerView : RibView {

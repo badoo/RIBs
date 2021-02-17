@@ -22,7 +22,7 @@ class ContainerBuilder(
         val presenter = ContainerPresenterImpl(backStack)
 
         return ContainerNode(
-            buildParams = BuildParams.Empty(),
+            buildParams = buildParams,
             viewFactory = ContainerViewImpl.Factory().invoke(deps = null),
             plugins = listOfNotNull(router, presenter)
         )

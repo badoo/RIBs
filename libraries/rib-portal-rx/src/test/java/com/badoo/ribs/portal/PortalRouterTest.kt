@@ -2,12 +2,12 @@ package com.badoo.ribs.portal
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
-import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Default
 import com.badoo.ribs.portal.PortalRouter.Configuration.Content.Portal
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
+import com.badoo.ribs.routing.source.impl.Empty
+import com.badoo.ribs.test.emptyBuildParams
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -27,7 +27,7 @@ class PortalRouterTest {
         node1 = TestNode(router = TestRouter(resolutionForC2 = child { node2 }))
 
         router = PortalRouter(
-            buildParams = BuildParams.Empty(),
+            buildParams = emptyBuildParams(),
             routingSource = Empty(),
             defaultResolution = child { node1 }
         )

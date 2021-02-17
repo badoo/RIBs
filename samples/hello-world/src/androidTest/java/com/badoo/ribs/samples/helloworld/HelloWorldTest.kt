@@ -7,7 +7,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.helloworld.hello_world.HelloWorld
 import com.badoo.ribs.samples.helloworld.hello_world.builder.HelloWorldBuilder

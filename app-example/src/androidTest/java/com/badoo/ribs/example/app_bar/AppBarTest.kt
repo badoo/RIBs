@@ -3,7 +3,7 @@ package com.badoo.ribs.example.app_bar
 import android.content.Context
 import android.os.Bundle
 import androidx.test.platform.app.InstrumentationRegistry
-import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.example.FakeUserRepository

@@ -4,6 +4,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.test.emptyBuildParams
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildInteractor
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter
@@ -15,7 +16,7 @@ class TestChildBuilder : SimpleBuilder<TestNode<TestChildView>>() {
     private val dependency: Nothing? = null
 
     override fun build(buildParams: BuildParams<Nothing?>): TestNode<TestChildView> {
-        val router = TestChildRouter(BuildParams.Empty())
+        val router = TestChildRouter(buildParams = emptyBuildParams())
 
         return TestNode(
             buildParams = buildParams,

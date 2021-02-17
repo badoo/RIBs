@@ -1,7 +1,6 @@
 package com.badoo.ribs.samples.retained_instance_store.rib.counter
 
 import com.badoo.ribs.builder.SimpleBuilder
-import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.retained_instance_store.utils.SecondsClock
 import com.badoo.ribs.store.RetainedInstanceStore

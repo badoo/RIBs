@@ -39,7 +39,6 @@ class ContainerViewImpl private constructor(
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
         when (subtreeOf) {
             is Menu -> menuContainer
-            is Child1, is Child2, is Child3 -> childContainer
-            else -> super.getParentViewForSubtree(subtreeOf)
+            else -> childContainer
         }
 }

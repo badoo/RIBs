@@ -8,7 +8,6 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C5
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O3
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryDiffer
 import com.badoo.ribs.routing.source.backstack.BackStack
@@ -25,6 +24,7 @@ import com.badoo.ribs.routing.state.changeset.RoutingCommand.Activate
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Deactivate
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Remove
+import com.badoo.ribs.test.emptyBuildParams
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -38,7 +38,7 @@ class BackStackDiffingIntegrationTest {
     fun setUp() {
         backStack = BackStack<C>(
             initialConfiguration = C1,
-            buildParams = BuildParams.Empty()
+            buildParams = emptyBuildParams()
         )
     }
 

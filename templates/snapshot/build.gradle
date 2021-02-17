@@ -4,5 +4,6 @@ dependencies {
     implementation project(":libraries:rib-base")
     implementation project(":libraries:rib-rx")
     debugImplementation project(":libraries:rib-base-test-activity")
+    testImplementation project(":libraries:rib-base-test")
     androidTestImplementation project(":libraries:rib-base-test")
 }

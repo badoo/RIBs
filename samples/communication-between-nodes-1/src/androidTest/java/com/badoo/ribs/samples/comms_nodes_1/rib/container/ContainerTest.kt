@@ -78,11 +78,11 @@ class ContainerTest {
     }
 
     private fun iSeeChild2() {
-        iSeeViewWithText("Hola! I am Child 2")
+        iSeeViewWithText("Hello! I am Child 2")
     }
 
     private fun iSeeChild3() {
-        iSeeViewWithText("Здравствуйте! I am Child 3")
+        iSeeViewWithText("Hello! I am Child 3")
     }
 
     private fun iClick(@IdRes idRes: Int) {

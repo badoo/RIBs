@@ -16,6 +16,12 @@ internal class ContainerPresenterImpl(
 ) : ContainerPresenter,
     SubtreeChangeAware {
 
+    private val menuOutputConsumer: Consumer<Menu.Output> = Consumer {
+        when (it) {
+            is Menu.Output.MenuItemSelected -> updateContent(it.item)
+        }
+    }
+
     override fun onChildBuilt(child: Node<*>) {
         when (child) {
             is Menu -> child.output.subscribe(menuOutputConsumer)
@@ -27,12 +33,6 @@ internal class ContainerPresenterImpl(
             is Menu -> backStack.activeConfiguration.observe {
                 updateMenuItem(it, child)
             }
-        }
-    }
-
-    private val menuOutputConsumer: Consumer<Menu.Output> = Consumer {
-        when (it) {
-            is Menu.Output.MenuItemSelected -> updateContent(it.item)
         }
     }
 

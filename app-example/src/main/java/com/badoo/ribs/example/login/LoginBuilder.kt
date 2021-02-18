@@ -14,7 +14,7 @@ class LoginBuilder(
         val interactor = LoginInteractor(
             buildParams = buildParams,
             feature = feature,
-            activityStarter = dependency.activityStarter()
+            activityStarter = dependency.activityStarter
         )
 
         return LoginNode(

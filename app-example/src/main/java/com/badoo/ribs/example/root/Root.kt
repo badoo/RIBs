@@ -7,7 +7,6 @@ import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.example.auth.AuthStateStorage
 import com.badoo.ribs.example.login.AuthCodeDataSource
 import com.badoo.ribs.example.network.NetworkError
-import com.badoo.ribs.example.login.AuthCodeDataSource
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.root.Root.Input
 import com.badoo.ribs.example.root.Root.Output
@@ -17,7 +16,7 @@ import io.reactivex.Observable
 
 interface Root : Rib, Connectable<Input, Output> {
 
-    interface Dependency: CanProvideActivityStarter {
+    interface Dependency : CanProvideActivityStarter {
         val api: UnsplashApi
         val authStateStorage: AuthStateStorage
         val networkErrors: Observable<NetworkError>

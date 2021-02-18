@@ -12,7 +12,6 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.utils.debug.DebugControlsHost
 import com.badoo.ribs.core.plugin.utils.debug.GrowthDirection
 import com.badoo.ribs.debug.TreePrinter
-import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.example.auth.AuthStateStorage
 import com.badoo.ribs.example.auth.AuthStateStorageImpl
 import com.badoo.ribs.example.auth.PreferencesAuthStatePersistence
@@ -29,6 +28,7 @@ import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.android.RibActivity
 import com.jakewharton.rxrelay2.Relay
 
 class RootActivity : RibActivity(), AuthCodeDataSource {
@@ -70,15 +70,13 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
 
         return RootBuilder(
             object : Root.Dependency {
-                override val api: UnsplashApi = api()
+                override val api: UnsplashApi = api(stateStorage)
                 override val authStateStorage: AuthStateStorage = stateStorage
                 override val authCodeDataSource: AuthCodeDataSource = this@RootActivity
+                override val activityStarter: ActivityStarter = integrationPoint.activityStarter
                 override val networkErrors: Observable<NetworkError> =
                     networkErrorsRelay
-                        .observeOn(AndroidSchedulers.mainThread())
-
-                override fun activityStarter(): ActivityStarter = activityStarter
-            }
+                        .observeOn(AndroidSchedulers.mainThread()) }
         ).build(buildContext)
     }
 
@@ -91,11 +89,12 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
     }
 
     override fun getAuthCodeUpdates(): Observable<String> = authCodeRelay
-    private fun api(): UnsplashApi =
+    private fun api(authStateStorage: AuthStateStorage): UnsplashApi =
         ApiFactory.api(
             isDebug = BuildConfig.DEBUG,
             accessKey = BuildConfig.ACCESS_KEY,
-            networkErrorConsumer = networkErrorsRelay
+            networkErrorConsumer = networkErrorsRelay,
+            authStateStorage =authStateStorage
         )
 
 

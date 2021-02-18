@@ -55,9 +55,9 @@ class BigViewImpl private constructor(
         idText.text = vm.text
     }
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup =
-        when (child) {
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        when (subtreeOf) {
             is Small -> smallContainer
-            else -> super.getParentViewForChild(child)
+            else -> super.getParentViewForSubtree(subtreeOf)
         }
 }

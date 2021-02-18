@@ -2,9 +2,8 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
-import com.badoo.common.ribs.InteractorTestHelper
-import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
@@ -12,16 +11,19 @@ import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
+import com.badoo.ribs.test.InteractorTestHelper
+import com.badoo.ribs.test.emptyBuildParams
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
+import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
 
 class SwitcherInteractorTest {
 
-    private val backStack: BackStackFeature<Configuration> = mock()
+    private val backStack: BackStack<Configuration> = mock()
     private val dialogToTestOverlay: DialogToTestOverlay = mock()
 
     private val viewEventRelay = PublishRelay.create<Event>()
@@ -31,9 +33,11 @@ class SwitcherInteractorTest {
     @Before
     fun setup() {
         interactor = SwitcherInteractor(
-            buildParams = BuildParams.Empty(),
+            buildParams = emptyBuildParams(),
             backStack = backStack,
-            dialogToTestOverlay = dialogToTestOverlay
+            dialogToTestOverlay = dialogToTestOverlay,
+            transitions = Observable.just(SETTLED),
+            transitionSettled = { true }
         )
 
         interactorTestHelper = InteractorTestHelper.create(interactor, viewEventRelay)

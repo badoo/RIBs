@@ -1,8 +1,5 @@
 configureAndroidApp(project)
 
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
 def getAccessToken() {
     def systemEnvKey = System.getenv('ACCESS_KEY')
 

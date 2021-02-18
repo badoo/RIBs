@@ -8,7 +8,6 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.extensions.findViewById
 import com.badoo.ribs.example.photo_feed.PhotoFeed
 
 interface FeedContainerView : RibView {
@@ -34,9 +33,9 @@ class FeedContainerViewImpl private constructor(
 
     private val photoFeedContainer = findViewById<ViewGroup>(R.id.photoFeedContainer)
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup =
-        when (child) {
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        when (subtreeOf) {
             is PhotoFeed -> photoFeedContainer
-            else -> super.getParentViewForChild(child)
+            else -> super.getParentViewForSubtree(subtreeOf)
         }
 }

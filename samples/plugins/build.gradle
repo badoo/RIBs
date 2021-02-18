@@ -1,0 +1,48 @@
+configureAndroidApp(project)
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "com.badoo.ribs.samples.plugins"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation deps.external.kotlinStdlib
+
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.design
+    implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-debug-utils")
+
+    implementation deps.external.leakCanary // use debugImplementation in real life apps
+}
+
+repositories {
+    mavenCentral()
+}

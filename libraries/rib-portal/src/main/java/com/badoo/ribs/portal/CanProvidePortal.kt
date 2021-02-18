@@ -2,8 +2,8 @@ package com.badoo.ribs.portal
 
 import com.badoo.ribs.annotation.ExperimentalApi
 
+@ExperimentalApi
 interface CanProvidePortal {
 
-    @ExperimentalApi
-    fun portal(): Portal.OtherSide
+    val portal: Portal.OtherSide
 }

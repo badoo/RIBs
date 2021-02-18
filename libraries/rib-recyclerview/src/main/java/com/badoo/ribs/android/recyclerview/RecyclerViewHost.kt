@@ -16,12 +16,12 @@ interface RecyclerViewHost<T : Parcelable>: Rib, Connectable<Input<T>, Nothing> 
 
     @ExperimentalApi
     interface Dependency<T : Parcelable> {
-        fun hostingStrategy(): HostingStrategy
-        fun initialElements(): List<T>
-        fun resolver(): RoutingResolver<T>
-        fun recyclerViewFactory(): RecyclerViewFactory
-        fun layoutManagerFactory(): LayoutManagerFactory
-        fun viewHolderLayoutParams(): FrameLayout.LayoutParams
+        val hostingStrategy: HostingStrategy
+        val initialElements: List<T>
+        val resolver: RoutingResolver<T>
+        val recyclerViewFactory: RecyclerViewFactory
+        val layoutManagerFactory: LayoutManagerFactory
+        val viewHolderLayoutParams: FrameLayout.LayoutParams
     }
 
     @ExperimentalApi

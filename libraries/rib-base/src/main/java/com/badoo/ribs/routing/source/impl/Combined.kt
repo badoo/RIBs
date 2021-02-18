@@ -46,6 +46,9 @@ internal data class Combined<C : Parcelable>(
     override fun handleBackPressFallback(): Boolean =
         first.handleBackPressFallback() || second.handleBackPressFallback()
 
+    override fun handleUpNavigation(): Boolean =
+        first.handleUpNavigation() || second.handleUpNavigation()
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         first.onSaveInstanceState(outState)

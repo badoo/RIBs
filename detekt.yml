@@ -295,7 +295,7 @@ style:
     active: true
     excludes: "**/test/**,**/androidTest/**,**/*Test.kt,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt,**/*InstrumentationTestUtils/**"
   MandatoryBracesIfStatements:
-    active: true
+    active: false
 
 comments:
   active: true

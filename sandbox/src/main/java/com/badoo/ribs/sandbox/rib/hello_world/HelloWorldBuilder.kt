@@ -19,7 +19,7 @@ class HelloWorldBuilder(
         val interactor = HelloWorldInteractor(
             buildParams = buildParams,
             feature = feature,
-            activityStarter = dependency.activityStarter()
+            activityStarter = dependency.activityStarter
         )
         val router = HelloWorldRouter(
             buildParams = buildParams,

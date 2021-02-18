@@ -9,6 +9,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.badoo.ribs.android.integrationpoint.FloatingIntegrationPoint
+import com.badoo.ribs.android.integrationpoint.IntegrationPoint
 import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.lifecycle.LifecycleManager
@@ -26,9 +28,11 @@ import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
 import com.badoo.ribs.core.plugin.SystemAware
+import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.util.RIBs
 
 /**
@@ -41,9 +45,10 @@ import com.badoo.ribs.util.RIBs
  * Forwards events to plugins / children respectively.
  **/
 @SuppressWarnings("LargeClass")
-open class Node<V : RibView>(
+open class Node<V : RibView> @VisibleForTesting internal constructor(
     val buildParams: BuildParams<*>,
     private val viewFactory: ((RibView) -> V?)?, // TODO V? vs V
+    private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
 
@@ -51,6 +56,12 @@ open class Node<V : RibView>(
         internal const val BUNDLE_KEY = "Node"
         internal const val KEY_VIEW_STATE = "view.state"
     }
+
+    constructor(
+        buildParams: BuildParams<*>,
+        viewFactory: ((RibView) -> V?)?,
+        plugins: List<Plugin> = emptyList()
+    ) : this(buildParams, viewFactory, RetainedInstanceStore, plugins)
 
     final override val node: Node<V>
         get() = this
@@ -60,6 +71,15 @@ open class Node<V : RibView>(
 
     internal val buildContext: BuildContext =
         buildParams.buildContext
+
+    var integrationPoint: IntegrationPoint = FloatingIntegrationPoint()
+        internal set
+        get() {
+            return if (isRoot) field
+            else parent?.integrationPoint ?: RIBs.errorHandler.handleFatalError(
+                "Non-root Node should have a parent"
+            )
+        }
 
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
@@ -127,7 +147,9 @@ open class Node<V : RibView>(
 
     @CallSuper
     open fun onCreate() {
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
+        plugins
+            .filterIsInstance<NodeLifecycleAware>()
+            .forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
         lifecycleManager.onCreate()
     }
 
@@ -179,7 +201,7 @@ open class Node<V : RibView>(
         }
     }
 
-    open fun onDestroy() {
+    open fun onDestroy(isRecreating: Boolean) {
         if (view != null) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
@@ -189,9 +211,12 @@ open class Node<V : RibView>(
 
         lifecycleManager.onDestroy()
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDestroy() }
+        if (!isRecreating) {
+            retainedInstanceStore.removeAll(identifier)
+        }
 
         for (child in children.toList()) {
-            detachChildNode(child)
+            detachChildNode(child, isRecreating)
         }
 
         isPendingDetach = false
@@ -226,15 +251,17 @@ open class Node<V : RibView>(
     }
 
     fun attachChildView(child: Node<*>) {
-        attachChildView(child, true)
+        attachChildView(child, child, true)
     }
 
-    private fun attachChildView(child: Node<*>, notifyPlugins: Boolean) {
+    private fun attachChildView(child: Node<*>, subtreeOf: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView) {
-            view?.let { it.attachChild(child) }
-                ?: parent?.attachChildView(child, false)
-                ?: rootHost?.attachChild(child)
-                ?: error("No view, no parent, and no root host should be technically impossible")
+            view?.attachChild(child, subtreeOf)
+                ?: parent?.attachChildView(child, this, false)
+                ?: integrationPoint.rootViewHost?.attachChild(child, this)
+                ?: RIBs.errorHandler.handleFatalError(
+                    "No view, no parent, and no root host should be technically impossible"
+                )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onAttachChildView(child) }
@@ -242,21 +269,22 @@ open class Node<V : RibView>(
     }
 
     fun detachChildView(child: Node<*>) {
-        detachChildView(child, true)
+        detachChildView(child, child, true)
     }
 
-    private fun detachChildView(child: Node<*>, notifyPlugins: Boolean) {
+    private fun detachChildView(child: Node<*>, subtreeOf: Node<*>, notifyPlugins: Boolean) {
         if (isAttachedToView && child.isAttachedToView) {
-            view?.let { it.detachChild(child) }
-                ?: parent?.detachChildView(child, false)
-                ?: rootHost!!.detachChild(child)
-                ?: error("No view, no parent, and no root host should be technically impossible")
+            view?.detachChild(child, subtreeOf)
+                ?: parent?.detachChildView(child, this, false)
+                ?: rootHost!!.detachChild(child, this)
+                ?: RIBs.errorHandler.handleFatalError(
+                    "No view, no parent, and no root host should be technically impossible"
+                )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
                 .forEach { it.onDetachChildView(child) }
         }
     }
-
 
 
     /**
@@ -267,10 +295,10 @@ open class Node<V : RibView>(
      * @param child the [Node] to be detached.
      */
     @MainThread
-    fun detachChildNode(child: Node<*>) {
+    fun detachChildNode(child: Node<*>, isRecreating: Boolean) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildDetached(child) }
         _children.remove(child)
-        child.onDestroy()
+        child.onDestroy(isRecreating)
     }
 
     internal fun markPendingViewDetach(isPendingViewDetach: Boolean) {
@@ -322,6 +350,25 @@ open class Node<V : RibView>(
             || delegateHandleBackPressToActiveChildren()
             || handlers.any { it.handleBackPress() }
             || subtreeHandlers.any { it.handleBackPressFallback() }
+    }
+
+    fun upNavigation() {
+        when {
+            isRoot -> integrationPoint.handleUpNavigation()
+
+            else -> parent?.handleUpNavigation()
+                ?: RIBs.errorHandler.handleNonFatalError(
+                    "Can't handle up navigation, Node is not a root and has no parent"
+                )
+        }
+    }
+
+    private fun handleUpNavigation() {
+        val subtreeHandlers = plugins.filterIsInstance<UpNavigationHandler>()
+
+        if (subtreeHandlers.none { it.handleUpNavigation() }) {
+            upNavigation()
+        }
     }
 
     private fun delegateHandleBackPressToActiveChildren(): Boolean =

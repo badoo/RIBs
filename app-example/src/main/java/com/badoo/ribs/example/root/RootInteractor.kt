@@ -10,8 +10,8 @@ import com.badoo.ribs.example.network.NetworkError
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedIn
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedOut
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.Login
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import io.reactivex.Observable
@@ -19,7 +19,7 @@ import io.reactivex.functions.Consumer
 
 internal class RootInteractor(
     buildParams: BuildParams<*>,
-    private val backStack: BackStackFeature<Configuration>,
+    private val backStack: BackStack<Configuration>,
     private val authDataSource: AuthDataSource,
     private val networkErrors: Observable<NetworkError>
 ) : Interactor<Root, Nothing>(

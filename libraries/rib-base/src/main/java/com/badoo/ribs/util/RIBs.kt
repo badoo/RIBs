@@ -35,6 +35,8 @@ object RIBs {
 
     interface ErrorHandler {
 
+        fun handleFatalError(errorMessage: String, throwable: Throwable? = null): Nothing
+
         /**
          * Called when there is a non-fatal error in the RIB framework. Consumers should route this data
          * to a place where it can be monitored (crash reporting, monitoring, etc.).
@@ -101,6 +103,11 @@ object RIBs {
                 "resolved group: $internalGroup, " +
                 "resolved code: $internalRequestCode, " +
                 "event: $event")
+        }
+
+        @Suppress("TooGenericExceptionThrown")
+        override fun handleFatalError(errorMessage: String, throwable: Throwable?): Nothing {
+            throw RuntimeException(errorMessage, throwable)
         }
 
         @Suppress("TooGenericExceptionThrown")

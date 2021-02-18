@@ -53,12 +53,12 @@ class RootActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?) =
         RxPortalBuilder(
             object : Portal.Dependency {
-                override fun defaultResolution(): (Portal.OtherSide) -> Resolution =
+                override val defaultResolution: (Portal.OtherSide) -> Resolution =
                     { portal ->
                         child { buildSwitcherNode(portal, it) }
                     }
 
-                override fun transitionHandler(): TransitionHandler<PortalRouter.Configuration>? =
+                override val transitionHandler: TransitionHandler<PortalRouter.Configuration> =
                     TransitionHandler.multiple(
                         Slider { it.configuration is PortalRouter.Configuration.Content },
                         CrossFader { it.configuration is PortalRouter.Configuration.Overlay }
@@ -70,13 +70,14 @@ class RootActivity : RibActivity() {
                 ): Switcher {
                     return SwitcherBuilder(
                         object : Switcher.Dependency {
-                            override fun activityStarter(): ActivityStarter = activityStarter
-                            override fun permissionRequester(): PermissionRequester =
-                                permissionRequester
-
-                            override fun dialogLauncher(): DialogLauncher = this@RootActivity
-                            override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
-                            override fun portal(): Portal.OtherSide =
+                            override val activityStarter: ActivityStarter =
+                                integrationPoint.activityStarter
+                            override val permissionRequester: PermissionRequester =
+                                integrationPoint.permissionRequester
+                            override val dialogLauncher: DialogLauncher =
+                                integrationPoint.dialogLauncher
+                            override val coffeeMachine: CoffeeMachine = StupidCoffeeMachine()
+                            override val portal: Portal.OtherSide =
                                 portal
                         }
                     ).build(buildContext)

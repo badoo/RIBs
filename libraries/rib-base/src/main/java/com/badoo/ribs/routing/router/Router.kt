@@ -9,13 +9,19 @@ import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
+import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.state.CompositeCancellable
+import com.badoo.ribs.core.state.Relay
+import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.core.state.TimeCapsule
+import com.badoo.ribs.core.state.map
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
+import com.badoo.ribs.routing.router.Router.TransitionState.IN_TRANSITION
+import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.changes
 import com.badoo.ribs.routing.state.feature.RoutingStatePool
@@ -34,8 +40,22 @@ abstract class Router<C : Parcelable>(
     NodeLifecycleAware,
     ViewLifecycleAware,
     SavesInstanceState,
-    SubtreeBackPressHandler by routingSource {
+    SubtreeBackPressHandler by routingSource,
+    UpNavigationHandler by routingSource {
 
+    enum class TransitionState {
+        SETTLED, IN_TRANSITION;
+
+        val isSettled: Boolean
+            get() = this == SETTLED
+    }
+
+    var transitionState: TransitionState = SETTLED
+        private set
+
+    private val transitionStatesRelay: Relay<TransitionState> = Relay()
+    val transitionStates: Source<TransitionState> = transitionStatesRelay
+    
     private val cancellable = CompositeCancellable()
     private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
     private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
@@ -47,6 +67,10 @@ abstract class Router<C : Parcelable>(
     override fun init(node: Node<*>) {
         this.node = node
         activator = RoutingActivator(node, clientChildActivator)
+    }
+
+    override fun onBuild() {
+        super.onBuild()
         initFeatures(node)
     }
 
@@ -69,7 +93,16 @@ abstract class Router<C : Parcelable>(
     }
 
     override fun onCreate(nodeLifecycle: Lifecycle) {
-        cancellable += routingSource.changes(hasSavedState).observe(routingStatePool::accept)
+        cancellable += routingSource
+            .changes(hasSavedState)
+            .observe(routingStatePool::accept)
+
+        cancellable += routingStatePool
+            .map { if (it.ongoingTransitions.isEmpty()) SETTLED else IN_TRANSITION }
+            .observe {
+                transitionState = it
+                transitionStatesRelay.emit(it)
+            }
     }
 
     override fun onAttachToView() {

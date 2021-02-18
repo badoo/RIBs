@@ -53,7 +53,7 @@ class RecyclerViewTestActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     private val fooBarBuilder = FooBarBuilder(object : FooBar.Dependency {
-        override fun permissionRequester(): PermissionRequester = this@RecyclerViewTestActivity.permissionRequester
+        override val permissionRequester: PermissionRequester = integrationPoint.permissionRequester
     })
 
     private val loremIpsumBuilder = LoremIpsumBuilder(object : LoremIpsum.Dependency {})
@@ -71,16 +71,16 @@ class RecyclerViewTestActivity : RibActivity() {
     private val switcherBuilder =
         SwitcherBuilder(
             object : Switcher.Dependency {
-                override fun activityStarter(): ActivityStarter = activityStarter
-                override fun permissionRequester(): PermissionRequester = permissionRequester
-                override fun dialogLauncher(): DialogLauncher = this@RecyclerViewTestActivity
-                override fun coffeeMachine(): CoffeeMachine = StupidCoffeeMachine()
-                override fun portal(): com.badoo.ribs.portal.Portal.OtherSide = noopPortal
+                override val activityStarter: ActivityStarter = integrationPoint.activityStarter
+                override val permissionRequester: PermissionRequester =
+                    integrationPoint.permissionRequester
+                override val dialogLauncher: DialogLauncher = integrationPoint.dialogLauncher
+                override val coffeeMachine: CoffeeMachine = StupidCoffeeMachine()
+                override val portal: com.badoo.ribs.portal.Portal.OtherSide = noopPortal
             }
         )
 
-    private val resolver = object :
-        RoutingResolver<Item> {
+    private val resolver = object : RoutingResolver<Item> {
         override fun resolve(routing: Routing<Item>): Resolution =
             when (routing.configuration) {
                 Item.LoremIpsumItem -> recyclerView { loremIpsumBuilder.build(it) }
@@ -98,12 +98,12 @@ class RecyclerViewTestActivity : RibActivity() {
     override fun createRib(savedInstanceState: Bundle?): Rib =
         RecyclerViewHostBuilder(
             object : RecyclerViewHost.Dependency<Item> {
-                override fun hostingStrategy(): RecyclerViewHost.HostingStrategy = EAGER
-                override fun initialElements(): List<Item> = initialElements
-                override fun resolver(): RoutingResolver<Item> = resolver
-                override fun recyclerViewFactory(): RecyclerViewFactory = ::RecyclerView
-                override fun layoutManagerFactory(): LayoutManagerFactory = ::LinearLayoutManager
-                override fun viewHolderLayoutParams(): FrameLayout.LayoutParams =
+                override val hostingStrategy: RecyclerViewHost.HostingStrategy = EAGER
+                override val initialElements: List<Item> = this@RecyclerViewTestActivity.initialElements
+                override val resolver: RoutingResolver<Item> = this@RecyclerViewTestActivity.resolver
+                override val recyclerViewFactory: RecyclerViewFactory = ::RecyclerView
+                override val layoutManagerFactory: LayoutManagerFactory = ::LinearLayoutManager
+                override val viewHolderLayoutParams: FrameLayout.LayoutParams =
                     FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT

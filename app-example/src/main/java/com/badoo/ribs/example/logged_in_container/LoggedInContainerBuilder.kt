@@ -5,7 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerChildBuilders
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration.Content
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 
 class LoggedInContainerBuilder(
     private val dependency: LoggedInContainer.Dependency
@@ -15,7 +15,7 @@ class LoggedInContainerBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): LoggedInContainer {
         val customisation = buildParams.getOrDefault(LoggedInContainer.Customisation())
-        val backStack = BackStackFeature<LoggedInContainerRouter.Configuration>(
+        val backStack = BackStack<LoggedInContainerRouter.Configuration>(
             buildParams = buildParams,
             initialConfiguration = Content.PhotoFeed
         )

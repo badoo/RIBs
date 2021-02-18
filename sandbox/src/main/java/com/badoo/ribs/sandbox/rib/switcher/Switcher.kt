@@ -23,7 +23,7 @@ interface Switcher : Rib {
         CanProvideDialogLauncher,
         CanProvidePortal {
 
-        fun coffeeMachine(): CoffeeMachine
+        val coffeeMachine: CoffeeMachine
     }
 
     sealed class Input

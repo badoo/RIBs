@@ -1,8 +1,5 @@
 configureAndroidApp(project)
 
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
 def getAccessToken() {
     def systemEnvKey = System.getenv('ACCESS_KEY')
 
@@ -90,6 +87,7 @@ dependencies {
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
     implementation deps.external.mviCoreDiff
+    implementation project(path: ':libraries:rib-debug-utils')
 
     testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin

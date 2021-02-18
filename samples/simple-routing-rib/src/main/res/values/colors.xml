@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="parent_background">#FFF7d8</color>
+    <color name="child1_background">#FFC629</color>
+    <color name="child1_child1_background">#FF6C37</color>
+    <color name="child1_child2_background">#009ABF</color>
+    <color name="child2_background">#767676</color>
+</resources>

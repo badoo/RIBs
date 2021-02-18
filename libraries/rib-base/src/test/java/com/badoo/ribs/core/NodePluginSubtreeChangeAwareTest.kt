@@ -1,8 +1,8 @@
 package com.badoo.ribs.core
 
+import com.badoo.ribs.core.helper.TestBuilder
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
-import com.badoo.ribs.core.helper.TestBuilder
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
@@ -52,7 +52,7 @@ class NodePluginSubtreeChangeAwareTest : NodePluginTest() {
         val (node, plugins) = testPlugins<SubtreeChangeAware>()
         val childNode = createChildNode(parent = node)
 
-        node.detachChildNode(childNode)
+        node.detachChildNode(childNode, isRecreating = false)
 
         plugins.forEach {
             verify(it).onChildDetached(eq(childNode))

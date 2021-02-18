@@ -100,7 +100,7 @@ class WorkflowTest {
 
     @Test
     fun `executeWorkflow never executes action on lifecycle terminate before subscribe`() {
-        node.onDestroy()
+        node.onDestroy(isRecreating = false)
 
         var actionInvoked = false
         val action = { actionInvoked = true }
@@ -128,7 +128,7 @@ class WorkflowTest {
 
     @Test
     fun `attachWorkflow never executes action on lifecycle terminate before subscribe`() {
-        node.onDestroy()
+        node.onDestroy(isRecreating = false)
 
         var actionInvoked = false
         val action = { actionInvoked = true }
@@ -158,7 +158,7 @@ class WorkflowTest {
 
     @Test
     fun `waitForChildAttached never executes action on lifecycle terminate before subscribe`() {
-        node.onDestroy()
+        node.onDestroy(isRecreating = false)
 
         val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = TestObserver<TestNode2>()

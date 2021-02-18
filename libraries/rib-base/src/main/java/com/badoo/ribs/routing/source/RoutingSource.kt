@@ -3,6 +3,7 @@ package com.badoo.ribs.routing.source
 import android.os.Parcelable
 import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
+import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
@@ -21,6 +22,7 @@ import com.badoo.ribs.routing.source.impl.Permanent
 interface RoutingSource<C : Parcelable> :
     Source<RoutingHistory<C>>,
     SubtreeBackPressHandler,
+    UpNavigationHandler,
     SavesInstanceState {
 
     /**

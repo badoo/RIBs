@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFC629</color>
+    <color name="colorPrimaryDark">#E3AA1F</color>
+    <color name="colorAccent">#767676</color>
+
+    <color name="customisation_parent">#7FC4D5</color>
+    <color name="customisation_child1">#767676</color>
+    <color name="customisation_child2">#FF6C37</color>
+    <color name="customisation_child1_child1">#FFC629</color>
+    <color name="customisation_child1_child2">#FFF7d8</color>
+</resources>

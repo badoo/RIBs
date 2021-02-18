@@ -1,6 +1,5 @@
 configureAndroidLibrary(project)
 
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 androidExtensions {
@@ -11,6 +10,8 @@ dependencies {
     api deps.android.appCompat
 
     implementation deps.android.lifecycleCommon
+    implementation deps.android.activity
+    implementation deps.android.fragment
     compileOnly deps.android.annotations
     implementation deps.external.kotlinStdlib
     implementation deps.external.rxrelay2
@@ -25,6 +26,7 @@ dependencies {
     testImplementation deps.test.assertj
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
+    testImplementation project(":libraries:rib-base-test")
 
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.assertj

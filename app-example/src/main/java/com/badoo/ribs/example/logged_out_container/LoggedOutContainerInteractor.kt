@@ -9,13 +9,13 @@ import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration.Content
 import com.badoo.ribs.example.welcome.Welcome
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
-import com.badoo.ribs.routing.source.backstack.operation.push
+import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.operation.replace
 import io.reactivex.functions.Consumer
 
 internal class LoggedOutContainerInteractor(
     buildParams: BuildParams<*>,
-    private val backStack: BackStackFeature<Configuration>,
+    private val backStack: BackStack<Configuration>,
     private val authDataSource: AuthDataSource
 ) : Interactor<LoggedOutContainer, Nothing>(
     buildParams = buildParams

@@ -6,7 +6,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.O1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.O2
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.routing.source.backstack.Elements
 import com.badoo.ribs.routing.source.backstack.operation.PushOverlay
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -17,7 +17,7 @@ class PushOverlayTest {
 
     @Test
     fun `not applicable when current overlay same`() {
-        val backStack: BackStack<Configuration> = listOf(
+        val elements: Elements<Configuration> = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration),
                 overlays = listOf(
@@ -27,7 +27,7 @@ class PushOverlayTest {
         )
         pushOverlay = PushOverlay(O1)
 
-        val applicable = pushOverlay.isApplicable(backStack)
+        val applicable = pushOverlay.isApplicable(elements)
 
         assertThat(applicable).isEqualTo(false)
     }

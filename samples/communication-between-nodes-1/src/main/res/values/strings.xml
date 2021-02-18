@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Communication with child nodes #2</string>
+    <string name="label_parent">Parent with router</string>
+    <string name="text_child1">Hello! I am Child 1</string>
+    <string name="text_child2">Hello! I am Child 2</string>
+    <string name="text_child3">Hello! I am Child 3</string>
+</resources>

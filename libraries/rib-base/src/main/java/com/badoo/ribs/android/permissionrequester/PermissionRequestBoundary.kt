@@ -1,11 +1,8 @@
 package com.badoo.ribs.android.permissionrequester
 
-import android.annotation.TargetApi
+import android.app.Activity
 import android.content.pm.PackageManager
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.CheckPermissionsResult
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.Cancelled
@@ -15,24 +12,40 @@ import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 
 class PermissionRequestBoundary(
-    private val activity: AppCompatActivity,
+    private val permissionRequesterHost: PermissionRequesterHost,
     requestCodeRegistry: RequestCodeRegistry
 ) : RequestCodeBasedEventStreamImpl<RequestPermissionsEvent>(requestCodeRegistry),
     PermissionRequester,
     PermissionRequestResultHandler {
 
+    constructor(
+        activity: Activity,
+        requestCodeRegistry: RequestCodeRegistry
+    ) : this(
+        PermissionRequesterHost.ActivityHost(activity),
+        requestCodeRegistry
+    )
+
+    constructor(
+        fragment: Fragment,
+        requestCodeRegistry: RequestCodeRegistry
+    ) : this(
+        PermissionRequesterHost.FragmentHost(fragment),
+        requestCodeRegistry
+    )
+
     override fun checkPermissions(
         client: RequestCodeClient,
         permissions: Array<String>
-    ) : CheckPermissionsResult {
+    ): CheckPermissionsResult {
         val granted = mutableListOf<String>()
         val shouldShowRationale = mutableListOf<String>()
         val canAsk = mutableListOf<String>()
 
         permissions.forEach { permission ->
             val list = when {
-                permission.isGranted() -> granted
-                permission.shouldShowRationale() -> shouldShowRationale
+                permissionRequesterHost.isGranted(permission) -> granted
+                permissionRequesterHost.shouldShowRationale(permission) -> shouldShowRationale
                 else -> canAsk
             }
 
@@ -44,21 +57,14 @@ class PermissionRequestBoundary(
         )
     }
 
-    private fun String.isGranted(): Boolean =
-        ContextCompat.checkSelfPermission(activity, this) == PackageManager.PERMISSION_GRANTED
-
-    private fun String.shouldShowRationale(): Boolean =
-        ActivityCompat.shouldShowRequestPermissionRationale(activity, this)
-
-    @TargetApi(Build.VERSION_CODES.M)
     override fun requestPermissions(
         client: RequestCodeClient,
         requestCode: Int,
         permissions: Array<String>
     ) {
-        ActivityCompat.requestPermissions(activity,
-            permissions,
-            client.forgeExternalRequestCode(requestCode)
+        permissionRequesterHost.requestPermissions(
+            client.forgeExternalRequestCode(requestCode),
+            permissions
         )
     }
 

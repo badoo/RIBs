@@ -1,5 +1,6 @@
 package com.badoo.ribs.sandbox.rib.switcher
 
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.LayoutRes
@@ -27,7 +28,7 @@ interface SwitcherView : RibView,
     }
 
     data class ViewModel(
-        val i: Int = 0
+        val uiFrozen: Boolean = false
     )
 
     interface Factory : ViewFactory<Dependency, SwitcherView>
@@ -71,10 +72,11 @@ class SwitcherViewImpl private constructor(
     }
 
     override fun accept(vm: ViewModel) {
+        Log.d("SwitcherViewImpl", "UI frozen: ${vm.uiFrozen}")
     }
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup =
-        when (child) {
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        when (subtreeOf) {
             is MenuNode -> menuContainer
             else -> contentContainer
         }

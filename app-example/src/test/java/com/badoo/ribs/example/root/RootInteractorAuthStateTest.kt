@@ -7,8 +7,10 @@ import com.badoo.ribs.example.RxSchedulerRule
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.auth.AuthState
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.replace
+import com.badoo.ribs.test.InteractorTestHelper
+import com.badoo.ribs.test.emptyBuildParams
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -24,10 +26,9 @@ class RootInteractorAuthStateTest(
     private val authState: AuthState,
     private val expectedConfiguration: Configuration
 ) {
+    private val backStack: BackStack<Configuration> = mock()
     @get:Rule
     val rxSchedulerRule = RxSchedulerRule()
-
-    private val backStack: BackStackFeature<Configuration> = mock()
     private val stateRelay = PublishRelay.create<AuthState>()
     private val authDataSource = mock<AuthDataSource>().apply {
         whenever(authUpdates).thenReturn(stateRelay)
@@ -38,9 +39,10 @@ class RootInteractorAuthStateTest(
     @Before
     fun setup() {
         interactor = RootInteractor(
-            buildParams = BuildParams.Empty(),
+            buildParams = emptyBuildParams(),
             backStack = backStack,
-            authDataSource = authDataSource
+            authDataSource = authDataSource,
+            networkErrors = PublishRelay.create()
         )
         interactorTestHelper = InteractorTestHelper(interactor)
     }

@@ -61,9 +61,9 @@ class HelloWorldViewImpl private constructor(
         text.text = vm.text
     }
 
-    override fun getParentViewForChild(child: Node<*>): ViewGroup =
-        when (child) {
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        when (subtreeOf) {
             is SmallNode -> smallContainer
-            else -> super.getParentViewForChild(child)
+            else -> super.getParentViewForSubtree(subtreeOf)
         }
 }

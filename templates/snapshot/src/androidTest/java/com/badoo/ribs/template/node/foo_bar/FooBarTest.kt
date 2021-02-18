@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.node.foo_bar
 
 import android.os.Bundle
-import com.badoo.common.ribs.RibsRule
+import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import org.junit.Rule

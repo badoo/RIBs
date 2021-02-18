@@ -1,9 +1,9 @@
 package com.badoo.ribs.routing.source.backstack
 
 import android.os.Parcelable
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.state.Source
 import com.badoo.ribs.routing.source.backstack.operation.push
+import com.badoo.ribs.test.emptyBuildParams
 import kotlinx.android.parcel.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -15,7 +15,7 @@ class BackStackTest {
 
     private val backStack = BackStack<Configuration>(
         initialConfiguration = Configuration.Initial,
-        buildParams = BuildParams.Empty()
+        buildParams = emptyBuildParams()
     )
 
     @Test

@@ -1,12 +1,12 @@
 package com.badoo.ribs.tutorials.tutorial5.rib.greetings_container
 
-import com.badoo.ribs.clienthelper.interactor.BackStackInteractor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainer.Output.GreetingsSaid
 import com.badoo.ribs.tutorials.tutorial5.rib.greetings_container.GreetingsContainerRouter.Configuration
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorld.Output.HelloThere
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelector
+import com.badoo.ribs.tutorials.tutorial5.util.BackStackInteractor
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.functions.Consumer

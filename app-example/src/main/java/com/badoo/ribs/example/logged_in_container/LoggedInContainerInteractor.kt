@@ -3,14 +3,14 @@ package com.badoo.ribs.example.logged_in_container
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.feed_container.FeedContainer
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration.Content
 import com.badoo.ribs.portal.Portal
-import io.reactivex.functions.Consumer
 import com.badoo.ribs.routing.source.backstack.BackStack
+import io.reactivex.functions.Consumer
+import com.badoo.ribs.core.Node
 
 internal class LoggedInContainerInteractor(
     buildParams: BuildParams<*>,
@@ -19,6 +19,15 @@ internal class LoggedInContainerInteractor(
 ) : Interactor<LoggedInContainer, Nothing>(
     buildParams = buildParams
 ) {
+
+    private val photoFeedOutputConsumer = Consumer<FeedContainer.Output> { output ->
+        when (output) {
+            is FeedContainer.Output.PhotoClicked -> portal.showContent(
+                node,
+                Content.PhotoDetails(output.id)
+            )
+        }
+    }
 
     override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {

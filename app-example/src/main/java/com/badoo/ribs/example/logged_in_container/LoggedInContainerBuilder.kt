@@ -22,7 +22,7 @@ class LoggedInContainerBuilder(
         val interactor = LoggedInContainerInteractor(
             buildParams = buildParams,
             backStack = backStack,
-            portal = dependency.portal()
+            portal = dependency.portal
         )
         val router = LoggedInContainerRouter(
             buildParams = buildParams,

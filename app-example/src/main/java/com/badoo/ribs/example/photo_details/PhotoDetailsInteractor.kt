@@ -11,11 +11,11 @@ import com.badoo.ribs.example.photo_details.mapper.NewsToOutput
 import com.badoo.ribs.example.photo_details.mapper.StateToViewModel
 import com.badoo.ribs.example.photo_details.mapper.ViewEventToWish
 import com.badoo.ribs.example.photo_details.routing.PhotoDetailsRouter.Configuration
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 
 internal class PhotoDetailsInteractor(
     buildParams: BuildParams<*>,
-    private val backStack: BackStackFeature<Configuration>,
+    private val backStack: BackStack<Configuration>,
     private val feature: PhotoDetailsFeature
 ) : Interactor<PhotoDetails, PhotoDetailsView>(
     buildParams = buildParams

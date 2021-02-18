@@ -6,7 +6,7 @@ import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature
 import com.badoo.ribs.example.photo_details.routing.PhotoDetailsChildBuilders
 import com.badoo.ribs.example.photo_details.routing.PhotoDetailsRouter
 import com.badoo.ribs.example.photo_details.routing.PhotoDetailsRouter.Configuration
-import com.badoo.ribs.routing.source.backstack.BackStackFeature
+import com.badoo.ribs.routing.source.backstack.BackStack
 
 class PhotoDetailsBuilder(
     private val dependency: PhotoDetails.Dependency
@@ -18,7 +18,7 @@ class PhotoDetailsBuilder(
     override fun build(buildParams: BuildParams<Params>): PhotoDetails {
         val connections = PhotoDetailsChildBuilders(dependency)
         val customisation = buildParams.getOrDefault(PhotoDetails.Customisation())
-        val backStack = BackStackFeature<Configuration>(
+        val backStack = BackStack<Configuration>(
             buildParams = buildParams,
             initialConfiguration = Configuration.Content.Default
         )

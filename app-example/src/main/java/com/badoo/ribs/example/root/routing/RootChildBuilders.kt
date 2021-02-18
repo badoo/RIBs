@@ -25,11 +25,10 @@ internal class RootChildBuilders(
     val loggedInContainerBuilder: PortalBuilder =
         PortalBuilder(
             object : Portal.Dependency {
-                override fun defaultResolution(): (Portal.OtherSide) -> Resolution =
+                override val defaultResolution: (Portal.OtherSide) -> Resolution =
                     { portal ->
                         child { loggedInContainerBuilder(authDataSource, portal).build(it) }
                     }
-
             }
         )
 
@@ -41,7 +40,7 @@ internal class RootChildBuilders(
             dependency = object : Root.Dependency by subtreeDeps,
                 LoggedInContainer.Dependency {
                 override val authDataSource: AuthDataSource = authDataSource
-                override fun portal(): Portal.OtherSide = portal
+                override val portal: Portal.OtherSide = portal
             }
         )
     }

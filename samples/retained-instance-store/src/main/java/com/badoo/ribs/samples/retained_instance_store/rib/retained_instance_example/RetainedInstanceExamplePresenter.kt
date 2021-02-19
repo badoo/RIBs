@@ -1,6 +1,5 @@
 package com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example
 
-import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.plugin.ViewAware
@@ -26,24 +25,20 @@ internal class RetainedInstanceExamplePresenterImpl(
         viewLifecycle.subscribe(
             onCreate = {
                 this@RetainedInstanceExamplePresenterImpl.view = view
-                view.updateButtonState(backStack.getCurrentConfig().toButtonState())
+                view.updateButtonState(backStack.activeConfiguration.toButtonState())
             },
             onDestroy = { this@RetainedInstanceExamplePresenterImpl.view = null }
         )
     }
 
     override fun toggleConfig() {
-        val newConfig = when (backStack.getCurrentConfig()) {
+        val newConfig = when (backStack.activeConfiguration) {
             is Content.Counter -> Content.Default
             is Content.Default -> Content.Counter
         }
         backStack.replace(newConfig)
         view?.updateButtonState(newConfig.toButtonState())
     }
-
-    private fun <T : Parcelable> BackStack<T>.getCurrentConfig() =
-        // FIXME add synchronous property to BackStack too
-        requireNotNull(state.current?.routing?.configuration) { IllegalStateException() }
 
     private fun Configuration.toButtonState() = when (this) {
         is Content.Counter -> ButtonState.DestroyCounter

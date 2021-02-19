@@ -6,7 +6,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.BuildContext
-import com.badoo.ribs.core.state.TimeCapsule
+import com.badoo.ribs.minimal.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.Routing.Identifier
 import com.badoo.ribs.routing.resolution.Resolution

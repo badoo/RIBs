@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.hello_world
 
 import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
-import com.badoo.ribs.clienthelper.connector.Connectable
+import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.portal.CanProvidePortal

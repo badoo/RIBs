@@ -11,11 +11,11 @@ import com.badoo.ribs.core.plugin.SavesInstanceState
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
-import com.badoo.ribs.core.state.CompositeCancellable
-import com.badoo.ribs.core.state.Relay
-import com.badoo.ribs.core.state.Source
-import com.badoo.ribs.core.state.TimeCapsule
-import com.badoo.ribs.core.state.map
+import com.badoo.ribs.minimal.reactive.CompositeCancellable
+import com.badoo.ribs.minimal.reactive.Relay
+import com.badoo.ribs.minimal.reactive.Source
+import com.badoo.ribs.minimal.state.TimeCapsule
+import com.badoo.ribs.minimal.reactive.map
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator

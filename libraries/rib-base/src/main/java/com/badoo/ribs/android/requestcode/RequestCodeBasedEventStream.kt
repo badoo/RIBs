@@ -1,11 +1,11 @@
 package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import io.reactivex.Observable
+import com.badoo.ribs.minimal.reactive.Source
 
 interface RequestCodeBasedEventStream<T : RequestCodeBasedEvent> {
 
-    fun events(client: RequestCodeClient): Observable<T>
+    fun events(client: RequestCodeClient): Source<T>
 
     interface RequestCodeBasedEvent {
         val requestCode: Int

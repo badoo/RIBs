@@ -3,8 +3,8 @@ package com.badoo.ribs.routing.state.feature
 import android.os.Parcelable
 import com.badoo.ribs.annotation.OutdatedDocumentation
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.state.AsyncStore
-import com.badoo.ribs.core.state.TimeCapsule
+import com.badoo.ribs.minimal.state.AsyncStore
+import com.badoo.ribs.minimal.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver

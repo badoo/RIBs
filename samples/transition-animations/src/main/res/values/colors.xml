@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFC629</color>
+    <color name="colorPrimaryDark">#E3AA1F</color>
+    <color name="colorAccent">#767676</color>
+
+    <color name="yellow_200">#FFF7D8</color>
+    <color name="yellow_350">#FFD08A</color>
+    <color name="yellow_500">#FFC629</color>
+    <color name="yellow_700">#E3AA1F</color>
+    <color name="teal_200">#009ABF</color>
+    <color name="teal_700">#005E75</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="light_gray">#CCCCCC</color>
+
+    <color name="text_default">#666</color>
+    <color name="text_selected">@color/black</color>
+
+    <color name="container_background">#FFF8E1</color>
+    <color name="child1_background">#F8BBD0</color>
+    <color name="child2_background">#C8E6C9</color>
+    <color name="child3_background">#7FC4D5</color>
+</resources>

@@ -7,7 +7,6 @@ import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content
 import com.badoo.ribs.samples.comms_nodes_1.rib.menu.Menu
-import io.reactivex.functions.Consumer
 
 interface ContainerPresenter
 

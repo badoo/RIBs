@@ -5,7 +5,6 @@ import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
-import com.badoo.ribs.minimal.reactive.Cancellable
 import com.badoo.ribs.minimal.reactive.CompositeCancellable
 
 interface MenuPresenter {

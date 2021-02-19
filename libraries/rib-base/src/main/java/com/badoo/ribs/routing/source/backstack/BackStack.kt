@@ -135,13 +135,19 @@ class BackStack<C : Parcelable> internal constructor(
             }
     }
 
-    val activeConfiguration: Source<C> =
+    val activeConfigurations: Source<C> =
         store
             .map {
                 it.elements.last()
                     .routing
                     .configuration
             }
+
+    val activeConfiguration: C =
+        state.elements
+            .last()
+            .routing
+            .configuration
 
     val state: State<C>
         get() = store.state

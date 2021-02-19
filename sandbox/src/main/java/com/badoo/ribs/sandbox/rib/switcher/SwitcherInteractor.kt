@@ -116,7 +116,7 @@ internal class SwitcherInteractor(
     override fun onChildAttached(child: Node<*>) {
         child.lifecycle.createDestroy {
             when (child) {
-                is Menu -> bind(backStack.activeConfiguration.rx2() to child.input using ConfigurationToMenuInput)
+                is Menu -> bind(backStack.activeConfigurations.rx2() to child.input using ConfigurationToMenuInput)
             }
         }
     }

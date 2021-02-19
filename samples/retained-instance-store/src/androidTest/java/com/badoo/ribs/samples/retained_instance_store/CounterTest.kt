@@ -9,9 +9,9 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
-import com.badoo.common.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.retained_instance_store.rib.counter.CounterBuilder
+import com.badoo.ribs.test.RibsRule
 import org.hamcrest.Matcher
 import org.junit.Assert.*
 import org.junit.Rule

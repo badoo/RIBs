@@ -30,7 +30,7 @@ internal class ContainerPresenterImpl(
 
     override fun onChildAttached(child: Node<*>) {
         when (child) {
-            is Menu -> backStack.activeConfiguration.observe {
+            is Menu -> backStack.activeConfigurations.observe {
                 updateMenuItem(it, child)
             }
         }

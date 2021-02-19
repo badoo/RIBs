@@ -20,7 +20,7 @@ class BackStackTest {
 
     @Test
     fun `activeConfiguration returns initial configuration`() {
-        val configurations = backStack.activeConfiguration.collect()
+        val configurations = backStack.activeConfigurations.collect()
 
         assertEquals(listOf(Configuration.Initial), configurations)
     }
@@ -29,7 +29,7 @@ class BackStackTest {
     fun `activeConfiguration returns last configuration from back stack`() {
         backStack.push(Configuration.Additional)
 
-        val configurations = backStack.activeConfiguration.collect()
+        val configurations = backStack.activeConfigurations.collect()
 
         assertEquals(listOf(Configuration.Additional), configurations)
     }
@@ -39,14 +39,14 @@ class BackStackTest {
         backStack.push(Configuration.Additional)
         backStack.popBackStack()
 
-        val configurations = backStack.activeConfiguration.collect()
+        val configurations = backStack.activeConfigurations.collect()
 
         assertEquals(listOf(Configuration.Initial), configurations)
     }
 
     @Test
     fun `activeConfiguration correctly notifies about operations`() {
-        val configurations = backStack.activeConfiguration.collect()
+        val configurations = backStack.activeConfigurations.collect()
 
         backStack.push(Configuration.Additional)
         backStack.popBackStack()

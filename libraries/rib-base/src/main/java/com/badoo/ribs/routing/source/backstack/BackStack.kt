@@ -3,22 +3,14 @@ package com.badoo.ribs.routing.source.backstack
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.core.state.Cancellable
-import com.badoo.ribs.core.state.Source
-import com.badoo.ribs.core.state.Store
-import com.badoo.ribs.core.state.TimeCapsule
-import com.badoo.ribs.core.state.map
+import com.badoo.ribs.core.state.*
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
 import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.routing.source.backstack.operation.NewRoot
-import com.badoo.ribs.routing.source.backstack.operation.Remove
-import com.badoo.ribs.routing.source.backstack.operation.canPop
-import com.badoo.ribs.routing.source.backstack.operation.canPopOverlay
-import com.badoo.ribs.routing.source.backstack.operation.pop
+import com.badoo.ribs.routing.source.backstack.operation.*
 import kotlinx.android.parcel.Parcelize
 import kotlin.random.Random
 
@@ -69,7 +61,7 @@ class BackStack<C : Parcelable> internal constructor(
         TimeCapsule(buildParams.savedInstanceState)
     )
 
-    override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
+    override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
         timeCapsule.initialState()
 
     private val store = object : Store<State<C>>(timeCapsule.initialState()) {
@@ -143,8 +135,8 @@ class BackStack<C : Parcelable> internal constructor(
                     .configuration
             }
 
-    val activeConfiguration: C =
-        state.elements
+    val activeConfiguration: C
+        get() = state.elements
             .last()
             .routing
             .configuration

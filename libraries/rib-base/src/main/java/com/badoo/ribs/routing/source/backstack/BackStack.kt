@@ -69,7 +69,7 @@ class BackStack<C : Parcelable> internal constructor(
         TimeCapsule(buildParams.savedInstanceState)
     )
 
-    override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
+    override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
         timeCapsule.initialState()
 
     private val store = object : Store<State<C>>(timeCapsule.initialState()) {
@@ -143,8 +143,8 @@ class BackStack<C : Parcelable> internal constructor(
                     .configuration
             }
 
-    val activeConfiguration: C =
-        state.elements
+    val activeConfiguration: C
+        get()= state.elements
             .last()
             .routing
             .configuration

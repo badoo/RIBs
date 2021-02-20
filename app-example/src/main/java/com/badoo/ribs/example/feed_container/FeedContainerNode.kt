@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.feed_container
 
-import com.badoo.ribs.clienthelper.connector.Connectable
-import com.badoo.ribs.clienthelper.connector.NodeConnector
+import com.badoo.ribs.rx2.clienthelper.connector.Connectable
+import com.badoo.ribs.rx2.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin

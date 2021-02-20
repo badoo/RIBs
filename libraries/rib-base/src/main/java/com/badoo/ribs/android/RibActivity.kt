@@ -9,8 +9,6 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.integrationpoint.ActivityIntegrationPoint
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Helper class for root [Rib] integration.
@@ -46,24 +44,8 @@ abstract class RibActivity : AppCompatActivity() {
 
         val root = createRib(savedInstanceState)
         integrationPoint.attach(root)
-
-        if (intent?.action == Intent.ACTION_VIEW) {
-            handleDeepLink(intent)
-        }
     }
-
-    private val disposables = CompositeDisposable()
-
-    fun handleDeepLink(intent: Intent) {
-        workflowFactory.invoke(intent)?.let {
-            disposables.add(it.subscribe())
-        }
-    }
-
-    open val workflowFactory: (Intent) -> Observable<*>? = {
-        null
-    }
-
+    
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         integrationPoint.onSaveInstanceState(outState)

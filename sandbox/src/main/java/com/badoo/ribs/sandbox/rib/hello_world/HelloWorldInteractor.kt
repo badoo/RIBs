@@ -10,6 +10,7 @@ import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.rx2.adapter.rx2
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.sandbox.rib.hello_world.analytics.HelloWorldAnalytics
@@ -48,7 +49,7 @@ class HelloWorldInteractor(
         viewLifecycle.startStop {
             bind(view to HelloWorldAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
-            bind(activityStarter.events(this@HelloWorldInteractor) to activityResultConsumer)
+            bind(activityStarter.events(this@HelloWorldInteractor).rx2() to activityResultConsumer)
             bind(dummyViewInput to view)
         }
     }

@@ -79,7 +79,7 @@ dependencies {
     implementation deps.retrofit.okhttpLoggingInterceptor
 
     implementation project(":libraries:rib-base")
-    implementation project(":libraries:rib-rx")
+    implementation project(':libraries:rib-rx2')
     implementation project(":libraries:rib-portal")
 
     implementation deps.external.mviCore
@@ -91,6 +91,7 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
+    testImplementation project(":libraries:rib-base-test-rx2")
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

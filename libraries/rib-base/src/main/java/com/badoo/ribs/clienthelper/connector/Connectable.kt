@@ -1,6 +1,6 @@
 package com.badoo.ribs.clienthelper.connector
 
-import com.jakewharton.rxrelay2.Relay
+import com.badoo.ribs.minimal.reactive.Relay
 
 interface Connectable<Input, Output> {
     val input: Relay<Input>

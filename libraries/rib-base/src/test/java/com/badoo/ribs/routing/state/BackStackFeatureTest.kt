@@ -4,7 +4,7 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C1
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C2
 import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
-import com.badoo.ribs.core.state.TimeCapsule
+import com.badoo.ribs.minimal.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
 import com.badoo.ribs.routing.source.backstack.Elements

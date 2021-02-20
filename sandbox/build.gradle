@@ -67,7 +67,7 @@ dependencies {
     implementation project(":libraries:rib-debug-utils")
     implementation project(":libraries:rib-portal-rx")
     implementation project(":libraries:rib-recyclerview")
-    implementation project(":libraries:rib-rx")
+    implementation project(':libraries:rib-rx2')
 
     if (useCompose) {
         implementation project(":libraries:rib-compose")
@@ -87,6 +87,7 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
+    testImplementation project(":libraries:rib-base-test-rx2")
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

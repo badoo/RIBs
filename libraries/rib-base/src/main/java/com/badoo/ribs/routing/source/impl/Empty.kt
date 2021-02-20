@@ -1,7 +1,7 @@
 package com.badoo.ribs.routing.source.impl
 
 import android.os.Parcelable
-import com.badoo.ribs.core.state.Cancellable
+import com.badoo.ribs.minimal.reactive.Cancellable
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.source.RoutingSource

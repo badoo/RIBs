@@ -7,7 +7,6 @@ import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content
 import com.badoo.ribs.samples.comms_nodes_1.rib.menu.Menu
-import io.reactivex.functions.Consumer
 
 interface ContainerPresenter
 
@@ -16,21 +15,21 @@ internal class ContainerPresenterImpl(
 ) : ContainerPresenter,
     SubtreeChangeAware {
 
-    private val menuOutputConsumer: Consumer<Menu.Output> = Consumer {
-        when (it) {
-            is Menu.Output.MenuItemSelected -> updateContent(it.item)
+    override fun onChildBuilt(child: Node<*>) {
+        when (child) {
+            is Menu -> child.output.observe(::onMenuOutput)
         }
     }
 
-    override fun onChildBuilt(child: Node<*>) {
-        when (child) {
-            is Menu -> child.output.subscribe(menuOutputConsumer)
+    private fun onMenuOutput(output: Menu.Output) {
+        when (output) {
+            is Menu.Output.MenuItemSelected -> updateContent(output.item)
         }
     }
 
     override fun onChildAttached(child: Node<*>) {
         when (child) {
-            is Menu -> backStack.activeConfiguration.observe {
+            is Menu -> backStack.activeConfigurations.observe {
                 updateMenuItem(it, child)
             }
         }

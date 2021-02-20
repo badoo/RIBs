@@ -5,8 +5,7 @@ import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.minimal.reactive.CompositeCancellable
 
 interface MenuPresenter {
     fun onMenuItemSelected(item: Menu.MenuItem)
@@ -19,26 +18,25 @@ internal class MenuPresenterImpl(
     RibAware<Menu> by ribAware {
 
     private var view: MenuView? = null
-    private var disposable: Disposable? = null
+    private var cancellables = CompositeCancellable()
 
     override fun onViewCreated(view: MenuView, viewLifecycle: Lifecycle) {
         view.selectMenuItem(Menu.MenuItem.Child1)
         viewLifecycle.subscribe(
             onCreate = {
                 this@MenuPresenterImpl.view = view
-                disposable = rib.input.subscribe(menuInputConsumer)
+                cancellables += rib.input.observe(::onInputReceived)
             },
             onDestroy = {
                 this@MenuPresenterImpl.view = null
-                disposable?.dispose()
-                disposable = null
+                cancellables.cancel()
             }
         )
     }
 
-    private val menuInputConsumer: Consumer<Menu.Input> = Consumer {
-        when (it) {
-            is Menu.Input.SelectMenuItem -> view?.selectMenuItem(it.item)
+    private fun onInputReceived(input: Menu.Input) {
+        when (input) {
+            is Menu.Input.SelectMenuItem -> view?.selectMenuItem(input.item)
         }
     }
 

@@ -2,7 +2,7 @@ package com.badoo.ribs.template.leaf.foo_bar
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.rx.disposables
+import com.badoo.ribs.rx2.disposables
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 
 class FooBarBuilder(

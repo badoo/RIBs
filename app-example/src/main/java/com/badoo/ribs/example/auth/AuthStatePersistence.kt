@@ -38,7 +38,7 @@ class PreferencesAuthStatePersistence(
     }
 
     private companion object {
-        const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN"
-        const val ANONYMOUS_AUTH_KEY = "ANONYMOUS_AUTH"
+        private const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN"
+        private const val ANONYMOUS_AUTH_KEY = "ANONYMOUS_AUTH"
     }
 }

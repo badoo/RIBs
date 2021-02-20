@@ -5,6 +5,8 @@ import com.badoo.ribs.example.logged_in_container.LoggedInContainer
 import com.badoo.ribs.example.logged_in_container.LoggedInContainerBuilder
 import com.badoo.ribs.example.logged_out_container.LoggedOutContainer
 import com.badoo.ribs.example.logged_out_container.LoggedOutContainerBuilder
+import com.badoo.ribs.example.login.Login
+import com.badoo.ribs.example.login.LoginBuilder
 import com.badoo.ribs.example.root.Root
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalBuilder
@@ -31,6 +33,7 @@ internal class RootChildBuilders(
                     }
             }
         )
+    val loginBuilder: LoginBuilder = LoginBuilder(subtreeDeps)
 
     private fun loggedInContainerBuilder(
         authDataSource: AuthDataSource,
@@ -49,5 +52,6 @@ internal class RootChildBuilders(
         dependency: Root.Dependency,
         override val authDataSource: AuthDataSource
     ) : Root.Dependency by dependency,
-        LoggedOutContainer.Dependency
+        LoggedOutContainer.Dependency,
+        Login.Dependency
 }

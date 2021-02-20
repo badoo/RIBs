@@ -11,12 +11,10 @@ import org.junit.runners.model.Statement
 import java.util.concurrent.Callable
 
 class RxSchedulerRule : TestRule {
-    private val SCHEDULER_INSTANCE =
-        Schedulers.trampoline()
-    private val schedulerFunction: Function<Scheduler, Scheduler> =
-        Function { SCHEDULER_INSTANCE }
+    private val scheduler = Schedulers.trampoline()
+    private val schedulerFunction: Function<Scheduler, Scheduler> = Function { scheduler }
     private val schedulerFunctionLazy: Function<Callable<Scheduler>, Scheduler> =
-        Function { SCHEDULER_INSTANCE }
+        Function { scheduler }
 
     override fun apply(
         base: Statement,

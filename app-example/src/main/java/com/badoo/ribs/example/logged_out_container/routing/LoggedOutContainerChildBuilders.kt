@@ -11,8 +11,8 @@ internal class LoggedOutContainerChildBuilders(
 ) {
     private val subtreeDeps = SubtreeDeps(dependency)
 
-    val welcomeBuilder = WelcomeBuilder(subtreeDeps)
-    val loginBuilder = LoginBuilder(subtreeDeps)
+    val welcomeBuilder: WelcomeBuilder = WelcomeBuilder(subtreeDeps)
+    val loginBuilder: LoginBuilder = LoginBuilder(subtreeDeps)
 
     private class SubtreeDeps(
         dependency: LoggedOutContainer.Dependency

@@ -102,13 +102,13 @@ interface UnsplashApi {
      * https://unsplash.com/documentation#like-a-photo
      */
     @POST("photos/{id}/like")
-    fun likePhoto(@Path("id") id: String): Completable
+    fun likePhoto(@Path("id") id: String): Single<Unit>
 
     /**
      * https://unsplash.com/documentation#unlike-a-photo
      */
     @DELETE("photos/{id}/like")
-    fun unlikePhoto(@Path("id") id: String): Completable
+    fun unlikePhoto(@Path("id") id: String): Single<Unit>
     //endregion
 
     //region Search

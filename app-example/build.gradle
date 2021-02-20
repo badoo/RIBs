@@ -79,6 +79,7 @@ dependencies {
     implementation deps.retrofit.moshiConverter
     implementation deps.retrofit.okhttp
     implementation deps.retrofit.okhttpLoggingInterceptor
+    implementation deps.retrofit.moshiKotlin
 
     implementation project(":libraries:rib-base")
     implementation project(':libraries:rib-rx2')

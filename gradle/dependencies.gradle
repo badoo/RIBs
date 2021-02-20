@@ -27,7 +27,7 @@ def versions = [
     androidxRecyclerViewVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
     androidxTestVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/test
     androidxTestUiAutoVersion:'2.2.0',
-    retrofitVersion: '2.8.1',
+    retrofitVersion: '2.9.0',
     okhttp: '3.14.7',
     leakCanary: '2.4'
 ]
@@ -127,6 +127,7 @@ def retrofit = [
     moshiConverter: "com.squareup.retrofit2:converter-moshi:${versions.retrofitVersion}",
     okhttp: "com.squareup.okhttp3:okhttp:${versions.okhttp}",
     okhttpLoggingInterceptor : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+    moshiKotlin : "com.squareup.moshi:moshi-kotlin:1.11.0",
 ]
 
 ext.deps = [

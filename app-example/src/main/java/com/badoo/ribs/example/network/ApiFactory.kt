@@ -1,7 +1,9 @@
 package com.badoo.ribs.example.network
 
-import io.reactivex.functions.Consumer
 import com.badoo.ribs.example.auth.AuthStateStorage
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -38,7 +40,13 @@ object ApiFactory {
     private fun retrofit(client: OkHttpClient, baseUrl: String): Retrofit = Retrofit.Builder()
         .client(client)
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(
+            MoshiConverterFactory.create(
+                Moshi.Builder()
+                    .addLast(KotlinJsonAdapterFactory())
+                    .build()
+            )
+        )
         .baseUrl(baseUrl)
         .build()
 

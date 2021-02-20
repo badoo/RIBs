@@ -79,16 +79,16 @@ internal class PhotoDetailsFeature(
 
         private fun likePhoto(): Observable<Effect> {
             return photoDetailsDataSource.likePhoto(photoId)
-                .toObservable<Effect>()
                 .map<Effect> { Effect.LikeSent }
                 .onErrorReturnItem(Effect.LikeNotSent)
+                .toObservable()
         }
 
         private fun unlikePhoto(): Observable<Effect> {
             return photoDetailsDataSource.unlikePhoto(photoId)
-                .toObservable<Effect>()
                 .map<Effect> { Effect.UnlikeSent }
                 .onErrorReturnItem(Effect.LikeNotSent)
+                .toObservable()
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.ViewGroup
+import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
@@ -22,14 +23,9 @@ import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.root.Root
 import com.badoo.ribs.example.root.RootBuilder
 import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import com.badoo.ribs.portal.Portal
-import com.badoo.ribs.portal.PortalBuilder
-import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
-import com.badoo.ribs.routing.resolution.Resolution
-import com.badoo.ribs.android.RibActivity
-import com.jakewharton.rxrelay2.Relay
 
 class RootActivity : RibActivity(), AuthCodeDataSource {
 
@@ -76,7 +72,8 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
                 override val activityStarter: ActivityStarter = integrationPoint.activityStarter
                 override val networkErrors: Observable<NetworkError> =
                     networkErrorsRelay
-                        .observeOn(AndroidSchedulers.mainThread()) }
+                        .observeOn(AndroidSchedulers.mainThread())
+            }
         ).build(buildContext)
     }
 
@@ -94,7 +91,7 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
             isDebug = BuildConfig.DEBUG,
             accessKey = BuildConfig.ACCESS_KEY,
             networkErrorConsumer = networkErrorsRelay,
-            authStateStorage =authStateStorage
+            authStateStorage = authStateStorage
         )
 
 

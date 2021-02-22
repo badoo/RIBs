@@ -19,9 +19,10 @@ class AlertDialogLauncher(
         })
     }
 
-    override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
+    override fun show(dialog: Dialog<*>, onClose: () -> Unit, onShown: (AlertDialog) -> Unit) {
         dialogs[dialog] = dialog.toAlertDialog(context, onClose).also {
             it.show()
+            onShown.invoke(it)
         }
     }
 

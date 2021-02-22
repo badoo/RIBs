@@ -1,6 +1,7 @@
 package com.badoo.ribs.android.dialog.routing.resolution
 
 import android.os.Parcelable
+import androidx.appcompat.app.AlertDialog
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.Rib
@@ -13,7 +14,8 @@ class DialogResolution<Event : Any, C : Parcelable>(
     private val routingSource: RoutingSource<C>,
     private val routingElementId: Routing.Identifier,
     private val dialogLauncher: DialogLauncher,
-    private val dialog: Dialog<Event>
+    private val dialog: Dialog<Event>,
+    private val onShown: ((AlertDialog) -> Unit)?
 ) : Resolution {
 
     override val numberOfNodes: Int = 1
@@ -22,9 +24,11 @@ class DialogResolution<Event : Any, C : Parcelable>(
         dialog.buildNodes(buildContexts.first())
 
     override fun execute() {
-        dialogLauncher.show(dialog, onClose = {
-            routingSource.remove(routingElementId)
-        })
+        dialogLauncher.show(
+            dialog = dialog,
+            onClose = { routingSource.remove(routingElementId) },
+            onShown = { onShown?.invoke(it) }
+        )
     }
 
     override fun cleanup() {
@@ -36,8 +40,9 @@ class DialogResolution<Event : Any, C : Parcelable>(
             routingSource: RoutingSource<C>,
             routingElementId: Routing.Identifier,
             dialogLauncher: DialogLauncher,
-            dialog: Dialog<*>
+            dialog: Dialog<*>,
+            onShown: ((AlertDialog) -> Unit)? = null
         ): Resolution =
-            DialogResolution(routingSource, routingElementId, dialogLauncher, dialog)
+            DialogResolution(routingSource, routingElementId, dialogLauncher, dialog, onShown)
     }
 }

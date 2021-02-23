@@ -2,6 +2,7 @@ package com.badoo.ribs.core.view
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Node
 
 interface RibView {
@@ -41,5 +42,9 @@ interface RibView {
      * Detaches a child from this view. Acts as the opposite of [attachChild].
      */
     fun detachChild(child: Node<*>, subtreeOf: Node<*>)
+
+    interface LifecycleAware {
+        fun onCreate(lifecycle: Lifecycle)
+    }
 }
 

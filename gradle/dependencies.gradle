@@ -40,7 +40,7 @@ def apt = [
 ]
 
 def agp
-if (useCompose) {
+if (useCompose.toBoolean()) {
     agp = 'com.android.tools.build:gradle:4.2.0-beta04'
 } else {
     agp = 'com.android.tools.build:gradle:4.1.1'

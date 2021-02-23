@@ -1,14 +1,14 @@
 def props = new Properties()
 def propsFile = file("local.properties")
 
-def useCompose = false
+boolean useCompose = false
 if (propsFile.exists()) {
     propsFile.withInputStream { props.load(it) }
-    useCompose = props.getProperty("useCompose")
+    useCompose = Boolean.parseBoolean(props.getProperty("useCompose").toString())
 }
 
 if (hasProperty("useCompose")) {
-    useCompose = getProperty("useCompose")
+    useCompose = Boolean.parseBoolean(getProperty("useCompose").toString())
 }
 
 if (useCompose) {

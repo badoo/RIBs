@@ -22,7 +22,7 @@ android {
         }
     }
 
-    if (useCompose) {
+    if (useCompose.toBoolean()) {
         buildFeatures {
             compose true
         }
@@ -63,7 +63,7 @@ dependencies {
 
     implementation project(":libraries:rib-base")
 
-    if (useCompose) {
+    if (useCompose.toBoolean()) {
         implementation project(":libraries:rib-compose")
         implementation deps.compose.runtime
         implementation deps.compose.uiCore

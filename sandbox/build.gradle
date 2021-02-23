@@ -23,7 +23,7 @@ android {
         }
     }
 
-    if (useCompose) {
+    if (useCompose.toBoolean()) {
         buildFeatures {
             compose true
         }
@@ -69,7 +69,7 @@ dependencies {
     implementation project(":libraries:rib-recyclerview")
     implementation project(':libraries:rib-rx2')
 
-    if (useCompose) {
+    if (useCompose.toBoolean()) {
         implementation project(":libraries:rib-compose")
         implementation project(":sandbox-compose")
         implementation deps.compose.runtime

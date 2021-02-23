@@ -62,19 +62,20 @@ jobs:
               working-directory: .
 
     instrumentation-tests:
-        name: Instrumentation tests
         runs-on: macOS-latest
         timeout-minutes: 60
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         strategy:
+            fail-fast: false
             matrix:
                 api-level: [22,25,29]
                 compose-enabled: [true,false]
                 exclude:
                     - api-level: 22
                       compose-enabled: true
+        name: Instrumentation tests [API=${{ matrix.api-level }}, Compose-Enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1

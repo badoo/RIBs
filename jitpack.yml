@@ -1,0 +1,9 @@
+jdk:
+  - openjdk8
+install:
+  - echo "Building non-compose artifacts"
+  - ./gradlew clean install -xtest
+  # By copying this to a different directory, we avoid deleting it when we clean, allowing Jitpack to find it.
+  - cp -R libraries libraries-non-compose
+  - echo "Building compose artifacts"
+  - ./gradlew clean install -xtest -PuseCompose=true

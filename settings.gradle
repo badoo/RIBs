@@ -1,12 +1,22 @@
 def props = new Properties()
 def propsFile = file("local.properties")
+
+def useCompose = false
 if (propsFile.exists()) {
     propsFile.withInputStream { props.load(it) }
-    if (props.getProperty("useCompose")) {
-        include ':libraries:rib-compose'
-        include ':sandbox-compose'
-    } else include ':sandbox-compose-placeholder'
-} else include ':sandbox-compose-placeholder'
+    useCompose = props.getProperty("useCompose")
+}
+
+if (hasProperty("useCompose")) {
+    useCompose = getProperty("useCompose")
+}
+
+if (useCompose) {
+    include ':libraries:rib-compose'
+    include ':sandbox-compose'
+} else {
+    include ':sandbox-compose-placeholder'
+}
 
 include ':app-example'
 include ':libraries:rib-base'

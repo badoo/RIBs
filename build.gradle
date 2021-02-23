@@ -59,6 +59,14 @@ subprojects {
         resolutionStrategy.eachDependency {
         }
     }
+
+    // Add '-compose' to all artifacts when building the compose variant.
+    if (project.hasProperty('POM_ARTIFACT_ID') && useCompose) {
+        def artifactId = project.getProperty("POM_ARTIFACT_ID").toString()
+        if (!artifactId.contains("compose")) {
+            project.setProperty("POM_ARTIFACT_ID", project.getProperty("POM_ARTIFACT_ID") + "-compose")
+        }
+    }
 }
 
 configureDetektForAllSubprojects(project)

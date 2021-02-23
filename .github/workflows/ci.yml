@@ -71,6 +71,10 @@ jobs:
         strategy:
             matrix:
                 api-level: [22,25,29]
+                compose-enabled: [true,false]
+                exclude:
+                    - api-level: 22
+                      compose-enabled: true
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -88,4 +92,4 @@ jobs:
               with:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
-                  script: ./gradlew connectedCheck
+                  script: ./gradlew connectedCheck -PuseCompose=${{ matrix.compose-enabled }}

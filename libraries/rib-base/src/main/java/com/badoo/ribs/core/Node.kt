@@ -31,6 +31,7 @@ import com.badoo.ribs.core.plugin.SystemAware
 import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
+import com.badoo.ribs.core.view.NodeViewFactory
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.util.RIBs
@@ -47,7 +48,7 @@ import com.badoo.ribs.util.RIBs
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView> @VisibleForTesting internal constructor(
     val buildParams: BuildParams<*>,
-    private val viewFactory: ((RibView) -> V?)?, // TODO V? vs V
+    private val viewFactory: NodeViewFactory<V>?, // TODO V? vs V
     private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
@@ -59,7 +60,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     constructor(
         buildParams: BuildParams<*>,
-        viewFactory: ((RibView) -> V?)?,
+        viewFactory: NodeViewFactory<V>?,
         plugins: List<Plugin> = emptyList()
     ) : this(buildParams, viewFactory, RetainedInstanceStore, plugins)
 
@@ -155,13 +156,13 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     fun onCreateView(parentView: RibView): V? {
         if (isRoot) rootHost = parentView
-        if (view == null) {
-            view = viewFactory?.invoke(parentView)
-            view?.let { view ->
-                view.androidView.restoreHierarchyState(savedViewState)
-                lifecycleManager.onViewCreated()
+        if (view == null && viewFactory != null) {
+            lifecycleManager.onViewCreated()
+            val lifecycle = lifecycleManager.viewLifecycle!!.lifecycle
+            view = viewFactory.invoke(parentView, lifecycle).apply {
+                androidView.restoreHierarchyState(savedViewState)
                 plugins.filterIsInstance<ViewAware<V>>().forEach {
-                    it.onViewCreated(view, lifecycleManager.viewLifecycle!!.lifecycle)
+                    it.onViewCreated(this, lifecycle)
                 }
             }
         }

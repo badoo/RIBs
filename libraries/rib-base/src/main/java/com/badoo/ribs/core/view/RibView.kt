@@ -2,14 +2,18 @@ package com.badoo.ribs.core.view
 
 import android.content.Context
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.badoo.ribs.core.Node
 
-interface RibView {
+interface RibView : LifecycleOwner {
 
     val androidView: ViewGroup
 
     val context: Context
         get() = androidView.context
+
+    fun onCreate(lifecycle: Lifecycle)
 
     /**
      * Shortcut, see overloaded version

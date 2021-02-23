@@ -160,8 +160,10 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             view?.let { view ->
                 view.androidView.restoreHierarchyState(savedViewState)
                 lifecycleManager.onViewCreated()
+                val lifecycle = lifecycleManager.viewLifecycle!!.lifecycle
+                view.onCreate(lifecycle)
                 plugins.filterIsInstance<ViewAware<V>>().forEach {
-                    it.onViewCreated(view, lifecycleManager.viewLifecycle!!.lifecycle)
+                    it.onViewCreated(view, lifecycle)
                 }
             }
         }

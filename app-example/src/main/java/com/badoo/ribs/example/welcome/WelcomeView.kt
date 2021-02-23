@@ -3,12 +3,14 @@ package com.badoo.ribs.example.welcome
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.R
-import com.badoo.ribs.example.extensions.findViewById
 import com.badoo.ribs.example.welcome.WelcomeView.Event
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
@@ -47,7 +49,8 @@ class WelcomeViewImpl private constructor(
     private val login = findViewById<Button>(R.id.welcome_login)
     private val register = findViewById<Button>(R.id.welcome_register)
 
-    init {
+    override fun onCreate(lifecycle: Lifecycle) {
+        super.onCreate(lifecycle)
         skipAuth.setOnClickListener {
             events.accept(Event.SkipClicked)
         }
@@ -57,5 +60,11 @@ class WelcomeViewImpl private constructor(
         register.setOnClickListener {
             events.accept(Event.RegisterClicked)
         }
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onCreate(owner: LifecycleOwner) {
+                // do something
+            }
+        })
     }
+
 }

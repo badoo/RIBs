@@ -2,11 +2,16 @@ package com.badoo.ribs.core.view
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.Plugin
 
-abstract class AndroidRibView : RibView {
+abstract class AndroidRibView : RibView, LifecycleOwner {
+
+    private lateinit var lifecycle: Lifecycle
 
     fun <T : View> findViewById(@IdRes id: Int): T =
         androidView.findViewById(id)
@@ -31,6 +36,13 @@ abstract class AndroidRibView : RibView {
         child.plugins<AndroidViewLifecycleAware>().forEach {
             it.onDetachFromView(target)
         }
+    }
+
+    override fun getLifecycle(): Lifecycle = lifecycle
+
+    @CallSuper
+    override fun onCreate(lifecycle: Lifecycle) {
+        this.lifecycle = lifecycle
     }
 
     /**

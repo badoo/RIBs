@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Transition Animations Sample App</string>
+    <string name="parent_text">Parent</string>
+    <string name="next_button_text">Next</string>
+    <string name="child1_text">Child 1</string>
+    <string name="child2_text">Child 2</string>
 </resources>

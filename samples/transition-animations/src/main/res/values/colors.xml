@@ -17,7 +17,7 @@
     <color name="text_default">#666</color>
     <color name="text_selected">@color/black</color>
 
-    <color name="container_background">#FFF8E1</color>
+    <color name="parent_background">#FFF8E1</color>
     <color name="child1_background">#F8BBD0</color>
     <color name="child2_background">#C8E6C9</color>
     <color name="child3_background">#7FC4D5</color>

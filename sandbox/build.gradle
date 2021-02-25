@@ -29,8 +29,8 @@ android {
         }
 
         composeOptions {
-            kotlinCompilerVersion "1.3.70-dev-withExperimentalGoogleExtensions-20200424"
-            kotlinCompilerExtensionVersion "0.1.0-dev14"
+            kotlinCompilerVersion deps.versions.kotlin
+            kotlinCompilerExtensionVersion deps.versions.compose
         }
     }
 }
@@ -43,6 +43,9 @@ androidExtensions {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
+        if (useCompose.toBoolean()) {
+            useIR = true
+        }
     }
 }
 
@@ -73,11 +76,10 @@ dependencies {
         implementation project(":libraries:rib-compose")
         implementation project(":sandbox-compose")
         implementation deps.compose.runtime
-        implementation deps.compose.uiCore
-        implementation deps.compose.uiLayout
-        implementation deps.compose.uiMaterial
+        implementation deps.compose.ui
+        implementation deps.compose.material
         implementation deps.compose.uiTooling
-        implementation deps.compose.uiFoundation
+        implementation deps.compose.foundation
     } else {
         implementation project(":sandbox-compose-placeholder")
     }

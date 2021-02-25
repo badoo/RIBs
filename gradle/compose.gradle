@@ -1,5 +1,10 @@
 def props = new Properties()
-def propsFile = file("local.properties")
+def propsFile
+if (rootDir.toString().contains("buildSrc")) {
+    propsFile = file("$rootDir/../local.properties")
+} else {
+    propsFile = file("$rootDir/local.properties")
+}
 
 boolean useCompose = false
 if (propsFile.exists()) {

@@ -28,7 +28,7 @@ dependencies {
 
     api project(":libraries:rib-portal")
     implementation project(":libraries:rib-base")
-    implementation project(":libraries:rib-rx")
+    implementation project(':libraries:rib-rx2')
 
     testImplementation deps.android.annotations
     testImplementation deps.test.junit
@@ -36,6 +36,7 @@ dependencies {
     testImplementation deps.test.assertj
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
+    testImplementation project(":libraries:rib-base-test")
 
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.assertj

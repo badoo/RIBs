@@ -7,7 +7,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.router.RouterByDelegate
 import com.badoo.ribs.routing.source.impl.Pool
-import com.badoo.ribs.rx.disposables
+import com.badoo.ribs.rx2.disposables
 
 @ExperimentalApi
 class RecyclerViewHostBuilder<T : Parcelable>(

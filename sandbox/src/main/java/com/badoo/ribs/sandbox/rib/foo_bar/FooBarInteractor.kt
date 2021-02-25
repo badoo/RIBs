@@ -10,6 +10,7 @@ import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPer
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.rx2.adapter.rx2
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.RequestPermissionsButtonClicked
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.ViewModel
@@ -36,7 +37,7 @@ class FooBarInteractor(
             bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
             bind(dummyViewInput to view)
-            bind(permissionRequester.events(this@FooBarInteractor) to permissionEventConsumer)
+            bind(permissionRequester.events(this@FooBarInteractor).rx2() to permissionEventConsumer)
         }
 
         dummyViewInput.accept(

@@ -1,24 +1,20 @@
 package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import com.badoo.ribs.core.state.Relay
-import com.badoo.ribs.core.state.rx2
+import com.badoo.ribs.minimal.reactive.Relay
+import com.badoo.ribs.minimal.reactive.Source
 import com.badoo.ribs.util.RIBs
-import io.reactivex.Observable
 
 abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val requestCodeRegistry: RequestCodeRegistry
 ) : RequestCodeBasedEventStream<T> {
     private val events = HashMap<Int, Relay<T>>()
 
-    override fun events(client: RequestCodeClient): Observable<T> {
+    override fun events(client: RequestCodeClient): Source<T> {
         val id = requestCodeRegistry.generateGroupId(client.requestCodeClientId)
         ensureSubject(id)
 
         return events.getValue(id)
-            .rx2()
-            .doOnDispose { cleanup(id) }
-            .hide()
     }
 
     private fun ensureSubject(id: Int, onSubjectDidNotExist: (() -> Unit)? = null) {
@@ -32,10 +28,6 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         if (subjectJustCreated) {
             onSubjectDidNotExist?.invoke()
         }
-    }
-
-    private fun cleanup(id: Int) {
-        events.remove(id)
     }
 
     protected fun publish(externalRequestCode: Int, event: T) {

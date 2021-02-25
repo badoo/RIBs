@@ -6,7 +6,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.rx.disposables
+import com.badoo.ribs.rx2.disposables
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter

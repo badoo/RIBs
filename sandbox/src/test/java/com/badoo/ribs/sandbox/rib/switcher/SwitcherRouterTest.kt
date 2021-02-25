@@ -3,7 +3,6 @@ package com.badoo.ribs.sandbox.rib.switcher
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
@@ -12,6 +11,7 @@ import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
+import com.badoo.ribs.test.emptyBuildParams
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -34,7 +34,7 @@ class SwitcherRouterTest {
 
     private val router =
         SwitcherRouter(
-            buildParams = BuildParams.Empty(),
+            buildParams = emptyBuildParams(),
             routingSource = Empty(),
             transitionHandler = null,
             builders = builders,

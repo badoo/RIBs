@@ -1,7 +1,7 @@
 package com.badoo.ribs.template.leaf.foo_bar
 
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
+import com.badoo.ribs.test.emptyBuildParams
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Before
@@ -15,7 +15,7 @@ class FooBarInteractorTest {
     @Before
     fun setup() {
         interactor = FooBarInteractor(
-            buildParams = BuildParams.Empty(),
+            buildParams = emptyBuildParams(),
             feature = feature
         )
     }

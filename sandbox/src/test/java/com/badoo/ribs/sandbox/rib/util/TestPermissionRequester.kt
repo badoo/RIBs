@@ -2,7 +2,8 @@ package com.badoo.ribs.sandbox.rib.util
 
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeClient
-import io.reactivex.Observable
+import com.badoo.ribs.minimal.reactive.Relay
+import com.badoo.ribs.minimal.reactive.Source
 
 class TestPermissionRequester : PermissionRequester {
 
@@ -14,6 +15,6 @@ class TestPermissionRequester : PermissionRequester {
         TODO()
     }
 
-    override fun events(client: RequestCodeClient): Observable<PermissionRequester.RequestPermissionsEvent> =
-        Observable.empty<PermissionRequester.RequestPermissionsEvent>()
+    override fun events(client: RequestCodeClient): Source<PermissionRequester.RequestPermissionsEvent> =
+        Relay()
 }

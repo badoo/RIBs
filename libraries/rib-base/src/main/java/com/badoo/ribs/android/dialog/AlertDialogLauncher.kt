@@ -15,19 +15,24 @@ class AlertDialogLauncher(
 
     init {
         lifecycle.subscribe(onDestroy = {
-            dialogs.values.forEach { it.dismiss() }
+            val iterator = dialogs.iterator()
+            while (iterator.hasNext()) {
+                val current = iterator.next()
+                current.value.dismiss()
+                iterator.remove()
+            }
         })
     }
 
-    override fun show(dialog: Dialog<*>, onClose: () -> Unit, onShown: (AlertDialog) -> Unit) {
+    override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
         dialogs[dialog] = dialog.toAlertDialog(context, onClose).also {
             it.show()
-            onShown.invoke(it)
         }
     }
 
     override fun hide(dialog: Dialog<*>) {
         dialogs[dialog]?.dismiss()
+        dialogs.remove(dialog)
     }
 
 }

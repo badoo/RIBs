@@ -22,6 +22,7 @@ fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> U
             .apply {
                 setCanceledOnTouchOutside(this@toAlertDialog)
                 setButtonClickListeners(this@toAlertDialog, onClose)
+                setOnDismissListener { this@toAlertDialog.rib = null }
             }
 }
 
@@ -45,8 +46,7 @@ private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
         setView(object : FrameLayout(context) {
             val host = AndroidRibViewHost(this)
 
-            override fun onAttachedToWindow() {
-                super.onAttachedToWindow()
+            init {
                 it.node.onCreateView(host)
                 host.attachChild(it.node)
             }

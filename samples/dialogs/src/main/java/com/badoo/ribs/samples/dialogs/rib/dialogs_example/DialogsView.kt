@@ -9,19 +9,8 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.dialogs.R
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowLazyDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowSimpleDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowRibDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowThemedDialogClicked
 
 interface DialogsView : RibView {
-
-    sealed class Event {
-        object ShowThemedDialogClicked : Event()
-        object ShowSimpleDialogClicked : Event()
-        object ShowLazyDialogClicked : Event()
-        object ShowRibDialogClicked : Event()
-    }
 
     interface Dependency {
         val presenter: DialogsPresenter
@@ -55,10 +44,10 @@ class DialogsViewImpl private constructor(
 
 
     init {
-        themedDialogButton.setOnClickListener { presenter.handleThemedDialog(ShowThemedDialogClicked) }
-        simpleDialogButton.setOnClickListener { presenter.handleSimpleDialog(ShowSimpleDialogClicked) }
-        lazyDialogButton.setOnClickListener { presenter.handleLazyDialog(ShowLazyDialogClicked) }
-        ribDialogButton.setOnClickListener { presenter.handleRibDialog(ShowRibDialogClicked) }
+        themedDialogButton.setOnClickListener { presenter.handleThemedDialog() }
+        simpleDialogButton.setOnClickListener { presenter.handleSimpleDialog() }
+        lazyDialogButton.setOnClickListener { presenter.handleLazyDialog() }
+        ribDialogButton.setOnClickListener { presenter.handleRibDialog() }
     }
 
     override fun displayText(headerText: String) {

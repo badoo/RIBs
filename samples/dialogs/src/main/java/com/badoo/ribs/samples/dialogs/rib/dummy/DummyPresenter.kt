@@ -14,7 +14,7 @@ internal class DummyPresenterImpl(
 
     override fun handle(event: DummyView.Event) {
         when (event) {
-            is DummyView.Event.ButtonClicked -> rib.output.accept(Dummy.Output.SomeEvent)
+            is DummyView.Event.ButtonClicked -> rib.output.emit(Dummy.Output.SomeEvent)
         }
     }
 }

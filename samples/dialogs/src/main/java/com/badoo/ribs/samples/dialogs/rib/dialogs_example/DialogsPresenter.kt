@@ -7,25 +7,20 @@ import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.ViewAware
+import com.badoo.ribs.minimal.reactive.CompositeCancellable
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.samples.dialogs.R
 import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Overlay
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowLazyDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowSimpleDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowRibDialogClicked
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsView.Event.ShowThemedDialogClicked
 import com.badoo.ribs.samples.dialogs.rib.dummy.Dummy
-import io.reactivex.Observable.wrap
-import io.reactivex.disposables.CompositeDisposable
 
 interface DialogsPresenter {
 
-    fun handleThemedDialog(event: ShowThemedDialogClicked)
-    fun handleSimpleDialog(event: ShowSimpleDialogClicked)
-    fun handleLazyDialog(event: ShowLazyDialogClicked)
-    fun handleRibDialog(event: ShowRibDialogClicked)
+    fun handleThemedDialog()
+    fun handleSimpleDialog()
+    fun handleLazyDialog()
+    fun handleRibDialog()
 }
 
 internal class DialogsPresenterImpl(
@@ -34,22 +29,20 @@ internal class DialogsPresenterImpl(
 ) : DialogsPresenter, ViewAware<DialogsView>, SubtreeChangeAware {
 
     private var view: DialogsView? = null
-    private val disposables = CompositeDisposable()
+    private val cancellables = CompositeCancellable()
 
     override fun onViewCreated(view: DialogsView, viewLifecycle: Lifecycle) {
         viewLifecycle.subscribe(
             onCreate = {
                 this@DialogsPresenterImpl.view = view
-                disposables.apply {
-                    add(wrap(dialogs.themedDialog).subscribe { resolveDialogEvents(it, view) })
-                    add(wrap(dialogs.simpleDialog).subscribe { resolveDialogEvents(it, view) })
-                    add(wrap(dialogs.lazyDialog).subscribe { resolveDialogEvents(it, view) })
-                    add(wrap(dialogs.ribDialog).subscribe { resolveDialogEvents(it, view) })
-                }
+                cancellables += dialogs.themedDialog.observe { resolveDialogEvents(it, view) }
+                cancellables += dialogs.simpleDialog.observe { resolveDialogEvents(it, view) }
+                cancellables += dialogs.lazyDialog.observe { resolveDialogEvents(it, view) }
+                cancellables += dialogs.ribDialog.observe { resolveDialogEvents(it, view) }
             },
             onDestroy = {
                 this@DialogsPresenterImpl.view = null
-                disposables.clear()
+                cancellables.cancel()
             }
         )
     }
@@ -58,26 +51,26 @@ internal class DialogsPresenterImpl(
         child.lifecycle.subscribe(
             onCreate = {
                 when (child) {
-                    is Dummy -> disposables.add(wrap(child.output).subscribe { resolveDummyOutput(view) })
+                    is Dummy -> cancellables += child.output.observe { resolveDummyOutput(view) }
                 }
             }
         )
     }
 
-    override fun handleThemedDialog(event: ShowThemedDialogClicked) {
+    override fun handleThemedDialog() {
         backStack.pushOverlay(Overlay.ThemedDialog)
     }
 
-    override fun handleLazyDialog(event: ShowLazyDialogClicked) {
+    override fun handleLazyDialog() {
         initLazyDialog()
         backStack.pushOverlay(Overlay.LazyDialog)
     }
 
-    override fun handleRibDialog(event: ShowRibDialogClicked) {
+    override fun handleRibDialog() {
         backStack.pushOverlay(Overlay.RibDialog)
     }
 
-    override fun handleSimpleDialog(event: ShowSimpleDialogClicked) {
+    override fun handleSimpleDialog() {
         backStack.pushOverlay(Overlay.SimpleDialog)
     }
 

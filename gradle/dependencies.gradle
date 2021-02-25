@@ -1,4 +1,4 @@
-if (rootDir.toString().contains("buildSrc")) {
+if (rootDir.toString().contains("plugins")) {
     apply from: "$rootDir/../gradle/compose.gradle"
 } else {
     apply from: "$rootDir/gradle/compose.gradle"

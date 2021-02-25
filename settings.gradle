@@ -47,3 +47,5 @@ include ':tutorials:tutorial2'
 include ':tutorials:tutorial3'
 include ':tutorials:tutorial4'
 include ':tutorials:tutorial5'
+
+includeBuild("plugins")

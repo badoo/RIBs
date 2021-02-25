@@ -27,9 +27,13 @@ jobs:
               run: ./gradlew assemble
               working-directory: . 
     detekt:
-        name: Detekt
         runs-on: ubuntu-latest
         timeout-minutes: 10
+        strategy:
+          fail-fast: false
+          matrix:
+            compose-enabled: [ true,false ]
+        name: Detekt [Compose-Enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -37,16 +41,20 @@ jobs:
               with:
                   java-version: 11
             - name: Detekt
-              run: ./gradlew detekt --stacktrace
+              run: ./gradlew detekt -PuseCompose=${{ matrix.compose-enabled }} --stacktrace
               working-directory: .
               
     unit-tests:
-        name: Unit tests
         runs-on: ubuntu-latest
         timeout-minutes: 20
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.parallel=true
+        strategy:
+          fail-fast: false
+          matrix:
+            compose-enabled: [ true,false ]
+        name: Unit tests [Compose-Enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -56,9 +64,9 @@ jobs:
             - uses: actions/cache@v1
               with:
                   path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
+                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
             - name: Unit tests
-              run: ./gradlew testDebugUnitTest
+              run: ./gradlew testDebugUnitTest -PuseCompose=${{ matrix.compose-enabled }}
               working-directory: .
 
     instrumentation-tests:
@@ -85,7 +93,7 @@ jobs:
             - uses: actions/cache@v1
               with:
                  path: ~/.gradle/caches
-                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
+                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
 
 
             - name: Instrumentation tests

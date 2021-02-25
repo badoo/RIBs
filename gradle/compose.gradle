@@ -1,10 +1,12 @@
-def props = new Properties()
-def propsFile
-if (rootDir.toString().contains("buildSrc")) {
-    propsFile = file("$rootDir/../local.properties")
-} else {
-    propsFile = file("$rootDir/local.properties")
+// Use the .github folder as a way to find the root directory.
+// Without this, the plugins module will not be able to use this script without hacks.
+File rootDirectory = rootDir
+while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github" }) {
+    rootDirectory = rootDirectory.parentFile
 }
+
+def props = new Properties()
+def propsFile = file("$rootDirectory/local.properties")
 
 boolean useCompose = false
 if (propsFile.exists()) {

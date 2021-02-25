@@ -1,8 +1,11 @@
-if (rootDir.toString().contains("plugins")) {
-    apply from: "$rootDir/../gradle/compose.gradle"
-} else {
-    apply from: "$rootDir/gradle/compose.gradle"
+// Use the .github folder as a way to find the root directory.
+// Without this, the plugins module will not be able to use this script without hacks.
+File rootDirectory = rootDir
+while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github" }) {
+    rootDirectory = rootDirectory.parentFile
 }
+
+apply from: "$rootDirectory/gradle/compose.gradle"
 
 def kotlinVersion
 if (useCompose.toBoolean()) {

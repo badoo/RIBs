@@ -57,7 +57,7 @@ def apt = [
 
 def agp
 if (useCompose.toBoolean()) {
-    agp = 'com.android.tools.build:gradle:7.0.0-alpha07'
+    agp = 'com.android.tools.build:gradle:7.0.0-alpha08'
 } else {
     agp = 'com.android.tools.build:gradle:4.1.1'
 }

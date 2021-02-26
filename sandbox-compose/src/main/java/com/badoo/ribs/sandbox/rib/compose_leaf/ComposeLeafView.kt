@@ -1,12 +1,11 @@
 package com.badoo.ribs.sandbox.rib.compose_leaf
 
 import android.content.Context
-import android.view.ViewGroup
-import androidx.compose.Composable
-import androidx.compose.MutableState
-import androidx.compose.mutableStateOf
-import androidx.ui.foundation.Text
-import androidx.ui.layout.Column
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -52,7 +51,7 @@ class ComposeLeafViewImpl private constructor(
         viewModel.value = vm
     }
 
-    override val composable: @Composable() () -> Unit = {
+    override val composable: @Composable () -> Unit = {
         Column {
             Text(text = "ComposeLeafView: ${viewModel.value.text}")
         }

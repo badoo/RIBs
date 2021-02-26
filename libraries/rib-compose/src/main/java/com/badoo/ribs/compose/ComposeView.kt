@@ -1,5 +1,5 @@
 package com.badoo.ribs.compose
 
-import androidx.compose.Composable
+import androidx.compose.runtime.Composable
 
-typealias ComposeView = @Composable() () -> Unit
+typealias ComposeView = @Composable () -> Unit

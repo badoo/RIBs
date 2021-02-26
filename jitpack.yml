@@ -1,5 +1,5 @@
 jdk:
-  - openjdk8
+  - openjdk11
 install:
   - echo "Building non-compose artifacts"
   - ./gradlew clean install -xtest

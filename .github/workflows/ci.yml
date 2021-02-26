@@ -33,7 +33,7 @@ jobs:
           fail-fast: false
           matrix:
             compose-enabled: [ true,false ]
-        name: Detekt [Compose-Enabled=${{ matrix.compose-enabled }}]
+        name: Detekt [jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -54,7 +54,7 @@ jobs:
           fail-fast: false
           matrix:
             compose-enabled: [ true,false ]
-        name: Unit tests [Compose-Enabled=${{ matrix.compose-enabled }}]
+        name: Unit tests [jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -83,7 +83,7 @@ jobs:
                 exclude:
                     - api-level: 22
                       compose-enabled: true
-        name: Instrumentation tests [API=${{ matrix.api-level }}, Compose-Enabled=${{ matrix.compose-enabled }}]
+        name: Instrumentation tests [API=${{ matrix.api-level }}, jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1

@@ -47,6 +47,13 @@ private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
             val host = AndroidRibViewHost(this)
 
             init {
+                // If we will execute multiple configurations in a short period of time ->
+                // Node can be attached to a host multiple times ->
+                // java.lang.IllegalStateException: The specified child already has a parent.
+                // Detach node here -> no harmful effect when view is not attached
+                // PushTwoPopOneDefaultTest.noPermanent_singleInitial_pushOverlay_pushContent_pop - to reproduce
+                host.detachChild(it.node)
+
                 it.node.onCreateView(host)
                 host.attachChild(it.node)
             }

@@ -9,7 +9,7 @@ interface ParentPresenter {
     fun handle(event: Event)
 }
 
-internal class ParentPresenterImpl(
+    internal class ParentPresenterImpl(
         private val backStack: BackStack<Configuration>
 ) : ParentPresenter {
 

@@ -7,6 +7,7 @@ import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child1
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child2
@@ -15,10 +16,12 @@ import kotlinx.android.parcel.Parcelize
 class ParentRouter internal constructor(
         buildParams: BuildParams<Nothing?>,
         routingSource: RoutingSource<Configuration>,
+        transitionHandler: TransitionHandler<Configuration>,
         private val builders: ParentChildBuilders
 ) : Router<Configuration>(
         buildParams = buildParams,
-        routingSource = routingSource
+        routingSource = routingSource,
+        transitionHandler = transitionHandler
 ) {
 
     sealed class Configuration : Parcelable {

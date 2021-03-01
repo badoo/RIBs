@@ -3,11 +3,11 @@ package com.badoo.ribs.routing.source.backstack
 import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.core.state.Cancellable
-import com.badoo.ribs.core.state.Source
-import com.badoo.ribs.core.state.Store
-import com.badoo.ribs.core.state.TimeCapsule
-import com.badoo.ribs.core.state.map
+import com.badoo.ribs.minimal.reactive.Cancellable
+import com.badoo.ribs.minimal.reactive.Source
+import com.badoo.ribs.minimal.state.Store
+import com.badoo.ribs.minimal.state.TimeCapsule
+import com.badoo.ribs.minimal.reactive.map
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
@@ -69,7 +69,7 @@ class BackStack<C : Parcelable> internal constructor(
         TimeCapsule(buildParams.savedInstanceState)
     )
 
-    override fun baseLineState(fromRestored: Boolean): RoutingHistory<C>  =
+    override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
         timeCapsule.initialState()
 
     private val store = object : Store<State<C>>(timeCapsule.initialState()) {
@@ -143,8 +143,8 @@ class BackStack<C : Parcelable> internal constructor(
                     .configuration
             }
 
-    val activeConfiguration: C =
-        state.elements
+    val activeConfiguration: C
+        get()= state.elements
             .last()
             .routing
             .configuration

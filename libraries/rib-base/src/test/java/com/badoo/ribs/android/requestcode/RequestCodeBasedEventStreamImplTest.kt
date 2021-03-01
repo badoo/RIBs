@@ -1,19 +1,19 @@
 package com.badoo.ribs.android.requestcode
 
+import com.badoo.ribs.minimal.reactive.CompositeCancellable
 import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
-import io.reactivex.disposables.CompositeDisposable
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class RequestCodeBasedEventStreamImplTest {
 
-    private val disposables = CompositeDisposable()
+    private val cancellables = CompositeCancellable()
 
     @Before
     fun setUp() {
@@ -24,7 +24,7 @@ class RequestCodeBasedEventStreamImplTest {
     @After
     fun tearDown() {
         RIBs.clearErrorHandler()
-        disposables.dispose()
+        cancellables.cancel()
     }
 
     @Test
@@ -44,7 +44,7 @@ class RequestCodeBasedEventStreamImplTest {
         val identifiable = TestRequestCodeClient(requestCodeClientId = "test")
         val externalRequestCode = stream.convertToExternalRequestCode(identifiable, 1)
         val event = TestEvent(stream.convertToInternalRequestCode(externalRequestCode))
-        disposables.add(stream.events(identifiable).subscribe())
+        cancellables += stream.events(identifiable).observe {}
 
         stream.testPublish(externalRequestCode, event)
 

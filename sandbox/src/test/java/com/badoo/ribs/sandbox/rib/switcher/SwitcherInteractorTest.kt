@@ -2,6 +2,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.Lifecycle.State.STARTED
+import com.badoo.common.ribs.rx2.createInteractorTestHelper
 import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
@@ -20,7 +21,10 @@ import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class SwitcherInteractorTest {
 
     private val backStack: BackStack<Configuration> = mock()
@@ -40,7 +44,7 @@ class SwitcherInteractorTest {
             transitionSettled = { true }
         )
 
-        interactorTestHelper = InteractorTestHelper.create(interactor, viewEventRelay)
+        interactorTestHelper = createInteractorTestHelper(interactor, viewEventRelay)
     }
 
     @Test

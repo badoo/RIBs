@@ -14,11 +14,10 @@ dependencies {
     implementation deps.android.fragment
     compileOnly deps.android.annotations
     implementation deps.external.kotlinStdlib
-    implementation deps.external.rxrelay2
-    implementation deps.external.rxjava2
 
     testImplementation deps.external.mviCore
     testImplementation deps.external.mviCoreAndroid
+    testImplementation deps.external.rxrelay2
 
     testImplementation deps.android.annotations
     testImplementation deps.test.junit
@@ -28,12 +27,14 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation project(":libraries:rib-base-test")
 
+    androidTestImplementation deps.external.rxjava2
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.assertj
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.espressoIntents
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.rules
+    androidTestImplementation project(":libraries:rib-rx2")
     androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation project(':libraries:rib-base-test-activity')
 }

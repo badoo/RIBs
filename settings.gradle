@@ -1,30 +1,43 @@
 def props = new Properties()
 def propsFile = file("local.properties")
+
+boolean useCompose = false
 if (propsFile.exists()) {
     propsFile.withInputStream { props.load(it) }
-    if (props.getProperty("useCompose")) {
-        include ':libraries:rib-compose'
-        include ':sandbox-compose'
-    } else include ':sandbox-compose-placeholder'
-} else include ':sandbox-compose-placeholder'
+    useCompose = Boolean.parseBoolean(props.getProperty("useCompose").toString())
+}
+
+if (hasProperty("useCompose")) {
+    useCompose = Boolean.parseBoolean(getProperty("useCompose").toString())
+}
+
+if (useCompose) {
+    include ':libraries:rib-compose'
+    include ':sandbox-compose'
+} else {
+    include ':sandbox-compose-placeholder'
+}
 
 include ':app-example'
 include ':libraries:rib-base'
 include ':libraries:rib-base-test'
 include ':libraries:rib-base-test-activity'
+include ':libraries:rib-base-test-rx2'
 include ':libraries:rib-debug-utils'
 include ':libraries:rib-portal'
 include ':libraries:rib-portal-rx'
 include ':libraries:rib-recyclerview'
-include ':libraries:rib-rx'
+include ':libraries:rib-rx2'
 include ':samples:back-stack'
 include ':samples:build-time-dependencies'
+include ':samples:customisations-app'
+include ':samples:dialogs'
 include ':samples:communication-between-nodes-1'
 include ':samples:hello-world'
 include ':samples:plugins'
+include ':samples:retained-instance-store'
 include ':samples:simple-routing-app'
 include ':samples:simple-routing-rib'
-include ':samples:customisations-app'
 include ':sandbox'
 include ':templates:release-0.26'
 include ':templates:snapshot'
@@ -34,3 +47,5 @@ include ':tutorials:tutorial2'
 include ':tutorials:tutorial3'
 include ':tutorials:tutorial4'
 include ':tutorials:tutorial5'
+
+includeBuild("plugins")

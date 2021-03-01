@@ -1,7 +1,7 @@
 package com.badoo.ribs.routing.source.backstack
 
 import android.os.Parcelable
-import com.badoo.ribs.core.state.Source
+import com.badoo.ribs.minimal.reactive.Source
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.test.emptyBuildParams
 import kotlinx.android.parcel.Parcelize

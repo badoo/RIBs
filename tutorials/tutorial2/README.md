@@ -119,7 +119,7 @@ import com.badoo.ribs.routing.action.AttachRibRoutingAction.Companion.attach
 
 override fun resolve(routing: RoutingElement<Configuration>): RoutingAction =
     when (routing.configuration) {
-        is Configuration.HelloWorld -> attach { TODO() }
+        is Configuration.HelloWorld -> child { TODO() }
     }
 ```
 
@@ -150,7 +150,7 @@ We'll care about how to pass it here just in a moment, but first let's finish ou
 ```kotlin
 override fun resolve(routing: RoutingElement<Configuration>): RoutingAction =
     when (routing.configuration) {
-        is Configuration.HelloWorld -> attach { helloWorldBuilder.build(it) }
+        is Configuration.HelloWorld -> child { helloWorldBuilder.build(it) }
     }
 ```
 
@@ -233,7 +233,7 @@ It's not very different from what we've seen in **tutorial1**, but now it's adde
 Steps to add a child RIB:
 1. Go to Router
     1. Define configuration
-    2. Resolve configuration to `attach { childBuilder.build(it) }` routing action
+    2. Resolve configuration to `child { childBuilder.build(it) }` routing action
     3. Define `childBuilder` as a constructor dependency 
 2. Go to Dagger module
     1. When constructing the `Router`, create and pass in an instance of the required child `Builder`

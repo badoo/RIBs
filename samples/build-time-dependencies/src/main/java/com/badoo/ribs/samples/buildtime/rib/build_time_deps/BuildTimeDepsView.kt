@@ -10,11 +10,12 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.buildtime.R
 
 interface BuildTimeDepsView : RibView {
 
-    interface Factory : ViewFactory<Dependency, BuildTimeDepsView>
+    interface Factory : ViewFactoryBuilder<Dependency, BuildTimeDepsView>
 
     interface Dependency {
         val presenter: BuildTimeDepsPresenter
@@ -36,7 +37,8 @@ class BuildTimeDepsViewImpl private constructor(
             ProfileContent(id = profileId, label = "Profile $profileId")
         }
 
-        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, profileContentList)
+        val adapter =
+            ArrayAdapter(context, android.R.layout.simple_spinner_item, profileContentList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         profileIdSpinner.adapter = adapter
 
@@ -59,11 +61,12 @@ class BuildTimeDepsViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_parent
     ) : BuildTimeDepsView.Factory {
-        override fun invoke(deps: BuildTimeDepsView.Dependency): (RibView) -> BuildTimeDepsView = {
-            BuildTimeDepsViewImpl(
-                androidView = it.inflate(layoutRes),
-                presenter = deps.presenter
-            )
-        }
+        override fun invoke(deps: BuildTimeDepsView.Dependency): ViewFactory<BuildTimeDepsView> =
+            ViewFactory {
+                BuildTimeDepsViewImpl(
+                    androidView = it.inflate(layoutRes),
+                    presenter = deps.presenter
+                )
+            }
     }
 }

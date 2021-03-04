@@ -5,11 +5,11 @@ import com.badoo.ribs.rx2.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 
 class BlockerNode(
     buildParams: BuildParams<Nothing?>,
-    viewFactory: (RibView) -> BlockerView,
+    viewFactory: ViewFactory<BlockerView>,
     plugins: List<Plugin> = emptyList(),
     val connector: NodeConnector<Blocker.Input, Blocker.Output> = NodeConnector()
 ): Node<BlockerView>(

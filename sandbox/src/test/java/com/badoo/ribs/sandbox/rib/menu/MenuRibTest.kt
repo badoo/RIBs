@@ -2,7 +2,7 @@ package com.badoo.ribs.sandbox.rib.menu
 
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
@@ -36,7 +36,7 @@ class MenuRibTest {
     private val customisation = RibCustomisationDirectoryImpl().apply {
         put(Menu.Customisation::class, mock {
             on { viewFactory } doReturn object : MenuView.Factory {
-                override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
+                override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
                     menuView
                 }
             }

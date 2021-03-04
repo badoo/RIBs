@@ -9,7 +9,7 @@ import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.sandbox.app.OtherActivity
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
@@ -53,42 +53,44 @@ class MainScreenTest {
     private val helloWorldView = TestHelloWorldView()
     private val customisation = RibCustomisationDirectoryImpl()
         .apply {
-        put(Menu.Customisation::class, mock {
-            on { viewFactory } doReturn object : MenuView.Factory {
-                override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
-                    menuView
+            put(Menu.Customisation::class, mock {
+                on { viewFactory } doReturn object : MenuView.Factory {
+                    override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
+                        menuView
+                    }
                 }
-            }
-        })
-        put(Switcher.Customisation::class, mock {
-            on { viewFactory } doReturn object : SwitcherView.Factory {
-                override fun invoke(deps: SwitcherView.Dependency): (RibView) -> SwitcherView = {
-                    switcherView
+            })
+            put(Switcher.Customisation::class, mock {
+                on { viewFactory } doReturn object : SwitcherView.Factory {
+                    override fun invoke(deps: SwitcherView.Dependency): ViewFactory<SwitcherView> =
+                        ViewFactory {
+                            switcherView
+                        }
                 }
-            }
-        })
-        put(DialogExample.Customisation::class, mock {
-            on { viewFactory } doReturn object : DialogExampleView.Factory {
-                override fun invoke(deps: Nothing?): (RibView) -> DialogExampleView = {
-                    dialogExampleView
+            })
+            put(DialogExample.Customisation::class, mock {
+                on { viewFactory } doReturn object : DialogExampleView.Factory {
+                    override fun invoke(deps: Nothing?): ViewFactory<DialogExampleView> =
+                        ViewFactory {
+                            dialogExampleView
+                        }
                 }
-            }
-        })
-        put(FooBar.Customisation::class, mock {
-            on { viewFactory } doReturn object : FooBarView.Factory {
-                override fun invoke(deps: Nothing?): (RibView) -> FooBarView = {
-                    fooBarView
+            })
+            put(FooBar.Customisation::class, mock {
+                on { viewFactory } doReturn object : FooBarView.Factory {
+                    override fun invoke(deps: Nothing?): ViewFactory<FooBarView> = ViewFactory {
+                        fooBarView
+                    }
                 }
-            }
-        })
-        put(HelloWorld.Customisation::class, mock {
-            on { viewFactory } doReturn object : HelloWorldView.Factory {
-                override fun invoke(deps: Nothing?): (RibView) -> HelloWorldView = {
-                    helloWorldView
+            })
+            put(HelloWorld.Customisation::class, mock {
+                on { viewFactory } doReturn object : HelloWorldView.Factory {
+                    override fun invoke(deps: Nothing?): ViewFactory<HelloWorldView> = ViewFactory {
+                        helloWorldView
+                    }
                 }
-            }
-        })
-    }
+            })
+        }
     private val rootRib: Switcher = buildRootRib(customisation)
 
     @Before
@@ -101,7 +103,10 @@ class MainScreenTest {
 
         dependencies
             .activityStarter
-            .stubResponse(component<OtherActivity>(), Instrumentation.ActivityResult(RESULT_OK, null))
+            .stubResponse(
+                component<OtherActivity>(),
+                Instrumentation.ActivityResult(RESULT_OK, null)
+            )
     }
 
     @Test

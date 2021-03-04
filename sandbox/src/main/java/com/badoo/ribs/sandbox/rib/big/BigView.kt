@@ -5,9 +5,10 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.big.BigView.Event
 import com.badoo.ribs.sandbox.rib.big.BigView.ViewModel
@@ -26,7 +27,7 @@ interface BigView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, BigView>
+    interface Factory : ViewFactoryBuilder<Nothing?, BigView>
 }
 
 
@@ -41,7 +42,7 @@ class BigViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_big
     ) : BigView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> BigView = {
+        override fun invoke(deps: Nothing?): ViewFactory<BigView> = ViewFactory {
             BigViewImpl(
                 it.inflate(layoutRes)
             )

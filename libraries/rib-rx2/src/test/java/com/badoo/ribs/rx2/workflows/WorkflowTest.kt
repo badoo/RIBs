@@ -10,9 +10,11 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.util.RIBs
+import com.nhaarman.mockitokotlin2.argThat
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Single
@@ -28,7 +30,7 @@ class WorkflowTest {
     private lateinit var view: TestView
     private lateinit var androidView: ViewGroup
     private lateinit var parentView: RibView
-    private lateinit var viewFactory: (RibView) -> TestView
+    private lateinit var viewFactory: ViewFactory<TestView>
     private lateinit var child1: TestNode
     private lateinit var child2: TestNode
     private lateinit var child3: TestNode
@@ -39,7 +41,7 @@ class WorkflowTest {
         parentView = mock()
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
-        viewFactory = mock { on { invoke(parentView) } doReturn view }
+        viewFactory = mock { on { invoke(argThat { parent == parentView }) } doReturn view }
         node = createNode(viewFactory = viewFactory)
         childAncestry = AncestryInfo.Child(node, Routing(AnyConfiguration))
 
@@ -53,7 +55,7 @@ class WorkflowTest {
 
     private fun createNode(
         buildParams: BuildParams<Nothing?> = testBuildParams(),
-        viewFactory: (RibView) -> TestView = this.viewFactory,
+        viewFactory: ViewFactory<TestView> = this.viewFactory,
         plugins: List<Plugin> = emptyList()
     ): RxWorkflowNode<TestView> = RxWorkflowNode(
         buildParams = buildParams,
@@ -170,7 +172,7 @@ class WorkflowTest {
 
     private class TestNode(
         buildParams: BuildParams<*> = testBuildParams(),
-        viewFactory: ((RibView) -> TestView?)? = TestViewFactory(),
+        viewFactory: ViewFactory<TestView>? = TestViewFactory(),
         router: Router<*> = mock(),
         plugins: List<Plugin> = emptyList()
     ) : Node<TestView>(
@@ -181,7 +183,7 @@ class WorkflowTest {
 
     private class TestNode2(
         buildParams: BuildParams<*> = testBuildParams(),
-        viewFactory: ((RibView) -> TestView?)? = TestViewFactory(),
+        viewFactory: ViewFactory<TestView>? = TestViewFactory(),
         router: Router<*> = mock(),
         plugins: List<Plugin> = emptyList()
     ) : Node<TestView>(
@@ -194,12 +196,14 @@ class WorkflowTest {
         override val androidView: ViewGroup = mock()
     }
 
-    private class TestViewFactory: (RibView) -> TestView {
-        override fun invoke(p1: RibView): TestView = TestView()
+    private class TestViewFactory : ViewFactory<TestView> {
+        override fun invoke(context: ViewFactory.Context): TestView = TestView()
     }
 
     @Parcelize
-    private object AnyConfiguration : Parcelable { override fun toString(): String = "AnyConfiguration" }
+    private object AnyConfiguration : Parcelable {
+        override fun toString(): String = "AnyConfiguration"
+    }
 
     companion object {
         private fun testBuildParams(ancestryInfo: AncestryInfo? = null) =

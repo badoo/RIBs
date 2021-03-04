@@ -9,13 +9,8 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.samples.transitionanimations.R
-import com.badoo.ribs.samples.transitionanimations.rib.parent.ParentView.Event
 
 interface ParentView : RibView {
-
-    sealed class Event {
-        object PushNextChild : Event()
-    }
 
     interface Factory : ViewFactory<Dependency, ParentView>
 
@@ -25,18 +20,18 @@ interface ParentView : RibView {
 }
 
 class ParentViewImpl private constructor(
-        override val androidView: ViewGroup,
-        private val presenter: ParentPresenter
+    override val androidView: ViewGroup,
+    private val presenter: ParentPresenter
 ) : AndroidRibView(),
-        ParentView {
+    ParentView {
 
     class Factory(
-            @LayoutRes private val layoutRes: Int = R.layout.rib_parent
+        @LayoutRes private val layoutRes: Int = R.layout.rib_parent
     ) : ParentView.Factory {
         override fun invoke(deps: ParentView.Dependency): (RibView) -> ParentView = {
             ParentViewImpl(
-                    androidView = it.inflate(layoutRes),
-                    presenter = deps.presenter
+                androidView = it.inflate(layoutRes),
+                presenter = deps.presenter
             )
         }
     }
@@ -46,7 +41,7 @@ class ParentViewImpl private constructor(
 
     init {
         nextButton.setOnClickListener {
-            presenter.handle(Event.PushNextChild)
+            presenter.goToNext()
         }
     }
 

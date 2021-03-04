@@ -9,15 +9,11 @@ import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRout
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentTransitionHandler
 
-class ParentBuilder(
-        private val dependency: Parent.Dependency
-) : SimpleBuilder<Parent>() {
+class ParentBuilder : SimpleBuilder<Parent>() {
 
-    private val builders = ParentChildBuilders(dependency)
-
+    private val builders = ParentChildBuilders()
 
     override fun build(buildParams: BuildParams<Nothing?>): Parent {
-        val customisation = buildParams.getOrDefault(Parent.Customisation())
         val backStack = backStack(buildParams)
         val transitionHandler = ParentTransitionHandler()
         val router = router(buildParams, backStack, transitionHandler)
@@ -26,42 +22,40 @@ class ParentBuilder(
             override val presenter: ParentPresenter = presenter
         }
 
-        return node(buildParams, customisation, viewDependency, router)
+        return node(buildParams, viewDependency, router)
     }
 
     private fun backStack(buildParams: BuildParams<Nothing?>): BackStack<Configuration> =
-            BackStack(
-                    buildParams = buildParams,
-                    initialConfiguration = Configuration.Child1
-            )
+        BackStack(
+            buildParams = buildParams,
+            initialConfiguration = Configuration.Child1
+        )
 
     private fun router(
-            buildParams: BuildParams<Nothing?>,
-            backStack: BackStack<Configuration>,
-            transitionHandler: TransitionHandler<Configuration>
+        buildParams: BuildParams<Nothing?>,
+        backStack: BackStack<Configuration>,
+        transitionHandler: TransitionHandler<Configuration>
     ): ParentRouter =
-            ParentRouter(
-                    buildParams = buildParams,
-                    routingSource = backStack,
-                    builders = builders,
-                    transitionHandler = transitionHandler
-            )
+        ParentRouter(
+            buildParams = buildParams,
+            routingSource = backStack,
+            builders = builders,
+            transitionHandler = transitionHandler
+        )
 
     private fun presenter(backStack: BackStack<Configuration>): ParentPresenterImpl =
-            ParentPresenterImpl(backStack)
+        ParentPresenterImpl(backStack)
 
     private fun node(
-            buildParams: BuildParams<Nothing?>,
-            customisation: Parent.Customisation,
-            viewDependency: ParentView.Dependency,
-            router: ParentRouter
-
+        buildParams: BuildParams<Nothing?>,
+        viewDependency: ParentView.Dependency,
+        router: ParentRouter
     ) =
-            ParentNode(
-                    buildParams = buildParams,
-                    viewFactory = customisation.viewFactory(viewDependency),
-                    plugins = listOfNotNull(
-                            router
-                    )
+        ParentNode(
+            buildParams = buildParams,
+            viewFactory = ParentViewImpl.Factory().invoke(viewDependency),
+            plugins = listOfNotNull(
+                router
             )
+        )
 }

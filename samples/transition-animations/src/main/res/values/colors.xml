@@ -21,4 +21,5 @@
     <color name="child1_background">#F8BBD0</color>
     <color name="child2_background">#C8E6C9</color>
     <color name="child3_background">#7FC4D5</color>
+    <color name="shared_element_background">#F8BBD0</color>
 </resources>

@@ -27,9 +27,13 @@ jobs:
               run: ./gradlew assemble
               working-directory: . 
     detekt:
-        name: Detekt
         runs-on: ubuntu-latest
         timeout-minutes: 10
+        strategy:
+          fail-fast: false
+          matrix:
+            compose-enabled: [ true,false ]
+        name: Detekt [jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -37,16 +41,20 @@ jobs:
               with:
                   java-version: 11
             - name: Detekt
-              run: ./gradlew detekt --stacktrace
+              run: ./gradlew detekt -PuseCompose=${{ matrix.compose-enabled }} --stacktrace
               working-directory: .
               
     unit-tests:
-        name: Unit tests
         runs-on: ubuntu-latest
         timeout-minutes: 20
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.parallel=true
+        strategy:
+          fail-fast: false
+          matrix:
+            compose-enabled: [ true,false ]
+        name: Unit tests [jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -56,21 +64,26 @@ jobs:
             - uses: actions/cache@v1
               with:
                   path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
+                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
             - name: Unit tests
-              run: ./gradlew testDebugUnitTest
+              run: ./gradlew testDebugUnitTest -PuseCompose=${{ matrix.compose-enabled }}
               working-directory: .
 
     instrumentation-tests:
-        name: Instrumentation tests
         runs-on: macOS-latest
         timeout-minutes: 60
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         strategy:
+            fail-fast: false
             matrix:
                 api-level: [22,25,29]
+                compose-enabled: [true,false]
+                exclude:
+                    - api-level: 22
+                      compose-enabled: true
+        name: Instrumentation tests [API=${{ matrix.api-level }}, jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -80,7 +93,7 @@ jobs:
             - uses: actions/cache@v1
               with:
                  path: ~/.gradle/caches
-                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
+                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
 
 
             - name: Instrumentation tests
@@ -88,4 +101,4 @@ jobs:
               with:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
-                  script: ./gradlew connectedCheck
+                  script: ./gradlew connectedCheck -PuseCompose=${{ matrix.compose-enabled }}

@@ -115,6 +115,14 @@ internal class RoutingStatePool<C : Parcelable>(
             ) : Individual<C>()
         }
 
+        class RequestTransition<C : Parcelable>(
+            val pendingTransition: PendingTransition<C>
+        ) : Effect<C>()
+
+        class RemovePendingTransition<C : Parcelable>(
+            val pendingTransition: PendingTransition<C>
+        ) : Effect<C>()
+
         data class TransitionStarted<C : Parcelable>(
             val transition: OngoingTransition<C>
         ) : Effect<C>()
@@ -145,6 +153,8 @@ internal class RoutingStatePool<C : Parcelable>(
         when (effect) {
             is Effect.Global -> state.global(effect)
             is Effect.Individual -> state.individual(effect)
+            is Effect.RemovePendingTransition -> state.copy(pendingTransition = state.pendingTransition - effect.pendingTransition)
+            is Effect.RequestTransition -> state.copy(pendingTransition = state.pendingTransition + effect.pendingTransition)
             is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
             is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
         }

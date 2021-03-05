@@ -3,9 +3,10 @@ package com.badoo.ribs.sandbox.rib.portal_overlay_test
 import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestView.Event
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestView.ViewModel
@@ -23,7 +24,7 @@ interface PortalOverlayTestView : RibView,
         val i: Int = 0
     )
 
-    interface Factory : ViewFactory<Nothing?, PortalOverlayTestView>
+    interface Factory : ViewFactoryBuilder<Nothing?, PortalOverlayTestView>
 }
 
 
@@ -38,7 +39,7 @@ class PortalOverlayTestViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_portal_overlay_test
     ) : PortalOverlayTestView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> PortalOverlayTestView = {
+        override fun invoke(deps: Nothing?): ViewFactory<PortalOverlayTestView> = ViewFactory {
             PortalOverlayTestViewImpl(
                 it.inflate(layoutRes)
             )

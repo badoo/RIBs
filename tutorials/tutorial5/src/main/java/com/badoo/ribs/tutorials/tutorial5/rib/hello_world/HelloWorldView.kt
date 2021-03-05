@@ -6,13 +6,14 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.jakewharton.rxrelay2.PublishRelay
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.hello_world.HelloWorldView.ViewModel
 import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
@@ -30,7 +31,7 @@ interface HelloWorldView : RibView,
         val buttonText: Text
     )
 
-    interface Factory : ViewFactory<Nothing?, HelloWorldView>
+    interface Factory : ViewFactoryBuilder<Nothing?, HelloWorldView>
 }
 
 class HelloWorldViewImpl private constructor(
@@ -44,7 +45,7 @@ class HelloWorldViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_hello_world
     ) : HelloWorldView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> HelloWorldView = {
+        override fun invoke(deps: Nothing?): ViewFactory<HelloWorldView> = ViewFactory {
             HelloWorldViewImpl(
                 it.inflate(layoutRes)
             )

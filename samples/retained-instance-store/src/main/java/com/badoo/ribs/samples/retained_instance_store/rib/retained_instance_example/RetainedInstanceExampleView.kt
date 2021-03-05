@@ -10,12 +10,13 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.retained_instance_store.R
 import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleView.*
 
 interface RetainedInstanceExampleView : RibView {
 
-    interface Factory : ViewFactory<Dependency, RetainedInstanceExampleView>
+    interface Factory : ViewFactoryBuilder<Dependency, RetainedInstanceExampleView>
 
     interface Dependency {
         val presenter: RetainedInstanceExamplePresenter
@@ -38,12 +39,13 @@ class RetainedInstanceExampleViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_retained_instance
     ) : RetainedInstanceExampleView.Factory {
-        override fun invoke(deps: Dependency): (RibView) -> RetainedInstanceExampleView = {
-            RetainedInstanceExampleViewImpl(
-                androidView = it.inflate(layoutRes),
-                presenter = deps.presenter
-            )
-        }
+        override fun invoke(deps: Dependency): ViewFactory<RetainedInstanceExampleView> =
+            ViewFactory {
+                RetainedInstanceExampleViewImpl(
+                    androidView = it.inflate(layoutRes),
+                    presenter = deps.presenter
+                )
+            }
     }
 
     private val childrenContainer = androidView.findViewById<FrameLayout>(R.id.children_container)

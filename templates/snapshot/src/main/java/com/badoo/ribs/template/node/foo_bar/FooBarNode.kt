@@ -4,7 +4,7 @@ import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.rx2.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.template.node.foo_bar.FooBar.Input
 import com.badoo.ribs.template.node.foo_bar.FooBar.Output
 import com.badoo.ribs.rx2.workflows.RxWorkflowNode
@@ -12,7 +12,7 @@ import io.reactivex.Single
 
 class FooBarNode internal constructor(
     buildParams: BuildParams<*>,
-    viewFactory: ((RibView) -> FooBarView?)?,
+    viewFactory: ViewFactory<FooBarView>?,
     plugins: List<Plugin> = emptyList(),
     connector: NodeConnector<Input, Output> = NodeConnector()
 ) : RxWorkflowNode<FooBarView>(

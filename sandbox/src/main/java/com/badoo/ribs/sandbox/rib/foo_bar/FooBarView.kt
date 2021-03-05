@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
@@ -30,7 +31,7 @@ interface FooBarView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, FooBarView>
+    interface Factory : ViewFactoryBuilder<Nothing?, FooBarView>
 }
 
 
@@ -45,7 +46,7 @@ class FooBarViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_foobar
     ) : FooBarView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> FooBarView = {
+        override fun invoke(deps: Nothing?): ViewFactory<FooBarView> = ViewFactory {
             FooBarViewImpl(
                 it.inflate(layoutRes)
             )

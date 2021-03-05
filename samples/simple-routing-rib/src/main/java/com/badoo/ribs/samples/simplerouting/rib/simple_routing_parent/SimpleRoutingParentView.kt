@@ -7,13 +7,14 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.simplerouting.rib.R
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2
 
 interface SimpleRoutingParentView : RibView {
 
-    interface Factory : ViewFactory<Nothing?, SimpleRoutingParentView>
+    interface Factory : ViewFactoryBuilder<Nothing?, SimpleRoutingParentView>
 }
 
 class SimpleRoutingParentViewImpl private constructor(
@@ -23,7 +24,7 @@ class SimpleRoutingParentViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_simple_routing_parent
     ) : SimpleRoutingParentView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> SimpleRoutingParentView = {
+        override fun invoke(deps: Nothing?): ViewFactory<SimpleRoutingParentView> = ViewFactory {
             SimpleRoutingParentViewImpl(
                 androidView = it.inflate(layoutRes)
             )

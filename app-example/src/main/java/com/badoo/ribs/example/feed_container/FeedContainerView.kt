@@ -7,12 +7,13 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.photo_feed.PhotoFeed
 
 interface FeedContainerView : RibView {
 
-    interface Factory : ViewFactory<Nothing?, FeedContainerView>
+    interface Factory : ViewFactoryBuilder<Nothing?, FeedContainerView>
 }
 
 
@@ -24,7 +25,7 @@ class FeedContainerViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_feed_container
     ) : FeedContainerView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> FeedContainerView = {
+        override fun invoke(deps: Nothing?): ViewFactory<FeedContainerView> = ViewFactory {
             FeedContainerViewImpl(
                 it.inflate(layoutRes)
             )

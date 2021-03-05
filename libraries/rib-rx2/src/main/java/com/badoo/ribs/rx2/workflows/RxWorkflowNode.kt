@@ -5,6 +5,7 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
@@ -12,7 +13,7 @@ import io.reactivex.Single
 
 open class RxWorkflowNode<V : RibView>(
     buildParams: BuildParams<*>,
-    viewFactory: ((RibView) -> V?)?,
+    viewFactory: ViewFactory<V>?,
     plugins: List<Plugin> = emptyList()
 ) : Node<V>(
     buildParams = buildParams,

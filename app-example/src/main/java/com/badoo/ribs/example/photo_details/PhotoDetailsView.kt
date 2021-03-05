@@ -13,6 +13,7 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.network.model.Photo
 import com.badoo.ribs.example.photo_details.PhotoDetailsView.Event
@@ -35,7 +36,7 @@ interface PhotoDetailsView : RibView,
         data class Loaded(val detail: Photo) : ViewModel()
     }
 
-    interface Factory : ViewFactory<Nothing?, PhotoDetailsView>
+    interface Factory : ViewFactoryBuilder<Nothing?, PhotoDetailsView>
 }
 
 
@@ -50,7 +51,7 @@ class PhotoDetailsViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_photo_details
     ) : PhotoDetailsView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> PhotoDetailsView = {
+        override fun invoke(deps: Nothing?): ViewFactory<PhotoDetailsView> = ViewFactory {
             PhotoDetailsViewImpl(
                 it.inflate(layoutRes)
             )

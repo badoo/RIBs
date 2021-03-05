@@ -1,9 +1,9 @@
 package com.badoo.ribs.core.helper
 
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 
-class TestViewFactory: (RibView) -> TestView {
+class TestViewFactory : ViewFactory<TestView> {
 
-    override fun invoke(p1: RibView): TestView =
+    override fun invoke(p1: ViewFactory.Context): TestView =
         TestView()
 }

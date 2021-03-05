@@ -35,7 +35,8 @@ class RootInteractorAuthStateTest(
         interactor = RootInteractor(
             buildParams = emptyBuildParams(),
             backStack = backStack,
-            authDataSource = authDataSource
+            authDataSource = authDataSource,
+            networkErrors = PublishRelay.create()
         )
         interactorTestHelper = InteractorTestHelper(interactor)
     }

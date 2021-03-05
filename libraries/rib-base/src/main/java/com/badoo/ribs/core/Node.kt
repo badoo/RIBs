@@ -423,4 +423,17 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
         return null
     }
+
+    inline fun <reified P> pluginRoot(): P? {
+        var found: P? = null
+        var current: Node<*>? = this
+
+        while (current != null) {
+            val plugin = current.plugin<P>()
+            if (plugin != null) found = plugin
+            current = current.parent
+        }
+
+        return found
+    }
 }

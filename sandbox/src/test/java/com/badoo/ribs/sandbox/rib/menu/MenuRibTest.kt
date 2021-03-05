@@ -15,6 +15,8 @@ import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 /**
  * Integration test that checks composition of all RIB components except view
@@ -23,6 +25,7 @@ import org.junit.Test
  * assertions based on view model emissions
  * It runs a lot faster than UI test as it doesn't require real device or emulator
  */
+@RunWith(RobolectricTestRunner::class)
 class MenuRibTest {
 
     private val menuView = TestMenuView()

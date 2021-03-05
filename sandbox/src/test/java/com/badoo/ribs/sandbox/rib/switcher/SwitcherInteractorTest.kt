@@ -21,7 +21,10 @@ import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class SwitcherInteractorTest {
 
     private val backStack: BackStack<Configuration> = mock()

@@ -4,10 +4,13 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.badoo.ribs.templategenerator"
+}
+
 apply plugin: "kotlin"
 apply plugin: "maven"
 apply plugin: "org.jetbrains.intellij"
-apply plugin: "templates-generator"
 
 group "com.badoo.ribs"
 

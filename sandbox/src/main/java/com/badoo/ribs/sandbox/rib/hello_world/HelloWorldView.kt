@@ -5,9 +5,10 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.Event
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView.ViewModel
@@ -28,7 +29,7 @@ interface HelloWorldView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, HelloWorldView>
+    interface Factory : ViewFactoryBuilder<Nothing?, HelloWorldView>
 }
 
 class HelloWorldViewImpl private constructor(
@@ -42,7 +43,7 @@ class HelloWorldViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_hello_world
     ) : HelloWorldView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> HelloWorldView = {
+        override fun invoke(deps: Nothing?): ViewFactory<HelloWorldView> = ViewFactory {
             HelloWorldViewImpl(
                 it.inflate(layoutRes)
             )

@@ -15,6 +15,7 @@ import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentView.Event
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentView.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
@@ -31,7 +32,7 @@ interface ComposeParentView : RibView,
         val someNumber: Int = 0
     )
 
-    interface Factory : ViewFactory<Nothing?, ComposeParentView>
+    interface Factory : ViewFactoryBuilder<Nothing?, ComposeParentView>
 }
 
 
@@ -44,9 +45,9 @@ class ComposeParentViewImpl private constructor(
     Consumer<ViewModel> {
 
     class Factory : ComposeParentView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> ComposeParentView = {
+        override fun invoke(deps: Nothing?): ViewFactory<ComposeParentView> = ViewFactory {
             ComposeParentViewImpl(
-                it.context
+                it.parent.context
             )
         }
     }

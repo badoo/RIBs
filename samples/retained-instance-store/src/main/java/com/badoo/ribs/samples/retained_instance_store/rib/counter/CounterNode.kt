@@ -3,11 +3,11 @@ package com.badoo.ribs.samples.retained_instance_store.rib.counter
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 
 internal class CounterNode(
     buildParams: BuildParams<*>,
-    viewFactory: ((RibView) -> CounterView?)?,
+    viewFactory: ViewFactory<CounterView>?,
     plugins: List<Plugin>
 ) : Node<CounterView>(
     buildParams = buildParams,

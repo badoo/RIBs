@@ -3,13 +3,13 @@ package com.badoo.ribs.core.helper
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.router.Router
 import com.nhaarman.mockitokotlin2.mock
 
 open class TestNode(
     buildParams: BuildParams<*> = testBuildParams(),
-    viewFactory: ((RibView) -> TestView?)? = TestViewFactory(),
+    viewFactory: ViewFactory<TestView>? = TestViewFactory(),
     router: Router<*> = mock(),
     plugins: List<Plugin> = emptyList()
 ) : Node<TestView>(

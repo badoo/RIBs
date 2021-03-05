@@ -9,7 +9,7 @@ import com.badoo.ribs.example.root.routing.RootRouter.Configuration
 import com.badoo.ribs.routing.source.backstack.BackStack
 
 class RootBuilder(
-    dependency: Root.Dependency
+    private val dependency: Root.Dependency
 ) : SimpleBuilder<Root>() {
 
     private val authDataSource = AuthDataSourceImpl(
@@ -27,7 +27,8 @@ class RootBuilder(
         val interactor = RootInteractor(
             buildParams = buildParams,
             backStack = backStack,
-            authDataSource = authDataSource
+            authDataSource = authDataSource,
+            networkErrors = dependency.networkErrors
         )
         val router = RootRouter(
             buildParams = buildParams,

@@ -58,7 +58,7 @@ By now you should be able to:
     1. satisfying child dependencies (prepared for you in `GreetingsContainerModule`)
     2. providing `optionsSelectorBuilder` to the `GreetingsContainerRouter`
     3. adding a new Configuration to `GreetingsContainerRouter`: "OptionsSelector"
-    4. resolving it to an `attach { optionsSelectorBuilder.build() }` action
+    4. resolving it to an `child { optionsSelectorBuilder.build() }` action
  
 For help with the above tasks, you can refer to:
 - **tutorial1** / **Further reading** section on how to make a Button trigger an `Output`

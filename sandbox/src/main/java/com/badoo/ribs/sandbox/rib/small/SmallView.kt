@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.small.SmallView.Event
 import com.badoo.ribs.sandbox.rib.small.SmallView.ViewModel
@@ -28,7 +29,7 @@ interface SmallView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, SmallView>
+    interface Factory : ViewFactoryBuilder<Nothing?, SmallView>
 }
 
 
@@ -42,7 +43,7 @@ class SmallViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_small
     ) : SmallView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> SmallView = {
+        override fun invoke(deps: Nothing?): ViewFactory<SmallView> = ViewFactory {
             SmallViewImpl(
                 it.inflate(layoutRes)
             )

@@ -5,9 +5,10 @@ import androidx.core.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.TextView
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.menu.MenuView.Event
@@ -26,7 +27,7 @@ interface MenuView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
         val selected: MenuItem?
     )
 
-    interface Factory : ViewFactory<Nothing?, MenuView>
+    interface Factory : ViewFactoryBuilder<Nothing?, MenuView>
 }
 
 
@@ -40,7 +41,7 @@ class MenuViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_menu
     ) : MenuView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> MenuView = {
+        override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
             MenuViewImpl(
                 it.inflate(layoutRes)
             )

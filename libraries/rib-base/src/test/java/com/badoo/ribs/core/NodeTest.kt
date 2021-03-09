@@ -20,6 +20,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.store.RetainedInstanceStore
@@ -27,6 +28,7 @@ import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.argThat
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.isA
 import com.nhaarman.mockitokotlin2.mock
@@ -46,7 +48,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class NodeTest {
 
-    interface TestViewFactory : (RibView) -> TestView
+    interface TestViewFactory : ViewFactory<TestView>
 
     private lateinit var node: Node<TestView>
     private lateinit var view: TestView
@@ -73,7 +75,7 @@ class NodeTest {
         someViewGroup3 = mock()
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
-        viewFactory = mock { on { invoke(parentView) } doReturn view }
+        viewFactory = mock { on { invoke(argThat { parent == parentView }) } doReturn view }
         router = mock()
         interactor = mock()
         retainedInstanceStore = mock()
@@ -269,7 +271,7 @@ class NodeTest {
             buildParams = testBuildParams(ancestryInfo = childAncestry)
         )
         node.attachChildNode(child)
-        verify(childViewFactory, never()).invoke(parentView)
+        verify(childViewFactory, never()).invoke(any())
     }
 
     @Test
@@ -467,7 +469,7 @@ class NodeTest {
     @Test
     fun `onCreateView() invokes viewFactory`() {
         node.onCreateView(parentView)
-        verify(viewFactory).invoke(parentView)
+        verify(viewFactory).invoke(argThat { parent == parentView })
     }
 
     @Test

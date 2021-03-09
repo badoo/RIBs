@@ -8,6 +8,7 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.dialogs.R
 
 interface DialogsView : RibView {
@@ -16,7 +17,7 @@ interface DialogsView : RibView {
         val presenter: DialogsPresenter
     }
 
-    interface Factory : ViewFactory<Dependency, DialogsView>
+    interface Factory : ViewFactoryBuilder<Dependency, DialogsView>
 
     fun displayText(headerText: String)
 }
@@ -28,7 +29,7 @@ class DialogsViewImpl private constructor(
 
     class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_dialogs) : DialogsView.Factory {
 
-        override fun invoke(deps: DialogsView.Dependency): (RibView) -> DialogsView = {
+        override fun invoke(deps: DialogsView.Dependency): ViewFactory<DialogsView> = ViewFactory {
             DialogsViewImpl(
                 androidView = it.inflate(layoutRes),
                 presenter = deps.presenter

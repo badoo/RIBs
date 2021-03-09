@@ -7,11 +7,12 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.buildtime.R
 
 interface ProfileView : RibView {
 
-    interface Factory : ViewFactory<Nothing?, ProfileView>
+    interface Factory : ViewFactoryBuilder<Nothing?, ProfileView>
 }
 
 class ProfileViewImpl private constructor(
@@ -29,7 +30,7 @@ class ProfileViewImpl private constructor(
         private val profileId: Int,
         @LayoutRes private val layoutRes: Int = R.layout.rib_profile
     ) : ProfileView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> ProfileView = {
+        override fun invoke(deps: Nothing?): ViewFactory<ProfileView> = ViewFactory {
             ProfileViewImpl(
                 androidView = it.inflate(layoutRes),
                 profileId = profileId

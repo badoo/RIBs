@@ -7,11 +7,12 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.retained_instance_store.R
 
 interface CounterView : RibView {
 
-    interface Factory : ViewFactory<Nothing?, CounterView>
+    interface Factory : ViewFactoryBuilder<Nothing?, CounterView>
 
     fun updateCount(count: Int)
 
@@ -24,7 +25,7 @@ class CounterViewImpl private constructor(override val androidView: ViewGroup) :
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_counter
     ) : CounterView.Factory {
-        override fun invoke(nothing: Nothing?): (RibView) -> CounterView = {
+        override fun invoke(nothing: Nothing?): ViewFactory<CounterView> = ViewFactory {
             CounterViewImpl(androidView = it.inflate(layoutRes))
         }
     }

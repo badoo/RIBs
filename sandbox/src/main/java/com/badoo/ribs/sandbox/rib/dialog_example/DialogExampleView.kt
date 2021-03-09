@@ -8,6 +8,7 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialogClicked
@@ -36,7 +37,7 @@ interface DialogExampleView : RibView,
         val text: String
     )
 
-    interface Factory : ViewFactory<Nothing?, DialogExampleView>
+    interface Factory : ViewFactoryBuilder<Nothing?, DialogExampleView>
 }
 
 class DialogExampleViewImpl  private constructor(
@@ -50,7 +51,7 @@ class DialogExampleViewImpl  private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_dialog_example
     ) : DialogExampleView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> DialogExampleView = {
+        override fun invoke(deps: Nothing?): ViewFactory<DialogExampleView> = ViewFactory {
             DialogExampleViewImpl(
                 it.inflate(layoutRes)
             )

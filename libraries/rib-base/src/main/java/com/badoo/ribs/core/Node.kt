@@ -32,6 +32,7 @@ import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.util.RIBs
 
@@ -47,7 +48,7 @@ import com.badoo.ribs.util.RIBs
 @SuppressWarnings("LargeClass")
 open class Node<V : RibView> @VisibleForTesting internal constructor(
     val buildParams: BuildParams<*>,
-    private val viewFactory: ((RibView) -> V?)?, // TODO V? vs V
+    private val viewFactory: ViewFactory<V>?,
     private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
@@ -59,14 +60,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     constructor(
         buildParams: BuildParams<*>,
-        viewFactory: ((RibView) -> V?)?,
+        viewFactory: ViewFactory<V>?,
         plugins: List<Plugin> = emptyList()
     ) : this(buildParams, viewFactory, RetainedInstanceStore, plugins)
 
     final override val node: Node<V>
         get() = this
 
-    open val identifier: Rib.Identifier =
+    open val identifier: Identifier =
         buildParams.identifier
 
     internal val buildContext: BuildContext =
@@ -122,7 +123,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     private var rootHost: RibView? = null
 
     internal open var savedViewState: SparseArray<Parcelable> =
-        savedInstanceState?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE) ?: SparseArray()
+        savedInstanceState?.getSparseParcelableArray(KEY_VIEW_STATE) ?: SparseArray()
 
     internal var isAttachedToView: Boolean = false
         private set
@@ -155,14 +156,19 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     fun onCreateView(parentView: RibView): V? {
         if (isRoot) rootHost = parentView
-        if (view == null) {
-            view = viewFactory?.invoke(parentView)
-            view?.let { view ->
-                view.androidView.restoreHierarchyState(savedViewState)
-                lifecycleManager.onViewCreated()
-                plugins.filterIsInstance<ViewAware<V>>().forEach {
-                    it.onViewCreated(view, lifecycleManager.viewLifecycle!!.lifecycle)
-                }
+        if (view == null && viewFactory != null) {
+            lifecycleManager.onViewCreated()
+            val lifecycle = lifecycleManager.viewLifecycle!!.lifecycle
+            val view = viewFactory.invoke(
+                ViewFactory.Context(
+                    parent = parentView,
+                    lifecycle = lifecycle
+                )
+            )
+            this.view = view
+            view.androidView.restoreHierarchyState(savedViewState)
+            plugins.filterIsInstance<ViewAware<V>>().forEach {
+                it.onViewCreated(view, lifecycle)
             }
         }
 
@@ -387,9 +393,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun saveViewState() {
-        view?.let {
-            it.androidView.saveHierarchyState(savedViewState)
-        }
+        view?.androidView?.saveHierarchyState(savedViewState)
     }
 
     fun onLowMemory() {

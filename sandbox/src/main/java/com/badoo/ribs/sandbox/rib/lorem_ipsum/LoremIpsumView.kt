@@ -4,9 +4,10 @@ import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumView.Event
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumView.ViewModel
@@ -26,7 +27,7 @@ interface LoremIpsumView : RibView,
         val i: Int = 0
     )
 
-    interface Factory : ViewFactory<Nothing?, LoremIpsumView>
+    interface Factory : ViewFactoryBuilder<Nothing?, LoremIpsumView>
 }
 
 
@@ -41,7 +42,7 @@ class LoremIpsumViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_lorem_ipsum
     ) : LoremIpsumView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> LoremIpsumView = {
+        override fun invoke(deps: Nothing?): ViewFactory<LoremIpsumView> = ViewFactory {
             LoremIpsumViewImpl(
                 it.inflate(layoutRes)
             )

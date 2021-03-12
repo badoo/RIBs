@@ -18,7 +18,9 @@ import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.changeset.addedOrRemoved
 import com.badoo.ribs.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.routing.state.exception.KeyNotFoundInPoolException
-import com.badoo.ribs.routing.state.feature.Transaction.*
+import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand
+import com.badoo.ribs.routing.state.feature.Transaction.RoutingChange
+import com.badoo.ribs.routing.state.feature.Transaction.InternalTransaction
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.state.feature.state.withDefaults
 import com.badoo.ribs.routing.state.mutablePoolOf
@@ -239,7 +241,6 @@ internal class Actor<C : Parcelable>(
             it.view.visibility = visibility
         }
     }
-
 
     /**
      * This is wrapped to prevent loops, as this can't access the transactionConsumer to call new transactions to be executed.

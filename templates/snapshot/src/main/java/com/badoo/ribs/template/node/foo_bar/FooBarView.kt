@@ -24,7 +24,7 @@ interface FooBarView : RibView,
         val i: Int = 0
     )
 
-    interface Factory : ViewFactoryBuilder<Nothing?, FooBarView>
+    fun interface Factory : ViewFactoryBuilder<Nothing?, FooBarView>
 }
 
 

@@ -2,12 +2,11 @@ package com.badoo.ribs.routing.state.feature
 
 import android.os.Handler
 import android.os.Parcelable
+import android.view.View
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
-import com.badoo.ribs.routing.state.MutablePool
-import com.badoo.ribs.routing.state.Pool
-import com.badoo.ribs.routing.state.RoutingContext
+import com.badoo.ribs.routing.state.*
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.action.TransactionExecutionParams
@@ -17,12 +16,9 @@ import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.changeset.addedOrRemoved
 import com.badoo.ribs.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.routing.state.exception.KeyNotFoundInPoolException
-import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand
-import com.badoo.ribs.routing.state.feature.Transaction.RoutingChange
+import com.badoo.ribs.routing.state.feature.Transaction.*
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.state.feature.state.withDefaults
-import com.badoo.ribs.routing.state.mutablePoolOf
-import com.badoo.ribs.routing.state.toMutablePool
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
@@ -36,7 +32,8 @@ internal class Actor<C : Parcelable>(
     private val activator: RoutingActivator<C>,
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?,
-    private val effectEmitter: EffectEmitter<C>
+    private val effectEmitter: EffectEmitter<C>,
+    private val transactionConsumer: (Transaction<C>) -> Unit
 ) {
 
     private val handler = Handler()
@@ -45,6 +42,7 @@ internal class Actor<C : Parcelable>(
         when (transaction) {
             is PoolCommand -> processPoolCommand(state, transaction)
             is RoutingChange -> processRoutingChange(state, transaction)
+            is ConsumeTransition -> consumeTransition(state, transaction)
         }
     }
 
@@ -112,7 +110,7 @@ internal class Actor<C : Parcelable>(
         state: WorkingState<C>,
         transaction: RoutingChange<C>
     ): NewTransitionsExecution {
-        state.pendingTransition.forEach { pendingTransition ->
+        state.pendingTransitions.forEach { pendingTransition ->
             when {
                 transaction.descriptor.isReverseOf(pendingTransition.descriptor) -> {
                     pendingTransition.discard()
@@ -133,13 +131,35 @@ internal class Actor<C : Parcelable>(
     ) {
         requireNotNull(transitionHandler)
 
-        PendingTransition(
+        val newTransition = PendingTransition(
             descriptor = descriptor,
             direction = TransitionDirection.EXIT,
             actions = actions,
             transitionElements = transitionElements,
             emitter = emitter
-        ).schedule(handler, transitionHandler)
+        )
+
+        newTransition.schedule()
+        /**
+         * Entering views at this point are created but will be measured / laid out the next frame.
+         * We need to base calculations in transition implementations based on their actual measurements,
+         * but without them appearing just yet to avoid flickering.
+         * Making them invisible, starting the transitions then making them visible achieves the above.
+         */
+        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
+        enteringElements.visibility(View.INVISIBLE)
+
+        handler.post {
+            enteringElements.visibility(View.VISIBLE)
+            transactionConsumer.invoke(ConsumeTransition(newTransition))
+        }
+    }
+
+    private fun consumeTransition(state: WorkingState<C>, transaction: ConsumeTransition<C>) {
+        requireNotNull(transitionHandler)
+        if(transaction.pendingTransition in state.pendingTransitions){
+            transaction.pendingTransition.execute(transitionHandler)
+        }
     }
 
 
@@ -179,7 +199,8 @@ internal class Actor<C : Parcelable>(
                 val lookup = tempPool[key]
                 if (lookup is RoutingContext.Resolved) lookup
                 else {
-                    val item = defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
+                    val item = defaultElements[key] ?: state.pool[key]
+                    ?: throw KeyNotFoundInPoolException(key, state.pool)
                     val resolved = item.resolve(resolver, parentNode)
                     tempPool[key] = resolved
                     resolved
@@ -212,6 +233,13 @@ internal class Actor<C : Parcelable>(
             throw CommandExecutionException(
                 "Could not execute command: ${command::class.java}", e
             )
+        }
+    }
+
+
+    private fun List<TransitionElement<C>>.visibility(visibility: Int) {
+        forEach {
+            it.view.visibility = visibility
         }
     }
 }

@@ -58,7 +58,8 @@ internal class RoutingStatePool<C : Parcelable>(
         activator = activator,
         parentNode = parentNode,
         transitionHandler = transitionHandler,
-        effectEmitter = ::emitEvent
+        effectEmitter = ::emitEvent,
+        transactionConsumer = ::accept
     )
 
     init {
@@ -153,8 +154,8 @@ internal class RoutingStatePool<C : Parcelable>(
         when (effect) {
             is Effect.Global -> state.global(effect)
             is Effect.Individual -> state.individual(effect)
-            is Effect.RemovePendingTransition -> state.copy(pendingTransition = state.pendingTransition - effect.pendingTransition)
-            is Effect.RequestTransition -> state.copy(pendingTransition = state.pendingTransition + effect.pendingTransition)
+            is Effect.RequestTransition -> state.copy(pendingTransitions = state.pendingTransitions + effect.pendingTransition)
+            is Effect.RemovePendingTransition -> state.copy(pendingTransitions = state.pendingTransitions - effect.pendingTransition)
             is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
             is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
         }

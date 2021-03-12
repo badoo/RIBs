@@ -20,7 +20,7 @@ internal data class WorkingState<C : Parcelable>(
     val pendingDeactivate: Set<Routing<C>> = setOf(),
     val pendingRemoval: Set<Routing<C>> = setOf(),
     val ongoingTransitions: List<OngoingTransition<C>> = emptyList(),
-    val pendingTransition: List<PendingTransition<C>> = emptyList()
+    val pendingTransitions: List<PendingTransition<C>> = emptyList()
 ) {
     /**
      * Converts the [WorkingState] to [SavedState] by shrinking all

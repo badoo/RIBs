@@ -16,30 +16,11 @@ internal class PendingTransition<C : Parcelable>(
     private val transitionElements: List<TransitionElement<C>>,
     private val emitter: EffectEmitter<C>) {
 
-    private var isDiscarded = false
-
-    fun schedule(handler: Handler, transitionHandler: TransitionHandler<C>) {
+    fun schedule() {
         emitter.invoke(RoutingStatePool.Effect.RequestTransition(this))
-
-        /**
-         * Entering views at this point are created but will be measured / laid out the next frame.
-         * We need to base calculations in transition implementations based on their actual measurements,
-         * but without them appearing just yet to avoid flickering.
-         * Making them invisible, starting the transitions then making them visible achieves the above.
-         */
-
-        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
-        enteringElements.visibility(View.INVISIBLE)
-        handler.post {
-            enteringElements.visibility(View.VISIBLE)
-
-            if (isDiscarded.not()) {
-                consume(transitionHandler)
-            }
-        }
     }
 
-    private fun consume(transitionHandler: TransitionHandler<C>) {
+    fun execute(transitionHandler: TransitionHandler<C>) {
         discard()
         val transitionPair = transitionHandler.onTransition(transitionElements)
         // TODO consider whether splitting this two two instances (one per direction, so that
@@ -61,13 +42,7 @@ internal class PendingTransition<C : Parcelable>(
     }
 
     fun discard() {
-        isDiscarded = true
         emitter.invoke(RoutingStatePool.Effect.RemovePendingTransition(this))
     }
 
-    private fun List<TransitionElement<C>>.visibility(visibility: Int) {
-        forEach {
-            it.view.visibility = visibility
-        }
-    }
 }

@@ -9,9 +9,7 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.*
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.changeset.RoutingCommand
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
@@ -59,7 +57,7 @@ internal class RoutingStatePool<C : Parcelable>(
         parentNode = parentNode,
         transitionHandler = transitionHandler,
         effectEmitter = ::emitEvent,
-        transactionConsumer = ::accept
+        transactionConsumer = ::actorConsumer
     )
 
     init {
@@ -148,6 +146,10 @@ internal class RoutingStatePool<C : Parcelable>(
 
     fun accept(transaction: Transaction<C>) {
         actor.invoke(state, transaction)
+    }
+
+    private fun actorConsumer(internalTransaction: Transaction.InternalTransaction<C>) {
+        accept(internalTransaction)
     }
 
     override fun reduceEvent(effect: Effect<C>, state: WorkingState<C>): WorkingState<C> =

@@ -6,7 +6,9 @@ import android.view.View
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
-import com.badoo.ribs.routing.state.*
+import com.badoo.ribs.routing.state.MutablePool
+import com.badoo.ribs.routing.state.Pool
+import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.action.TransactionExecutionParams
@@ -19,6 +21,8 @@ import com.badoo.ribs.routing.state.exception.KeyNotFoundInPoolException
 import com.badoo.ribs.routing.state.feature.Transaction.*
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.state.feature.state.withDefaults
+import com.badoo.ribs.routing.state.mutablePoolOf
+import com.badoo.ribs.routing.state.toMutablePool
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.handler.TransitionHandler

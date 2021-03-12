@@ -33,16 +33,17 @@ internal class Actor<C : Parcelable>(
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?,
     private val effectEmitter: EffectEmitter<C>,
-    private val transactionConsumer: (Transaction<C>) -> Unit
+    private val transactionConsumer: (InternalTransaction<C>) -> Unit
 ) {
 
     private val handler = Handler()
+    private val internalTransactionProcessor = InternalTransactionProcessor(transitionHandler)
 
     fun invoke(state: WorkingState<C>, transaction: Transaction<C>) {
         when (transaction) {
             is PoolCommand -> processPoolCommand(state, transaction)
             is RoutingChange -> processRoutingChange(state, transaction)
-            is ConsumeTransition -> consumeTransition(state, transaction)
+            is InternalTransaction -> internalTransactionProcessor.process(state, transaction)
         }
     }
 
@@ -151,17 +152,9 @@ internal class Actor<C : Parcelable>(
 
         handler.post {
             enteringElements.visibility(View.VISIBLE)
-            transactionConsumer.invoke(ConsumeTransition(newTransition))
+            transactionConsumer.invoke(InternalTransaction.ConsumePendingTransition(newTransition))
         }
     }
-
-    private fun consumeTransition(state: WorkingState<C>, transaction: ConsumeTransition<C>) {
-        requireNotNull(transitionHandler)
-        if(transaction.pendingTransition in state.pendingTransitions){
-            transaction.pendingTransition.execute(transitionHandler)
-        }
-    }
-
 
     /**
      * Since the state doesn't yet reflect elements we're just about to add, we'll create them ahead
@@ -242,5 +235,24 @@ internal class Actor<C : Parcelable>(
             it.view.visibility = visibility
         }
     }
-}
 
+
+    /**
+     * This is wrapped to prevent loops, as this can't access the transactionConsumer to call new transactions to be executed.
+     *  However this also make impossible to chain multiple internal action, but we do not required that so far.
+     */
+    internal class InternalTransactionProcessor<C : Parcelable>(private val transitionHandler: TransitionHandler<C>?) {
+        fun process(state: WorkingState<C>, internalTransaction: InternalTransaction<C>) {
+            when (internalTransaction) {
+                is InternalTransaction.ConsumePendingTransition -> consumeTransition(state, internalTransaction)
+            }
+        }
+
+        private fun consumeTransition(state: WorkingState<C>, transaction: InternalTransaction.ConsumePendingTransition<C>) {
+            requireNotNull(transitionHandler)
+            if (transaction.pendingTransition in state.pendingTransitions) {
+                transaction.pendingTransition.consume(transitionHandler)
+            }
+        }
+    }
+}

@@ -1,8 +1,6 @@
 package com.badoo.ribs.routing.state.feature
 
-import android.os.Handler
 import android.os.Parcelable
-import android.view.View
 import com.badoo.ribs.routing.state.action.single.ReversibleAction
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.transition.TransitionDirection
@@ -20,7 +18,7 @@ internal class PendingTransition<C : Parcelable>(
         emitter.invoke(RoutingStatePool.Effect.RequestTransition(this))
     }
 
-    fun execute(transitionHandler: TransitionHandler<C>) {
+    fun consume(transitionHandler: TransitionHandler<C>) {
         discard()
         val transitionPair = transitionHandler.onTransition(transitionElements)
         // TODO consider whether splitting this two two instances (one per direction, so that

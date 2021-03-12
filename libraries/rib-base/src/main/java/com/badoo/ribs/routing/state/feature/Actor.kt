@@ -2,7 +2,6 @@ package com.badoo.ribs.routing.state.feature
 
 import android.os.Handler
 import android.os.Parcelable
-import android.view.View
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
@@ -42,7 +41,7 @@ internal class Actor<C : Parcelable>(
 
     private val handler = Handler()
 
-    fun invoke(state: WorkingState<C>, transaction: Transaction<C>){
+    fun invoke(state: WorkingState<C>, transaction: Transaction<C>) {
         when (transaction) {
             is PoolCommand -> processPoolCommand(state, transaction)
             is RoutingChange -> processRoutingChange(state, transaction)
@@ -73,6 +72,8 @@ internal class Actor<C : Parcelable>(
             transaction = transaction
         )
 
+        checkPendingTransitions(state, transaction)
+
         if (checkOngoingTransitions(state, transaction) == NewTransitionsExecution.ABORT) {
             return
         }
@@ -85,7 +86,7 @@ internal class Actor<C : Parcelable>(
             actions.forEach { it.onTransition() }
             actions.forEach { it.onFinish() }
         } else {
-            beginTransitions(transaction.descriptor, transitionElements, effectEmitter, actions)
+            scheduleTransitions(transaction.descriptor, transitionElements, effectEmitter, actions)
         }
     }
 
@@ -104,48 +105,43 @@ internal class Actor<C : Parcelable>(
                 }
             }
         }
-
         return NewTransitionsExecution.CONTINUE
     }
 
-    private fun beginTransitions(
+    private fun checkPendingTransitions(
+        state: WorkingState<C>,
+        transaction: RoutingChange<C>
+    ): NewTransitionsExecution {
+        state.pendingTransition.forEach { pendingTransition ->
+            when {
+                transaction.descriptor.isReverseOf(pendingTransition.descriptor) -> {
+                    pendingTransition.discard()
+                }
+                transaction.descriptor.isContinuationOf(pendingTransition.descriptor) -> {
+                    pendingTransition.completeWithoutTransition()
+                }
+            }
+        }
+        return NewTransitionsExecution.CONTINUE
+    }
+
+    private fun scheduleTransitions(
         descriptor: TransitionDescriptor,
         transitionElements: List<TransitionElement<C>>,
         emitter: EffectEmitter<C>,
         actions: List<ReversibleAction<C>>
     ) {
         requireNotNull(transitionHandler)
-        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
 
-        /**
-         * Entering views at this point are created but will be measured / laid out the next frame.
-         * We need to base calculations in transition implementations based on their actual measurements,
-         * but without them appearing just yet to avoid flickering.
-         * Making them invisible, starting the transitions then making them visible achieves the above.
-         */
-        enteringElements.visibility(View.INVISIBLE)
-        handler.post {
-            val transitionPair = transitionHandler.onTransition(transitionElements)
-            enteringElements.visibility(View.VISIBLE)
-
-            // TODO consider whether splitting this two two instances (one per direction, so that
-            //  enter and exit can be controlled separately) is better
-            OngoingTransition(
-                descriptor = descriptor,
-                direction = TransitionDirection.EXIT,
-                transitionPair = transitionPair,
-                actions = actions,
-                transitionElements = transitionElements,
-                emitter = emitter
-            ).start()
-        }
+        PendingTransition(
+            descriptor = descriptor,
+            direction = TransitionDirection.EXIT,
+            actions = actions,
+            transitionElements = transitionElements,
+            emitter = emitter
+        ).schedule(handler, transitionHandler)
     }
 
-    private fun List<TransitionElement<C>>.visibility(visibility: Int) {
-        forEach {
-            it.view.visibility = visibility
-        }
-    }
 
     /**
      * Since the state doesn't yet reflect elements we're just about to add, we'll create them ahead

@@ -1,16 +1,16 @@
 package com.badoo.ribs.android.recyclerview
 
-import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostView.Dependency
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 
 
 internal interface RecyclerViewHostView : RibView {
 
-    interface Factory : ViewFactory<Dependency, RecyclerViewHostView>
+    interface Factory : ViewFactoryBuilder<Dependency, RecyclerViewHostView>
 
     interface Dependency {
         fun adapter(): Adapter<*>
@@ -24,13 +24,19 @@ internal class RecyclerViewHostViewImpl private constructor(
 ) : AndroidRibView(),
     RecyclerViewHostView {
 
-    class Factory: RecyclerViewHostView.Factory {
-        override fun invoke(deps: Dependency): (RibView) -> RecyclerViewHostView = {
+    class Factory : RecyclerViewHostView.Factory {
+        override fun invoke(deps: Dependency): ViewFactory<RecyclerViewHostView> = ViewFactory {
             RecyclerViewHostViewImpl(
-                androidView = deps.recyclerViewFactory().invoke(it.androidView.context).apply {
-                    adapter = deps.adapter()
-                    layoutManager = deps.layoutManagerFactory().invoke(it.androidView.context)
-                }
+                androidView = deps
+                    .recyclerViewFactory()
+                    .invoke(it.parent.androidView.context)
+                    .apply {
+                        adapter = deps.adapter()
+                        layoutManager =
+                            deps
+                                .layoutManagerFactory()
+                                .invoke(it.parent.androidView.context)
+                    }
             )
         }
     }

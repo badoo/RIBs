@@ -4,11 +4,12 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import org.mockito.Mockito.mock
 
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<*, View>,
-    val viewFactory: ((RibView) -> View?)? = null
+    val viewFactory: ViewFactory<View>? = null
 ) {
     var nodeCreator: () -> Node<View> = {
         Node(

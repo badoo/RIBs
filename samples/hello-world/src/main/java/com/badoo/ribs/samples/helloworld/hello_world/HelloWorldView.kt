@@ -8,12 +8,13 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.helloworld.R
 import com.google.android.material.snackbar.Snackbar
 
 interface HelloWorldView : RibView {
 
-    interface Factory : ViewFactory<Dependency, HelloWorldView>
+    interface Factory : ViewFactoryBuilder<Dependency, HelloWorldView>
 
     interface Dependency {
         val presenter: HelloWorldPresenter
@@ -32,12 +33,13 @@ class HelloWorldViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_hello_world
     ) : HelloWorldView.Factory {
-        override fun invoke(deps: HelloWorldView.Dependency): (RibView) -> HelloWorldView = {
-            HelloWorldViewImpl(
-                androidView = it.inflate(layoutRes),
-                presenter = deps.presenter
-            )
-        }
+        override fun invoke(deps: HelloWorldView.Dependency): ViewFactory<HelloWorldView> =
+            ViewFactory {
+                HelloWorldViewImpl(
+                    androidView = it.inflate(layoutRes),
+                    presenter = deps.presenter
+                )
+            }
     }
 
     private val textView: TextView = androidView.findViewById(R.id.hello_world_text)

@@ -4,6 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
+
+fun <T> ViewFactory.Context.inflate(@LayoutRes layoutResourceId: Int): T =
+    parent.inflate(layoutResourceId)
 
 fun <T> RibView.inflate(@LayoutRes layoutResourceId: Int): T =
     androidView.inflate(layoutResourceId)

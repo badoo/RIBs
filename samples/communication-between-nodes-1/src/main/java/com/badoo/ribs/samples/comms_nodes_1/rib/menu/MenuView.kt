@@ -9,11 +9,12 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.comms_nodes_1.R
 
 interface MenuView : RibView {
 
-    interface Factory : ViewFactory<Dependency, MenuView>
+    interface Factory : ViewFactoryBuilder<Dependency, MenuView>
 
     interface Dependency {
         val presenter: MenuPresenter
@@ -31,7 +32,7 @@ class MenuViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_menu
     ) : MenuView.Factory {
-        override fun invoke(deps: MenuView.Dependency): (RibView) -> MenuView = {
+        override fun invoke(deps: MenuView.Dependency): ViewFactory<MenuView> = ViewFactory {
             MenuViewImpl(
                 it.inflate(layoutRes),
                 presenter = deps.presenter

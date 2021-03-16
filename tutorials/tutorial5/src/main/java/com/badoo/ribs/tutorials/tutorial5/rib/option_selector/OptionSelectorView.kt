@@ -7,13 +7,14 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.tutorials.tutorial5.R
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.Event
 import com.badoo.ribs.tutorials.tutorial5.rib.option_selector.OptionSelectorView.ViewModel
 import com.badoo.ribs.android.text.Text
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
@@ -29,7 +30,7 @@ interface OptionSelectorView : RibView,
         val options: List<Text>
     )
 
-    interface Factory : ViewFactory<Nothing?, OptionSelectorView>
+    interface Factory : ViewFactoryBuilder<Nothing?, OptionSelectorView>
 }
 
 
@@ -44,7 +45,7 @@ class OptionSelectorViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_option_selector
     ) : OptionSelectorView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> OptionSelectorView = {
+        override fun invoke(deps: Nothing?): ViewFactory<OptionSelectorView> = ViewFactory {
             OptionSelectorViewImpl(
                 it.inflate(layoutRes)
             )

@@ -11,6 +11,7 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.app_bar.AppBarView.Event
 import com.badoo.ribs.example.app_bar.AppBarView.ViewModel
@@ -31,7 +32,7 @@ interface AppBarView : RibView,
         val profileImageUrl: String
     )
 
-    interface Factory : ViewFactory<Nothing?, AppBarView>
+    interface Factory : ViewFactoryBuilder<Nothing?, AppBarView>
 }
 
 
@@ -59,7 +60,7 @@ class AppBarViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_app_bar
     ) : AppBarView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> AppBarView = {
+        override fun invoke(deps: Nothing?): ViewFactory<AppBarView> = ViewFactory {
             AppBarViewImpl(
                 androidView = it.inflate(layoutRes)
             )

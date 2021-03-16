@@ -7,6 +7,7 @@ import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.dialogs.R
 import com.badoo.ribs.samples.dialogs.rib.dummy.DummyView.Dependency
 import com.badoo.ribs.samples.dialogs.rib.dummy.DummyView.Event
@@ -21,7 +22,7 @@ interface DummyView : RibView {
         val presenter: DummyPresenter
     }
 
-    interface Factory : ViewFactory<Dependency, DummyView>
+    interface Factory : ViewFactoryBuilder<Dependency, DummyView>
 }
 
 class DummyViewImpl private constructor(
@@ -32,7 +33,7 @@ class DummyViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_dummy
     ) : DummyView.Factory {
-        override fun invoke(deps: Dependency): (RibView) -> DummyView = {
+        override fun invoke(deps: Dependency): ViewFactory<DummyView> = ViewFactory {
             DummyViewImpl(it.inflate(layoutRes), deps.presenter)
         }
     }

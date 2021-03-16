@@ -4,6 +4,7 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.test.emptyBuildParams
 import com.nhaarman.mockitokotlin2.mock
@@ -11,7 +12,7 @@ import com.nhaarman.mockitokotlin2.mock
 class TestNode<V : RibView>(
     buildParams: BuildParams<*> = emptyBuildParams(),
     router: Router<*> = mock(),
-    viewFactory: ((RibView) -> V?)? = mock(),
+    viewFactory: ViewFactory<V>? = mock(),
     interactor: Interactor<*, V> = mock()
 ) : Node<V>(
     buildParams = buildParams,

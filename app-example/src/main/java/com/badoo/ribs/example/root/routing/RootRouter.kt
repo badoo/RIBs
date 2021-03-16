@@ -7,6 +7,7 @@ import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
@@ -29,6 +30,9 @@ class RootRouter internal constructor(
 
             @Parcelize
             object LoggedOut : Content()
+
+            @Parcelize
+            object Login : Content()
         }
     }
 
@@ -37,6 +41,7 @@ class RootRouter internal constructor(
             when (routing.configuration) {
                 is Content.LoggedIn -> child { loggedInContainerBuilder.build(it) }
                 is Content.LoggedOut -> child { loggedOutContainerBuilder.build(it) }
+                is Content.Login -> noop()
             }
         }
 }

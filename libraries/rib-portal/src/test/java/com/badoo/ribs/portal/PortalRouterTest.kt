@@ -31,6 +31,7 @@ class PortalRouterTest {
             routingSource = Empty(),
             defaultResolution = child { node1 }
         )
+        val portalRootNode = TestNode(router = router)
     }
 
     @Test

@@ -50,8 +50,10 @@ class PortalRouter(
     // TODO probably needs to change from List<Parcelable> to List<AncestryInfo>,
     //  so that extra info can be added too. See below for details.
     private fun List<Routing<out Parcelable>>.resolve(): Resolution {
-        // TODO grab first from real root (now should be possible) -- currently works only if PortalRouter is in the root rib
-        var targetRouter: RoutingResolver<Parcelable> = this@PortalRouter as RoutingResolver<Parcelable>
+        var targetRouter: RoutingResolver<Parcelable> =
+            node.pluginRoot<RoutingResolver<Parcelable>>()
+                ?: throw IllegalStateException("There is no routers up in the hierarchy")
+
         var resolution: Resolution = targetRouter.resolve(first() as Routing<Parcelable>)
 
         drop(1).forEach { element ->

@@ -3,11 +3,11 @@ package com.badoo.ribs.sandbox.rib.small
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 
 class SmallNode(
     buildParams: BuildParams<Nothing?>,
-    viewFactory: ((RibView) -> SmallView?)?,
+    viewFactory: ViewFactory<SmallView>?,
     plugins: List<Plugin>
 ) : Node<SmallView>(
     buildParams = buildParams,

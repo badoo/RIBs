@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.MenuNode
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
@@ -24,14 +25,14 @@ interface SwitcherView : RibView,
 
     sealed class Event {
         object ShowOverlayDialogClicked : Event()
-        object ShowBlockerClicked: Event()
+        object ShowBlockerClicked : Event()
     }
 
     data class ViewModel(
         val uiFrozen: Boolean = false
     )
 
-    interface Factory : ViewFactory<Dependency, SwitcherView>
+    interface Factory : ViewFactoryBuilder<Dependency, SwitcherView>
 
     interface Dependency {
         fun coffeeMachine(): CoffeeMachine
@@ -50,12 +51,13 @@ class SwitcherViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_switcher
     ) : SwitcherView.Factory {
-        override fun invoke(deps: SwitcherView.Dependency): (RibView) -> SwitcherView = {
-            SwitcherViewImpl(
-                it.inflate(layoutRes),
-                deps.coffeeMachine()
-            )
-        }
+        override fun invoke(deps: SwitcherView.Dependency): ViewFactory<SwitcherView> =
+            ViewFactory {
+                SwitcherViewImpl(
+                    it.parent.inflate(layoutRes),
+                    deps.coffeeMachine()
+                )
+            }
     }
 
     private val menuContainer: ViewGroup = androidView.findViewById(R.id.menu_container)

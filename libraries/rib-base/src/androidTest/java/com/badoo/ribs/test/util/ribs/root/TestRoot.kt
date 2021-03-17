@@ -45,27 +45,30 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> TestNode<TestChildView> =
-            {
-                TestChildBuilder().build(it).also {
-                    block.invoke(it)
-                }
+        private fun builder(
+            addEditText: Boolean,
+            block: (TestNode<TestChildView>) -> Unit
+        ): (BuildContext) -> TestNode<TestChildView> = {
+            TestChildBuilder().build(it, TestChildBuilder.Params(addEditText)).also {
+                block.invoke(it)
             }
+        }
 
         fun create(
-            buildParams: BuildParams<*>,
+            buildParams: BuildParams<TestRootBuilder.Params>,
             dialogLauncher: DialogLauncher,
             savedInstanceState: Bundle?,
             routingSource: RoutingSource<Configuration> = Empty()
         ): TestNode<TestRootView> {
+            val addEditText: Boolean = buildParams.payload.addEditText
             val router = TestRootRouter(
                 buildParams = buildParams,
                 routingSource = routingSource,
-                builderPermanent1 = builder { permanentNode1 = it },
-                builderPermanent2 = builder { permanentNode2 = it },
-                builder1 = builder { childNode1 = it },
-                builder2 = builder { childNode2 = it },
-                builder3 = builder { childNode3 = it },
+                builderPermanent1 = builder(addEditText) { permanentNode1 = it },
+                builderPermanent2 = builder(addEditText) { permanentNode2 = it },
+                builder1 = builder(addEditText) { childNode1 = it },
+                builder2 = builder(addEditText) { childNode2 = it },
+                builder3 = builder(addEditText) { childNode3 = it },
                 permanentParts = permanentParts,
                 dialogLauncher = dialogLauncher
             )
@@ -78,7 +81,8 @@ interface TestRoot : Rib {
 
                 }
             ).build(
-                BuildContext.root(savedInstanceState)
+                BuildContext.root(savedInstanceState),
+                buildParams.payload
             ) as TestNode<TestRootView>
             rootNode = node
             return node

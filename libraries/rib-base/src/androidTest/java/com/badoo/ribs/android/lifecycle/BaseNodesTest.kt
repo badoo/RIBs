@@ -13,6 +13,7 @@ import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
+import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Rule
 import java.util.UUID
@@ -43,8 +44,8 @@ abstract class BaseNodesTest {
         var backStack: BackStack<TestRootRouter.Configuration>? = null
 
         ribsRule.start { activity, savedInstanceState ->
-            val buildParams = BuildParams(
-                payload = null,
+            val buildParams = BuildParams<TestRootBuilder.Params>(
+                payload = TestRootBuilder.Params(false),
                 buildContext = BuildContext.root(savedInstanceState),
                 identifier = Rib.Identifier(
                     uuid = UUID.randomUUID()

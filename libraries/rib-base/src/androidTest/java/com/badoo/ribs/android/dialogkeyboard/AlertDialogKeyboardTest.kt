@@ -28,7 +28,7 @@ class AlertDialogKeyboardTest {
     val ribsRule = RibsRule()
 
     @Test
-    fun keyboardIsShownForRIBDialogWithEditText() {
+    fun keyboardCanBeShownForRIBDialogWithEditText() {
         setupRibs()
         onView(withClassName(endsWith("EditText"))).perform(click())
 

@@ -15,12 +15,8 @@ class AlertDialogLauncher(
 
     init {
         lifecycle.subscribe(onDestroy = {
-            val iterator = dialogs.iterator()
-            while (iterator.hasNext()) {
-                val current = iterator.next()
-                current.value.dismiss()
-                iterator.remove()
-            }
+            dialogs.values.forEach { it.dismiss() }
+            dialogs.clear()
         })
     }
 

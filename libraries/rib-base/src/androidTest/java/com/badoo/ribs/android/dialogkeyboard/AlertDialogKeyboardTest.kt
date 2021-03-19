@@ -27,6 +27,8 @@ class AlertDialogKeyboardTest {
     @get:Rule
     val ribsRule = RibsRule()
 
+    // https://github.com/badoo/RIBs/issues/263
+    // Even after focusing and clicking to editText keyboard was hidden
     @Test
     fun keyboardCanBeShownForRIBDialogWithEditText() {
         setupRibs()

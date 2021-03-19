@@ -9,7 +9,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import io.reactivex.observers.TestObserver
 
 class TestRootInteractor(
-    buildParams: BuildParams<Nothing?>,
+    buildParams: BuildParams<*>,
     private val viewLifecycleObserver: TestObserver<Lifecycle.Event>
 ) : Interactor<TestRoot, TestRootView>(
     buildParams = buildParams

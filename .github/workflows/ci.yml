@@ -11,7 +11,7 @@ jobs:
         timeout-minutes: 25
         env:
             JAVA_TOOL_OPTIONS: -Xmx6g
-            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.parallel=true
+            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -53,7 +53,7 @@ jobs:
         timeout-minutes: 20
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
-            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.parallel=true
+            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         strategy:
           fail-fast: false
           matrix:

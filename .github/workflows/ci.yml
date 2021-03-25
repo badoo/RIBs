@@ -18,11 +18,15 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: 11
-            - uses: actions/cache@v1
+            - uses: actions/cache@v2
               with:
-                  path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
-
+                path: |
+                  ~/.gradle/caches
+                  ~/.gradle/wrapper
+                key: ${{ runner.os }}-gradle-false-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                restore-keys: |
+                  ${{ runner.os }}-gradle-false-
+                  ${{ runner.os }}-gradle-
             - name: Assemble
               run: ./gradlew assemble
               working-directory: . 
@@ -61,10 +65,15 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: 11
-            - uses: actions/cache@v1
+            - uses: actions/cache@v2
               with:
-                  path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
+                path: |
+                  ~/.gradle/caches
+                  ~/.gradle/wrapper
+                key: ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                restore-keys: |
+                  ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-
+                  ${{ runner.os }}-gradle-
             - name: Unit tests
               run: ./gradlew testDebugUnitTest -PuseCompose=${{ matrix.compose-enabled }}
               working-directory: .
@@ -90,12 +99,15 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: 11
-            - uses: actions/cache@v1
+            - uses: actions/cache@v2
               with:
-                 path: ~/.gradle/caches
-                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
-
-
+                path: |
+                  ~/.gradle/caches
+                  ~/.gradle/wrapper
+                key: ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                restore-keys: |
+                  ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-
+                  ${{ runner.os }}-gradle-
             - name: Instrumentation tests
               uses: reactivecircus/android-emulator-runner@v2
               with:

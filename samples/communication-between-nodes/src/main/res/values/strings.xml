@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Communication with child nodes #1</string>
     <string name="change_language">Change Language</string>
+    <string name="confirm_language">Confirm Language</string>
 </resources>

@@ -28,7 +28,7 @@ interface GreetingView : RibView {
         val greeting: Text
     )
 
-    fun onChange(vm: ViewModel)
+    fun accept(vm: ViewModel)
 }
 
 class GreetingViewImpl private constructor(
@@ -55,7 +55,7 @@ class GreetingViewImpl private constructor(
         changeLanguageButton.setOnClickListener { presenter.onEvent(GreetingView.Event.ChangeLanguageClicked) }
     }
 
-    override fun onChange(vm: GreetingView.ViewModel) {
+    override fun accept(vm: GreetingView.ViewModel) {
         greetingTextView.text = vm.greeting.resolve(context)
     }
 }

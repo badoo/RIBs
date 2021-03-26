@@ -12,17 +12,17 @@ interface GreetingPresenter {
 }
 
 internal class GreetingPresenterImpl(
-    ribAware: RibAware<Node<GreetingView>> = RibAwareImpl()
+    ribAware: RibAware<Greeting> = RibAwareImpl()
 ) : GreetingPresenter,
     ViewAware<GreetingView>,
-    RibAware<Node<GreetingView>> by ribAware {
+    RibAware<Greeting> by ribAware {
 
     override fun onViewCreated(view: GreetingView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
-        view.onChange(GreetingView.ViewModel(Text.Plain("Hello")))
+        view.accept(GreetingView.ViewModel(Text.Plain("Hello")))
     }
 
     override fun onEvent(event: GreetingView.Event) {
-        // TODO: open the next screen
+        rib.output.accept(Greeting.Output.ChangeLanguage)
     }
 }

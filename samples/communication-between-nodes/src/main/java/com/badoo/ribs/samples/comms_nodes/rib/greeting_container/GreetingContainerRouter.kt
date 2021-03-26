@@ -8,23 +8,26 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.builder.GreetingBuilder
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.builder.LanguageSelectorBuilder
 import kotlinx.android.parcel.Parcelize
 
 class GreetingContainerRouter(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
-    private val greetingBuilder: GreetingBuilder
+    private val greetingBuilder: GreetingBuilder,
+    private val languageSelectorBuilder: LanguageSelectorBuilder
 ) : Router<GreetingContainerRouter.Configuration>(
     buildParams = buildParams,
     routingSource = routingSource
 ) {
     sealed class Configuration : Parcelable {
-        @Parcelize
-        object Greeting : Configuration()
+        @Parcelize object Greeting : Configuration()
+        @Parcelize object LanguageSelector: Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
             is Configuration.Greeting -> child { greetingBuilder.build(it) }
+            is Configuration.LanguageSelector -> child { languageSelectorBuilder.build(it) }
         }
 }

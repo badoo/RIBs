@@ -10,4 +10,8 @@ interface LanguageSelector : Rib {
     sealed class Output {
         data class GreetingSelected(val greeting: Text) : Output()
     }
+
+    class Customisation(
+        val viewFactory: LanguageSelectorView.Factory = LanguageSelectorViewImpl.Factory()
+    )
 }

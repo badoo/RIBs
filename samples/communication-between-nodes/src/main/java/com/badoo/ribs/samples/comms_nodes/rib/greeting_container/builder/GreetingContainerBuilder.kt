@@ -4,13 +4,13 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
+import com.badoo.ribs.samples.comms_nodes.app.Language
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.builder.GreetingBuilder
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainer
 import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerPresenterImpl
 import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.builder.LanguageSelectorBuilder
 
-class GreetingContainerBuilder : SimpleBuilder<Node<Nothing>>() {
+class GreetingContainerBuilder(private val languages: List<Language>) : SimpleBuilder<Node<Nothing>>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Node<Nothing> {
         val backStack = createBackStack(buildParams)
@@ -24,7 +24,7 @@ class GreetingContainerBuilder : SimpleBuilder<Node<Nothing>>() {
         )
     }
 
-    private fun createBackStack(buildParams: BuildParams<Nothing?>) : BackStack<GreetingContainerRouter.Configuration> =
+    private fun createBackStack(buildParams: BuildParams<Nothing?>): BackStack<GreetingContainerRouter.Configuration> =
         BackStack(
             buildParams = buildParams,
             initialConfiguration = GreetingContainerRouter.Configuration.Greeting
@@ -37,7 +37,7 @@ class GreetingContainerBuilder : SimpleBuilder<Node<Nothing>>() {
         buildParams = buildParams,
         routingSource = backStack,
         greetingBuilder = GreetingBuilder(),
-        languageSelectorBuilder = LanguageSelectorBuilder()
+        languageSelectorBuilder = LanguageSelectorBuilder(languages)
     )
 
 }

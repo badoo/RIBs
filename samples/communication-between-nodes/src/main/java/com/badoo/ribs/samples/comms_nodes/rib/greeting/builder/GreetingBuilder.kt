@@ -6,7 +6,7 @@ import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingPresenter
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingPresenterImpl
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingView
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingNode
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingNode
 
 class GreetingBuilder : SimpleBuilder<Greeting>() {
 

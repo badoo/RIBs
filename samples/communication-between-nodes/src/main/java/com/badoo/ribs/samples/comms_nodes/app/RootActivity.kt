@@ -19,5 +19,8 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?) =
-        GreetingContainerBuilder().build(BuildContext.root(savedInstanceState))
+        GreetingContainerBuilder(getLanguages()).build(BuildContext.root(savedInstanceState))
+
+    private fun getLanguages() = listOf(Language.English, Language.German, Language.French)
 }
+

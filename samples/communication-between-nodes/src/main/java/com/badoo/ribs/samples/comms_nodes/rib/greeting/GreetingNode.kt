@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.comms_nodes.rib.greeting_container
+package com.badoo.ribs.samples.comms_nodes.rib.greeting
 
 import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.clienthelper.connector.NodeConnector
@@ -6,8 +6,6 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingView
 
 class GreetingNode internal constructor(
     buildParams: BuildParams<*>,

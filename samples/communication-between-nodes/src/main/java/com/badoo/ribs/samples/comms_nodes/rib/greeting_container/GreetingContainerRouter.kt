@@ -1,0 +1,30 @@
+package com.badoo.ribs.samples.comms_nodes.rib.greeting_container
+
+import android.os.Parcelable
+import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
+import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.RoutingSource
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.builder.GreetingBuilder
+import kotlinx.android.parcel.Parcelize
+
+class GreetingContainerRouter(
+    buildParams: BuildParams<Nothing?>,
+    routingSource: RoutingSource<Configuration>,
+    private val greetingBuilder: GreetingBuilder
+) : Router<GreetingContainerRouter.Configuration>(
+    buildParams = buildParams,
+    routingSource = routingSource
+) {
+    sealed class Configuration : Parcelable {
+        @Parcelize
+        object Greeting : Configuration()
+    }
+
+    override fun resolve(routing: Routing<Configuration>): Resolution =
+        when (routing.configuration) {
+            is Configuration.Greeting -> child { greetingBuilder.build(it) }
+        }
+}

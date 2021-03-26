@@ -10,4 +10,8 @@ interface Greeting : Rib {
     sealed class Input {
         data class UpdateGreeting(val greeting: Text) : Input()
     }
+
+    class Customisation(
+        val viewFactory: GreetingView.Factory = GreetingViewImpl.Factory()
+    )
 }

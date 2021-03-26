@@ -27,6 +27,7 @@ interface LanguageSelectorView : RibView {
     }
 
     data class ViewModel(
+        val selectionIndex: Int,
         val languages: List<Language>
     )
 
@@ -62,18 +63,18 @@ class LanguageSelectorViewImpl private constructor(
         get() = indexOfChild(findViewById<RadioButton>(checkedRadioButtonId))
 
     override fun accept(vm: LanguageSelectorView.ViewModel) {
-        createRadioButtons(vm.languages)
+        createRadioButtons(vm)
     }
 
-    private fun createRadioButtons(languages: List<Language>) {
+    private fun createRadioButtons(vm: LanguageSelectorView.ViewModel) {
         radioGroup.removeAllViews()
 
-        languages.forEachIndexed { index, language ->
+        vm.languages.forEachIndexed { index, language ->
             RadioButton(context).apply {
                 text = language.displayText().resolve(context)
                 id = View.generateViewId()
                 radioGroup.addView(this)
-                isChecked = index == 0
+                isChecked = index == vm.selectionIndex
             }
         }
     }

@@ -8,7 +8,6 @@ import com.badoo.ribs.samples.comms_nodes.app.Language
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.builder.GreetingBuilder
 import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerPresenterImpl
 import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.builder.LanguageSelectorBuilder
 
 class GreetingContainerBuilder(private val languages: List<Language>) : SimpleBuilder<Node<Nothing>>() {
 
@@ -37,7 +36,7 @@ class GreetingContainerBuilder(private val languages: List<Language>) : SimpleBu
         buildParams = buildParams,
         routingSource = backStack,
         greetingBuilder = GreetingBuilder(),
-        languageSelectorBuilder = LanguageSelectorBuilder(languages)
+        languages = languages
     )
 
 }

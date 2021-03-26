@@ -12,14 +12,15 @@ interface LanguageSelectorPresenter {
 
 internal class LanguageSelectorPresenterImpl(
     ribAware: RibAware<LanguageSelector> = RibAwareImpl(),
-    private val languages: List<Language>
+    private val languages: List<Language>,
+    private val defaultSelection: Int
 ) : LanguageSelectorPresenter,
     ViewAware<LanguageSelectorView>,
     RibAware<LanguageSelector> by ribAware {
 
     override fun onViewCreated(view: LanguageSelectorView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
-        view.accept(LanguageSelectorView.ViewModel(languages))
+        view.accept(LanguageSelectorView.ViewModel(defaultSelection, languages))
     }
 
     override fun onEvent(event: LanguageSelectorView.Event) {

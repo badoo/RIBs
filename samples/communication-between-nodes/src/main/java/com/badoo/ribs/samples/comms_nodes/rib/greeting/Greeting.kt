@@ -13,7 +13,7 @@ interface Greeting : Rib, Connectable<Greeting.Input, Greeting.Output> {
     }
 
     sealed class Output {
-        object ChangeLanguage : Output()
+        data class ChangeLanguage(val currentLanguage: Language) : Output()
     }
 
     class Customisation(

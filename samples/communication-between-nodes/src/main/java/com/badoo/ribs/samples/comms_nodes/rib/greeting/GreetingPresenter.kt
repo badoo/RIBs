@@ -22,6 +22,7 @@ internal class GreetingPresenterImpl(
 
     private var view: GreetingView? = null
     private var cancellables = CompositeCancellable()
+    private var currentLanguage: Language = defaultLanguage
 
     private val greetingForLanguage = mapOf(
         Language.English to "Hello!",
@@ -29,7 +30,7 @@ internal class GreetingPresenterImpl(
         Language.French to "Bonjour"
     )
 
-    private val initialViewModel = buildViewModel(defaultLanguage)
+    private val initialViewModel = buildViewModel(currentLanguage)
 
     override fun onViewCreated(view: GreetingView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
@@ -52,10 +53,15 @@ internal class GreetingPresenterImpl(
         }
     }
 
-    private fun buildViewModel(language: Language): GreetingView.ViewModel =
-        GreetingView.ViewModel(Text.Plain(greetingForLanguage[language] ?: throw IllegalStateException("no such language")))
+    private fun buildViewModel(language: Language): GreetingView.ViewModel {
+        currentLanguage = language
+        return GreetingView.ViewModel(
+            Text.Plain(greetingForLanguage[currentLanguage] ?: throw IllegalStateException("no such language"))
+        )
+    }
+
 
     override fun onEvent(event: GreetingView.Event) {
-        rib.output.accept(Greeting.Output.ChangeLanguage)
+        rib.output.accept(Greeting.Output.ChangeLanguage(currentLanguage))
     }
 }

@@ -30,7 +30,7 @@ internal class GreetingContainerPresenterImpl(
 
     private fun onGreetingOutput(output: Greeting.Output) {
         when (output) {
-            is Greeting.Output.ChangeLanguage -> backStack.push(GreetingContainerRouter.Configuration.LanguageSelector)
+            is Greeting.Output.ChangeLanguage -> backStack.push(GreetingContainerRouter.Configuration.LanguageSelector(output.currentLanguage))
         }
     }
 

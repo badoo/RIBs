@@ -23,4 +23,3 @@ class RootActivity : RibActivity() {
 
     private fun getLanguages() = listOf(Language.English, Language.German, Language.French)
 }
-

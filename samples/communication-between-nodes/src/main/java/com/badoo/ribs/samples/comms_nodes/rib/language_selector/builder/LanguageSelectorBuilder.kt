@@ -36,5 +36,4 @@ class LanguageSelectorBuilder(
             languageIndex
         }
     }
-
 }

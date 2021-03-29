@@ -38,5 +38,4 @@ class GreetingContainerBuilder(private val languages: List<Language>) : SimpleBu
         greetingBuilder = GreetingBuilder(),
         languages = languages
     )
-
 }

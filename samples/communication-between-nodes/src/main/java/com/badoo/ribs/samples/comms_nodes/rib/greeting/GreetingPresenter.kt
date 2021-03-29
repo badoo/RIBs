@@ -56,7 +56,10 @@ internal class GreetingPresenterImpl(
     private fun buildViewModel(language: Language): GreetingView.ViewModel {
         currentLanguage = language
         return GreetingView.ViewModel(
-            Text.Plain(greetingForLanguage[currentLanguage] ?: throw IllegalStateException("no such language"))
+            Text.Plain(
+                greetingForLanguage[currentLanguage]
+                    ?: throw IllegalStateException("no such language")
+            )
         )
     }
 

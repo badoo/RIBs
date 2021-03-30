@@ -43,7 +43,13 @@ jobs:
             - name: Detekt
               run: ./gradlew detekt -PuseCompose=${{ matrix.compose-enabled }} --stacktrace
               working-directory: .
-              
+            - name: Upload failure reports
+              if: failure()
+              uses: actions/upload-artifact@v2
+              with:
+                name: detekt-reports-compose-${{ matrix.compose-enabled }}
+                path: '**/build/reports'
+
     unit-tests:
         runs-on: ubuntu-latest
         timeout-minutes: 20
@@ -68,6 +74,12 @@ jobs:
             - name: Unit tests
               run: ./gradlew testDebugUnitTest -PuseCompose=${{ matrix.compose-enabled }}
               working-directory: .
+            - name: Upload failure reports
+              if: failure()
+              uses: actions/upload-artifact@v2
+              with:
+                name: unit-test-reports-compose-${{ matrix.compose-enabled }}
+                path: '**/build/reports'
 
     instrumentation-tests:
         runs-on: macOS-latest
@@ -103,9 +115,9 @@ jobs:
                   arch: x86
                   script: ./gradlew connectedCheck -PuseCompose=${{ matrix.compose-enabled }}
 
-            - name: Upload test reports
-              if: always()
+            - name: Upload failure reports
+              if: failure()
               uses: actions/upload-artifact@v2
               with:
-                name: test-reports-api-${{ matrix.api-level }}-compose-${{ matrix.compose-enabled }}
+                name: instrumentation-reports-api-${{ matrix.api-level }}-compose-${{ matrix.compose-enabled }}
                 path: '**/build/reports'

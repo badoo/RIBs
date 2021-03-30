@@ -102,3 +102,10 @@ jobs:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
                   script: ./gradlew connectedCheck -PuseCompose=${{ matrix.compose-enabled }}
+
+            - name: Upload test reports
+              if: always()
+              uses: actions/upload-artifact@v2
+              with:
+                name: test-reports-api-${{ matrix.api-level }}-compose-${{ matrix.compose-enabled }}
+                path: '**/build/reports'

@@ -2,4 +2,5 @@ apply plugin: 'jacoco'
 
 jacoco {
     toolVersion = deps.versions.jacoco
+    reportsDir = file("$buildDir/codeCoverageReports")
 }

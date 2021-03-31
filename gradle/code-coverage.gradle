@@ -27,4 +27,11 @@ task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
             '**/*Test*.*',
             'android/**/*.*'
     ]
+
+    def javaClasses = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes",
+            excludes: exclusions)
+    def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug",
+            excludes: exclusions)
+
+    classDirectories.setFrom(files([javaClasses, kotlinClasses]))
 }

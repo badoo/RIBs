@@ -1,1 +1,5 @@
 apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = deps.versions.jacoco
+}

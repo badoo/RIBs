@@ -18,4 +18,13 @@ task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
     reports {
         html.enabled = true
     }
+
+    def exclusions = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*'
+    ]
 }

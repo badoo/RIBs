@@ -34,4 +34,9 @@ task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
             excludes: exclusions)
 
     classDirectories.setFrom(files([javaClasses, kotlinClasses]))
+
+    def javaSourceDirectory = "$project.projectDir/src/main/java"
+    def kotlinSourceDirectory = "$project.projectDir/src/main/kotlin"
+
+    sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
 }

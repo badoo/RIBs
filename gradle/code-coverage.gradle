@@ -14,4 +14,8 @@ task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
 
     group = "Code coverage"
     description = "Generate coverage reports that combine both Unit and UI tests for debug builds"
+
+    reports {
+        html.enabled = true
+    }
 }

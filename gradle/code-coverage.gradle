@@ -4,3 +4,8 @@ jacoco {
     toolVersion = deps.versions.jacoco
     reportsDir = file("$buildDir/codeCoverageReports")
 }
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}

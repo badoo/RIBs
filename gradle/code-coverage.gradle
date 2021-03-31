@@ -9,3 +9,9 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
     jacoco.excludes = ['jdk.internal.*']
 }
+
+task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    group = "Code coverage"
+    description = "Generate coverage reports that combine both Unit and UI tests for debug builds"
+}

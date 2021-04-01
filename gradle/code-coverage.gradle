@@ -74,3 +74,17 @@ task debugUnitTestCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
     sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
     executionData(files([unitTestsData]))
 }
+
+task debugUiTestCodeCoverageReport(type: JacocoReport, dependsOn: ['createDebugCoverageReport']) {
+
+    group = "Code coverage"
+    description = "Generate coverage reports on UI tests for debug builds"
+
+    reports {
+        html.enabled = true
+    }
+
+    classDirectories.setFrom(files([javaClasses, kotlinClasses]))
+    sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
+    executionData(files([androidTestsData]))
+}

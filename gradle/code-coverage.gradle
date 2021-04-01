@@ -16,6 +16,15 @@ android {
             testCoverageEnabled true
         }
     }
+    testOptions {
+        unitTests {
+            all {
+                // Issue tracker: https://issuetracker.google.com/issues/67872367
+                // Official documentation: https://www.jacoco.org/jacoco/trunk/doc/offline.html
+                systemProperty 'jacoco-agent.destfile', buildDir.path + '/jacoco/jacoco.exec'
+            }
+        }
+    }
 }
 
 task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {

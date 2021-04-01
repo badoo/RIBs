@@ -10,6 +10,14 @@ tasks.withType(Test) {
     jacoco.excludes = ['jdk.internal.*']
 }
 
+android {
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
+}
+
 task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
 
     group = "Code coverage"

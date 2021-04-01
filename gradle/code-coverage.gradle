@@ -39,4 +39,9 @@ task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
     def kotlinSourceDirectory = "$project.projectDir/src/main/kotlin"
 
     sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
+
+    def unitTestsData = fileTree(dir: "${buildDir}/jacoco/", includes: ["**/*.exec"])
+    def androidTestsData = fileTree(dir: "${buildDir}/outputs/code_coverage/debugAndroidTest/connected/", includes: ["**/*.ec"])
+
+    executionData(files([unitTestsData, androidTestsData]))
 }

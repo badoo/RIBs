@@ -22,6 +22,7 @@ fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> U
             .apply {
                 setCanceledOnTouchOutside(this@toAlertDialog)
                 setButtonClickListeners(this@toAlertDialog, onClose)
+                setOnDismissListener { this@toAlertDialog.rib = null }
             }
 }
 
@@ -45,8 +46,14 @@ private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
         setView(object : FrameLayout(context) {
             val host = AndroidRibViewHost(this)
 
-            override fun onAttachedToWindow() {
-                super.onAttachedToWindow()
+            init {
+                // If we will execute multiple configurations in a short period of time ->
+                // Node can be attached to a host multiple times ->
+                // java.lang.IllegalStateException: The specified child already has a parent.
+                // Detach node here -> no harmful effect when view is not attached
+                // PushTwoPopOneDefaultTest.noPermanent_singleInitial_pushOverlay_pushContent_pop - to reproduce
+                host.detachChild(it.node)
+
                 it.node.onCreateView(host)
                 host.attachChild(it.node)
             }

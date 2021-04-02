@@ -16,6 +16,7 @@ class AlertDialogLauncher(
     init {
         lifecycle.subscribe(onDestroy = {
             dialogs.values.forEach { it.dismiss() }
+            dialogs.clear()
         })
     }
 
@@ -27,6 +28,7 @@ class AlertDialogLauncher(
 
     override fun hide(dialog: Dialog<*>) {
         dialogs[dialog]?.dismiss()
+        dialogs.remove(dialog)
     }
 
 }

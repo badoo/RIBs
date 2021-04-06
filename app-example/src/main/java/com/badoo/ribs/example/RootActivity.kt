@@ -78,9 +78,13 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
     }
 
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent?.data?.getQueryParameter("code")?.let {
+        handleAuthDeeplink(intent)
+    }
+
+    private fun handleAuthDeeplink(intent: Intent) {
+        intent.data?.getQueryParameter("code")?.let {
             authCodeRelay.accept(it)
         }
     }

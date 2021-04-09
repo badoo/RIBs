@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Launching Activities sample</string>
+    <string name="button_launch_activity">Launch Activity</string>
+    <string name="label_data_to_send">Data to send to the other activity:</string>
+    <string name="label_data_returned">Data returned from launched activity</string>
+    <string name="label_data_to_return">Data to be returned as a result</string>
+    <string name="button_return_data">Return data</string>
+    <string name="label_data_received">Received data:</string>
+</resources>

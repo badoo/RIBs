@@ -12,17 +12,17 @@ import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.minimal.reactive.Cancellable
 
-interface PermissionsPresenter : RequestCodeClient {
+interface PermissionsSamplePresenter : RequestCodeClient {
 
     fun onRequestPermissionsClicked()
 
     fun onCheckPermissionsClicked()
 }
 
-class PermissionsPresenterImpl(
+class PermissionsSamplePresenterImpl(
     private val permissionRequester: PermissionRequester,
-    private val ribAware: RibAware<PermissionsRib> = RibAwareImpl()
-) : PermissionsPresenter, ViewAware<PermissionsView>, RibAware<PermissionsRib> by ribAware {
+    private val ribAware: RibAware<PermissionsSample> = RibAwareImpl()
+) : PermissionsSamplePresenter, ViewAware<PermissionsView>, RibAware<PermissionsSample> by ribAware {
 
     private var view: PermissionsView? = null
     private var cancellable: Cancellable? = null

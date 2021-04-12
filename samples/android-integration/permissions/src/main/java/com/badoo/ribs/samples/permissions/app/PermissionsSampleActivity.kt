@@ -7,13 +7,13 @@ import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.permissions.R
-import com.badoo.ribs.samples.permissions.rib.PermissionsBuilder
-import com.badoo.ribs.samples.permissions.rib.PermissionsRib
+import com.badoo.ribs.samples.permissions.rib.PermissionsSample
+import com.badoo.ribs.samples.permissions.rib.PermissionsSampleBuilder
 
-class PermissionsActivity : RibActivity() {
+class PermissionsSampleActivity : RibActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setContentView(R.layout.activity_permissions)
+        setContentView(R.layout.activity_permissions_sample)
         super.onCreate(savedInstanceState)
     }
 
@@ -21,11 +21,11 @@ class PermissionsActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib {
-        val dependency = object : PermissionsRib.Dependency {
+        val dependency = object : PermissionsSample.Dependency {
             override val permissionRequester: PermissionRequester
                 get() = integrationPoint.permissionRequester
         }
-        return PermissionsBuilder(dependency).build(root(savedInstanceState))
+        return PermissionsSampleBuilder(dependency).build(root(savedInstanceState))
     }
 
 }

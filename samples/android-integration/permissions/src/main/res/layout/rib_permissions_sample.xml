@@ -5,7 +5,7 @@
     android:id="@+id/rib_foobar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.PermissionsActivity">
+    tools:context=".app.PermissionsSampleActivity">
 
     <TextView
         android:id="@+id/availablePermissions_text"

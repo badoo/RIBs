@@ -5,7 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 
-class PermissionsNode(
+class PermissionsSampleNode(
     buildParams: BuildParams<Nothing?>,
     viewFactory: ViewFactory<PermissionsView>,
     plugins: List<Plugin> = emptyList(),
@@ -13,4 +13,4 @@ class PermissionsNode(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), PermissionsRib
+), PermissionsSample

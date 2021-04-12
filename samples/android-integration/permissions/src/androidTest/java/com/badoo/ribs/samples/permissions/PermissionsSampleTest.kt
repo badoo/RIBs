@@ -10,13 +10,13 @@ import androidx.test.rule.GrantPermissionRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.modality.BuildContext
-import com.badoo.ribs.samples.permissions.rib.PermissionsBuilder
-import com.badoo.ribs.samples.permissions.rib.PermissionsRib
+import com.badoo.ribs.samples.permissions.rib.PermissionsSampleBuilder
+import com.badoo.ribs.samples.permissions.rib.PermissionsSample
 import com.badoo.ribs.test.RibsRule
 import org.junit.Rule
 import org.junit.Test
 
-class PermissionsTest {
+class PermissionsSampleTest {
 
     @get:Rule
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
@@ -25,7 +25,7 @@ class PermissionsTest {
     val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant()
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-        PermissionsBuilder(object : PermissionsRib.Dependency {
+        PermissionsSampleBuilder(object : PermissionsSample.Dependency {
             override val permissionRequester: PermissionRequester =
                 ribTestActivity.integrationPoint.permissionRequester
         }).build(BuildContext.root(savedInstanceState))

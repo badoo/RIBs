@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RIBs">
-        <activity android:name=".app.PermissionsActivity">
+        <activity android:name=".app.PermissionsSampleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

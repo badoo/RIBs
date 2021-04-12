@@ -16,7 +16,7 @@ interface PermissionsView : RibView {
     interface Factory : ViewFactoryBuilder<Dependency, PermissionsView>
 
     interface Dependency {
-        val presenter: PermissionsPresenter
+        val presenter: PermissionsSamplePresenter
     }
 
     fun setText(text: String)
@@ -24,10 +24,10 @@ interface PermissionsView : RibView {
 
 class PermissionsViewImpl private constructor(
     override val androidView: ViewGroup,
-    private val presenter: PermissionsPresenter
+    private val presenter: PermissionsSamplePresenter
 ) : AndroidRibView(), PermissionsView {
 
-    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions) : PermissionsView.Factory {
+    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample) : PermissionsView.Factory {
         override fun invoke(deps: PermissionsView.Dependency): ViewFactory<PermissionsView> = ViewFactory {
             PermissionsViewImpl(
                 androidView = it.inflate(layoutRes),

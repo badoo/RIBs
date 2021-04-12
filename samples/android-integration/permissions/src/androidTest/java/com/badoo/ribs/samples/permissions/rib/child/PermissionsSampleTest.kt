@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.permissions
+package com.badoo.ribs.samples.permissions.rib.child
 
 import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
@@ -10,8 +10,7 @@ import androidx.test.rule.GrantPermissionRule
 import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.modality.BuildContext
-import com.badoo.ribs.samples.permissions.rib.PermissionsSampleBuilder
-import com.badoo.ribs.samples.permissions.rib.PermissionsSample
+import com.badoo.ribs.samples.permissions.R
 import com.badoo.ribs.test.RibsRule
 import org.junit.Rule
 import org.junit.Test

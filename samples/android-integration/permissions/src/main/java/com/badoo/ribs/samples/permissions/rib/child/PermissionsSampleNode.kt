@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.permissions.rib
+package com.badoo.ribs.samples.permissions.rib.child
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams

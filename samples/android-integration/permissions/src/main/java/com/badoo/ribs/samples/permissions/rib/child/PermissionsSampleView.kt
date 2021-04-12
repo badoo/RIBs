@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.permissions.rib
+package com.badoo.ribs.samples.permissions.rib.child
 
 import android.view.ViewGroup
 import android.widget.Button

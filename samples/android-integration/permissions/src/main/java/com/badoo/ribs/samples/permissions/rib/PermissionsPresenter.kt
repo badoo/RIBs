@@ -29,25 +29,29 @@ class PermissionsPresenterImpl(
 
     override fun onViewCreated(view: PermissionsView, viewLifecycle: Lifecycle) {
         viewLifecycle.subscribe(
-            onCreate = {
-                this.view = view
-                cancellable = permissionRequester
-                    .events(this)
-                    .observe { event ->
-                        if (event.requestCode == REQUEST_CODE_CAMERA) {
-                            when (event) {
-                                is RequestPermissionsResult -> view.setText("Permission event: $event")
-                                is Cancelled -> view.setText("Permission request cancelled")
-                                else -> Unit
-                            }
-                        }
-                    }
-            },
-            onDestroy = {
-                this.view = null
-                cancellable?.cancel()
-            }
+            onCreate = { handleOnCreate(view) },
+            onDestroy = { handleOnDestroy() }
         )
+    }
+
+    private fun handleOnCreate(view: PermissionsView) {
+        this.view = view
+        cancellable = permissionRequester
+            .events(this)
+            .observe { event ->
+                if (event.requestCode == REQUEST_CODE_CAMERA) {
+                    when (event) {
+                        is RequestPermissionsResult -> view.setText("Permission event: $event")
+                        is Cancelled -> view.setText("Permission request cancelled")
+                        else -> Unit
+                    }
+                }
+            }
+    }
+
+    private fun handleOnDestroy() {
+        this.view = null
+        cancellable?.cancel()
     }
 
     override val requestCodeClientId: String

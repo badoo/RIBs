@@ -177,8 +177,7 @@ internal class Actor<C : Parcelable>(
                 val lookup = tempPool[key]
                 if (lookup is RoutingContext.Resolved) lookup
                 else {
-                    val item = defaultElements[key] ?: state.pool[key]
-                    ?: throw KeyNotFoundInPoolException(key, state.pool)
+                    val item = defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
                     val resolved = item.resolve(resolver, parentNode)
                     tempPool[key] = resolved
                     resolved

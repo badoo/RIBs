@@ -11,8 +11,8 @@ import com.badoo.ribs.samples.android_integration.launching_activities.R
 
 class OtherActivity : AppCompatActivity() {
     companion object {
-        const val KEY_INCOMING = "incoming"
-        const val KEY_OUTGOING = "outgoing"
+        const val KEY_INCOMING: String = "incoming"
+        const val KEY_OUTGOING: String = "outgoing"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -20,8 +20,8 @@ interface PermissionsPresenter : RequestCodeClient {
 }
 
 class PermissionsPresenterImpl(
-        private val permissionRequester: PermissionRequester,
-        private val ribAware: RibAware<PermissionsRib> = RibAwareImpl()
+    private val permissionRequester: PermissionRequester,
+    private val ribAware: RibAware<PermissionsRib> = RibAwareImpl()
 ) : PermissionsPresenter, ViewAware<PermissionsView>, RibAware<PermissionsRib> by ribAware {
 
     private var view: PermissionsView? = null
@@ -29,24 +29,24 @@ class PermissionsPresenterImpl(
 
     override fun onViewCreated(view: PermissionsView, viewLifecycle: Lifecycle) {
         viewLifecycle.subscribe(
-                onCreate = {
-                    this.view = view
-                    cancellable = permissionRequester
-                            .events(this)
-                            .observe { event ->
-                                if (event.requestCode == REQUEST_CODE_CAMERA) {
-                                    when (event) {
-                                        is RequestPermissionsResult -> view.setText("Permission event: $event")
-                                        is Cancelled -> view.setText("Permission request cancelled")
-                                        else -> Unit
-                                    }
-                                }
+            onCreate = {
+                this.view = view
+                cancellable = permissionRequester
+                    .events(this)
+                    .observe { event ->
+                        if (event.requestCode == REQUEST_CODE_CAMERA) {
+                            when (event) {
+                                is RequestPermissionsResult -> view.setText("Permission event: $event")
+                                is Cancelled -> view.setText("Permission request cancelled")
+                                else -> Unit
                             }
-                },
-                onDestroy = {
-                    this.view = null
-                    cancellable?.cancel()
-                }
+                        }
+                    }
+            },
+            onDestroy = {
+                this.view = null
+                cancellable?.cancel()
+            }
         )
     }
 
@@ -59,16 +59,16 @@ class PermissionsPresenterImpl(
 
     override fun onRequestPermissionsClicked() {
         permissionRequester.requestPermissions(
-                client = this,
-                requestCode = REQUEST_CODE_CAMERA,
-                permissions = arrayOf(Manifest.permission.CAMERA)
+            client = this,
+            requestCode = REQUEST_CODE_CAMERA,
+            permissions = arrayOf(Manifest.permission.CAMERA)
         )
     }
 
     override fun onCheckPermissionsClicked() {
         val result = permissionRequester.checkPermissions(
-                client = this,
-                permissions = arrayOf(Manifest.permission.CAMERA)
+            client = this,
+            permissions = arrayOf(Manifest.permission.CAMERA)
         )
         view?.setText(result.toString())
     }

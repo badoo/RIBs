@@ -4,7 +4,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 
 class PermissionsBuilder(private val dependency: PermissionsRib.Dependency) :
-        SimpleBuilder<PermissionsRib>() {
+    SimpleBuilder<PermissionsRib>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): PermissionsRib {
         val presenter = PermissionsPresenterImpl(dependency.permissionRequester)
@@ -12,9 +12,9 @@ class PermissionsBuilder(private val dependency: PermissionsRib.Dependency) :
             override val presenter: PermissionsPresenter = presenter
         }
         return PermissionsNode(
-                buildParams = buildParams,
-                viewFactory = PermissionsViewImpl.Factory().invoke(viewDependencies),
-                plugins = listOf(presenter)
+            buildParams = buildParams,
+            viewFactory = PermissionsViewImpl.Factory().invoke(viewDependencies),
+            plugins = listOf(presenter)
         )
     }
 }

@@ -23,15 +23,15 @@ interface PermissionsView : RibView {
 }
 
 class PermissionsViewImpl private constructor(
-        override val androidView: ViewGroup,
-        private val presenter: PermissionsPresenter
+    override val androidView: ViewGroup,
+    private val presenter: PermissionsPresenter
 ) : AndroidRibView(), PermissionsView {
 
     class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions) : PermissionsView.Factory {
         override fun invoke(deps: PermissionsView.Dependency): ViewFactory<PermissionsView> = ViewFactory {
             PermissionsViewImpl(
-                    androidView = it.inflate(layoutRes),
-                    presenter = deps.presenter
+                androidView = it.inflate(layoutRes),
+                presenter = deps.presenter
             )
         }
     }

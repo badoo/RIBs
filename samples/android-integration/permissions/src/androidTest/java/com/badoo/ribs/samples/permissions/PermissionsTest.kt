@@ -25,24 +25,24 @@ class PermissionsTest {
     val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant()
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-            PermissionsBuilder(object : PermissionsRib.Dependency {
-                override val permissionRequester: PermissionRequester =
-                        ribTestActivity.integrationPoint.permissionRequester
-            }).build(BuildContext.root(savedInstanceState))
+        PermissionsBuilder(object : PermissionsRib.Dependency {
+            override val permissionRequester: PermissionRequester =
+                ribTestActivity.integrationPoint.permissionRequester
+        }).build(BuildContext.root(savedInstanceState))
 
     @Test
     fun givenPermissionGrantedWhenRequestPermissionClickedThenChangedAvailablePermissionsText() {
         onView(withId(R.id.availablePermissions_text))
-                .check(matches(withText("")))
+            .check(matches(withText("")))
 
         onView(withId(R.id.check_permissions_button)).perform(click())
 
         onView(withId(R.id.availablePermissions_text))
-                .check(matches(withText(CAMERA_PERMISSION_GRANTED_TEXT)))
+            .check(matches(withText(CAMERA_PERMISSION_GRANTED_TEXT)))
     }
 
     companion object {
         private const val CAMERA_PERMISSION_GRANTED_TEXT =
-                "CheckPermissionsResult(granted=[android.permission.CAMERA], notGranted=[], shouldShowRationale=[])"
+            "CheckPermissionsResult(granted=[android.permission.CAMERA], notGranted=[], shouldShowRationale=[])"
     }
 }

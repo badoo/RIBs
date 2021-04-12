@@ -1,14 +1,14 @@
 package com.badoo.ribs.routing.state.feature
 
-import android.os.Handler
 import android.os.Parcelable
-import android.view.View
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.MutablePool
 import com.badoo.ribs.routing.state.Pool
+import com.badoo.ribs.routing.state.mutablePoolOf
 import com.badoo.ribs.routing.state.RoutingContext
+import com.badoo.ribs.routing.state.toMutablePool
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.action.TransactionExecutionParams
@@ -19,12 +19,11 @@ import com.badoo.ribs.routing.state.changeset.addedOrRemoved
 import com.badoo.ribs.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.routing.state.exception.KeyNotFoundInPoolException
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand
-import com.badoo.ribs.routing.state.feature.Transaction.RoutingChange
 import com.badoo.ribs.routing.state.feature.Transaction.InternalTransaction
+import com.badoo.ribs.routing.state.feature.Transaction.RoutingChange
+import com.badoo.ribs.routing.state.feature.Transaction.InternalTransaction.ExecutePendingTransition
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.state.feature.state.withDefaults
-import com.badoo.ribs.routing.state.mutablePoolOf
-import com.badoo.ribs.routing.state.toMutablePool
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
@@ -39,17 +38,14 @@ internal class Actor<C : Parcelable>(
     private val parentNode: Node<*>,
     private val transitionHandler: TransitionHandler<C>?,
     private val effectEmitter: EffectEmitter<C>,
-    private val transactionConsumer: (InternalTransaction<C>) -> Unit
+    private val pendingTransitionFactory: PendingTransitionFactory<C>
 ) {
-
-    private val handler = Handler()
-    private val internalTransactionProcessor = InternalTransactionProcessor(transitionHandler)
 
     fun invoke(state: WorkingState<C>, transaction: Transaction<C>) {
         when (transaction) {
             is PoolCommand -> processPoolCommand(state, transaction)
             is RoutingChange -> processRoutingChange(state, transaction)
-            is InternalTransaction -> internalTransactionProcessor.process(state, transaction)
+            is InternalTransaction -> processInternalTransaction(state, transaction)
         }
     }
 
@@ -87,11 +83,11 @@ internal class Actor<C : Parcelable>(
         actions.forEach { it.onBeforeTransition() }
         val transitionElements = actions.flatMap { it.transitionElements }
 
-        if (params.globalActivationLevel == SLEEPING || transitionHandler == null) {
+        if (canTransition(params)) {
+            scheduleTransitions(transaction.descriptor, transitionElements, actions)
+        } else {
             actions.forEach { it.onTransition() }
             actions.forEach { it.onFinish() }
-        } else {
-            scheduleTransitions(transaction.descriptor, transitionElements, effectEmitter, actions)
         }
     }
 
@@ -133,33 +129,16 @@ internal class Actor<C : Parcelable>(
     private fun scheduleTransitions(
         descriptor: TransitionDescriptor,
         transitionElements: List<TransitionElement<C>>,
-        emitter: EffectEmitter<C>,
         actions: List<ReversibleAction<C>>
     ) {
         requireNotNull(transitionHandler)
 
-        val newTransition = PendingTransition(
+        pendingTransitionFactory.make(
             descriptor = descriptor,
             direction = TransitionDirection.EXIT,
             actions = actions,
             transitionElements = transitionElements,
-            emitter = emitter
-        )
-
-        newTransition.schedule()
-        /**
-         * Entering views at this point are created but will be measured / laid out the next frame.
-         * We need to base calculations in transition implementations based on their actual measurements,
-         * but without them appearing just yet to avoid flickering.
-         * Making them invisible, starting the transitions then making them visible achieves the above.
-         */
-        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
-        enteringElements.visibility(View.INVISIBLE)
-
-        handler.post {
-            enteringElements.visibility(View.VISIBLE)
-            transactionConsumer.invoke(InternalTransaction.ConsumePendingTransition(newTransition))
-        }
+        ).schedule()
     }
 
     /**
@@ -235,29 +214,28 @@ internal class Actor<C : Parcelable>(
         }
     }
 
+    private fun processInternalTransaction(state: WorkingState<C>, internalTransaction: InternalTransaction<C>) {
+        val params = createParams(
+            emitter = effectEmitter,
+            state = state,
+            defaultElements = emptyMap(),
+            transaction = internalTransaction
+        )
 
-    private fun List<TransitionElement<C>>.visibility(visibility: Int) {
-        forEach {
-            it.view.visibility = visibility
+        when (internalTransaction) {
+            is ExecutePendingTransition -> consumeTransition(state, internalTransaction.pendingTransition, params)
         }
     }
 
-    /**
-     * This is wrapped to prevent loops, as this can't access the transactionConsumer to call new transactions to be executed.
-     *  However this also make impossible to chain multiple internal action, but we do not required that so far.
-     */
-    internal class InternalTransactionProcessor<C : Parcelable>(private val transitionHandler: TransitionHandler<C>?) {
-        fun process(state: WorkingState<C>, internalTransaction: InternalTransaction<C>) {
-            when (internalTransaction) {
-                is InternalTransaction.ConsumePendingTransition -> consumeTransition(state, internalTransaction)
-            }
-        }
-
-        private fun consumeTransition(state: WorkingState<C>, transaction: InternalTransaction.ConsumePendingTransition<C>) {
-            requireNotNull(transitionHandler)
-            if (transaction.pendingTransition in state.pendingTransitions) {
-                transaction.pendingTransition.consume(transitionHandler)
-            }
+    private fun consumeTransition(state: WorkingState<C>, pendingTransition: PendingTransition<C>, params: TransactionExecutionParams<C>) {
+        when {
+            pendingTransition.isScheduled(state) && canTransition(params) -> pendingTransition.execute(requireNotNull(transitionHandler)).start()
+            pendingTransition.isScheduled(state) && canTransition(params).not() -> pendingTransition.completeWithoutTransition()
+            else -> pendingTransition.discard()
         }
     }
+
+    private fun <C : Parcelable> PendingTransition<C>.isScheduled(state: WorkingState<C>) = this in state.pendingTransitions
+
+    private fun canTransition(params: TransactionExecutionParams<C>) = params.globalActivationLevel != SLEEPING && transitionHandler != null
 }

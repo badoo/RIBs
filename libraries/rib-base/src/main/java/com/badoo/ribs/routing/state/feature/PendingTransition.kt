@@ -1,36 +1,55 @@
 package com.badoo.ribs.routing.state.feature
 
+import android.os.Handler
 import android.os.Parcelable
+import android.view.View
 import com.badoo.ribs.routing.state.action.single.ReversibleAction
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
+@SuppressWarnings("LongParameterList")
 internal class PendingTransition<C : Parcelable>(
     val descriptor: TransitionDescriptor,
+    private val actions: List<ReversibleAction<C>>,
     private val direction: TransitionDirection,
-    private var actions: List<ReversibleAction<C>>,
     private val transitionElements: List<TransitionElement<C>>,
-    private val emitter: EffectEmitter<C>) {
+    private val effectEmitter: EffectEmitter<C>,
+    private val internalTransactionConsumer: InternalTransactionConsumer<C>,
+    private val handler: Handler = Handler()
+) {
 
     fun schedule() {
-        emitter.invoke(RoutingStatePool.Effect.RequestTransition(this))
+        effectEmitter.invoke(RoutingStatePool.Effect.Transition.RequestTransition(this))
+        /**
+         * Entering views at this point are created but will be measured / laid out the next frame.
+         * We need to base calculations in transition implementations based on their actual measurements,
+         * but without them appearing just yet to avoid flickering.
+         * Making them invisible, starting the transitions then making them visible achieves the above.
+         */
+        hideEnteringElements()
+        handler.post {
+            internalTransactionConsumer.invoke(Transaction.InternalTransaction.ExecutePendingTransition(this))
+        }
     }
 
-    fun consume(transitionHandler: TransitionHandler<C>) {
+    fun execute(transitionHandler: TransitionHandler<C>): OngoingTransition<C> {
         discard()
+
         val transitionPair = transitionHandler.onTransition(transitionElements)
+        showEnteringElements()
+
         // TODO consider whether splitting this two two instances (one per direction, so that
         //  enter and exit can be controlled separately) is better
-        OngoingTransition(
+        return OngoingTransition(
             descriptor = descriptor,
             direction = direction,
             transitionPair = transitionPair,
             actions = actions,
             transitionElements = transitionElements,
-            emitter = emitter
-        ).start()
+            emitter = effectEmitter
+        )
     }
 
     fun completeWithoutTransition() {
@@ -40,7 +59,28 @@ internal class PendingTransition<C : Parcelable>(
     }
 
     fun discard() {
-        emitter.invoke(RoutingStatePool.Effect.RemovePendingTransition(this))
+        effectEmitter.invoke(RoutingStatePool.Effect.Transition.RemovePendingTransition(this))
     }
 
+    fun cancel() {
+        handler.removeCallbacksAndMessages(null)
+        showEnteringElements()
+        discard()
+    }
+
+    private fun List<TransitionElement<C>>.visibility(visibility: Int) {
+        forEach {
+            it.view.visibility = visibility
+        }
+    }
+
+    private fun hideEnteringElements() {
+        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
+        enteringElements.visibility(View.INVISIBLE)
+    }
+
+    private fun showEnteringElements() {
+        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
+        enteringElements.visibility(View.VISIBLE)
+    }
 }

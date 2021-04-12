@@ -1,5 +1,7 @@
 package com.badoo.ribs.core.state
 
+import androidx.annotation.RestrictTo
+
 abstract class Store<State>(
     initialState: State
 ) : Source<State>, Cancellable {
@@ -39,6 +41,11 @@ abstract class Store<State>(
         callback(state)
         return relay.observe(callback)
     }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun overrideState(newState: State) {
+        state = newState
+    }
 }
 
 abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(initialState) {
@@ -56,6 +63,11 @@ abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(init
     override fun cancel() {
         super.cancel()
         cancellable.cancel()
+    }
+
+    @RestrictTo(RestrictTo.Scope.TESTS)
+    fun testEvent(event: Event) {
+        emitEvent(event)
     }
 }
 

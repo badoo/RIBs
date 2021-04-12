@@ -15,7 +15,6 @@ class PendingTransitionTest {
 
     private val effectEmitter: EffectEmitter<TestConfiguration> = mock()
     private val internalTransactionConsumer: InternalTransactionConsumer<TestConfiguration> = mock()
-
     private val handler = mock<Handler> {
         on { post(any()) } doAnswer {
             (it.arguments[0] as Runnable).run()

@@ -10,11 +10,10 @@ androidExtensions {
 dependencies {
     api deps.android.appCompat
 
-    implementation deps.android.lifecycleCommon
+    api deps.android.lifecycleCommon
     implementation deps.android.activity
     implementation deps.android.fragment
     compileOnly deps.android.annotations
-    implementation deps.external.kotlinStdlib
 
     testImplementation deps.external.mviCore
     testImplementation deps.external.mviCoreAndroid

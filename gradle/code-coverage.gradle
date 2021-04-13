@@ -1,0 +1,90 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = deps.versions.jacoco
+    reportsDir = file("$buildDir/codeCoverageReports")
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+android {
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
+    testOptions {
+        unitTests {
+            all {
+                // Issue tracker: https://issuetracker.google.com/issues/67872367
+                // Official documentation: https://www.jacoco.org/jacoco/trunk/doc/offline.html
+                systemProperty 'jacoco-agent.destfile', buildDir.path + '/jacoco/jacoco.exec'
+            }
+        }
+    }
+}
+
+def exclusions = [
+        '**/R.class',
+        '**/R$*.class',
+        '**/BuildConfig.*',
+        '**/Manifest*.*',
+        '**/*Test*.*',
+        'android/**/*.*'
+]
+
+def javaClasses = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes",
+        excludes: exclusions)
+def kotlinClasses = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug",
+        excludes: exclusions)
+
+def javaSourceDirectory = "$project.projectDir/src/main/java"
+def kotlinSourceDirectory = "$project.projectDir/src/main/kotlin"
+
+def unitTestsData = fileTree(dir: "${buildDir}/jacoco/", includes: ["**/*.exec"])
+def androidTestsData = fileTree(dir: "${buildDir}/outputs/code_coverage/debugAndroidTest/connected/", includes: ["**/*.ec"])
+
+task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    group = "Code coverage"
+    description = "Generate coverage reports that combine both Unit and UI tests for debug builds"
+
+    reports {
+        html.enabled = true
+    }
+
+    classDirectories.setFrom(files([javaClasses, kotlinClasses]))
+    sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
+    executionData(files([unitTestsData, androidTestsData]))
+}
+
+task debugUnitTestCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
+
+    group = "Code coverage"
+    description = "Generate coverage reports on Unit tests for debug builds"
+
+    reports {
+        html.enabled = true
+    }
+
+    classDirectories.setFrom(files([javaClasses, kotlinClasses]))
+    sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
+    executionData(files([unitTestsData]))
+}
+
+task debugUiTestCodeCoverageReport(type: JacocoReport, dependsOn: ['createDebugCoverageReport']) {
+
+    group = "Code coverage"
+    description = "Generate coverage reports on UI tests for debug builds"
+
+    reports {
+        html.enabled = true
+    }
+
+    classDirectories.setFrom(files([javaClasses, kotlinClasses]))
+    sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
+    executionData(files([androidTestsData]))
+}

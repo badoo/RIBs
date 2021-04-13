@@ -2,9 +2,10 @@ package com.badoo.ribs.samples.android_integration.launching_activities.rib
 
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
@@ -17,7 +18,14 @@ import com.badoo.ribs.samples.android_integration.launching_activities.R
 
 interface LaunchingActivitiesView : RibView {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, LaunchingActivitiesView>
+    interface Dependency {
+        @StringRes
+        fun getTitleResource(): Int
+        @StringRes
+        fun getDescriptionResource(): Int
+    }
+
+    interface Factory : ViewFactoryBuilder<Dependency, LaunchingActivitiesView>
 
     val events: Source<Event>
 
@@ -28,22 +36,27 @@ interface LaunchingActivitiesView : RibView {
     }
 }
 
-class LaunchingActivitiesViewImpl private constructor(
-        override val androidView: ViewGroup
+class LaunchingActivitiesViewImpl constructor(
+        override val androidView: ViewGroup,
+        val dependency: LaunchingActivitiesView.Dependency
 ) : AndroidRibView(), LaunchingActivitiesView, Source<LaunchingActivitiesView.Event> {
+
     private val _events: Relay<LaunchingActivitiesView.Event> = Relay()
     override val events: Source<LaunchingActivitiesView.Event>
         get() = _events
 
     private val launchButton: Button = androidView.findViewById(R.id.launchActivityButton)
     private val dataReturned: TextView = androidView.findViewById(R.id.dataReturned)
-    private val dataToSend: EditText = androidView.findViewById(R.id.dataToSend)
+    private val title: TextView = androidView.findViewById(R.id.title)
+    private val description: TextView = androidView.findViewById(R.id.description)
 
     init {
+        title.setText(dependency.getTitleResource())
+        description.setText(dependency.getDescriptionResource())
         launchButton.setOnClickListener {
             _events.accept(
                     LaunchingActivitiesView.Event.LaunchActivityForResult(
-                            dataToSend.text.toString())
+                            "Launched from `${title.text}`")
             )
         }
     }
@@ -55,13 +68,19 @@ class LaunchingActivitiesViewImpl private constructor(
     override fun observe(callback: (LaunchingActivitiesView.Event) -> Unit): Cancellable =
             events.observe(callback)
 
+    private val childContainer: ViewGroup? = androidView.findViewById(R.id.childContainer)
+
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup = childContainer
+            ?: super.getParentViewForSubtree(subtreeOf)
+
     class Factory(
-            @LayoutRes private val layoutRes: Int = R.layout.rib_launching_activities
+            @LayoutRes private val layoutRes: Int = R.layout.rib_launching_activities_root,
     ) : LaunchingActivitiesView.Factory {
-        override fun invoke(nothing: Nothing?): ViewFactory<LaunchingActivitiesView> =
+        override fun invoke(dependency: LaunchingActivitiesView.Dependency): ViewFactory<LaunchingActivitiesView> =
                 ViewFactory {
                     LaunchingActivitiesViewImpl(
-                            androidView = it.inflate(layoutRes)
+                            androidView = it.inflate(layoutRes),
+                            dependency = dependency
                     )
                 }
     }

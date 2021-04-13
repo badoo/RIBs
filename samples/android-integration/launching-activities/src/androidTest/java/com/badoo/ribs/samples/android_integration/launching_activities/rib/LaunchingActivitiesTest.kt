@@ -14,7 +14,7 @@ import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.android_integration.launching_activities.R
 import com.badoo.ribs.samples.android_integration.launching_activities.app.OtherActivity
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.builder.LaunchingActivitiesBuilder
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.builder.LaunchingActivitiesChildBuilder
 import com.badoo.ribs.test.RibsRule
 import org.junit.Before
 import org.junit.Rule
@@ -32,7 +32,7 @@ class LaunchingActivitiesTest {
     }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-            LaunchingActivitiesBuilder(object : LaunchingActivities.Dependency {
+            LaunchingActivitiesChildBuilder(object : LaunchingActivities.Dependency {
                 override val activityStarter: ActivityStarter = ribTestActivity.integrationPoint.activityStarter
             }).build(BuildContext.root(savedInstanceState))
 

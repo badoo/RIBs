@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">Launching Activities sample</string>
     <string name="button_launch_activity">Launch Activity</string>
-    <string name="label_data_to_send">Data to send to the other activity:</string>
-    <string name="label_data_returned">Data returned from launched activity</string>
+    <string name="label_data_returned">Data returned from launched activity will appear below</string>
     <string name="label_data_to_return">Data to be returned as a result</string>
     <string name="button_return_data">Return data</string>
     <string name="label_data_received">Received data:</string>
+    <string name="parent_title">Parent Node</string>
+    <string name="parent_description">This is a parent node. It hosts a child node but can also launch activities itself.</string>
+    <string name="child_title">Child Node</string>
+    <string name="child_description">This is a child node. It uses the same classes but different instances than a parent node, so it too can launch activities. Notice that the result of an Activity is delivered to the node that has launched it.</string>
 </resources>

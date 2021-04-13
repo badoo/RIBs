@@ -37,7 +37,6 @@ dependencies {
     implementation localGroovy()
     implementation gradleApi()
     implementation deps.build.gradlePlugins.android
-    implementation deps.external.kotlinStdlib
     implementation deps.external.gson
 }
 

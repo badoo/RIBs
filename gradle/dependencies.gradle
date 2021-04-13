@@ -46,7 +46,8 @@ def versions = [
     androidxTestUiAutoVersion:'2.2.0',
     retrofitVersion: '2.8.1',
     okhttp: '3.14.7',
-    leakCanary: '2.4'
+    leakCanary: '2.4',
+    jacoco: '0.8.6'
 ]
 
 def apt = [
@@ -79,6 +80,7 @@ def build = [
         gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
         mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.8.0',
         detekt: 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.10.0',
+        jacoco: "org.jacoco:org.jacoco.core:${versions.jacoco}"
     ]
 ]
 

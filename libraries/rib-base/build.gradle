@@ -1,6 +1,7 @@
 configureAndroidLibrary(project)
 
 apply plugin: 'kotlin-android-extensions'
+apply from: rootProject.file('gradle/code-coverage.gradle')
 
 androidExtensions {
     experimental = true

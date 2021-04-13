@@ -11,21 +11,29 @@ jobs:
         timeout-minutes: 25
         env:
             JAVA_TOOL_OPTIONS: -Xmx6g
-            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.parallel=true
+            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
             - uses: actions/setup-java@v1
               with:
                   java-version: 11
-            - uses: actions/cache@v1
+            - uses: actions/cache@v2
               with:
-                  path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}
-
+                path: |
+                  ~/.gradle/caches
+                  ~/.gradle/wrapper
+                key: ${{ runner.os }}-gradle-false-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                restore-keys: |
+                  ${{ runner.os }}-gradle-false-
+                  ${{ runner.os }}-gradle-
             - name: Assemble
               run: ./gradlew assemble
-              working-directory: . 
+              working-directory: .
+            - name: Cleanup Gradle Cache
+              run: |
+                rm -f ~/.gradle/caches/modules-2/modules-2.lock
+                rm -f ~/.gradle/caches/modules-2/gc.properties
     detekt:
         runs-on: ubuntu-latest
         timeout-minutes: 10
@@ -49,7 +57,7 @@ jobs:
         timeout-minutes: 20
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
-            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.parallel=true
+            GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         strategy:
           fail-fast: false
           matrix:
@@ -61,13 +69,22 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: 11
-            - uses: actions/cache@v1
+            - uses: actions/cache@v2
               with:
-                  path: ~/.gradle/caches
-                  key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
+                path: |
+                  ~/.gradle/caches
+                  ~/.gradle/wrapper
+                key: ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                restore-keys: |
+                  ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-
+                  ${{ runner.os }}-gradle-
             - name: Unit tests
               run: ./gradlew testDebugUnitTest -PuseCompose=${{ matrix.compose-enabled }}
               working-directory: .
+            - name: Cleanup Gradle Cache
+              run: |
+                rm -f ~/.gradle/caches/modules-2/modules-2.lock
+                rm -f ~/.gradle/caches/modules-2/gc.properties
 
     instrumentation-tests:
         runs-on: macOS-latest
@@ -90,15 +107,22 @@ jobs:
             - uses: actions/setup-java@v1
               with:
                   java-version: 11
-            - uses: actions/cache@v1
+            - uses: actions/cache@v2
               with:
-                 path: ~/.gradle/caches
-                 key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/gradle/dependencies.gradle') }}-${{ matrix.compose-enabled }}
-
-
+                path: |
+                  ~/.gradle/caches
+                  ~/.gradle/wrapper
+                key: ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                restore-keys: |
+                  ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-
+                  ${{ runner.os }}-gradle-
             - name: Instrumentation tests
               uses: reactivecircus/android-emulator-runner@v2
               with:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
                   script: ./gradlew connectedCheck -PuseCompose=${{ matrix.compose-enabled }}
+            - name: Cleanup Gradle Cache
+              run: |
+                rm -f ~/.gradle/caches/modules-2/modules-2.lock
+                rm -f ~/.gradle/caches/modules-2/gc.properties

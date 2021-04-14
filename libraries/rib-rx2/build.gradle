@@ -7,11 +7,10 @@ androidExtensions {
 }
 
 dependencies {
-    implementation deps.external.kotlinStdlib
-    implementation deps.external.rxrelay2
-    implementation deps.external.rxjava2
+    api deps.external.rxrelay2
+    api deps.external.rxjava2
 
-    implementation project(":libraries:rib-base")
+    api project(":libraries:rib-base")
 
     testImplementation deps.android.annotations
     testImplementation deps.test.junit

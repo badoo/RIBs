@@ -9,8 +9,6 @@ androidExtensions {
 }
 
 dependencies {
-    implementation deps.external.kotlinStdlib
-
     kapt deps.apt.daggerCompiler
     compileOnly deps.apt.javax
 

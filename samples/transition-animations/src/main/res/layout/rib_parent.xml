@@ -5,6 +5,7 @@
     android:id="@+id/rib_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:background="@color/parent_background">
 
     <TextView

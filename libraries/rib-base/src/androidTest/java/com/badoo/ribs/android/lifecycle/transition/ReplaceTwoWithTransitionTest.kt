@@ -7,6 +7,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Test
 
+@Suppress("FunctionNaming")
 class ReplaceTwoWithTransitionTest :TransitionBaseNodeTest() {
 
 

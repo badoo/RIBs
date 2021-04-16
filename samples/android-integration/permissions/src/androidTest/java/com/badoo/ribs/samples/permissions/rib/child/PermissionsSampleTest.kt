@@ -31,9 +31,6 @@ class PermissionsSampleTest {
 
     @Test
     fun givenPermissionGrantedWhenRequestPermissionClickedThenChangedAvailablePermissionsText() {
-        onView(withId(R.id.availablePermissions_text))
-            .check(matches(withText("")))
-
         onView(withId(R.id.check_permissions_button)).perform(click())
 
         onView(withId(R.id.availablePermissions_text))

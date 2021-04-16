@@ -15,7 +15,7 @@ class PushOneTest : BaseNodesTest() {
     private fun pushOneConfiguration(setup: When, expectedState: ExpectedState) {
         test(setup, expectedState) { router, _ ->
             runOnMainSync {
-A                router.pushIt(setup.configuration1!!)
+                router.pushIt(setup.configuration1!!)
             }
         }
     }

@@ -1,10 +1,7 @@
 package com.badoo.ribs.android.lifecycle.helper
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Lifecycle.State.CREATED
-import androidx.lifecycle.Lifecycle.State.DESTROYED
-import androidx.lifecycle.Lifecycle.State.RESUMED
-import androidx.lifecycle.Lifecycle.State.STARTED
+import androidx.lifecycle.Lifecycle.State.*
 
 data class NodeState(
     val attached: Boolean,
@@ -42,6 +39,12 @@ data class NodeState(
             viewAttached = false,
             ribLifeCycleState = DESTROYED,
             viewLifeCycleState = null
+        )
+        val ON_SCREEN_RESUMED = NodeState(
+            attached = true,
+            viewAttached = true,
+            ribLifeCycleState = CREATED,
+            viewLifeCycleState = RESUMED
         )
     }
 

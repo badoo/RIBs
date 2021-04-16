@@ -8,9 +8,9 @@ class PushTwoPopOneStopBetweenPushesTest : PushTwoPopOneStopTest() {
     override fun pushTwoConfigurationAndPop(setup: When, expectedState: ExpectedState) {
         test(setup, expectedState) { router, rootNode ->
             runOnMainSync {
-                router.pushIt(setup.pushConfiguration1!!)
+                router.pushIt(setup.configuration1!!)
                 rootNode.onStop()
-                router.pushIt(setup.pushConfiguration2!!)
+                router.pushIt(setup.configuration2!!)
                 router.popBackStack()
             }
         }

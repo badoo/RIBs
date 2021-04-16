@@ -1,13 +1,14 @@
 package com.badoo.ribs.test.util.ribs.root
 
-import androidx.lifecycle.Lifecycle
 import android.os.Bundle
-import com.badoo.ribs.core.modality.BuildParams
+import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.impl.Empty
-import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildView
@@ -56,7 +57,8 @@ interface TestRoot : Rib {
             buildParams: BuildParams<*>,
             dialogLauncher: DialogLauncher,
             savedInstanceState: Bundle?,
-            routingSource: RoutingSource<Configuration> = Empty()
+            routingSource: RoutingSource<Configuration> = Empty(),
+            transitionHandler: TransitionHandler<Configuration>? = null
         ): TestNode<TestRootView> {
             val router = TestRootRouter(
                 buildParams = buildParams,
@@ -67,7 +69,8 @@ interface TestRoot : Rib {
                 builder2 = builder { childNode2 = it },
                 builder3 = builder { childNode3 = it },
                 permanentParts = permanentParts,
-                dialogLauncher = dialogLauncher
+                dialogLauncher = dialogLauncher,
+                transitionHandler = transitionHandler
             )
 
             val node = TestRootBuilder(

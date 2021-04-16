@@ -15,7 +15,7 @@ class PushOneTest : BaseNodesTest() {
     private fun pushOneConfiguration(setup: When, expectedState: ExpectedState) {
         test(setup, expectedState) { router, _ ->
             runOnMainSync {
-                router.pushIt(setup.pushConfiguration1!!)
+A                router.pushIt(setup.configuration1!!)
             }
         }
     }
@@ -25,7 +25,7 @@ class PushOneTest : BaseNodesTest() {
         pushOneConfiguration(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2
+                configuration1 = AttachNode2
             ),
             ExpectedState(
                 node1 = VIEW_DETACHED,
@@ -39,7 +39,7 @@ class PushOneTest : BaseNodesTest() {
         pushOneConfiguration(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay
+                configuration1 = AttachNode2AsOverlay
             ),
             ExpectedState(
                 node1 = ON_SCREEN,
@@ -54,7 +54,7 @@ class PushOneTest : BaseNodesTest() {
             When(
                 permanentParts = listOf(Permanent1),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2
+                configuration1 = AttachNode2
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN,
@@ -70,7 +70,7 @@ class PushOneTest : BaseNodesTest() {
             When(
                 permanentParts = listOf(Permanent1),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay
+                configuration1 = AttachNode2AsOverlay
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN,

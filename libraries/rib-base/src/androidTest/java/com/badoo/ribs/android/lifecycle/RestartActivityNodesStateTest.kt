@@ -20,8 +20,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
     private fun testPushTwoConfigurationThenRestart(setup: When, expectedState: ExpectedState) {
         test(setup, expectedState) { router, _ ->
             runOnMainSync {
-                router.pushIt(setup.pushConfiguration1!!)
-                router.pushIt(setup.pushConfiguration2!!)
+                router.pushIt(setup.configuration1!!)
+                router.pushIt(setup.configuration2!!)
             }
             ribsRule.restartActivitySync()
         }
@@ -32,8 +32,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
         testPushTwoConfigurationThenRestart(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3
             ),
             ExpectedState(
                 node1 = DETACHED,
@@ -48,8 +48,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
         testPushTwoConfigurationThenRestart(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 node1 = DETACHED,
@@ -64,8 +64,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
         testPushTwoConfigurationThenRestart(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2AsOverlay,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 node1 = ON_SCREEN,
@@ -84,8 +84,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
                     Permanent2
                 ),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN,
@@ -106,8 +106,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
                     Permanent2
                 ),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN,
@@ -128,8 +128,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
                     Permanent2
                 ),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2AsOverlay,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN,

@@ -8,7 +8,7 @@
     android:background="@color/child3_background">
 
     <View
-        android:id="@+id/sharedElement"
+        android:id="@+id/shared_element"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"

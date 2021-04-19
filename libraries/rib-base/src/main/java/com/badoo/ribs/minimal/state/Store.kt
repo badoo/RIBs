@@ -1,6 +1,5 @@
 package com.badoo.ribs.minimal.state
 
-import androidx.annotation.RestrictTo
 import com.badoo.ribs.minimal.reactive.Cancellable
 import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.minimal.reactive.Source
@@ -44,11 +43,6 @@ abstract class Store<State>(
         callback(state)
         return relay.observe(callback)
     }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    fun overrideState(newState: State) {
-        state = newState
-    }
 }
 
 abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(initialState) {
@@ -66,11 +60,6 @@ abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(init
     override fun cancel() {
         super.cancel()
         cancellable.cancel()
-    }
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    fun testEvent(event: Event) {
-        emitEvent(event)
     }
 }
 

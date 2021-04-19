@@ -11,7 +11,7 @@ internal class PendingTransitionFactory<C : Parcelable>(
     private val internalTransactionConsumer: InternalTransactionConsumer<C>
 ) {
 
-    fun make(
+    fun create(
         descriptor: TransitionDescriptor,
         direction: TransitionDirection,
         actions: List<ReversibleAction<C>>,

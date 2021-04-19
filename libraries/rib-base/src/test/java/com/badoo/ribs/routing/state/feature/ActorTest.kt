@@ -5,14 +5,19 @@ import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.test.TestConfiguration
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 
 class ActorTest {
 
     private val pendingTransition: PendingTransition<TestConfiguration> = mock()
     private val pendingTransitionFactory: PendingTransitionFactory<TestConfiguration> = mock {
-        on { make(any(), any(), any(), any()) } doReturn pendingTransition
+        on { create(any(), any(), any(), any()) } doReturn pendingTransition
     }
 
     /**
@@ -36,7 +41,7 @@ class ActorTest {
     }
 
     /**
-     * [Case-1]
+     * [Case-2]
      *  1. there is no ongoingTransitions
      *  2. there is no pendingTransitions
      *  2. globalActivationState is SLEEPING

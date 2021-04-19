@@ -35,7 +35,6 @@ internal class PendingTransition<C : Parcelable>(
     }
 
     fun execute(transitionHandler: TransitionHandler<C>): OngoingTransition<C> {
-
         val transitionPair = transitionHandler.onTransition(transitionElements)
         discard()
         // TODO consider whether splitting this two two instances (one per direction, so that

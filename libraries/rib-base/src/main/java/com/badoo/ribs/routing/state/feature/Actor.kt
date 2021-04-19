@@ -6,9 +6,7 @@ import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.MutablePool
 import com.badoo.ribs.routing.state.Pool
-import com.badoo.ribs.routing.state.mutablePoolOf
 import com.badoo.ribs.routing.state.RoutingContext
-import com.badoo.ribs.routing.state.toMutablePool
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.action.TransactionExecutionParams
@@ -18,12 +16,14 @@ import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.changeset.addedOrRemoved
 import com.badoo.ribs.routing.state.exception.CommandExecutionException
 import com.badoo.ribs.routing.state.exception.KeyNotFoundInPoolException
-import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand
 import com.badoo.ribs.routing.state.feature.Transaction.InternalTransaction
-import com.badoo.ribs.routing.state.feature.Transaction.RoutingChange
 import com.badoo.ribs.routing.state.feature.Transaction.InternalTransaction.ExecutePendingTransition
+import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand
+import com.badoo.ribs.routing.state.feature.Transaction.RoutingChange
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.state.feature.state.withDefaults
+import com.badoo.ribs.routing.state.mutablePoolOf
+import com.badoo.ribs.routing.state.toMutablePool
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
@@ -133,7 +133,7 @@ internal class Actor<C : Parcelable>(
     ) {
         requireNotNull(transitionHandler)
 
-        pendingTransitionFactory.make(
+        pendingTransitionFactory.create(
             descriptor = descriptor,
             direction = TransitionDirection.EXIT,
             actions = actions,
@@ -227,14 +227,18 @@ internal class Actor<C : Parcelable>(
     }
 
     private fun consumeTransition(state: WorkingState<C>, pendingTransition: PendingTransition<C>, params: TransactionExecutionParams<C>) {
+        val isScheduled = pendingTransition.isScheduled(state)
+        val canTransition = canTransition(params)
         when {
-            pendingTransition.isScheduled(state) && canTransition(params) -> pendingTransition.execute(requireNotNull(transitionHandler)).start()
-            pendingTransition.isScheduled(state) && canTransition(params).not() -> pendingTransition.completeWithoutTransition()
+            isScheduled && canTransition -> pendingTransition.execute(requireNotNull(transitionHandler)).start()
+            isScheduled && !canTransition -> pendingTransition.completeWithoutTransition()
             else -> pendingTransition.discard()
         }
     }
 
-    private fun <C : Parcelable> PendingTransition<C>.isScheduled(state: WorkingState<C>) = this in state.pendingTransitions
+    private fun <C : Parcelable> PendingTransition<C>.isScheduled(state: WorkingState<C>) =
+        this in state.pendingTransitions
 
-    private fun canTransition(params: TransactionExecutionParams<C>) = params.globalActivationLevel != SLEEPING && transitionHandler != null
+    private fun canTransition(params: TransactionExecutionParams<C>) =
+        params.globalActivationLevel != SLEEPING && transitionHandler != null
 }

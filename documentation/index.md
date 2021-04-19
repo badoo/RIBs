@@ -78,6 +78,6 @@
 
 - Portals
 - RecyclerView hosting
-- Jetpack Compose compatibility
+- [Jetpack Compose compatibility](experimental/jetpack-compose.md)
 
 ## Demo app

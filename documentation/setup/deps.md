@@ -9,6 +9,21 @@ allprojects {
 }
 ```
 
+### Jetpack Compose support
+
+All artifacts should be available both with and without a `-compose` suffix, e.g.:
+
+```groovy
+// non-compose variant"
+implementation 'com.github.badoo.RIBs:rib-{###}:{latest-version}'
+// OR
+// compose variant:
+implementation 'com.github.badoo.RIBs:rib-{###}-compose:{latest-version}' 
+```
+
+You only need one of them though, based on whether you need compose support or not. 
+Make sure to refer to all dependencies consistently.
+
 ### Base
 ```groovy
 implementation 'com.github.badoo.RIBs:rib-base:{latest-version}'

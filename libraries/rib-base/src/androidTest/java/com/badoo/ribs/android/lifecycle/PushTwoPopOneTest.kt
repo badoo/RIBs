@@ -22,8 +22,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
         pushTwoConfigurationAndPop(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3
             ),
             ExpectedState(
                 node1 = VIEW_DETACHED, // Next content should cause view detach on first
@@ -38,8 +38,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
         pushTwoConfigurationAndPop(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 node1 = VIEW_DETACHED, // Next content should cause view detach on first
@@ -54,8 +54,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
         pushTwoConfigurationAndPop(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2AsOverlay,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 node1 = ON_SCREEN, // This should be restored after pop (next one is overlay)
@@ -70,8 +70,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
         pushTwoConfigurationAndPop(
             When(
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay,
-                pushConfiguration2 = AttachNode3
+                configuration1 = AttachNode2AsOverlay,
+                configuration2 = AttachNode3
             ),
             ExpectedState(
                 node1 = ON_SCREEN, // This should be restored after pop (next one is overlay)
@@ -87,8 +87,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
             When(
                 permanentParts = listOf(Permanent1, Permanent2),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN, // This should always be on screen
@@ -106,8 +106,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
             When(
                 permanentParts = listOf(Permanent1, Permanent2),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN, // This should always be on screen
@@ -125,8 +125,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
             When(
                 permanentParts = listOf(Permanent1, Permanent2),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay,
-                pushConfiguration2 = AttachNode3AsOverlay
+                configuration1 = AttachNode2AsOverlay,
+                configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN, // This should always be on screen
@@ -144,8 +144,8 @@ abstract class PushTwoPopOneTest : BaseNodesTest() {
             When(
                 permanentParts = listOf(Permanent1, Permanent2),
                 initialConfiguration = AttachNode1,
-                pushConfiguration1 = AttachNode2AsOverlay,
-                pushConfiguration2 = AttachNode3
+                configuration1 = AttachNode2AsOverlay,
+                configuration2 = AttachNode3
             ),
             ExpectedState(
                 permanentNode1 = ON_SCREEN, // This should always be on screen

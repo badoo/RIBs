@@ -38,11 +38,11 @@ class ParentTransitionHandler(duration: Long = 750) : TransitionHandler.Multiple
     )
 )
 
-fun TransitionElement<out Configuration>.isNotEnteringFirstChild() =
+fun TransitionElement<out Configuration>.isNotEnteringFirstChild(): Boolean =
     !(configuration == Configuration.Child1
         && direction == TransitionDirection.ENTER
         && addedOrRemoved)
 
-fun TransitionElement<out Configuration>.isNotExitingLastChild() =
+fun TransitionElement<out Configuration>.isNotExitingLastChild(): Boolean =
     !(configuration == Configuration.Child3
         && direction == TransitionDirection.EXIT)

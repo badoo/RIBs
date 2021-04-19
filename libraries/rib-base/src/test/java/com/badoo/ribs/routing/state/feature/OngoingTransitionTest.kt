@@ -3,7 +3,6 @@ package com.badoo.ribs.routing.state.feature
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.TransitionFinished
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.TransitionStarted
 import com.badoo.ribs.routing.transition.TransitionElement
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 

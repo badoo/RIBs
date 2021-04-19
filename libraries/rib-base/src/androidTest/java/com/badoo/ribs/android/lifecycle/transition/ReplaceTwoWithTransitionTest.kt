@@ -30,7 +30,7 @@ class ReplaceTwoWithTransitionTest :TransitionBaseNodeTest() {
             ),
             ExpectedState(
                 node1 = NodeState.ON_SCREEN_RESUMED,
-                node2 = NodeState.DETACHED,
+                node2 = NodeState.DETACHED
                 )
         )
     }

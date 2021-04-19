@@ -137,7 +137,7 @@ internal class Actor<C : Parcelable>(
             descriptor = descriptor,
             direction = TransitionDirection.EXIT,
             actions = actions,
-            transitionElements = transitionElements,
+            transitionElements = transitionElements
         ).schedule()
     }
 

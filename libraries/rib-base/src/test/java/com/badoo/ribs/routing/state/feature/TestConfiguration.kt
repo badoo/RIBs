@@ -1,4 +1,4 @@
-package com.badoo.ribs.test
+package com.badoo.ribs.routing.state.feature
 
 import android.os.Parcelable
 

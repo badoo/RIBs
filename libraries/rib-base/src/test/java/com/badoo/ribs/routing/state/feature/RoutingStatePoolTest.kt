@@ -1,7 +1,6 @@
 package com.badoo.ribs.routing.state.feature
 
 import com.badoo.ribs.routing.state.feature.state.WorkingState
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat

@@ -4,7 +4,6 @@ import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock

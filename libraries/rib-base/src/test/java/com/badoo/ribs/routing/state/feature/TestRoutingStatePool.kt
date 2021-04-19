@@ -1,9 +1,8 @@
 package com.badoo.ribs.routing.state.feature
 
-import com.badoo.ribs.minimal.state.TimeCapsule
+import com.badoo.ribs.core.state.TimeCapsule
 import com.badoo.ribs.routing.state.feature.state.SavedState
 import com.badoo.ribs.routing.state.feature.state.WorkingState
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -13,7 +12,7 @@ internal class TestRoutingStatePool(initialState: WorkingState<TestConfiguration
     resolver = mock(),
     activator = mock(),
     parentNode = mock(),
-    transitionHandler = mock(),
+    transitionHandler = mock()
 ) {
 
     fun testEvent(event: Effect<TestConfiguration>) {

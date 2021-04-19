@@ -15,7 +15,7 @@ internal class PendingTransitionFactory<C : Parcelable>(
         descriptor: TransitionDescriptor,
         direction: TransitionDirection,
         actions: List<ReversibleAction<C>>,
-        transitionElements: List<TransitionElement<C>>,
+        transitionElements: List<TransitionElement<C>>
     ): PendingTransition<C> =
         PendingTransition(
             descriptor = descriptor,

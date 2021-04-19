@@ -35,11 +35,9 @@ internal class PendingTransition<C : Parcelable>(
     }
 
     fun execute(transitionHandler: TransitionHandler<C>): OngoingTransition<C> {
-        discard()
 
         val transitionPair = transitionHandler.onTransition(transitionElements)
-        showEnteringElements()
-
+        discard()
         // TODO consider whether splitting this two two instances (one per direction, so that
         //  enter and exit can be controlled separately) is better
         return OngoingTransition(
@@ -59,12 +57,12 @@ internal class PendingTransition<C : Parcelable>(
     }
 
     fun discard() {
+        showEnteringElements()
         effectEmitter.invoke(RoutingStatePool.Effect.Transition.RemovePendingTransition(this))
     }
 
     fun cancel() {
         handler.removeCallbacksAndMessages(null)
-        showEnteringElements()
         discard()
     }
 

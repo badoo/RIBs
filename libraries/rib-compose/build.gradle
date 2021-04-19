@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-    implementation deps.external.kotlinStdlib
     compileOnly deps.apt.javax
 
     implementation deps.compose.runtime

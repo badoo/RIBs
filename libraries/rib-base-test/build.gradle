@@ -27,7 +27,6 @@ dependencies {
     compileOnly deps.external.rxrelay2
     compileOnly deps.external.rxjava2
 
-    implementation deps.external.kotlinStdlib
     implementation deps.android.annotations
     implementation deps.android.runner
     implementation deps.test.junit

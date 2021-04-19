@@ -9,8 +9,8 @@ class PushTwoPopOneStopBeforePushTest : PushTwoPopOneStopTest() {
         test(setup, expectedState) { router, rootNode ->
             runOnMainSync {
                 rootNode.onStop()
-                router.pushIt(setup.pushConfiguration1!!)
-                router.pushIt(setup.pushConfiguration2!!)
+                router.pushIt(setup.configuration1!!)
+                router.pushIt(setup.configuration2!!)
                 router.popBackStack()
             }
         }

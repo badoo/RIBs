@@ -8,15 +8,17 @@ import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.TransitionPair
 
+@SuppressWarnings("LongParameterList")
 internal class OngoingTransition<C : Parcelable>(
     descriptor: TransitionDescriptor,
     val direction: TransitionDirection,
     private val transitionPair: TransitionPair,
     private var actions: List<ReversibleAction<C>>,
     private val transitionElements: List<TransitionElement<C>>,
-    private val emitter: EffectEmitter<C>
+    private val emitter: EffectEmitter<C>,
+    private val handler: Handler = Handler()
 ) {
-    private val handler = Handler()
+
     var descriptor = descriptor
         private set
 
@@ -37,7 +39,7 @@ internal class OngoingTransition<C : Parcelable>(
     fun start() {
         actions.forEach { it.onTransition() }
         emitter.invoke(
-            RoutingStatePool.Effect.TransitionStarted(
+            RoutingStatePool.Effect.Transition.TransitionStarted(
                 this
             )
         )
@@ -50,7 +52,7 @@ internal class OngoingTransition<C : Parcelable>(
         handler.removeCallbacks(checkFinishedRunnable)
         actions.forEach { it.onFinish() }
         emitter.invoke(
-            RoutingStatePool.Effect.TransitionFinished(
+            RoutingStatePool.Effect.Transition.TransitionFinished(
                 this
             )
         )

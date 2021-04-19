@@ -43,7 +43,7 @@ private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
  */
 @OutdatedDocumentation
 @Suppress("LongParameterList")
-internal class RoutingStatePool<C : Parcelable>(
+internal open class RoutingStatePool<C : Parcelable>(
     timeCapsule: TimeCapsule,
     resolver: RoutingResolver<C>,
     activator: RoutingActivator<C>,
@@ -216,7 +216,7 @@ internal class RoutingStatePool<C : Parcelable>(
     override fun cancel() {
         super.cancel()
         disposeOngoingTransitions(state.ongoingTransitions)
-        discardPendingTransitions(state.pendingTransitions)
+        cancelPendingTransitions(state.pendingTransitions)
     }
 
     private fun disposeOngoingTransitions(ongoingTransitions: List<OngoingTransition<C>>) {
@@ -225,7 +225,7 @@ internal class RoutingStatePool<C : Parcelable>(
         }
     }
 
-    private fun discardPendingTransitions(pendingTransition: List<PendingTransition<C>>) {
+    private fun cancelPendingTransitions(pendingTransition: List<PendingTransition<C>>) {
         pendingTransition.forEach {
             it.cancel()
         }

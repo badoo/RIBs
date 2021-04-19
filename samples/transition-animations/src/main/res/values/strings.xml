@@ -5,4 +5,5 @@
     <string name="child1_text">Child 1</string>
     <string name="child2_text">Child 2</string>
     <string name="child3_text">Child 3</string>
+    <string name="parent_footer">Try to press back while animating</string>
 </resources>

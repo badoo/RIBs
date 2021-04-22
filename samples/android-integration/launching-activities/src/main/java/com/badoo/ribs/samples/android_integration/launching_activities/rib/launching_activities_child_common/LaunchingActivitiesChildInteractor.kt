@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common
 
 import android.app.Activity
 import android.content.Intent
@@ -11,21 +11,21 @@ import com.badoo.ribs.minimal.reactive.CompositeCancellable
 import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.samples.android_integration.launching_activities.app.OtherActivity
 
-class LaunchingActivitiesInteractor(
+class LaunchingActivitiesChildInteractor(
         buildParams: BuildParams<Nothing?>,
         private val activityStarter: ActivityStarter
-) : Interactor<LaunchingActivities, LaunchingActivitiesView>(
+) : Interactor<LaunchingActivitiesChildBase, LaunchingActivitiesChildView>(
         buildParams = buildParams
 ) {
     private val cancellable = CompositeCancellable()
     private val dataReturnedRelay = Relay<String>()
 
-    override fun onViewCreated(view: LaunchingActivitiesView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: LaunchingActivitiesChildView, viewLifecycle: Lifecycle) {
 
         viewLifecycle.subscribe(
                 onCreate = {
                     cancellable += activityStarter
-                            .events(this@LaunchingActivitiesInteractor)
+                            .events(this@LaunchingActivitiesChildInteractor)
                             .observe(::onActivityEvent)
                     cancellable += view.events.observe(::onViewEvent)
                     cancellable += dataReturnedRelay.observe { view.setData(it) }
@@ -36,9 +36,9 @@ class LaunchingActivitiesInteractor(
         )
     }
 
-    private fun onViewEvent(event: LaunchingActivitiesView.Event) {
+    private fun onViewEvent(event: LaunchingActivitiesChildView.Event) {
         when (event) {
-            is LaunchingActivitiesView.Event.LaunchActivityForResult ->
+            is LaunchingActivitiesChildView.Event.LaunchActivityForResult ->
                 activityStarter.startActivityForResult(this, REQUEST_CODE_OTHER_ACTIVITY) {
                     Intent(this, OtherActivity::class.java)
                             .putExtra(OtherActivity.KEY_INCOMING, event.data)

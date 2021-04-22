@@ -1,16 +1,16 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 
-internal class LaunchingActivitiesNode(
+internal class LaunchingActivitiesParentNode(
         buildParams: BuildParams<*>,
-        viewFactory: ViewFactory<LaunchingActivitiesView>?,
+        viewFactory: ViewFactory<LaunchingActivitiesParentView>?,
         plugins: List<Plugin>
-) : Node<LaunchingActivitiesView>(
+) : Node<LaunchingActivitiesParentView>(
         buildParams = buildParams,
         viewFactory = viewFactory,
         plugins = plugins
-), LaunchingActivities
+), LaunchingActivitiesParent

@@ -1,0 +1,5 @@
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child2
+
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildBase
+
+interface LaunchingActivitiesChild2 : LaunchingActivitiesChildBase

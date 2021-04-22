@@ -5,8 +5,10 @@
     <string name="label_data_to_return">Data to be returned as a result</string>
     <string name="button_return_data">Return data</string>
     <string name="label_data_received">Received data:</string>
-    <string name="parent_title">Parent Node</string>
-    <string name="parent_description">This is a parent node. It hosts a child node but can also launch activities itself.</string>
-    <string name="child_title">Child Node</string>
-    <string name="child_description">This is a child node. It uses the same classes but different instances than a parent node, so it too can launch activities. Notice that the result of an Activity is delivered to the node that has launched it.</string>
+    <string name="parent_title">Parent</string>
+    <string name="parent_description">This node is the one that is hosted by the Activity directly</string>
+    <string name="child1_title">Child1</string>
+    <string name="child1_description">This is the first child node. Both child nodes are capable of launching activities.</string>
+    <string name="child2_title">Child2</string>
+    <string name="child2_description">This is the second child node. Notice that the result of an Activity is delivered to the node that has launched it.</string>
 </resources>

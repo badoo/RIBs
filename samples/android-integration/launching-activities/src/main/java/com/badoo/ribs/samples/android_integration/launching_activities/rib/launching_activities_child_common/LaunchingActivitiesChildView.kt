@@ -1,11 +1,10 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common
 
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
@@ -16,16 +15,17 @@ import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.minimal.reactive.Source
 import com.badoo.ribs.samples.android_integration.launching_activities.R
 
-interface LaunchingActivitiesView : RibView {
+interface LaunchingActivitiesChildView : RibView {
 
     interface Dependency {
         @StringRes
         fun getTitleResource(): Int
+
         @StringRes
         fun getDescriptionResource(): Int
     }
 
-    interface Factory : ViewFactoryBuilder<Dependency, LaunchingActivitiesView>
+    interface Factory : ViewFactoryBuilder<Dependency, LaunchingActivitiesChildView>
 
     val events: Source<Event>
 
@@ -36,13 +36,13 @@ interface LaunchingActivitiesView : RibView {
     }
 }
 
-class LaunchingActivitiesViewImpl constructor(
+class LaunchingActivitiesChildViewImpl constructor(
         override val androidView: ViewGroup,
-        val dependency: LaunchingActivitiesView.Dependency
-) : AndroidRibView(), LaunchingActivitiesView, Source<LaunchingActivitiesView.Event> {
+        val dependency: LaunchingActivitiesChildView.Dependency
+) : AndroidRibView(), LaunchingActivitiesChildView, Source<LaunchingActivitiesChildView.Event> {
 
-    private val _events: Relay<LaunchingActivitiesView.Event> = Relay()
-    override val events: Source<LaunchingActivitiesView.Event>
+    private val _events: Relay<LaunchingActivitiesChildView.Event> = Relay()
+    override val events: Source<LaunchingActivitiesChildView.Event>
         get() = _events
 
     private val launchButton: Button = androidView.findViewById(R.id.launchActivityButton)
@@ -55,7 +55,7 @@ class LaunchingActivitiesViewImpl constructor(
         description.setText(dependency.getDescriptionResource())
         launchButton.setOnClickListener {
             _events.accept(
-                    LaunchingActivitiesView.Event.LaunchActivityForResult(
+                    LaunchingActivitiesChildView.Event.LaunchActivityForResult(
                             "Launched from `${title.text}`")
             )
         }
@@ -65,20 +65,15 @@ class LaunchingActivitiesViewImpl constructor(
         dataReturned.text = data
     }
 
-    override fun observe(callback: (LaunchingActivitiesView.Event) -> Unit): Cancellable =
+    override fun observe(callback: (LaunchingActivitiesChildView.Event) -> Unit): Cancellable =
             events.observe(callback)
 
-    private val childContainer: ViewGroup? = androidView.findViewById(R.id.childContainer)
-
-    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup = childContainer
-            ?: super.getParentViewForSubtree(subtreeOf)
-
     class Factory(
-            @LayoutRes private val layoutRes: Int = R.layout.rib_launching_activities_root,
-    ) : LaunchingActivitiesView.Factory {
-        override fun invoke(dependency: LaunchingActivitiesView.Dependency): ViewFactory<LaunchingActivitiesView> =
+            @LayoutRes private val layoutRes: Int = R.layout.rib_launching_activities_child,
+    ) : LaunchingActivitiesChildView.Factory {
+        override fun invoke(dependency: LaunchingActivitiesChildView.Dependency): ViewFactory<LaunchingActivitiesChildView> =
                 ViewFactory {
-                    LaunchingActivitiesViewImpl(
+                    LaunchingActivitiesChildViewImpl(
                             androidView = it.inflate(layoutRes),
                             dependency = dependency
                     )

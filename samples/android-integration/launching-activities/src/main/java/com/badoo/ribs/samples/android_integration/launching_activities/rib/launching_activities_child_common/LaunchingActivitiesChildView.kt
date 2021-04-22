@@ -18,11 +18,11 @@ import com.badoo.ribs.samples.android_integration.launching_activities.R
 interface LaunchingActivitiesChildView : RibView {
 
     interface Dependency {
-        @StringRes
-        fun getTitleResource(): Int
+        @get:StringRes
+        val titleResource: Int
 
-        @StringRes
-        fun getDescriptionResource(): Int
+        @get:StringRes
+        val descriptionResource: Int
     }
 
     interface Factory : ViewFactoryBuilder<Dependency, LaunchingActivitiesChildView>
@@ -51,8 +51,8 @@ class LaunchingActivitiesChildViewImpl constructor(
     private val description: TextView = androidView.findViewById(R.id.description)
 
     init {
-        title.setText(dependency.getTitleResource())
-        description.setText(dependency.getDescriptionResource())
+        title.setText(dependency.titleResource)
+        description.setText(dependency.descriptionResource)
         launchButton.setOnClickListener {
             _events.accept(
                     LaunchingActivitiesChildView.Event.LaunchActivityForResult(

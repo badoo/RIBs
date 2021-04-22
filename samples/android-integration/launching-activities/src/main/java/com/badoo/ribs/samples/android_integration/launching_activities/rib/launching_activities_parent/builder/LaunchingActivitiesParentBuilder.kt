@@ -9,7 +9,7 @@ import com.badoo.ribs.samples.android_integration.launching_activities.rib.launc
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentNode
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentView
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentViewImpl
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.routing.LaunchingActivitiesParentRouter
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentRouter
 
 class LaunchingActivitiesParentBuilder(
         private val dependency: LaunchingActivitiesParent.Dependency

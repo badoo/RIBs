@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.routing
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams

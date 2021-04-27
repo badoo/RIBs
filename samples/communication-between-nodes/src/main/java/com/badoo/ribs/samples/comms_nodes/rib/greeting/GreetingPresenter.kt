@@ -7,15 +7,22 @@ import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.minimal.reactive.CompositeCancellable
-import com.badoo.ribs.samples.comms_nodes.app.Language
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Input
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Input.UpdateGreeting
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Output.AvailableLanguagesDisplayed
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingView.ViewModel
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.English
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.French
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.German
 
 interface GreetingPresenter {
-    fun onEvent(event: GreetingView.Event)
+    fun onChangeLanguageClicked()
 }
 
 internal class GreetingPresenterImpl(
     ribAware: RibAware<Greeting> = RibAwareImpl(),
-    defaultLanguage: Language = Language.English
+    defaultLanguage: Language = English
 ) : GreetingPresenter,
     ViewAware<GreetingView>,
     RibAware<Greeting> by ribAware {
@@ -25,12 +32,10 @@ internal class GreetingPresenterImpl(
     private var currentLanguage: Language = defaultLanguage
 
     private val greetingForLanguage = mapOf(
-        Language.English to "Hello!",
-        Language.German to "Guten Tag!",
-        Language.French to "Bonjour"
+        English to "Hello!",
+        German to "Guten Tag!",
+        French to "Bonjour"
     )
-
-    private val initialViewModel = buildViewModel(currentLanguage)
 
     override fun onViewCreated(view: GreetingView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
@@ -44,18 +49,21 @@ internal class GreetingPresenterImpl(
                 cancellables.cancel()
             }
         )
+        val initialViewModel = buildViewModel()
         view.accept(initialViewModel)
     }
 
-    private fun onGreetingInput(input: Greeting.Input) {
+    private fun onGreetingInput(input: Input) {
         when (input) {
-            is Greeting.Input.UpdateGreeting -> view?.accept(buildViewModel(input.language))
+            is UpdateGreeting -> {
+                currentLanguage = input.language
+                view?.accept(buildViewModel())
+            }
         }
     }
 
-    private fun buildViewModel(language: Language): GreetingView.ViewModel {
-        currentLanguage = language
-        return GreetingView.ViewModel(
+    private fun buildViewModel(): ViewModel {
+        return ViewModel(
             Text.Plain(
                 greetingForLanguage[currentLanguage]
                     ?: throw IllegalStateException("no such language")
@@ -63,8 +71,7 @@ internal class GreetingPresenterImpl(
         )
     }
 
-
-    override fun onEvent(event: GreetingView.Event) {
-        rib.output.accept(Greeting.Output.ChangeLanguage(currentLanguage))
+    override fun onChangeLanguageClicked() {
+        rib.output.accept(AvailableLanguagesDisplayed(currentLanguage))
     }
 }

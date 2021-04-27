@@ -20,10 +20,6 @@ interface GreetingView : RibView {
         val presenter: GreetingPresenter
     }
 
-    sealed class Event {
-        object ChangeLanguageClicked : Event()
-    }
-
     data class ViewModel(
         val greeting: Text
     )
@@ -52,7 +48,7 @@ class GreetingViewImpl private constructor(
     private val changeLanguageButton: Button = androidView.findViewById(R.id.change_language_button)
 
     init {
-        changeLanguageButton.setOnClickListener { presenter.onEvent(GreetingView.Event.ChangeLanguageClicked) }
+        changeLanguageButton.setOnClickListener { presenter.onChangeLanguageClicked() }
     }
 
     override fun accept(vm: GreetingView.ViewModel) {

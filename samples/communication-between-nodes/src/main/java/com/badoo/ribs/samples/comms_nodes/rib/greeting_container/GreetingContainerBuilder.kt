@@ -1,15 +1,14 @@
-package com.badoo.ribs.samples.comms_nodes.rib.greeting_container.builder
+package com.badoo.ribs.samples.comms_nodes.rib.greeting_container
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.samples.comms_nodes.app.Language
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.builder.GreetingBuilder
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerPresenterImpl
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainer.Dependency
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter.Configuration
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter.Configuration.Greeting
 
-class GreetingContainerBuilder(private val languages: List<Language>) : SimpleBuilder<Node<Nothing>>() {
+class GreetingContainerBuilder(private val dependencies: Dependency) : SimpleBuilder<Node<Nothing>>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Node<Nothing> {
         val backStack = createBackStack(buildParams)
@@ -23,19 +22,18 @@ class GreetingContainerBuilder(private val languages: List<Language>) : SimpleBu
         )
     }
 
-    private fun createBackStack(buildParams: BuildParams<Nothing?>): BackStack<GreetingContainerRouter.Configuration> =
+    private fun createBackStack(buildParams: BuildParams<Nothing?>): BackStack<Configuration> =
         BackStack(
             buildParams = buildParams,
-            initialConfiguration = GreetingContainerRouter.Configuration.Greeting
+            initialConfiguration = Greeting
         )
 
     private fun createRouter(
         buildParams: BuildParams<Nothing?>,
-        backStack: BackStack<GreetingContainerRouter.Configuration>
+        backStack: BackStack<Configuration>
     ) = GreetingContainerRouter(
         buildParams = buildParams,
         routingSource = backStack,
-        greetingBuilder = GreetingBuilder(),
-        languages = languages
+        languages = dependencies.languages
     )
 }

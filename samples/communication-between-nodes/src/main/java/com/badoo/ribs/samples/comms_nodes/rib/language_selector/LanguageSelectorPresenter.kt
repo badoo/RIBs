@@ -4,10 +4,11 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
-import com.badoo.ribs.samples.comms_nodes.app.Language
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelector.Output.LanguageSelected
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelectorView.ViewModel
 
 interface LanguageSelectorPresenter {
-    fun onEvent(event: LanguageSelectorView.Event)
+    fun onLanguageConfirmed(selectionIndex: Int)
 }
 
 internal class LanguageSelectorPresenterImpl(
@@ -20,14 +21,10 @@ internal class LanguageSelectorPresenterImpl(
 
     override fun onViewCreated(view: LanguageSelectorView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
-        view.accept(LanguageSelectorView.ViewModel(defaultSelection, languages))
+        view.accept(ViewModel(defaultSelection, languages))
     }
 
-    override fun onEvent(event: LanguageSelectorView.Event) {
-        when (event) {
-            is LanguageSelectorView.Event.LanguageConfirmed -> {
-                rib.output.accept(LanguageSelector.Output.LanguageSelected(languages[event.selectionIndex]))
-            }
-        }
+    override fun onLanguageConfirmed(selectionIndex: Int) {
+        rib.output.accept(LanguageSelected(languages[selectionIndex]))
     }
 }

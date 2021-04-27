@@ -6,12 +6,16 @@ import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Input.UpdateGreeting
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Output.AvailableLanguagesDisplayed
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter.Configuration
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter.Configuration.ChooseLanguage
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelector
 
 interface GreetingContainerPresenter
 
 internal class GreetingContainerPresenterImpl(
-    private val backStack: BackStack<GreetingContainerRouter.Configuration>
+    private val backStack: BackStack<Configuration>
 ) : GreetingContainerPresenter,
     SubtreeChangeAware {
 
@@ -30,7 +34,7 @@ internal class GreetingContainerPresenterImpl(
 
     private fun onGreetingOutput(output: Greeting.Output) {
         when (output) {
-            is Greeting.Output.ChangeLanguage -> backStack.push(GreetingContainerRouter.Configuration.LanguageSelector(output.currentLanguage))
+            is AvailableLanguagesDisplayed -> backStack.push(ChooseLanguage(output.currentLanguage))
         }
     }
 
@@ -38,8 +42,15 @@ internal class GreetingContainerPresenterImpl(
         when (output) {
             is LanguageSelector.Output.LanguageSelected -> {
                 backStack.popBackStack()
-                greetingInput?.accept(Greeting.Input.UpdateGreeting(output.language))
+                greetingInput?.accept(UpdateGreeting(output.language))
             }
+        }
+    }
+
+    override fun onChildDetached(child: Node<*>) {
+        super.onChildDetached(child)
+        when (child) {
+            is Greeting -> greetingInput = null
         }
     }
 }

@@ -1,12 +1,8 @@
-package com.badoo.ribs.samples.comms_nodes.rib.greeting.builder
+package com.badoo.ribs.samples.comms_nodes.rib.greeting
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingNode
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingPresenter
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingPresenterImpl
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingView
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Customisation
 
 class GreetingBuilder : SimpleBuilder<Greeting>() {
 
@@ -16,10 +12,11 @@ class GreetingBuilder : SimpleBuilder<Greeting>() {
             override val presenter: GreetingPresenter
                 get() = presenter
         }
+        val customisation = buildParams.getOrDefault(Customisation())
 
         return GreetingNode(
             buildParams = buildParams,
-            viewFactory = Greeting.Customisation().viewFactory.invoke(viewDependency),
+            viewFactory = customisation.viewFactory.invoke(viewDependency),
             plugins = listOf(presenter)
         )
     }

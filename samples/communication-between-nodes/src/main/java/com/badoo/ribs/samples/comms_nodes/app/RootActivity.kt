@@ -6,7 +6,12 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.comms_nodes.R
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.builder.GreetingContainerBuilder
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.English
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.French
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.German
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainer.Dependency
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerBuilder
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
 
 class RootActivity : RibActivity() {
 
@@ -19,7 +24,11 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-        GreetingContainerBuilder(getLanguages()).build(BuildContext.root(savedInstanceState))
+        GreetingContainerBuilder(
+            dependencies = object : Dependency {
+                override val languages: List<Language> = getLanguages()
+            }
+        ).build(BuildContext.root(savedInstanceState))
 
-    private fun getLanguages() = listOf(Language.English, Language.German, Language.French)
+    private fun getLanguages() = listOf(English, German, French)
 }

@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.comms_nodes.app
+package com.badoo.ribs.samples.comms_nodes.rib.language_selector
 
 import android.os.Parcelable
 import com.badoo.ribs.android.text.Text

@@ -8,8 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.comms_nodes.R
-import com.badoo.ribs.samples.comms_nodes.app.Language
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.builder.GreetingContainerBuilder
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
 import com.badoo.ribs.test.RibsRule
 import org.junit.Rule
 import org.junit.Test

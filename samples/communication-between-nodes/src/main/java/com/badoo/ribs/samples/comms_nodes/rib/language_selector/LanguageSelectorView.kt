@@ -12,7 +12,6 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.comms_nodes.R
-import com.badoo.ribs.samples.comms_nodes.app.Language
 
 interface LanguageSelectorView : RibView {
 
@@ -20,10 +19,6 @@ interface LanguageSelectorView : RibView {
 
     interface Dependency {
         val presenter: LanguageSelectorPresenter
-    }
-
-    sealed class Event {
-        data class LanguageConfirmed(val selectionIndex: Int) : Event()
     }
 
     data class ViewModel(
@@ -56,7 +51,7 @@ class LanguageSelectorViewImpl private constructor(
     private val radioGroup: RadioGroup = androidView.findViewById(R.id.languages_radio_group)
 
     init {
-        confirmLanguageButton.setOnClickListener { presenter.onEvent(LanguageSelectorView.Event.LanguageConfirmed(radioGroup.checkedIndex)) }
+        confirmLanguageButton.setOnClickListener { presenter.onLanguageConfirmed(radioGroup.checkedIndex) }
     }
 
     private val RadioGroup.checkedIndex: Int

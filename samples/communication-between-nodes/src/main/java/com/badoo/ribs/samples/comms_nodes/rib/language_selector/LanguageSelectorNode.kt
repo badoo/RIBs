@@ -6,14 +6,15 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelector.Output
 
 class LanguageSelectorNode internal constructor(
     buildParams: BuildParams<*>,
     viewFactory: ViewFactory<LanguageSelectorView>?,
     plugins: List<Plugin> = emptyList(),
-    connector: NodeConnector<Nothing, LanguageSelector.Output> = NodeConnector()
+    connector: NodeConnector<Nothing, Output> = NodeConnector()
 ) : Node<LanguageSelectorView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), LanguageSelector, Connectable<Nothing, LanguageSelector.Output> by connector
+), LanguageSelector, Connectable<Nothing, Output> by connector

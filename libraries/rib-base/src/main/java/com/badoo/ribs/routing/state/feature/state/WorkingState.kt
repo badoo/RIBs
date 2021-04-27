@@ -5,6 +5,7 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.state.Pool
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.feature.OngoingTransition
+import com.badoo.ribs.routing.state.feature.PendingTransition
 import com.badoo.ribs.routing.state.poolOf
 
 /**
@@ -18,7 +19,8 @@ internal data class WorkingState<C : Parcelable>(
     val pool: Pool<C> = poolOf(),
     val pendingDeactivate: Set<Routing<C>> = setOf(),
     val pendingRemoval: Set<Routing<C>> = setOf(),
-    val ongoingTransitions: List<OngoingTransition<C>> = emptyList()
+    val ongoingTransitions: List<OngoingTransition<C>> = emptyList(),
+    val pendingTransitions: List<PendingTransition<C>> = emptyList()
 ) {
     /**
      * Converts the [WorkingState] to [SavedState] by shrinking all

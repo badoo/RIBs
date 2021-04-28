@@ -17,6 +17,7 @@ buildscript {
         classpath deps.build.gradlePlugins.kotlin
         classpath deps.build.gradlePlugins.mavenPublish
         classpath deps.build.gradlePlugins.detekt
+        classpath deps.build.gradlePlugins.jacoco
     }
 }
 

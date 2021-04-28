@@ -32,7 +32,6 @@ androidExtensions {
 }
 
 dependencies {
-    implementation deps.external.kotlinStdlib
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design

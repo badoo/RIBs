@@ -50,7 +50,6 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    implementation deps.external.kotlinStdlib
     compileOnly deps.apt.javax
 
     implementation deps.android.appCompat

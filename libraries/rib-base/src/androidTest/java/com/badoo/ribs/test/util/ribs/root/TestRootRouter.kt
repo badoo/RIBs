@@ -1,23 +1,22 @@
 package com.badoo.ribs.test.util.ribs.root
 
 import android.os.Parcelable
+import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution.Companion.showDialog
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.resolution.RibFactory
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.CompositeResolution.Companion.composite
-import com.badoo.ribs.android.dialog.routing.resolution.DialogResolution.Companion.showDialog
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
-import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.resolution.RibFactory
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
-import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.test.util.ribs.TestRibDialog
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.*
 import kotlinx.android.parcel.Parcelize
 
 class TestRootRouter(
@@ -29,30 +28,49 @@ class TestRootRouter(
     private val builder1: RibFactory,
     private val builder2: RibFactory,
     private val dialogLauncher: DialogLauncher,
+    transitionHandler: TransitionHandler<Configuration>? = null,
     permanentParts: List<Permanent>
 ) : Router<Configuration>(
     buildParams = buildParams,
-    routingSource = routingSource + permanent(permanentParts)
+    routingSource = routingSource + permanent(permanentParts),
+    transitionHandler = transitionHandler
 ) {
 
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
-            @Parcelize object Permanent1 : Permanent()
-            @Parcelize object Permanent2 : Permanent()
+            @Parcelize
+            object Permanent1 : Permanent()
+
+            @Parcelize
+            object Permanent2 : Permanent()
         }
 
         sealed class Content : Configuration() {
-            @Parcelize object NoOp : Content()
-            @Parcelize object AttachNode1 : Content()
-            @Parcelize object AttachNode2 : Content()
-            @Parcelize object AttachNode3 : Content()
-            @Parcelize object AttachNode1And2 : Content()
+            @Parcelize
+            object NoOp : Content()
+
+            @Parcelize
+            object AttachNode1 : Content()
+
+            @Parcelize
+            object AttachNode2 : Content()
+
+            @Parcelize
+            object AttachNode3 : Content()
+
+            @Parcelize
+            object AttachNode1And2 : Content()
         }
 
         sealed class Overlay : Configuration() {
-            @Parcelize object AttachNode1AsOverlay : Overlay()
-            @Parcelize object AttachNode2AsOverlay : Overlay()
-            @Parcelize object AttachNode3AsOverlay : Overlay()
+            @Parcelize
+            object AttachNode1AsOverlay : Overlay()
+
+            @Parcelize
+            object AttachNode2AsOverlay : Overlay()
+
+            @Parcelize
+            object AttachNode3AsOverlay : Overlay()
         }
     }
 

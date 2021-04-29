@@ -43,6 +43,12 @@ data class NodeState(
             ribLifeCycleState = DESTROYED,
             viewLifeCycleState = null
         )
+        val ON_SCREEN_RESUMED = NodeState(
+            attached = true,
+            viewAttached = true,
+            ribLifeCycleState = CREATED,
+            viewLifeCycleState = RESUMED
+        )
     }
 
     override fun toString(): String = when {

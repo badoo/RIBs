@@ -8,7 +8,8 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration
-import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration.Permanent.Child
+import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration.Permanent.Child1
+import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration.Permanent.Child2
 import kotlinx.android.parcel.Parcelize
 
 class PermissionsSampleParentRouter internal constructor(
@@ -16,19 +17,23 @@ class PermissionsSampleParentRouter internal constructor(
     private val builders: PermissionsSampleParentChildBuilder
 ) : Router<Configuration>(
     buildParams = buildParams,
-    routingSource = permanent(Child)
+    routingSource = permanent(Child1, Child2)
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
             @Parcelize
-            object Child : Permanent()
+            object Child1 : Permanent()
+
+            @Parcelize
+            object Child2 : Permanent()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                Child -> child { child.build(it) }
+                Child1 -> child { child.build(it) }
+                Child2 -> child { child.build(it) }
             }
         }
 }

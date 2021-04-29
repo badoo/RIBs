@@ -15,12 +15,12 @@ interface PermissionsSampleParentView : RibView {
     interface Factory : ViewFactoryBuilder<Nothing?, PermissionsSampleParentView>
 }
 
-
 class PermissionsSampleParentViewImpl private constructor(
     override val androidView: ViewGroup
 ) : AndroidRibView(), PermissionsSampleParentView {
 
-    private val childContainer = androidView.findViewById<ViewGroup>(R.id.child_container)
+    private val child1Container: ViewGroup = androidView.findViewById(R.id.child1_container)
+    private val child2Container: ViewGroup = androidView.findViewById(R.id.child2_container)
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample_parent
@@ -32,5 +32,10 @@ class PermissionsSampleParentViewImpl private constructor(
         }
     }
 
-    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup = childContainer
+    override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
+        when (subtreeOf.parent?.children?.indexOf(subtreeOf) ?: -1) {
+            0 -> child1Container
+            1 -> child2Container
+            else -> super.getParentViewForSubtree(subtreeOf)
+        }
 }

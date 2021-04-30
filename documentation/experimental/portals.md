@@ -239,7 +239,7 @@ Add something to the portal from your business logic. Here we are using an `Inte
 class SomeInteractor(
     // ...
     portal: Portal.OtherSide // Coming from SomeRib.Dependency 
-) : Interactor<Small, SmallView>(
+) : Interactor<SomeRib, SomeRibView>(
     buildParams = buildParams
 ) {
     

@@ -1,6 +1,8 @@
 package com.badoo.ribs.clienthelper.interactor
 
 import com.badoo.ribs.android.requestcode.RequestCodeClient
+import com.badoo.ribs.clienthelper.childawareness.ChildAwareRegistry
+import com.badoo.ribs.clienthelper.childawareness.ChildAwareRegistryImpl
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
@@ -9,17 +11,17 @@ import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.SavesInstanceState
-import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.core.view.RibView
 
 abstract class Interactor<R : Rib, V : RibView>(
     private val buildParams: BuildParams<*>,
-    private val ribAware: RibAware<R> = RibAwareImpl()
+    private val ribAware: RibAware<R> = RibAwareImpl(),
+    private val childAwareRegistry: ChildAwareRegistry = ChildAwareRegistryImpl(),
 ) : RibAware<R> by ribAware,
     ViewAware<V>,
     NodeLifecycleAware,
-    SubtreeChangeAware,
+    ChildAwareRegistry by childAwareRegistry,
     BackPressHandler,
     SavesInstanceState,
     RequestCodeClient {
@@ -33,6 +35,7 @@ abstract class Interactor<R : Rib, V : RibView>(
     override val requestCodeClientId: String
         get() = buildParams.identifier.toString()
 
-    val node: Node<*>
-       get() = rib.node
+    override val node: Node<*>
+        get() = rib.node
+
 }

@@ -5,19 +5,7 @@
 - Problems with opinionated frameworks
 
 ## About RIBs
-- [incorporate problems here, maybe merge 1, 2, 3, 4]
-- [1] Our approach
-        ?? Unopinionated
-        ?? Plugins-based
-        ?? State persistence
-        ?? Transitions
-- [2] Your application as a tree 
-- [3] Divide & conquer
-- [4] Tree structure (Node, parent, child, sibling)
-  - Complexity
-  - DI
-  - Testing in isolation
-  - Reuse
+- Our approach
 
 ## Setup
 
@@ -62,10 +50,7 @@
 - Permission requests
 
 ## Extras
-- Bumble's approach
-    - Unidirectional dataflow, Binder
-    - Interactor
-    - Reactive views
+- Our approach to RIBs client code
 - Demo apps
 - Tooling
 - Template plugin
@@ -80,4 +65,3 @@
 - RecyclerView hosting
 - [Jetpack Compose compatibility](experimental/jetpack-compose.md)
 
-## Demo app

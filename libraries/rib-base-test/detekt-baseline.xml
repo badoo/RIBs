@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues></CurrentIssues>
+  <CurrentIssues>
+    <ID>ForbiddenImport:RibsRule.kt$import org.junit.runner.Description</ID>
+    <ID>ForbiddenImport:RibsRule.kt$import org.junit.runners.model.Statement</ID>
+  </CurrentIssues>
 </SmellBaseline>

@@ -4,19 +4,5 @@
   <CurrentIssues>
     <ID>EmptyFunctionBlock:HelloWorldView.kt$HelloWorldViewImpl${ }</ID>
     <ID>LibraryCodeMustSpecifyReturnType:User.kt$User.Companion$val DUMMY = object : User { override fun name(): String = "Tutorial User" }</ID>
-    <ID>PackageNaming:GreetingsContainer.kt$package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container</ID>
-    <ID>PackageNaming:GreetingsContainerBuilder.kt$package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder</ID>
-    <ID>PackageNaming:GreetingsContainerComponent.kt$package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder</ID>
-    <ID>PackageNaming:GreetingsContainerInteractor.kt$package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container</ID>
-    <ID>PackageNaming:GreetingsContainerModule.kt$package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder</ID>
-    <ID>PackageNaming:GreetingsContainerRouter.kt$package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container</ID>
-    <ID>PackageNaming:GreetingsContainerScope.kt$package com.badoo.ribs.tutorials.tutorial3.rib.greetings_container.builder</ID>
-    <ID>PackageNaming:HelloWorld.kt$package com.badoo.ribs.tutorials.tutorial3.rib.hello_world</ID>
-    <ID>PackageNaming:HelloWorldBuilder.kt$package com.badoo.ribs.tutorials.tutorial3.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldComponent.kt$package com.badoo.ribs.tutorials.tutorial3.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldInteractor.kt$package com.badoo.ribs.tutorials.tutorial3.rib.hello_world</ID>
-    <ID>PackageNaming:HelloWorldModule.kt$package com.badoo.ribs.tutorials.tutorial3.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldScope.kt$package com.badoo.ribs.tutorials.tutorial3.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldView.kt$package com.badoo.ribs.tutorials.tutorial3.rib.hello_world</ID>
   </CurrentIssues>
 </SmellBaseline>

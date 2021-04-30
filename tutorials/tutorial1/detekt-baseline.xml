@@ -4,13 +4,5 @@
   <CurrentIssues>
     <ID>EmptyFunctionBlock:HelloWorldView.kt$HelloWorldViewImpl${ }</ID>
     <ID>NotImplementedDeclaration:RootActivity.kt$RootActivity$TODO("Create HelloWorldBuilder, supply dependencies in constructor, return built Node")</ID>
-    <ID>PackageNaming:HelloWorld.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world</ID>
-    <ID>PackageNaming:HelloWorldBuilder.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldComponent.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldInteractor.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world</ID>
-    <ID>PackageNaming:HelloWorldModule.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldScope.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.builder</ID>
-    <ID>PackageNaming:HelloWorldView.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world</ID>
-    <ID>PackageNaming:ViewEventToOutput.kt$package com.badoo.ribs.tutorials.tutorial1.rib.hello_world.mapper</ID>
   </CurrentIssues>
 </SmellBaseline>

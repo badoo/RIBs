@@ -5,6 +5,22 @@
     <ID>EmptyFunctionBlock:PhotoListItemViewHolder.kt$NextPageLoadingViewHolder${ }</ID>
     <ID>EmptyFunctionBlock:TestImageLoader.kt$TestImageLoader${}</ID>
     <ID>EmptyFunctionBlock:TestImageLoader.kt$TestImageLoader.&lt;no name provided&gt;${}</ID>
+    <ID>ForbiddenImport:AppBarTest.kt$import org.junit.Rule</ID>
+    <ID>ForbiddenImport:AppBarTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:AppBarTest.kt$import org.junit.rules.RuleChain</ID>
+    <ID>ForbiddenImport:AuthDataSourceImplTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:AuthDataSourceImplTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:ExampleUnitTest.kt$import org.junit.Assert.*</ID>
+    <ID>ForbiddenImport:ExampleUnitTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:FakeImageLoaderRule.kt$import org.junit.rules.TestRule</ID>
+    <ID>ForbiddenImport:FakeImageLoaderRule.kt$import org.junit.runner.Description</ID>
+    <ID>ForbiddenImport:FakeImageLoaderRule.kt$import org.junit.runners.model.Statement</ID>
+    <ID>ForbiddenImport:RootInteractorAuthStateTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:RootInteractorAuthStateTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RootInteractorAuthStateTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:RootInteractorAuthStateTest.kt$import org.junit.runners.Parameterized</ID>
+    <ID>ForbiddenImport:WelcomeInteractorTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:WelcomeInteractorTest.kt$import org.junit.Test</ID>
     <ID>FunctionNaming:AppBarTest.kt$AppBarTest$@Test fun whenAvatarClicked_verifyOutputGenerated()</ID>
     <ID>FunctionNaming:AppBarTest.kt$AppBarTest$@Test fun whenSearchClicked_verifyOutputGenerated()</ID>
     <ID>FunctionNaming:ExampleUnitTest.kt$ExampleUnitTest$@Test fun addition_isCorrect()</ID>
@@ -13,57 +29,11 @@
     <ID>LibraryCodeMustSpecifyReturnType:AuthStateStorage.kt$PreferencesAuthStateStorage.Companion$const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN"</ID>
     <ID>LibraryCodeMustSpecifyReturnType:AuthStateStorage.kt$PreferencesAuthStateStorage.Companion$const val ANONYMOUS_AUTH_KEY = "ANONYMOUS_AUTH"</ID>
     <ID>LibraryCodeMustSpecifyReturnType:FeedContainerChildBuilders.kt$FeedContainerChildBuilders$val photoFeedBuilder = PhotoFeedBuilder(subtreeDeps)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:LoggedInContainerChildBuilders.kt$LoggedInContainerChildBuilders$val photoFeedBuilder = FeedContainerBuilder(subtreeDeps)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:LoggedOutContainerChildBuilders.kt$LoggedOutContainerChildBuilders$val welcomeBuilder = WelcomeBuilder(subtreeDeps)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:PhotoFeedFeature.kt$PhotoFeedFeature.State.Companion$const val firstPageNumber = 1</ID>
     <ID>LibraryCodeMustSpecifyReturnType:PhotoListItemViewHolder.kt$NextPageLoadingErrorViewHolder.Companion$fun create(context: Context, parent: ViewGroup)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:PhotoListItemViewHolder.kt$NextPageLoadingViewHolder.Companion$fun create(context: Context, parent: ViewGroup)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:PhotoListItemViewHolder.kt$PhotoViewHolder.Companion$fun create(context: Context)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:RootChildBuilders.kt$RootChildBuilders$val loggedInContainerBuilder = LoggedInContainerBuilder( subtreeDeps )</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:RootChildBuilders.kt$RootChildBuilders$val loggedOutContainerBuilder = LoggedOutContainerBuilder( subtreeDeps )</ID>
-    <ID>MandatoryBracesIfStatements:AspectRatioDimensionsCalculator.kt$AspectRatioDimensionsCalculator$throw IllegalArgumentException("Aspect ratio should be greater than 0")</ID>
     <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.badoo.ribs.example.ExampleUnitTest.kt</ID>
-    <ID>PackageNaming:AppBar.kt$package com.badoo.ribs.example.app_bar</ID>
-    <ID>PackageNaming:AppBarBuilder.kt$package com.badoo.ribs.example.app_bar</ID>
-    <ID>PackageNaming:AppBarInteractor.kt$package com.badoo.ribs.example.app_bar</ID>
-    <ID>PackageNaming:AppBarNode.kt$package com.badoo.ribs.example.app_bar</ID>
-    <ID>PackageNaming:AppBarTest.kt$package com.badoo.ribs.example.app_bar</ID>
-    <ID>PackageNaming:AppBarView.kt$package com.badoo.ribs.example.app_bar</ID>
-    <ID>PackageNaming:AspectRatioDimensionsCalculator.kt$package com.badoo.ribs.example.photo_feed.view</ID>
-    <ID>PackageNaming:AspectRatioImageView.kt$package com.badoo.ribs.example.photo_feed.view</ID>
-    <ID>PackageNaming:FeedContainer.kt$package com.badoo.ribs.example.feed_container</ID>
-    <ID>PackageNaming:FeedContainerBuilder.kt$package com.badoo.ribs.example.feed_container</ID>
-    <ID>PackageNaming:FeedContainerChildBuilders.kt$package com.badoo.ribs.example.feed_container.routing</ID>
-    <ID>PackageNaming:FeedContainerInteractor.kt$package com.badoo.ribs.example.feed_container</ID>
-    <ID>PackageNaming:FeedContainerNode.kt$package com.badoo.ribs.example.feed_container</ID>
-    <ID>PackageNaming:FeedContainerRouter.kt$package com.badoo.ribs.example.feed_container.routing</ID>
-    <ID>PackageNaming:FeedContainerView.kt$package com.badoo.ribs.example.feed_container</ID>
-    <ID>PackageNaming:LoggedInContainer.kt$package com.badoo.ribs.example.logged_in_container</ID>
-    <ID>PackageNaming:LoggedInContainerBuilder.kt$package com.badoo.ribs.example.logged_in_container</ID>
-    <ID>PackageNaming:LoggedInContainerChildBuilders.kt$package com.badoo.ribs.example.logged_in_container.routing</ID>
-    <ID>PackageNaming:LoggedInContainerInteractor.kt$package com.badoo.ribs.example.logged_in_container</ID>
-    <ID>PackageNaming:LoggedInContainerNode.kt$package com.badoo.ribs.example.logged_in_container</ID>
-    <ID>PackageNaming:LoggedInContainerRouter.kt$package com.badoo.ribs.example.logged_in_container.routing</ID>
-    <ID>PackageNaming:LoggedOutContainer.kt$package com.badoo.ribs.example.logged_out_container</ID>
-    <ID>PackageNaming:LoggedOutContainerBuilder.kt$package com.badoo.ribs.example.logged_out_container</ID>
-    <ID>PackageNaming:LoggedOutContainerChildBuilders.kt$package com.badoo.ribs.example.logged_out_container.routing</ID>
-    <ID>PackageNaming:LoggedOutContainerInteractor.kt$package com.badoo.ribs.example.logged_out_container</ID>
-    <ID>PackageNaming:LoggedOutContainerNode.kt$package com.badoo.ribs.example.logged_out_container</ID>
-    <ID>PackageNaming:LoggedOutContainerRouter.kt$package com.badoo.ribs.example.logged_out_container.routing</ID>
-    <ID>PackageNaming:PhotoFeed.kt$package com.badoo.ribs.example.photo_feed</ID>
-    <ID>PackageNaming:PhotoFeedBuilder.kt$package com.badoo.ribs.example.photo_feed</ID>
-    <ID>PackageNaming:PhotoFeedDataSource.kt$package com.badoo.ribs.example.photo_feed</ID>
-    <ID>PackageNaming:PhotoFeedFeature.kt$package com.badoo.ribs.example.photo_feed.feature</ID>
-    <ID>PackageNaming:PhotoFeedInteractor.kt$package com.badoo.ribs.example.photo_feed</ID>
-    <ID>PackageNaming:PhotoFeedNode.kt$package com.badoo.ribs.example.photo_feed</ID>
-    <ID>PackageNaming:PhotoFeedView.kt$package com.badoo.ribs.example.photo_feed.view</ID>
-    <ID>PackageNaming:PhotoListItem.kt$package com.badoo.ribs.example.photo_feed.view</ID>
-    <ID>PackageNaming:PhotoListItemViewHolder.kt$package com.badoo.ribs.example.photo_feed.view</ID>
-    <ID>PackageNaming:PhotosAdapter.kt$package com.badoo.ribs.example.photo_feed.view</ID>
-    <ID>PackageNaming:StateToViewModel.kt$package com.badoo.ribs.example.photo_feed.mapper</ID>
-    <ID>PackageNaming:UserToViewModel.kt$package com.badoo.ribs.example.app_bar.mapper</ID>
-    <ID>PackageNaming:ViewEventToOutput.kt$package com.badoo.ribs.example.app_bar.mapper</ID>
-    <ID>PackageNaming:ViewEventToOutput.kt$package com.badoo.ribs.example.photo_feed.mapper</ID>
-    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.example.photo_feed.mapper</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -7,6 +7,105 @@
     <ID>EmptyFunctionBlock:NoOpDialogLauncher.kt$NoOpDialogLauncher${ }</ID>
     <ID>EmptyFunctionBlock:RIBs.kt$RIBs.DefaultErrorHandler${}</ID>
     <ID>EmptyFunctionBlock:RemoveAction.kt$RemoveAction${ }</ID>
+    <ID>ForbiddenImport:ActivityStarterTest.kt$import org.junit.Rule</ID>
+    <ID>ForbiddenImport:ActivityStarterTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:ActorTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:AlertDialogKeyboardTest.kt$import org.junit.Rule</ID>
+    <ID>ForbiddenImport:AlertDialogKeyboardTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:BackStackDiffingIntegrationTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:BackStackDiffingIntegrationTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:BackStackDiffingIntegrationTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:BackStackFeatureTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:BackStackFeatureTest.kt$import org.junit.Assert.assertThat</ID>
+    <ID>ForbiddenImport:BackStackFeatureTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:BackStackFeatureTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:BackStackTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:BackStackTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:BackStackTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:BaseNodesTest.kt$import org.junit.Rule</ID>
+    <ID>ForbiddenImport:CappedLifecycleTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:CappedLifecycleTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:CappedLifecycleTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:CombineLatestTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:ConfigurationFeatureTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:ConfigurationFeatureTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:ConfigurationFeatureTest.kt$import org.junit.Ignore</ID>
+    <ID>ForbiddenImport:ConfigurationFeatureTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:DifferTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:InitialNodesStateTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:LifecycleManagerTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:LifecycleManagerTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:LifecycleManagerTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NewRootTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodeBackPressHandlingTest.kt$import org.junit.Assert.assertFalse</ID>
+    <ID>ForbiddenImport:NodeBackPressHandlingTest.kt$import org.junit.Assert.assertTrue</ID>
+    <ID>ForbiddenImport:NodeBackPressHandlingTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodeBackPressHandlingTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginAndroidLifecycleAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginAndroidLifecycleAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginNodeAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginNodeAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginNodeLifecycleAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginNodeLifecycleAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginRibAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginRibAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginSavesInstanceStateTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginSavesInstanceStateTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginSubtreeChangeAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginSubtreeChangeAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginSubtreeViewChangeAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginSubtreeViewChangeAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginSystemAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginSystemAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:NodePluginViewAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginViewAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodePluginViewLifecycleAwareTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodePluginViewLifecycleAwareTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:NodeTest.kt$import org.junit.After</ID>
+    <ID>ForbiddenImport:NodeTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:NodeTest.kt$import org.junit.Assert.assertNotNull</ID>
+    <ID>ForbiddenImport:NodeTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:NodeTest.kt$import org.junit.Ignore</ID>
+    <ID>ForbiddenImport:NodeTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:NodeTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:OngoingTransitionTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PendingTransitionTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PopTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PushOneTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PushOverlayTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PushTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PushTwoPopOnePauseTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PushTwoPopOneStopTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PushTwoPopOneTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:PushTwoTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RemoveTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:ReplaceTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:ReplaceTwoWithTransitionTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RequestCodeBasedEventStreamImplTest.kt$import org.junit.After</ID>
+    <ID>ForbiddenImport:RequestCodeBasedEventStreamImplTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:RequestCodeBasedEventStreamImplTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RequestCodeRegistryTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:RequestCodeRegistryTest.kt$import org.junit.Assert.assertNotEquals</ID>
+    <ID>ForbiddenImport:RequestCodeRegistryTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:RequestCodeRegistryTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RestartActivityNodesStateTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RetainedInstanceStoreTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:RetainedInstanceStoreTest.kt$import org.junit.Assert.assertFalse</ID>
+    <ID>ForbiddenImport:RetainedInstanceStoreTest.kt$import org.junit.Assert.assertTrue</ID>
+    <ID>ForbiddenImport:RetainedInstanceStoreTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RootNodeLifecycleTest.kt$import org.junit.Rule</ID>
+    <ID>ForbiddenImport:RootNodeLifecycleTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RouterTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:RouterTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:RouterTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RouterTest.kt$import org.junit.runner.RunWith</ID>
+    <ID>ForbiddenImport:RoutingContextTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:RoutingContextTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:RoutingStatePoolTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:SingleTopTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:StoreTest.kt$import org.junit.Test</ID>
+    <ID>ForbiddenImport:fakeTest.kt$import org.junit.Assert.assertTrue</ID>
     <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivitiesWithCollisionThatReturnsOkResultAndRestart_returnsOkResultCode()</ID>
     <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivityThatReturnsCancelledResult_returnsCancelledResultCode()</ID>
     <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startActivityThatReturnsIntentData_returnsIntentData()</ID>
@@ -16,7 +115,6 @@
     <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivityForResult_startsTargetActivity()</ID>
     <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivity_intentDataIsDeliveredToTargetActivity()</ID>
     <ID>FunctionNaming:ActivityStarterTest.kt$ActivityStarterTest$@Test fun startActivity_startsTargetActivity()</ID>
-    <ID>FunctionNaming:BuildParams.kt$BuildParams.Companion$ fun Empty()</ID>
     <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun multipleInitial_multiplePermanent()</ID>
     <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun multipleInitial_noPermanent()</ID>
     <ID>FunctionNaming:InitialNodesStateTest.kt$InitialNodesStateTest$@Test fun noInitial_noPermanent()</ID>
@@ -69,17 +167,9 @@
     <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityResumed_lifecycleEventsAreDispatched()</ID>
     <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityResumed_nodeIsAttached()</ID>
     <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityResumed_viewIsAttached()</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:BackStackFeature.kt$BackStackFeature$override fun subscribe(observer: Observer&lt;in RoutingHistory&lt;C&gt;&gt;)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:BuildContext.kt$BuildContext.Companion$ fun root( savedInstanceState: Bundle?, customisations: RibCustomisationDirectory = RibCustomisationDirectoryImpl(), rootPlugins: List&lt;Plugin&gt; = emptyList() )</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:BuildParams.kt$BuildParams.Companion$ fun Empty()</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:Empty.kt$Empty$override fun subscribe(observer: Observer&lt;in RoutingHistory&lt;C&gt;&gt;)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:EndValues.kt$EndValues$fun reverse()</ID>
     <ID>LibraryCodeMustSpecifyReturnType:EndValues.kt$EndValues$val difference = to - from</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:Node.kt$Node$val children = CopyOnWriteArrayList&lt;Node&lt;*&gt;&gt;()</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:Node.kt$Node$val detachSignal = BehaviorRelay.create&lt;Unit&gt;()</ID>
     <ID>LibraryCodeMustSpecifyReturnType:OngoingTransition.kt$OngoingTransition$var descriptor = descriptor private set</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:Pool.kt$Pool$override fun subscribe(observer: Observer&lt;in RoutingHistory&lt;C&gt;&gt;)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:RibActivity.kt$RibActivity$override fun onRequestPermissionsResult(requestCode: Int, permissions: Array&lt;out String&gt;, grantResults: IntArray)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:RoutingContext.kt$RoutingContext.Resolved$fun saveInstanceState()</ID>
     <ID>LibraryCodeMustSpecifyReturnType:RoutingContext.kt$RoutingContext.Resolved$override fun withActivationState(activationState: ActivationState)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:RoutingContext.kt$RoutingContext.Unresolved$override fun withActivationState(activationState: ActivationState)</ID>
@@ -90,24 +180,18 @@
     <ID>LibraryCodeMustSpecifyReturnType:Transition.kt$Transition.Companion$fun multiple(vararg transitions: Collection&lt;Transition?&gt;)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:TransitionDescriptor.kt$TransitionDescriptor$fun isContinuationOf(other: TransitionDescriptor)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:TransitionDescriptor.kt$TransitionDescriptor$fun isReverseOf(other: TransitionDescriptor)</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:TransitionDescriptor.kt$TransitionDescriptor.Companion$val None = TransitionDescriptor( null, null )</ID>
     <ID>LibraryCodeMustSpecifyReturnType:TransitionHandler.kt$TransitionHandler.Companion$fun &lt;C&gt; multiple(vararg transitionhandlers: TransitionHandler&lt;C&gt;)</ID>
     <ID>LongMethod:ConfigurationFeatureTest.kt$ConfigurationFeatureTest$@Before fun setUp()</ID>
     <ID>LongParameterList:ActivateAction.kt$ActivateAction$( private val emitter: EffectEmitter&lt;C&gt;, private val routing: Routing&lt;C&gt;, private var item: Resolved&lt;C&gt;, private val parentNode: Node&lt;*&gt;, private val activator: RoutingActivator&lt;C&gt;, private val addedOrRemoved: Boolean, private val globalActivationLevel: RoutingContext.ActivationState )</ID>
     <ID>LongParameterList:DeactivateAction.kt$DeactivateAction$( private val emitter: EffectEmitter&lt;C&gt;, private val routing: Routing&lt;C&gt;, private var item: Resolved&lt;C&gt;, private val parentNode: Node&lt;*&gt;, private val activator: RoutingActivator&lt;C&gt;, private val addedOrRemoved: Boolean, private val targetActivationState: ActivationState = INACTIVE )</ID>
-    <ID>LongParameterList:OngoingTransition.kt$OngoingTransition$( descriptor: TransitionDescriptor, val direction: TransitionDirection, private val transitionPair: TransitionPair, private var actions: List&lt;ReversibleAction&lt;C&gt;&gt;, private val transitionElements: List&lt;TransitionElement&lt;C&gt;&gt;, private val emitter: EffectEmitter&lt;C&gt; )</ID>
-    <ID>LongParameterList:RoutingStatePool.kt$RoutingStatePool$( timeCapsule: TimeCapsule&lt;SavedState&lt;C&gt;&gt;, resolver: RoutingResolver&lt;C&gt;, activator: RoutingActivator&lt;C&gt;, parentNode: Node&lt;*&gt;, transitionHandler: TransitionHandler&lt;C&gt;? )</ID>
     <ID>LongParameterList:Slider.kt$Slider$( private val gravity: Gravity = Gravity.LEFT, private val animationContainer: AnimationContainer = AnimationContainer.RootView, private val duration: Long = defaultDuration, private val interpolator: Interpolator = defaultInterpolator, private val condition: (TransitionElement&lt;out T&gt;) -&gt; Boolean = { true } )</ID>
     <ID>LongParameterList:TabSwitcher.kt$TabSwitcher$( private val tabsOrder: List&lt;T&gt;, private val animationContainer: AnimationContainer = AnimationContainer.Parent, private val duration: Long = defaultDuration, private val interpolator: Interpolator = defaultInterpolator, private val condition: (TransitionElement&lt;out T&gt;) -&gt; Boolean = { true } )</ID>
     <ID>LongParameterList:TransitionElement.kt$TransitionElement$( val configuration: C, val direction: TransitionDirection, val addedOrRemoved: Boolean, val identifier: Rib.Identifier, val view: View, val progressEvaluator: MultiProgressEvaluator = MultiProgressEvaluator() )</ID>
     <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$0x0000FFFF</ID>
     <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$4</ID>
-    <ID>MandatoryBracesIfStatements:Actor.kt$Actor$lookup</ID>
     <ID>TopLevelPropertyNaming:Defaults.kt$internal const val defaultDuration: Long = 300</ID>
     <ID>UnusedImports:FirstActivity.kt$import androidx.appcompat.app.AppCompatActivity</ID>
     <ID>UnusedImports:NodePluginViewAwareTest.kt$import com.nhaarman.mockitokotlin2.mock</ID>
-    <ID>UnusedImports:NodeTest.kt$import com.nhaarman.mockitokotlin2.whenever</ID>
-    <ID>UnusedImports:Router.kt$import android.view.ViewGroup</ID>
     <ID>VariableNaming:RouterTest.kt$RouterTest$private lateinit var childNodeC2_1: Node&lt;*&gt;</ID>
     <ID>VariableNaming:RouterTest.kt$RouterTest$private lateinit var childNodeC2_2: Node&lt;*&gt;</ID>
   </CurrentIssues>

@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues></CurrentIssues>
+  <CurrentIssues>
+    <ID>ForbiddenImport:DialogsExampleTest.kt$import org.junit.Rule</ID>
+    <ID>ForbiddenImport:DialogsExampleTest.kt$import org.junit.Test</ID>
+  </CurrentIssues>
 </SmellBaseline>

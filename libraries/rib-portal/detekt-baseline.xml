@@ -2,6 +2,9 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
+    <ID>ForbiddenImport:PortalRouterTest.kt$import org.junit.Assert.assertEquals</ID>
+    <ID>ForbiddenImport:PortalRouterTest.kt$import org.junit.Before</ID>
+    <ID>ForbiddenImport:PortalRouterTest.kt$import org.junit.Test</ID>
     <ID>LibraryCodeMustSpecifyReturnType:Portal.kt$Portal.OtherSide.Companion$/** * For testing purposes only. */ val NOOP = object : OtherSide { override fun showContent(remoteNode: Node&lt;*&gt;, remoteConfiguration: Parcelable) {} override fun showOverlay(remoteNode: Node&lt;*&gt;, remoteConfiguration: Parcelable) {} }</ID>
   </CurrentIssues>
 </SmellBaseline>

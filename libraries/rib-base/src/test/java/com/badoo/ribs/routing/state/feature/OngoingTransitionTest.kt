@@ -19,7 +19,6 @@ class OngoingTransitionTest {
         transitionPair = mock(),
         transitionElements = listOf(transitionElement),
         emitter = effectEmitter,
-        handler = mock()
     )
 
     @Test

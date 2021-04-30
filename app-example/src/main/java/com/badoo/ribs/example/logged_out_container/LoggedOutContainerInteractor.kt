@@ -2,8 +2,8 @@ package com.badoo.ribs.example.logged_out_container
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
+import com.badoo.ribs.clienthelper.childawareness.whenChildBuilt
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRouter.Configuration
@@ -24,14 +24,9 @@ internal class LoggedOutContainerInteractor(
     override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
         }
-    }
-
-    override fun onChildBuilt(child: Node<*>) {
-        child.lifecycle.createDestroy {
-            when (child) {
-                is Welcome -> {
-                    bind(child.output to welcomeListener)
-                }
+        whenChildBuilt<Welcome>(nodeLifecycle) { commonLifecycle, child ->
+            commonLifecycle.createDestroy {
+                bind(child.output to welcomeListener)
             }
         }
     }

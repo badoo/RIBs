@@ -30,9 +30,9 @@
 - [Plugins](basics/plugins.md)
 
 ## Hello world!
-- [Hello world!](helloworld/hello-world.md)
-- [Adding a view](helloworld/view.md)
-- [Adding business logic](helloworld/business-logic.md)
+- [Hello world!](hello-world/hello-world.md)
+- [Adding a view](hello-world/view.md)
+- [Adding business logic](hello-world/business-logic.md)
 
 ## Tree structure 101
 

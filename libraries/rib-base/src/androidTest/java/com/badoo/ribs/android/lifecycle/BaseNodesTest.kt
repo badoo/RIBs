@@ -10,9 +10,11 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
+import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
+import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Rule
 import java.util.UUID
@@ -22,11 +24,13 @@ abstract class BaseNodesTest {
     @get:Rule
     val ribsRule = RibsRule()
 
+    protected open val transitionHandler : TransitionHandler<TestRootRouter.Configuration>? = null
+
     data class When(
         val permanentParts: List<TestRootRouter.Configuration.Permanent> = emptyList(),
         val initialConfiguration: TestRootRouter.Configuration.Content = TestRootRouter.Configuration.Content.NoOp,
-        val pushConfiguration1: TestRootRouter.Configuration? = null,
-        val pushConfiguration2: TestRootRouter.Configuration? = null
+        val configuration1: TestRootRouter.Configuration? = null,
+        val configuration2: TestRootRouter.Configuration? = null
     )
 
     @SuppressWarnings("LongMethod")
@@ -43,8 +47,8 @@ abstract class BaseNodesTest {
         var backStack: BackStack<TestRootRouter.Configuration>? = null
 
         ribsRule.start { activity, savedInstanceState ->
-            val buildParams = BuildParams(
-                payload = null,
+            val buildParams = BuildParams<TestRootBuilder.Params>(
+                payload = TestRootBuilder.Params(false),
                 buildContext = BuildContext.root(savedInstanceState),
                 identifier = Rib.Identifier(
                     uuid = UUID.randomUUID()
@@ -61,7 +65,8 @@ abstract class BaseNodesTest {
                 buildParams = buildParams,
                 dialogLauncher = activity.integrationPoint.dialogLauncher, // TODO reconsider if we need direct dependency at all
                 savedInstanceState = savedInstanceState,
-                routingSource = backStack!!
+                routingSource = backStack!!,
+                transitionHandler= transitionHandler
             )
         }
 
@@ -104,4 +109,5 @@ abstract class BaseNodesTest {
             ribLifeCycleState = lifecycleManager.ribLifecycle.lifecycle.currentState,
             viewLifeCycleState = lifecycleManager.viewLifecycle?.lifecycle?.currentState
         )
+
 }

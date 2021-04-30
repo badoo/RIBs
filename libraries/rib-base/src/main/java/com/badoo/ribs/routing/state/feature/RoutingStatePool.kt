@@ -21,8 +21,7 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
 private val timeCapsuleKey = RoutingStatePool::class.java.name
 private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
-    (get<SavedState<C>>(timeCapsuleKey)
-        ?.let { it.toWorkingState() }
+    (get<SavedState<C>>(timeCapsuleKey)?.toWorkingState()
         ?: WorkingState())
 
 /**
@@ -34,7 +33,7 @@ private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
  */
 @OutdatedDocumentation
 @Suppress("LongParameterList")
-internal class RoutingStatePool<C : Parcelable>(
+internal open class RoutingStatePool<C : Parcelable>(
     timeCapsule: TimeCapsule,
     resolver: RoutingResolver<C>,
     activator: RoutingActivator<C>,
@@ -47,7 +46,8 @@ internal class RoutingStatePool<C : Parcelable>(
         activator = activator,
         parentNode = parentNode,
         transitionHandler = transitionHandler,
-        effectEmitter = ::emitEvent
+        effectEmitter = ::emitEvent,
+        pendingTransitionFactory = PendingTransitionFactory(::emitEvent, ::consumeInternalTransaction)
     )
 
     init {
@@ -104,13 +104,23 @@ internal class RoutingStatePool<C : Parcelable>(
             ) : Individual<C>()
         }
 
-        data class TransitionStarted<C : Parcelable>(
-            val transition: OngoingTransition<C>
-        ) : Effect<C>()
+        sealed class Transition<C : Parcelable> : Effect<C>() {
+            class RequestTransition<C : Parcelable>(
+                val pendingTransition: PendingTransition<C>
+            ) : Transition<C>()
 
-        data class TransitionFinished<C : Parcelable>(
-            val transition: OngoingTransition<C>
-        ) : Effect<C>()
+            class RemovePendingTransition<C : Parcelable>(
+                val pendingTransition: PendingTransition<C>
+            ) : Transition<C>()
+
+            data class TransitionStarted<C : Parcelable>(
+                val transition: OngoingTransition<C>
+            ) : Transition<C>()
+
+            data class TransitionFinished<C : Parcelable>(
+                val transition: OngoingTransition<C>
+            ) : Transition<C>()
+        }
     }
 
     private fun initialize() {
@@ -130,12 +140,23 @@ internal class RoutingStatePool<C : Parcelable>(
         actor.invoke(state, transaction)
     }
 
+    private fun consumeInternalTransaction(internalTransaction: Transaction.InternalTransaction<C>) {
+        accept(internalTransaction)
+    }
+
     override fun reduceEvent(effect: Effect<C>, state: WorkingState<C>): WorkingState<C> =
         when (effect) {
             is Effect.Global -> state.global(effect)
             is Effect.Individual -> state.individual(effect)
-            is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
-            is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
+            is Effect.Transition -> state.transition(effect)
+        }
+
+    private fun WorkingState<C>.transition(effect: Effect.Transition<C>): WorkingState<C> =
+        when (effect) {
+            is Effect.Transition.RequestTransition -> copy(pendingTransitions = pendingTransitions + effect.pendingTransition)
+            is Effect.Transition.RemovePendingTransition -> copy(pendingTransitions = pendingTransitions - effect.pendingTransition)
+            is Effect.Transition.TransitionStarted -> copy(ongoingTransitions = ongoingTransitions + effect.transition)
+            is Effect.Transition.TransitionFinished -> copy(ongoingTransitions = ongoingTransitions - effect.transition)
         }
 
     private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =
@@ -184,8 +205,19 @@ internal class RoutingStatePool<C : Parcelable>(
 
     override fun cancel() {
         super.cancel()
-        state.ongoingTransitions.forEach {
+        disposeOngoingTransitions(state.ongoingTransitions)
+        cancelPendingTransitions(state.pendingTransitions)
+    }
+
+    private fun disposeOngoingTransitions(ongoingTransitions: List<OngoingTransition<C>>) {
+        ongoingTransitions.forEach {
             it.dispose()
+        }
+    }
+
+    private fun cancelPendingTransitions(pendingTransition: List<PendingTransition<C>>) {
+        pendingTransition.forEach {
+            it.cancel()
         }
     }
 }

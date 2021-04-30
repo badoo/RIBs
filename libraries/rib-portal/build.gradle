@@ -17,11 +17,8 @@ dependencies {
 
     implementation deps.apt.javaxInject
 
-    implementation deps.android.recyclerView
-    implementation deps.android.lifecycleCommon
     compileOnly deps.android.annotations
-    implementation deps.external.kotlinStdlib
-    implementation project(":libraries:rib-base")
+    api project(":libraries:rib-base")
 
     testImplementation deps.android.annotations
     testImplementation deps.test.junit

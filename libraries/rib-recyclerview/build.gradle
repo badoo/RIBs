@@ -18,9 +18,7 @@ dependencies {
     implementation deps.apt.javaxInject
 
     implementation deps.android.recyclerView
-    implementation deps.android.lifecycleCommon
     compileOnly deps.android.annotations
-    implementation deps.external.kotlinStdlib
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
     implementation deps.external.rxrelay2

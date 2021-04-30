@@ -1,6 +1,6 @@
 package com.badoo.ribs.test.util.ribs.root.builder
 
-import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.ViewFactory
@@ -12,9 +12,13 @@ import com.badoo.ribs.test.util.ribs.root.TestRootViewImpl
 
 class TestRootBuilder(
     private val dependency: TestRoot.Dependency
-) : SimpleBuilder<Node<TestRootView>>() {
+) : Builder<TestRootBuilder.Params, Node<TestRootView>>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): Node<TestRootView> {
+    class Params(
+        val addEditText: Boolean = false
+    )
+
+    override fun build(buildParams: BuildParams<Params>): Node<TestRootView> {
         return TestNode(
             buildParams = buildParams,
             viewFactory = {

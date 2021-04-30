@@ -1,13 +1,14 @@
 package com.badoo.ribs.test.util.ribs.root
 
-import androidx.lifecycle.Lifecycle
 import android.os.Bundle
-import com.badoo.ribs.core.modality.BuildParams
+import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.impl.Empty
-import com.badoo.ribs.android.dialog.DialogLauncher
+import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildView
@@ -45,29 +46,34 @@ interface TestRoot : Rib {
         var rootNode: TestNode<*>? = null
             private set
 
-        private fun builder(block: (TestNode<TestChildView>) -> Unit): (BuildContext) -> TestNode<TestChildView> =
-            {
-                TestChildBuilder().build(it).also {
-                    block.invoke(it)
-                }
+        private fun builder(
+            addEditText: Boolean,
+            block: (TestNode<TestChildView>) -> Unit
+        ): (BuildContext) -> TestNode<TestChildView> = {
+            TestChildBuilder().build(it, TestChildBuilder.Params(addEditText)).also {
+                block.invoke(it)
             }
+        }
 
         fun create(
-            buildParams: BuildParams<*>,
+            buildParams: BuildParams<TestRootBuilder.Params>,
             dialogLauncher: DialogLauncher,
             savedInstanceState: Bundle?,
-            routingSource: RoutingSource<Configuration> = Empty()
+            routingSource: RoutingSource<Configuration> = Empty(),
+            transitionHandler: TransitionHandler<Configuration>? = null
         ): TestNode<TestRootView> {
+            val addEditText: Boolean = buildParams.payload.addEditText
             val router = TestRootRouter(
                 buildParams = buildParams,
                 routingSource = routingSource,
-                builderPermanent1 = builder { permanentNode1 = it },
-                builderPermanent2 = builder { permanentNode2 = it },
-                builder1 = builder { childNode1 = it },
-                builder2 = builder { childNode2 = it },
-                builder3 = builder { childNode3 = it },
+                builderPermanent1 = builder(addEditText) { permanentNode1 = it },
+                builderPermanent2 = builder(addEditText) { permanentNode2 = it },
+                builder1 = builder(addEditText) { childNode1 = it },
+                builder2 = builder(addEditText) { childNode2 = it },
+                builder3 = builder(addEditText) { childNode3 = it },
                 permanentParts = permanentParts,
-                dialogLauncher = dialogLauncher
+                dialogLauncher = dialogLauncher,
+                transitionHandler = transitionHandler
             )
 
             val node = TestRootBuilder(
@@ -78,7 +84,8 @@ interface TestRoot : Rib {
 
                 }
             ).build(
-                BuildContext.root(savedInstanceState)
+                BuildContext.root(savedInstanceState),
+                buildParams.payload
             ) as TestNode<TestRootView>
             rootNode = node
             return node

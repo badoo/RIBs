@@ -66,7 +66,7 @@
     - Unidirectional dataflow, Binder
     - Interactor
     - Reactive views
-- Demo app
+- Demo apps
 - Tooling
 - Template plugin
 
@@ -76,7 +76,7 @@
 
 ## Experimental features
 
-- Portals
+- [Portals](experimental/portals.md)
 - RecyclerView hosting
 - [Jetpack Compose compatibility](experimental/jetpack-compose.md)
 

@@ -45,7 +45,7 @@ But following from the division of screen space, `X` could only be hosted in the
 
 ## Approach 1: another Activity
 
-We could of course launch another Activity, which would host `X` as its own root. However, by doing this, we would also lose all benefits of a single-Activity, single-tree approach, and we would also make it more difficult to have communication between `E` and `X`. 
+We could of course launch another Activity, which would host `X` as its own root. However, by doing this, we would also lose all benefits of a single-Activity, single-tree approach:
 
 - `E` is no longer scoping `X`
 - `E` has a lot more difficult way of sharing state and dependencies with `X`
@@ -92,7 +92,7 @@ app
     └── XN
 ```
 
-`A` will soon become bloated with lots of extra concerns and dependencies that logically it shouldn't have to care about. And more than just an inconvenience, this becomes 
+`A` will soon become bloated with lots of extra concerns and dependencies that logically it shouldn't have to care about. And more than just an inconvenience, this becomes a burden in a shared module architecture.
 
 Remember: we're tried adding these `Nodes` here only to show them on full screen - and not because `A` has anything to do with them. Let's try to avoid it!
  

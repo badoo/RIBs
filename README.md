@@ -1,13 +1,7 @@
 # RIBs
 [![Version](https://jitpack.io/v/badoo/RIBs.svg)](https://jitpack.io/#badoo/RIBs)
-[![Build Status](https://travis-ci.org/badoo/RIBs.svg?branch=master)](https://travis-ci.org/badoo/RIBs)
+[![Build Status](https://github.com/badoo/RIBs/actions/workflows/ci.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-
-## Roadmap to 1.0
-[See here](https://github.com/badoo/RIBs/issues/96)
-
-## Documentation
-[See here](documentation/index.md)
 
 ## What's this project about?
 
@@ -53,6 +47,12 @@ Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions
 - Declarative routing
 - Focusing directly on a closer Android integration
 - Tons of great features. Have a look in the full [Documentation](documentation/index.md)
+
+## Roadmap to 1.0
+[See here](https://github.com/badoo/RIBs/issues/96)
+
+## Documentation
+[See here](documentation/index.md)
 
 ## WIP warning
 This is an in-progress, preview version.

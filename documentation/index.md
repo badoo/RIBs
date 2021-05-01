@@ -40,19 +40,22 @@
 - [Transition reversal](transitions/transition-reversal.md)
 
 ## Reusability
+
 - [Build-time dependencies](reuse/build-time-dependencies.md)
 - [Customisations](reuse/customisations.md)
 
 ## Android support
 
-- Dialogs
 - Launching external Activities
 - Permission requests
+- Dialogs
 
 ## Extras
+- Best practices
 - Our approach to RIBs client code
 - Demo apps
 - Tooling
+- [Minimal reactive API](extras/minimal-reactive-api.md)
 - Template plugin
 
 ## Testing

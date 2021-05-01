@@ -1,6 +1,6 @@
 # RIBs
 [![Version](https://jitpack.io/v/badoo/RIBs.svg)](https://jitpack.io/#badoo/RIBs)
-[![Build Status](https://github.com/badoo/RIBs/actions/workflows/ci.yml/badge.svg)
+![Build Status](https://github.com/badoo/RIBs/actions/workflows/ci.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## What's this project about?

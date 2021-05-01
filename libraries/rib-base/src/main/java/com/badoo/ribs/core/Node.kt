@@ -11,7 +11,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.android.integrationpoint.FloatingIntegrationPoint
 import com.badoo.ribs.android.integrationpoint.IntegrationPoint
+import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib.Identifier
+import com.badoo.ribs.core.communication.Unlockable
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.lifecycle.LifecycleManager
 import com.badoo.ribs.core.modality.ActivationMode
@@ -241,6 +243,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         child.onCreate()
         onAttachChildNode(child)
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildAttached(child) }
+        if (child is Unlockable) {
+            child.unlock()
+        }
     }
 
     open fun onAttachChildNode(child: Node<*>) {

@@ -48,7 +48,7 @@
 
 - [Launching external Activities](android/launching-activities.md)
 - [Permission requests](android/permission-requests.md)
-- Dialogs
+- [Dialogs](android/dialogs.md)
 
 ## Extras
 - Best practices

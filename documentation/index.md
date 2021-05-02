@@ -31,7 +31,7 @@
 - When the back stack is not enough
 - [Providing dependencies](tree-structure-101/providing-dependencies.md)
 - [Communication between Nodes](tree-structure-101/communication-between-nodes.md)
-- Deep link workflows
+- [Deep link workflows](tree-structure-101/deep-link-workflows.md)
 
 ## Transition animations
 

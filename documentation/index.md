@@ -47,7 +47,7 @@
 ## Android support
 
 - [Launching external Activities](android/launching-activities.md)
-- Permission requests
+- [Permission requests](android/permission-requests.md)
 - Dialogs
 
 ## Extras

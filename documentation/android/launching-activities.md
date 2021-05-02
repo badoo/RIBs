@@ -53,7 +53,7 @@ val activityStarter = node.integrationPoint.activityStarter
 ```kotlin
 private fun launchOtherActivity() {
     activityStarter.startActivity() {
-        // implicit this from lambda is Context, let's return an Intent
+        // implicit »this« from lambda is Context, let's return an Intent
         Intent(this, OtherActivity::class.java)
             .putExtra(OtherActivity.KEY_INCOMING, "Some data")
     }
@@ -80,33 +80,38 @@ companion object {
 The point is that wherever you are in the application's tree structure, the framework guarantees that you get the results delivered to the same Rib that fired the request.
 
 
+**2. Set up reacting on result**
 
-**2. Launch the Activity for result**
+`ActivityStarter` uses our [Minimal reactive API](../extras/minimal-reactive-api.md) that you can subscribe to:
 
 We'll talk about what `client` is in a second.
 
 ```kotlin
-val client = TODO() 
+val client = TODO()
+
+val activityResult: Source<ActivityResultEvent> = activityStarter.events(client)
+
+// You can subscribe to it directly:
+val cancellable = activityResult.observe { /*...*/ }
+// Or you can map it to other reactive types:
+val disposable = activityResult.rx2().subscribe { /*...*/ }
+```
+
+**3. Launch the Activity for result**
+
+Once listening to results is in place, it's time to fire the request.
+
+```kotlin
+val client = TODO() // It should be the same instance as above
 
 private fun launchOtherActivityForResult() {
     activityStarter.startActivityForResult(client, REQUEST_CODE_OTHER_ACTIVITY) {
-        // implicit this from lambda is Context, let's return an Intent
+        // implicit »this« from lambda is Context, let's return an Intent
         Intent(this, OtherActivity::class.java)
             .putExtra(OtherActivity.KEY_INCOMING, "Some data")
     }
 }
 ```
-
-**3. React on result**
-
-`ActivityStarter` uses our [Minimal reactive API](../extras/minimal-reactive-api.md) that you can subscribe to:
-
-```kotlin
-val client = TODO() // It should be the same object that you used for launching the request
-
-val activityResult: Source<ActivityResultEvent> = activityStarter.events(client)
-```
-
 
 
 ## Client

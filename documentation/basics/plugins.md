@@ -196,6 +196,30 @@ internal class MyNode(
 ⚠️ Note: ```plugins``` is a ```List```, as the order matters here. All ```Plugin``` instances are invoked in the order they appear in the list.
 
 
+## Default plugins
+
+Whenever creating your root, you can also choose to inject a list of default plugins. Any plugin you pass here will be automatically added to all your `Nodes`:
+
+```kotlin
+override fun createRib(savedInstanceState: Bundle?) =
+    YourRootBuilder(
+        object : YourRoot.Dependency {
+            // ...
+        }
+    ).build(root(
+        savedInstanceState = savedInstanceState,
+        defaultPlugins = { node ->
+            // TODO list default plugins
+            //  node can be used for conditional checks e.g if (node.isRoot)
+        }
+    ))
+```
+
+This way you can add plugins from the application level without having to change the individual modules. 
+
+Also see [Tooling](../extras/tooling.md) for some utility plugins you might find useful. 
+
+
 ## Suggested read
 
 Check the tutorial found in the ```Hello world!``` chapters to see this topic implemented in practice.

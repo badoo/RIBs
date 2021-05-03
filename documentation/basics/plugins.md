@@ -118,7 +118,7 @@ interface SystemAware : Plugin {
 
 Sometimes you need to grab a reference to the component as a whole, either as an interface, or its implementation, the ```Node```.
 
-This will come especially handy in [Workflows]()
+This will come especially handy in [Workflows](../tree-structure-101/deep-link-workflows.md)
 
 
 ```kotlin

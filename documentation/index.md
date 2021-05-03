@@ -1,11 +1,8 @@
-## Problems
-
-- Problems with multiple Activities
-- Problems with Fragments
-- Problems with opinionated frameworks
 
 ## About RIBs
-- Our approach
+
+- [Your application as a tree](about/your-application-as-a-tree.md)
+- [Evolution of RIBs](about/evolution-of-ribs.md)
 
 ## Setup
 
@@ -28,10 +25,10 @@
 - [Routing](tree-structure-101/routing.md)
 - [Resolving routing](tree-structure-101/resolving-routing.md)
 - [Back stack](tree-structure-101/back-stack.md)
-- When the back stack is not enough
+- [Permanent parts](tree-structure-101/permanent-parts.md)
 - [Providing dependencies](tree-structure-101/providing-dependencies.md)
 - [Communication between Nodes](tree-structure-101/communication-between-nodes.md)
-- Deep link workflows
+- [Deep link workflows](tree-structure-101/deep-link-workflows.md)
 
 ## Transition animations
 
@@ -40,19 +37,22 @@
 - [Transition reversal](transitions/transition-reversal.md)
 
 ## Reusability
+
 - [Build-time dependencies](reuse/build-time-dependencies.md)
 - [Customisations](reuse/customisations.md)
 
 ## Android support
 
-- Dialogs
-- Launching external Activities
-- Permission requests
+- [Launching external Activities](android/launching-activities.md)
+- [Permission requests](android/permission-requests.md)
+- [Dialogs](android/dialogs.md)
 
 ## Extras
+- Best practices
 - Our approach to RIBs client code
 - Demo apps
-- Tooling
+- [Tooling](extras/tooling.md)
+- [Minimal reactive API](extras/minimal-reactive-api.md)
 - Template plugin
 
 ## Testing

@@ -17,7 +17,9 @@ Inputs are messages the current RIB can take and interpret as commands.
 
 Outputs are messages the current RIB can produce.
 
-To use it, you would first define these types in your main interface:
+Note: These interfaces rely on our [Minimal reactive API](../extras/minimal-reactive-api.md), which you can convert to some other reactive type if you wish. You can also find an RxJava2 equivalent of them in the `rib-rx2` package.
+
+To use them, you would first define these types in your main interface:
 
 ```kotlin
 import somepackage.SomeRib.Input

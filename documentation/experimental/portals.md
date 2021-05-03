@@ -20,7 +20,7 @@ app
 
 Here, `A` is a container that has control over the entire screen space.
 
-`A` divides this available space two two parts: one to host `B`, the other to host `C`. As a consequence, these children have now control over only a portion of the screen.
+`A` divides this available space into two parts: one to host `B`, the other to host `C`. As a consequence, these children have now control over only a portion of the screen.
 
 Repeating this pattern, the screen space available to any `Node` can only get smaller and smaller. The `Nodes` themselves shouldn't care about this of course.
 
@@ -149,7 +149,7 @@ Optionally, you can depend on the RxJava version of it, which provides some work
 implementation 'com.github.badoo.RIBs:rib-portal-rx:{latest-version}'
 ```
 
-To use portals, you will want to add it as a dependency in your tree:
+To use portals, you will want to add it as a dependency in your tree to every `Rib` down the the point where you want to use it:
 
 ```kotlin
 interface SomeRib : Rib {
@@ -216,7 +216,12 @@ You'll also want to propagate this dependency down your whole tree, so that you 
 
 
 ## Using portals
-Define some routing configurations first. It's helpful to place them in a nested sealed class:
+
+**1. Define some routing configurations**
+
+The place to do it is the parent that wishes to show something through a portal (`E` in the original example). 
+
+It's helpful to place them in a nested sealed class:
 
 ```kotlin
 sealed class Configuration : Parcelable {
@@ -232,7 +237,9 @@ sealed class Configuration : Parcelable {
 }
 ```
 
-Add something to the portal from your business logic. Here we are using an `Interactor`, but feel free to use any other architectural pattern of course:
+**2. Use the portal**
+
+You most likely want to do this in the class responsible for business logic in `E`. Here we are using an `Interactor`, but feel free to use any other architectural pattern of course:
 
 ```kotlin
 // Built in SomeRibBuilder:
@@ -244,18 +251,24 @@ class SomeInteractor(
 ) {
     
     fun businessLogic() {
-        portal.showContent(node, FullScreen.X) 
+        portal.showContent(node, FullScreen.X) // <- We send it our local configuration
         // or:
         portal.showOverlay(node, FullScreen.X)
     }
 }
 ```
 
-Notice how the methods take 2 params: the first refers to the current `Node` this `Interactor` belongs to.
+Notice how the methods we call on the `portal` take 2 params each: 
+
+1. The first one refers to the current `Node` this `Interactor` belongs to.
+2. The second one is our local configuration 
 
 Note: here `node` is available because `Interactor` (base class provided by the framework) provides it automatically. If you're using a different pattern / class, you can still access `node` either directly through the `NodeAware` or indirectly through the `RibAware` plugins. See [Plugins](../basics/plugins.md) for more details.
 
-The last bit we need to put in place is resolving our configuration in our `Router`:
+
+**3. Resolve the configuration**
+
+The last bit we need to put in place is resolving our configuration in `E`'s `Router`:
 
 ```kotlin
 override fun resolve(routing: Routing<Configuration>): Resolution =
@@ -263,6 +276,7 @@ override fun resolve(routing: Routing<Configuration>): Resolution =
         FullScreen.X -> remoteChild(anchor = node) { xBuilder.build(it) }
     }
 ```
-Notice how we don't use a `child { }` resolution here, but `remoteChild` with an additional parameter, `anchor`. This is an important detail. Note again the usage of the current `Node`, which `Router` automatically has a reference to.
+
+Notice how we are not using a `child { }` resolution here, but `remoteChild { }` with an additional parameter, `anchor`. This is an important detail. Note again the usage of the current `Node`, which `Router` automatically has a reference to.
 
 The importance of these `Node` references is that it provides a way for `Portal` to backtrack where `X` is coming from. `Portal` itself is agnostic of the children it hosts, and delegates their resolution to the logical parent (`E` in the original scheme / `SomeRib` in the code examples).

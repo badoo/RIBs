@@ -51,7 +51,7 @@
 - Best practices
 - Our approach to RIBs client code
 - Demo apps
-- Tooling
+- [Tooling](extras/tooling.md)
 - [Minimal reactive API](extras/minimal-reactive-api.md)
 - Template plugin
 

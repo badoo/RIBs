@@ -25,7 +25,7 @@
 - [Routing](tree-structure-101/routing.md)
 - [Resolving routing](tree-structure-101/resolving-routing.md)
 - [Back stack](tree-structure-101/back-stack.md)
-- When the back stack is not enough
+- [Permanent parts](tree-structure-101/permanent-parts.md)
 - [Providing dependencies](tree-structure-101/providing-dependencies.md)
 - [Communication between Nodes](tree-structure-101/communication-between-nodes.md)
 - [Deep link workflows](tree-structure-101/deep-link-workflows.md)

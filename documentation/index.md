@@ -1,11 +1,8 @@
-## Problems
-
-- Problems with multiple Activities
-- Problems with Fragments
-- Problems with opinionated frameworks
 
 ## About RIBs
-- Our approach
+
+- Your application as a tree
+- [Evolution of RIBs](about/evolution-of-ribs.md)
 
 ## Setup
 

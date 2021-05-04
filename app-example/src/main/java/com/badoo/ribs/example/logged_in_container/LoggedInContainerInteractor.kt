@@ -32,7 +32,7 @@ internal class LoggedInContainerInteractor(
     override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
         }
-        whenChildBuilt<FeedContainer>(nodeLifecycle) { commonLifecycle, child ->
+        whenChildBuilt<FeedContainer> { commonLifecycle, child ->
             commonLifecycle.createDestroy {
                 bind(child.output to photoFeedOutputConsumer)
             }

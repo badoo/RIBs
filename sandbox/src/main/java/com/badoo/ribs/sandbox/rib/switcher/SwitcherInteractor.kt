@@ -104,7 +104,7 @@ internal class SwitcherInteractor(
         whenChildBuilt<Blocker>(nodeLifecycle) { commonLifecycle, child ->
             commonLifecycle.createDestroy { bind(child.output to blockerOutputConsumer) }
         }
-        whenChildAttached<Menu>(nodeLifecycle) { commonLifecycle, child ->
+        whenChildAttached<Menu> { commonLifecycle, child ->
             commonLifecycle.createDestroy {
                 bind(backStack.activeConfigurations.rx2() to child.input using ConfigurationToMenuInput)
             }

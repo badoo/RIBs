@@ -34,7 +34,7 @@ class ChildAwareCallbackInfoTest {
     @Test
     fun `whenChildBuilt is invoked if registered before onChildBuilt`() {
         var capturedNode: Rib? = null
-        registry.whenChildBuilt<Child1>(rootNode.lifecycle) { _, child -> capturedNode = child }
+        registry.whenChildBuilt<Child1> { _, child -> capturedNode = child }
         val child1 = createChild1(attach = false)
         assertEquals(child1, capturedNode)
     }
@@ -43,14 +43,14 @@ class ChildAwareCallbackInfoTest {
     fun `whenChildBuilt is invoked if registered after onChildBuilt`() {
         val child1 = createChild1()
         var capturedNode: Rib? = null
-        registry.whenChildBuilt<Child1>(rootNode.lifecycle) { _, child -> capturedNode = child }
+        registry.whenChildBuilt<Child1> { _, child -> capturedNode = child }
         assertEquals(child1, capturedNode)
     }
 
     @Test
     fun `whenChildAttached is invoked if registered before onChildAttached`() {
         var capturedNode: Rib? = null
-        registry.whenChildAttached<Child1>(rootNode.lifecycle) { _, child -> capturedNode = child }
+        registry.whenChildAttached<Child1> { _, child -> capturedNode = child }
         val child1 = createChild1()
         assertEquals(child1, capturedNode)
     }
@@ -59,7 +59,7 @@ class ChildAwareCallbackInfoTest {
     fun `whenChildAttached is invoked if registered after onChildAttached`() {
         val child1 = createChild1()
         var capturedNode: Rib? = null
-        registry.whenChildAttached<Child1>(rootNode.lifecycle) { _, child -> capturedNode = child }
+        registry.whenChildAttached<Child1> { _, child -> capturedNode = child }
         assertEquals(child1, capturedNode)
     }
 
@@ -67,8 +67,8 @@ class ChildAwareCallbackInfoTest {
     fun `every whenChildBuilt is invoked`() {
         var capturedNode1: Rib? = null
         var capturedNode2: Rib? = null
-        registry.whenChildBuilt<Child1>(rootNode.lifecycle) { _, child -> capturedNode1 = child }
-        registry.whenChildBuilt<Child1>(rootNode.lifecycle) { _, child -> capturedNode2 = child }
+        registry.whenChildBuilt<Child1> { _, child -> capturedNode1 = child }
+        registry.whenChildBuilt<Child1> { _, child -> capturedNode2 = child }
         val child1 = createChild1(attach = false)
         assertEquals(child1, capturedNode1)
         assertEquals(child1, capturedNode2)
@@ -79,7 +79,7 @@ class ChildAwareCallbackInfoTest {
         val child1 = createChild1()
         val child2 = createChild1()
         val capturedNodes = ArrayList<Rib>()
-        registry.whenChildBuilt<Child1>(rootNode.lifecycle) { _, child -> capturedNodes += child }
+        registry.whenChildBuilt<Child1> { _, child -> capturedNodes += child }
         assertEquals(listOf(child1, child2), capturedNodes)
     }
 
@@ -87,7 +87,7 @@ class ChildAwareCallbackInfoTest {
     fun `whenChildAttached is not invoked for unrelated child`() {
         createChild1()
         var capturedNode: Rib? = null
-        registry.whenChildAttached<Child2>(rootNode.lifecycle) { _, child -> capturedNode = child }
+        registry.whenChildAttached<Child2> { _, child -> capturedNode = child }
         assertNull(capturedNode)
     }
 
@@ -97,13 +97,13 @@ class ChildAwareCallbackInfoTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun `whenChildrenBuilt can't register same class callback`() {
-        registry.whenChildrenBuilt<Child1, Child1>(rootNode.lifecycle) { _, _, _ -> }
+        registry.whenChildrenBuilt<Child1, Child1> { _, _, _ -> }
     }
 
     @Test
     fun `whenChildrenBuilt is invoked if registered before onChildBuilt`() {
         val capturedNodes = ArrayList<Rib>()
-        registry.whenChildrenBuilt<Child1, Child2>(rootNode.lifecycle) { _, c1, c2 ->
+        registry.whenChildrenBuilt<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1
             capturedNodes += c2
         }
@@ -117,7 +117,7 @@ class ChildAwareCallbackInfoTest {
         val child1 = createChild1()
         val child2 = createChild2()
         val capturedNodes = ArrayList<Rib>()
-        registry.whenChildrenBuilt<Child1, Child2>(rootNode.lifecycle) { _, c1, c2 ->
+        registry.whenChildrenBuilt<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1
             capturedNodes += c2
         }
@@ -127,7 +127,7 @@ class ChildAwareCallbackInfoTest {
     @Test
     fun `whenChildrenAttached is invoked if registered before onChildAttached`() {
         val capturedNodes = ArrayList<Rib>()
-        registry.whenChildrenAttached<Child1, Child2>(rootNode.lifecycle) { _, c1, c2 ->
+        registry.whenChildrenAttached<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1
             capturedNodes += c2
         }
@@ -141,7 +141,7 @@ class ChildAwareCallbackInfoTest {
         val child1 = createChild1()
         val child2 = createChild2()
         val capturedNodes = ArrayList<Rib>()
-        registry.whenChildrenAttached<Child1, Child2>(rootNode.lifecycle) { _, c1, c2 ->
+        registry.whenChildrenAttached<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1
             capturedNodes += c2
         }
@@ -153,7 +153,7 @@ class ChildAwareCallbackInfoTest {
         createChild1()
         createChild3()
         val capturedNodes = ArrayList<Rib>()
-        registry.whenChildrenAttached<Child1, Child2>(rootNode.lifecycle) { _, c1, c2 ->
+        registry.whenChildrenAttached<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1
             capturedNodes += c2
         }
@@ -167,7 +167,7 @@ class ChildAwareCallbackInfoTest {
         val child21 = createChild2()
         val child22 = createChild2()
         val capturedNodes = ArrayList<Rib>()
-        registry.whenChildrenAttached<Child1, Child2>(rootNode.lifecycle) { _, child1, child2 ->
+        registry.whenChildrenAttached<Child1, Child2> { _, child1, child2 ->
             capturedNodes += child1
             capturedNodes += child2
         }

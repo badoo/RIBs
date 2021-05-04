@@ -24,7 +24,7 @@ internal class LoggedOutContainerInteractor(
     override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
         }
-        whenChildBuilt<Welcome>(nodeLifecycle) { commonLifecycle, child ->
+        whenChildBuilt<Welcome> { commonLifecycle, child ->
             commonLifecycle.createDestroy {
                 bind(child.output to welcomeListener)
             }

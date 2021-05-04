@@ -39,8 +39,7 @@ class FooBarBuilder(
         customisation: FooBar.Customisation,
         feature: FooBarFeature,
         interactor: FooBarInteractor
-    ) =
-        FooBarNode(
+    ) = FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
             plugins = listOf(

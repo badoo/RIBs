@@ -12,6 +12,7 @@ import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.requestcode.RequestCodeRegistry
 import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.view.RibView
 
 abstract class IntegrationPoint(
@@ -56,6 +57,7 @@ abstract class IntegrationPoint(
         this._root = root
         root.node.integrationPoint = this
         subscribeToLifecycle()
+        if (root is NodeLifecycleAware) root.onAttached()
     }
 
     private fun subscribeToLifecycle() {

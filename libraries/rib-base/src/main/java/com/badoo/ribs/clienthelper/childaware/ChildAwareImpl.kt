@@ -1,12 +1,12 @@
-package com.badoo.ribs.clienthelper.childawareness
+package com.badoo.ribs.clienthelper.childaware
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.clienthelper.childawareness.ChildAwareCallbackInfo.Mode
+import com.badoo.ribs.clienthelper.childaware.ChildAwareCallbackInfo.Mode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import kotlin.reflect.KClass
 
-class ChildAwareRegistryImpl : ChildAwareRegistry {
+class ChildAwareImpl : ChildAware {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 

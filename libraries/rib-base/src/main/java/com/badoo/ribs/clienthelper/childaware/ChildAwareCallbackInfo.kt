@@ -1,4 +1,4 @@
-package com.badoo.ribs.clienthelper.childawareness
+package com.badoo.ribs.clienthelper.childaware
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Node

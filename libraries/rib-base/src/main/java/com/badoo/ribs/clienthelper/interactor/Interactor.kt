@@ -1,8 +1,8 @@
 package com.badoo.ribs.clienthelper.interactor
 
 import com.badoo.ribs.android.requestcode.RequestCodeClient
-import com.badoo.ribs.clienthelper.childawareness.ChildAwareRegistry
-import com.badoo.ribs.clienthelper.childawareness.ChildAwareRegistryImpl
+import com.badoo.ribs.clienthelper.childaware.ChildAware
+import com.badoo.ribs.clienthelper.childaware.ChildAwareImpl
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
@@ -17,11 +17,11 @@ import com.badoo.ribs.core.view.RibView
 abstract class Interactor<R : Rib, V : RibView>(
     private val buildParams: BuildParams<*>,
     private val ribAware: RibAware<R> = RibAwareImpl(),
-    private val childAwareRegistry: ChildAwareRegistry = ChildAwareRegistryImpl(),
+    private val childAware: ChildAware = ChildAwareImpl(),
 ) : RibAware<R> by ribAware,
     ViewAware<V>,
     NodeLifecycleAware,
-    ChildAwareRegistry by childAwareRegistry,
+    ChildAware by childAware,
     BackPressHandler,
     SavesInstanceState,
     RequestCodeClient {

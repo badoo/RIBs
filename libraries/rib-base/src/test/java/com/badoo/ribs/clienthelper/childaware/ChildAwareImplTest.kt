@@ -1,4 +1,4 @@
-package com.badoo.ribs.clienthelper.childawareness
+package com.badoo.ribs.clienthelper.childaware
 
 import android.os.Parcelable
 import com.badoo.ribs.builder.Builder
@@ -16,9 +16,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class ChildAwareCallbackInfoTest {
+class ChildAwareImplTest {
 
-    private val registry = ChildAwareRegistryImpl()
+    private val registry = ChildAwareImpl()
     private val rootNode = createViaBuilder(isRoot = true) { buildContext ->
         Node<RibView>(
             buildParams = BuildParams(payload = null, buildContext = buildContext),

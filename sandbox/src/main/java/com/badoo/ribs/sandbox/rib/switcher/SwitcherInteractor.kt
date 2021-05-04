@@ -6,8 +6,8 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.dialog.Dialog
-import com.badoo.ribs.clienthelper.childawareness.whenChildAttached
-import com.badoo.ribs.clienthelper.childawareness.whenChildBuilt
+import com.badoo.ribs.clienthelper.childaware.whenChildAttached
+import com.badoo.ribs.clienthelper.childaware.whenChildBuilt
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.router.Router

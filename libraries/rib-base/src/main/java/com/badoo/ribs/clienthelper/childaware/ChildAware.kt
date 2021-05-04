@@ -1,4 +1,4 @@
-package com.badoo.ribs.clienthelper.childawareness
+package com.badoo.ribs.clienthelper.childaware
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Rib
@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
  *
  * Does not support Portals properly.
  */
-interface ChildAwareRegistry : SubtreeChangeAware, NodeAware {
+interface ChildAware : SubtreeChangeAware, NodeAware {
 
     fun <T : Rib> whenChildBuilt(
         lifecycle: Lifecycle = node.lifecycle,

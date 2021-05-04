@@ -2,7 +2,7 @@ package com.badoo.ribs.example.logged_in_container
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
-import com.badoo.ribs.clienthelper.childawareness.whenChildBuilt
+import com.badoo.ribs.clienthelper.childaware.whenChildBuilt
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.feed_container.FeedContainer

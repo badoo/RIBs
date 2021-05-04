@@ -11,7 +11,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.badoo.ribs.android.integrationpoint.FloatingIntegrationPoint
 import com.badoo.ribs.android.integrationpoint.IntegrationPoint
-import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib.Identifier
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.lifecycle.LifecycleManager

@@ -25,6 +25,8 @@ interface NodeLifecycleAware : Plugin {
 
     fun onCreate(nodeLifecycle: Lifecycle) {}
 
+    fun onAttached() {}
+
     fun onDestroy() {}
 }
 

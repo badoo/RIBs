@@ -20,7 +20,7 @@ class NodeConnector<Input, Output>(
         }
     }
 
-    override fun unlock() {
+    override fun onAttached() {
         synchronized(this) {
             if (isUnlocked) error("Already unlocked")
             isUnlocked = true

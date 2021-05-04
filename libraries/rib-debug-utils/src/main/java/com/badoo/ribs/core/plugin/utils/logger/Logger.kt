@@ -41,7 +41,12 @@ class Logger<T : Rib>(
     }
 
     override fun onCreate(nodeLifecycle: Lifecycle) {
-        if (policy.logOnAttach) log(rib, "onCreate")
+        if (policy.logOnCreate) log(rib, "onCreate")
+    }
+
+    override fun onAttached() {
+        super.onAttached()
+        if (policy.logOnAttached) log(rib, "onAttached")
     }
 
     override fun onDestroy() {

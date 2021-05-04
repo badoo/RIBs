@@ -95,11 +95,6 @@ class ChildAwareCallbackInfoTest {
 
     // region Double
 
-    @Test(expected = IllegalArgumentException::class)
-    fun `whenChildrenBuilt can't register same class callback`() {
-        registry.whenChildrenBuilt<Child1, Child1> { _, _, _ -> }
-    }
-
     @Test
     fun `whenChildrenBuilt is invoked if registered before onChildBuilt`() {
         val capturedNodes = ArrayList<Rib>()
@@ -166,13 +161,27 @@ class ChildAwareCallbackInfoTest {
         val child12 = createChild1()
         val child21 = createChild2()
         val child22 = createChild2()
-        val capturedNodes = ArrayList<Rib>()
+        val capturedNodes = ArrayList<Pair<Rib, Rib>>()
         registry.whenChildrenAttached<Child1, Child2> { _, child1, child2 ->
-            capturedNodes += child1
-            capturedNodes += child2
+            capturedNodes += child1 to child2
         }
         assertEquals(
-            listOf(child11, child21, child11, child22, child12, child21, child12, child22),
+            listOf(child11 to child21, child11 to child22, child12 to child21, child12 to child22),
+            capturedNodes
+        )
+    }
+
+    @Test
+    fun `whenChildrenAttached is invoked properly for same class connections`() {
+        val child1 = createChild1()
+        val child2 = createChild1()
+        val child3 = createChild1()
+        val capturedNodes = ArrayList<Pair<Rib, Rib>>()
+        registry.whenChildrenAttached<Child1, Child1> { _, c1, c2 ->
+            capturedNodes += c1 to c2
+        }
+        assertEquals(
+            listOf(child1 to child2, child1 to child3, child2 to child3),
             capturedNodes
         )
     }

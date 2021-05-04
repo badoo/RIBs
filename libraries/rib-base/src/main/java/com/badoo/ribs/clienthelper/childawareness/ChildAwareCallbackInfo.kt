@@ -46,10 +46,6 @@ internal sealed class ChildAwareCallbackInfo {
         override val mode: Mode,
     ) : ChildAwareCallbackInfo() {
 
-        init {
-            require(child1 != child2) { "Registered classes should be different ($child1, $child2)" }
-        }
-
         fun invokeIfRequired(activeNodes: List<Node<*>>, newNode: Node<*>) {
             val second = getOther(newNode) ?: return
             activeNodes

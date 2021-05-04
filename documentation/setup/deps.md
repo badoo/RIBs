@@ -37,9 +37,9 @@ implementation 'com.github.badoo.RIBs:rib-base-test-activity:{latest-version}'
 ```
 
 ### Rx
-Contains Rx implementation of workflow node + Rx Disposables plugin:
+Contains Rx implementations of the minimal reactive APIs and Rx based workflow helper classes:
 ```groovy
-implementation 'com.github.badoo.RIBs:rib-rx:{latest-version}'
+implementation 'com.github.badoo.RIBs:rib-rx2:{latest-version}'
 ```
 
 ### Debug utils

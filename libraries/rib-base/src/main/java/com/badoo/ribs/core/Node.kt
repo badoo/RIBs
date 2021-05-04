@@ -242,7 +242,11 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         child.onCreate()
         onAttachChildNode(child)
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildAttached(child) }
-        child.plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttached() }
+        child.onAttachFinished()
+    }
+
+    internal fun onAttachFinished() {
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttached() }
     }
 
     open fun onAttachChildNode(child: Node<*>) {

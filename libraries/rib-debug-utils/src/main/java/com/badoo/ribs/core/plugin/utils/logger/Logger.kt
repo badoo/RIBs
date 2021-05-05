@@ -18,13 +18,13 @@ import com.badoo.ribs.core.plugin.SystemAware
 import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 
-class Logger<T : Rib>(
+class Logger(
     private val log: (Rib, String) -> Unit = { rib, event ->
         Log.d("Rib Logger", "$rib: $event")
     },
     private val policy: LoggingPolicy = LoggingPolicy.DenyList(),
-    private val ribAware: RibAware<T> = RibAwareImpl()
-) : RibAware<T> by ribAware,
+    private val ribAware: RibAware<Rib> = RibAwareImpl()
+) : RibAware<Rib> by ribAware,
     NodeLifecycleAware,
     ViewLifecycleAware,
     SubtreeChangeAware,

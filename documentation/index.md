@@ -35,7 +35,7 @@
 
 - [Quick start](transitions/transitions-quick-start.md)
 - [Custom transitions](transitions/custom-transitions.md)
-- [Transition reversal](transitions/transition-reversal.md)
+- [Transition reversal](transitions/transitions-reversal.md)
 
 ## Reusability
 

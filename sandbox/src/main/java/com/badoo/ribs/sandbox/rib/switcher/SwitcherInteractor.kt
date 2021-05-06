@@ -2,14 +2,12 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import android.util.Log
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.dialog.Dialog
-import com.badoo.ribs.clienthelper.childaware.whenChildAttached
-import com.badoo.ribs.clienthelper.childaware.whenChildBuilt
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.mvicore.createDestroy
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.router.Router.TransitionState.IN_TRANSITION
 import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
@@ -98,16 +96,14 @@ internal class SwitcherInteractor(
 
     override fun onCreate(nodeLifecycle: Lifecycle) {
         super.onCreate(nodeLifecycle)
-        whenChildBuilt<Menu>(nodeLifecycle) { commonLifecycle, child ->
-            commonLifecycle.createDestroy { bind(child.output to menuListener) }
+
+        createDestroy<Blocker> { blocker ->
+            bind(blocker.output to blockerOutputConsumer)
         }
-        whenChildBuilt<Blocker>(nodeLifecycle) { commonLifecycle, child ->
-            commonLifecycle.createDestroy { bind(child.output to blockerOutputConsumer) }
-        }
-        whenChildAttached<Menu> { commonLifecycle, child ->
-            commonLifecycle.createDestroy {
-                bind(backStack.activeConfigurations.rx2() to child.input using ConfigurationToMenuInput)
-            }
+
+        createDestroy<Menu> { menu ->
+            bind(menu.output to menuListener)
+            bind(backStack.activeConfigurations.rx2() to menu.input using ConfigurationToMenuInput)
         }
     }
 

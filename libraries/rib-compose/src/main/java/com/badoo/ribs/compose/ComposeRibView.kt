@@ -28,10 +28,13 @@ abstract class ComposeRibView(
         }
     }
 
+    private var lastChildAttached: Node<*>? = null
+
     protected open fun getParentViewForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
         mutableStateOf(null)
 
     override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
+        lastChildAttached = child
         val target = getParentViewForSubtree(subtreeOf)
 
         when (val childView = child.onCreateView(this)) {
@@ -50,6 +53,14 @@ abstract class ComposeRibView(
 
     override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
         child.onDetachFromView()
-        getParentViewForSubtree(subtreeOf).value = null
+
+        // Only detach the same child, or we would remove something unintended.
+        // If there was already another child attached, then this one in
+        // MutableState was overwritten, and already removed from the composition as a result,
+        // so no further action is needed.
+        if (child == lastChildAttached) {
+            getParentViewForSubtree(subtreeOf).value = null
+            lastChildAttached = null
+        }
     }
 }

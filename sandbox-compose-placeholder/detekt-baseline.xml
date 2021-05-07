@@ -2,6 +2,10 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
+    <ID>PackageNaming:ComposeParent.kt$package com.badoo.ribs.sandbox.rib.compose_parent</ID>
+    <ID>PackageNaming:ComposeParentBuilder.kt$package com.badoo.ribs.sandbox.rib.compose_parent</ID>
+    <ID>PackageNaming:ComposeParentNode.kt$package com.badoo.ribs.sandbox.rib.compose_parent</ID>
+    <ID>PackageNaming:ComposeParentView.kt$package com.badoo.ribs.sandbox.rib.compose_parent</ID>
     <ID>UnusedImports:ComposeParentBuilder.kt$import com.badoo.ribs.core.plugin.Plugin</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -5,13 +5,6 @@
     <ID>ExpressionBodySyntax:ReplacementsUtilsTest.kt$ReplacementsUtilsTest.TestCase$return "when source value = $sourceValue, target value = $targetValue expects replacements = ${expectedReplacements.joinToString()}"</ID>
     <ID>ExpressionBodySyntax:StringUtils.kt$return StringUtils.replaceEach(this, replacements.fromArray, replacements.toArray)</ID>
     <ID>ExpressionBodySyntax:TemplateFilesProviderTest.kt$TemplateFilesProviderTest$return TestResourceProvider(files)</ID>
-    <ID>ForbiddenImport:MetaInformationProviderTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:ReplacementsUtilsTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:ReplacementsUtilsTest.kt$import org.junit.runner.RunWith</ID>
-    <ID>ForbiddenImport:ReplacementsUtilsTest.kt$import org.junit.runners.Parameterized</ID>
-    <ID>ForbiddenImport:ReplacementsUtilsTest.kt$import org.junit.runners.Parameterized.Parameters</ID>
-    <ID>ForbiddenImport:TemplateFilesProviderTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:TemplateReplacementsGeneratorTest.kt$import org.junit.Test</ID>
     <ID>LibraryCodeMustSpecifyReturnType:IndexUtils.kt$fun PsiDirectory.topLevelScope()</ID>
     <ID>LibraryCodeMustSpecifyReturnType:RibIconProvider.kt$RibIcons$val GENERATE_RIB_ICON = IconLoader.getIcon("/icons/generate_rib.png", RibIcons::class.java)</ID>
     <ID>LibraryCodeMustSpecifyReturnType:RibIndexer.kt$RibIndexer.Companion$const val RIB_NAME_KEY = "com.badoo.ribs.index.ribName"</ID>
@@ -24,6 +17,7 @@
     <ID>MagicNumber:GenerateRibDialog.kt$GenerateRibDialog$30</ID>
     <ID>MagicNumber:GenerateRibDialog.kt$GenerateRibDialog$50</ID>
     <ID>MagicNumber:ResourceUtils.kt$5</ID>
+    <ID>MandatoryBracesIfStatements:ReplacementsUtils.kt$isFirst = false</ID>
     <ID>NewLineAtEndOfFile:TemplateFilesProviderTest.kt$com.badoo.ribs.plugin.template.TemplateFilesProviderTest.kt</ID>
     <ID>NewLineAtEndOfFile:TemplateReplacementsGeneratorTest.kt$com.badoo.ribs.plugin.generator.TemplateReplacementsGeneratorTest.kt</ID>
     <ID>ReturnCount:GenerateTemplateAction.kt$GenerateTemplateAction$private fun isAvailable(dataContext: DataContext): Boolean</ID>

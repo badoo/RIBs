@@ -1,16 +1,5 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>ForbiddenImport:SimpleRoutingChild1Child1Test.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:SimpleRoutingChild1Child1Test.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:SimpleRoutingChild1Child2Test.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:SimpleRoutingChild1Child2Test.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:SimpleRoutingChild1Test.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:SimpleRoutingChild1Test.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:SimpleRoutingChild2Test.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:SimpleRoutingChild2Test.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:SimpleRoutingParentTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:SimpleRoutingParentTest.kt$import org.junit.Test</ID>
-  </CurrentIssues>
+    <ManuallySuppressedIssues></ManuallySuppressedIssues>
+    <CurrentIssues></CurrentIssues>
 </SmellBaseline>

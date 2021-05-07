@@ -1,12 +1,5 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>ForbiddenImport:DisposablePluginTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:DisposablePluginTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:WorkflowTest.kt$import org.junit.After</ID>
-    <ID>ForbiddenImport:WorkflowTest.kt$import org.junit.Assert</ID>
-    <ID>ForbiddenImport:WorkflowTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:WorkflowTest.kt$import org.junit.Test</ID>
-  </CurrentIssues>
+  <CurrentIssues></CurrentIssues>
 </SmellBaseline>

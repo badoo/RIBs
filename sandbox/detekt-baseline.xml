@@ -5,50 +5,12 @@
     <ID>EmptyFunctionBlock:BlockerView.kt$BlockerViewImpl${ }</ID>
     <ID>EmptyFunctionBlock:DialogExampleInteractorTest.kt$DialogExampleInteractorTest${ }</ID>
     <ID>EmptyFunctionBlock:DialogExampleRouterTest.kt$DialogExampleRouterTest${ }</ID>
+    <ID>EmptyFunctionBlock:DialogExampleTest.kt$DialogExampleTest${ }</ID>
     <ID>EmptyFunctionBlock:FooBarInteractorTest.kt$FooBarInteractorTest${ }</ID>
     <ID>EmptyFunctionBlock:LoremIpsumInteractorTest.kt$LoremIpsumInteractorTest${ }</ID>
     <ID>EmptyFunctionBlock:LoremIpsumView.kt$LoremIpsumViewImpl${ }</ID>
     <ID>EmptyFunctionBlock:PortalOverlayTestView.kt$PortalOverlayTestViewImpl${ }</ID>
-    <ID>ForbiddenImport:CompiledWorkflowTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:CompiledWorkflowTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:DialogExampleInteractorTest.kt$import org.junit.After</ID>
-    <ID>ForbiddenImport:DialogExampleInteractorTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:DialogExampleInteractorTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:DialogExampleRouterTest.kt$import org.junit.After</ID>
-    <ID>ForbiddenImport:DialogExampleRouterTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:DialogExampleRouterTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:DialogExampleRouterTest.kt$import org.junit.runner.RunWith</ID>
-    <ID>ForbiddenImport:DialogExampleTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:DialogExampleTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:FooBarInteractorTest.kt$import org.junit.After</ID>
-    <ID>ForbiddenImport:FooBarInteractorTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:FooBarInteractorTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:HelloWorldTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:HelloWorldTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:HelloWorldTestDeferred.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:HelloWorldTestDeferred.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:LoremIpsumInteractorTest.kt$import org.junit.After</ID>
-    <ID>ForbiddenImport:LoremIpsumInteractorTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:LoremIpsumInteractorTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:LoremIpsumTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:LoremIpsumTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:MainScreenTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:MainScreenTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:MainScreenTest.kt$import org.junit.runner.RunWith</ID>
-    <ID>ForbiddenImport:MenuFeatureTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:MenuRibTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:MenuRibTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:MenuRibTest.kt$import org.junit.runner.RunWith</ID>
-    <ID>ForbiddenImport:MenuTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:MenuTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:MenuViewTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:MenuViewTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:MenuViewTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:SwitcherInteractorTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:SwitcherInteractorTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:SwitcherInteractorTest.kt$import org.junit.runner.RunWith</ID>
-    <ID>ForbiddenImport:SwitcherRouterTest.kt$import org.junit.Before</ID>
-    <ID>ForbiddenImport:SwitcherRouterTest.kt$import org.junit.Test</ID>
+    <ID>EmptyFunctionBlock:SwitcherView.kt$SwitcherViewImpl${ }</ID>
     <ID>FunctionNaming:MainScreenTest.kt$MainScreenTest$@Test fun openHelloSectionAndClickButton_displaysReturnedDataFromActivity()</ID>
     <ID>FunctionNaming:MainScreenTest.kt$MainScreenTest$@Test fun openHelloSectionAndClickButton_launchesActivity()</ID>
     <ID>FunctionNaming:MenuRibTest.kt$MenuRibTest$@Test fun itemClickUiEvent_producesSelectOutput()</ID>
@@ -87,5 +49,64 @@
     <ID>NotImplementedDeclaration:TestPermissionRequester.kt$TestPermissionRequester$TODO()</ID>
     <ID>NotImplementedDeclaration:ViewEventToWish.kt$ViewEventToWish$TODO("Implement FooBarViewEventToWish mapping")</ID>
     <ID>NotImplementedDeclaration:ViewEventToWish.kt$ViewEventToWish$TODO("Implement HelloWorldViewEventToWish mapping")</ID>
+    <ID>PackageNaming:DialogExample.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleBuilder.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleChildBuilders.kt$package com.badoo.ribs.sandbox.rib.dialog_example.routing</ID>
+    <ID>PackageNaming:DialogExampleInteractor.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleInteractorTest.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleNode.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleRouter.kt$package com.badoo.ribs.sandbox.rib.dialog_example.routing</ID>
+    <ID>PackageNaming:DialogExampleRouterTest.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleTest.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:DialogExampleView.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
+    <ID>PackageNaming:Dialogs.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.sandbox.rib.foo_bar.analytics</ID>
+    <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarFeature.kt$package com.badoo.ribs.sandbox.rib.foo_bar.feature</ID>
+    <ID>PackageNaming:FooBarInteractor.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarInteractorTest.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarNode.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarView.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:HelloWorld.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldAnalytics.kt$package com.badoo.ribs.sandbox.rib.hello_world.analytics</ID>
+    <ID>PackageNaming:HelloWorldBuilder.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldChildBuilders.kt$package com.badoo.ribs.sandbox.rib.hello_world.routing</ID>
+    <ID>PackageNaming:HelloWorldFeature.kt$package com.badoo.ribs.sandbox.rib.hello_world.feature</ID>
+    <ID>PackageNaming:HelloWorldInteractor.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldNode.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldRouter.kt$package com.badoo.ribs.sandbox.rib.hello_world.routing</ID>
+    <ID>PackageNaming:HelloWorldTest.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldTestDeferred.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:HelloWorldView.kt$package com.badoo.ribs.sandbox.rib.hello_world</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:InputToWish.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>PackageNaming:LazyDialog.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:LoremIpsum.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumBuilder.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumInteractor.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumInteractorTest.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumNode.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumTest.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:LoremIpsumView.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:NewsToOutput.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>PackageNaming:ParentLongClickListener.kt$package com.badoo.ribs.sandbox.rib.foo_bar.viewplugin</ID>
+    <ID>PackageNaming:PortalOverlayTest.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestBuilder.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestInteractor.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestNode.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:PortalOverlayTestView.kt$package com.badoo.ribs.sandbox.rib.portal_overlay_test</ID>
+    <ID>PackageNaming:RibDialog.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:SimpleDialog.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToAnalyticsEvent.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>PackageNaming:ViewEventToOutput.kt$package com.badoo.ribs.sandbox.rib.lorem_ipsum.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.sandbox.rib.foo_bar.mapper</ID>
+    <ID>PackageNaming:ViewEventToWish.kt$package com.badoo.ribs.sandbox.rib.hello_world.mapper</ID>
+    <ID>UnusedImports:MainScreenTest.kt$import android.view.ViewGroup</ID>
+    <ID>UnusedImports:MenuRibTest.kt$import android.view.ViewGroup</ID>
+    <ID>UnusedImports:Small.kt$import com.badoo.ribs.sandbox.rib.big.Big</ID>
+    <ID>UnusedImports:TestNode.kt$import android.view.ViewGroup</ID>
   </CurrentIssues>
 </SmellBaseline>

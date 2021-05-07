@@ -231,8 +231,8 @@ style:
     active: true
     values: 'STOPSHIP'
   ForbiddenImport:
-    active: true
-    imports: "org.junit.Test" # Purpose: avoid new junit4 test. TODO: Once all junit4 test are removed (also vintage dependency), this must be removed
+    active: false
+    imports: ''
   LoopWithTooManyJumpStatements:
     active: true
     maxJumpCount: 1

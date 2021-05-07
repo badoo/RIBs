@@ -1,10 +1,5 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>ForbiddenImport:BuildTimeDepsTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:BuildTimeDepsTest.kt$import org.junit.Test</ID>
-    <ID>ForbiddenImport:ProfileTest.kt$import org.junit.Rule</ID>
-    <ID>ForbiddenImport:ProfileTest.kt$import org.junit.Test</ID>
-  </CurrentIssues>
+  <CurrentIssues></CurrentIssues>
 </SmellBaseline>

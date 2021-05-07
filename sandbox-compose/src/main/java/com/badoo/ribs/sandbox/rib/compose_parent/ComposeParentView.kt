@@ -3,13 +3,18 @@ package com.badoo.ribs.sandbox.rib.compose_parent
 import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.Node
@@ -26,7 +31,9 @@ interface ComposeParentView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
-    sealed class Event
+    sealed class Event {
+        object NextClicked : Event()
+    }
 
     data class ViewModel(
         val someNumber: Int = 0
@@ -56,15 +63,7 @@ class ComposeParentViewImpl private constructor(
     private var content: MutableState<ComposeView?> = mutableStateOf(null)
 
     override val composable: @Composable () -> Unit = {
-        Column {
-            Text(text = "ComposeParentView")
-            Text(text = "Own viewModel: ${viewModel.value}")
-            Text(text = "Child:")
-            Box(modifier = Modifier.padding(all = Dp(40f))) {
-                content.value?.invoke()
-            }
-            Text(text = "Here be menu")
-        }
+        View(viewModel.value, content.value, { events.accept(Event.NextClicked) })
     }
 
     override fun accept(vm: ViewModel) {
@@ -73,4 +72,48 @@ class ComposeParentViewImpl private constructor(
 
     override fun getParentViewForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
         content
+}
+
+@Composable
+private fun View(viewModel: ViewModel, content: ComposeView?, onNextClicked: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+
+    ) {
+        Column {
+            Text(
+                fontWeight = FontWeight.Bold,
+                text = "ComposeParentView"
+            )
+            // Text(text = "Own viewModel: $viewModel")
+            Text(
+                text = "Change routing to next child:"
+            )
+            Button(
+                modifier = Modifier.padding(top = Dp(16f)),
+                onClick = onNextClicked
+            ) {
+                Text("Next")
+            }
+            Text(
+                modifier = Modifier.padding(top = Dp(24f)),
+                text = "Current child:"
+            )
+            Box(modifier = Modifier.padding(all = Dp(40f))) {
+                content?.invoke()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewView() {
+    View(
+        viewModel = ViewModel(),
+        content = null,
+        onNextClicked = {}
+    )
 }

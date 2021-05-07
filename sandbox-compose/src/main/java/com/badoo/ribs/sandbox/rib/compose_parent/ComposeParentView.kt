@@ -75,6 +75,7 @@ class ComposeParentViewImpl private constructor(
 }
 
 @Composable
+@SuppressWarnings("MagicNumber")
 private fun View(viewModel: ViewModel, content: ComposeView?, onNextClicked: () -> Unit) {
     Box(
         modifier = Modifier

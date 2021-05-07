@@ -68,6 +68,7 @@ class ComposeLeafViewImpl private constructor(
 
 
 @Composable
+@SuppressWarnings("MagicNumber")
 private fun View(viewModel: ViewModel) {
     Box(
         modifier = Modifier

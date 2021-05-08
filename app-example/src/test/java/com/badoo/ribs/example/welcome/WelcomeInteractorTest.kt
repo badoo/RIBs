@@ -1,14 +1,15 @@
 package com.badoo.ribs.example.welcome
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.common.ribs.rx2.createInteractorTestHelper
-import com.badoo.common.ribs.rx2.mockIO
+import com.badoo.common.ribs.rx2.subscribedView
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.welcome.Welcome.Output
 import com.badoo.ribs.example.welcome.WelcomeView.Event
 import com.badoo.ribs.test.InteractorTestHelper
 import com.badoo.ribs.test.emptyBuildParams
 import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay2.Relay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.observers.TestObserver
@@ -31,8 +32,18 @@ class WelcomeInteractorTest {
             buildParams = emptyBuildParams(),
             authDataSource = authDataSource
         )
-        interactor.mockIO(outputRelay = output)
-        interactorTestHelper = createInteractorTestHelper(interactor, viewEventRelay)
+        val view = viewEventRelay.subscribedView<WelcomeView, Event>()
+        interactorTestHelper = InteractorTestHelper(interactor)
+        interactorTestHelper.nodeCreator = {
+            object : Node<WelcomeView>(
+                buildParams = emptyBuildParams(),
+                viewFactory = { view },
+                plugins = listOf(interactor)
+            ), Welcome {
+                override val input: Relay<Welcome.Input> = PublishRelay.create()
+                override val output: Relay<Output> = this@WelcomeInteractorTest.output
+            }
+        }
         outputObserver = TestObserver.create()
         output.subscribe(outputObserver)
     }

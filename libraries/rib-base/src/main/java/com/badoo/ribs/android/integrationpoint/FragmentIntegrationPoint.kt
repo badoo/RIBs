@@ -53,7 +53,10 @@ open class FragmentIntegrationPoint(
     }
 
     override fun handleUpNavigation() {
-        fragment.requireActivity().onNavigateUp()
+        val activity = fragment.requireActivity()
+        if (!activity.onNavigateUp()) {
+            activity.onBackPressed()
+        }
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

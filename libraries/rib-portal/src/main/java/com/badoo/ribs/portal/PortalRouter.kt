@@ -81,6 +81,7 @@ class PortalRouter(
         return resolution.buildNodes(
             listOf(
                 // we'll be discarding these Nodes, it doesn't matter
+                // TODO consider edge cases where non-root BuildContext contains data that modifies creation deps
                 BuildContext.root(
                     // TODO for maximum correctness, original List<> should also contain Bundles,
                     //  as that might change how dependencies are built (right now there's no case for this,

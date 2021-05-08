@@ -15,9 +15,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 
@@ -63,7 +61,7 @@ class BackStackFeatureTest {
 
     @Test
     fun `Initial back stack contains only one element`() {
-        assertThat(backStack.state.elements, hasSize(1))
+        assertEquals(1, backStack.state.elements.size)
     }
 
     @Test

@@ -6,7 +6,9 @@ import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.feature.ActorReducerFeature
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.login.AuthCodeDataSource
-import com.badoo.ribs.example.login.feature.LoginFeature.*
+import com.badoo.ribs.example.login.feature.LoginFeature.State
+import com.badoo.ribs.example.login.feature.LoginFeature.Wish
+import com.badoo.ribs.example.login.feature.LoginFeature.Effect
 import io.reactivex.Observable
 
 internal class LoginFeature(

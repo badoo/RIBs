@@ -8,12 +8,13 @@ import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.auth.AuthState
 import com.badoo.ribs.example.network.NetworkError
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration
-import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.*
+import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedIn
+import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.LoggedOut
+import com.badoo.ribs.example.root.routing.RootRouter.Configuration.Content.Login
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 
 internal class RootInteractor(

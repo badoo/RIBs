@@ -1,5 +1,6 @@
 package com.badoo.ribs.example.auth
 
+import com.badoo.ribs.example.RxSchedulerRule
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.AccessToken
 import com.nhaarman.mockitokotlin2.mock
@@ -8,6 +9,7 @@ import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class AuthDataSourceImplTest {
@@ -16,6 +18,9 @@ class AuthDataSourceImplTest {
     private var api: UnsplashApi = mock()
     private var persistence: AuthStatePersistence = mock()
     private lateinit var authStateSubscriber: TestObserver<AuthState>
+
+    @get:Rule
+    val rxSchedulerRule = RxSchedulerRule()
 
     @Before
     fun setUp() {

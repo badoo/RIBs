@@ -4,6 +4,7 @@ import com.badoo.ribs.example.BuildConfig
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.AccessToken
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 interface AuthDataSource : AuthStateStorage {
     fun login(authCode: String): Single<AccessToken>
@@ -25,6 +26,7 @@ class AuthDataSourceImpl(
             redirectUri = AuthConfig.redirectUri,
             code = authCode
         )
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess(::onAuthSuccess)
 
     private fun onAuthSuccess(token: AccessToken) {

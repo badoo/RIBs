@@ -52,7 +52,7 @@ class SourceSetDirectoriesProvider(
             } else {
                 targetPackage.directories.firstOrNull { VfsUtil.isAncestor(virtualFile!!, it.virtualFile, false) }
             }
-        } catch (t: Throwable) {
+        } catch (t: ClassCastException) {
             null
         }
     }

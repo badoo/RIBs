@@ -27,9 +27,9 @@ dependencies {
     compileOnly deps.external.rxrelay2
     compileOnly deps.external.rxjava2
 
-    junitImplementation(project)
     implementation deps.android.annotations
     implementation deps.android.runner
+    implementation deps.test.junit4
     implementation deps.test.mockito
 
     api deps.android.rules

@@ -35,17 +35,14 @@ ext.junitTestImplementation = { project ->
     project.dependencies {
         testImplementation deps.test.junitApi
         testImplementation deps.test.junitParams
-        testImplementation deps.test.junitEngine
+        testRuntimeOnly deps.test.junitEngine
         testImplementation deps.test.junitVintage
     }
 }
 
 ext.junitAndroidTestImplementation = { project ->
     project.dependencies {
-        androidTestImplementation deps.test.junitApi
-        androidTestImplementation deps.test.junitParams
-        androidTestImplementation deps.test.junitEngine
-        androidTestImplementation deps.test.junitVintage
+        androidTestImplementation deps.test.junit4
     }
 }
 

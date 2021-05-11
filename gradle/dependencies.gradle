@@ -108,6 +108,7 @@ def compose = [
 ]
 
 def test = [
+        junit4         : "junit:junit:4.12",
         junitApi      : "org.junit.jupiter:junit-jupiter-api:${versions.junit5}",
         junitParams   : "org.junit.jupiter:junit-jupiter-params:${versions.junit5}",
         junitEngine   : "org.junit.jupiter:junit-jupiter-engine:${versions.junit5}",

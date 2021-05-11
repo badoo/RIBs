@@ -68,8 +68,8 @@ dependencies {
     implementation deps.compose.uiTooling
     implementation deps.compose.foundation
 
-    testImplementation deps.external.roboelectricBase
     junitTestImplementation(project)
+    testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")

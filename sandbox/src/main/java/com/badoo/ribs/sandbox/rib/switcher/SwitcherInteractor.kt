@@ -2,13 +2,12 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import android.util.Log
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.mvicore.createDestroy
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.router.Router.TransitionState.IN_TRANSITION
 import com.badoo.ribs.routing.router.Router.TransitionState.SETTLED
@@ -80,7 +79,7 @@ internal class SwitcherInteractor(
         backStack.pop()
     }
 
-    private val dialogEventConsumer : Consumer<Dialog.Event> = Consumer {
+    private val dialogEventConsumer: Consumer<Dialog.Event> = Consumer {
         when (it) {
             Dialog.Event.Positive -> {
                 // do something if you want
@@ -88,10 +87,23 @@ internal class SwitcherInteractor(
         }
     }
 
-    private val transitionStateToViewModel : (Router.TransitionState) -> ViewModel = {
+    private val transitionStateToViewModel: (Router.TransitionState) -> ViewModel = {
         when (it) {
             SETTLED -> ViewModel(uiFrozen = false)
             IN_TRANSITION -> ViewModel(uiFrozen = true)
+        }
+    }
+
+    override fun onCreate(nodeLifecycle: Lifecycle) {
+        super.onCreate(nodeLifecycle)
+
+        createDestroy<Blocker> { blocker ->
+            bind(blocker.output to blockerOutputConsumer)
+        }
+
+        createDestroy<Menu> { menu ->
+            bind(menu.output to menuListener)
+            bind(backStack.activeConfigurations.rx2() to menu.input using ConfigurationToMenuInput)
         }
     }
 
@@ -101,23 +113,6 @@ internal class SwitcherInteractor(
             bind(view to viewEventConsumer)
             bind(dialogToTestOverlay.rx2() to dialogEventConsumer)
             bind(transitions to view using transitionStateToViewModel)
-        }
-    }
-
-    override fun onChildBuilt(child: Node<*>) {
-        child.lifecycle.createDestroy {
-            when (child) {
-                is Menu -> bind(child.output to menuListener)
-                is Blocker -> bind(child.output to blockerOutputConsumer)
-            }
-        }
-    }
-
-    override fun onChildAttached(child: Node<*>) {
-        child.lifecycle.createDestroy {
-            when (child) {
-                is Menu -> bind(backStack.activeConfigurations.rx2() to child.input using ConfigurationToMenuInput)
-            }
         }
     }
 

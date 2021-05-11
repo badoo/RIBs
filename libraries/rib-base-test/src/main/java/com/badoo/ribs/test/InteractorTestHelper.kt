@@ -1,8 +1,12 @@
 package com.badoo.ribs.test
 
 import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.modality.BuildContext
+import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import org.mockito.Mockito.mock
@@ -45,8 +49,15 @@ class InteractorTestHelper<View : RibView>(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun toAttachViewState(block: (Node<View>) -> Unit) {
-        val node = nodeCreator()
+        val node =
+            object : Builder<Nothing?, Rib>() {
+                override fun build(buildParams: BuildParams<Nothing?>): Rib = nodeCreator()
+            }.build(
+                payload = null,
+                buildContext = BuildContext.root(savedInstanceState = null)
+            ) as Node<View>
         node.onCreate()
         node.onCreateView(mock(RibView::class.java))
         node.onAttachToView()

@@ -99,7 +99,7 @@ class RootActivity : RxWorkflowActivity() {
             workflowRoot = it
         }
 
-    private fun createLogger(): Plugin = Logger<Switcher>(
+    private fun createLogger(): Plugin = Logger(
         log = { rib, event ->
             Log.d("Rib Logger", "$rib: $event")
         }

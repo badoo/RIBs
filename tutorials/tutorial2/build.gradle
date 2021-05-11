@@ -46,7 +46,7 @@ dependencies {
 
     junitTestImplementation(project)
     testImplementation deps.external.roboelectricBase
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
+    testImplementation deps.test.mockitoKotlin
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

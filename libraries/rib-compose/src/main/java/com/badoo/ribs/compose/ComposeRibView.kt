@@ -28,14 +28,14 @@ abstract class ComposeRibView(
         }
     }
 
-    private var lastChildAttached: Node<*>? = null
+    private var lastChildAttached: MutableMap<Any, Node<*>> = mutableMapOf()
 
     protected open fun getParentViewForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
         mutableStateOf(null)
 
     override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
-        lastChildAttached = child
-        val target = getParentViewForSubtree(subtreeOf)
+        val target: MutableState<ComposeView?> = getParentViewForSubtree(subtreeOf)
+        lastChildAttached[target] = child
 
         when (val childView = child.onCreateView(this)) {
             is ComposeRibView -> {
@@ -53,14 +53,15 @@ abstract class ComposeRibView(
 
     override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
         child.onDetachFromView()
+        val target: MutableState<ComposeView?> = getParentViewForSubtree(subtreeOf)
 
         // Only detach the same child, or we would remove something unintended.
-        // If there was already another child attached, then this one in
-        // MutableState was overwritten, and already removed from the composition as a result,
-        // so no further action is needed.
-        if (child == lastChildAttached) {
-            getParentViewForSubtree(subtreeOf).value = null
-            lastChildAttached = null
+        // If there was already another child attached to the same target, then the MutableState
+        // of lastChildAttached[target] was overwritten, and the related ComposeView
+        // was already removed from the composition as a result, and no further action is needed.
+        if (child == lastChildAttached[target]) {
+            target.value = null
+            lastChildAttached.remove(target)
         }
     }
 }

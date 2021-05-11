@@ -76,9 +76,7 @@ private def configureAndroidModule(Project project) {
         project.afterEvaluate {
             project.android.kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
-    }
 
-    tasks.withType(Test).configureEach {
-        useJUnitPlatform()
+        testOptions.unitTests.all { useJUnitPlatform() }
     }
 }

@@ -1,10 +1,11 @@
-package com.badoo.ribs.clienthelper.connector
+package com.badoo.ribs.rx2.clienthelper.conector
 
-import com.badoo.ribs.test.helper.connectable.ConnectableTestRib.Input
-import com.badoo.ribs.test.helper.connectable.ConnectableTestRib.Output
-import com.badoo.ribs.test.helper.connectable.ConnectableTestRib.Output.Output1
-import com.badoo.ribs.test.helper.connectable.ConnectableTestRib.Output.Output2
-import com.badoo.ribs.test.helper.connectable.ConnectableTestRib.Output.Output3
+import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestRib.Input
+import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestRib.Output
+import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestRib.Output.Output1
+import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestRib.Output.Output2
+import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestRib.Output.Output3
+import com.badoo.ribs.rx2.clienthelper.connector.NodeConnector
 import io.reactivex.observers.TestObserver
 import org.junit.After
 import org.junit.Rule
@@ -14,7 +15,7 @@ import java.util.concurrent.CyclicBarrier
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-class NodeConnectorTest {
+class Rx2NodeConnectorTest {
 
     @get:Rule
     val exceptionRule: ExpectedException = ExpectedException.none()
@@ -29,7 +30,8 @@ class NodeConnectorTest {
     @Test
     fun `WHEN nodeConnector onAttached is called THEN every emitted output event is emitted again`() {
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.observe { testObserver.onNext(it) }
+
+        nodeConnector.output.subscribe { testObserver.onNext(it) }
 
         nodeConnector.output.accept(Output1)
         nodeConnector.onAttached()
@@ -40,9 +42,9 @@ class NodeConnectorTest {
 
     @Test
     fun `WHEN nodeConnector onAttached is called THEN every new emitted output is just emitted once`() {
-        //val testObserver = TestObserver<Output>()
+
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.observe { testObserver.onNext(it) }
+        nodeConnector.output.subscribe { testObserver.onNext(it) }
 
         nodeConnector.onAttached()
         nodeConnector.output.accept(Output1)
@@ -63,6 +65,7 @@ class NodeConnectorTest {
 
     @Test
     fun `WHEN multiple output are accepted from multiple threads THEN output is correctly received when onAttached is called`() {
+        //val testObserver = TestObserver<Output>()
         val nodeConnector = NodeConnector<Input, Output>()
         val threadNumber = 100
         val iterations = 10000
@@ -86,7 +89,7 @@ class NodeConnectorTest {
         executor.shutdown()
         executor.awaitTermination(3, TimeUnit.SECONDS)
 
-        nodeConnector.output.observe { testObserver.onNext(it) }
+        nodeConnector.output.subscribe { testObserver.onNext(it) }
         nodeConnector.onAttached()
 
         testObserver.assertValueCount(threadNumber * iterations * 3)

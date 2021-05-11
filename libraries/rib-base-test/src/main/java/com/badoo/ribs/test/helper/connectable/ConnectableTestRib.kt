@@ -1,8 +1,8 @@
-package com.badoo.ribs.test.helper
+package com.badoo.ribs.test.helper.connectable
 
 import com.badoo.ribs.clienthelper.connector.Connectable
-import com.badoo.ribs.test.helper.ConnectableTestRib.Input
-import com.badoo.ribs.test.helper.ConnectableTestRib.Output
+import com.badoo.ribs.test.helper.connectable.ConnectableTestRib.Input
+import com.badoo.ribs.test.helper.connectable.ConnectableTestRib.Output
 
 interface ConnectableTestRib : Connectable<Input, Output> {
 

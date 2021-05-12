@@ -1,0 +1,11 @@
+- Our approach
+  - Divide & conquer
+  - Tree structure (Node, parent, child, sibling)
+    - Complexity
+    - DI
+    - Testing in isolation
+    - Reuse
+  - Unopinionated
+  - Plugins-based
+  - State persistence
+  - Transitions

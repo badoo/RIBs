@@ -41,6 +41,7 @@ internal class FooBarInteractor(
     }
 
     override fun onChildBuilt(child: Node<*>) {
+        super.onChildBuilt(child)
         /**
          * TODO bind children here and delete this comment block.
          *

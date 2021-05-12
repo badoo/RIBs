@@ -12,15 +12,15 @@ dependencies {
 
     api project(":libraries:rib-base")
 
+    junitTestImplementation(project)
     testImplementation deps.android.annotations
-    testImplementation deps.test.junit
     testImplementation deps.test.mockito
     testImplementation deps.test.assertj
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
     testImplementation project(":libraries:rib-base-test")
 
-    androidTestImplementation deps.test.junit
+    junitAndroidTestImplementation(project)
     androidTestImplementation deps.test.assertj
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.espressoIntents

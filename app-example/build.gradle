@@ -85,15 +85,16 @@ dependencies {
     implementation deps.external.mviCoreDiff
     implementation project(path: ':libraries:rib-debug-utils')
 
-    testImplementation deps.test.junit
+    junitTestImplementation(project)
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
     testImplementation project(":libraries:rib-base-test-rx2")
 
-    debugImplementation project(":libraries:rib-base-test-activity")
+    junitAndroidTestImplementation(project)
     androidTestImplementation project(":libraries:rib-base-test")
-    androidTestImplementation deps.test.junit
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner
+
+    debugImplementation project(":libraries:rib-base-test-activity")
 }

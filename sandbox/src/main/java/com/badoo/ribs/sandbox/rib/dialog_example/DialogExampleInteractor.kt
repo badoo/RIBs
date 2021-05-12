@@ -6,8 +6,8 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.text.Text
+import com.badoo.ribs.clienthelper.childaware.whenChildBuilt
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
@@ -38,6 +38,14 @@ class DialogExampleInteractor internal constructor(
         ViewModel("Dialog examples")
     )
 
+    override fun onCreate(nodeLifecycle: Lifecycle) {
+        whenChildBuilt<LoremIpsum>(nodeLifecycle) { commonLifecycle, child ->
+            commonLifecycle.createDestroy {
+                bind(child.output to loremIpsumOutputConsumer)
+            }
+        }
+    }
+
     override fun onViewCreated(view: DialogExampleView, viewLifecycle: Lifecycle) {
         viewLifecycle.startStop {
             bind(dummyViewInput to view)
@@ -46,14 +54,6 @@ class DialogExampleInteractor internal constructor(
             bind(dialogs.simpleDialog.rx2() to dialogEventConsumer)
             bind(dialogs.lazyDialog.rx2() to dialogEventConsumer)
             bind(dialogs.ribDialog.rx2() to dialogEventConsumer)
-        }
-    }
-
-    override fun onChildBuilt(child: Node<*>) {
-        child.lifecycle.createDestroy {
-            when (child) {
-                is LoremIpsum -> bind(child.output to loremIpsumOutputConsumer)
-            }
         }
     }
 
@@ -85,7 +85,7 @@ class DialogExampleInteractor internal constructor(
         }
     }
 
-    private val dialogEventConsumer : Consumer<Dialog.Event> = Consumer {
+    private val dialogEventConsumer: Consumer<Dialog.Event> = Consumer {
         when (it) {
             Dialog.Event.Positive -> {
                 dummyViewInput.accept(ViewModel("Dialog - Positive clicked"))
@@ -96,13 +96,13 @@ class DialogExampleInteractor internal constructor(
             Dialog.Event.Neutral -> {
                 dummyViewInput.accept(ViewModel("Dialog - Neutral clicked"))
             }
-            Dialog.Event.Cancelled ->{
+            Dialog.Event.Cancelled -> {
                 dummyViewInput.accept(ViewModel("Dialog - Cancelled"))
             }
         }
     }
 
-    private val loremIpsumOutputConsumer : Consumer<LoremIpsum.Output> = Consumer {
+    private val loremIpsumOutputConsumer: Consumer<LoremIpsum.Output> = Consumer {
         dummyViewInput.accept(ViewModel("Button in Lorem Ipsum RIB clicked"))
         backStack.popBackStack()
     }

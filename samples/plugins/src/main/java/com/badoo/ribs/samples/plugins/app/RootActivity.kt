@@ -41,7 +41,7 @@ class RootActivity : RibActivity() {
         ))
     }
 
-    private fun createLogger(): Plugin = Logger<PluginsDemo>(
+    private fun createLogger(): Plugin = Logger(
         log = { rib, event ->
             Log.d("SampleLogger", "$rib: $event")
         }

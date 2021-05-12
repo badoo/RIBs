@@ -2,32 +2,55 @@ package com.badoo.ribs.rx2.clienthelper.connector
 
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
-import io.reactivex.disposables.Disposable
+import io.reactivex.Observer
+
 
 class NodeConnector<Input, Output>(
     override val input: Relay<Input> = PublishRelay.create(),
-    override val output: Relay<Output> = PublishRelay.create()
 ) : Connectable<Input, Output> {
 
-    private var isUnlocked = false
+
+    private val intake: Relay<Output> = PublishRelay.create()
+    private val exhaust: Relay<Output> = PublishRelay.create()
+    private var isFlushed = false
     private val outputCache = mutableListOf<Output>()
-    private val cacheSubscription: Disposable = output.subscribe {
+
+    override val output = object : Relay<Output>() {
+
+        override fun subscribeActual(observer: Observer<in Output>?) {
+            exhaust.subscribe(observer as Observer<Output>)
+        }
+
+        override fun accept(value: Output) {
+            intake.accept(value)
+        }
+
+        override fun hasObservers() = exhaust.hasObservers()
+
+    }
+
+    private val cacheSubscription = intake.subscribe {
         synchronized(this) {
-            if (!isUnlocked) {
+            if (!isFlushed) {
                 outputCache.add(it)
             } else {
-                output.accept(it)
+                exhaust.accept(it)
+                switchToExhaust()
             }
         }
     }
 
     override fun onAttached() {
         synchronized(this) {
-            if (isUnlocked) error("Already unlocked")
-            isUnlocked = true
-            cacheSubscription.dispose()
-            outputCache.forEach { output.accept(it) }
+            if (isFlushed) error("Already unlocked")
+            isFlushed = true
+            outputCache.forEach { exhaust.accept(it) }
             outputCache.clear()
         }
+    }
+
+    private fun switchToExhaust() {
+        intake.subscribe { exhaust.accept(it) }
+        cacheSubscription.dispose()
     }
 }

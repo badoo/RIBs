@@ -1,5 +1,6 @@
 package com.badoo.ribs.rx2.clienthelper.conector
 
+import com.badoo.ribs.test.BaseConnectableNodeTest
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestNode
@@ -12,7 +13,7 @@ import org.junit.Before
 import org.junit.Test
 
 
-class Rx2ConnectableNodeTest {
+class Rx2ConnectableNodeTest : BaseConnectableNodeTest() {
 
     private lateinit var parent: Rx2ConnectableTestNode
     private val testObserver = TestObserver<Output>()
@@ -35,7 +36,7 @@ class Rx2ConnectableNodeTest {
     }
 
     @Test
-    fun `WHEN child emit some output before it is attached to parent THEN parent receive the output after child attach finished`() {
+    override fun WHEN_child_emit_some_output_before_it_is_attached_to_parent_THEN_parent_receive_the_output_after_child_attach_finished() {
         val children = Rx2ConnectableTestNode(parent = parent)
 
         children.output.accept(Output1)
@@ -45,7 +46,7 @@ class Rx2ConnectableNodeTest {
     }
 
     @Test
-    fun `WHEN child is attached and emit some output THEN parent receive the exact output`() {
+    override fun `WHEN_child_is_attached_and_emit_some_output_THEN_parent_receive_the_exact_output`() {
         val children = Rx2ConnectableTestNode(parent = parent)
 
         parent.attachChildNode(children)
@@ -56,7 +57,7 @@ class Rx2ConnectableNodeTest {
     }
 
     @Test
-    fun `WHEN child emit multiple outputs before it is attached to parent THEN parent receive the output after attach finished in correct order`() {
+    override fun `WHEN_child_emit_multiple_outputs_before_it_is_attached_to_parent_THEN_parent_receive_the_output_after_attach_finished_in_correct_order`() {
         val children = Rx2ConnectableTestNode(parent = parent)
 
         children.output.accept(Output1)
@@ -68,7 +69,7 @@ class Rx2ConnectableNodeTest {
     }
 
     @Test
-    fun `WHEN child emit output before it is attached to parent and then after it is attached to parent THEN parent receive the output in correct order`() {
+    override fun `WHEN_child_emit_output_before_it_is_attached_to_parent_and_then_after_it_is_attached_to_parent_THEN_parent_receive_the_output_in_correct_order`() {
         val children = Rx2ConnectableTestNode(parent = parent)
 
         children.output.accept(Output1)

@@ -1,4 +1,4 @@
-package com.badoo.ribs.test.helper
+package com.badoo.ribs.core.helper
 
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.AndroidRibView

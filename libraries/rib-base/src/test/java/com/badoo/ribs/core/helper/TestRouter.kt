@@ -6,7 +6,6 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.test.helper.testBuildParams
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.android.parcel.Parcelize
 

@@ -1,6 +1,6 @@
 package com.badoo.ribs.core
 
-import com.badoo.ribs.test.helper.TestView
+import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.plugin.ViewAware
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq

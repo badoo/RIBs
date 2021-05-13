@@ -31,7 +31,6 @@ dependencies {
     implementation deps.android.runner
     implementation deps.test.junit4
     implementation deps.test.mockito
-    implementation deps.test.mockitoKotlin
 
     api deps.android.rules
 }

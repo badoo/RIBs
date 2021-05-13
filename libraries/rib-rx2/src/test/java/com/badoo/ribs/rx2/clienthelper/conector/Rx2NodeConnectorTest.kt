@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import java.util.concurrent.CyclicBarrier
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -28,9 +29,9 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun GIVEN_nodeConnector_onAttached_is_not_called_WHEN_output_is_accepted_THEN_accepted_output_do_not_reach_observer() {
+    override fun `GIVEN nodeConnector onAttached is not called WHEN output is accepted THEN accepted output do not reach observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.output.accept(Output1)
 
@@ -38,47 +39,42 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun GIVEN_and_output_is_accepted_before_onAttached_WHEN_nodeConnector_onAttached_is_called_THEN_accepted_output_reach_the_observer() {
+    override fun `GIVEN and output is accepted before onAttached WHEN nodeConnector onAttached is called THEN accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.output.accept(Output1)
         nodeConnector.onAttached()
 
-        firstTestObserver.assertValue(Output1)
-        firstTestObserver.assertValueCount(1)
+        firstTestObserver.assertValues(Output1)
     }
 
     @Test
-    override fun GIVEN_nodeConnector_is_attached_WHEN_output_is_accepted_THEN_every_accepted_output_reach_the_observer() {
+    override fun `GIVEN nodeConnector is attached WHEN output is accepted THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.onAttached()
         nodeConnector.output.accept(Output1)
 
-        firstTestObserver.assertValue(Output1)
-        firstTestObserver.assertValueCount(1)
+        firstTestObserver.assertValues(Output1)
     }
 
     @Test
-    override fun GIVEN_outputs_accepted_before_and_after_onAttached_WHEN_node_is_attached_THEN_every_accepted_output_reach_the_observer() {
+    override fun `GIVEN outputs accepted before and after onAttached WHEN node is attached THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.output.accept(Output1)
         nodeConnector.onAttached()
         nodeConnector.output.accept(Output2)
         nodeConnector.output.accept(Output3)
 
-        firstTestObserver.assertValueAt(0, Output1)
-        firstTestObserver.assertValueAt(1, Output2)
-        firstTestObserver.assertValueAt(2, Output3)
-        firstTestObserver.assertValueCount(3)
+        firstTestObserver.assertValues(Output1, Output2, Output3)
     }
 
     @Test
-    override fun WHEN_nodeConnector_onAttached_is_called_twice_THEN_error_is_raised() {
+    override fun `WHEN nodeConnector onAttached is called twice THEN error is raised`() {
         val nodeConnector = NodeConnector<Input, Output>()
 
         nodeConnector.onAttached()
@@ -88,65 +84,56 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun GIVEN_multiple_observers_and_output_is_accepted_before_OnAttached_WHEN_nodeConnector_onAttached_is_called_THEN_every_accepted_output_reach_the_observers() {
+    override fun `GIVEN multiple observers and output is accepted before OnAttached WHEN nodeConnector onAttached is called THEN every accepted output reach the observers`() {
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
-        nodeConnector.output.subscribe { secondTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
+        nodeConnector.output.subscribe(secondTestObserver)
 
         nodeConnector.output.accept(Output1)
         nodeConnector.onAttached()
 
-        firstTestObserver.assertValue(Output1)
-        firstTestObserver.assertValueCount(1)
-        secondTestObserver.assertValue(Output1)
-        secondTestObserver.assertValueCount(1)
+        firstTestObserver.assertValues(Output1)
+        secondTestObserver.assertValues(Output1)
     }
 
     @Test
-    override fun GIVEN_multiple_observers_and_nodeConnector_is_attached_WHEN_output_is_accepted_THEN_every_accepted_output_reach_the_observer() {
+    override fun `GIVEN multiple observers and nodeConnector is attached WHEN output is accepted THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
-        nodeConnector.output.subscribe { secondTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
+        nodeConnector.output.subscribe(secondTestObserver)
 
         nodeConnector.onAttached()
         nodeConnector.output.accept(Output1)
 
-        firstTestObserver.assertValue(Output1)
-        firstTestObserver.assertValueCount(1)
-        secondTestObserver.assertValue(Output1)
-        secondTestObserver.assertValueCount(1)
+        firstTestObserver.assertValues(Output1)
+        secondTestObserver.assertValues(Output1)
     }
 
     @Test
-    override fun GIVEN_multiple_observers_that_subscribe_before_and_after_onAttached__and_outputs_accepted_before_and_after_onAttached_WHEN_node_is_attached_THEN_every_accepted_output_reach_the_observer() {
+    override fun `GIVEN multiple observers that subscribe before and after onAttached  and outputs accepted before and after onAttached WHEN node is attached THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
         //First subscriber subscribe BEFORE onAttached
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
 
         //Output accepted BEFORE onAttached
         nodeConnector.output.accept(Output1)
         nodeConnector.onAttached()
 
         //Second subscriber subscribe AFTER onAttached
-        nodeConnector.output.subscribe { secondTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(secondTestObserver)
 
         //Outputs accepted AFTER onAttached
         nodeConnector.output.accept(Output2)
         nodeConnector.output.accept(Output3)
 
-        firstTestObserver.assertValueAt(0, Output1)
-        firstTestObserver.assertValueAt(1, Output2)
-        firstTestObserver.assertValueAt(2, Output3)
-        firstTestObserver.assertValueCount(3)
+        firstTestObserver.assertValues(Output1, Output2, Output3)
+        secondTestObserver.assertValues(Output2, Output3)
 
-        secondTestObserver.assertValueAt(0, Output2)
-        secondTestObserver.assertValueAt(1, Output3)
-        secondTestObserver.assertValueCount(2)
     }
 
 
     @Test
-    override fun WHEN_multiple_output_are_accepted_from_multiple_threads_THEN_output_is_correctly_received_when_onAttached_is_called() {
+    override fun `WHEN multiple output are accepted from multiple threads THEN output is correctly received when onAttached is called`() {
         val nodeConnector = NodeConnector<Input, Output>()
         val threadNumber = 100
         val iterations = 10000
@@ -154,7 +141,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         val executor = Executors.newFixedThreadPool(threadNumber).apply {
             repeat(threadNumber) {
                 submit {
-                    barrier.await()
+                    barrier.awaitWithTimeOut()
                     repeat(iterations) {
                         nodeConnector.output.accept(Output1)
                         nodeConnector.output.accept(Output2)
@@ -166,11 +153,11 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         }
 
         //Unlock threads(trip barrier) and wait for them to complete
-        barrier.await()
+        barrier.awaitWithTimeOut()
         executor.shutdown()
-        executor.awaitTermination(3, TimeUnit.SECONDS)
+        executor.awaitWithTimeOut()
 
-        nodeConnector.output.subscribe { firstTestObserver.onNext(it) }
+        nodeConnector.output.subscribe(firstTestObserver)
         nodeConnector.onAttached()
 
         firstTestObserver.assertValueCount(threadNumber * iterations * 3)
@@ -193,7 +180,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
      * % of failure when race condition issue is present.
      */
     @RepeatedTest(1000)
-    override fun WHEN_accept_and_onAttached_are_called_by_different_thread_at_the_same_time_THEN_output_is_the_expected() {
+    override fun `WHEN accept and onAttached are called by different thread at the same time THEN output is the expected`() {
         val nodeConnector1 = NodeConnector<Input, Output>()
         val nodeConnector2 = NodeConnector<Input, Output>()
         val threadNumber = 2
@@ -203,43 +190,54 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         val executor = Executors.newFixedThreadPool(threadNumber).apply {
             //Emitter thread
             submit {
-                barrier1.await()
+                barrier1.awaitWithTimeOut()
                 nodeConnector1.output.accept(Output1)
             }
             //Attacher thread
             submit {
-                barrier1.await()
+                barrier1.awaitWithTimeOut()
                 nodeConnector1.onAttached()
             }
         }
         val executor2 = Executors.newFixedThreadPool(threadNumber).apply {
             //Attacher thread
             submit {
-                barrier2.await()
+                barrier2.awaitWithTimeOut()
                 nodeConnector2.onAttached()
             }
             //Emitter thread
             submit {
-                barrier2.await()
+                barrier2.awaitWithTimeOut()
                 nodeConnector2.output.accept(Output1)
             }
         }
 
         //subscribe nodes
-        nodeConnector1.output.subscribe { firstTestObserver.onNext(it) }
-        nodeConnector2.output.subscribe { secondTestObserver.onNext(it) }
+        nodeConnector1.output.subscribe(firstTestObserver)
+        nodeConnector2.output.subscribe(secondTestObserver)
 
         //Unlock threads(trip barrier) and wait for them to complete
-        barrier1.await()
-        barrier2.await()
+        barrier1.awaitWithTimeOut()
+        barrier2.awaitWithTimeOut()
         executor.shutdown()
         executor2.shutdown()
-        executor.awaitTermination(3, TimeUnit.SECONDS)
-        executor2.awaitTermination(3, TimeUnit.SECONDS)
+        executor.awaitWithTimeOut()
+        executor2.awaitWithTimeOut()
 
-        firstTestObserver.assertValue(Output1)
-        firstTestObserver.assertValueCount(1)
-        secondTestObserver.assertValue(Output1)
-        secondTestObserver.assertValueCount(1)
+        firstTestObserver.assertValues(Output1)
+        secondTestObserver.assertValues(Output1)
+    }
+
+
+    private fun CyclicBarrier.awaitWithTimeOut() {
+        await(TIME_OUT_S, TimeUnit.SECONDS)
+    }
+
+    private fun ExecutorService.awaitWithTimeOut() {
+        awaitTermination(TIME_OUT_S, TimeUnit.SECONDS)
+    }
+
+    companion object {
+        private const val TIME_OUT_S = 30L
     }
 }

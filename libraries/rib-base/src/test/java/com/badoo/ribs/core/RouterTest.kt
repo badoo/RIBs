@@ -1,7 +1,7 @@
 package com.badoo.ribs.core
 
 import com.badoo.ribs.core.helper.TestRouter
-import com.badoo.ribs.test.helper.TestView
+import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.any
@@ -71,7 +71,7 @@ class RouterTest {
 
     @Test
     fun `Save instance state call reaches child nodes`() {
-        router.onBuild()
+        router.onNodeBuild()
         router.onCreate(mock())
         router.onSaveInstanceState(mock())
         verify(childNodeC2_1).onSaveInstanceState(any())

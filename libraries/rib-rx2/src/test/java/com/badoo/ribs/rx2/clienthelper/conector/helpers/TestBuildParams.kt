@@ -1,4 +1,4 @@
-package com.badoo.ribs.test.helper
+package com.badoo.ribs.rx2.clienthelper.conector.helpers
 
 import android.os.Bundle
 import com.badoo.ribs.core.Rib

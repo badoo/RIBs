@@ -21,7 +21,7 @@ interface NodeAware : Plugin {
 }
 
 interface NodeLifecycleAware : Plugin {
-    fun onBuild() {}
+    fun onNodeBuild() {}
 
     fun onCreate(nodeLifecycle: Lifecycle) {}
 

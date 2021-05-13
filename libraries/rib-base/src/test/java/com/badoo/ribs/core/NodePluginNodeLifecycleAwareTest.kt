@@ -21,7 +21,7 @@ class NodePluginNodeLifecycleAwareTest : NodePluginTest() {
         builder.build(BuildContext.root(null))
 
         plugins.forEach {
-            verify(it).onBuild()
+            verify(it).onNodeBuild()
         }
     }
 

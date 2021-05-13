@@ -1,4 +1,4 @@
-package com.badoo.ribs.test.helper
+package com.badoo.ribs.core.helper
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

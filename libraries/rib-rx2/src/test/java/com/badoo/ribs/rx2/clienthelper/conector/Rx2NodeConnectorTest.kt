@@ -213,15 +213,15 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
             }
         }
         val executor2 = Executors.newFixedThreadPool(threadNumber).apply {
-            //Emitter thread
-            submit {
-                barrier2.await()
-                nodeConnector2.output.accept(Output1)
-            }
             //Attacher thread
             submit {
                 barrier2.await()
                 nodeConnector2.onAttached()
+            }
+            //Emitter thread
+            submit {
+                barrier2.await()
+                nodeConnector2.output.accept(Output1)
             }
         }
 

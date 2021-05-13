@@ -127,7 +127,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
         nodeConnector.output.accept(Output3)
 
         firstTestObserver.assertValues(Output1, Output2, Output3)
-        firstTestObserver.assertValues(Output2, Output3)
+        secondTestObserver.assertValues(Output2, Output3)
     }
 
 

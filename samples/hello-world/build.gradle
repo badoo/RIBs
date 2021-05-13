@@ -34,12 +34,13 @@ dependencies {
     implementation deps.android.design
     implementation project(":libraries:rib-base")
 
-    testImplementation 'junit:junit:4.13.1'
+    junitTestImplementation(project)
+
+    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation deps.androidTest.runner
+    androidTestImplementation deps.androidTest.espresso
 
     debugImplementation project(":libraries:rib-base-test-activity")
-    androidTestImplementation project(":libraries:rib-base-test")
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 
 repositories {

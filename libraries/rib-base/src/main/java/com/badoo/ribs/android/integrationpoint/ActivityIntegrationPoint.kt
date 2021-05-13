@@ -46,7 +46,9 @@ open class ActivityIntegrationPoint(
     }
 
     override fun handleUpNavigation() {
-        activity.onNavigateUp()
+        if (!activity.onNavigateUp()) {
+            activity.onBackPressed()
+        }
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

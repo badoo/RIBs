@@ -1,0 +1,9 @@
+configureAndroidLibrary(project)
+
+dependencies {
+    api project(":libraries:rib-base")
+    api deps.external.mviCore
+    api deps.external.mviCoreAndroid
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

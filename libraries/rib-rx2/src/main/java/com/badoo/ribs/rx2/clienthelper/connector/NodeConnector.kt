@@ -42,7 +42,7 @@ class NodeConnector<Input, Output>(
 
     override fun onAttached() {
         synchronized(this) {
-            if (isFlushed) error("Already unlocked")
+            if (isFlushed) error("Already flushed")
             isFlushed = true
             outputCache.forEach { exhaust.accept(it) }
             outputCache.clear()

@@ -20,7 +20,6 @@ class NodeConnector<Input, Output>(
 
         override fun observe(callback: (Output) -> Unit): Cancellable =
             exhaust.observe(callback)
-
     }
 
     private val cacheSubscription = intake.observe {
@@ -36,7 +35,7 @@ class NodeConnector<Input, Output>(
 
     override fun onAttached() {
         synchronized(this) {
-            if (isFlushed) error("Already unlocked")
+            if (isFlushed) error("Already flushed")
             isFlushed = true
             outputCache.forEach { exhaust.accept(it) }
             outputCache.clear()

@@ -180,7 +180,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
     /**
      * Why is this test repeated 1000 times?
      * This test exist to ensure that there is no race condition issues under the threading scenario described by the test.
-     * To do so, a high amount of repetitions must be executed as when the race condition is happening, it could only produced
+     * To do so, a high amount of repetitions must be executed as when the race condition is happening, it could only produce
      * an unexpected result in some % of the case.
      * E.g: Race condition between Thread1 and Thread2
      * When Thread1 is executed first -> Desired Scenario
@@ -189,8 +189,8 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
      *
      * Why is the test logic duplicated?
      * Seems that CyclicBarrier is a bit biased and is giving preference to the first thread awaiting to be executed first.
-     * So to balance this weighed thread execution priority, we test both cases in the same test to increase the % of failure
-     * when race condition issue is present.
+     * So to balance this weighed thread execution priority, we switch order and test both in the same test to increase the
+     * % of failure when race condition issue is present.
      */
     @RepeatedTest(1000)
     override fun WHEN_accept_and_onAttached_are_called_by_different_thread_at_the_same_time_THEN_output_is_the_expected() {

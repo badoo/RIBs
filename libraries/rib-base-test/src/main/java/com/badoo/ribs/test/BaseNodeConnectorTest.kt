@@ -1,5 +1,6 @@
 package com.badoo.ribs.test
 
+@Suppress("FunctionNaming")
 abstract class BaseNodeConnectorTest {
 
     abstract fun GIVEN_nodeConnector_onAttached_is_not_called_WHEN_output_is_accepted_THEN_accepted_output_do_not_reach_observer()

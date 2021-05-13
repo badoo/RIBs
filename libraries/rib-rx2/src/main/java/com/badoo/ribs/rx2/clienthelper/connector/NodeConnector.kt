@@ -15,7 +15,7 @@ class NodeConnector<Input, Output>(
     private var isFlushed = false
     private val outputCache = mutableListOf<Output>()
 
-    override val output = object : Relay<Output>() {
+    override val output: Relay<Output> = object : Relay<Output>() {
 
         override fun subscribeActual(observer: Observer<in Output>?) {
             exhaust.subscribe(observer as Observer<Output>)

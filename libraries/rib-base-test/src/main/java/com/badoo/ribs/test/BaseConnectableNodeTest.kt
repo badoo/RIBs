@@ -1,5 +1,6 @@
 package com.badoo.ribs.test
 
+@Suppress("FunctionNaming")
 abstract class BaseConnectableNodeTest {
 
     abstract fun WHEN_child_emit_some_output_before_it_is_attached_to_parent_THEN_parent_receive_the_output_after_child_attach_finished()

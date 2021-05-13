@@ -12,15 +12,15 @@ class NodeConnector<Input, Output>(
     private var isFlushed = false
     private val outputCache = mutableListOf<Output>()
 
-    override val output = object : Relay<Output>() {
+    override val output: Relay<Output> = object : Relay<Output>() {
 
         override fun emit(value: Output) {
             intake.accept(value)
         }
 
-        override fun observe(callback: (Output) -> Unit): Cancellable {
-            return exhaust.observe(callback)
-        }
+        override fun observe(callback: (Output) -> Unit): Cancellable =
+            exhaust.observe(callback)
+
     }
 
     private val cacheSubscription = intake.observe {

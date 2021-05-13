@@ -187,7 +187,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
      * When Thread2 is executed first -> Undesired Scenario
      * Under this example if both threads get the lock with the same priority, the % of each case would be 50%.
      *
-     * Why the test logic is duplicated?
+     * Why is the test logic duplicated?
      * Seems that CyclicBarrier is a bit biased and is giving preference to the first thread awaiting to be executed first.
      * So to balance this weighed thread execution priority, we test both cases in the same test to increase the % of failure
      * when race condition issue is present.

@@ -178,7 +178,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
 
 
     /**
-     * Why is this test repeated 10000 times?
+     * Why is this test repeated 1000 times?
      * This test exist to ensure that there is no race condition issues under the threading scenario described by the test.
      * To do so, a high amount of repetitions must be executed as when the race condition is happening, it could only produced
      * an unexpected result in some % of the case.
@@ -192,7 +192,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
      * So to balance this weighed thread execution priority, we test both cases in the same test to increase the % of failure
      * when race condition issue is present.
      */
-    @RepeatedTest(10000)
+    @RepeatedTest(1000)
     override fun WHEN_accept_and_onAttached_are_called_by_different_thread_at_the_same_time_THEN_output_is_the_expected() {
         val nodeConnector1 = NodeConnector<Input, Output>()
         val nodeConnector2 = NodeConnector<Input, Output>()

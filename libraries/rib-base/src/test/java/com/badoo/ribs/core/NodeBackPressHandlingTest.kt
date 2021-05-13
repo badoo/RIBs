@@ -1,7 +1,7 @@
 package com.badoo.ribs.core
 
 import com.badoo.ribs.core.helper.TestNode
-import com.badoo.ribs.core.helper.TestView
+import com.badoo.ribs.test.helper.TestView
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
 import com.nhaarman.mockitokotlin2.doReturn

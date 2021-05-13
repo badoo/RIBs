@@ -2,9 +2,9 @@ package com.badoo.ribs.core.lifecycle
 
 import androidx.lifecycle.Lifecycle.State.RESUMED
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.helper.AnyConfiguration
+import com.badoo.ribs.test.helper.AnyConfiguration
 import com.badoo.ribs.core.helper.TestNode
-import com.badoo.ribs.core.helper.testBuildParams
+import com.badoo.ribs.test.helper.testBuildParams
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.routing.Routing
 import com.nhaarman.mockitokotlin2.doReturn

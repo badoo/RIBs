@@ -5,6 +5,8 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.test.helper.TestView
+import com.badoo.ribs.test.helper.testBuildParams
 import com.nhaarman.mockitokotlin2.mock
 
 open class TestNode(

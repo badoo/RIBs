@@ -1,7 +1,7 @@
 package com.badoo.ribs.core
 
 import com.badoo.ribs.core.helper.TestRouter
-import com.badoo.ribs.core.helper.TestView
+import com.badoo.ribs.test.helper.TestView
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.core.view.RibView
 import com.nhaarman.mockitokotlin2.any

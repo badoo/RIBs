@@ -41,4 +41,3 @@ class Rx2ConnectableTestNode(
         }
     }
 }
-

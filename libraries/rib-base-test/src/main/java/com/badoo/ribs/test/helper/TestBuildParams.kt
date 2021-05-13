@@ -25,7 +25,6 @@ fun testBuildParams(
             activationMode = ActivationMode.ATTACH_TO_PARENT,
             savedInstanceState = savedInstanceState,
             customisations = RibCustomisationDirectoryImpl()
-        )
-    },
+    )},
     identifier = identifier
 )

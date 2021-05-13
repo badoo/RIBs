@@ -3,6 +3,8 @@ package com.badoo.ribs.core.helper
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.test.helper.TestView
+import com.badoo.ribs.test.helper.testBuildParams
 
 class TestInteractor(
     private val onViewCreated: (view: TestView, viewLifecycle: Lifecycle) -> Unit = { _, _ -> },

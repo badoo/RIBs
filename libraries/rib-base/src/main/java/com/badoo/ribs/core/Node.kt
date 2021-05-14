@@ -138,8 +138,8 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         this.plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
-    internal fun onBuild() {
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onNodeBuild() }
+    internal fun onNodeBuild() {
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onBuild() }
         parent?.onChildBuilt(this)
     }
 

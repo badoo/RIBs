@@ -36,7 +36,7 @@ class Logger(
     SubtreeBackPressHandler,
     UpNavigationHandler {
 
-    override fun onNodeBuild() {
+    override fun onBuild() {
         if (policy.logOnBuild) log(rib, "onBuild")
     }
 

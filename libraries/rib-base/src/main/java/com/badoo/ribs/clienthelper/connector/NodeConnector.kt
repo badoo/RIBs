@@ -33,7 +33,7 @@ class NodeConnector<Input, Output>(
         }
     }
 
-    override fun onAttached() {
+    override fun onAttach() {
         synchronized(this) {
             if (isFlushed) error("Already flushed")
             isFlushed = true

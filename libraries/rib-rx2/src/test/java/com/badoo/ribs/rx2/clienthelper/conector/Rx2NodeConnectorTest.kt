@@ -44,7 +44,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.output.accept(Output1)
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
 
         firstTestObserver.assertValues(Output1)
     }
@@ -54,7 +54,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         val nodeConnector = NodeConnector<Input, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
 
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
         nodeConnector.output.accept(Output1)
 
         firstTestObserver.assertValues(Output1)
@@ -66,7 +66,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.output.accept(Output1)
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
         nodeConnector.output.accept(Output2)
         nodeConnector.output.accept(Output3)
 
@@ -77,9 +77,9 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
     override fun `WHEN nodeConnector onAttached is called twice THEN error is raised`() {
         val nodeConnector = NodeConnector<Input, Output>()
 
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
         assertThrows(IllegalStateException::class.java) {
-            nodeConnector.onAttached()
+            nodeConnector.onAttach()
         }
     }
 
@@ -90,7 +90,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         nodeConnector.output.subscribe(secondTestObserver)
 
         nodeConnector.output.accept(Output1)
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
 
         firstTestObserver.assertValues(Output1)
         secondTestObserver.assertValues(Output1)
@@ -102,7 +102,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         nodeConnector.output.subscribe(firstTestObserver)
         nodeConnector.output.subscribe(secondTestObserver)
 
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
         nodeConnector.output.accept(Output1)
 
         firstTestObserver.assertValues(Output1)
@@ -117,7 +117,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
 
         //Output accepted BEFORE onAttached
         nodeConnector.output.accept(Output1)
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
 
         //Second subscriber subscribe AFTER onAttached
         nodeConnector.output.subscribe(secondTestObserver)
@@ -158,7 +158,7 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
         executor.awaitWithTimeOut()
 
         nodeConnector.output.subscribe(firstTestObserver)
-        nodeConnector.onAttached()
+        nodeConnector.onAttach()
 
         firstTestObserver.assertValueCount(threadNumber * iterations * 3)
     }
@@ -196,14 +196,14 @@ class Rx2NodeConnectorTest : BaseNodeConnectorTest() {
             //Attacher thread
             submit {
                 barrier1.awaitWithTimeOut()
-                nodeConnector1.onAttached()
+                nodeConnector1.onAttach()
             }
         }
         val executor2 = Executors.newFixedThreadPool(threadNumber).apply {
             //Attacher thread
             submit {
                 barrier2.awaitWithTimeOut()
-                nodeConnector2.onAttached()
+                nodeConnector2.onAttach()
             }
             //Emitter thread
             submit {

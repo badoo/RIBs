@@ -138,7 +138,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         this.plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
-    internal fun onNodeBuild() {
+    internal fun onBuildFinished() {
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onBuild() }
         parent?.onChildBuilt(this)
     }
@@ -246,7 +246,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     internal fun onAttachFinished() {
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttached() }
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach() }
     }
 
     open fun onAttachChildNode(child: Node<*>) {
@@ -276,7 +276,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
                 )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
-                .forEach { it.onAttachChildView(child) }
+                .forEach { it.onAttachedChildView(child) }
         }
     }
 
@@ -294,7 +294,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
                 )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
-                .forEach { it.onDetachChildView(child) }
+                .forEach { it.onDetachedChildView(child) }
         }
     }
 

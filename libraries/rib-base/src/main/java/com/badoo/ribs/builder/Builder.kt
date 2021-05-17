@@ -26,7 +26,7 @@ abstract class Builder<P, T : Rib> {
                 plugin.init(rib)
             }
 
-            rib.node.onNodeBuild()
+            rib.node.onBuildFinished()
         }
     }
 

@@ -40,6 +40,8 @@ interface NodeLifecycleAware : Plugin {
 
     fun onCreate(nodeLifecycle: Lifecycle) {} // <-- Android lifecycle
 
+    fun onAttach() {}
+
     fun onDestroy() {}
 }
 ```
@@ -74,9 +76,9 @@ interface SubtreeChangeAware : Plugin {
 
 ```kotlin
 interface SubtreeViewChangeAware : Plugin {
-    fun onAttachChildView(child: Node<*>) {}
+    fun onAttachedChildView(child: Node<*>) {}
 
-    fun onDetachChildView(child: Node<*>) {}
+    fun onDetachedChildView(child: Node<*>) {}
 }
 ```
 

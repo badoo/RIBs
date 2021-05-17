@@ -44,8 +44,8 @@ class Logger(
         if (policy.logOnCreate) log(rib, "onCreate")
     }
 
-    override fun onAttached() {
-        super.onAttached()
+    override fun onAttach() {
+        super.onAttach()
         if (policy.logOnAttached) log(rib, "onAttached")
     }
 
@@ -73,11 +73,11 @@ class Logger(
         if (policy.logOnChildDetached) log(rib, "onChildDetached: $child")
     }
 
-    override fun onAttachChildView(child: Node<*>) {
+    override fun onAttachedChildView(child: Node<*>) {
         if (policy.logOnAttachChildView) log(rib, "onAttachChildView: $child")
     }
 
-    override fun onDetachChildView(child: Node<*>) {
+    override fun onDetachedChildView(child: Node<*>) {
         if (policy.logOnDetachChildView) log(rib, "onDetachChildView: $child")
     }
 

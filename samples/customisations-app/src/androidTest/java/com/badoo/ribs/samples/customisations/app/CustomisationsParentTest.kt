@@ -5,7 +5,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.badoo.ribs.test.RibsRule
+import com.badoo.ribs.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.SimpleRoutingParent
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.builder.SimpleRoutingParentBuilder
@@ -15,7 +15,7 @@ import org.junit.Test
 class CustomisationsParentTest {
 
     @get:Rule
-    val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
+    val ribsRule = com.badoo.ribs.RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
         SimpleRoutingParentBuilder(

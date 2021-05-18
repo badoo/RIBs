@@ -2,7 +2,7 @@ package com.badoo.ribs.template.leaf.foo_bar
 
 import android.os.Bundle
 import com.badoo.ribs.test.RibsRule
-import com.badoo.ribs.RibTestActivity
+import com.badoo.ribs.test.RibTestActivity
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import org.junit.Rule
 import org.junit.Test

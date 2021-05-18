@@ -77,7 +77,7 @@ class Logger(
         if (policy.logOnAttachChildView) log(rib, "onAttachChildView: $child")
     }
 
-    override fun onDetachedChildView(child: Node<*>) {
+    override fun onChildViewDetached(child: Node<*>) {
         if (policy.logOnDetachChildView) log(rib, "onDetachChildView: $child")
     }
 

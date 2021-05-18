@@ -35,7 +35,7 @@ class NodePluginSubtreeViewChangeAwareTest : NodePluginTest() {
         node.detachChildView(childNode)
 
         plugins.forEach {
-            verify(it).onDetachedChildView(eq(childNode))
+            verify(it).onChildViewDetached(eq(childNode))
         }
     }
 }

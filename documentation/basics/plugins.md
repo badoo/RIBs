@@ -78,7 +78,7 @@ interface SubtreeChangeAware : Plugin {
 interface SubtreeViewChangeAware : Plugin {
     fun onChildViewAttached(child: Node<*>) {}
 
-    fun onDetachedChildView(child: Node<*>) {}
+    fun onChildViewDetached(child: Node<*>) {}
 }
 ```
 

@@ -15,7 +15,7 @@ import org.junit.Test
 class CustomisationsParentTest {
 
     @get:Rule
-    val ribsRule = com.badoo.ribs.RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
+    val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
         SimpleRoutingParentBuilder(

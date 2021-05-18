@@ -37,7 +37,7 @@ class ConnectableNodeTest : BaseConnectableNodeTest() {
     }
 
     @Test
-    override fun `WHEN child emit some output before it is attached to parent THEN parent receive the output after child attach finished`() {
+    override fun `WHEN_child_emit_some_output_before_it_is_attached_to_parent_THEN_parent_receive_the_output_after_child_attach_finished`() {
         val children = ConnectableTestNode(parent = parent)
 
         children.output.accept(Output1)
@@ -47,7 +47,7 @@ class ConnectableNodeTest : BaseConnectableNodeTest() {
     }
 
     @Test
-    override fun `WHEN child is attached and emit some output THEN parent receive the exact output`() {
+    override fun `WHEN_child_is_attached_and_emit_some_output_THEN_parent_receive_the_exact_output`() {
         val children = ConnectableTestNode(parent = parent)
 
         parent.attachChildNode(children)
@@ -58,7 +58,7 @@ class ConnectableNodeTest : BaseConnectableNodeTest() {
     }
 
     @Test
-    override fun `WHEN child emit multiple outputs before it is attached to parent THEN parent receive the output after attach finished in correct order`() {
+    override fun `WHEN_child_emit_multiple_outputs_before_it_is_attached_to_parent_THEN_parent_receive_the_output_after_attach_finished_in_correct_order`() {
         val children = ConnectableTestNode(parent = parent)
 
         children.output.accept(Output1)
@@ -69,7 +69,7 @@ class ConnectableNodeTest : BaseConnectableNodeTest() {
     }
 
     @Test
-    override fun `WHEN child emit output before it is attached to parent and then after it is attached to parent THEN parent receive the output in correct order`() {
+    override fun `WHEN_child_emit_output_before_it_is_attached_to_parent_and_then_after_it_is_attached_to_parent_THEN_parent_receive_the_output_in_correct_order`() {
         val children = ConnectableTestNode(parent = parent)
 
         children.output.accept(Output1)

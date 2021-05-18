@@ -29,7 +29,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `GIVEN nodeConnector onAttached is not called WHEN output is accepted THEN accepted output do not reach observer`() {
+    override fun `GIVEN_nodeConnector_onAttached_is_not_called_WHEN_output_is_accepted_THEN_accepted_output_do_not_reach_observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
         nodeConnector.output.observe { firstTestObserver.onNext(it) }
 
@@ -39,7 +39,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `GIVEN and output is accepted before onAttached WHEN nodeConnector onAttached is called THEN accepted output reach the observer`() {
+    override fun `GIVEN_and_output_is_accepted_before_onAttached_WHEN_nodeConnector_onAttached_is_called_THEN_accepted_output_reach_the_observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
         nodeConnector.output.observe { firstTestObserver.onNext(it) }
 
@@ -50,7 +50,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `GIVEN nodeConnector is attached WHEN output is accepted THEN every accepted output reach the observer`() {
+    override fun `GIVEN_nodeConnector_is_attached_WHEN_output_is_accepted_THEN_every_accepted_output_reach_the_observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
         nodeConnector.output.observe { firstTestObserver.onNext(it) }
 
@@ -61,7 +61,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `GIVEN outputs accepted before and after onAttached WHEN node is attached THEN every accepted output reach the observer`() {
+    override fun `GIVEN_outputs_accepted_before_and_after_onAttached_WHEN_node_is_attached_THEN_every_accepted_output_reach_the_observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
         nodeConnector.output.observe { firstTestObserver.onNext(it) }
 
@@ -74,7 +74,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `WHEN nodeConnector onAttached is called twice THEN error is raised`() {
+    override fun `WHEN_nodeConnector_onAttached_is_called_twice_THEN_error_is_raised`() {
         val nodeConnector = NodeConnector<Input, Output>()
 
         nodeConnector.onAttach()
@@ -84,7 +84,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `GIVEN multiple observers and output is accepted before OnAttached WHEN nodeConnector onAttached is called THEN every accepted output reach the observers`() {
+    override fun `GIVEN_multiple_observers_and_output_is_accepted_before_OnAttached_WHEN_nodeConnector_onAttached_is_called_THEN_every_accepted_output_reach_the_observers`() {
         val nodeConnector = NodeConnector<Input, Output>()
         nodeConnector.output.observe { firstTestObserver.onNext(it) }
         nodeConnector.output.observe { secondTestObserver.onNext(it) }
@@ -97,7 +97,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `GIVEN multiple observers and nodeConnector is attached WHEN output is accepted THEN every accepted output reach the observer`() {
+    override fun `GIVEN_multiple_observers_and_nodeConnector_is_attached_WHEN_output_is_accepted_THEN_every_accepted_output_reach_the_observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
         nodeConnector.output.observe { firstTestObserver.onNext(it) }
         nodeConnector.output.observe { secondTestObserver.onNext(it) }
@@ -110,7 +110,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
     }
 
     @Test
-    override fun `GIVEN multiple observers that subscribe before and after onAttached  and outputs accepted before and after onAttached WHEN node is attached THEN every accepted output reach the observer`() {
+    override fun `GIVEN_multiple_observers_that_subscribe_before_and_after_onAttached__and_outputs_accepted_before_and_after_onAttached_WHEN_node_is_attached_THEN_every_accepted_output_reach_the_observer`() {
         val nodeConnector = NodeConnector<Input, Output>()
         //First observer observe BEFORE onAttached
         nodeConnector.output.observe { firstTestObserver.onNext(it) }
@@ -132,7 +132,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
 
 
     @Test
-    override fun `WHEN multiple output are accepted from multiple threads THEN output is correctly received when onAttached is called`() {
+    override fun `WHEN_multiple_output_are_accepted_from_multiple_threads_THEN_output_is_correctly_received_when_onAttached_is_called`() {
         val nodeConnector = NodeConnector<Input, Output>()
         val threadNumber = 100
         val iterations = 10000
@@ -179,7 +179,7 @@ class NodeConnectorTest : BaseNodeConnectorTest() {
      * % of failure when race condition issue is present.
      */
     @RepeatedTest(1000)
-    override fun `WHEN accept and onAttached are called by different thread at the same time THEN output is the expected`() {
+    override fun `WHEN_accept_and_onAttached_are_called_by_different_thread_at_the_same_time_THEN_output_is_the_expected`() {
         val nodeConnector1 = NodeConnector<Input, Output>()
         val nodeConnector2 = NodeConnector<Input, Output>()
         val threadNumber = 2

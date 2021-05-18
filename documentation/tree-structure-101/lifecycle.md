@@ -85,6 +85,8 @@ interface NodeLifecycleAware : Plugin {
 
     fun onCreate(nodeLifecycle: Lifecycle) {}
 
+    fun onAttach() {}
+
     fun onDestroy() {}
 }
 ```

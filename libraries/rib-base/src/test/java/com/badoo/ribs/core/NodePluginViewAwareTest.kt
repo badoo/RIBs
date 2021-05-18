@@ -4,7 +4,6 @@ import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.plugin.ViewAware
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 import org.junit.runner.RunWith

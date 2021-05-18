@@ -1,12 +1,12 @@
 package com.badoo.ribs.routing.state.feature
 
+import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -25,15 +25,15 @@ internal class ActorTest {
     @MethodSource("scheduleTestArguments")
     fun `GIVEN no pending or ongoing transitions WHEN a RoutingChange is accepted THEN pendingTransition is correctly scheduled`(
         activationState: RoutingContext.ActivationState,
-        transitionHandler: TransitionHandler<TestConfiguration>?,
+        transitionHandler: TransitionHandler<AnyConfiguration>?,
         isScheduled: Boolean
     ) {
-        val pendingTransition: PendingTransition<TestConfiguration> = mock()
-        val pendingTransitionFactory: PendingTransitionFactory<TestConfiguration> = mock {
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
+        val pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration> = mock {
             on { create(any(), any(), any(), any()) } doReturn pendingTransition
         }
-        val state = WorkingState<TestConfiguration>(activationLevel = activationState)
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
+        val state = WorkingState<AnyConfiguration>(activationLevel = activationState)
+        val transaction = Transaction.RoutingChange<AnyConfiguration>(
             changeset = emptyList(),
             descriptor = mock()
         )
@@ -48,11 +48,11 @@ internal class ActorTest {
         isContinuation: Boolean,
         isReverse: Boolean
     ) {
-        val pendingTransition: PendingTransition<TestConfiguration> = mock()
-        val pendingTransitionFactory: PendingTransitionFactory<TestConfiguration> = mock {
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
+        val pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration> = mock {
             on { create(any(), any(), any(), any()) } doReturn pendingTransition
         }
-        val oldPendingTransition: PendingTransition<TestConfiguration> = mock {
+        val oldPendingTransition: PendingTransition<AnyConfiguration> = mock {
             on { descriptor } doReturn mock()
         }
         val state = WorkingState(
@@ -63,7 +63,7 @@ internal class ActorTest {
             on { isReverseOf(oldPendingTransition.descriptor) } doReturn isReverse
             on { isContinuationOf(oldPendingTransition.descriptor) } doReturn isContinuation
         }
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
+        val transaction = Transaction.RoutingChange<AnyConfiguration>(
             changeset = emptyList(),
             descriptor = newDescriptor
         )
@@ -79,14 +79,14 @@ internal class ActorTest {
     @MethodSource("executePendingTestArguments")
     fun `WHEN a ExecutePendingTransition is accepted THEN pendingTransition is correctly handled`(
         activationState: RoutingContext.ActivationState,
-        transitionHandler: TransitionHandler<TestConfiguration>?,
-        existingPendingTransition: PendingTransition<TestConfiguration>,
-        toExecuteTransition: PendingTransition<TestConfiguration>,
+        transitionHandler: TransitionHandler<AnyConfiguration>?,
+        existingPendingTransition: PendingTransition<AnyConfiguration>,
+        toExecuteTransition: PendingTransition<AnyConfiguration>,
         isCompletedWithoutTransition: Boolean,
         isDiscarded: Boolean,
         isExecuted: Boolean
     ) {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock()
+        val ongoingTransition: OngoingTransition<AnyConfiguration> = mock()
         whenever(toExecuteTransition.execute(any())).thenReturn(ongoingTransition)
         val state = WorkingState(
             activationLevel = activationState,
@@ -107,11 +107,11 @@ internal class ActorTest {
         isContinuation: Boolean,
         isReverse: Boolean
     ) {
-        val pendingTransition: PendingTransition<TestConfiguration> = mock()
-        val pendingTransitionFactory: PendingTransitionFactory<TestConfiguration> = mock {
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
+        val pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration> = mock {
             on { create(any(), any(), any(), any()) } doReturn pendingTransition
         }
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock {
+        val ongoingTransition: OngoingTransition<AnyConfiguration> = mock {
             on { descriptor } doReturn mock()
         }
         val state = WorkingState(
@@ -124,7 +124,7 @@ internal class ActorTest {
 
         }
 
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
+        val transaction = Transaction.RoutingChange<AnyConfiguration>(
             changeset = emptyList(),
             descriptor = newDescriptor
         )
@@ -137,8 +137,8 @@ internal class ActorTest {
 
 
     private fun getActor(
-        pendingTransitionFactory: PendingTransitionFactory<TestConfiguration>,
-        transitionHandler: TransitionHandler<TestConfiguration>? = mock()) =
+        pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration>,
+        transitionHandler: TransitionHandler<AnyConfiguration>? = mock()) =
         Actor(
             resolver = mock(),
             activator = mock(),
@@ -174,7 +174,7 @@ internal class ActorTest {
         )
 
         private fun createScheduleTestArguments(activationState: RoutingContext.ActivationState,
-                                                transitionHandler: TransitionHandler<TestConfiguration>?,
+                                                transitionHandler: TransitionHandler<AnyConfiguration>?,
                                                 isScheduled: Boolean) =
             Arguments.of(activationState, transitionHandler, isScheduled)
 
@@ -230,13 +230,13 @@ internal class ActorTest {
 
 
         private fun createExecutePendingTestArguments(activationState: RoutingContext.ActivationState,
-                                                      transitionHandler: TransitionHandler<TestConfiguration>?,
+                                                      transitionHandler: TransitionHandler<AnyConfiguration>?,
                                                       isNewSameAsExistingTransition: Boolean,
                                                       isCompletedWithoutTransition: Boolean,
                                                       isDiscarded: Boolean,
                                                       isExecuted: Boolean): Arguments {
 
-            val existingPendingTransition: PendingTransition<TestConfiguration> = mock()
+            val existingPendingTransition: PendingTransition<AnyConfiguration> = mock()
             val toExecuteTransition = if (isNewSameAsExistingTransition) existingPendingTransition else mock()
 
             return Arguments.of(activationState,

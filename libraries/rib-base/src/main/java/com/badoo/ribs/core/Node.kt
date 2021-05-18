@@ -276,7 +276,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
                 )
 
             if (notifyPlugins) plugins.filterIsInstance<SubtreeViewChangeAware>()
-                .forEach { it.onAttachedChildView(child) }
+                .forEach { it.onChildViewAttached(child) }
         }
     }
 

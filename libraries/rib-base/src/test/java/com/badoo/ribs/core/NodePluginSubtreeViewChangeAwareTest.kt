@@ -20,7 +20,7 @@ class NodePluginSubtreeViewChangeAwareTest : NodePluginTest() {
         node.attachChildView(childNode)
 
         plugins.forEach {
-            verify(it).onAttachedChildView(eq(childNode))
+            verify(it).onChildViewAttached(eq(childNode))
         }
     }
 

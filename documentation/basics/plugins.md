@@ -76,7 +76,7 @@ interface SubtreeChangeAware : Plugin {
 
 ```kotlin
 interface SubtreeViewChangeAware : Plugin {
-    fun onAttachedChildView(child: Node<*>) {}
+    fun onChildViewAttached(child: Node<*>) {}
 
     fun onDetachedChildView(child: Node<*>) {}
 }

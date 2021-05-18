@@ -1,16 +1,14 @@
 package com.badoo.ribs.test
 
-
 import android.os.Bundle
 import androidx.test.rule.ActivityTestRule
-import com.badoo.ribs.RibTestActivity
 import com.badoo.ribs.core.Rib
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 open class RibsRule(
     builder: ((RibTestActivity, Bundle?) -> Rib)? = null
-): ActivityTestRule<RibTestActivity>(
+) : ActivityTestRule<RibTestActivity>(
     RibTestActivity::class.java, true, builder != null
 ) {
     init {
@@ -22,7 +20,7 @@ open class RibsRule(
         launchActivity(null)
     }
 
-    override fun apply(base: Statement, description: Description?): Statement =
+    override fun apply(base: Statement, description: Description): Statement =
         super.apply(object : Statement() {
             override fun evaluate() {
                 try {
@@ -32,4 +30,5 @@ open class RibsRule(
                 }
             }
         }, description)
+
 }

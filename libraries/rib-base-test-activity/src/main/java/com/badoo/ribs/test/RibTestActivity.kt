@@ -1,10 +1,10 @@
-package com.badoo.ribs
+package com.badoo.ribs.test
 
 import android.os.Bundle
 import android.view.ViewGroup
-import com.badoo.common.rib.test.activity.R
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.test.activity.R
 
 class RibTestActivity : RibActivity() {
 

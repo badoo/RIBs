@@ -71,7 +71,7 @@ class MenuRibTest {
         val outputObserver = rib.output.subscribeOnTestObserver()
 
         menuView.uiEvents.accept(Select(FooBar))
-        menuView
+
         outputObserver.assertValue(MenuItemSelected(FooBar))
     }
 

@@ -19,7 +19,7 @@ dependencies {
 
     implementation deps.android.appCompat
 
-    api deps.test.junit
+    api deps.test.junit4
     api deps.android.rules
 }
 

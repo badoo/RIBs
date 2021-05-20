@@ -18,6 +18,7 @@ dependencies {
     testImplementation deps.test.assertj
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
+    testImplementation project(":libraries:rib-base-test")
 
     junitAndroidTestImplementation(project)
     androidTestImplementation deps.test.assertj

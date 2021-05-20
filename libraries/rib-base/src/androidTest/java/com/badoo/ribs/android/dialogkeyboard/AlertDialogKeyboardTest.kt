@@ -34,7 +34,7 @@ class AlertDialogKeyboardTest {
         setupRibs()
         onView(withClassName(endsWith("EditText"))).perform(click())
 
-        waitFor(3000) {
+        waitFor() {
             val inputManager = InstrumentationRegistry
                 .getInstrumentation()
                 .targetContext

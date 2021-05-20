@@ -342,29 +342,33 @@ class ConfigurationFeatureTest {
         verify(routingActivator, never()).activate(helperContentExternal2.routing, helperContentExternal2.nodes)
     }
 
-    @Test
-    fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts NOT are added - associated RoutingActions are NOT resolved`() {
-        createRestoredFeature()
-        feature.accept(WakeUp())
-        verify(resolver, never()).resolve(Routing(ContentViewParented3))
-        verify(resolver, never()).resolve(Routing(ContentExternal2))
-    }
-
-    @Test
-    fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts are NOT added - Node factories are NOT invoked`() {
-        createRestoredFeature()
-        feature.accept(WakeUp())
-        helperContentViewParented3.nodeFactories.forEach { verify(it, never()).invoke() }
-        helperContentExternal2.nodeFactories.forEach { verify(it, never()).invoke() }
-    }
-
-    @Test
-    fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts are NOT added - Nodes that are created are NOT ttached`() {
-        createRestoredFeature()
-        feature.accept(WakeUp())
-        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it)) }
-        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it)) }
-    }
+    /**
+     * Not removing this block yet, as the same exact thing should be tested for SHRUNK parts instead of INACTIVE,
+     * the support of which is TODO
+     */
+//    @Test
+//    fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts NOT are added - associated RoutingActions are NOT resolved`() {
+//        createRestoredFeature()
+//        feature.accept(WakeUp())
+//        verify(resolver, never()).resolve(Routing(ContentViewParented3))
+//        verify(resolver, never()).resolve(Routing(ContentExternal2))
+//    }
+//
+//    @Test
+//    fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts are NOT added - Node factories are NOT invoked`() {
+//        createRestoredFeature()
+//        feature.accept(WakeUp())
+//        helperContentViewParented3.nodeFactories.forEach { verify(it, never()).invoke() }
+//        helperContentExternal2.nodeFactories.forEach { verify(it, never()).invoke() }
+//    }
+//
+//    @Test
+//    fun `On WakeUp after init from TimeCapsule, previously INACTIVE Content parts are NOT added - Nodes that are created are NOT ttached`() {
+//        createRestoredFeature()
+//        feature.accept(WakeUp())
+//        helperContentViewParented3.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it)) }
+//        helperContentExternal2.nodes.forEach { verify(parentNode, never()).attachChildNode(eq(it)) }
+//    }
 
     @Test
     fun `On WakeUp after init from TimeCapsule, ALL previously INACTIVE configurations are NOT activated - associated RoutingActions are NOT executed`() {

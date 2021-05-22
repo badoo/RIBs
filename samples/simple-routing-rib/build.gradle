@@ -3,11 +3,7 @@ configureAndroidLibrary(project)
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 30
-
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -33,7 +29,7 @@ dependencies {
     implementation deps.android.design
     implementation project(":libraries:rib-base")
 
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation deps.test.junit4
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

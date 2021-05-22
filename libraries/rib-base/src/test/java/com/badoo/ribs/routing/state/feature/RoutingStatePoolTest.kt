@@ -1,7 +1,7 @@
 package com.badoo.ribs.routing.state.feature
 
+import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.routing.state.feature.state.WorkingState
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat
@@ -11,7 +11,7 @@ class RoutingStatePoolTest {
 
     @Test
     fun `WHEN cancel is called THEN ongoingTransition are disposed`() {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock()
+        val ongoingTransition: OngoingTransition<AnyConfiguration> = mock()
         val state = WorkingState(
             ongoingTransitions = listOf(ongoingTransition)
         )
@@ -22,7 +22,7 @@ class RoutingStatePoolTest {
 
     @Test
     fun `WHEN cancel is called THEN pendingTransitions are discarded`() {
-        val pendingTransition: PendingTransition<TestConfiguration> = mock()
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
         val state = WorkingState(
             pendingTransitions = listOf(pendingTransition)
         )
@@ -34,7 +34,7 @@ class RoutingStatePoolTest {
 
     @Test
     fun `WHEN RequestTransition is emitted THEN a pendingTransitions is added to the state`() {
-        val pendingTransition: PendingTransition<TestConfiguration> = mock()
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
         val routingStatePool = TestRoutingStatePool()
 
         routingStatePool.testEvent(RoutingStatePool.Effect.Transition.RequestTransition(pendingTransition))
@@ -44,7 +44,7 @@ class RoutingStatePoolTest {
 
     @Test
     fun `GIVEN some pendingTransition in the state WHEN RemovePendingTransition is emitted THEN a pendingTransition is removed from the state`() {
-        val pendingTransition: PendingTransition<TestConfiguration> = mock()
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
         val state = WorkingState(
             pendingTransitions = listOf(pendingTransition)
         )
@@ -57,7 +57,7 @@ class RoutingStatePoolTest {
 
     @Test
     fun `WHEN TransitionStarted is emitted THEN an ongoingTransition is added to the state`() {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock()
+        val ongoingTransition: OngoingTransition<AnyConfiguration> = mock()
         val routingStatePool = TestRoutingStatePool()
 
         routingStatePool.testEvent(RoutingStatePool.Effect.Transition.TransitionStarted(ongoingTransition))
@@ -67,7 +67,7 @@ class RoutingStatePoolTest {
 
     @Test
     fun `WHEN TransitionFinished is emitted THEN a ongoingTransition is removed from the state`() {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock()
+        val ongoingTransition: OngoingTransition<AnyConfiguration> = mock()
         val state = WorkingState(
             ongoingTransitions = listOf(ongoingTransition)
         )
@@ -80,8 +80,8 @@ class RoutingStatePoolTest {
 
     @Test
     fun `GIVEN some pendingTransition in the state WHEN a new RequestTransition is emitted and remove pendingTransition with old value is emitten THEN a oldpendingTransition is removed  and new one is added to the state`() {
-        val pendingTransition: PendingTransition<TestConfiguration> = mock()
-        val pendingTransition2: PendingTransition<TestConfiguration> = mock()
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
+        val pendingTransition2: PendingTransition<AnyConfiguration> = mock()
         val state = WorkingState(
             pendingTransitions = listOf(pendingTransition)
         )

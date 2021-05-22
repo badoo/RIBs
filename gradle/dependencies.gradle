@@ -16,44 +16,45 @@ if (useCompose.toBoolean()) {
 println("kotlin version: $kotlinVersion")
 
 def versions = [
-    dagger: '2.22.1',
-    intellij: '2020.2.3',
-    intellij_kotlin: '1.4.21-release-IJ2020.2-1',
-    kotlin: kotlinVersion,
-    mviCore: '1.2.4',
-    robolectric: '4.4',
-    compose: '1.0.0-beta01',
+        dagger                         : '2.22.1',
+        intellij                       : '2020.2.3',
+        intellij_kotlin                : '1.4.21-release-IJ2020.2-1',
+        kotlin                         : kotlinVersion,
+        mviCore                        : '1.2.4',
+        robolectric                    : '4.4',
+        compose                        : '1.0.0-beta01',
 
-    materialVersion:'1.1.0', // https://github.com/material-components/material-components-android/releases
-    androidxAnnotationVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
-    androidxAppCompatVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
-    androidxBrowserVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/browser
-    androidxBroadcastVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
-    androidxCardViewVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
-    androidxCollectionVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
-    androidxConstraintLayoutVersion:'1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
-    androidxCoreVersion:'1.3.0', // https://developer.android.com/jetpack/androidx/releases/core
-    androidxExifVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
-    androidxFragmentVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/fragment
-    androidxActivityVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/activity
-    androidxGridLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
-    androidxLifecycleVersion:'2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    androidxLoaderVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
-    androidxPaletteVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
-    androidxPercentLayoutVersion:'1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
-    androidxRecyclerViewVersion:'1.1.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
-    androidxTestVersion:'1.3.0', // https://developer.android.com/jetpack/androidx/releases/test
-    androidxTestUiAutoVersion:'2.2.0',
-    retrofitVersion: '2.8.1',
-    okhttp: '3.14.7',
-    leakCanary: '2.4',
-    jacoco: '0.8.6'
+        materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
+        androidxAnnotationVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
+        androidxAppCompatVersion       : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
+        androidxBrowserVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/browser
+        androidxBroadcastVersion       : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
+        androidxCardViewVersion        : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
+        androidxCollectionVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
+        androidxConstraintLayoutVersion: '1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
+        androidxCoreVersion            : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/core
+        androidxExifVersion            : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
+        androidxFragmentVersion        : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/fragment
+        androidxActivityVersion        : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/activity
+        androidxGridLayoutVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
+        androidxLifecycleVersion       : '2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
+        androidxLoaderVersion          : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
+        androidxPaletteVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
+        androidxPercentLayoutVersion   : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
+        androidxRecyclerViewVersion    : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
+        androidxTestVersion            : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/test
+        androidxTestUiAutoVersion      : '2.2.0',
+        retrofitVersion                : '2.8.1',
+        okhttp                         : '3.14.7',
+        leakCanary                     : '2.4',
+        jacoco                         : '0.8.6',
+        junit5                         : '5.7.1'
 ]
 
 def apt = [
-    daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
-    javax: "javax.annotation:jsr250-api:1.0",
-    javaxInject: "javax.inject:javax.inject:1",
+        daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
+        javax         : "javax.annotation:jsr250-api:1.0",
+        javaxInject   : "javax.inject:javax.inject:1",
 ]
 
 def agp
@@ -65,96 +66,100 @@ if (useCompose.toBoolean()) {
 println("agp version: $agp")
 
 def build = [
-    compileSdkVersion: 28,
-    gradlePluginsUrl : "https://plugins.gradle.org/m2/",
-    ci: 'true' == System.getenv('CI'),
-    minSdkVersion: 17,
-    targetSdkVersion: 28,
-    guava: "com.google.guava:guava:20.0",
-    commonsLang: "commons-lang:commons-lang:2.6",
-    intellijPlugin: "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.7.3",
-    kotlinIdeaPlugin: "org.jetbrains.kotlin:${versions.intellij_kotlin}",
-    gradlePlugins: [
-        android: agp,
-        kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-        gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
-        mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.8.0',
-        detekt: 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.10.0',
-        jacoco: "org.jacoco:org.jacoco.core:${versions.jacoco}"
-    ]
+        compileSdkVersion: 28,
+        gradlePluginsUrl : "https://plugins.gradle.org/m2/",
+        ci               : 'true' == System.getenv('CI'),
+        minSdkVersion    : 17,
+        targetSdkVersion : 28,
+        guava            : "com.google.guava:guava:20.0",
+        commonsLang      : "commons-lang:commons-lang:2.6",
+        intellijPlugin   : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.7.3",
+        kotlinIdeaPlugin : "org.jetbrains.kotlin:${versions.intellij_kotlin}",
+        gradlePlugins    : [
+                android        : agp,
+                kotlin         : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+                gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
+                mavenPublish   : 'com.vanniktech:gradle-maven-publish-plugin:0.8.0',
+                detekt         : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.10.0',
+                jacoco         : "org.jacoco:org.jacoco.core:${versions.jacoco}"
+        ]
 ]
 
 def android = [
-    annotations: "androidx.annotation:annotation:${versions.androidxAnnotationVersion}",
-    appCompat: "androidx.appcompat:appcompat:${versions.androidxAppCompatVersion}",
-    lifecycleCommon: "androidx.lifecycle:lifecycle-common-java8:${versions.androidxLifecycleVersion}",
-    constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayoutVersion}",
-    design: "com.google.android.material:material:${versions.materialVersion}",
-    percent: "androidx.percentlayout:percentlayout:${versions.androidxPercentLayoutVersion}",
-    runner: "androidx.test:runner:${versions.androidxTestVersion}",
-    recyclerView: "androidx.recyclerview:recyclerview:${versions.androidxRecyclerViewVersion}",
-    rules: "androidx.test:rules:${versions.androidxTestVersion}",
-    activity: "androidx.activity:activity-ktx:${versions.androidxActivityVersion}",
-    fragment: "androidx.fragment:fragment-ktx:${versions.androidxFragmentVersion}",
+        annotations     : "androidx.annotation:annotation:${versions.androidxAnnotationVersion}",
+        appCompat       : "androidx.appcompat:appcompat:${versions.androidxAppCompatVersion}",
+        lifecycleCommon : "androidx.lifecycle:lifecycle-common-java8:${versions.androidxLifecycleVersion}",
+        constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayoutVersion}",
+        design          : "com.google.android.material:material:${versions.materialVersion}",
+        percent         : "androidx.percentlayout:percentlayout:${versions.androidxPercentLayoutVersion}",
+        runner          : "androidx.test:runner:${versions.androidxTestVersion}",
+        recyclerView    : "androidx.recyclerview:recyclerview:${versions.androidxRecyclerViewVersion}",
+        rules           : "androidx.test:rules:${versions.androidxTestVersion}",
+        activity        : "androidx.activity:activity-ktx:${versions.androidxActivityVersion}",
+        fragment        : "androidx.fragment:fragment-ktx:${versions.androidxFragmentVersion}",
 ]
 
 def compose = [
-    runtime: "androidx.compose.runtime:runtime:${versions.compose}",
-    ui: "androidx.compose.ui:ui:${versions.compose}",
-    material: "androidx.compose.material:material:${versions.compose}",
-    uiTooling: "androidx.compose.ui:ui-tooling:${versions.compose}",
-    foundation: "androidx.compose.foundation:foundation:${versions.compose}"
+        runtime   : "androidx.compose.runtime:runtime:${versions.compose}",
+        ui        : "androidx.compose.ui:ui:${versions.compose}",
+        material  : "androidx.compose.material:material:${versions.compose}",
+        uiTooling : "androidx.compose.ui:ui-tooling:${versions.compose}",
+        foundation: "androidx.compose.foundation:foundation:${versions.compose}"
 ]
 
 def test = [
-    junit: "junit:junit:4.12",
-    mockito: "org.mockito:mockito-core:2.24.0",
-    mockitoKotlin: "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0",
-    assertj: "org.assertj:assertj-core:3.11.1",
-    compileTesting: "com.google.testing.compile:compile-testing:0.11",
+        junit4         : "junit:junit:4.12",
+        junitApi      : "org.junit.jupiter:junit-jupiter-api:${versions.junit5}",
+        junitParams   : "org.junit.jupiter:junit-jupiter-params:${versions.junit5}",
+        junitEngine   : "org.junit.jupiter:junit-jupiter-engine:${versions.junit5}",
+        junitVintage  : "org.junit.vintage:junit-vintage-engine:${versions.junit5}",
+        mockito       : "org.mockito:mockito-core:2.24.0",
+        mockitoKotlin : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0",
+        assertj       : "org.assertj:assertj-core:3.11.1",
+        compileTesting: "com.google.testing.compile:compile-testing:0.11",
 ]
 
 def androidTest = [
-    espresso: 'androidx.test.espresso:espresso-core:3.3.0',
-    espressoIntents: 'androidx.test.espresso:espresso-intents:3.3.0',
-    runner: "androidx.test:runner:${versions.androidxTestVersion}",
-    rules: "androidx.test:rules:${versions.androidxTestVersion}"
+        espresso       : 'androidx.test.espresso:espresso-core:3.3.0',
+        espressoIntents: 'androidx.test.espresso:espresso-intents:3.3.0',
+        runner         : "androidx.test:runner:${versions.androidxTestVersion}",
+        rules          : "androidx.test:rules:${versions.androidxTestVersion}"
 ]
 
 def external = [
-    kotlinStdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
-    dagger: "com.google.dagger:dagger:${versions.dagger}",
-    mviCore: "com.github.badoo.mvicore:mvicore:${versions.mviCore}",
-    mviCoreAndroid: "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
-    mviCoreDiff: "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
-    rxjava2: "io.reactivex.rxjava2:rxjava:2.2.6",
-    rxrelay2: "com.jakewharton.rxrelay2:rxrelay:2.1.0",
-    rxandroid2: "io.reactivex.rxjava2:rxandroid:2.1.1",
-    roboelectricBase: "org.robolectric:robolectric:${versions.robolectric}",
-    rxbinding: 'com.jakewharton.rxbinding2:rxbinding:2.2.0',
-    leakcanaryDebug: 'com.squareup.leakcanary:leakcanary-android:1.6.3',
-    apacheCommons: 'org.apache.commons:commons-lang3:3.0',
-    gson: 'com.google.code.gson:gson:2.8.5',
-    coil: 'io.coil-kt:coil:0.11.0',
-    leakCanary: "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
+        kotlinStdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
+        dagger          : "com.google.dagger:dagger:${versions.dagger}",
+        mviCore         : "com.github.badoo.mvicore:mvicore:${versions.mviCore}",
+        mviCoreAndroid  : "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
+        mviCoreDiff     : "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
+        rxjava2         : "io.reactivex.rxjava2:rxjava:2.2.6",
+        rxrelay2        : "com.jakewharton.rxrelay2:rxrelay:2.1.0",
+        rxandroid2      : "io.reactivex.rxjava2:rxandroid:2.1.1",
+        roboelectricBase: "org.robolectric:robolectric:${versions.robolectric}",
+        rxbinding       : 'com.jakewharton.rxbinding2:rxbinding:2.2.0',
+        leakcanaryDebug : 'com.squareup.leakcanary:leakcanary-android:1.6.3',
+        apacheCommons   : 'org.apache.commons:commons-lang3:3.0',
+        gson            : 'com.google.code.gson:gson:2.8.5',
+        coil            : 'io.coil-kt:coil:0.11.0',
+        leakCanary      : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
 ]
 
 def retrofit = [
-    retrofit: "com.squareup.retrofit2:retrofit:${versions.retrofitVersion}",
-    rxjavaAdapter: "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofitVersion}",
-    moshiConverter: "com.squareup.retrofit2:converter-moshi:${versions.retrofitVersion}",
-    okhttp: "com.squareup.okhttp3:okhttp:${versions.okhttp}",
-    okhttpLoggingInterceptor : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+        retrofit                : "com.squareup.retrofit2:retrofit:${versions.retrofitVersion}",
+        rxjavaAdapter           : "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofitVersion}",
+        moshiConverter          : "com.squareup.retrofit2:converter-moshi:${versions.retrofitVersion}",
+        okhttp                  : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+        okhttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
 ]
 
 ext.deps = [
-    "apt": apt,
-    "build": build,
-    "compose": compose,
-    "external": external,
-    "android": android,
-    "test": test,
-    "androidTest": androidTest,
-    "versions": versions,
-    "retrofit": retrofit,
+        "apt"        : apt,
+        "build"      : build,
+        "compose"    : compose,
+        "external"   : external,
+        "android"    : android,
+        "test"       : test,
+        "androidTest": androidTest,
+        "versions"   : versions,
+        "retrofit"   : retrofit,
 ]

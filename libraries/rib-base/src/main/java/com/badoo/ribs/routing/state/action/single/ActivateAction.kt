@@ -71,16 +71,12 @@ internal class ActivateAction<C : Parcelable>(
 
     private fun prepareTransition() {
         // TODO Consider doing this closer to Router (e.g. result of RoutingActivator.activate)
-        transitionElements = item.nodes.mapNotNull {
-            it.view?.let { ribView ->
-                TransitionElement(
-                    configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
-                    direction = TransitionDirection.ENTER,
-                    addedOrRemoved = addedOrRemoved,
-                    identifier = it.identifier,
-                    view = ribView.androidView
-                )
-            }
+        transitionElements = item.nodes.flatMap { node ->
+            node.createTransitionElements(
+                item = item,
+                direction = TransitionDirection.ENTER,
+                addedOrRemoved = addedOrRemoved,
+            )
         }
     }
 

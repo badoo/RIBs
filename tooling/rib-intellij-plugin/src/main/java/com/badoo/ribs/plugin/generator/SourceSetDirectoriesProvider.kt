@@ -47,7 +47,7 @@ class SourceSetDirectoriesProvider(
         file.mkdirs()
         val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
         return if (createIfNotFound) {
-            RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, virtualFile)
+            RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, virtualFile!!)
         } else {
             targetPackage.directories.firstOrNull { VfsUtil.isAncestor(virtualFile!!, it.virtualFile, false) }
         }

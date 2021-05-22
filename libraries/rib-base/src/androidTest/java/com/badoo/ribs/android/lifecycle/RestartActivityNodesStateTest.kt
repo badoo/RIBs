@@ -3,6 +3,7 @@ package com.badoo.ribs.android.lifecycle
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.DETACHED
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
+import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
 import com.badoo.ribs.test.util.restartActivitySync
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode1
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content.AttachNode2
@@ -36,8 +37,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
                 configuration2 = AttachNode3
             ),
             ExpectedState(
-                node1 = DETACHED,
-                node2 = DETACHED,
+                node1 = VIEW_DETACHED,
+                node2 = VIEW_DETACHED,
                 node3 = ON_SCREEN
             )
         )
@@ -52,7 +53,7 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
                 configuration2 = AttachNode3AsOverlay
             ),
             ExpectedState(
-                node1 = DETACHED,
+                node1 = VIEW_DETACHED,
                 node2 = ON_SCREEN,
                 node3 = ON_SCREEN
             )
@@ -90,8 +91,8 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
             ExpectedState(
                 permanentNode1 = ON_SCREEN,
                 permanentNode2 = ON_SCREEN,
-                node1 = DETACHED,
-                node2 = DETACHED,
+                node1 = VIEW_DETACHED,
+                node2 = VIEW_DETACHED,
                 node3 = ON_SCREEN
             )
         )
@@ -112,7 +113,7 @@ class RestartActivityNodesStateTest : BaseNodesTest() {
             ExpectedState(
                 permanentNode1 = ON_SCREEN,
                 permanentNode2 = ON_SCREEN,
-                node1 = DETACHED,
+                node1 = VIEW_DETACHED,
                 node2 = ON_SCREEN,
                 node3 = ON_SCREEN
             )

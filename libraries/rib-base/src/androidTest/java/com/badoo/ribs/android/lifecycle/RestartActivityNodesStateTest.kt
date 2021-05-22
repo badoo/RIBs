@@ -1,7 +1,6 @@
 package com.badoo.ribs.android.lifecycle
 
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
-import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.DETACHED
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.ON_SCREEN
 import com.badoo.ribs.android.lifecycle.helper.NodeState.Companion.VIEW_DETACHED
 import com.badoo.ribs.test.util.restartActivitySync

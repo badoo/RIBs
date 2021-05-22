@@ -112,6 +112,7 @@ class RoutingStatePoolTest {
     }
 
     @Before
+    @SuppressWarnings("LongMethod")
     fun setUp() {
         val routingPermanent1 = Routing(identifier = Identifier("Permanent 0"), configuration = Permanent1 as Configuration)
         val routingPermanent2 = Routing(identifier = Identifier("Permanent 1"), configuration = Permanent2 as Configuration)

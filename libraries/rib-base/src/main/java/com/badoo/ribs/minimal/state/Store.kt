@@ -7,7 +7,6 @@ import com.badoo.ribs.minimal.reactive.Source
 abstract class Store<State>(
     initialState: State
 ) : Source<State>, Cancellable {
-    private val initThread = Thread.currentThread()
 
     private var isCancelled = false
     var state: State = initialState
@@ -18,18 +17,9 @@ abstract class Store<State>(
     protected fun emit(value: State) {
         if (isCancelled) return
 
-        verifyThread()
-
-        this.state = value
-        relay.emit(value)
-    }
-
-    private fun verifyThread() {
-        if (initThread != Thread.currentThread()) {
-            throw SameThreadVerificationException(
-                "Store functions should be called on the same thread where store is initialized. " +
-                    "Current: ${Thread.currentThread().name}, initial: ${initThread.name}."
-            )
+        synchronized(this) {
+            this.state = value
+            relay.emit(value)
         }
     }
 
@@ -38,10 +28,10 @@ abstract class Store<State>(
     }
 
     override fun observe(callback: (State) -> Unit): Cancellable {
-        verifyThread()
-
-        callback(state)
-        return relay.observe(callback)
+        synchronized(this) {
+            callback(state)
+            return relay.observe(callback)
+        }
     }
 }
 
@@ -62,5 +52,3 @@ abstract class AsyncStore<Event, State>(initialState: State) : Store<State>(init
         cancellable.cancel()
     }
 }
-
-class SameThreadVerificationException(message: String) : IllegalStateException(message)

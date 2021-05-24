@@ -1,22 +1,21 @@
-package com.badoo.ribs.test
+package com.badoo.ribs.test.view
 
-import android.os.Bundle
 import androidx.annotation.StyleRes
 import androidx.test.rule.ActivityTestRule
-import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.ViewFactory
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-open class RibsRule<R : Rib>(
+open class RibsViewRule<View : RibView>(
+    private val launchActivity: Boolean = true,
     @StyleRes private val theme: Int? = null,
-    private var builder: ((RibTestActivity, Bundle?) -> R)? = null
-) : ActivityTestRule<RibTestActivity>(
-    RibTestActivity::class.java, true, builder != null
-) {
+    private var viewFactory: ViewFactory<View>,
+) : ActivityTestRule<RibsViewActivity>(RibsViewActivity::class.java, true, launchActivity) {
 
     @Suppress("UNCHECKED_CAST")
-    val rib: R
-        get() = activity.rib as R
+    val view: View
+        get() = activity.view as View
 
     override fun apply(base: Statement, description: Description): Statement {
         val activityStatement = super.apply(base, description)
@@ -33,18 +32,19 @@ open class RibsRule<R : Rib>(
     }
 
     private fun setup() {
-        RibTestActivity.RIB_FACTORY = builder
-        RibTestActivity.THEME = theme
+        RibsViewActivity.THEME = theme
+        RibsViewActivity.VIEW_FACTORY = viewFactory
     }
 
     private fun reset() {
-        RibTestActivity.RIB_FACTORY = null
-        RibTestActivity.THEME = null
+        RibsViewActivity.THEME = null
+        RibsViewActivity.VIEW_FACTORY = null
     }
 
-    fun start(ribFactory: ((RibTestActivity, Bundle?) -> R)) {
-        builder = ribFactory
-        setup()
+    fun start() {
+        require(!launchActivity) {
+            "Activity will be launched automatically, launchActivity parameter was passed into constructor"
+        }
         launchActivity(null)
     }
 

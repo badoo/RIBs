@@ -9,7 +9,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name="com.badoo.ribs.test.view.RibViewTestActivity"
+            android:name="com.badoo.ribs.test.view.RibsViewActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
     </application>

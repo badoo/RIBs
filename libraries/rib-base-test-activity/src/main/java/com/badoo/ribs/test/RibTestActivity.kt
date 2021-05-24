@@ -8,6 +8,9 @@ import com.badoo.ribs.core.Rib
 
 class RibTestActivity : RibActivity() {
 
+    lateinit var rib: Rib
+        private set
+
     override val rootViewGroup: ViewGroup
         get() = findViewById(android.R.id.content)
 
@@ -17,11 +20,11 @@ class RibTestActivity : RibActivity() {
     }
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-        requireNotNull(ribFactory)(this, savedInstanceState)
+        requireNotNull(RIB_FACTORY).invoke(this, savedInstanceState).also { rib = it }
 
     companion object {
         @StyleRes
         var THEME: Int? = null
-        var ribFactory: ((RibTestActivity, Bundle?) -> Rib)? = null
+        var RIB_FACTORY: ((RibTestActivity, Bundle?) -> Rib)? = null
     }
 }

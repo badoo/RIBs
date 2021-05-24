@@ -17,7 +17,7 @@ import org.junit.Test
 class HelloWorldTestDeferred {
 
     @get:Rule
-    val ribsRule = RibsRule()
+    val ribsRule = RibsRule<HelloWorld>()
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         HelloWorldBuilder(object : HelloWorld.Dependency {

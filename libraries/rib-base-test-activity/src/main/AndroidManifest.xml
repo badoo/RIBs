@@ -1,10 +1,15 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.badoo.ribs.test.activity">
 
     <application>
 
         <activity
             android:name="com.badoo.ribs.test.RibTestActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name="com.badoo.ribs.test.view.RibViewTestActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
     </application>

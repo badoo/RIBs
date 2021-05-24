@@ -1,34 +1,30 @@
 package com.badoo.ribs.test
 
 import android.os.Bundle
+import androidx.annotation.StyleRes
 import androidx.test.rule.ActivityTestRule
 import com.badoo.ribs.core.Rib
-import org.junit.runner.Description
-import org.junit.runners.model.Statement
 
 open class RibsRule(
-    builder: ((RibTestActivity, Bundle?) -> Rib)? = null
+    @StyleRes private val theme: Int? = null,
+    private var builder: ((RibTestActivity, Bundle?) -> Rib)? = null
 ) : ActivityTestRule<RibTestActivity>(
     RibTestActivity::class.java, true, builder != null
 ) {
-    init {
+
+    override fun beforeActivityLaunched() {
         RibTestActivity.ribFactory = builder
+        RibTestActivity.THEME = theme
+    }
+
+    override fun afterActivityLaunched() {
+        RibTestActivity.ribFactory = null
+        RibTestActivity.THEME = null
     }
 
     fun start(ribFactory: ((RibTestActivity, Bundle?) -> Rib)) {
-        RibTestActivity.ribFactory = ribFactory
+        builder = ribFactory
         launchActivity(null)
     }
-
-    override fun apply(base: Statement, description: Description): Statement =
-        super.apply(object : Statement() {
-            override fun evaluate() {
-                try {
-                    base.evaluate()
-                } finally {
-                    RibTestActivity.ribFactory = null
-                }
-            }
-        }, description)
 
 }

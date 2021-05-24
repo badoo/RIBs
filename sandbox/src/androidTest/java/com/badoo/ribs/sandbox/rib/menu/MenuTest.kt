@@ -22,7 +22,7 @@ import org.junit.Test
 class MenuTest {
 
     @get:Rule
-    val ribsRule = RibsRule(this::buildRib)
+    val ribsRule = RibsRule(builder = this::buildRib)
 
     private lateinit var rib: Menu
 

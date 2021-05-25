@@ -7,16 +7,16 @@ import com.badoo.ribs.core.Rib
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-open class RibsRule<R : Rib>(
+open class RibsRule<T : Rib>(
     @StyleRes private val theme: Int? = null,
-    private var builder: ((RibTestActivity, Bundle?) -> R)? = null
+    private var builder: ((RibTestActivity, Bundle?) -> T)? = null
 ) : ActivityTestRule<RibTestActivity>(
     RibTestActivity::class.java, true, builder != null
 ) {
 
     @Suppress("UNCHECKED_CAST")
-    val rib: R
-        get() = activity.rib as R
+    val rib: T
+        get() = activity.rib as T
 
     override fun apply(base: Statement, description: Description): Statement {
         val activityStatement = super.apply(base, description)
@@ -42,7 +42,7 @@ open class RibsRule<R : Rib>(
         RibTestActivity.THEME = null
     }
 
-    fun start(ribFactory: ((RibTestActivity, Bundle?) -> R)) {
+    fun start(ribFactory: ((RibTestActivity, Bundle?) -> T)) {
         builder = ribFactory
         setup()
         launchActivity(null)

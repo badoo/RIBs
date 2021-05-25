@@ -1,10 +1,12 @@
 package com.badoo.ribs.clienthelper.childaware
 
 import android.os.Parcelable
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
+import com.badoo.ribs.core.lifecycle.TestLifecycle
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
@@ -184,6 +186,35 @@ class ChildAwareImplTest {
             listOf(child1 to child2, child1 to child3, child2 to child3),
             capturedNodes
         )
+    }
+
+    // endregion
+
+    // region Callback lifecycle checks
+
+    @Test
+    fun `ignores registration when parent lifecycle is destroyed`() {
+        val testLifecycle = TestLifecycle(Lifecycle.State.DESTROYED)
+        createChild1()
+        var capturedNode: Rib? = null
+        registry.whenChildAttached<Child1>(testLifecycle.lifecycle) { _, child ->
+            capturedNode = child
+        }
+        assertNull(capturedNode)
+    }
+
+    @Test
+    fun `removes registration after parent lifecycle is destroyed`() {
+        val testLifecycle = TestLifecycle(Lifecycle.State.CREATED)
+        createChild1()
+        var capturedNode: Rib?
+        registry.whenChildAttached<Child1>(testLifecycle.lifecycle) { _, child ->
+            capturedNode = child
+        }
+        testLifecycle.state = Lifecycle.State.DESTROYED
+        capturedNode = null
+        createChild1()
+        assertNull(capturedNode)
     }
 
     // endregion

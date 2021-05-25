@@ -1,9 +1,6 @@
 package com.badoo.ribs.core.lifecycle
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -42,19 +39,6 @@ class MinimumCombinedLifecycleTest {
         val test2 = TestLifecycle()
         val combined = MinimumCombinedLifecycle(test1.lifecycle, test2.lifecycle)
         assertEquals(State.DESTROYED, combined.lifecycle.currentState)
-    }
-
-    private class TestLifecycle : LifecycleOwner {
-        private val registry = LifecycleRegistry(this)
-
-        var state: State
-            get() = registry.currentState
-            set(value) {
-                registry.currentState = value
-            }
-
-        override fun getLifecycle(): Lifecycle = registry
-
     }
 
     companion object {

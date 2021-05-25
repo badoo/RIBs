@@ -60,7 +60,7 @@ dependencies {
     implementation deps.external.rxandroid2
 
     implementation project(":libraries:rib-base")
-
+    implementation project(":libraries:rib-mvicore")
     implementation project(":libraries:rib-compose")
     implementation deps.compose.runtime
     implementation deps.compose.ui

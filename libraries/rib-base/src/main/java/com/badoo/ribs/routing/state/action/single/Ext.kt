@@ -13,8 +13,15 @@ internal fun <C : Parcelable> Node<*>.createTransitionElements(
 ): List<TransitionElement<C>> {
     val elements = mutableListOf<TransitionElement<C>>()
 
-    val ribView = view
-    if (ribView != null) {
+    if (isViewless) {
+        children.forEach {
+            elements += it.createTransitionElements(
+                item, direction, addedOrRemoved
+            )
+        }
+    } else {
+        val ribView = view
+        requireNotNull(ribView)
         elements += TransitionElement(
             configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
             direction = direction,
@@ -22,12 +29,6 @@ internal fun <C : Parcelable> Node<*>.createTransitionElements(
             identifier = identifier,
             view = ribView.androidView
         )
-    } else {
-        children.forEach {
-            elements += it.createTransitionElements(
-                item, direction, addedOrRemoved
-            )
-        }
     }
 
     return elements

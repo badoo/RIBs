@@ -72,6 +72,9 @@ internal class ActivateAction<C : Parcelable>(
     private fun prepareTransition() {
         // TODO Consider doing this closer to Router (e.g. result of RoutingActivator.activate)
         transitionElements = item.nodes.flatMap { node ->
+            /** At this point view should've been created as a consequence of [RoutingActivator.activate] */
+            if (!node.isViewless) requireNotNull(node.view)
+
             node.createTransitionElements(
                 item = item,
                 direction = TransitionDirection.ENTER,

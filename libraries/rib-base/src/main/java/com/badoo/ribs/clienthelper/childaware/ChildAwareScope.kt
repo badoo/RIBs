@@ -3,7 +3,7 @@ package com.badoo.ribs.clienthelper.childaware
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Rib
 
-class ChildAwareDSL(
+class ChildAwareScope(
     private val childAware: ChildAware,
     val lifecycle: Lifecycle,
 ) : ChildAware by childAware {

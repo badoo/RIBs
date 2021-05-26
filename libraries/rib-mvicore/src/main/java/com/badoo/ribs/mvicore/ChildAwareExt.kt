@@ -5,10 +5,10 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.resumePause
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.Binder
-import com.badoo.ribs.clienthelper.childaware.ChildAwareDSL
+import com.badoo.ribs.clienthelper.childaware.ChildAwareScope
 import com.badoo.ribs.core.Rib
 
-inline fun <reified T : Rib> ChildAwareDSL.createDestroy(
+inline fun <reified T : Rib> ChildAwareScope.createDestroy(
     lifecycle: Lifecycle = this.lifecycle,
     noinline f: Binder.(T) -> Unit
 ) {
@@ -19,7 +19,7 @@ inline fun <reified T : Rib> ChildAwareDSL.createDestroy(
     }
 }
 
-inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareDSL.createDestroy(
+inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareScope.createDestroy(
     lifecycle: Lifecycle = this.lifecycle,
     noinline f: Binder.(T1, T2) -> Unit
 ) {
@@ -30,7 +30,7 @@ inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareDSL.createDestroy(
     }
 }
 
-inline fun <reified T : Rib> ChildAwareDSL.startStop(
+inline fun <reified T : Rib> ChildAwareScope.startStop(
     lifecycle: Lifecycle = this.lifecycle,
     noinline f: Binder.(T) -> Unit
 ) {
@@ -41,7 +41,7 @@ inline fun <reified T : Rib> ChildAwareDSL.startStop(
     }
 }
 
-inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareDSL.startStop(
+inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareScope.startStop(
     lifecycle: Lifecycle = this.lifecycle,
     noinline f: Binder.(T1, T2) -> Unit
 ) {
@@ -52,7 +52,7 @@ inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareDSL.startStop(
     }
 }
 
-inline fun <reified T : Rib> ChildAwareDSL.resumePause(
+inline fun <reified T : Rib> ChildAwareScope.resumePause(
     lifecycle: Lifecycle = this.lifecycle,
     noinline f: Binder.(T) -> Unit
 ) {
@@ -63,7 +63,7 @@ inline fun <reified T : Rib> ChildAwareDSL.resumePause(
     }
 }
 
-inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareDSL.resumePause(
+inline fun <reified T1 : Rib, reified T2 : Rib> ChildAwareScope.resumePause(
     lifecycle: Lifecycle = this.lifecycle,
     noinline f: Binder.(T1, T2) -> Unit
 ) {

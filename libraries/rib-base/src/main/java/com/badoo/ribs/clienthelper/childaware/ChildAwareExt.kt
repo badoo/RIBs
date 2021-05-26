@@ -4,8 +4,8 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Rib
 
 /** Simplify usage of [ChildAware] by providing default lifecycle to every method. */
-fun ChildAware.childAware(lifecycle: Lifecycle, block: ChildAwareDSL.() -> Unit) {
-    ChildAwareDSL(this, lifecycle).block()
+fun ChildAware.childAware(lifecycle: Lifecycle, block: ChildAwareScope.() -> Unit) {
+    ChildAwareScope(this, lifecycle).block()
 }
 
 inline fun <reified T : Rib> ChildAware.whenChildBuilt(

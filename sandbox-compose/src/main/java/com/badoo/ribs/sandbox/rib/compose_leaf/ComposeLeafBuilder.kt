@@ -1,14 +1,14 @@
 package com.badoo.ribs.sandbox.rib.compose_leaf
 
-import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 
 class ComposeLeafBuilder(
     private val dependency: ComposeLeaf.Dependency
-) : SimpleBuilder<ComposeLeaf>() {
+) : Builder<ComposeLeaf.Params, ComposeLeaf>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): ComposeLeaf {
+    override fun build(buildParams: BuildParams<ComposeLeaf.Params>): ComposeLeaf {
         val customisation = buildParams.getOrDefault(ComposeLeaf.Customisation())
         val interactor = ComposeLeafInteractor(
             buildParams = buildParams
@@ -22,10 +22,10 @@ class ComposeLeafBuilder(
     }
 
     private fun node(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<*>,
         customisation: ComposeLeaf.Customisation,
         plugins: List<Plugin>
-    ) =
+    ): ComposeLeaf =
         ComposeLeafNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),

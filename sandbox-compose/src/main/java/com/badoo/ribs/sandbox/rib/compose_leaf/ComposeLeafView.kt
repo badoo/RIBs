@@ -1,11 +1,20 @@
 package com.badoo.ribs.sandbox.rib.compose_leaf
 
 import android.content.Context
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -23,7 +32,7 @@ interface ComposeLeafView : RibView,
     sealed class Event
 
     data class ViewModel(
-        val text: String = "Initial view model text"
+        val i: Int = 0
     )
 
     interface Factory : ViewFactoryBuilder<Nothing?, ComposeLeafView>
@@ -53,8 +62,48 @@ class ComposeLeafViewImpl private constructor(
     }
 
     override val composable: @Composable () -> Unit = {
-        Column {
-            Text(text = "ComposeLeafView: ${viewModel.value.text}")
+        View(viewModel.value)
+    }
+}
+
+
+@Composable
+@SuppressWarnings("MagicNumber")
+private fun View(viewModel: ViewModel) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                color = when (viewModel.i % 3) {
+                    0 -> Color(0xFF009ABF)
+                    1 -> Color(0xFFFFD08A)
+                    2 -> Color(0xFFFF6C37)
+                    else -> Color.LightGray
+                }
+            ),
+        contentAlignment = Alignment.Center
+
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                fontWeight = FontWeight.Bold,
+                text = "ComposeLeafView"
+            )
+            Text(
+                fontSize = 48.sp,
+                fontWeight = FontWeight.Bold,
+                text = viewModel.i.toString()
+            )
         }
     }
+}
+
+@Preview
+@Composable
+private fun PreviewView() {
+    View(
+        viewModel = ViewModel(1)
+    )
 }

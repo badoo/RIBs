@@ -17,8 +17,8 @@ println("kotlin version: $kotlinVersion")
 
 def versions = [
         dagger                         : '2.22.1',
-        intellij                       : '2020.2.3',
-        intellij_kotlin                : '1.4.21-release-IJ2020.2-1',
+        intellij                       : '2020.1.4',
+        intellij_kotlin                : '1.4.21-release-IJ2020.1-1',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.4',
         robolectric                    : '4.4',

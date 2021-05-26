@@ -20,15 +20,15 @@ internal fun <C : Parcelable> Node<*>.createTransitionElements(
             )
         }
     } else {
-        val ribView = view
-        requireNotNull(ribView)
-        elements += TransitionElement(
-            configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
-            direction = direction,
-            addedOrRemoved = addedOrRemoved,
-            identifier = identifier,
-            view = ribView.androidView
-        )
+        view?.let { ribView ->
+            elements += TransitionElement(
+                configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
+                direction = direction,
+                addedOrRemoved = addedOrRemoved,
+                identifier = identifier,
+                view = ribView.androidView
+            )
+        }
     }
 
     return elements

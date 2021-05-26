@@ -3,8 +3,8 @@ package com.badoo.ribs.routing.state.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
@@ -30,7 +30,7 @@ internal class ActivateAction<C : Parcelable>(
     private val globalActivationLevel: RoutingContext.ActivationState
 ) : RoutingTransitionAction<C> {
 
-    object Factory: ActionFactory {
+    object Factory : ActionFactory {
         override fun <C : Parcelable> create(
             params: ActionExecutionParams<C>
         ): RoutingTransitionAction<C> =
@@ -59,7 +59,10 @@ internal class ActivateAction<C : Parcelable>(
         // The least we can do is to mark correct state, this is regardless of executing transitions
         if (!itemAlreadyActivated) {
             emitter.invoke(
-                Effect.Individual.Activated(routing, item.copy(activationState = globalActivationLevel))
+                Effect.Individual.Activated(
+                    routing,
+                    item.copy(activationState = globalActivationLevel)
+                )
             )
         }
 
@@ -72,9 +75,6 @@ internal class ActivateAction<C : Parcelable>(
     private fun prepareTransition() {
         // TODO Consider doing this closer to Router (e.g. result of RoutingActivator.activate)
         transitionElements = item.nodes.flatMap { node ->
-            /** At this point view should've been created as a consequence of [RoutingActivator.activate] */
-            if (!node.isViewless) requireNotNull(node.view)
-
             node.createTransitionElements(
                 item = item,
                 direction = TransitionDirection.ENTER,

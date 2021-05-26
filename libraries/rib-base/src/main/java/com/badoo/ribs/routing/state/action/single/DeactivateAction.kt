@@ -51,16 +51,12 @@ internal class DeactivateAction<C : Parcelable>(
 
     override fun onBeforeTransition() {
         // TODO Consider doing this closer to Router (in result of RoutingActivator)
-        transitionElements = item.nodes.mapNotNull {
-            it.view?.let { ribView ->
-                TransitionElement(
-                    configuration = item.routing.configuration, // TODO consider passing the whole RoutingElement
-                    direction = TransitionDirection.EXIT,
-                    addedOrRemoved = addedOrRemoved,
-                    identifier = it.identifier,
-                    view = ribView.androidView
-                )
-            }
+        transitionElements = item.nodes.flatMap { node ->
+            node.createTransitionElements(
+                item = item,
+                direction = TransitionDirection.EXIT,
+                addedOrRemoved = addedOrRemoved,
+            )
         }
     }
 

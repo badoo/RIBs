@@ -1,6 +1,7 @@
 package com.badoo.ribs.clienthelper.childaware
 
 import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.clienthelper.childaware.ChildAwareCallbackInfo.Mode
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
@@ -22,9 +23,11 @@ class ChildAwareImpl : ChildAware {
         child: KClass<T>,
         callback: ChildCallback<T>
     ) {
+        if (lifecycle.isDestroyed) return
         val info = ChildAwareCallbackInfo.Single(child, callback, lifecycle, Mode.ON_BUILT)
         callbacks += info
         notifyWhenRegistered(info)
+        lifecycle.removeWhenDestroyed(info)
     }
 
     override fun <T : Rib> whenChildAttached(
@@ -32,9 +35,11 @@ class ChildAwareImpl : ChildAware {
         child: KClass<T>,
         callback: ChildCallback<T>
     ) {
+        if (lifecycle.isDestroyed) return
         val info = ChildAwareCallbackInfo.Single(child, callback, lifecycle, Mode.ON_ATTACH)
         callbacks += info
         notifyWhenRegistered(info)
+        lifecycle.removeWhenDestroyed(info)
     }
 
     override fun <T1 : Rib, T2 : Rib> whenChildrenBuilt(
@@ -43,10 +48,12 @@ class ChildAwareImpl : ChildAware {
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
     ) {
+        if (lifecycle.isDestroyed) return
         val info =
             ChildAwareCallbackInfo.Double(child1, child2, callback, lifecycle, Mode.ON_BUILT)
         callbacks += info
         notifyWhenRegistered(info)
+        lifecycle.removeWhenDestroyed(info)
     }
 
     override fun <T : Rib, R : Rib> whenChildrenAttached(
@@ -55,10 +62,12 @@ class ChildAwareImpl : ChildAware {
         child2: KClass<R>,
         callback: ChildrenCallback<T, R>,
     ) {
+        if (lifecycle.isDestroyed) return
         val info =
             ChildAwareCallbackInfo.Double(child1, child2, callback, lifecycle, Mode.ON_ATTACH)
         callbacks += info
         notifyWhenRegistered(info)
+        lifecycle.removeWhenDestroyed(info)
     }
 
     override fun onChildBuilt(child: Node<*>) {
@@ -83,6 +92,10 @@ class ChildAwareImpl : ChildAware {
                 is ChildAwareCallbackInfo.Single<*> -> callback.invokeIfRequired(child)
             }
         }
+    }
+
+    private fun Lifecycle.removeWhenDestroyed(info: ChildAwareCallbackInfo) {
+        subscribe(onDestroy = { callbacks.remove(info) })
     }
 
 }

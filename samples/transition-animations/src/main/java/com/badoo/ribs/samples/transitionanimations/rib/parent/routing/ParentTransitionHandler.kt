@@ -41,9 +41,8 @@ class ParentTransitionHandler(duration: Long = 1000) : TransitionHandler.Multipl
 //  addedOrRemoved property to detect when user is reversing the animation
 fun TransitionElement<out Configuration>.isNotEnteringFirstChild(): Boolean =
     !(configuration == Configuration.Child1
-        && direction == TransitionDirection.ENTER
         && addedOrRemoved)
 
 fun TransitionElement<out Configuration>.isNotExitingLastChild(): Boolean =
     !(configuration == Configuration.Child3
-        && direction == TransitionDirection.EXIT)
+        && !addedOrRemoved)

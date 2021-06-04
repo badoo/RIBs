@@ -37,6 +37,7 @@ ext.junitTestImplementation = { project ->
         testImplementation deps.test.junitParams
         testRuntimeOnly deps.test.junitEngine
         testImplementation deps.test.junitVintage
+        testImplementation deps.test.byteBuddy
     }
 }
 

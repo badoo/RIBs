@@ -1,27 +1,30 @@
 # Integration tests
 
-The framework also provides multiple ways of integration testing.
+The framework provides multiple ways of doing integration testing
 
 ## Rib test
 
-We can create an instance of `Node` (or `Rib`) with help of `Builder` in JUnit test and verify its behaviour quite fast without using any emulators.
-To do so we need to use one of the framework features – view factory replacement.
-We can replace `View` implementation of `RIB` with stub implementation (as we did previously in `Interactor`) while keeping every other internal component intact.
-`View` implementation can be unit tested separately.
-To control the lifecycle of `Node` please use `RibNodeTestHelper`.
+Running integration tests on emulators can take a lot of time and we want to avoid it as much as possible.
+Most of `Rib` business logic can be tested without usage of emulators or `Robolectric`.
+We can create an instance of a `Rib` by instantiating its `Node` with the help of associated `Builder` in test.
+Then we can replace a `View` implementation of a `RIB` with a stub while keeping every other internal component intact.
+We can also mock or stub all external dependencies of a `RIB` to make sure that we do not use any Android related classes.
+In the end, we will be able to launch a `Rib` in JVM environment.
+Because we do not have any integration point like `Activity` or `Fragment`, we need to control the lifecycle of `Rib` manually with help of `RibNodeTestHelper`.
+The `View` implementation, that we excluded from a test, can be tested separately.
 
 ```kotlin
 class SomeScreenNodeTest {
 
-    // Test implementations of network and analytics components, that allows to stub results and verify calls 
+    // Test implementations of network and analytics components, that allow to stub results and verify function invocations
     private val testTracker = TestAnalyticsTracker()
     private val testNetwork = TestNetwork()
 
-    // We can replace view implementation with stub, so we can run this test without Robolectric
-    // RibViewStub is suitable for MVI approach, but you can easily create your own View stub just by implementing View interface
+    // We can replace view implementation with a stub, so we can run this test without Robolectric
+    // RibViewStub is suitable for MVI approach, but you can easily create your own View stub by implementing View interface
     private val view = object : RibViewStub<SomeScreenView.ViewModel, SomeScreenView.Event>(), SomeScreenView {}
 
-    // Create the node under test through builder, provide stub dependencies
+    // Instantiate the node under test, with the help of its builder, and provide the test implementation dependencies
     private val node = SomeScreenBuilder(
         dependency = object : SomeScreen.Dependency {
             override val network: Network = testNetwork
@@ -30,12 +33,12 @@ class SomeScreenNodeTest {
     ).build(
         buildContext = BuildContext.root(
             savedInstanceState = null,
-            // Override view implementation with stub
+            // Override the view implementation with our previously instantiated stub
             customisations = SomeScreen.Customisation { { view } }.toDirectory()
         )
     )
 
-    // RibNodeTestHelper will invoke all required callbacks to setup Node properly
+    // Utility helper that will allow you to invoke all required callbacks in order to setup the Node's state properly
     private val nodeTestHelper = RibNodeTestHelper(node)
 
     @Test
@@ -68,9 +71,8 @@ class SomeScreenNodeTest {
 }
 ```
 
-In case when `Rib` has children, use the same approach as for `Interactor` and `Router` tests. 
-We can replace child builders with stubs.
-Create internal and visible for tests constructor and use it to replace child builders.
+In case of `Rib` having children, we can replace child builders with stubs.
+Create `@VisibleForTests` internal constructor and use it to replace child builders.
 
 ```kotlin
 class SomeScreenBuilder @VisibleForTesting internal constructor(
@@ -102,7 +104,7 @@ class SomeScreenNodeTest {
 
     ...
 
-    // Use RibBuilderStub for testing purposes, RibNodeStub to create stub for Node
+    // Use RibBuilderStub to return RibNodeStub
     private val child1Builder = RibBuilderStub<Child1Builder.Param, Child1> { params ->
         object : RibNodeStub<RibView>(params), Child1, Connectable<Child1.Input, Child1.Output> by NodeConnector()
     }    
@@ -119,7 +121,6 @@ class SomeScreenNodeTest {
     ).build(
         buildContext = BuildContext.root(
             savedInstanceState = null,
-            // Override view implementation with stub
             customisations = SomeScreen.Customisation { { view } }.toDirectory()
         )
     )
@@ -127,7 +128,7 @@ class SomeScreenNodeTest {
     ...
 
     @Test
-    fun `GIVEN Child1 is attached WHEN Child1  THEN output SomeOutput`() {
+    fun `GIVEN Child1 is attached WHEN Child1 THEN output SomeOutput`() {
         nodeTestHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             val test = child1Builder.last?.input?.test()
 
@@ -193,9 +194,3 @@ class SomeScreenTest {
 
 }
 ```
-
-# Compatibility with other frameworks
-
-We tried to make the testing suite decoupled from any testing framework (JUnit4/JUnit5/Kotest and etc.) and want to try to keep it so.
-If you experience any incompatibility issues, feel free to create your own test helper classes based on our logic that suits your requirements.
-You can share your experience in the issues section or propose a pull request to make it better.

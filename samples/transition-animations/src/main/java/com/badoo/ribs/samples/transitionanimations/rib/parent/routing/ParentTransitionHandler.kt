@@ -1,7 +1,6 @@
 package com.badoo.ribs.samples.transitionanimations.rib.parent.routing
 
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
-import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.effect.sharedelement.SharedElementTransition
 import com.badoo.ribs.routing.transition.handler.CrossFader

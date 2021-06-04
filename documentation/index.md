@@ -53,7 +53,7 @@
 - [Preparations](testing/preparations.md)
 - [Unit tests](testing/unit-tests.md)
 - [Integration tests](testing/integration-tests.md)
-- [Compatibility](testing/compatibility.md)
+- [Compatibility with testing frameworks](testing/compatibility.md)
 
 ## Extras
 - Best practices

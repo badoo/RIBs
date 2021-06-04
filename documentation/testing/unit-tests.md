@@ -10,7 +10,7 @@ Now we can use `RibBuilderStub` instead of real `Child1Builder`, so it will help
 ```kotlin
 class SomeScreenRouterTest {
 
-    // Use RibBuilderStub for testing purposes, RibNodeStub to create stub for Node
+    // Use RibBuilderStub to return RibNodeStub
     private val child1Builder = RibBuilderStub<Child1Builder.Param, Child1> { params ->
         object : RibNodeStub<RibView>(params), Child1, Connectable<Child1.Input, Child1.Output> by NodeConnector()
     }
@@ -28,7 +28,7 @@ class SomeScreenRouterTest {
         child1Builder = child1Builder,
     )
     
-    // RibRouterTestHelper will invoke all required callbacks to setup Router properly
+    // Utility helper that will allow you to invoke all required callbacks in order to setup the Router's state properly
     private val routerTestHelper = RibRouterTestHelper(
         buildParams = emptyBuildParams(),
         router = router,
@@ -111,14 +111,14 @@ class SomeScreenInteractorTest {
         backStack = backStack,
     )
 
-    // We can replace view implementation with stub, so we can run this test without Robolectric
+    // We can replace view implementation with a stub, so we can run this test without Robolectric
     // RibViewStub is suitable for MVI approach, but you can easily create your own View stub just by implementing View interface
     private val view = object : RibViewStub<SomeScreenView.ViewModel, SomeScreenView.Event>(), SomeScreenView {}
 
-    // RibInteractorTestHelper will invoke all required callbacks to setup Interactor properly
+    // Utility helper that will allow you to invoke all required callbacks in order to setup the Interactor's state properly
     private val interactorTestHelper = RibInteractorTestHelper(
         interactor = interactor,
-        // If it is hard to create instance of SomeScreenNode, you can extend RibNodeStub and implement SomeScreen interface
+        // If it is hard to create an instance of SomeScreenNode, you can extend RibNodeStub and implement SomeScreen interface
         ribFactory = { SomeScreenNode(it, viewFactory = { view }, plugins = emptyList()) }
     )
 

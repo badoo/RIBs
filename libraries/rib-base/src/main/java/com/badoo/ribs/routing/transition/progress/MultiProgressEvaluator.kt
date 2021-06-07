@@ -9,7 +9,7 @@ class MultiProgressEvaluator : ProgressEvaluator {
     }
 
     override var progress: Float =
-        evaluators.map { it.progress }.min() ?: 0f
+        evaluators.map { it.progress }.minOrNull() ?: 0f
 
     override fun isPending(): Boolean =
         evaluators.any { it.isPending() }

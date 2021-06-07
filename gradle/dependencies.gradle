@@ -9,7 +9,7 @@ apply from: "$rootDirectory/gradle/compose.gradle"
 
 def kotlinVersion
 if (useCompose.toBoolean()) {
-    kotlinVersion = '1.4.30'
+    kotlinVersion = '1.5.10'
 } else {
     kotlinVersion = '1.4.31'
 }

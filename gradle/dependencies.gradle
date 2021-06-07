@@ -22,7 +22,7 @@ def versions = [
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.4',
         robolectric                    : '4.4',
-        compose                        : '1.0.0-beta01',
+        compose                        : '1.0.0-beta08',
 
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation

@@ -162,12 +162,7 @@ dependencies {
 
 // Determines if the machine has Maven credentials.
 def hasMavenCredentials() {
-    return ext.mavenUser && ext.mavenPassword
-}
-
-// Determines if it is a release build.
-static def isReleaseBuild() {
-    return System.env.ENABLE_RELEASE_BUILD == "true"
+    return ext.hasProperty('mavenUser') && ext.hasProperty('mavenPassword')
 }
 
 ext.pluginXml = new XmlSlurper().parse(file("src/main/resources/META-INF/plugin.xml"))
@@ -199,20 +194,17 @@ afterEvaluate {
 
 publishing {
     repositories {
-        maven {
-            if (isReleaseBuild() && hasMavenCredentials()) {
+        if (hasMavenCredentials()) {
+            maven {
                 url = "${config.build.artifactoryUrl}/${pluginsMavenRepositoryBucket}"
                 credentials {
                     username = mavenUser
                     password = mavenPassword
                 }
-            } else {
-                url = "file://" + new File(System.getProperty("user.home"), ".m2/repository").absolutePath
             }
         }
     }
 }
-build.dependsOn publishing
 
 if (needToPublishPlugin()) {
     def pluginVersion = VERSION_NAME + "-" + (System.currentTimeMillis() / 1000)

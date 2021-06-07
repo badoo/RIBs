@@ -52,9 +52,9 @@ def versions = [
 ]
 
 def apt = [
-        daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
-        javax         : "javax.annotation:jsr250-api:1.0",
-        javaxInject   : "javax.inject:javax.inject:1",
+    daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
+    javax: "javax.annotation:jsr250-api:1.0",
+    javaxInject: "javax.inject:javax.inject:1",
 ]
 
 def agp
@@ -79,7 +79,7 @@ def build = [
                 android        : agp,
                 kotlin         : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
                 gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
-                mavenPublish   : 'com.vanniktech:gradle-maven-publish-plugin:0.8.0',
+                mavenPublish   : 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
                 detekt         : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.10.0',
                 jacoco         : "org.jacoco:org.jacoco.core:${versions.jacoco}"
         ]

@@ -10,6 +10,7 @@ import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
@@ -129,7 +130,7 @@ internal open class RoutingStatePool<C : Parcelable>(
                 Transaction.RoutingChange(
                     descriptor = TransitionDescriptor.None,
                     changeset = state.pool
-                        .filter { it.value.activationState == SLEEPING }
+                        .filter { it.value.activationState == INACTIVE || it.value.activationState == SLEEPING }
                         .map { Add(it.key) }
                 )
             )

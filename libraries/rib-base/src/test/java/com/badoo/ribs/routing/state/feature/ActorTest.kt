@@ -1,398 +1,259 @@
 package com.badoo.ribs.routing.state.feature
 
+import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.routing.state.RoutingContext
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import org.junit.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.internal.verification.VerificationModeFactory.times
+import java.util.stream.Stream
 
-class ActorTest {
+internal class ActorTest {
 
-    private val pendingTransition: PendingTransition<TestConfiguration> = mock()
-    private val pendingTransitionFactory: PendingTransitionFactory<TestConfiguration> = mock {
-        on { create(any(), any(), any(), any()) } doReturn pendingTransition
-    }
-
-    /**
-     * [Case-1]
-     *  1. there is no ongoingTransitions
-     *  2. there is no pendingTransitions
-     *  3. globalActivationState is NOT SLEEPING
-     *  4. transitionHandler is NOT null
-     */
-    @Test
-    fun `GIVEN Case-1 conditions WHEN a RoutingChange is accepted THEN a pendingTransition is scheduled`() {
-        val state = WorkingState<TestConfiguration>(activationLevel = RoutingContext.ActivationState.ACTIVE)
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
+    @ParameterizedTest
+    @MethodSource("scheduleTestArguments")
+    fun `GIVEN no pending or ongoing transitions WHEN a RoutingChange is accepted THEN pendingTransition is correctly scheduled`(
+        activationState: RoutingContext.ActivationState,
+        transitionHandler: TransitionHandler<AnyConfiguration>?,
+        isScheduled: Boolean
+    ) {
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
+        val pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration> = mock {
+            on { create(any(), any(), any(), any()) } doReturn pendingTransition
+        }
+        val state = WorkingState<AnyConfiguration>(activationLevel = activationState)
+        val transaction = Transaction.RoutingChange<AnyConfiguration>(
             changeset = emptyList(),
             descriptor = mock()
         )
+        getActor(pendingTransitionFactory, transitionHandler).invoke(state, transaction)
 
-        getActor().invoke(state, transaction)
-
-        verify(pendingTransition).schedule()
+        verify(pendingTransition, verifyMode(isScheduled)).schedule()
     }
 
-    /**
-     * [Case-2]
-     *  1. there is no ongoingTransitions
-     *  2. there is no pendingTransitions
-     *  2. globalActivationState is SLEEPING
-     *  3. transitionHandler is NOT null
-     */
-    @Test
-    fun `GIVEN Case-2 conditions WHEN a RoutingChange is accepted THEN a pendingTransition is NOT scheduled`() {
-        val state = WorkingState<TestConfiguration>(activationLevel = RoutingContext.ActivationState.SLEEPING)
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
-            changeset = emptyList(),
-            descriptor = mock()
-        )
-
-        getActor().invoke(state, transaction)
-
-        verify(pendingTransition, never()).schedule()
-    }
-
-    /**
-     * [Case-3]
-     *  1. there is no ongoingTransitions
-     *  2. there is no pendingTransitions
-     *  3. globalActivationState is NOT SLEEPING
-     *  4. transitionHandler is null
-     */
-    @Test
-    fun `GIVEN Case-3 conditions WHEN a RoutingChange is accepted THEN a pendingTransition is NOT scheduled`() {
-        val state = WorkingState<TestConfiguration>(activationLevel = RoutingContext.ActivationState.ACTIVE)
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
-            changeset = emptyList(),
-            descriptor = mock()
-        )
-
-        getActor(null).invoke(state, transaction)
-
-        verify(pendingTransition, never()).schedule()
-    }
-
-    /**
-     * [Case-4]
-     *  1. there is no ongoingTransitions
-     *  2. there is 1 pendingTransitions
-     *  3. globalActivationState is NOT SLEEPING
-     *  4. transitionHandler is NOT null
-     *  5. The existing pending transition is the reversed of the new RoutingChange
-     */
-    @Test
-    fun `GIVEN Case-4 conditions WHEN a RoutingChange is accepted THEN a the old pending transition is discarded, and new one is scheduled`() {
-        val oldPendingTransition: PendingTransition<TestConfiguration> = mock {
+    @ParameterizedTest
+    @MethodSource("pendingInteractionsTestArguments")
+    fun `GIVEN transition enabled conditions and a pendingTransition already in the state WHEN a RoutingChange is accepted THEN pendingTransition is correctly handled and new transition is scheduled `(
+        isContinuation: Boolean,
+        isReverse: Boolean
+    ) {
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
+        val pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration> = mock {
+            on { create(any(), any(), any(), any()) } doReturn pendingTransition
+        }
+        val oldPendingTransition: PendingTransition<AnyConfiguration> = mock {
             on { descriptor } doReturn mock()
         }
         val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
+            activationLevel = ACTIVE,
             pendingTransitions = listOf(oldPendingTransition)
         )
         val newDescriptor: TransitionDescriptor = mock {
-            on { isReverseOf(oldPendingTransition.descriptor) } doReturn true
+            on { isReverseOf(oldPendingTransition.descriptor) } doReturn isReverse
+            on { isContinuationOf(oldPendingTransition.descriptor) } doReturn isContinuation
         }
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
+        val transaction = Transaction.RoutingChange<AnyConfiguration>(
             changeset = emptyList(),
             descriptor = newDescriptor
         )
 
-        getActor().invoke(state, transaction)
+        getActor(pendingTransitionFactory, mock()).invoke(state, transaction)
 
-        verify(oldPendingTransition).discard()
+        verify(oldPendingTransition, verifyMode(isContinuation)).completeWithoutTransition()
+        verify(oldPendingTransition, verifyMode(isReverse)).discard()
         verify(pendingTransition).schedule()
     }
 
-    /**
-     * [Case-5]
-     *  1. there is no ongoingTransitions
-     *  2. there is 1 pendingTransitions
-     *  3. globalActivationState is NOT SLEEPING
-     *  4. transitionHandler is NOT null
-     *  5. The existing pending transition is the continuation of the new RoutingChange
-     */
-    @Test
-    fun `GIVEN Case-5 conditions WHEN a RoutingChange is accepted THEN the old pending transition is completeWithoutTransition, and new one is scheduled`() {
-        val oldPendingTransition: PendingTransition<TestConfiguration> = mock {
+    @ParameterizedTest()
+    @MethodSource("executePendingTestArguments")
+    fun `WHEN a ExecutePendingTransition is accepted THEN pendingTransition is correctly handled`(
+        activationState: RoutingContext.ActivationState,
+        transitionHandler: TransitionHandler<AnyConfiguration>?,
+        existingPendingTransition: PendingTransition<AnyConfiguration>,
+        toExecuteTransition: PendingTransition<AnyConfiguration>,
+        isCompletedWithoutTransition: Boolean,
+        isDiscarded: Boolean,
+        isExecuted: Boolean
+    ) {
+        val ongoingTransition: OngoingTransition<AnyConfiguration> = mock()
+        whenever(toExecuteTransition.execute(any())).thenReturn(ongoingTransition)
+        val state = WorkingState(
+            activationLevel = activationState,
+            pendingTransitions = listOf(existingPendingTransition)
+        )
+        getActor(mock(), transitionHandler).invoke(state, Transaction.InternalTransaction.ExecutePendingTransition(toExecuteTransition))
+
+        verify(toExecuteTransition, verifyMode(isCompletedWithoutTransition)).completeWithoutTransition()
+        verify(toExecuteTransition, verifyMode(isDiscarded)).discard()
+        transitionHandler?.let {
+            verify(toExecuteTransition, verifyMode(isExecuted)).execute(transitionHandler)
+        }
+    }
+
+    @ParameterizedTest()
+    @MethodSource("ongoingTransitionInteractionsTestArguments")
+    fun `GIVEN an ongoingTransition in the state WHEN a RoutingChange is accepted THEN existing ongoingTransition is correctly handled`(
+        isContinuation: Boolean,
+        isReverse: Boolean
+    ) {
+        val pendingTransition: PendingTransition<AnyConfiguration> = mock()
+        val pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration> = mock {
+            on { create(any(), any(), any(), any()) } doReturn pendingTransition
+        }
+        val ongoingTransition: OngoingTransition<AnyConfiguration> = mock {
             on { descriptor } doReturn mock()
         }
         val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            pendingTransitions = listOf(oldPendingTransition)
-        )
-        val newDescriptor: TransitionDescriptor = mock {
-            on { isReverseOf(oldPendingTransition.descriptor) } doReturn false
-            on { isContinuationOf(oldPendingTransition.descriptor) } doReturn true
-        }
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
-            changeset = emptyList(),
-            descriptor = newDescriptor
-        )
-
-        getActor().invoke(state, transaction)
-
-        verify(oldPendingTransition).completeWithoutTransition()
-        verify(pendingTransition).schedule()
-    }
-
-    /**
-     * [Case-6]
-     *  1. there is no ongoingTransitions
-     *  2. there is no pendingTransitions
-     *  3. globalActivationState is NOT SLEEPING
-     *  4. transitionHandler is NOT null
-     *  5. The existing pending transition is the continuation of the new RoutingChange
-     */
-    @Test
-    fun `GIVEN Case-6 conditions WHEN a RoutingChange is accepted THEN the old pending transition is completeWithoutTransition, and new one is scheduled`() {
-        val oldPendingTransition: PendingTransition<TestConfiguration> = mock {
-            on { descriptor } doReturn mock()
-        }
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            pendingTransitions = listOf(oldPendingTransition)
-        )
-        val newDescriptor: TransitionDescriptor = mock {
-            on { isReverseOf(oldPendingTransition.descriptor) } doReturn false
-            on { isContinuationOf(oldPendingTransition.descriptor) } doReturn true
-        }
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
-            changeset = emptyList(),
-            descriptor = newDescriptor
-        )
-
-        getActor().invoke(state, transaction)
-
-        verify(oldPendingTransition).completeWithoutTransition()
-        verify(pendingTransition).schedule()
-    }
-
-    /**
-     * [Case-7]
-     *  1. there is no ongoingTransitions
-     *  2. there is no pendingTransitions
-     *  3. globalActivationState is NOT SLEEPING
-     *  4. transitionHandler is NOT null
-     *  5. The existing pending transition has no interactions with the new one
-     */
-    @Test
-    fun `GIVEN Case-7 conditions WHEN a RoutingChange is accepted THEN then new one is scheduled and no actions are applied to old one`() {
-        val oldPendingTransition: PendingTransition<TestConfiguration> = mock {
-            on { descriptor } doReturn mock()
-        }
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            pendingTransitions = listOf(oldPendingTransition)
-        )
-        val newDescriptor: TransitionDescriptor = mock {
-            on { isReverseOf(oldPendingTransition.descriptor) } doReturn false
-            on { isContinuationOf(oldPendingTransition.descriptor) } doReturn false
-        }
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
-            changeset = emptyList(),
-            descriptor = newDescriptor
-        )
-
-        getActor().invoke(state, transaction)
-
-        verify(oldPendingTransition, never()).completeWithoutTransition()
-        verify(oldPendingTransition, never()).discard()
-        verify(pendingTransition).schedule()
-    }
-
-    /**
-     * [Case-8]
-     *  1. globalActivationState is NOT SLEEPING
-     *  2. there is 1 pendingTransitions
-     *  3. transitionHandler is NOT null
-     *  4. Accepted transition is the pending one.
-     */
-    @Test
-    fun `GIVEN Case-8 conditions WHEN a ExecutePendingTransition is accepted THEN then the pendingTransition is executed and ongoingTransition started`() {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock()
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            pendingTransitions = listOf(pendingTransition)
-        )
-        whenever(pendingTransition.execute(any())).thenReturn(ongoingTransition)
-
-        getActor().invoke(state, Transaction.InternalTransaction.ExecutePendingTransition(pendingTransition))
-
-        verify(pendingTransition).execute(any())
-        verify(ongoingTransition).start()
-    }
-
-    /**
-     * [Case-9]
-     *  1. globalActivationState is NOT SLEEPING
-     *  2. there is 1 pendingTransitions
-     *  3. transitionHandler is NOT null
-     *  4. Accepted transition is NOT the pending one.
-     */
-    @Test
-    fun `GIVEN Case-9 conditions WHEN a ExecutePendingTransition is accepted THEN then the pendingTransition is discarded`() {
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            pendingTransitions = listOf<PendingTransition<TestConfiguration>>(mock())
-        )
-
-        getActor().invoke(state, Transaction.InternalTransaction.ExecutePendingTransition(pendingTransition))
-
-        verify(pendingTransition).discard()
-    }
-
-    /**
-     * [Case-10]
-     *  1. globalActivationState is SLEEPING
-     *  2. there is 1 pendingTransitions
-     *  3. transitionHandler is NOT null
-     *  4. Accepted transition is the pending one.
-     */
-    @Test
-    fun `GIVEN Case-10 conditions WHEN a ExecutePendingTransition is accepted THEN then the pendingTransition is completedWithoutTransition`() {
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.SLEEPING,
-            pendingTransitions = listOf(pendingTransition)
-        )
-
-        getActor().invoke(state, Transaction.InternalTransaction.ExecutePendingTransition(pendingTransition))
-
-        verify(pendingTransition).completeWithoutTransition()
-    }
-
-    /**
-     * [Case-11]
-     *  1. globalActivationState is NOT SLEEPING
-     *  2. there is 1 pendingTransitions
-     *  3. transitionHandler is null
-     *  4. Accepted transition is the pending one.
-     */
-    @Test
-    fun `GIVEN Case-11 conditions WHEN a ExecutePendingTransition is accepted THEN then the pendingTransition is completedWithoutTransition`() {
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            pendingTransitions = listOf(pendingTransition)
-        )
-
-        getActor(null).invoke(state, Transaction.InternalTransaction.ExecutePendingTransition(pendingTransition))
-
-        verify(pendingTransition).completeWithoutTransition()
-    }
-
-    /**
-     * [Case-12]
-     *  1. globalActivationState is NOT SLEEPING
-     *  2. transitionHandler is NOT null
-     *  3. there is no pendingTransitions
-     *  4. there is 1 ongoingTransition
-     *  4. The existing ongoingTransition is the reverse of the new one.
-     */
-    @Test
-    fun `GIVEN Case-12 conditions WHEN a RoutingChange is accepted THEN then the old one is reversed, and new one is NOT scheduled`() {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock {
-            on { descriptor } doReturn mock()
-        }
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
+            activationLevel = ACTIVE,
             ongoingTransitions = listOf(ongoingTransition)
         )
         val newDescriptor: TransitionDescriptor = mock {
-            on { isReverseOf(ongoingTransition.descriptor) } doReturn true
+            on { isReverseOf(ongoingTransition.descriptor) } doReturn isReverse
+            on { isContinuationOf(ongoingTransition.descriptor) } doReturn isContinuation
+
         }
 
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
+        val transaction = Transaction.RoutingChange<AnyConfiguration>(
             changeset = emptyList(),
             descriptor = newDescriptor
         )
 
-        getActor().invoke(state, transaction)
+        getActor(pendingTransitionFactory, mock()).invoke(state, transaction)
 
-        verify(ongoingTransition).reverse()
-        verify(pendingTransition, never()).schedule()
-    }
-
-    /**
-     * [Case-13]
-     *  1. globalActivationState is NOT SLEEPING
-     *  2. transitionHandler is NOT null
-     *  3. there is no pendingTransitions
-     *  4. there is 1 ongoingTransition
-     *  4. The new transition is the continuation of the ongoing one.
-     */
-    @Test
-    fun `GIVEN Case-13 conditions WHEN a RoutingChange is accepted THEN then the old one is jumpToEnd, and new one is scheduled`() {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock {
-            on { descriptor } doReturn mock()
-        }
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            ongoingTransitions = listOf(ongoingTransition)
-        )
-        val newDescriptor: TransitionDescriptor = mock {
-            on { isContinuationOf(ongoingTransition.descriptor) } doReturn true
-        }
-
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
-            changeset = emptyList(),
-            descriptor = newDescriptor
-        )
-
-        getActor().invoke(state, transaction)
-
-        verify(ongoingTransition).jumpToEnd()
-        verify(pendingTransition).schedule()
-    }
-
-    /**
-     * [Case-14]
-     *  1. globalActivationState is NOT SLEEPING
-     *  2. transitionHandler is NOT null
-     *  3. there is no pendingTransitions
-     *  4. there is 1 ongoingTransition
-     *  4. The new transition has no interaction with ongoing one
-     */
-    @Test
-    fun `GIVEN Case-14 conditions WHEN a RoutingChange is accepted THEN then new one is scheduled and no actions are applied to old one`() {
-        val ongoingTransition: OngoingTransition<TestConfiguration> = mock {
-            on { descriptor } doReturn mock()
-        }
-        val state = WorkingState(
-            activationLevel = RoutingContext.ActivationState.ACTIVE,
-            ongoingTransitions = listOf(ongoingTransition)
-        )
-        val newDescriptor: TransitionDescriptor = mock {
-            on { isReverseOf(ongoingTransition.descriptor) } doReturn false
-            on { isContinuationOf(ongoingTransition.descriptor) } doReturn false
-
-        }
-
-        val transaction = Transaction.RoutingChange<TestConfiguration>(
-            changeset = emptyList(),
-            descriptor = newDescriptor
-        )
-
-        getActor().invoke(state, transaction)
-
-        verify(ongoingTransition, never()).reverse()
-        verify(ongoingTransition, never()).jumpToEnd()
-        verify(pendingTransition).schedule()
+        verify(ongoingTransition, verifyMode(isReverse)).reverse()
+        verify(ongoingTransition, verifyMode(isContinuation)).jumpToEnd()
     }
 
 
-    private fun getActor(transitionHandler: TransitionHandler<TestConfiguration>? = mock()) = Actor(
-        resolver = mock(),
-        activator = mock(),
-        parentNode = mock(),
-        transitionHandler = transitionHandler,
-        effectEmitter = mock(),
-        pendingTransitionFactory = pendingTransitionFactory
-    )
+    private fun getActor(
+        pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration>,
+        transitionHandler: TransitionHandler<AnyConfiguration>? = mock()) =
+        Actor(
+            resolver = mock(),
+            activator = mock(),
+            parentNode = mock(),
+            transitionHandler = transitionHandler,
+            effectEmitter = mock(),
+            pendingTransitionFactory = pendingTransitionFactory
+        )
+
+    private fun verifyMode(isExpected: Boolean) =
+        if (isExpected) times(1) else never()
+
+    companion object {
+
+        @JvmStatic
+        private fun scheduleTestArguments(): Stream<Arguments> = Stream.of(
+            createScheduleTestArguments(
+                activationState = ACTIVE,
+                transitionHandler = mock(),
+                isScheduled = true),
+            createScheduleTestArguments(
+                activationState = SLEEPING,
+                transitionHandler = mock(),
+                isScheduled = false),
+            createScheduleTestArguments(
+                activationState = ACTIVE,
+                transitionHandler = null,
+                isScheduled = false),
+            createScheduleTestArguments(
+                activationState = SLEEPING,
+                transitionHandler = null,
+                isScheduled = false),
+        )
+
+        private fun createScheduleTestArguments(activationState: RoutingContext.ActivationState,
+                                                transitionHandler: TransitionHandler<AnyConfiguration>?,
+                                                isScheduled: Boolean) =
+            Arguments.of(activationState, transitionHandler, isScheduled)
+
+        @JvmStatic
+        private fun pendingInteractionsTestArguments(): Stream<Arguments> = Stream.of(
+            interactionTestArguments(
+                isContinuation = false,
+                isReversed = true),
+            interactionTestArguments(
+                isContinuation = true,
+                isReversed = false),
+            interactionTestArguments(
+                isContinuation = false,
+                isReversed = false)
+        )
+
+        private fun interactionTestArguments(isContinuation: Boolean, isReversed: Boolean) =
+            Arguments.of(isContinuation, isReversed)
+
+        @JvmStatic
+        private fun executePendingTestArguments() =
+            Stream.of(
+                createExecutePendingTestArguments(
+                    activationState = ACTIVE,
+                    transitionHandler = mock(),
+                    isNewSameAsExistingTransition = true,
+                    isCompletedWithoutTransition = false,
+                    isDiscarded = false,
+                    isExecuted = true),
+                createExecutePendingTestArguments(
+                    activationState = ACTIVE,
+                    transitionHandler = mock(),
+                    isNewSameAsExistingTransition = false,
+                    isCompletedWithoutTransition = false,
+                    isDiscarded = true,
+                    isExecuted = false),
+                createExecutePendingTestArguments(
+                    activationState = SLEEPING,
+                    transitionHandler = mock(),
+                    isNewSameAsExistingTransition = true,
+                    isCompletedWithoutTransition = true,
+                    isDiscarded = false,
+                    isExecuted = false),
+                createExecutePendingTestArguments(
+                    activationState = ACTIVE,
+                    transitionHandler = null,
+                    isNewSameAsExistingTransition = true,
+                    isCompletedWithoutTransition = true,
+                    isDiscarded = false,
+                    isExecuted = false)
+
+            )
+
+
+        private fun createExecutePendingTestArguments(activationState: RoutingContext.ActivationState,
+                                                      transitionHandler: TransitionHandler<AnyConfiguration>?,
+                                                      isNewSameAsExistingTransition: Boolean,
+                                                      isCompletedWithoutTransition: Boolean,
+                                                      isDiscarded: Boolean,
+                                                      isExecuted: Boolean): Arguments {
+
+            val existingPendingTransition: PendingTransition<AnyConfiguration> = mock()
+            val toExecuteTransition = if (isNewSameAsExistingTransition) existingPendingTransition else mock()
+
+            return Arguments.of(activationState,
+                transitionHandler,
+                existingPendingTransition,
+                toExecuteTransition,
+                isCompletedWithoutTransition,
+                isDiscarded,
+                isExecuted)
+        }
+
+        @JvmStatic
+        private fun ongoingTransitionInteractionsTestArguments() =
+            Stream.of(
+                interactionTestArguments(isContinuation = false, isReversed = false),
+                interactionTestArguments(isContinuation = true, isReversed = false),
+                interactionTestArguments(isContinuation = false, isReversed = false),
+            )
+    }
 }

@@ -3,7 +3,7 @@ package com.badoo.ribs.minimal.reactive
 import com.badoo.ribs.minimal.reactive.Cancellable.Companion.cancellableOf
 
 
-class Relay<T> : Source<T>, Emitter<T> {
+open class Relay<T> : Source<T>, Emitter<T> {
     private val listeners: MutableList<(T) -> Unit> = mutableListOf()
 
     fun accept(value: T) {

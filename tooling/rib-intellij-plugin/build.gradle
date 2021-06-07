@@ -155,7 +155,7 @@ dependencies {
     implementation deps.external.apacheCommons
     implementation deps.external.gson
 
-    testImplementation deps.test.junit
+    junitTestImplementation(project)
     testImplementation deps.test.assertj
     testImplementation deps.test.mockitoKotlin
 }

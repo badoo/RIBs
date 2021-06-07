@@ -19,7 +19,7 @@ internal class FeedContainerInteractor(
     override fun onCreate(nodeLifecycle: Lifecycle) {
         nodeLifecycle.createDestroy {
         }
-        whenChildBuilt<PhotoFeed> { commonLifecycle, child ->
+        whenChildBuilt<PhotoFeed>(nodeLifecycle) { commonLifecycle, child ->
             commonLifecycle.createDestroy {
                 bind(child.output to rib.output using FeedOutputToContainerOutput)
             }

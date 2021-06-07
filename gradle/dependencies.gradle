@@ -25,23 +25,23 @@ def versions = [
         compose                        : '1.0.0-beta08',
 
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
-        androidxAnnotationVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
-        androidxAppCompatVersion       : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
-        androidxBrowserVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/browser
+        androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation
+        androidxAppCompatVersion       : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
+        androidxBrowserVersion         : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/browser
         androidxBroadcastVersion       : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
         androidxCardViewVersion        : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
-        androidxCollectionVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
-        androidxConstraintLayoutVersion: '1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
-        androidxCoreVersion            : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/core
-        androidxExifVersion            : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
-        androidxFragmentVersion        : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/fragment
-        androidxActivityVersion        : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/activity
+        androidxCollectionVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/collection
+        androidxConstraintLayoutVersion: '2.0.4', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
+        androidxCoreVersion            : '1.5.0', // https://developer.android.com/jetpack/androidx/releases/core
+        androidxExifVersion            : '1.3.2', // https://developer.android.com/jetpack/androidx/releases/exifinterface
+        androidxFragmentVersion        : '1.3.4', // https://developer.android.com/jetpack/androidx/releases/fragment
+        androidxActivityVersion        : '1.2.3', // https://developer.android.com/jetpack/androidx/releases/activity
         androidxGridLayoutVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
-        androidxLifecycleVersion       : '2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
-        androidxLoaderVersion          : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
+        androidxLifecycleVersion       : '2.3.1', // https://developer.android.com/jetpack/androidx/releases/lifecycle
+        androidxLoaderVersion          : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/loader
         androidxPaletteVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
         androidxPercentLayoutVersion   : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
-        androidxRecyclerViewVersion    : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
+        androidxRecyclerViewVersion    : '1.2.1', // https://developer.android.com/jetpack/androidx/releases/recyclerview
         androidxTestVersion            : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/test
         androidxTestUiAutoVersion      : '2.2.0',
         retrofitVersion                : '2.8.1',
@@ -59,7 +59,7 @@ def apt = [
 
 def agp
 if (useCompose.toBoolean()) {
-    agp = 'com.android.tools.build:gradle:7.0.0-alpha08'
+    agp = 'com.android.tools.build:gradle:7.0.0-beta03'
 } else {
     agp = 'com.android.tools.build:gradle:4.1.1'
 }

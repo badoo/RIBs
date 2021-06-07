@@ -42,14 +42,20 @@ class SourceSetDirectoriesProvider(
     }
 
     private fun getAndroidArtifactDirectory(artifact: String, createIfNotFound: Boolean): PsiDirectory? {
-        val file = androidModel.getTestSourceProviders(artifact).firstOrNull()?.javaDirectories?.firstOrNull()
-            ?: throw IllegalStateException("Source set directory for $artifact not found")
-        file.mkdirs()
-        val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
-        return if (createIfNotFound) {
-            RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, virtualFile)
-        } else {
-            targetPackage.directories.firstOrNull { VfsUtil.isAncestor(virtualFile!!, it.virtualFile, false) }
+        return try {
+            val file = androidModel.getTestSourceProviders(artifact).firstOrNull()?.javaDirectories?.firstOrNull()
+                ?: throw IllegalStateException("Source set directory for $artifact not found")
+            file.mkdirs()
+            val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
+            if (createIfNotFound) {
+                RefactoringUtil.createPackageDirectoryInSourceRoot(targetPackage, virtualFile!!)
+            } else {
+                targetPackage.directories.firstOrNull { VfsUtil.isAncestor(virtualFile!!, it.virtualFile, false) }
+            }
+        } catch (t: ClassCastException) {
+            null
+        } catch (t: NoSuchMethodError) {
+            null
         }
     }
 }

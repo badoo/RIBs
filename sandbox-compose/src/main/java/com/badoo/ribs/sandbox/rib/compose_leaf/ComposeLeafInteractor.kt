@@ -6,13 +6,13 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.ViewModel
 
 internal class ComposeLeafInteractor(
-    buildParams: BuildParams<*>
+    private val buildParams: BuildParams<ComposeLeaf.Params>
 ) : Interactor<ComposeLeaf, ComposeLeafView>(
     buildParams = buildParams
 ) {
     override fun onViewCreated(view: ComposeLeafView, viewLifecycle: Lifecycle) {
         view.accept(
-            ViewModel(text = "Initial view model")
+            ViewModel(i = buildParams.payload.i)
         )
     }
 }

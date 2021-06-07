@@ -31,6 +31,6 @@ internal class RecyclerViewHostNode<T : Parcelable>(
 
     override fun onDestroy(isRecreating: Boolean) {
         adapter.onDestroy()
-        super.onDestroy(isRecreating)
+        super<Node>.onDestroy(isRecreating)
     }
 }

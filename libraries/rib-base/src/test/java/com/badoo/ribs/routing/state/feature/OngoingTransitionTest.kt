@@ -1,16 +1,16 @@
 package com.badoo.ribs.routing.state.feature
 
+import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.TransitionFinished
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.TransitionStarted
 import com.badoo.ribs.routing.transition.TransitionElement
-import com.badoo.ribs.test.TestConfiguration
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 
 class OngoingTransitionTest {
 
-    private val effectEmitter: EffectEmitter<TestConfiguration> = mock()
-    private val transitionElement: TransitionElement<TestConfiguration> = mock()
+    private val effectEmitter: EffectEmitter<AnyConfiguration> = mock()
+    private val transitionElement: TransitionElement<AnyConfiguration> = mock()
 
     private val ongoingTransition = OngoingTransition(
         descriptor = mock(),
@@ -28,8 +28,8 @@ class OngoingTransitionTest {
 
         ongoingTransition.start()
 
-        verify(effectEmitter).invoke(any<TransitionStarted<TestConfiguration>>())
-        verify(effectEmitter, never()).invoke(any<TransitionFinished<TestConfiguration>>())
+        verify(effectEmitter).invoke(any<TransitionStarted<AnyConfiguration>>())
+        verify(effectEmitter, never()).invoke(any<TransitionFinished<AnyConfiguration>>())
 
     }
 
@@ -39,13 +39,13 @@ class OngoingTransitionTest {
 
         ongoingTransition.start()
 
-        verify(effectEmitter).invoke(any<TransitionFinished<TestConfiguration>>())
+        verify(effectEmitter).invoke(any<TransitionFinished<AnyConfiguration>>())
     }
 
     @Test
     fun `WHEN transition is jumpToEnd THEN TransitionFinished is emitted`() {
         ongoingTransition.jumpToEnd()
 
-        verify(effectEmitter).invoke(any<TransitionFinished<TestConfiguration>>())
+        verify(effectEmitter).invoke(any<TransitionFinished<AnyConfiguration>>())
     }
 }

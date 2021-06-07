@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="yellow_200">#FFF7D8</color>
-    <color name="yellow_350">#FFD08A</color>
-    <color name="yellow_500">#FFC629</color>
-    <color name="yellow_700">#E3AA1F</color>
-    <color name="teal_200">#009ABF</color>
-    <color name="teal_700">#005E75</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="light_gray">#CCCCCC</color>
 
     <color name="text_default">#666</color>
     <color name="text_selected">@color/black</color>

@@ -13,11 +13,10 @@ def getSnapshotRepositoryUrl() {
 
 apply plugin: "com.vanniktech.maven.publish"
 
-mavenPublish {
-    targets {
-        uploadArchives {
-            releaseRepositoryUrl = getReleaseRepositoryUrl()
-            snapshotRepositoryUrl = getSnapshotRepositoryUrl()
+publishing {
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? getSnapshotRepositoryUrl() : getReleaseRepositoryUrl()
         }
     }
 }

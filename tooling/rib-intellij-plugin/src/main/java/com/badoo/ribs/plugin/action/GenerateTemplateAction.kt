@@ -57,27 +57,30 @@ open class GenerateTemplateAction : AnAction(), GenerateRibDialog.Listener {
         val androidFacet = FacetManager.getInstance(currentModule).getFacetByType(AndroidFacet.ID)!!
 
         val targetPackage = PackageWrapper(PsiManager.getInstance(project), getCurrentPackageName())
-        val targetModulePackage = AndroidModuleModel.get(androidFacet)?.applicationId!!
+        val moduleModel = AndroidModuleModel.get(androidFacet)
+        if (moduleModel != null) {
+            val targetModulePackage = moduleModel.applicationId
 
-        val template = metaInformationProvider.templates.find { it.id == templateId }!!
+            val template = metaInformationProvider.templates.find { it.id == templateId }!!
 
-        val sourceSetDirectories = SourceSetDirectoriesProvider(project, androidFacet, targetPackage, directory)
+            val sourceSetDirectories = SourceSetDirectoriesProvider(project, androidFacet, targetPackage, directory)
 
-        val replacements = createReplacements(
-            template.sourcePackage,
-            targetPackage.qualifiedName,
-            template.modulePackage,
-            targetModulePackage,
-            template.tokens.map { it.id to it }.toMap(),
-            tokenValues
-        )
+            val replacements = createReplacements(
+                template.sourcePackage,
+                targetPackage.qualifiedName,
+                template.modulePackage,
+                targetModulePackage,
+                template.tokens.associateBy { it.id },
+                tokenValues
+            )
 
-        val writer = TemplateWriter(filesProvider.templateFiles.getValue(templateId))
+            val writer = TemplateWriter(filesProvider.templateFiles.getValue(templateId))
 
-        ApplicationManager.getApplication().runWriteAction {
-            CommandProcessor.getInstance().executeCommand(project, {
-                writer.writeFiles(project, sourceSetDirectories, replacements)
-            }, "Generate new RIB", null)
+            ApplicationManager.getApplication().runWriteAction {
+                CommandProcessor.getInstance().executeCommand(project, {
+                    writer.writeFiles(project, sourceSetDirectories, replacements)
+                }, "Generate new RIB", null)
+            }
         }
     }
 

@@ -1,10 +1,10 @@
 package com.badoo.ribs.routing.transition.progress
 
 import com.badoo.ribs.minimal.reactive.Source
+import com.badoo.ribs.minimal.reactive.distinctUntilChanged
 import com.badoo.ribs.minimal.reactive.map
 import com.badoo.ribs.minimal.state.Store
 import com.badoo.ribs.util.RIBs
-
 
 class SingleProgressEvaluator : ProgressEvaluator {
 
@@ -31,6 +31,12 @@ class SingleProgressEvaluator : ProgressEvaluator {
             is Progress.Finished -> 1f
         }
 
+    override val isPending: Boolean
+        get() = isInProgress() || isInitialised()
+
+    override val isPendingSource: Source<Boolean> =
+        state.map { isPending }.distinctUntilChanged()
+
     fun start() {
         state.setState(Progress.InProgress())
     }
@@ -54,16 +60,10 @@ class SingleProgressEvaluator : ProgressEvaluator {
         state.setState(Progress.Finished)
     }
 
-    override fun isPending(): Boolean =
-        isInProgress() || isInitialised()
-
     private fun isInProgress(): Boolean =
         state.state is Progress.InProgress
 
     private fun isInitialised(): Boolean =
         state.state is Progress.Initialised
-
-    override fun isPendingSource(): Source<Boolean> =
-        state.map { isPending() }
 
 }

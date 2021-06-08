@@ -16,8 +16,8 @@ interface ProgressEvaluator {
      */
     val progress: Float
 
-    fun isPending(): Boolean
+    val isPending: Boolean
 
-    fun isPendingSource(): Source<Boolean>
+    val isPendingSource: Source<Boolean>
 
 }

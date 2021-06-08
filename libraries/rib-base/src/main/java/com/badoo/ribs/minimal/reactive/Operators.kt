@@ -8,34 +8,42 @@ fun <T> just(producer: () -> T): Source<T> =
         }
     }
 
+@Suppress("UNCHECKED_CAST")
 fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: Source<B>, combination: (A, B) -> C): Source<C> =
+    combineLatest(listOf(source1, source2)) { array -> combination(array[0] as A, array[1] as B) }
+
+fun <C> combineLatest(sources: Collection<Source<Any>>, combination: (Array<Any?>) -> C): Source<C> =
     object : Source<C> {
         /**
          * The internal state (first / second values) should be recreated for each new call to observer
          * Otherwise new subscriptions will not start from empty state but will share values, which is not desirable
          */
         override fun observe(callback: (C) -> Unit): Cancellable {
-            var firstValue: A? = null
-            var secondValue: B? = null
+            if (sources.isEmpty()) return Cancellable.Empty
+
+            val initialized = Array(sources.size) { false }
+            var allInitialized = false
+            val values = Array<Any?>(sources.size) { null }
 
             fun emitCombined() {
-                if (firstValue != null && secondValue != null) {
-                    callback(combination(firstValue!!, secondValue!!))
+                if (!allInitialized && initialized.all { it }) {
+                    allInitialized = true
+                }
+                if (allInitialized) {
+                    callback(combination(values))
                 }
             }
 
-            val cancellable1 = source1.observe {
-                firstValue = it
-                emitCombined()
-            }
-            val cancellable2 = source2.observe {
-                secondValue = it
-                emitCombined()
+            val cancellables = sources.mapIndexed { index, source ->
+                source.observe { value ->
+                    initialized[index] = true
+                    values[index] = value
+                    emitCombined()
+                }
             }
 
             return Cancellable.cancellableOf {
-                cancellable1.cancel()
-                cancellable2.cancel()
+                cancellables.forEach { it.cancel() }
             }
         }
     }
@@ -60,4 +68,24 @@ fun <T> Source<T>.startWith(value: T): Source<T> =
             callback(value)
             return this@startWith.observe(callback)
         }
+    }
+
+fun <T> defer(factory: () -> Source<T>): Source<T> =
+    object : Source<T> {
+        override fun observe(callback: (T) -> Unit): Cancellable =
+            factory().observe(callback)
+    }
+
+fun <T> Source<T>.distinctUntilChanged(): Source<T> =
+    object : Source<T> {
+        private var hasLastValue: Boolean = false
+        private var lastValue: T? = null
+        override fun observe(callback: (T) -> Unit): Cancellable =
+            this@distinctUntilChanged.observe {
+                if (!hasLastValue || lastValue != it) {
+                    hasLastValue = true
+                    lastValue = it
+                    callback(it)
+                }
+            }
     }

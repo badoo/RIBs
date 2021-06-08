@@ -2,12 +2,14 @@ package com.badoo.ribs.routing.state.feature
 
 import android.os.Parcelable
 import com.badoo.ribs.minimal.reactive.Cancellable
+import com.badoo.ribs.minimal.reactive.Source
+import com.badoo.ribs.minimal.reactive.combineLatest
+import com.badoo.ribs.minimal.reactive.distinctUntilChanged
 import com.badoo.ribs.routing.state.action.single.ReversibleAction
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.TransitionPair
-import com.badoo.ribs.routing.transition.progress.ProgressEvaluatorIsAnyPendingStore
 
 @SuppressWarnings("LongParameterList")
 internal class OngoingTransition<C : Parcelable>(
@@ -19,14 +21,16 @@ internal class OngoingTransition<C : Parcelable>(
     private val emitter: EffectEmitter<C>,
 ) {
 
-    var descriptor = descriptor
+    var descriptor: TransitionDescriptor = descriptor
         private set
 
-    private val isAnyPendingStore = ProgressEvaluatorIsAnyPendingStore(transitionElements)
+    private val isAnyPending: Source<Boolean> =
+        combineLatest(transitionElements.map { it.isPendingSource }) { array -> array.any { it == true } }
+            .distinctUntilChanged()
+
     private var cancellable: Cancellable? = null
 
     fun dispose() {
-        isAnyPendingStore.cancel()
         cancellable?.cancel()
     }
 
@@ -38,9 +42,7 @@ internal class OngoingTransition<C : Parcelable>(
             )
         )
         cancellable?.cancel()
-        cancellable = isAnyPendingStore.observe {
-            if (!it.isAnyPending) finish()
-        }
+        cancellable = isAnyPending.observe { if (!it) finish() }
         transitionPair.exiting?.start()
         transitionPair.entering?.start()
     }

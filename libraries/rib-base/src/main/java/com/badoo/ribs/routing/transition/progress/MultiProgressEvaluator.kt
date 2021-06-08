@@ -1,25 +1,36 @@
 package com.badoo.ribs.routing.transition.progress
 
 import com.badoo.ribs.minimal.reactive.Source
-import com.badoo.ribs.minimal.reactive.map
+import com.badoo.ribs.minimal.reactive.combineLatest
+import com.badoo.ribs.minimal.reactive.defer
+import com.badoo.ribs.minimal.reactive.distinctUntilChanged
+import com.badoo.ribs.minimal.reactive.just
 
 class MultiProgressEvaluator : ProgressEvaluator {
 
     private val evaluators = mutableListOf<ProgressEvaluator>()
-    private val isAnyPendingStore = ProgressEvaluatorIsAnyPendingStore()
+    private var lock = false
 
     fun add(evaluator: ProgressEvaluator) {
+        // isPendingSource is being observed only after animation start, so it is safe to lock evaluators list
+        // if this behaviour is not correct anymore, feel free to remove and re-evaluate approach
+        check(!lock) { "Can't add new evaluators when progress observation started" }
         evaluators.add(evaluator)
-        isAnyPendingStore.add(evaluator)
     }
 
     override var progress: Float =
-        evaluators.map { it.progress }.min() ?: 0f
+        evaluators.minOfOrNull { it.progress } ?: 0f
 
-    override fun isPending(): Boolean =
-        evaluators.any { it.isPending() }
+    override val isPending: Boolean
+        get() = evaluators.any { it.isPending }
 
-    override fun isPendingSource(): Source<Boolean> =
-        isAnyPendingStore.map { it.isAnyPending }
+    override val isPendingSource: Source<Boolean> = defer {
+        lock = true
+        if (evaluators.isNotEmpty()) {
+            combineLatest(evaluators.map { it.isPendingSource }) { isPending }.distinctUntilChanged()
+        } else {
+            just { isPending }
+        }
+    }
 
 }

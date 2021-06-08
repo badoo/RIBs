@@ -10,6 +10,10 @@ interface ComposeLeaf : Rib, Connectable<Input, Output> {
 
     interface Dependency
 
+    data class Params(
+        val i: Int = 1
+    )
+
     sealed class Input
 
     sealed class Output

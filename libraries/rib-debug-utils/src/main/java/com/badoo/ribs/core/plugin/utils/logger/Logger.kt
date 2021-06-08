@@ -18,13 +18,13 @@ import com.badoo.ribs.core.plugin.SystemAware
 import com.badoo.ribs.core.plugin.UpNavigationHandler
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
 
-class Logger<T : Rib>(
+class Logger(
     private val log: (Rib, String) -> Unit = { rib, event ->
         Log.d("Rib Logger", "$rib: $event")
     },
     private val policy: LoggingPolicy = LoggingPolicy.DenyList(),
-    private val ribAware: RibAware<T> = RibAwareImpl()
-) : RibAware<T> by ribAware,
+    private val ribAware: RibAware<Rib> = RibAwareImpl()
+) : RibAware<Rib> by ribAware,
     NodeLifecycleAware,
     ViewLifecycleAware,
     SubtreeChangeAware,
@@ -41,7 +41,12 @@ class Logger<T : Rib>(
     }
 
     override fun onCreate(nodeLifecycle: Lifecycle) {
-        if (policy.logOnAttach) log(rib, "onCreate")
+        if (policy.logOnCreate) log(rib, "onCreate")
+    }
+
+    override fun onAttach() {
+        super.onAttach()
+        if (policy.logOnAttached) log(rib, "onAttached")
     }
 
     override fun onDestroy() {
@@ -68,11 +73,11 @@ class Logger<T : Rib>(
         if (policy.logOnChildDetached) log(rib, "onChildDetached: $child")
     }
 
-    override fun onAttachChildView(child: Node<*>) {
+    override fun onChildViewAttached(child: Node<*>) {
         if (policy.logOnAttachChildView) log(rib, "onAttachChildView: $child")
     }
 
-    override fun onDetachChildView(child: Node<*>) {
+    override fun onChildViewDetached(child: Node<*>) {
         if (policy.logOnDetachChildView) log(rib, "onDetachChildView: $child")
     }
 

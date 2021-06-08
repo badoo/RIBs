@@ -9,10 +9,10 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
-import com.badoo.ribs.routing.state.changeset.RoutingCommand
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect
@@ -26,20 +26,11 @@ private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
         ?: WorkingState())
 
 /**
- * FIXME rewrite
- *
- * State store responsible for executing [RoutingCommand]s it takes as inputs.
+ * State store responsible for executing [Transaction]s.
  *
  * The [WorkingState] contains a pool of [RoutingContext] elements referenced
  * by [Routing] objects. Practically, these keep reference to all configurations
- * currently associated with the RIB: all initial configurations (typically permanent parts
- * and one content type) + the ones coming from back stack changes.
- *
- * Any given [RoutingContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
- * respective to whether it is active on the screen.
- * Last elements in the back stack are activated, others are deactivated.
- * Permanent parts are added and activated on initialisation and never deactivated as long as
- * the view is available.
+ * currently associated with the RIB.
  */
 @OutdatedDocumentation
 @Suppress("LongParameterList")
@@ -139,7 +130,7 @@ internal open class RoutingStatePool<C : Parcelable>(
                 Transaction.RoutingChange(
                     descriptor = TransitionDescriptor.None,
                     changeset = state.pool
-                        .filter { it.value.activationState == SLEEPING }
+                        .filter { it.value.activationState == INACTIVE || it.value.activationState == SLEEPING }
                         .map { Add(it.key) }
                 )
             )

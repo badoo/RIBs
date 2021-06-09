@@ -19,9 +19,10 @@ class GreetingContainerTest {
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        GreetingContainerBuilder(
-            listOf(Language.English, Language.German, Language.French)
-        ).build(BuildContext.root(savedInstanceState))
+        GreetingContainerBuilder(object : GreetingContainer.Dependency {
+            override val languages: List<Language>
+                get() = listOf(Language.English, Language.German, Language.French)
+        }).build(BuildContext.root(savedInstanceState))
 
     @Test
     fun iSeeHello() {

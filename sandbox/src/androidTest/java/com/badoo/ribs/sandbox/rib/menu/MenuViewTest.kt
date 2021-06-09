@@ -47,21 +47,21 @@ class MenuViewTest {
 
     @Test
     fun emptySelectItem_noSelectedElements() {
-        menuView.accept(MenuView.ViewModel(selected = null))
+        runOnUiThread { menuView.accept(MenuView.ViewModel(selected = null)) }
 
         menu.assertNothingSelected()
     }
 
     @Test
     fun viewModelWithSelectedItem_selectsItem() {
-        menuView.accept(MenuView.ViewModel(selected = HelloWorld))
+        runOnUiThread { menuView.accept(MenuView.ViewModel(selected = HelloWorld)) }
 
         menu.helloItem.assertIsSelected()
     }
 
     @Test
     fun clickOnItem_doesNotSelectItem() {
-        menuView.accept(MenuView.ViewModel(selected = null))
+        runOnUiThread { menuView.accept(MenuView.ViewModel(selected = null)) }
 
         menu.dialogsItem.click()
 
@@ -79,8 +79,10 @@ class MenuViewTest {
 
     @Test
     fun bindViewModelTwoTimes_displaysOnlyLastSelection() {
-        menuView.accept(MenuView.ViewModel(selected = HelloWorld))
-        menuView.accept(MenuView.ViewModel(selected = FooBar))
+        runOnUiThread {
+            menuView.accept(MenuView.ViewModel(selected = HelloWorld))
+            menuView.accept(MenuView.ViewModel(selected = FooBar))
+        }
 
         menu.helloItem.assertIsNotSelected()
         menu.fooItem.assertIsSelected()

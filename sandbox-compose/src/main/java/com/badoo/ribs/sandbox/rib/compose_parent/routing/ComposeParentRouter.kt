@@ -8,29 +8,31 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeaf
 import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Configuration
-import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Configuration.Permanent.ComposeLeaf
+import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Configuration.Content
 import kotlinx.android.parcel.Parcelize
 
 class ComposeParentRouter internal constructor(
     buildParams: BuildParams<*>,
+    routingSource: RoutingSource<Configuration>,
     private val builders: ComposeParentChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
 ): Router<Configuration>(
     buildParams = buildParams,
-    routingSource = RoutingSource.permanent(ComposeLeaf),
+    routingSource = routingSource,
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
-        sealed class Permanent : Configuration() {
-            @Parcelize object ComposeLeaf : Permanent()
+        sealed class Content : Configuration() {
+            @Parcelize data class ComposeLeaf(val i: Int) : Content()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
-            when (routing.configuration) {
-                is ComposeLeaf -> child { composeLeaf.build(it) }
+            when (val configuration = routing.configuration) {
+                is Content.ComposeLeaf -> child { composeLeaf.build(it, ComposeLeaf.Params(configuration.i)) }
             }
         }
 }

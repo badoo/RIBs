@@ -56,6 +56,7 @@ abstract class IntegrationPoint(
         this._root = root
         root.node.integrationPoint = this
         subscribeToLifecycle()
+        root.node.onAttachFinished()
     }
 
     private fun subscribeToLifecycle() {

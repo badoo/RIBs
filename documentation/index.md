@@ -29,12 +29,13 @@
 - [Providing dependencies](tree-structure-101/providing-dependencies.md)
 - [Communication between Nodes](tree-structure-101/communication-between-nodes.md)
 - [Deep link workflows](tree-structure-101/deep-link-workflows.md)
+- [Lifecycle](tree-structure-101/lifecycle.md)
 
 ## Transition animations
 
 - [Quick start](transitions/transitions-quick-start.md)
 - [Custom transitions](transitions/custom-transitions.md)
-- [Transition reversal](transitions/transition-reversal.md)
+- [Transition reversal](transitions/transitions-reversal.md)
 
 ## Reusability
 

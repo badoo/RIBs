@@ -13,7 +13,7 @@ import com.badoo.ribs.core.view.RibView
 
 class FloatingIntegrationPoint : IntegrationPoint(
     lifecycleOwner = NoLifecycle(),
-    viewLifecycleOwner = MutableLiveData(NoLifecycle()),
+    viewLifecycleOwner = MutableLiveData(),
     savedInstanceState = null,
     rootViewHostFactory = { NoopRibView() }
 ) {

@@ -83,7 +83,7 @@ abstract class BaseNodesTest {
     }
 
     private fun TestRoot.Provider.makeAssertions(expected: ExpectedState) {
-        if (transitionHandler != null) Thread.sleep(defaultDuration) // wait for animations
+        if (transitionHandler != null) Thread.sleep(defaultDuration * 2) // wait for animations
         Espresso.onIdle()
         permanentNode1?.let {
             assertThat(it.toNodeState()).describedAs("Permanent node 1 state")

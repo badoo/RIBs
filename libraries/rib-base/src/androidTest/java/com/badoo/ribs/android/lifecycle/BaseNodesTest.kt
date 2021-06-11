@@ -16,7 +16,7 @@ import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
-import org.assertj.core.api.Java6Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import java.util.UUID
 

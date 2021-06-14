@@ -21,6 +21,10 @@ publishing {
     }
 }
 
+mavenPublish {
+    releaseSigningEnabled false
+}
+
 project.afterEvaluate {
     project.tasks.named("androidSourcesJar").configure {
         from project.android.sourceSets.main.java.srcDirs

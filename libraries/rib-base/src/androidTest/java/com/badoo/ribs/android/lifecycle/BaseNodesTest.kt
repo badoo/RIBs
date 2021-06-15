@@ -23,7 +23,7 @@ import java.util.UUID
 abstract class BaseNodesTest {
 
     @get:Rule
-    val ribsRule = RibsRule()
+    val ribsRule = RibsRule<Rib>()
 
     protected open val transitionHandler: TransitionHandler<TestRootRouter.Configuration>? = null
 

@@ -32,6 +32,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
 
     androidTestImplementation project(':libraries:rib-base-test')
+    androidTestImplementation project(':libraries:rib-base-test-activity')
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner
 }

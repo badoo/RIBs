@@ -11,6 +11,7 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import org.mockito.Mockito.mock
 
+@Deprecated("Use RibInteractorTestHelper")
 class InteractorTestHelper<View : RibView>(
     val interactor: Interactor<*, View>,
     val viewFactory: ViewFactory<View>? = null

@@ -26,7 +26,7 @@ import java.util.UUID
 class AlertDialogKeyboardTest {
 
     @get:Rule
-    val ribsRule = RibsRule()
+    val ribsRule = RibsRule<Rib>()
 
     // https://github.com/badoo/RIBs/issues/263
     // Even after focusing and clicking to editText keyboard was hidden

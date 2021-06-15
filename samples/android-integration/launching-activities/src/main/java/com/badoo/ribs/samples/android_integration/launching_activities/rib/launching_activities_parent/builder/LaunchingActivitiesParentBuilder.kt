@@ -7,19 +7,19 @@ import com.badoo.ribs.samples.android_integration.launching_activities.R
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildBase
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParent
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentNode
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentRouter
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentView
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentViewImpl
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentRouter
 
 class LaunchingActivitiesParentBuilder(
-        private val dependency: LaunchingActivitiesParent.Dependency
+    private val dependency: LaunchingActivitiesParent.Dependency
 ) : SimpleBuilder<LaunchingActivitiesParent>() {
     override fun build(buildParams: BuildParams<Nothing?>): LaunchingActivitiesParent {
         val router = LaunchingActivitiesParentRouter(
-                buildParams = buildParams,
-                builders = LaunchingActivitiesChildBuilders(object : LaunchingActivitiesChildBase.Dependency {
-                    override val activityStarter: ActivityStarter = dependency.activityStarter
-                }),
+            buildParams = buildParams,
+            builders = LaunchingActivitiesChildBuilders(object : LaunchingActivitiesChildBase.Dependency {
+                override val activityStarter: ActivityStarter = dependency.activityStarter
+            }),
         )
         val viewDependency = object : LaunchingActivitiesParentView.Dependency {
             override fun getTitleResource(): Int = R.string.parent_title
@@ -27,9 +27,9 @@ class LaunchingActivitiesParentBuilder(
         }
 
         return LaunchingActivitiesParentNode(
-                buildParams = buildParams,
-                viewFactory = LaunchingActivitiesParentViewImpl.Factory().invoke(viewDependency),
-                plugins = listOf(router),
+            buildParams = buildParams,
+            viewFactory = LaunchingActivitiesParentViewImpl.Factory().invoke(viewDependency),
+            plugins = listOf(router),
         )
     }
 }

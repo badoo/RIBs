@@ -28,8 +28,8 @@ interface LaunchingActivitiesParentView : RibView {
 }
 
 class LaunchingActivitiesParentViewImpl constructor(
-        override val androidView: ViewGroup,
-        val dependency: LaunchingActivitiesParentView.Dependency
+    override val androidView: ViewGroup,
+    val dependency: LaunchingActivitiesParentView.Dependency
 ) : AndroidRibView(), LaunchingActivitiesParentView {
 
     private val title: TextView = androidView.findViewById(R.id.title)
@@ -43,21 +43,21 @@ class LaunchingActivitiesParentViewImpl constructor(
     private val child1Container: ViewGroup = androidView.findViewById(R.id.child1Container)
     private val child2Container: ViewGroup = androidView.findViewById(R.id.child2Container)
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
-            when (subtreeOf) {
-                is LaunchingActivitiesChild1 -> child1Container
-                is LaunchingActivitiesChild2 -> child2Container
-                else -> super.getParentViewForSubtree(subtreeOf)
-            }
+        when (subtreeOf) {
+            is LaunchingActivitiesChild1 -> child1Container
+            is LaunchingActivitiesChild2 -> child2Container
+            else -> super.getParentViewForSubtree(subtreeOf)
+        }
 
     class Factory(
-            @LayoutRes private val layoutRes: Int = R.layout.rib_launching_activities_root,
+        @LayoutRes private val layoutRes: Int = R.layout.rib_launching_activities_root,
     ) : LaunchingActivitiesParentView.Factory {
         override fun invoke(dependency: LaunchingActivitiesParentView.Dependency): ViewFactory<LaunchingActivitiesParentView> =
-                ViewFactory {
-                    LaunchingActivitiesParentViewImpl(
-                            androidView = it.inflate(layoutRes),
-                            dependency = dependency
-                    )
-                }
+            ViewFactory {
+                LaunchingActivitiesParentViewImpl(
+                    androidView = it.inflate(layoutRes),
+                    dependency = dependency
+                )
+            }
     }
 }

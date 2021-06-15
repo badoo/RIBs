@@ -9,12 +9,12 @@ import com.badoo.ribs.samples.android_integration.launching_activities.rib.launc
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildViewImpl
 
 class LaunchingActivitiesChild1Builder(
-        private val dependency: LaunchingActivitiesChildBase.Dependency
+    private val dependency: LaunchingActivitiesChildBase.Dependency
 ) : SimpleBuilder<LaunchingActivitiesChild1>() {
     override fun build(buildParams: BuildParams<Nothing?>): LaunchingActivitiesChild1 {
         val interactor = LaunchingActivitiesChildInteractor(
-                buildParams = buildParams,
-                activityStarter = dependency.activityStarter
+            buildParams = buildParams,
+            activityStarter = dependency.activityStarter
         )
         val viewDependency = object : LaunchingActivitiesChildView.Dependency {
             override val titleResource: Int = R.string.child1_title
@@ -22,9 +22,9 @@ class LaunchingActivitiesChild1Builder(
         }
 
         return LaunchingActivitiesChild1Node(
-                buildParams = buildParams,
-                viewFactory = LaunchingActivitiesChildViewImpl.Factory().invoke(viewDependency),
-                plugins = listOf(interactor)
+            buildParams = buildParams,
+            viewFactory = LaunchingActivitiesChildViewImpl.Factory().invoke(viewDependency),
+            plugins = listOf(interactor)
         )
     }
 }

@@ -6,11 +6,11 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 
 internal class LaunchingActivitiesParentNode(
-        buildParams: BuildParams<*>,
-        viewFactory: ViewFactory<LaunchingActivitiesParentView>?,
-        plugins: List<Plugin>
+    buildParams: BuildParams<*>,
+    viewFactory: ViewFactory<LaunchingActivitiesParentView>?,
+    plugins: List<Plugin>
 ) : Node<LaunchingActivitiesParentView>(
-        buildParams = buildParams,
-        viewFactory = viewFactory,
-        plugins = plugins
+    buildParams = buildParams,
+    viewFactory = viewFactory,
+    plugins = plugins
 ), LaunchingActivitiesParent

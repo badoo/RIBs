@@ -11,14 +11,14 @@ import com.badoo.ribs.samples.android_integration.launching_activities.rib.launc
 import kotlinx.android.parcel.Parcelize
 
 class LaunchingActivitiesParentRouter(
-        buildParams: BuildParams<*>,
-        private val builders: LaunchingActivitiesChildBuilders
+    buildParams: BuildParams<*>,
+    private val builders: LaunchingActivitiesChildBuilders
 ) : Router<LaunchingActivitiesParentRouter.Configuration>(
-        buildParams = buildParams,
-        routingSource = permanent(
-                Configuration.Permanent.Child1,
-                Configuration.Permanent.Child2,
-        )
+    buildParams = buildParams,
+    routingSource = permanent(
+        Configuration.Permanent.Child1,
+        Configuration.Permanent.Child2,
+    )
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
@@ -31,10 +31,10 @@ class LaunchingActivitiesParentRouter(
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
-            with(builders) {
-                when (routing.configuration) {
-                    Configuration.Permanent.Child1 -> child { child1.build(it) }
-                    Configuration.Permanent.Child2 -> child { child2.build(it) }
-                }
+        with(builders) {
+            when (routing.configuration) {
+                Configuration.Permanent.Child1 -> child { child1.build(it) }
+                Configuration.Permanent.Child2 -> child { child2.build(it) }
             }
+        }
 }

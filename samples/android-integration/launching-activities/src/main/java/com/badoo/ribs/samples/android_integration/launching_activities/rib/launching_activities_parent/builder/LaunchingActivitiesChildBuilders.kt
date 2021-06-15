@@ -5,13 +5,13 @@ import com.badoo.ribs.samples.android_integration.launching_activities.rib.launc
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildBase
 
 class LaunchingActivitiesChildBuilders(
-        dependency: LaunchingActivitiesChildBase.Dependency
+    dependency: LaunchingActivitiesChildBase.Dependency
 ) {
     private val childDeps = SubtreeDependency(dependency)
     val child1: LaunchingActivitiesChild1Builder = LaunchingActivitiesChild1Builder(childDeps)
     val child2: LaunchingActivitiesChild2Builder = LaunchingActivitiesChild2Builder(childDeps)
 
     class SubtreeDependency(
-            private val dependency: LaunchingActivitiesChildBase.Dependency
+        private val dependency: LaunchingActivitiesChildBase.Dependency
     ) : LaunchingActivitiesChildBase.Dependency by dependency
 }

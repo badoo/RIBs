@@ -33,9 +33,9 @@ class LaunchingActivitiesParentTest {
     }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-            LaunchingActivitiesChild1Builder(object : LaunchingActivitiesChildBase.Dependency {
-                override val activityStarter: ActivityStarter = ribTestActivity.integrationPoint.activityStarter
-            }).build(BuildContext.root(savedInstanceState))
+        LaunchingActivitiesChild1Builder(object : LaunchingActivitiesChildBase.Dependency {
+            override val activityStarter: ActivityStarter = ribTestActivity.integrationPoint.activityStarter
+        }).build(BuildContext.root(savedInstanceState))
 
     @Test
     fun whenLaunchActivityButtonIsPressedThenOtherActivityIsStarted() {

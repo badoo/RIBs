@@ -12,10 +12,10 @@ import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.samples.android_integration.launching_activities.app.OtherActivity
 
 class LaunchingActivitiesChildInteractor(
-        buildParams: BuildParams<Nothing?>,
-        private val activityStarter: ActivityStarter
+    buildParams: BuildParams<Nothing?>,
+    private val activityStarter: ActivityStarter
 ) : Interactor<LaunchingActivitiesChildBase, LaunchingActivitiesChildView>(
-        buildParams = buildParams
+    buildParams = buildParams
 ) {
     private val cancellable = CompositeCancellable()
     private val dataReturnedRelay = Relay<String>()
@@ -23,16 +23,16 @@ class LaunchingActivitiesChildInteractor(
     override fun onViewCreated(view: LaunchingActivitiesChildView, viewLifecycle: Lifecycle) {
 
         viewLifecycle.subscribe(
-                onCreate = {
-                    cancellable += activityStarter
-                            .events(this@LaunchingActivitiesChildInteractor)
-                            .observe(::onActivityEvent)
-                    cancellable += view.events.observe(::onViewEvent)
-                    cancellable += dataReturnedRelay.observe { view.setData(it) }
-                },
-                onDestroy = {
-                    cancellable.cancel()
-                }
+            onCreate = {
+                cancellable += activityStarter
+                    .events(this@LaunchingActivitiesChildInteractor)
+                    .observe(::onActivityEvent)
+                cancellable += view.events.observe(::onViewEvent)
+                cancellable += dataReturnedRelay.observe { view.setData(it) }
+            },
+            onDestroy = {
+                cancellable.cancel()
+            }
         )
     }
 
@@ -41,7 +41,7 @@ class LaunchingActivitiesChildInteractor(
             is LaunchingActivitiesChildView.Event.LaunchActivityForResult ->
                 activityStarter.startActivityForResult(this, REQUEST_CODE_OTHER_ACTIVITY) {
                     Intent(this, OtherActivity::class.java)
-                            .putExtra(OtherActivity.KEY_INCOMING, event.data)
+                        .putExtra(OtherActivity.KEY_INCOMING, event.data)
                 }
         }
     }
@@ -50,7 +50,7 @@ class LaunchingActivitiesChildInteractor(
         if (activityEvent.requestCode == REQUEST_CODE_OTHER_ACTIVITY) {
             if (activityEvent.resultCode == Activity.RESULT_OK) {
                 dataReturnedRelay.accept(activityEvent.data?.getStringExtra(OtherActivity.KEY_OUTGOING)
-                        ?: "")
+                    ?: "")
             }
         }
     }

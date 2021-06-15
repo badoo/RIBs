@@ -21,7 +21,7 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-            LaunchingActivitiesParentBuilder(object : LaunchingActivitiesParent.Dependency {
-                override val activityStarter: ActivityStarter = integrationPoint.activityStarter
-            }).build(root(savedInstanceState))
+        LaunchingActivitiesParentBuilder(object : LaunchingActivitiesParent.Dependency {
+            override val activityStarter: ActivityStarter = integrationPoint.activityStarter
+        }).build(root(savedInstanceState))
 }

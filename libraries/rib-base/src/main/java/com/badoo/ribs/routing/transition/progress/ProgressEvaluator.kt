@@ -1,5 +1,7 @@
 package com.badoo.ribs.routing.transition.progress
 
+import com.badoo.ribs.minimal.reactive.Source
+
 interface ProgressEvaluator {
     /**
      * A value in the range of typically 0f to 1f.
@@ -14,5 +16,8 @@ interface ProgressEvaluator {
      */
     val progress: Float
 
-    fun isPending(): Boolean
+    val isPending: Boolean
+
+    val isPendingSource: Source<Boolean>
+
 }

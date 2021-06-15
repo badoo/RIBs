@@ -108,7 +108,7 @@ def compose = [
 ]
 
 def test = [
-        junit4         : "junit:junit:4.12",
+        junit4        : "junit:junit:4.12",
         junitApi      : "org.junit.jupiter:junit-jupiter-api:${versions.junit5}",
         junitParams   : "org.junit.jupiter:junit-jupiter-params:${versions.junit5}",
         junitEngine   : "org.junit.jupiter:junit-jupiter-engine:${versions.junit5}",
@@ -116,7 +116,7 @@ def test = [
         byteBuddy     : "net.bytebuddy:byte-buddy:1.10.21",
         mockito       : "org.mockito:mockito-core:2.24.0",
         mockitoKotlin : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0",
-        assertj       : "org.assertj:assertj-core:3.11.1",
+        assertj       : "org.assertj:assertj-core:2.9.1", // 2.x version is Android compatible
         compileTesting: "com.google.testing.compile:compile-testing:0.11",
 ]
 

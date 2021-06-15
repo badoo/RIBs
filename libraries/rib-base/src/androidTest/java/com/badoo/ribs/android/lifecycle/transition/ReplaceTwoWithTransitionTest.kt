@@ -8,8 +8,7 @@ import com.badoo.ribs.test.util.runOnMainSync
 import org.junit.Test
 
 @Suppress("FunctionNaming")
-class ReplaceTwoWithTransitionTest :TransitionBaseNodeTest() {
-
+class ReplaceTwoWithTransitionTest : TransitionBaseNodeTest() {
 
     private fun replaceTwoConfigurations(setup: When, expectedState: ExpectedState) {
         test(setup, expectedState) { router, _ ->
@@ -31,7 +30,7 @@ class ReplaceTwoWithTransitionTest :TransitionBaseNodeTest() {
             ExpectedState(
                 node1 = NodeState.ON_SCREEN_RESUMED,
                 node2 = NodeState.DETACHED,
-                )
+            )
         )
     }
 }

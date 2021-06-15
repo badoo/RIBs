@@ -72,12 +72,16 @@ private def configureAndroidModule(Project project) {
             targetCompatibility JavaVersion.VERSION_1_8
         }
 
-        testOptions.unitTests.includeAndroidResources = true
+        testOptions {
+            animationsDisabled true
+            unitTests {
+                includeAndroidResources = true
+                all { useJUnitPlatform() }
+            }
+        }
 
         project.afterEvaluate {
             project.android.kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
-
-        testOptions.unitTests.all { useJUnitPlatform() }
     }
 }

@@ -48,6 +48,12 @@ Handy utils: tree printer, logger, debug drawer, memory leak detector:
 implementation 'com.github.badoo.RIBs:rib-debug-utils:{latest-version}'
 ```
 
+### MVICore integration
+Binder helpers
+```groovy
+implementation 'com.github.badoo.RIBs:rib-mvicore:{latest-version}'
+```
+
 ### Portals (experimental)
 Base deps:
 ```groovy

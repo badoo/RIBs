@@ -67,6 +67,7 @@ dependencies {
 
     implementation project(":libraries:rib-base")
     implementation project(":libraries:rib-debug-utils")
+    implementation project(":libraries:rib-mvicore")
     implementation project(":libraries:rib-portal-rx")
     implementation project(":libraries:rib-recyclerview")
     implementation project(':libraries:rib-rx2')
@@ -83,18 +84,19 @@ dependencies {
         implementation project(":sandbox-compose-placeholder")
     }
 
+    junitTestImplementation(project)
     testImplementation deps.external.roboelectricBase
-    testImplementation deps.test.junit
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
     testImplementation project(":libraries:rib-base-test-rx2")
 
-    debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
+    androidTestImplementation deps.androidTest.runner
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.test.mockitoKotlin
+
+    debugImplementation project(":libraries:rib-base-test-activity")
 }
 
 repositories {

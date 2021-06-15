@@ -3,8 +3,9 @@ package com.badoo.ribs.minimal.reactive
 import com.badoo.ribs.minimal.reactive.Cancellable.Companion.cancellableOf
 
 
-class Relay<T> : Source<T>, Emitter<T> {
-    private val listeners: MutableList<(T) -> Unit> = mutableListOf()
+open class Relay<T> : Source<T>, Emitter<T> {
+    // keep list read-only to avoid modification during iteration
+    private var listeners: List<(T) -> Unit> = emptyList()
 
     fun accept(value: T) {
         emit(value)
@@ -15,7 +16,9 @@ class Relay<T> : Source<T>, Emitter<T> {
     }
 
     override fun observe(callback: (T) -> Unit): Cancellable {
-        listeners += callback
-        return cancellableOf { listeners -= callback }
+        listeners = listeners + callback
+        return cancellableOf {
+            listeners = listeners - callback
+        }
     }
 }

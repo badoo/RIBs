@@ -25,6 +25,8 @@ interface NodeLifecycleAware : Plugin {
 
     fun onCreate(nodeLifecycle: Lifecycle) {}
 
+    fun onAttach() {}
+
     fun onDestroy() {}
 }
 
@@ -47,9 +49,9 @@ interface SubtreeChangeAware : Plugin {
 }
 
 interface SubtreeViewChangeAware : Plugin {
-    fun onAttachChildView(child: Node<*>) {}
+    fun onChildViewAttached(child: Node<*>) {}
 
-    fun onDetachChildView(child: Node<*>) {}
+    fun onChildViewDetached(child: Node<*>) {}
 }
 
 interface AndroidLifecycleAware : Plugin {

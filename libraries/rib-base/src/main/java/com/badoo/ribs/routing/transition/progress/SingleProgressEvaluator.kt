@@ -1,7 +1,10 @@
 package com.badoo.ribs.routing.transition.progress
 
+import com.badoo.ribs.minimal.reactive.Source
+import com.badoo.ribs.minimal.reactive.distinctUntilChanged
+import com.badoo.ribs.minimal.reactive.map
+import com.badoo.ribs.minimal.state.Store
 import com.badoo.ribs.util.RIBs
-
 
 class SingleProgressEvaluator : ProgressEvaluator {
 
@@ -14,23 +17,32 @@ class SingleProgressEvaluator : ProgressEvaluator {
         object Finished : Progress()
     }
 
-    private var state: Progress =
-        Progress.Initialised
+    private val state = object : Store<Progress>(Progress.Initialised) {
+        fun setState(state: Progress) {
+            emit(state)
+        }
+    }
 
     override val progress: Float =
-        when (val state = state) {
+        when (val state = state.state) {
             is Progress.Initialised -> 0f
             is Progress.Reset -> 0f
             is Progress.InProgress -> state.progress
             is Progress.Finished -> 1f
         }
 
+    override val isPending: Boolean
+        get() = isInProgress() || isInitialised()
+
+    override val isPendingSource: Source<Boolean> =
+        state.map { isPending }.distinctUntilChanged()
+
     fun start() {
-        state = Progress.InProgress()
+        state.setState(Progress.InProgress())
     }
 
     fun updateProgress(progress: Float) {
-        when (val state = state) {
+        when (val state = state.state) {
             is Progress.InProgress -> state.progress = progress
             else -> if (progress != 1f && progress != 0f) {
                 RIBs.errorHandler.handleNonFatalError(
@@ -41,19 +53,17 @@ class SingleProgressEvaluator : ProgressEvaluator {
     }
 
     fun reset() {
-        state = Progress.Reset
+        state.setState(Progress.Reset)
     }
 
     fun markFinished() {
-        state = Progress.Finished
+        state.setState(Progress.Finished)
     }
 
-    override fun isPending(): Boolean =
-        isInProgress() || isInitialised()
-
     private fun isInProgress(): Boolean =
-        state is Progress.InProgress
+        state.state is Progress.InProgress
 
     private fun isInitialised(): Boolean =
-        state is Progress.Initialised
+        state.state is Progress.Initialised
+
 }

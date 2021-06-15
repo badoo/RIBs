@@ -29,7 +29,7 @@ dependencies {
 
     implementation deps.android.annotations
     implementation deps.android.runner
-    implementation deps.test.junit
+    implementation deps.test.junit4
     implementation deps.test.mockito
 
     api deps.android.rules

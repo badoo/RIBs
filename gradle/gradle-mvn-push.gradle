@@ -13,20 +13,20 @@ def getSnapshotRepositoryUrl() {
 
 apply plugin: "com.vanniktech.maven.publish"
 
-mavenPublish {
-    targets {
-        uploadArchives {
-            releaseRepositoryUrl = getReleaseRepositoryUrl()
-            snapshotRepositoryUrl = getSnapshotRepositoryUrl()
+publishing {
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? getSnapshotRepositoryUrl() : getReleaseRepositoryUrl()
         }
     }
+}
+
+mavenPublish {
+    releaseSigningEnabled false
 }
 
 project.afterEvaluate {
     project.tasks.named("androidSourcesJar").configure {
         from project.android.sourceSets.main.java.srcDirs
-    }
-    project.tasks.register("install").configure { task ->
-        task.dependsOn("installArchives")
     }
 }

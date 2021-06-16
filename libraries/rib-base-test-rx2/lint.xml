@@ -1,6 +1,0 @@
-<lint>
-    <issue id="InvalidPackage">
-        <ignore path="**/byte-buddy-agent-*.jar"/>
-        <ignore path="**/mockito-core-*.jar"/>
-    </issue>
-</lint>

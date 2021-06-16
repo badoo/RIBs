@@ -1,12 +1,12 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child1
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.child1
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.android_integration.launching_activities.R
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildBase
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildInteractor
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildView
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildViewImpl
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child_common.LaunchingActivitiesChildBase
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child_common.LaunchingActivitiesChildInteractor
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child_common.LaunchingActivitiesChildView
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child_common.LaunchingActivitiesChildViewImpl
 
 class LaunchingActivitiesChild1Builder(
     private val dependency: LaunchingActivitiesChildBase.Dependency

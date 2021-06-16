@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.child_common
 
 import android.view.ViewGroup
 import android.widget.Button

@@ -7,8 +7,8 @@ import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.android_integration.launching_activities.R
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParent
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.builder.LaunchingActivitiesParentBuilder
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParent
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.builder.LaunchingActivitiesParentBuilder
 
 class RootActivity : RibActivity() {
 

@@ -14,8 +14,8 @@ import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.android_integration.launching_activities.R
 import com.badoo.ribs.samples.android_integration.launching_activities.app.OtherActivity
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child1.LaunchingActivitiesChild1Builder
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildBase
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child1.LaunchingActivitiesChild1Builder
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child_common.LaunchingActivitiesChildBase
 import com.badoo.ribs.test.RibsRule
 import org.junit.Before
 import org.junit.Rule

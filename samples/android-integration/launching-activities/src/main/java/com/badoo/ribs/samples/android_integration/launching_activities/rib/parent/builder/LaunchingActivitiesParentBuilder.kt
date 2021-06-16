@@ -1,15 +1,15 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.builder
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.builder
 
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.android_integration.launching_activities.R
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child_common.LaunchingActivitiesChildBase
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParent
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentNode
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentRouter
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentView
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.LaunchingActivitiesParentViewImpl
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child_common.LaunchingActivitiesChildBase
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParent
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParentNode
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParentRouter
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParentView
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParentViewImpl
 
 class LaunchingActivitiesParentBuilder(
     private val dependency: LaunchingActivitiesParent.Dependency

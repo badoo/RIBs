@@ -35,6 +35,7 @@ dependencies {
     implementation deps.android.constraintLayout
     implementation deps.android.design
     implementation project(":libraries:rib-base")
+    implementation project(":samples:resources")
 
     testImplementation 'junit:junit:4.13.1'
 

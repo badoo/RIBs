@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.parent
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams

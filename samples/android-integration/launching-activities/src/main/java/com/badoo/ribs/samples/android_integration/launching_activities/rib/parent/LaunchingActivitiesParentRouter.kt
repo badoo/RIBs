@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.parent
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -7,7 +7,8 @@ import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent.builder.LaunchingActivitiesChildBuilders
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParentRouter.Configuration.Permanent
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.builder.LaunchingActivitiesChildBuilders
 import kotlinx.android.parcel.Parcelize
 
 class LaunchingActivitiesParentRouter(
@@ -16,8 +17,8 @@ class LaunchingActivitiesParentRouter(
 ) : Router<LaunchingActivitiesParentRouter.Configuration>(
     buildParams = buildParams,
     routingSource = permanent(
-        Configuration.Permanent.Child1,
-        Configuration.Permanent.Child2,
+        Permanent.Child1,
+        Permanent.Child2,
     )
 ) {
     sealed class Configuration : Parcelable {
@@ -33,8 +34,8 @@ class LaunchingActivitiesParentRouter(
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                Configuration.Permanent.Child1 -> child { child1.build(it) }
-                Configuration.Permanent.Child2 -> child { child2.build(it) }
+                Permanent.Child1 -> child { child1.build(it) }
+                Permanent.Child2 -> child { child2.build(it) }
             }
         }
 }

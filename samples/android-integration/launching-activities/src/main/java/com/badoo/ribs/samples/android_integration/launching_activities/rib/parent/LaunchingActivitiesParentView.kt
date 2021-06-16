@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_parent
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.parent
 
 import android.view.ViewGroup
 import android.widget.TextView
@@ -11,8 +11,8 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.android_integration.launching_activities.R
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child1.LaunchingActivitiesChild1
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_child2.LaunchingActivitiesChild2
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child1.LaunchingActivitiesChild1
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.child2.LaunchingActivitiesChild2
 
 interface LaunchingActivitiesParentView : RibView {
 

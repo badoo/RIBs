@@ -1,24 +1,37 @@
 package com.badoo.ribs.samples.comms_nodes.rib.greeting_container
 
 import com.badoo.ribs.builder.SimpleBuilder
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainer.Dependency
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter.Configuration
-import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.GreetingContainerRouter.Configuration.Greeting
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.GreetingContainerChildBuilder
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.GreetingContainerRouter
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.GreetingContainerRouter.Configuration
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.GreetingContainerRouter.Configuration.Greeting
 
-class GreetingContainerBuilder(private val dependencies: Dependency) : SimpleBuilder<Node<Nothing>>() {
+class GreetingContainerBuilder(
+    private val dependencies: Dependency
+) : SimpleBuilder<GreetingContainer>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): Node<Nothing> {
+    private val childBuilder by lazy { GreetingContainerChildBuilder(dependencies) }
+
+    private fun interactor(
+        buildParams: BuildParams<Nothing?>,
+        backStack: BackStack<Configuration>
+    ): GreetingContainerInteractor =
+        GreetingContainerInteractor(
+            buildParams = buildParams,
+            backStack = backStack
+        )
+
+    override fun build(buildParams: BuildParams<Nothing?>): GreetingContainer {
         val backStack = createBackStack(buildParams)
         val router = createRouter(buildParams, backStack)
-        val presenter = GreetingContainerPresenterImpl(backStack)
+        val interactor = interactor(buildParams, backStack)
 
-        return Node(
+        return GreetingContainerNode(
             buildParams = buildParams,
-            viewFactory = null,
-            plugins = listOf(router, presenter)
+            plugins = listOf(router, interactor)
         )
     }
 
@@ -34,6 +47,6 @@ class GreetingContainerBuilder(private val dependencies: Dependency) : SimpleBui
     ) = GreetingContainerRouter(
         buildParams = buildParams,
         routingSource = backStack,
-        languages = dependencies.languages
+        childBuilder = childBuilder
     )
 }

@@ -5,7 +5,9 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelector.Dependency
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelectorBuilder.Params
 
-class LanguageSelectorBuilder(private val dependencies: Dependency) : Builder<Params, LanguageSelector>() {
+class LanguageSelectorBuilder(
+    private val dependencies: Dependency
+) : Builder<Params, LanguageSelector>() {
 
     data class Params(
         val currentLanguage: Language
@@ -14,7 +16,6 @@ class LanguageSelectorBuilder(private val dependencies: Dependency) : Builder<Pa
     override fun build(buildParams: BuildParams<Params>): LanguageSelector {
         val payload = buildParams.payload.currentLanguage
         val presenter = LanguageSelectorPresenterImpl(
-            languages = dependencies.languages,
             defaultSelection = getCurrentSelection(payload)
         )
         val viewDependency = object : LanguageSelectorView.Dependency {
@@ -31,7 +32,7 @@ class LanguageSelectorBuilder(private val dependencies: Dependency) : Builder<Pa
     }
 
     private fun getCurrentSelection(currentLanguage: Language): Int {
-        val languageIndex = dependencies.languages.indexOf(currentLanguage)
+        val languageIndex = Language.values().indexOf(currentLanguage)
         return if (languageIndex == -1) {
             0
         } else {

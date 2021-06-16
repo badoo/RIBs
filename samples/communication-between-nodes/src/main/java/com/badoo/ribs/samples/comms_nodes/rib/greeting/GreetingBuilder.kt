@@ -4,7 +4,9 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Customisation
 
-class GreetingBuilder : SimpleBuilder<Greeting>() {
+class GreetingBuilder(
+    private val dependency: Greeting.Dependency
+) : SimpleBuilder<Greeting>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): Greeting {
         val presenter = GreetingPresenterImpl()

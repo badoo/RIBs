@@ -12,9 +12,7 @@ import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Input.UpdateGree
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Output.AvailableLanguagesDisplayed
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingView.ViewModel
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.English
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.French
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.German
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.*
 
 interface GreetingPresenter {
     fun onChangeLanguageClicked()
@@ -22,7 +20,7 @@ interface GreetingPresenter {
 
 internal class GreetingPresenterImpl(
     ribAware: RibAware<Greeting> = RibAwareImpl(),
-    defaultLanguage: Language = English
+    defaultLanguage: Language = ENGLISH
 ) : GreetingPresenter,
     ViewAware<GreetingView>,
     RibAware<Greeting> by ribAware {
@@ -32,9 +30,9 @@ internal class GreetingPresenterImpl(
     private var currentLanguage: Language = defaultLanguage
 
     private val greetingForLanguage = mapOf(
-        English to "Hello!",
-        German to "Guten Tag!",
-        French to "Bonjour"
+        ENGLISH to "Hello!",
+        GERMAN to "Guten Tag!",
+        FRENCH to "Bonjour"
     )
 
     override fun onViewCreated(view: GreetingView, viewLifecycle: Lifecycle) {
@@ -56,7 +54,7 @@ internal class GreetingPresenterImpl(
     private fun onGreetingInput(input: Input) {
         when (input) {
             is UpdateGreeting -> {
-                currentLanguage = input.language
+                currentLanguage = Language.values()[input.selectedIndex]
                 view?.accept(buildViewModel())
             }
         }

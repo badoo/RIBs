@@ -7,12 +7,10 @@ import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelector
 
 interface LanguageSelector : Rib, Connectable<Nothing, Output> {
 
-    interface Dependency {
-        val languages: List<Language>
-    }
+    interface Dependency
 
     sealed class Output {
-        data class LanguageSelected(val language: Language) : Output()
+        data class LanguageSelected(val selectedIndex: Int) : Output()
     }
 
     class Customisation(

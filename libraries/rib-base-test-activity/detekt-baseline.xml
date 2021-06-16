@@ -1,9 +1,5 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>LibraryCodeMustSpecifyReturnType:RibTestActivity.kt$RibTestActivity$override fun activityStarter()</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:RibTestActivity.kt$RibTestActivity$override fun dialogLauncher()</ID>
-    <ID>LibraryCodeMustSpecifyReturnType:RibTestActivity.kt$RibTestActivity$override fun permissionRequester()</ID>
-  </CurrentIssues>
+  <CurrentIssues></CurrentIssues>
 </SmellBaseline>

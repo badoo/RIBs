@@ -3,23 +3,25 @@ configureAndroidLibrary(project)
 android {
     defaultConfig {
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
     }
 }
 
 dependencies {
-    compileOnly deps.android.annotations
-
-    compileOnly project(':libraries:rib-base')
-    implementation deps.android.annotations
     implementation deps.android.appCompat
+
+    api project(':libraries:rib-base')
+    api deps.test.junit4
+    api deps.android.rules
+
+    androidTestImplementation deps.androidTest.espresso
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

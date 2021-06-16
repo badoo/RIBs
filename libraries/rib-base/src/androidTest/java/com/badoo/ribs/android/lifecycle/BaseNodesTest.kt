@@ -1,7 +1,6 @@
 package com.badoo.ribs.android.lifecycle
 
 import androidx.test.espresso.Espresso
-import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.android.lifecycle.helper.ExpectedState
 import com.badoo.ribs.android.lifecycle.helper.NodeState
 import com.badoo.ribs.core.Rib
@@ -11,20 +10,22 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.routing.transition.handler.defaultDuration
+import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.root.TestRoot
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
-import org.assertj.core.api.Java6Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import java.util.UUID
 
 abstract class BaseNodesTest {
 
     @get:Rule
-    val ribsRule = RibsRule()
+    val ribsRule = RibsRule<Rib>()
 
-    protected open val transitionHandler : TransitionHandler<TestRootRouter.Configuration>? = null
+    protected open val transitionHandler: TransitionHandler<TestRootRouter.Configuration>? = null
 
     data class When(
         val permanentParts: List<TestRootRouter.Configuration.Permanent> = emptyList(),
@@ -66,7 +67,7 @@ abstract class BaseNodesTest {
                 dialogLauncher = activity.integrationPoint.dialogLauncher, // TODO reconsider if we need direct dependency at all
                 savedInstanceState = savedInstanceState,
                 routingSource = backStack!!,
-                transitionHandler= transitionHandler
+                transitionHandler = transitionHandler
             )
         }
 
@@ -82,6 +83,7 @@ abstract class BaseNodesTest {
     }
 
     private fun TestRoot.Provider.makeAssertions(expected: ExpectedState) {
+        if (transitionHandler != null) Thread.sleep(defaultDuration * 2) // wait for animations
         Espresso.onIdle()
         permanentNode1?.let {
             assertThat(it.toNodeState()).describedAs("Permanent node 1 state")

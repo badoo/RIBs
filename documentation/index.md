@@ -48,6 +48,13 @@
 - [Permission requests](android/permission-requests.md)
 - [Dialogs](android/dialogs.md)
 
+## Testing
+
+- [Preparations](testing/preparations.md)
+- [Unit tests](testing/unit-tests.md)
+- [Integration tests](testing/integration-tests.md)
+- [Compatibility with testing frameworks](testing/compatibility.md)
+
 ## Extras
 - Best practices
 - Our approach to RIBs client code
@@ -55,10 +62,6 @@
 - [Tooling](extras/tooling.md)
 - [Minimal reactive API](extras/minimal-reactive-api.md)
 - Template plugin
-
-## Testing
-
-- Testing best practices
 
 ## Experimental features
 

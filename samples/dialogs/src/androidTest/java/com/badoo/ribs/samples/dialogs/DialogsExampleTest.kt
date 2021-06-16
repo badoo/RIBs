@@ -7,7 +7,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.badoo.ribs.test.RibsRule
-import com.badoo.ribs.RibTestActivity
+import com.badoo.ribs.test.RibTestActivity
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExample

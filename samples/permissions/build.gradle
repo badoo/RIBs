@@ -3,17 +3,9 @@ configureAndroidApp(project)
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 30
-
     defaultConfig {
         applicationId "com.badoo.ribs.samples.permissions"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -36,10 +28,11 @@ dependencies {
     implementation deps.android.constraintLayout
     implementation deps.android.design
     implementation project(":libraries:rib-base")
+    implementation project(':samples:resources')
 
     testImplementation deps.external.roboelectricBase
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

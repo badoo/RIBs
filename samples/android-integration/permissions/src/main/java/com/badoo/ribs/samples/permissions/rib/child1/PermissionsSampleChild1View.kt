@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.permissions.rib.child
+package com.badoo.ribs.samples.permissions.rib.child1
 
 import android.view.ViewGroup
 import android.widget.Button
@@ -10,26 +10,27 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.permissions.R
+import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2Presenter
 
-interface PermissionsView : RibView {
+interface PermissionsSampleChild1View : RibView {
 
-    interface Factory : ViewFactoryBuilder<Dependency, PermissionsView>
+    interface Factory : ViewFactoryBuilder<Dependency, PermissionsSampleChild1View>
 
     interface Dependency {
-        val presenter: PermissionsSamplePresenter
+        val presenter: PermissionsSampleChild2Presenter
     }
 
     fun setText(text: String)
 }
 
-class PermissionsViewImpl private constructor(
+class PermissionsSampleChild1ViewImpl private constructor(
     override val androidView: ViewGroup,
-    private val presenter: PermissionsSamplePresenter
-) : AndroidRibView(), PermissionsView {
+    private val presenter: PermissionsSampleChild2Presenter
+) : AndroidRibView(), PermissionsSampleChild1View {
 
-    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample) : PermissionsView.Factory {
-        override fun invoke(deps: PermissionsView.Dependency): ViewFactory<PermissionsView> = ViewFactory {
-            PermissionsViewImpl(
+    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample) : PermissionsSampleChild1View.Factory {
+        override fun invoke(deps: PermissionsSampleChild1View.Dependency): ViewFactory<PermissionsSampleChild1View> = ViewFactory {
+            PermissionsSampleChild1ViewImpl(
                 androidView = it.inflate(layoutRes),
                 presenter = deps.presenter
             )

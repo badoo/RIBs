@@ -1,7 +1,9 @@
 package com.badoo.ribs.samples.permissions.rib.parent.routing
 
-import com.badoo.ribs.samples.permissions.rib.child.PermissionsSample
-import com.badoo.ribs.samples.permissions.rib.child.PermissionsSampleBuilder
+import com.badoo.ribs.samples.permissions.rib.child1.PermissionsSampleChild1
+import com.badoo.ribs.samples.permissions.rib.child1.PermissionsSampleChild1Builder
+import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2
+import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2Builder
 import com.badoo.ribs.samples.permissions.rib.parent.PermissionsSampleParent
 
 internal open class PermissionsSampleParentChildBuilder(
@@ -9,10 +11,11 @@ internal open class PermissionsSampleParentChildBuilder(
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    val child: PermissionsSampleBuilder = PermissionsSampleBuilder(subtreeDeps)
+    val child1Builder = PermissionsSampleChild1Builder(subtreeDeps)
+    val child2Builder = PermissionsSampleChild2Builder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: PermissionsSampleParent.Dependency
     ) : PermissionsSampleParent.Dependency by dependency,
-        PermissionsSample.Dependency
+        PermissionsSampleChild2.Dependency, PermissionsSampleChild1.Dependency
 }

@@ -1,16 +1,17 @@
-package com.badoo.ribs.samples.permissions.rib.child
+package com.badoo.ribs.samples.permissions.rib.child1
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2
 
-class PermissionsSampleNode(
+class PermissionsSampleChild1Node(
     buildParams: BuildParams<Nothing?>,
-    viewFactory: ViewFactory<PermissionsView>,
+    viewFactory: ViewFactory<PermissionsSampleChild1View>,
     plugins: List<Plugin> = emptyList(),
-) : Node<PermissionsView>(
+) : Node<PermissionsSampleChild1View>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), PermissionsSample
+), PermissionsSampleChild1

@@ -32,8 +32,8 @@ class PermissionsSampleParentRouter internal constructor(
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                Child1 -> child { child.build(it) }
-                Child2 -> child { child.build(it) }
+                Child1 -> child { child1Builder.build(it) }
+                Child2 -> child { child2Builder.build(it) }
             }
         }
 }

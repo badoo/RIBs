@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.permissions.rib.child
+package com.badoo.ribs.samples.permissions.rib.child1
 
 import android.Manifest
 import androidx.lifecycle.Lifecycle
@@ -11,30 +11,31 @@ import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.minimal.reactive.Cancellable
+import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2Presenter
 
-interface PermissionsSamplePresenter : RequestCodeClient {
+interface PermissionsSampleChild1Presenter : RequestCodeClient {
 
     fun onRequestPermissionsClicked()
 
     fun onCheckPermissionsClicked()
 }
 
-class PermissionsSamplePresenterImpl(
+class PermissionsSampleChild1PresenterImpl(
     private val permissionRequester: PermissionRequester,
-    private val ribAware: RibAware<PermissionsSample> = RibAwareImpl()
-) : PermissionsSamplePresenter, ViewAware<PermissionsView>, RibAware<PermissionsSample> by ribAware {
+    private val ribAware: RibAware<PermissionsSampleChild1> = RibAwareImpl()
+) : PermissionsSampleChild2Presenter, ViewAware<PermissionsSampleChild1View>, RibAware<PermissionsSampleChild1> by ribAware {
 
-    private var view: PermissionsView? = null
+    private var view: PermissionsSampleChild1View? = null
     private var cancellable: Cancellable? = null
 
-    override fun onViewCreated(view: PermissionsView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: PermissionsSampleChild1View, viewLifecycle: Lifecycle) {
         viewLifecycle.subscribe(
             onCreate = { handleOnCreate(view) },
             onDestroy = { handleOnDestroy() }
         )
     }
 
-    private fun handleOnCreate(view: PermissionsView) {
+    private fun handleOnCreate(view: PermissionsSampleChild1View) {
         this.view = view
         cancellable = permissionRequester
             .events(this)

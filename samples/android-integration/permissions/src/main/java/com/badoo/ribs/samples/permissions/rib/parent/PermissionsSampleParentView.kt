@@ -9,6 +9,8 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.permissions.R
+import com.badoo.ribs.samples.permissions.rib.child1.PermissionsSampleChild1
+import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2
 
 interface PermissionsSampleParentView : RibView {
 
@@ -33,9 +35,9 @@ class PermissionsSampleParentViewImpl private constructor(
     }
 
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
-        when (subtreeOf.parent?.children?.indexOf(subtreeOf) ?: -1) {
-            0 -> child1Container
-            1 -> child2Container
+        when (subtreeOf) {
+            is PermissionsSampleChild1 -> child1Container
+            is PermissionsSampleChild2 -> child2Container
             else -> super.getParentViewForSubtree(subtreeOf)
         }
 }

@@ -10,14 +10,13 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.permissions.R
-import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2Presenter
 
 interface PermissionsSampleChild1View : RibView {
 
     interface Factory : ViewFactoryBuilder<Dependency, PermissionsSampleChild1View>
 
     interface Dependency {
-        val presenter: PermissionsSampleChild2Presenter
+        val presenter: PermissionsSampleChild1Presenter
     }
 
     fun setText(text: String)
@@ -25,7 +24,7 @@ interface PermissionsSampleChild1View : RibView {
 
 class PermissionsSampleChild1ViewImpl private constructor(
     override val androidView: ViewGroup,
-    private val presenter: PermissionsSampleChild2Presenter
+    private val presenter: PermissionsSampleChild1Presenter
 ) : AndroidRibView(), PermissionsSampleChild1View {
 
     class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample) : PermissionsSampleChild1View.Factory {

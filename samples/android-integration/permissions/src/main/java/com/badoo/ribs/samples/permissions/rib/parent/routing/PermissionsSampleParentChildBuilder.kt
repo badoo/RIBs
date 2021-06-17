@@ -11,8 +11,8 @@ internal open class PermissionsSampleParentChildBuilder(
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    val child1Builder = PermissionsSampleChild1Builder(subtreeDeps)
-    val child2Builder = PermissionsSampleChild2Builder(subtreeDeps)
+    val child1Builder: PermissionsSampleChild1Builder = PermissionsSampleChild1Builder(subtreeDeps)
+    val child2Builder: PermissionsSampleChild2Builder = PermissionsSampleChild2Builder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: PermissionsSampleParent.Dependency

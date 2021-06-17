@@ -11,7 +11,6 @@ import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.minimal.reactive.Cancellable
-import com.badoo.ribs.samples.permissions.rib.child1.PermissionsSampleChild1Presenter
 
 interface PermissionsSampleChild2Presenter : RequestCodeClient {
 

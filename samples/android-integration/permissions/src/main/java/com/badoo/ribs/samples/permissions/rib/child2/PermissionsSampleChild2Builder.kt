@@ -2,7 +2,6 @@ package com.badoo.ribs.samples.permissions.rib.child2
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.samples.permissions.rib.child1.PermissionsSampleChild1PresenterImpl
 
 class PermissionsSampleChild2Builder(private val dependency: PermissionsSampleChild2.Dependency) :
     SimpleBuilder<PermissionsSampleChild2>() {

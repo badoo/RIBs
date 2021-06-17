@@ -63,8 +63,7 @@ abstract class RibsRuleTestBase(
         val rib = rule.rib
         rule.finishActivity()
 
-        Thread.sleep(1_000) // wait for activity finishes
-        assertEquals(Lifecycle.State.DESTROYED, rib.node.lifecycle.currentState)
+        waitFor { Lifecycle.State.DESTROYED == rib.node.lifecycle.currentState }
     }
 
     @Test

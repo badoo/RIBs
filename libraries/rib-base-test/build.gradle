@@ -3,36 +3,21 @@ configureAndroidLibrary(project)
 android {
     defaultConfig {
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
-    }
-
-
-    lintOptions {
-        lintConfig file("lint.xml")
     }
 }
 
 dependencies {
-    compileOnly deps.android.annotations
-
     compileOnly project(':libraries:rib-base')
-    compileOnly project(':libraries:rib-base-test-activity')
-    compileOnly deps.external.rxrelay2
-    compileOnly deps.external.rxjava2
 
-    implementation deps.android.annotations
-    implementation deps.android.runner
-    implementation deps.test.junit
     implementation deps.test.mockito
-
-    api deps.android.rules
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

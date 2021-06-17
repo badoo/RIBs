@@ -6,6 +6,9 @@ import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 
+fun customisations(block: RibCustomisationDirectoryImpl.() -> Unit): RibCustomisationDirectoryImpl =
+    RibCustomisationDirectoryImpl().apply(block)
+
 fun <T> ViewFactory.Context.inflate(@LayoutRes layoutResourceId: Int): T =
     parent.inflate(layoutResourceId)
 

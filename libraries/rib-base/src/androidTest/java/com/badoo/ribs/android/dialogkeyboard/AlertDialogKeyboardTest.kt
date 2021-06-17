@@ -2,9 +2,11 @@ package com.badoo.ribs.android.dialogkeyboard
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.platform.app.InstrumentationRegistry
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
@@ -17,24 +19,26 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import com.badoo.ribs.test.util.runOnMainSync
 import com.badoo.ribs.test.util.waitFor
-import org.hamcrest.CoreMatchers.endsWith
 import org.junit.Rule
 import org.junit.Test
-import java.util.*
+import java.util.UUID
 
 class AlertDialogKeyboardTest {
 
     @get:Rule
-    val ribsRule = RibsRule()
+    val ribsRule = RibsRule<Rib>()
 
     // https://github.com/badoo/RIBs/issues/263
     // Even after focusing and clicking to editText keyboard was hidden
     @Test
     fun keyboardCanBeShownForRIBDialogWithEditText() {
         setupRibs()
-        onView(withClassName(endsWith("EditText"))).perform(click())
 
-        waitFor(3000) {
+        onView(isAssignableFrom(EditText::class.java))
+            .inRoot(isDialog())
+            .perform(click())
+
+        waitFor {
             val inputManager = InstrumentationRegistry
                 .getInstrumentation()
                 .targetContext

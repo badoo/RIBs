@@ -24,6 +24,12 @@ internal sealed class Transaction<C : Parcelable> {
         val changeset: RoutingChangeset<C>
     ) : Transaction<C>()
 
+    sealed class InternalTransaction<C : Parcelable> : Transaction<C>() {
+        data class ExecutePendingTransition<C : Parcelable>(
+            val pendingTransition: PendingTransition<C>
+        ) : InternalTransaction<C>()
+    }
+
     companion object {
         fun <C : Parcelable> from(vararg commands: RoutingCommand<out C>): Transaction<C> =
             RoutingChange(

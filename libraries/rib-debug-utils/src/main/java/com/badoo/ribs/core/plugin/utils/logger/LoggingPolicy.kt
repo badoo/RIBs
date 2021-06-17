@@ -3,7 +3,8 @@ package com.badoo.ribs.core.plugin.utils.logger
 interface LoggingPolicy {
 
     val logOnBuild: Boolean
-    val logOnAttach: Boolean
+    val logOnCreate: Boolean
+    val logOnAttached: Boolean
     val logOnDestroy: Boolean
     val logOnAttachToView: Boolean
     val logOnDetachFromView: Boolean
@@ -29,7 +30,8 @@ interface LoggingPolicy {
     @SuppressWarnings("LongParameterList")
     class AllowList(
         override val logOnBuild: Boolean = false,
-        override val logOnAttach: Boolean = false,
+        override val logOnCreate: Boolean = false,
+        override val logOnAttached: Boolean = false,
         override val logOnDestroy: Boolean = false,
         override val logOnAttachToView: Boolean = false,
         override val logOnDetachFromView: Boolean = false,
@@ -56,7 +58,8 @@ interface LoggingPolicy {
     @SuppressWarnings("LongParameterList")
     class DenyList(
         override val logOnBuild: Boolean = true,
-        override val logOnAttach: Boolean = true,
+        override val logOnCreate: Boolean = true,
+        override val logOnAttached: Boolean = true,
         override val logOnDestroy: Boolean = true,
         override val logOnAttachToView: Boolean = true,
         override val logOnDetachFromView: Boolean = true,

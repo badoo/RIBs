@@ -13,7 +13,6 @@ import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
-import com.badoo.ribs.routing.state.changeset.RoutingCommand
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect
@@ -23,29 +22,19 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 
 private val timeCapsuleKey = RoutingStatePool::class.java.name
 private fun <C : Parcelable> TimeCapsule.initialState(): WorkingState<C> =
-    (get<SavedState<C>>(timeCapsuleKey)
-        ?.let { it.toWorkingState() }
+    (get<SavedState<C>>(timeCapsuleKey)?.toWorkingState()
         ?: WorkingState())
 
 /**
- * FIXME rewrite
- *
- * State store responsible for executing [RoutingCommand]s it takes as inputs.
+ * State store responsible for executing [Transaction]s.
  *
  * The [WorkingState] contains a pool of [RoutingContext] elements referenced
  * by [Routing] objects. Practically, these keep reference to all configurations
- * currently associated with the RIB: all initial configurations (typically permanent parts
- * and one content type) + the ones coming from back stack changes.
- *
- * Any given [RoutingContext] in the pool can be typically in [ACTIVE] or [INACTIVE] state,
- * respective to whether it is active on the screen.
- * Last elements in the back stack are activated, others are deactivated.
- * Permanent parts are added and activated on initialisation and never deactivated as long as
- * the view is available.
+ * currently associated with the RIB.
  */
 @OutdatedDocumentation
 @Suppress("LongParameterList")
-internal class RoutingStatePool<C : Parcelable>(
+internal open class RoutingStatePool<C : Parcelable>(
     timeCapsule: TimeCapsule,
     resolver: RoutingResolver<C>,
     activator: RoutingActivator<C>,
@@ -58,7 +47,8 @@ internal class RoutingStatePool<C : Parcelable>(
         activator = activator,
         parentNode = parentNode,
         transitionHandler = transitionHandler,
-        effectEmitter = ::emitEvent
+        effectEmitter = ::emitEvent,
+        pendingTransitionFactory = PendingTransitionFactory(::emitEvent, ::consumeInternalTransaction)
     )
 
     init {
@@ -115,13 +105,23 @@ internal class RoutingStatePool<C : Parcelable>(
             ) : Individual<C>()
         }
 
-        data class TransitionStarted<C : Parcelable>(
-            val transition: OngoingTransition<C>
-        ) : Effect<C>()
+        sealed class Transition<C : Parcelable> : Effect<C>() {
+            class RequestTransition<C : Parcelable>(
+                val pendingTransition: PendingTransition<C>
+            ) : Transition<C>()
 
-        data class TransitionFinished<C : Parcelable>(
-            val transition: OngoingTransition<C>
-        ) : Effect<C>()
+            class RemovePendingTransition<C : Parcelable>(
+                val pendingTransition: PendingTransition<C>
+            ) : Transition<C>()
+
+            data class TransitionStarted<C : Parcelable>(
+                val transition: OngoingTransition<C>
+            ) : Transition<C>()
+
+            data class TransitionFinished<C : Parcelable>(
+                val transition: OngoingTransition<C>
+            ) : Transition<C>()
+        }
     }
 
     private fun initialize() {
@@ -130,7 +130,7 @@ internal class RoutingStatePool<C : Parcelable>(
                 Transaction.RoutingChange(
                     descriptor = TransitionDescriptor.None,
                     changeset = state.pool
-                        .filter { it.value.activationState == SLEEPING }
+                        .filter { it.value.activationState == INACTIVE || it.value.activationState == SLEEPING }
                         .map { Add(it.key) }
                 )
             )
@@ -141,12 +141,23 @@ internal class RoutingStatePool<C : Parcelable>(
         actor.invoke(state, transaction)
     }
 
+    private fun consumeInternalTransaction(internalTransaction: Transaction.InternalTransaction<C>) {
+        accept(internalTransaction)
+    }
+
     override fun reduceEvent(effect: Effect<C>, state: WorkingState<C>): WorkingState<C> =
         when (effect) {
             is Effect.Global -> state.global(effect)
             is Effect.Individual -> state.individual(effect)
-            is Effect.TransitionStarted -> state.copy(ongoingTransitions = state.ongoingTransitions + effect.transition)
-            is Effect.TransitionFinished -> state.copy(ongoingTransitions = state.ongoingTransitions - effect.transition)
+            is Effect.Transition -> state.transition(effect)
+        }
+
+    private fun WorkingState<C>.transition(effect: Effect.Transition<C>): WorkingState<C> =
+        when (effect) {
+            is Effect.Transition.RequestTransition -> copy(pendingTransitions = pendingTransitions + effect.pendingTransition)
+            is Effect.Transition.RemovePendingTransition -> copy(pendingTransitions = pendingTransitions - effect.pendingTransition)
+            is Effect.Transition.TransitionStarted -> copy(ongoingTransitions = ongoingTransitions + effect.transition)
+            is Effect.Transition.TransitionFinished -> copy(ongoingTransitions = ongoingTransitions - effect.transition)
         }
 
     private fun WorkingState<C>.global(effect: Effect.Global<C>): WorkingState<C> =
@@ -195,8 +206,19 @@ internal class RoutingStatePool<C : Parcelable>(
 
     override fun cancel() {
         super.cancel()
-        state.ongoingTransitions.forEach {
+        disposeOngoingTransitions(state.ongoingTransitions)
+        cancelPendingTransitions(state.pendingTransitions)
+    }
+
+    private fun disposeOngoingTransitions(ongoingTransitions: List<OngoingTransition<C>>) {
+        ongoingTransitions.forEach {
             it.dispose()
+        }
+    }
+
+    private fun cancelPendingTransitions(pendingTransition: List<PendingTransition<C>>) {
+        pendingTransition.forEach {
+            it.cancel()
         }
     }
 }

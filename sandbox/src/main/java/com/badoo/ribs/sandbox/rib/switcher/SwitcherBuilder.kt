@@ -16,7 +16,7 @@ import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
 
 class SwitcherBuilder(
     private val dependency: Switcher.Dependency
-) : SimpleBuilder<SwitcherNode>() {
+) : SimpleBuilder<Switcher>() {
 
     private val builders by lazy { SwitcherChildBuilders(dependency) }
     private val dialogToTestOverlay = DialogToTestOverlay()

@@ -22,7 +22,7 @@ internal class LoginFeature(
 ) {
 
     data class State(
-        val isLoading: Boolean = false,
+        val inProgress: Boolean = false,
         val error: Throwable? = null
     )
 

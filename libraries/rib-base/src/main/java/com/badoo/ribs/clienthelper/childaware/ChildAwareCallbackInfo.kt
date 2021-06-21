@@ -19,13 +19,16 @@ internal sealed class ChildAwareCallbackInfo {
     ) : ChildAwareCallbackInfo() {
 
         fun invokeIfRequired(newNode: Node<*>) {
+            if (parentLifecycle.isDestroyed) return
             val castedNode = child.safeCast(newNode)
             if (castedNode != null) {
+                val lifecycle =
+                    MinimumCombinedLifecycle(
+                        parentLifecycle,
+                        newNode.lifecycle,
+                    ).lifecycle
                 @Suppress("UNCHECKED_CAST")
-                callback(
-                    MinimumCombinedLifecycle(parentLifecycle, newNode.lifecycle).lifecycle,
-                    castedNode
-                )
+                callback(lifecycle, castedNode)
             }
         }
 
@@ -64,11 +67,12 @@ internal sealed class ChildAwareCallbackInfo {
 
         @Suppress("UNCHECKED_CAST")
         private fun notify(node1: Node<*>, node2: Node<*>) {
+            if (parentLifecycle.isDestroyed) return
             val lifecycle =
                 MinimumCombinedLifecycle(
                     parentLifecycle,
                     node1.lifecycle,
-                    node2.lifecycle
+                    node2.lifecycle,
                 ).lifecycle
             if (child1.isInstance(node1)) {
                 callback(lifecycle, child1.cast(node1), child2.cast(node2))

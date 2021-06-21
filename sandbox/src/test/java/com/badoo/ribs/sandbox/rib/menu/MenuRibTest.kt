@@ -1,7 +1,9 @@
 package com.badoo.ribs.sandbox.rib.menu
 
+import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
@@ -50,6 +52,7 @@ class MenuRibTest {
         rib.node.onCreate()
         rib.node.onCreateView(mock())
         rib.node.onAttachToView()
+        rib.node.onAttachFinished()
         rib.node.onStart()
         rib.node.onResume()
     }
@@ -91,4 +94,8 @@ class MenuRibTest {
         )
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
+
+    private fun Node<*>.onAttachFinished(){
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach() }
+    }
 }

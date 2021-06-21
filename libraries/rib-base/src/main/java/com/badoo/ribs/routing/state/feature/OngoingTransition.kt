@@ -1,7 +1,10 @@
 package com.badoo.ribs.routing.state.feature
 
-import android.os.Handler
 import android.os.Parcelable
+import com.badoo.ribs.minimal.reactive.Cancellable
+import com.badoo.ribs.minimal.reactive.Source
+import com.badoo.ribs.minimal.reactive.combineLatest
+import com.badoo.ribs.minimal.reactive.distinctUntilChanged
 import com.badoo.ribs.routing.state.action.single.ReversibleAction
 import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.transition.TransitionDirection
@@ -14,26 +17,21 @@ internal class OngoingTransition<C : Parcelable>(
     val direction: TransitionDirection,
     private val transitionPair: TransitionPair,
     private var actions: List<ReversibleAction<C>>,
-    private val transitionElements: List<TransitionElement<C>>,
+    transitionElements: List<TransitionElement<C>>,
     private val emitter: EffectEmitter<C>,
-    private val handler: Handler = Handler()
 ) {
 
-    var descriptor = descriptor
+    var descriptor: TransitionDescriptor = descriptor
         private set
 
-    private val checkFinishedRunnable = object : Runnable {
-        override fun run() {
-            if (transitionElements.any { it.isPending() }) {
-                handler.post(this)
-            } else {
-                finish()
-            }
-        }
-    }
+    private val isAnyPending: Source<Boolean> =
+        combineLatest(transitionElements.map { it.isPendingSource }) { array -> array.any { it == true } }
+            .distinctUntilChanged()
+
+    private var cancellable: Cancellable? = null
 
     fun dispose() {
-        handler.removeCallbacks(checkFinishedRunnable)
+        cancellable?.cancel()
     }
 
     fun start() {
@@ -43,13 +41,14 @@ internal class OngoingTransition<C : Parcelable>(
                 this
             )
         )
-        checkFinishedRunnable.run()
+        cancellable?.cancel()
+        cancellable = isAnyPending.observe { if (!it) finish() }
         transitionPair.exiting?.start()
         transitionPair.entering?.start()
     }
 
     private fun finish() {
-        handler.removeCallbacks(checkFinishedRunnable)
+        dispose()
         actions.forEach { it.onFinish() }
         emitter.invoke(
             RoutingStatePool.Effect.Transition.TransitionFinished(

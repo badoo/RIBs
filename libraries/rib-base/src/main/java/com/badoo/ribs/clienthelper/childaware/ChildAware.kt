@@ -15,26 +15,26 @@ import kotlin.reflect.KClass
 interface ChildAware : SubtreeChangeAware, NodeAware {
 
     fun <T : Rib> whenChildBuilt(
-        lifecycle: Lifecycle = node.lifecycle,
+        lifecycle: Lifecycle,
         child: KClass<T>,
         callback: ChildCallback<T>,
     )
 
     fun <T : Rib> whenChildAttached(
-        lifecycle: Lifecycle = node.lifecycle,
+        lifecycle: Lifecycle,
         child: KClass<T>,
         callback: ChildCallback<T>,
     )
 
     fun <T1 : Rib, T2 : Rib> whenChildrenBuilt(
-        lifecycle: Lifecycle = node.lifecycle,
+        lifecycle: Lifecycle,
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>,
     )
 
     fun <T1 : Rib, T2 : Rib> whenChildrenAttached(
-        lifecycle: Lifecycle = node.lifecycle,
+        lifecycle: Lifecycle,
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>,

@@ -44,15 +44,15 @@ dependencies {
     implementation deps.external.rxandroid2
     implementation project(":libraries:rib-base")
 
+    junitTestImplementation(project)
     testImplementation deps.external.roboelectricBase
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation deps.test.mockitoKotlin
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")
-    androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner
-    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.test.mockitoKotlin
 }
 
 repositories {

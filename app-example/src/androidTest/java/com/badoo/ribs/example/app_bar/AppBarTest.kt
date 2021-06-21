@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.test.platform.app.InstrumentationRegistry
 import com.badoo.ribs.test.RibsRule
-import com.badoo.ribs.RibTestActivity
+import com.badoo.ribs.test.RibTestActivity
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.example.FakeUserRepository
 import com.badoo.ribs.example.MY_ID

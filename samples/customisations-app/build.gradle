@@ -3,17 +3,10 @@ configureAndroidApp(project)
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 30
-
     defaultConfig {
-        applicationId "com.badoo.ribs.samples.customisations.app"
-        minSdkVersion 21
-        targetSdkVersion 30
+        applicationId 'com.badoo.ribs.samples.customisations.app'
         versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        versionName '1.0'
     }
 
     buildTypes {
@@ -32,12 +25,14 @@ dependencies {
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
-    implementation project(":samples:simple-routing-rib")
-    implementation project(":libraries:rib-base")
+    implementation project(':samples:simple-routing-rib')
+    implementation project(':libraries:rib-base')
+    implementation project(':samples:resources')
 
     testImplementation 'junit:junit:4.13.1'
 
-    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation project(':libraries:rib-base-test')
+    androidTestImplementation project(':libraries:rib-base-test-activity')
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.runner
 }

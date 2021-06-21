@@ -1,11 +1,11 @@
 package com.badoo.common.ribs.rx2
 
 import android.view.ViewGroup
-import com.badoo.ribs.test.InteractorTestHelper
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.rx2.clienthelper.connector.Connectable
+import com.badoo.ribs.test.InteractorTestHelper
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
@@ -15,7 +15,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as whenever
 
-
+@Deprecated("Use RibInteractorTestHelper")
 inline fun <reified View, ViewEvent> createInteractorTestHelper(
     interactor: Interactor<*, View>,
     viewEventRelay: Relay<ViewEvent>
@@ -24,6 +24,7 @@ inline fun <reified View, ViewEvent> createInteractorTestHelper(
     return InteractorTestHelper(interactor, { view })
 }
 
+@Deprecated("Use RibInteractorTestHelper")
 inline fun <reified R, reified Input, reified Output> Interactor<R, *>.mockIO(
     inputRelay: Relay<Input> = PublishRelay.create(),
     outputRelay: Relay<Output> = PublishRelay.create()
@@ -35,6 +36,7 @@ inline fun <reified R, reified Input, reified Output> Interactor<R, *>.mockIO(
     init(rib)
 }
 
+@Deprecated("Use RibInteractorTestHelper")
 inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView where RView : RibView, RView : ObservableSource<ViewEvent> =
     mock(RView::class.java).apply {
         Mockito.`when`(this.androidView).thenReturn(mock(ViewGroup::class.java))

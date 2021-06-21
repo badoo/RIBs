@@ -9,7 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.ribs.test.RibsRule
-import com.badoo.ribs.RibTestActivity
+import com.badoo.ribs.test.RibTestActivity
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.sandbox.R

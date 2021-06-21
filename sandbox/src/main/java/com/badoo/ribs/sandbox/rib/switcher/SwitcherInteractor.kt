@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.android.dialog.Dialog
+import com.badoo.ribs.clienthelper.childaware.childAware
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.mvicore.createDestroy
@@ -97,13 +98,15 @@ internal class SwitcherInteractor(
     override fun onCreate(nodeLifecycle: Lifecycle) {
         super.onCreate(nodeLifecycle)
 
-        createDestroy<Blocker> { blocker ->
-            bind(blocker.output to blockerOutputConsumer)
-        }
+        childAware(nodeLifecycle) {
+            createDestroy<Blocker> { blocker ->
+                bind(blocker.output to blockerOutputConsumer)
+            }
 
-        createDestroy<Menu> { menu ->
-            bind(menu.output to menuListener)
-            bind(backStack.activeConfigurations.rx2() to menu.input using ConfigurationToMenuInput)
+            createDestroy<Menu> { menu ->
+                bind(menu.output to menuListener)
+                bind(backStack.activeConfigurations.rx2() to menu.input using ConfigurationToMenuInput)
+            }
         }
     }
 

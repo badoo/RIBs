@@ -32,8 +32,8 @@ internal class LoginFeature(
 
     sealed class Effect {
         object AuthSuccess : Effect()
-        object LoadingStarted : Effect()
-        class LoadingFailed(val error: Throwable?) : Effect()
+        object AuthInProgress : Effect()
+        class AuthFailed(val error: Throwable?) : Effect()
     }
 
     class BootStrapperImpl(

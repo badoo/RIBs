@@ -128,11 +128,34 @@ jobs:
                 restore-keys: |
                   ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-
                   ${{ runner.os }}-gradle-
+                  
+            - uses: actions/cache@v2
+              id: avd-cache
+              with:
+               path: |
+                 ~/.android/avd/*
+                 ~/.android/adb*
+               key: avd
+               
+               
+            - name: generate snapshot for caching
+              if: steps.avd-cache.outputs.cache-hit != 'true'
+              uses: reactivecircus/android-emulator-runner@v2
+              with:
+                  api-level: ${{ matrix.api-level }}
+                  force-avd-creation: false
+                  emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+                  disable-animations: false
+                  script: echo "Generated AVD snapshot for caching."
+              
             - name: Instrumentation tests
               uses: reactivecircus/android-emulator-runner@v2
               with:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
+                  force-avd-creation: false
+                  emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+                  disable-animations: true
                   script: ./gradlew connectedCheck -PuseCompose=${{ matrix.compose-enabled }}
 
             - name: Upload failure reports

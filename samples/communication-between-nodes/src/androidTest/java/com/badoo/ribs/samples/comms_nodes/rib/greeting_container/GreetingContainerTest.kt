@@ -8,10 +8,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.comms_nodes.R
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.ENGLISH
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.FRENCH
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.GERMAN
 import com.badoo.ribs.test.RibsRule
 import org.junit.Rule
 import org.junit.Test
@@ -22,10 +18,9 @@ class GreetingContainerTest {
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        GreetingContainerBuilder(object : GreetingContainer.Dependency {
-            override val languages: List<Language>
-                get() = listOf(ENGLISH, GERMAN, FRENCH)
-        }).build(BuildContext.root(savedInstanceState))
+        GreetingContainerBuilder(
+            object : GreetingContainer.Dependency {}
+        ).build(BuildContext.root(savedInstanceState))
 
     @Test
     fun iSeeHello() {

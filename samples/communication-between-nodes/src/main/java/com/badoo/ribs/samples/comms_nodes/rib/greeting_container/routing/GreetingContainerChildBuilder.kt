@@ -11,8 +11,8 @@ internal class GreetingContainerChildBuilder(
 ) {
     private val subtreeDeps = SubtreeDependency(dependency)
 
-    val greetingBuilder = GreetingBuilder(subtreeDeps)
-    val languageSelectorBuilder = LanguageSelectorBuilder(subtreeDeps)
+    val greetingBuilder: GreetingBuilder = GreetingBuilder(subtreeDeps)
+    val languageSelectorBuilder: LanguageSelectorBuilder = LanguageSelectorBuilder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: GreetingContainer.Dependency

@@ -12,7 +12,9 @@ import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Input.UpdateGree
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Output.AvailableLanguagesDisplayed
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingView.ViewModel
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.*
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.ENGLISH
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.FRENCH
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.GERMAN
 
 interface GreetingPresenter {
     fun onChangeLanguageClicked()

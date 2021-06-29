@@ -12,7 +12,9 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.comms_nodes.R
-import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.*
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.ENGLISH
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.FRENCH
+import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.GERMAN
 
 interface LanguageSelectorView : RibView {
 
@@ -74,7 +76,7 @@ class LanguageSelectorViewImpl private constructor(
         radioGroup.check(selectionId)
     }
 
-    private fun Language.toDisplayText() : String =
+    private fun Language.toDisplayText(): String =
         when (this) {
             ENGLISH -> "English"
             GERMAN -> "German"

@@ -2,7 +2,6 @@ package com.badoo.ribs.plugin.generator
 
 import com.badoo.ribs.plugin.template.Token
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Test
 
 class TemplateReplacementsGeneratorTest {
@@ -32,12 +31,9 @@ class TemplateReplacementsGeneratorTest {
         replacements.assertReplace("foo.bar" to "my.rib")
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException::class)
     fun `create replacements - provided token value for not existent token - throws exception`() {
-        assertThatExceptionOfType(IllegalArgumentException::class.java)
-            .isThrownBy {
-                create(tokens = mapOf(), tokenValues = mapOf("incorrect_id" to "MyRib"))
-            }
+        create(tokens = mapOf(), tokenValues = mapOf("incorrect_id" to "MyRib"))
     }
 
     @Test

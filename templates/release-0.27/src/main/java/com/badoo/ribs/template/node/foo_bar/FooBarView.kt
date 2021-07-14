@@ -39,11 +39,12 @@ class FooBarViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_foo_bar
     ) : FooBarView.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<FooBarView> = ViewFactory {
-            FooBarViewImpl(
-                it.inflate(layoutRes)
-            )
-        }
+        override fun invoke(deps: Nothing?): ViewFactory<FooBarView> =
+            ViewFactory {
+                FooBarViewImpl(
+                    it.inflate(layoutRes)
+                )
+            }
     }
 
     override fun accept(vm: FooBarView.ViewModel) {

@@ -23,7 +23,7 @@ interface FooBar : Rib, Connectable<Input, Output> {
     ) : RibCustomisation
 
     // Workflow
-    // todo: do not delete - rename, and add more
+    // todo: rename rather than delete, and add more
     // todo: expose all meaningful operations
     fun businessLogicOperation(): Single<FooBar>
 

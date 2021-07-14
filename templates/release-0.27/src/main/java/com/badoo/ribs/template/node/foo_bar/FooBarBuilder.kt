@@ -51,8 +51,7 @@ class FooBarBuilder(
         routingSource: RoutingSource<Configuration>,
         builders: FooBarChildBuilders,
         customisation: FooBar.Customisation
-    ) =
-        FooBarRouter(
+    ) = FooBarRouter(
             buildParams = buildParams,
             builders = builders,
             routingSource = routingSource,

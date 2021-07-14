@@ -17,8 +17,7 @@ class FooBarBuilder(
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation
-    ) =
-        FooBarNode(
+    ) = FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
             plugins = emptyList()

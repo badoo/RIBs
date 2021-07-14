@@ -23,8 +23,7 @@ class FooBarBuilder(
     private fun interactor(
         buildParams: BuildParams<*>,
         feature: FooBarFeature
-    ) =
-        FooBarInteractor(
+    ) = FooBarInteractor(
             buildParams = buildParams,
             feature = feature
         )
@@ -34,8 +33,7 @@ class FooBarBuilder(
         customisation: FooBar.Customisation,
         feature: FooBarFeature,
         interactor: FooBarInteractor
-    ) =
-        FooBarNode(
+    ) = FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
             plugins = listOf(interactor, disposables(feature))

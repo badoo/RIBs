@@ -21,17 +21,6 @@ class FooBarNode internal constructor(
     plugins = plugins
 ), FooBar, Connectable<Input, Output> by connector {
 
-    /**
-     * TODO:
-     *  - use router / input / output / feature for FooBar method implementations
-     *  - keep in mind that in most cases you probably don't need to use interactor reference directly
-     *      - its lifecycle methods are not accessible publicly (and it's good this way)
-     *      - its internal consumers are usually reacting to children, and then it's better to
-     *          trigger child workflows instead of faking them directly on the parent
-     *  - as a general advice, try to trigger actions at points that are closest to where they would happen naturally,
-     *      such that triggering involves executing all related actions (analytics, logging, etc)
-     */
-
     override fun businessLogicOperation(): Single<FooBar> =
         executeWorkflow {
             // todo e.g. push wish to feature / trigger input / output

@@ -69,54 +69,6 @@ templates {
     }
 
     template {
-        id = 'leaf_release_0.26'
-        name = '[0.26] Leaf node'
-
-        fromProject = project(':templates:release-0.26')
-        sourcePackage = 'com.badoo.ribs.template.leaf'
-        modulePackage = 'com.badoo.ribs.template'
-        resources = ['rib_foo_bar.xml']
-
-        token {
-            id = "rib_name"
-            name = "RIB name"
-            sourceValue = "FooBar"
-        }
-    }
-
-    template {
-        id = 'leaf_view_only_release_0.26'
-        name = '[0.26] Leaf node (view only)'
-
-        fromProject = project(':templates:release-0.26')
-        sourcePackage = 'com.badoo.ribs.template.leaf_view_only'
-        modulePackage = 'com.badoo.ribs.template'
-        resources = ['rib_foo_bar.xml']
-
-        token {
-            id = "rib_name"
-            name = "RIB name"
-            sourceValue = "FooBar"
-        }
-    }
-
-    template {
-        id = 'router_node_manual_di_release_0.26'
-        name = '[0.26] Router node + Manual DI'
-
-        fromProject = project(':templates:release-0.26')
-        sourcePackage = 'com.badoo.ribs.template.node'
-        modulePackage = 'com.badoo.ribs.template'
-        resources = ['rib_foo_bar.xml']
-
-        token {
-            id = "rib_name"
-            name = "RIB name"
-            sourceValue = "FooBar"
-        }
-    }
-
-    template {
         id = 'leaf_snapshot'
         name = '[SNAPSHOT] Leaf node'
 

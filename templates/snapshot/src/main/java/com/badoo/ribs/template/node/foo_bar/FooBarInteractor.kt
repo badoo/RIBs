@@ -30,6 +30,18 @@ internal class FooBarInteractor(
             bind(feature.news to rib.output using NewsToOutput)
             bind(rib.input to feature using InputToWish)
         }
+
+//        childAware(nodeLifecycle) {
+//            whenChildAttached<Child1> { commonLifecycle, child1 ->
+//                // TODO e.g. subscribe to child1.output
+//                // TODO use commonLifecycle for scoping
+//            }
+//
+//            whenChildrenAttached<Child1, Child2> { commonLifecycle, child1, child2 ->
+//                // TODO connect e.g. child1.output to child2.input
+//                // TODO use commonLifecycle for scoping
+//            }
+//        }
     }
 
     override fun onViewCreated(view: FooBarView, viewLifecycle: Lifecycle) {
@@ -38,23 +50,5 @@ internal class FooBarInteractor(
             bind(view to feature using ViewEventToWish)
             bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
         }
-    }
-
-    override fun onChildBuilt(child: Node<*>) {
-        super.onChildBuilt(child)
-        /**
-         * TODO bind children here and delete this comment block.
-         *
-         *  At this point children haven't set their own bindings yet,
-         *  so it's safe to setup listening to their output before they start emitting.
-         *
-         *  On the other hand, they're not ready to receive inputs yet. Usually this is alright.
-         *  If it's a requirement though, create those bindings in [onChildAttached]
-         */
-        // child.lifecycle.createDestroy {
-            // when (child) {
-                // is Child1 -> bind(child.output to someConsumer)
-            // }
-        // }
     }
 }

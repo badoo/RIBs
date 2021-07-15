@@ -1,4 +1,4 @@
-package com.badoo.ribs.portal
+package com.badoo.ribs.portal.rx2
 
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.AncestryInfo
@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.rx2.workflows.RxWorkflowNode
 import io.reactivex.Single
 
-internal class RxPortalNode(
+internal class Rx2PortalNode(
     buildParams: BuildParams<*>,
     private val backStack: BackStack<Configuration>,
     plugins: List<Plugin>
@@ -19,7 +19,7 @@ internal class RxPortalNode(
     buildParams = buildParams,
     viewFactory = null,
     plugins = plugins
-), RxPortal {
+), Rx2Portal {
 
     override fun showDefault(): Single<Rib> =
         attachWorkflow {

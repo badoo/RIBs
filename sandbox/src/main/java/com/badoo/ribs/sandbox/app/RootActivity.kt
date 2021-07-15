@@ -17,8 +17,8 @@ import com.badoo.ribs.core.plugin.utils.memoryleak.LeakDetector
 import com.badoo.ribs.debug.TreePrinter
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalRouter
-import com.badoo.ribs.portal.RxPortal
-import com.badoo.ribs.portal.RxPortalBuilder
+import com.badoo.ribs.portal.rx2.Rx2Portal
+import com.badoo.ribs.portal.rx2.Rx2PortalBuilder
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.CrossFader
@@ -48,10 +48,10 @@ class RootActivity : RxWorkflowActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    private lateinit var workflowRoot: RxPortal
+    private lateinit var workflowRoot: Rx2Portal
 
     override fun createRib(savedInstanceState: Bundle?) =
-        RxPortalBuilder(
+        Rx2PortalBuilder(
             object : Portal.Dependency {
                 override val defaultResolution: (Portal.OtherSide) -> Resolution =
                     { portal ->

@@ -12,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 
 interface UnsplashApi {
@@ -20,8 +21,9 @@ interface UnsplashApi {
      * https://unsplash.com/documentation#authorization-workflow
      */
     @SuppressWarnings("LongParameterList")
-    @POST("oauth/token")
+    @POST()
     fun requestAccessToken(
+        @Url url:String = "https://unsplash.com/oauth/token",
         @Query("client_id") clientId: String,
         @Query("client_secret") clientSecret: String,
         @Query("redirect_uri") redirectUri: String,
@@ -100,13 +102,13 @@ interface UnsplashApi {
      * https://unsplash.com/documentation#like-a-photo
      */
     @POST("photos/{id}/like")
-    fun likePhoto(@Path("id") id: String): Completable
+    fun likePhoto(@Path("id") id: String): Single<Unit>
 
     /**
      * https://unsplash.com/documentation#unlike-a-photo
      */
     @DELETE("photos/{id}/like")
-    fun unlikePhoto(@Path("id") id: String): Completable
+    fun unlikePhoto(@Path("id") id: String): Single<Unit>
     //endregion
 
     //region Search

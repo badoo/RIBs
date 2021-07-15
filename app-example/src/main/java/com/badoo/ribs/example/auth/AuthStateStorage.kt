@@ -1,44 +1,35 @@
 package com.badoo.ribs.example.auth
 
-import android.content.SharedPreferences
+import android.util.Log
+import com.jakewharton.rxrelay2.BehaviorRelay
+import io.reactivex.Observable
 
 interface AuthStateStorage {
-    fun save(state: AuthState)
-    fun restore(): AuthState
+    val authUpdates: Observable<AuthState>
+    var state: AuthState
 }
 
-class PreferencesAuthStateStorage(
-    private val preferences: SharedPreferences
+class AuthStateStorageImpl(
+    private val persistence: AuthStatePersistence
 ) : AuthStateStorage {
+    private val stateRelay = BehaviorRelay.createDefault<AuthState>(
+        persistence.restore()
+    )
 
-    override fun save(state: AuthState) {
-        when (state) {
-            is AuthState.Unauthenticated -> preferences.edit()
-                .clear()
-                .apply()
-            is AuthState.Anonymous -> preferences.edit()
-                .clear()
-                .putBoolean(ANONYMOUS_AUTH_KEY, true)
-                .apply()
-            is AuthState.Authenticated -> preferences.edit()
-                .clear()
-                .putString(ACCESS_TOKEN_KEY, state.accessToken)
-                .apply()
+    override val authUpdates: Observable<AuthState> = stateRelay
+    override var state: AuthState
+        get() {
+            val authState = stateRelay.value
+            return if (authState != null) {
+                authState
+            } else {
+                Log.e("AuthDataSource", "Cannot retrieve auth state")
+                AuthState.Unauthenticated
+            }
         }
-    }
-
-    override fun restore(): AuthState {
-        val accessToken = preferences.getString(ACCESS_TOKEN_KEY, null)
-        val isAnonymousAuth = preferences.getBoolean(ANONYMOUS_AUTH_KEY, false)
-        return when {
-            accessToken != null -> AuthState.Authenticated(accessToken)
-            isAnonymousAuth -> AuthState.Anonymous
-            else -> AuthState.Unauthenticated
+        set(value) {
+            persistence.save(value)
+            stateRelay.accept(value)
         }
-    }
 
-    private companion object {
-        const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN"
-        const val ANONYMOUS_AUTH_KEY = "ANONYMOUS_AUTH"
-    }
 }

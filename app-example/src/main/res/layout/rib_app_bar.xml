@@ -34,7 +34,6 @@
             android:layout_height="0dp"
             android:src="@drawable/ic_search"
             android:padding="12dp"
-            android:tint="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -48,10 +48,5 @@ include ':sandbox'
 include ':templates:release-0.27'
 include ':templates:snapshot'
 include ':tooling:rib-intellij-plugin'
-include ':tutorials:tutorial1'
-include ':tutorials:tutorial2'
-include ':tutorials:tutorial3'
-include ':tutorials:tutorial4'
-include ':tutorials:tutorial5'
 
 includeBuild("plugins")

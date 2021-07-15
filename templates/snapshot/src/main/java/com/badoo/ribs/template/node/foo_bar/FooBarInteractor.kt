@@ -5,7 +5,6 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.template.node.foo_bar.analytics.FooBarAnalytics

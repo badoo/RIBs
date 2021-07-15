@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.badoo.ribs.intellij-plugin</id>
     <name>RIBs</name>
-    <version>0.26.3</version>
+    <version>0.27.2</version>
     <vendor url="https://github.com/badoo" email="release@corp.badoo.com">Badoo</vendor>
 
     <description><![CDATA[
@@ -12,6 +12,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <strong>0.27</strong><br/>
+      <ul>
+        <li>ViewFactory API change</li>
+        <li>Package name fixes</li>
+      </ul>
+
     <strong>0.26.3</strong><br/>
       <ul>
         <li>Fix leaf node creation on Android Studio 4.1+</li>

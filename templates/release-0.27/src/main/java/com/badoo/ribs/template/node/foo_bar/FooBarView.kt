@@ -21,7 +21,7 @@ interface FooBarView : RibView,
     sealed class Event
 
     data class ViewModel(
-        val i: Int = 0,
+        val i: Int = 0
     )
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, FooBarView>
@@ -30,14 +30,14 @@ interface FooBarView : RibView,
 
 class FooBarViewImpl private constructor(
     override val androidView: ViewGroup,
-    private val events: PublishRelay<Event> = PublishRelay.create(),
+    private val events: PublishRelay<Event> = PublishRelay.create()
 ) : AndroidRibView(),
     FooBarView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_foo_bar,
+        @LayoutRes private val layoutRes: Int = R.layout.rib_foo_bar
     ) : FooBarView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<FooBarView> =
             ViewFactory {

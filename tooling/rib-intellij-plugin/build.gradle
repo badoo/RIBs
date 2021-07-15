@@ -21,10 +21,10 @@ repositories {
 templates {
 
     template {
-        id = 'leaf_release_0.26'
-        name = '[0.26] Leaf node'
+        id = 'leaf_release_0.27'
+        name = '[0.27] Leaf node'
 
-        fromProject = project(':templates:release-0.26')
+        fromProject = project(':templates:release-0.27')
         sourcePackage = 'com.badoo.ribs.template.leaf'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']
@@ -37,10 +37,10 @@ templates {
     }
 
     template {
-        id = 'leaf_view_only_release_0.26'
-        name = '[0.26] Leaf node (view only)'
+        id = 'leaf_view_only_release_0.27'
+        name = '[0.27] Leaf node (view only)'
 
-        fromProject = project(':templates:release-0.26')
+        fromProject = project(':templates:release-0.27')
         sourcePackage = 'com.badoo.ribs.template.leaf_view_only'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']
@@ -53,10 +53,10 @@ templates {
     }
 
     template {
-        id = 'router_node_manual_di_release_0.26'
-        name = '[0.26] Router node + Manual DI'
+        id = 'router_node_manual_di_release_0.27'
+        name = '[0.27] Router node + Manual DI'
 
-        fromProject = project(':templates:release-0.26')
+        fromProject = project(':templates:release-0.27')
         sourcePackage = 'com.badoo.ribs.template.node'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']

@@ -3,7 +3,7 @@ package com.badoo.ribs.core.plugin.utils.debug
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.badoo.mobile.rib.base.R
+import com.badoo.ribs.base.R
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.plugin.NodeAware

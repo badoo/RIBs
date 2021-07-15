@@ -5,7 +5,6 @@ import com.badoo.ribs.plugin.template.file.ResourceTemplateFile
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.io.InputStream
@@ -103,14 +102,11 @@ class TemplateFilesProviderTest {
         ))
     }
 
-    @Test
+    @Test(expected = IllegalStateException::class)
     fun `get template files - no files in template - throws exception`() {
         givenTemplatesWithIds("id1")
         val resourceProvider = createResourceProviderWithFiles()
-
-        assertThatExceptionOfType(IllegalStateException::class.java).isThrownBy {
-            loadTemplateFiles(resourceProvider)
-        }
+        loadTemplateFiles(resourceProvider)
     }
 
     @Test

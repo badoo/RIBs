@@ -1,4 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.rib_recyclerview">
+    package="com.badoo.ribs.android.recyclerview">
 
 </manifest>

@@ -5,7 +5,9 @@ import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.clienthelper.interactor.Interactor
+import com.badoo.ribs.clienthelper.childaware.childAware
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.mvicore.createDestroy
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.template.node.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
@@ -29,16 +31,14 @@ internal class FooBarInteractor(
             bind(feature.news to rib.output using NewsToOutput)
             bind(rib.input to feature using InputToWish)
         }
-
+        
 //        childAware(nodeLifecycle) {
-//            whenChildAttached<Child1> { commonLifecycle, child1 ->
-//                // TODO e.g. subscribe to child1.output
-//                // TODO use commonLifecycle for scoping
+//            createDestroy<Child1> { child1 ->
+//                bind(child1.output to TODO())
 //            }
 //
-//            whenChildrenAttached<Child1, Child2> { commonLifecycle, child1, child2 ->
-//                // TODO connect e.g. child1.output to child2.input
-//                // TODO use commonLifecycle for scoping
+//            createDestroy<Child1, Child2> { child1, child2 ->
+//                bind(child1.output to child2.input)
 //            }
 //        }
     }

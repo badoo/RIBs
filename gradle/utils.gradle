@@ -1,14 +1,14 @@
 ext.configureAndroidLibrary = { project ->
     project.apply plugin: 'com.android.library'
     project.apply plugin: 'kotlin-android'
-    project.apply plugin: 'kotlin-android-extensions'
+    project.apply plugin: 'kotlin-parcelize'
     configureAndroidModule(project)
 }
 
 ext.configureAndroidApp = { project ->
     project.apply plugin: 'com.android.application'
     project.apply plugin: 'kotlin-android'
-    project.apply plugin: 'kotlin-android-extensions'
+    project.apply plugin: 'kotlin-parcelize'
     configureAndroidModule(project)
 }
 
@@ -76,7 +76,10 @@ private def configureAndroidModule(Project project) {
             animationsDisabled true
             unitTests {
                 includeAndroidResources = true
-                all { useJUnitPlatform() }
+                all {
+                    useJUnitPlatform()
+                    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+                }
             }
         }
 

@@ -3,7 +3,7 @@ package com.badoo.ribs.routing.state.feature.state
 import android.os.Parcelable
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.state.RoutingContext
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * The state of [RoutingStatePool] in a form that can be persisted to [android.os.Bundle].

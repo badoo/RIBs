@@ -16,7 +16,7 @@ import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @ExperimentalApi
 class PortalRouter(

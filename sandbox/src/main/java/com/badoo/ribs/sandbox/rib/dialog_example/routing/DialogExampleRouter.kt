@@ -13,7 +13,7 @@ import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Overlay
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class DialogExampleRouter(
     buildParams: BuildParams<Nothing?>,

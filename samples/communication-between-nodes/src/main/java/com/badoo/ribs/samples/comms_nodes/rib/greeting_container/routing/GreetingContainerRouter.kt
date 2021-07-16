@@ -12,7 +12,7 @@ import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.Greetin
 import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.GreetingContainerRouter.Configuration.Greeting
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelectorBuilder.Params
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 internal class GreetingContainerRouter(
     buildParams: BuildParams<Nothing?>,

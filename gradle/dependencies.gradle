@@ -9,20 +9,21 @@ apply from: "$rootDirectory/gradle/compose.gradle"
 
 def kotlinVersion
 if (useCompose.toBoolean()) {
-    kotlinVersion = '1.4.30'
+    kotlinVersion = '1.5.21'
 } else {
     kotlinVersion = '1.4.31'
 }
 println("kotlin version: $kotlinVersion")
 
 def versions = [
-        dagger                         : '2.22.1',
+        dagger                         : '2.37',
         intellij                       : '2020.1.4',
         intellij_kotlin                : '1.3.72-release-IJ2020.1-1',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.4',
-        robolectric                    : '4.4',
-        compose                        : '1.0.0-beta01',
+        robolectric                    : '4.6.1',
+        compose                        : '1.0.0-rc02',
+        kotlinComposeCompilerVersion   : '1.5.10', // https://developer.android.com/jetpack/androidx/releases/compose-runtime#declaring_dependencies
 
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
@@ -32,12 +33,12 @@ def versions = [
         androidxCardViewVersion        : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
         androidxCollectionVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
         androidxConstraintLayoutVersion: '1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
-        androidxCoreVersion            : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/core
+        androidxCoreVersion            : useCompose.toBoolean() ? '1.5.0' : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/core
         androidxExifVersion            : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
-        androidxFragmentVersion        : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/fragment
-        androidxActivityVersion        : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/activity
+        androidxFragmentVersion        : useCompose.toBoolean() ? '1.3.5' : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/fragment
+        androidxActivityVersion        : useCompose.toBoolean() ? '1.2.3' : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/activity
         androidxGridLayoutVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
-        androidxLifecycleVersion       : '2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
+        androidxLifecycleVersion       : useCompose.toBoolean() ? '2.3.1' : '2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
         androidxLoaderVersion          : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
         androidxPaletteVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
         androidxPercentLayoutVersion   : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
@@ -51,26 +52,26 @@ def versions = [
         junit5                         : '5.7.1'
 ]
 
+println("androidxCoreVersion version: ${versions.androidxCoreVersion}")
+println("androidxFragmentVersion version: ${versions.androidxFragmentVersion}")
+println("androidxActivityVersion version: ${versions.androidxActivityVersion}")
+println("androidxLifecycleVersion version: ${versions.androidxLifecycleVersion}")
+
 def apt = [
-    daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
-    javax: "javax.annotation:jsr250-api:1.0",
-    javaxInject: "javax.inject:javax.inject:1",
+        daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
+        javax         : "javax.annotation:jsr250-api:1.0",
+        javaxInject   : "javax.inject:javax.inject:1",
 ]
 
-def agp
-if (useCompose.toBoolean()) {
-    agp = 'com.android.tools.build:gradle:7.0.0-alpha08'
-} else {
-    agp = 'com.android.tools.build:gradle:4.1.1'
-}
+def agp = 'com.android.tools.build:gradle:4.2.2'
 println("agp version: $agp")
 
 def build = [
-        compileSdkVersion: 28,
+        compileSdkVersion: 30,
         gradlePluginsUrl : "https://plugins.gradle.org/m2/",
         ci               : 'true' == System.getenv('CI'),
         minSdkVersion    : 17,
-        targetSdkVersion : 28,
+        targetSdkVersion : 30,
         guava            : "com.google.guava:guava:20.0",
         commonsLang      : "commons-lang:commons-lang:2.6",
         intellijPlugin   : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.7.3",
@@ -80,7 +81,7 @@ def build = [
                 kotlin         : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
                 gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
                 mavenPublish   : 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
-                detekt         : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.10.0',
+                detekt         : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1',
                 jacoco         : "org.jacoco:org.jacoco.core:${versions.jacoco}"
         ]
 ]
@@ -100,11 +101,12 @@ def android = [
 ]
 
 def compose = [
-        runtime   : "androidx.compose.runtime:runtime:${versions.compose}",
-        ui        : "androidx.compose.ui:ui:${versions.compose}",
-        material  : "androidx.compose.material:material:${versions.compose}",
-        uiTooling : "androidx.compose.ui:ui-tooling:${versions.compose}",
-        foundation: "androidx.compose.foundation:foundation:${versions.compose}"
+        runtime         : "androidx.compose.runtime:runtime:${versions.compose}",
+        ui              : "androidx.compose.ui:ui:${versions.compose}",
+        material        : "androidx.compose.material:material:${versions.compose}",
+        uiTooling       : "androidx.compose.ui:ui-tooling:${versions.compose}",
+        uiToolingPreview: "androidx.compose.ui:ui-tooling-preview:${versions.compose}",
+        foundation      : "androidx.compose.foundation:foundation:${versions.compose}"
 ]
 
 def test = [
@@ -128,7 +130,7 @@ def androidTest = [
 ]
 
 def external = [
-        kotlinStdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
+        kotlinStdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
         dagger          : "com.google.dagger:dagger:${versions.dagger}",
         mviCore         : "com.github.badoo.mvicore:mvicore:${versions.mviCore}",
         mviCoreAndroid  : "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",

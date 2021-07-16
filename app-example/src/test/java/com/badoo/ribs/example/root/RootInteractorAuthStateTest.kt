@@ -12,16 +12,13 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import java.util.stream.Stream
 
-@RunWith(Parameterized::class)
-class RootInteractorAuthStateTest(
-    private val authState: AuthState,
-    private val expectedConfiguration: Configuration
-) {
+class RootInteractorAuthStateTest {
     private val backStack: BackStack<Configuration> = mock()
     private val stateRelay = PublishRelay.create<AuthState>()
     private val authDataSource = mock<AuthDataSource>().apply {
@@ -30,7 +27,7 @@ class RootInteractorAuthStateTest(
     private lateinit var interactor: RootInteractor
     private lateinit var interactorTestHelper: InteractorTestHelper<Nothing>
 
-    @Before
+    @BeforeEach
     fun setup() {
         interactor = RootInteractor(
             buildParams = emptyBuildParams(),
@@ -41,22 +38,25 @@ class RootInteractorAuthStateTest(
         interactorTestHelper = InteractorTestHelper(interactor)
     }
 
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters
-        fun data() = listOf(
-            arrayOf(AuthState.Unauthenticated, Configuration.Content.LoggedOut),
-            arrayOf(AuthState.Anonymous, Configuration.Content.LoggedIn),
-            arrayOf(AuthState.Authenticated(""), Configuration.Content.LoggedIn)
-        )
-    }
-
-    @Test
-    fun `an example test with some conditions should pass`() {
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `an example test with some conditions should pass`(
+        authState: AuthState,
+        expectedConfiguration: Configuration
+    ) {
         interactorTestHelper.moveToStateAndCheck(Lifecycle.State.CREATED) {
             stateRelay.accept(authState)
 
             verify(backStack).replace(expectedConfiguration)
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun data(): Stream<Arguments> = Stream.of(
+            Arguments.of(AuthState.Unauthenticated, Configuration.Content.LoggedOut),
+            Arguments.of(AuthState.Anonymous, Configuration.Content.LoggedIn),
+            Arguments.of(AuthState.Authenticated(""), Configuration.Content.LoggedIn)
+        )
     }
 }

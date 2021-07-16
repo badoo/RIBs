@@ -1,11 +1,6 @@
 configureAndroidLibrary(project)
 
-apply plugin: 'kotlin-android-extensions'
 apply from: rootProject.file('gradle/code-coverage.gradle')
-
-androidExtensions {
-    experimental = true
-}
 
 dependencies {
     api deps.android.appCompat
@@ -21,7 +16,6 @@ dependencies {
 
     junitTestImplementation(project)
     testImplementation deps.android.annotations
-    testImplementation deps.test.mockito
     testImplementation deps.test.assertj
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin

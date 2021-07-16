@@ -3,12 +3,12 @@ configureAndroidApp(project)
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.badoo.ribs.sandbox"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -29,15 +29,10 @@ android {
         }
 
         composeOptions {
-            kotlinCompilerVersion deps.versions.kotlin
+            kotlinCompilerVersion deps.versions.kotlinComposeCompilerVersion
             kotlinCompilerExtensionVersion deps.versions.compose
         }
     }
-}
-
-androidExtensions {
-    experimental = true
-    features = ["parcelize"]
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
@@ -79,6 +74,7 @@ dependencies {
         implementation deps.compose.ui
         implementation deps.compose.material
         implementation deps.compose.uiTooling
+        debugImplementation deps.compose.uiToolingPreview
         implementation deps.compose.foundation
     } else {
         implementation project(":sandbox-compose-placeholder")

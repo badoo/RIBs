@@ -20,10 +20,6 @@ android {
     }
 }
 
-androidExtensions {
-    experimental = true
-}
-
 dependencies {
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout

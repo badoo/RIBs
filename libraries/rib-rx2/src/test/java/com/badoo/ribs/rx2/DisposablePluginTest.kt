@@ -6,15 +6,15 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.disposables.Disposable
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class DisposablePluginTest {
 
     private val disposables = mock<Disposable>()
     private lateinit var node: Node<*>
 
-    @Before
+    @BeforeEach
     fun setUp() {
         node = Node<Nothing>(
             buildParams = BuildParams(null, BuildContext.root(null)),

@@ -1,6 +1,7 @@
 package com.badoo.ribs.routing.state.feature
 
 import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.view.View
 import com.badoo.ribs.routing.state.action.single.ReversibleAction
@@ -17,7 +18,7 @@ internal class PendingTransition<C : Parcelable>(
     private val transitionElements: List<TransitionElement<C>>,
     private val effectEmitter: EffectEmitter<C>,
     private val internalTransactionConsumer: InternalTransactionConsumer<C>,
-    private val handler: Handler = Handler()
+    private val handler: Handler = Handler(Looper.getMainLooper())
 ) {
 
     fun schedule() {

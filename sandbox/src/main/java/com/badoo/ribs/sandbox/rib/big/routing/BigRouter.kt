@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.sandbox.rib.big.routing.BigRouter.Configuration
 import com.badoo.ribs.sandbox.rib.big.routing.BigRouter.Configuration.Permanent
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class BigRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

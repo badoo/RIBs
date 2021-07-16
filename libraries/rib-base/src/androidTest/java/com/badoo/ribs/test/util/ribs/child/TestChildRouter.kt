@@ -7,7 +7,7 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.test.util.ribs.child.TestChildRouter.Configuration
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class TestChildRouter(
     buildParams: BuildParams<Nothing?>

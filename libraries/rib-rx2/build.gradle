@@ -1,11 +1,5 @@
 configureAndroidLibrary(project)
 
-apply plugin: 'kotlin-android-extensions'
-
-androidExtensions {
-    experimental = true
-}
-
 dependencies {
     api deps.external.rxrelay2
     api deps.external.rxjava2
@@ -14,7 +8,6 @@ dependencies {
 
     junitTestImplementation(project)
     testImplementation deps.android.annotations
-    testImplementation deps.test.mockito
     testImplementation deps.test.assertj
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin

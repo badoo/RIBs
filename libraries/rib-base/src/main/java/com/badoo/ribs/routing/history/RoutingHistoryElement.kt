@@ -3,7 +3,7 @@ package com.badoo.ribs.routing.history
 import android.os.Parcelable
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Marks a [Routing] with [Activation] status, and lists

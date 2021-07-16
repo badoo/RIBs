@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.resolution.Resolution.Companion.noop
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class FeedContainerRouter internal constructor(
     buildParams: BuildParams<*>,

@@ -10,7 +10,7 @@ import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration
 import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration.Permanent.Child1
 import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration.Permanent.Child2
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class PermissionsSampleParentRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

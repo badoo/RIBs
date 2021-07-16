@@ -13,7 +13,7 @@ import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRoute
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content.Child2
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content.Child3
 import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Permanent.Menu
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class ContainerRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

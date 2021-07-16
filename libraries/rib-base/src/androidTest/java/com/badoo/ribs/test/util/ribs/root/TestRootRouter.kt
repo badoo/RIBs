@@ -17,7 +17,7 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.test.util.ribs.TestRibDialog
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.*
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class TestRootRouter(
     buildParams: BuildParams<*>,

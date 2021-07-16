@@ -14,7 +14,7 @@ import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configu
 import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Content.D
 import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Overlay.E
 import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Overlay.F
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class ParentRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

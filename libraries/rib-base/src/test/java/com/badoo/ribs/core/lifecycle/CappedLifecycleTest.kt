@@ -10,8 +10,8 @@ import androidx.lifecycle.LifecycleRegistry
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class CappedLifecycleTest {
 
@@ -19,7 +19,7 @@ class CappedLifecycleTest {
 
     private val lifecycleRegistry = mock<LifecycleRegistry>()
 
-    @Before
+    @BeforeEach
     fun setUp() {
         cappedLifecycle = CappedLifecycle(lifecycleRegistry)
     }

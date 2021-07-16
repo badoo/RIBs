@@ -14,7 +14,7 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.test.RibTestHelper
 import com.badoo.ribs.test.integrationpoint.TestIntegrationPoint
 import com.badoo.ribs.test.node.RibNodeTestHelper
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class RibInteractorTestHelper<out R : Rib, View : RibView>(
     val interactor: Interactor<*, View>,

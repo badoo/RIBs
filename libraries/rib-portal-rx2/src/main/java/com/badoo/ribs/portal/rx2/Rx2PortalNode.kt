@@ -1,5 +1,6 @@
 package com.badoo.ribs.portal.rx2
 
+import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildParams
@@ -11,6 +12,7 @@ import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.rx2.workflows.RxWorkflowNode
 import io.reactivex.Single
 
+@ExperimentalApi
 internal class Rx2PortalNode(
     buildParams: BuildParams<*>,
     private val backStack: BackStack<Configuration>,

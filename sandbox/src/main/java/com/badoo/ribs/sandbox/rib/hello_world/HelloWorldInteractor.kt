@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.mvicore.binder.using
+import com.badoo.binder.using
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.clienthelper.interactor.Interactor

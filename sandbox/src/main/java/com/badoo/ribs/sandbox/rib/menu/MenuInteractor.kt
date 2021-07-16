@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.menu
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.mvicore.binder.using
+import com.badoo.binder.using
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.menu.feature.MenuFeature

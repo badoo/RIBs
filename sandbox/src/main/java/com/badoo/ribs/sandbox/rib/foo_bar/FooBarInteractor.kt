@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.foo_bar
 import android.Manifest
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.mvicore.binder.using
+import com.badoo.binder.using
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.Cancelled

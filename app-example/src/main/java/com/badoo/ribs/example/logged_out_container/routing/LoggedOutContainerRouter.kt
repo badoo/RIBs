@@ -38,7 +38,7 @@ class LoggedOutContainerRouter internal constructor(
         with(builders) {
             when (routing.configuration) {
                 is Content.Welcome -> child { welcomeBuilder.build(it) }
-                is Content.Login -> noop()
+                is Content.Login -> child { loginBuilder.build(it) }
                 is Content.Register -> noop()
             }
         }

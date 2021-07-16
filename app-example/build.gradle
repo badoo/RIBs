@@ -66,6 +66,8 @@ dependencies {
     implementation deps.android.constraintLayout
     implementation deps.android.recyclerView
     implementation deps.external.coil
+    implementation deps.android.browser
+
 
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
@@ -75,6 +77,7 @@ dependencies {
     implementation deps.retrofit.moshiConverter
     implementation deps.retrofit.okhttp
     implementation deps.retrofit.okhttpLoggingInterceptor
+    implementation deps.retrofit.moshiKotlin
 
     implementation project(":libraries:rib-base")
     implementation project(':libraries:rib-rx2')

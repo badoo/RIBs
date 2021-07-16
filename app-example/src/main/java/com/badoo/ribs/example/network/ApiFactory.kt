@@ -1,5 +1,8 @@
 package com.badoo.ribs.example.network
 
+import com.badoo.ribs.example.auth.AuthStateStorage
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -14,20 +17,22 @@ object ApiFactory {
     fun api(
         isDebug: Boolean,
         accessKey: String,
+        authStateStorage: AuthStateStorage,
         networkErrorConsumer: Consumer<NetworkError>
     ): UnsplashApi =
         retrofit(
-            client = okhttpClient(isDebug, accessKey, networkErrorConsumer),
+            client = okhttpClient(isDebug, accessKey, authStateStorage, networkErrorConsumer),
             baseUrl = BASE_URL
         ).create(UnsplashApi::class.java)
 
     private fun okhttpClient(
         isDebug: Boolean,
         accessKey: String,
+        authStateStorage: AuthStateStorage,
         networkErrorConsumer: Consumer<NetworkError>
     ): OkHttpClient =
         OkHttpClient.Builder()
-            .addNetworkInterceptor(authInterceptor(accessKey))
+            .addNetworkInterceptor(authInterceptor(accessKey, authStateStorage))
             .addNetworkInterceptor(loggingInterceptor(isDebug))
             .addInterceptor(UnauthorizedErrorInterceptor(networkErrorConsumer))
             .build()
@@ -35,7 +40,13 @@ object ApiFactory {
     private fun retrofit(client: OkHttpClient, baseUrl: String): Retrofit = Retrofit.Builder()
         .client(client)
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(
+            MoshiConverterFactory.create(
+                Moshi.Builder()
+                    .addLast(KotlinJsonAdapterFactory())
+                    .build()
+            )
+        )
         .baseUrl(baseUrl)
         .build()
 
@@ -44,5 +55,8 @@ object ApiFactory {
             level = if (isDebug) Level.BODY else Level.NONE
         }
 
-    private fun authInterceptor(accessKey: String) = AuthInterceptor(accessKey)
+    private fun authInterceptor(
+        accessKey: String,
+        authStateStorage: AuthStateStorage
+    ) = AuthInterceptor(accessKey, authStateStorage)
 }

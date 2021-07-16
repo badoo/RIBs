@@ -7,6 +7,7 @@ import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRoute
 import com.badoo.ribs.example.photo_details.PhotoDetailsBuilder
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
+import com.badoo.ribs.routing.resolution.ChildResolution.Companion.remoteChild
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
@@ -37,7 +38,7 @@ class LoggedInContainerRouter internal constructor(
         with(builders) {
             when (val configuration = routing.configuration) {
                 is Content.PhotoFeed -> child { photoFeedBuilder.build(it) }
-                is Content.PhotoDetails -> child {
+                is Content.PhotoDetails -> remoteChild(node) {
                     photoDetailsBuilder.build(
                         it,
                         PhotoDetailsBuilder.Params(configuration.photoId)

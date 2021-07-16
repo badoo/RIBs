@@ -2,15 +2,14 @@ package com.badoo.ribs.example.photo_details
 
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.Photo
-import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 
 interface PhotoDetailsDataSource {
     fun getPhoto(id: String): Single<Photo>
 
-    fun likePhoto(id: String): Completable
-    fun unlikePhoto(id: String): Completable
+    fun likePhoto(id: String):  Single<Unit>
+    fun unlikePhoto(id: String):  Single<Unit>
 }
 
 
@@ -19,11 +18,11 @@ class PhotoDetailsDataSourceImpl(private val api: UnsplashApi) : PhotoDetailsDat
         api.getPhoto(id)
             .observeOn(AndroidSchedulers.mainThread())
 
-    override fun likePhoto(id: String): Completable =
+    override fun likePhoto(id: String): Single<Unit> =
         api.likePhoto(id)
             .observeOn(AndroidSchedulers.mainThread())
 
-    override fun unlikePhoto(id: String): Completable =
+    override fun unlikePhoto(id: String):  Single<Unit> =
         api.unlikePhoto(id)
             .observeOn(AndroidSchedulers.mainThread())
 }

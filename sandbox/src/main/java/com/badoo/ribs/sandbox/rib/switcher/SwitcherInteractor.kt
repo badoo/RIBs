@@ -3,7 +3,7 @@ package com.badoo.ribs.sandbox.rib.switcher
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.mvicore.binder.using
+import com.badoo.binder.using
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.clienthelper.childaware.childAware
 import com.badoo.ribs.clienthelper.interactor.Interactor

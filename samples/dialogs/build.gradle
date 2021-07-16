@@ -28,6 +28,7 @@ dependencies {
     implementation deps.external.rxrelay2
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
+    implementation deps.external.mviCoreBinder
     implementation project(':libraries:rib-base')
     implementation project(':samples:resources')
 

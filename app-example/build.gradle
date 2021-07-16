@@ -85,6 +85,7 @@ dependencies {
 
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
+    implementation deps.external.mviCoreBinder
     implementation deps.external.mviCoreDiff
     implementation project(path: ':libraries:rib-debug-utils')
 

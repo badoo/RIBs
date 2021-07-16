@@ -54,7 +54,7 @@ templates {
 
     template {
         id = 'router_node_manual_di_release_0.27'
-        name = '[0.27] Router node + Manual DI'
+        name = '[0.27] Router node'
 
         fromProject = project(':templates:release-0.27')
         sourcePackage = 'com.badoo.ribs.template.node'
@@ -102,42 +102,10 @@ templates {
 
     template {
         id = 'router_node_manual_di_snapshot'
-        name = '[SNAPSHOT] Router node + Manual DI'
+        name = '[SNAPSHOT] Router node'
 
         fromProject = project(':templates:snapshot')
         sourcePackage = 'com.badoo.ribs.template.node'
-        modulePackage = 'com.badoo.ribs.template'
-        resources = ['rib_foo_bar.xml']
-
-        token {
-            id = "rib_name"
-            name = "RIB name"
-            sourceValue = "FooBar"
-        }
-    }
-
-    template {
-        id = 'router_node_dagger_snapshot'
-        name = '[SNAPSHOT] Router node + Dagger'
-
-        fromProject = project(':templates:snapshot')
-        sourcePackage = 'com.badoo.ribs.template.node_dagger'
-        modulePackage = 'com.badoo.ribs.template'
-        resources = ['rib_foo_bar.xml']
-
-        token {
-            id = "rib_name"
-            name = "RIB name"
-            sourceValue = "FooBar"
-        }
-    }
-
-    template {
-        id = 'router_node_dagger_build_param_snapshot'
-        name = '[SNAPSHOT] Router node + Dagger + BuildParam'
-
-        fromProject = project(':templates:snapshot')
-        sourcePackage = 'com.badoo.ribs.template.node_dagger_build_param'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']
 

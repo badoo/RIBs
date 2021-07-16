@@ -1,7 +1,7 @@
 package com.badoo.ribs.example.root
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.example.RxSchedulerRule
+import com.badoo.ribs.example.RxSchedulerExtension
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.auth.AuthState
 import com.badoo.ribs.example.root.routing.RootRouter.Configuration
@@ -14,17 +14,16 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.BeforeEach
-import org.junit.Rule
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
+@ExtendWith(RxSchedulerExtension::class)
 class RootInteractorAuthStateTest {
 
     private val backStack: BackStack<Configuration> = mock()
-    @get:Rule
-    val rxSchedulerRule = RxSchedulerRule()
 
     private val stateRelay = PublishRelay.create<AuthState>()
     private val authDataSource = mock<AuthDataSource>().apply {

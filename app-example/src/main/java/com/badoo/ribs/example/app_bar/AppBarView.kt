@@ -3,7 +3,7 @@ package com.badoo.ribs.example.app_bar
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
-import coil.api.load
+import coil.load
 import coil.transform.CircleCropTransformation
 import com.badoo.mvicore.ModelWatcher
 import com.badoo.mvicore.modelWatcher

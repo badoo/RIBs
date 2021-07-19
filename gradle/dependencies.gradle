@@ -49,7 +49,8 @@ def versions = [
         okhttp                         : '3.14.7',
         leakCanary                     : '2.4',
         jacoco                         : '0.8.6',
-        junit5                         : '5.7.1'
+        junit5                         : '5.7.1',
+        coil                           : useCompose.toBoolean() ? '1.2.2' : '1.2.0'
 ]
 
 println("androidxCoreVersion version: ${versions.androidxCoreVersion}")
@@ -144,7 +145,7 @@ def external = [
         leakcanaryDebug : 'com.squareup.leakcanary:leakcanary-android:1.6.3',
         apacheCommons   : 'org.apache.commons:commons-lang3:3.0',
         gson            : 'com.google.code.gson:gson:2.8.5',
-        coil            : 'io.coil-kt:coil:0.11.0',
+        coil            : "io.coil-kt:coil:${versions.coil}",
         leakCanary      : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
 ]
 
@@ -154,7 +155,7 @@ def retrofit = [
         moshiConverter          : "com.squareup.retrofit2:converter-moshi:${versions.retrofitVersion}",
         okhttp                  : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
         okhttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
-        moshiKotlin : "com.squareup.moshi:moshi-kotlin:1.11.0",
+        moshiKotlin             : "com.squareup.moshi:moshi-kotlin:1.11.0",
 ]
 
 ext.deps = [

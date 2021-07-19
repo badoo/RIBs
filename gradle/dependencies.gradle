@@ -20,7 +20,7 @@ def versions = [
         intellij                       : '2020.1.4',
         intellij_kotlin                : '1.3.72-release-IJ2020.1-1',
         kotlin                         : kotlinVersion,
-        mviCore                        : '1.2.4',
+        mviCore                        : '1.2.6',
         robolectric                    : '4.6.1',
         compose                        : '1.0.0-rc02',
         kotlinComposeCompilerVersion   : '1.5.10', // https://developer.android.com/jetpack/androidx/releases/compose-runtime#declaring_dependencies
@@ -136,6 +136,7 @@ def external = [
         dagger          : "com.google.dagger:dagger:${versions.dagger}",
         mviCore         : "com.github.badoo.mvicore:mvicore:${versions.mviCore}",
         mviCoreAndroid  : "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
+        mviCoreBinder   : "com.github.badoo.mvicore:binder:${versions.mviCore}",
         mviCoreDiff     : "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
         rxjava2         : "io.reactivex.rxjava2:rxjava:2.2.6",
         rxrelay2        : "com.jakewharton.rxrelay2:rxrelay:2.1.0",

@@ -12,6 +12,7 @@ dependencies {
 
     testImplementation deps.external.mviCore
     testImplementation deps.external.mviCoreAndroid
+    testImplementation deps.external.mviCoreBinder
     testImplementation deps.external.rxrelay2
 
     junitTestImplementation(project)

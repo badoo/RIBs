@@ -13,8 +13,8 @@ import com.jakewharton.rxrelay2.Relay
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.observers.TestObserver
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class WelcomeInteractorTest {
 
@@ -26,7 +26,7 @@ class WelcomeInteractorTest {
     private val output = PublishRelay.create<Output>()
 
 
-    @Before
+    @BeforeEach
     fun setup() {
         interactor = WelcomeInteractor(
             buildParams = emptyBuildParams(),

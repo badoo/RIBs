@@ -1,0 +1,14 @@
+configureAndroidLibrary(project)
+
+apply from: rootProject.file('gradle/code-coverage.gradle')
+
+dependencies {
+    implementation deps.test.junitApi
+    implementation deps.android.archCoreTesting
+}
+
+android {
+    packagingOptions {
+        exclude 'META-INF/LICENSE*.*'
+    }
+}

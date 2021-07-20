@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.routing.SimpleRoutingChild1Router.Configuration.Permanent.Child1
 import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.routing.SimpleRoutingChild1Router.Configuration.Permanent.Child2
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class SimpleRoutingChild1Router internal constructor(
     buildParams: BuildParams<Nothing?>,

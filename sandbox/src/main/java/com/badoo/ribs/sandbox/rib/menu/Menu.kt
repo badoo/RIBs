@@ -6,7 +6,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input
 import com.badoo.ribs.sandbox.rib.menu.Menu.Output
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 interface Menu : Rib, Connectable<Input, Output> {
 

@@ -13,7 +13,7 @@ import com.badoo.ribs.samples.buildtime.rib.build_time_deps.BuildTimeDepsRouter.
 import com.badoo.ribs.samples.buildtime.rib.build_time_deps.BuildTimeDepsRouter.Configuration.ShowProfile
 import com.badoo.ribs.samples.buildtime.rib.profile.Profile
 import com.badoo.ribs.samples.buildtime.rib.profile.ProfileBuilder
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 internal class BuildTimeDepsRouter(
     buildParams: BuildParams<*>,

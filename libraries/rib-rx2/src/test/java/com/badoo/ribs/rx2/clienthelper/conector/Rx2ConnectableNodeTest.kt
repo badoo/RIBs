@@ -8,9 +8,9 @@ import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestRib.Ou
 import com.badoo.ribs.rx2.clienthelper.conector.helpers.Rx2ConnectableTestRib.Output.Output2
 import com.badoo.ribs.test.BaseConnectableNodeTest
 import io.reactivex.observers.TestObserver
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 
 class Rx2ConnectableNodeTest : BaseConnectableNodeTest() {
@@ -25,12 +25,12 @@ class Rx2ConnectableNodeTest : BaseConnectableNodeTest() {
         }
     }
 
-    @Before
+    @BeforeEach
     fun setUp() {
         parent = Rx2ConnectableTestNode(plugins = listOf(changesAwarePlugin))
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         testObserver.dispose()
     }

@@ -154,7 +154,7 @@ internal class ActorTest {
     companion object {
 
         @JvmStatic
-        private fun scheduleTestArguments(): Stream<Arguments> = Stream.of(
+        fun scheduleTestArguments(): Stream<Arguments> = Stream.of(
             createScheduleTestArguments(
                 activationState = ACTIVE,
                 transitionHandler = mock(),
@@ -179,7 +179,7 @@ internal class ActorTest {
             Arguments.of(activationState, transitionHandler, isScheduled)
 
         @JvmStatic
-        private fun pendingInteractionsTestArguments(): Stream<Arguments> = Stream.of(
+        fun pendingInteractionsTestArguments(): Stream<Arguments> = Stream.of(
             interactionTestArguments(
                 isContinuation = false,
                 isReversed = true),
@@ -195,7 +195,7 @@ internal class ActorTest {
             Arguments.of(isContinuation, isReversed)
 
         @JvmStatic
-        private fun executePendingTestArguments() =
+        fun executePendingTestArguments() =
             Stream.of(
                 createExecutePendingTestArguments(
                     activationState = ACTIVE,
@@ -249,7 +249,7 @@ internal class ActorTest {
         }
 
         @JvmStatic
-        private fun ongoingTransitionInteractionsTestArguments() =
+        fun ongoingTransitionInteractionsTestArguments() =
             Stream.of(
                 interactionTestArguments(isContinuation = false, isReversed = false),
                 interactionTestArguments(isContinuation = true, isReversed = false),

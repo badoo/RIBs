@@ -9,7 +9,7 @@ import com.badoo.ribs.android.recyclerview.RecyclerViewHost.Input
 import com.badoo.ribs.android.recyclerview.RecyclerViewHostFeature.State
 import com.badoo.ribs.routing.Routing
 import io.reactivex.Observable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 private val timeCapsuleKey = "RecyclerViewHostFeature"

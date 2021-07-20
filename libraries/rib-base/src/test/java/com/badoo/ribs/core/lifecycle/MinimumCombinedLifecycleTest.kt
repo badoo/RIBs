@@ -2,7 +2,7 @@ package com.badoo.ribs.core.lifecycle
 
 import androidx.lifecycle.Lifecycle.State
 import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MinimumCombinedLifecycleTest {
 

@@ -9,7 +9,7 @@ import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.routing.resolver.RoutingResolver
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @ExperimentalApi
 interface RecyclerViewHost<T : Parcelable>: Rib, Connectable<Input<T>, Nothing> {

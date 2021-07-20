@@ -12,11 +12,11 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class ChildAwareImplTest {
 

@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.sandbox.rib.hello_world.routing.HelloWorldRouter.Configuration
 import com.badoo.ribs.sandbox.rib.hello_world.routing.HelloWorldRouter.Configuration.Permanent.Small
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class HelloWorldRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

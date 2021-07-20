@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeaf
 import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Configuration
 import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Configuration.Content
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class ComposeParentRouter internal constructor(
     buildParams: BuildParams<*>,

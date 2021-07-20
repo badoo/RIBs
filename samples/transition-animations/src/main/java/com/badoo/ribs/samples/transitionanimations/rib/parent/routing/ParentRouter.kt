@@ -12,7 +12,7 @@ import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRout
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child1
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child2
 import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child3
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class ParentRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

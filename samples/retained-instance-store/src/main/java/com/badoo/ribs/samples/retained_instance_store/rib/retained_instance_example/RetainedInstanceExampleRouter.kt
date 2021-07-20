@@ -10,7 +10,7 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.samples.retained_instance_store.rib.counter.CounterBuilder
 import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleRouter.Configuration.Content
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class RetainedInstanceExampleRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

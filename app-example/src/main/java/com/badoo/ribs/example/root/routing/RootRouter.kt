@@ -10,7 +10,7 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class RootRouter internal constructor(
     buildParams: BuildParams<*>,

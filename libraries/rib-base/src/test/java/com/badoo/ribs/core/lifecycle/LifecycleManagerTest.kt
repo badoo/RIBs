@@ -10,8 +10,8 @@ import com.badoo.ribs.routing.Routing
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import java.util.concurrent.CopyOnWriteArrayList
 
 class LifecycleManagerTest {
@@ -22,7 +22,7 @@ class LifecycleManagerTest {
         on { children } doReturn children
     }
 
-    @Before
+    @BeforeEach
     fun setUp() {
         lifecycleManager = LifecycleManager(owner)
     }

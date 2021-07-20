@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration
 import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration.FullScreen
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class SmallRouter internal constructor(
     buildParams: BuildParams<Nothing?>,

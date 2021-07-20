@@ -19,11 +19,11 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
-import kotlinx.android.parcel.Parcelize
-import org.junit.After
+import kotlinx.parcelize.Parcelize
 import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class WorkflowTest {
     private lateinit var node: RxWorkflowNode<TestView>
@@ -36,7 +36,7 @@ class WorkflowTest {
     private lateinit var child3: TestNode
     private lateinit var childAncestry: AncestryInfo
 
-    @Before
+    @BeforeEach
     fun setUp() {
         parentView = mock()
         androidView = mock()
@@ -48,7 +48,7 @@ class WorkflowTest {
         addChildren()
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         RIBs.clearErrorHandler()
     }

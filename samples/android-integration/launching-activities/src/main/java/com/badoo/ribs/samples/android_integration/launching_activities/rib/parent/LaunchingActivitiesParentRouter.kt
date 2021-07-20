@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParentRouter.Configuration.Permanent
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.builder.LaunchingActivitiesChildBuilders
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class LaunchingActivitiesParentRouter(
     buildParams: BuildParams<*>,

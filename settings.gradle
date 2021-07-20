@@ -48,5 +48,6 @@ include ':sandbox'
 include ':templates:release-0.27'
 include ':templates:snapshot'
 include ':tooling:rib-intellij-plugin'
+include ':internal:junitextensions'
 
 includeBuild("plugins")

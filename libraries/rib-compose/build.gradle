@@ -1,12 +1,5 @@
 configureAndroidLibrary(project)
 
-apply plugin: 'kotlin-android-extensions'
-
-androidExtensions {
-    experimental = true
-    features = ["parcelize"]
-}
-
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
@@ -15,11 +8,11 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
@@ -48,6 +41,7 @@ dependencies {
     implementation deps.compose.ui
     implementation deps.compose.material
     implementation deps.compose.uiTooling
+    debugImplementation deps.compose.uiToolingPreview
     implementation deps.compose.foundation
 
     implementation project(":libraries:rib-base")

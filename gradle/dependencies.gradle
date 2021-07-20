@@ -27,6 +27,7 @@ def versions = [
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
         androidxAppCompatVersion       : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
+        androidxArchCoreVersion        : '2.1.0', // https://developer.android.com/jetpack/androidx/releases/arch-core
         androidxBrowserVersion         : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/browser
         androidxBroadcastVersion       : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
         androidxCardViewVersion        : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
@@ -56,6 +57,7 @@ println("androidxCoreVersion version: ${versions.androidxCoreVersion}")
 println("androidxFragmentVersion version: ${versions.androidxFragmentVersion}")
 println("androidxActivityVersion version: ${versions.androidxActivityVersion}")
 println("androidxLifecycleVersion version: ${versions.androidxLifecycleVersion}")
+println("coil version: ${versions.coil}")
 
 def apt = [
         daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
@@ -64,7 +66,6 @@ def apt = [
 ]
 
 def agp = 'com.android.tools.build:gradle:4.2.2'
-println("agp version: $agp")
 
 def build = [
         compileSdkVersion: 30,
@@ -98,7 +99,8 @@ def android = [
         rules           : "androidx.test:rules:${versions.androidxTestVersion}",
         activity        : "androidx.activity:activity-ktx:${versions.androidxActivityVersion}",
         fragment        : "androidx.fragment:fragment-ktx:${versions.androidxFragmentVersion}",
-        browser         : "androidx.browser:browser:${versions.androidxBrowserVersion}"
+        browser         : "androidx.browser:browser:${versions.androidxBrowserVersion}",
+        archCoreTesting : "androidx.arch.core:core-testing:${versions.androidxArchCoreVersion}"
 ]
 
 def compose = [

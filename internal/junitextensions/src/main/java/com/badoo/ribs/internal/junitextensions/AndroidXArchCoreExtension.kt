@@ -1,4 +1,4 @@
-package com.badoo.ribs.test
+package com.badoo.ribs.internal.junitextensions
 
 import android.annotation.SuppressLint
 import androidx.arch.core.executor.ArchTaskExecutor

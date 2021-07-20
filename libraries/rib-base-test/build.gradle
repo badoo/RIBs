@@ -15,7 +15,6 @@ android {
 }
 
 dependencies {
-    compileOnly deps.test.junitApi
     compileOnly project(':libraries:rib-base')
 
     implementation deps.test.mockito

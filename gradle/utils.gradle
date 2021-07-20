@@ -31,13 +31,14 @@ ext.configureDetektForAllSubprojects = { Project project ->
     }
 }
 
-ext.junitTestImplementation = { project ->
-    project.dependencies {
+ext.junitTestImplementation = { it ->
+    it.dependencies {
         testImplementation deps.test.junitApi
         testImplementation deps.test.junitParams
         testRuntimeOnly deps.test.junitEngine
         testImplementation deps.test.junitVintage
         testImplementation deps.test.byteBuddy
+        testImplementation project(':internal:junitextensions')
     }
 }
 

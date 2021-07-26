@@ -8,16 +8,15 @@ jobs:
     build:
         name: Assemble
         runs-on: ubuntu-latest
-        timeout-minutes: 30
+        timeout-minutes: 25
         env:
             JAVA_TOOL_OPTIONS: -Xmx6g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
-            - uses: actions/setup-java@v2
+            - uses: actions/setup-java@v1
               with:
-                  distribution: 'adopt'
                   java-version: 11
             - uses: actions/cache@v2
               with:
@@ -46,10 +45,9 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
-            - uses: actions/setup-java@v2
+            - uses: actions/setup-java@v1
               with:
-                distribution: 'adopt'
-                java-version: 11
+                  java-version: 11
             - name: Detekt
               run: ./gradlew detekt -PuseCompose=${{ matrix.compose-enabled }} --stacktrace
               working-directory: .
@@ -74,10 +72,9 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
-            - uses: actions/setup-java@v2
+            - uses: actions/setup-java@v1
               with:
-                distribution: 'adopt'
-                java-version: 11
+                  java-version: 11
             - uses: actions/cache@v2
               with:
                 path: |
@@ -103,14 +100,14 @@ jobs:
 
     instrumentation-tests:
         runs-on: macOS-latest
-        timeout-minutes: 90
+        timeout-minutes: 60
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
         strategy:
             fail-fast: false
             matrix:
-                api-level: [22,25,30]
+                api-level: [22,25,29]
                 compose-enabled: [true,false]
                 exclude:
                     - api-level: 22
@@ -119,10 +116,9 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
-            - uses: actions/setup-java@v2
+            - uses: actions/setup-java@v1
               with:
-                distribution: 'adopt'
-                java-version: 11
+                  java-version: 11
             - uses: actions/cache@v2
               with:
                 path: |

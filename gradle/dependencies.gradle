@@ -75,12 +75,11 @@ def build = [
         targetSdkVersion : 30,
         guava            : "com.google.guava:guava:20.0",
         commonsLang      : "commons-lang:commons-lang:2.6",
-        intellijPlugin   : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.7.3",
+        intellijPlugin   : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.1.3",
         kotlinIdeaPlugin : "org.jetbrains.kotlin:${versions.intellij_kotlin}",
         gradlePlugins    : [
                 android        : agp,
                 kotlin         : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-                gradleKotlinDsl: 'org.gradle.kotlin:plugins:1.2.2',
                 mavenPublish   : 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
                 detekt         : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1',
                 jacoco         : "org.jacoco:org.jacoco.core:${versions.jacoco}"

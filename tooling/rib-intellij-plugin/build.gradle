@@ -140,9 +140,9 @@ intellij {
     plugins = ['android', deps.build.kotlinIdeaPlugin, 'java']
     version = deps.versions.intellij
     // localPath = '/Applications/Android Studio.app'
-    updateSinceUntilBuild false
-    sandboxDirectory "${project.gradle.gradleHomeDir}/caches/intellij"
-    downloadSources true
+    updateSinceUntilBuild = false
+    sandboxDir = "${project.gradle.gradleHomeDir}/caches/intellij"
+    downloadSources = true
 
     // Uncomment to test against Android Studio
     // alternativeIdePath = '/Applications/Android Studio.app'

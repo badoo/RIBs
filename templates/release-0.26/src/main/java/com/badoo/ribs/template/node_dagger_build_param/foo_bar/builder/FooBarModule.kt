@@ -22,13 +22,11 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun feature(): FooBarFeature =
         FooBarFeature()
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun backStack(
         buildParams: BuildParams<Params>
     ): BackStack<Configuration> =
@@ -39,7 +37,6 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun interactor(
         dependency: FooBar.Dependency,
         buildParams: BuildParams<Params>,
@@ -54,7 +51,6 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun childBuilders(
         dependency: FooBar.Dependency
     ): FooBarChildBuilders =
@@ -64,7 +60,6 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun router(
         buildParams: BuildParams<Params>,
         backStack: BackStack<Configuration>,
@@ -80,7 +75,6 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun viewDependency(): FooBarView.ViewDependency =
         object : FooBarView.ViewDependency {
 
@@ -88,7 +82,6 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun node(
         buildParams: BuildParams<Params>,
         customisation: FooBar.Customisation,

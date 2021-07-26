@@ -16,13 +16,11 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun feature(): FooBarFeature =
         FooBarFeature()
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun interactor(
         buildParams: BuildParams<Nothing?>,
         feature: FooBarFeature,
@@ -34,7 +32,6 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun viewDependency(): FooBarView.ViewDependency =
         object : FooBarView.ViewDependency {
 
@@ -42,7 +39,6 @@ internal object FooBarModule {
 
     @FooBarScope
     @Provides
-    @JvmStatic
     internal fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation,

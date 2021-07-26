@@ -1,7 +1,5 @@
 configureAndroidLibrary(project)
 
-apply plugin: 'kotlin-android-extensions'
-
 android {
     compileSdkVersion 28
 
@@ -21,11 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-androidExtensions {
-    experimental = true
-    features = ["parcelize"]
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

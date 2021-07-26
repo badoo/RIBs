@@ -55,10 +55,10 @@ templates {
 
 
     template {
-        id = 'router_node_dagger_build_param_snapshot'
+        id = 'router_node_dagger_build_param_0.26'
         name = '[0.26] Node + Dagger + BuildParam'
 
-        fromProject = project(':templates:snapshot')
+        fromProject = project(':templates:release-0.26')
         sourcePackage = 'com.badoo.ribs.template.node_dagger_build_param'
         modulePackage = 'com.badoo.ribs.template'
         resources = ['rib_foo_bar.xml']

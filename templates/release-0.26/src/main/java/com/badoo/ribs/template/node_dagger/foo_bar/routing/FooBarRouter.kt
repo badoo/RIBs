@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter.Configuration
 import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter.Configuration.Content
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class FooBarRouter internal constructor(
     buildParams: BuildParams<*>,

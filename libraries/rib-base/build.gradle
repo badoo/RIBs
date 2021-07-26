@@ -1,11 +1,5 @@
 configureAndroidLibrary(project)
 
-apply plugin: 'kotlin-android-extensions'
-
-androidExtensions {
-    experimental = true
-}
-
 dependencies {
     api deps.android.appCompat
 

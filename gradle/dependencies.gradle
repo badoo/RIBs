@@ -11,7 +11,7 @@ def kotlinVersion
 if (useCompose.toBoolean()) {
     kotlinVersion = '1.4.30'
 } else {
-    kotlinVersion = '1.4.31'
+    kotlinVersion = '1.5.20'
 }
 println("kotlin version: $kotlinVersion")
 
@@ -64,11 +64,11 @@ if (useCompose.toBoolean()) {
 println("agp version: $agp")
 
 def build = [
-    compileSdkVersion: 28,
+    compileSdkVersion: 29,
     gradlePluginsUrl : "https://plugins.gradle.org/m2/",
     ci: 'true' == System.getenv('CI'),
     minSdkVersion: 17,
-    targetSdkVersion: 28,
+    targetSdkVersion: 29,
     guava: "com.google.guava:guava:20.0",
     commonsLang: "commons-lang:commons-lang:2.6",
     intellijPlugin: "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:0.4.21",

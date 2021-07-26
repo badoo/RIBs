@@ -1,7 +1,7 @@
 ext.configureAndroidLibrary = { project ->
     project.apply plugin: 'com.android.library'
     project.apply plugin: 'kotlin-android'
-    project.apply plugin: 'kotlin-android-extensions'
+    project.apply plugin: 'kotlin-parcelize'
     configureAndroidModule(project)
 }
 
@@ -15,6 +15,7 @@ ext.configureAndroidApp = { project ->
 private def configureAndroidModule(Project project) {
     project.android {
         compileSdkVersion deps.build.compileSdkVersion
+        buildToolsVersion "29.0.3"
 
         defaultConfig {
             minSdkVersion deps.build.minSdkVersion

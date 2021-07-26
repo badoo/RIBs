@@ -1,9 +1,37 @@
-apply from: file('../common-template.gradle')
+configureAndroidLibrary(project)
+apply plugin: 'kotlin-kapt'
 
 dependencies {
     final String version = '0.26.1'
     implementation "com.github.badoo.RIBs:rib-base:$version"
     implementation "com.github.badoo.RIBs:rib-rx:$version"
-    debugImplementation "com.github.badoo.RIBs:rib-base-test-activity:$version"
-    androidTestImplementation "com.github.badoo.RIBs:rib-base-test:$version"
+    implementation deps.external.kotlinStdlib
+    kapt deps.apt.daggerCompiler
+
+    implementation deps.android.lifecycleCommon
+    implementation deps.android.activity
+    implementation deps.android.fragment
+    compileOnly deps.android.annotations
+
+    compileOnly deps.apt.javax
+
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.percent
+
+    implementation deps.external.dagger
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
+    implementation deps.external.rxrelay2
+}
+
+repositories {
+    mavenCentral()
+}
+
+afterEvaluate {
+    // Disable test tasks because the tests contain code that intentionally throws exceptions
+    project.tasks.getByName("testDebugUnitTest").configure { enabled = false }
+    project.tasks.getByName("testReleaseUnitTest").configure { enabled = false }
+    project.tasks.getByName("connectedDebugAndroidTest").configure { enabled = false }
 }

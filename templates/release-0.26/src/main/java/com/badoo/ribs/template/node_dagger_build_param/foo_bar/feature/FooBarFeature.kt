@@ -17,7 +17,7 @@ import io.reactivex.Observable.empty
 
 internal class FooBarFeature : BaseFeature<Wish, Action, Effect, State, News>(
     initialState = State(),
-    bootstrapper = BootStrapperImpl(),
+    bootstrapper = BootstrapperImpl(),
     actor = ActorImpl(),
     reducer = ReducerImpl(),
     newsPublisher = NewsPublisherImpl(),
@@ -38,12 +38,12 @@ internal class FooBarFeature : BaseFeature<Wish, Action, Effect, State, News>(
 
     sealed class News
 
-    class BootStrapperImpl : Bootstrapper<Action> {
+    private class BootstrapperImpl : Bootstrapper<Action> {
         override fun invoke(): Observable<Action> =
             empty()
     }
 
-    class ActorImpl : Actor<State, Action, Effect> {
+    private class ActorImpl : Actor<State, Action, Effect> {
         override fun invoke(state: State, action: Action): Observable<Effect> =
             when (action) {
                 is ExecuteWish -> executeWish(state, action.wish)
@@ -53,12 +53,12 @@ internal class FooBarFeature : BaseFeature<Wish, Action, Effect, State, News>(
             empty()
     }
 
-    class ReducerImpl : Reducer<State, Effect> {
+    private class ReducerImpl : Reducer<State, Effect> {
         override fun invoke(state: State, effect: Effect): State =
             state
     }
 
-    class NewsPublisherImpl : NewsPublisher<Action, Effect, State, News> {
+    private class NewsPublisherImpl : NewsPublisher<Action, Effect, State, News> {
         override fun invoke(action: Action, effect: Effect, state: State): News? =
             null
     }

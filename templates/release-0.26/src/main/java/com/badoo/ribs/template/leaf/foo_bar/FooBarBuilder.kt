@@ -14,14 +14,17 @@ class FooBarBuilder(
         val feature = feature()
         val interactor = interactor(
             buildParams = buildParams,
-            feature = feature
+            feature = feature,
         )
+
+        val viewDependency = viewDependency()
 
         return node(
             buildParams = buildParams,
             customisation = customisation,
             feature = feature,
-            interactor = interactor
+            viewDependency = viewDependency,
+            interactor = interactor,
         )
     }
 
@@ -31,21 +34,27 @@ class FooBarBuilder(
     private fun interactor(buildParams: BuildParams<*>, feature: FooBarFeature) =
         FooBarInteractor(
             buildParams = buildParams,
-            feature = feature
+            feature = feature,
         )
+
+    private fun viewDependency(): FooBarView.ViewDependency =
+        object : FooBarView.ViewDependency {
+
+        }
 
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: FooBar.Customisation,
         feature: FooBarFeature,
-        interactor: FooBarInteractor
+        viewDependency: FooBarView.ViewDependency,
+        interactor: FooBarInteractor,
     ) =
         FooBarNode(
             buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
+            viewFactory = customisation.viewFactory(viewDependency),
             plugins = listOf(
                 interactor,
-                disposables(feature)
+                disposables(feature),
             )
         )
 }

@@ -22,24 +22,29 @@ class FooBarBuilder(
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
         val backStack = backStack(buildParams)
         val feature = feature()
-        val interactor = interactor(
-            buildParams = buildParams,
-            backStack = backStack,
-            feature = feature
-        )
-        val router = router(
-            buildParams = buildParams,
-            routingSource = backStack,
-            builders = connections,
-            customisation = customisation
-        )
+        val interactor: FooBarInteractor =
+            interactor(
+                buildParams = buildParams,
+                backStack = backStack,
+                feature = feature,
+            )
+        val router: FooBarRouter =
+            router(
+                buildParams = buildParams,
+                routingSource = backStack,
+                builders = connections,
+                customisation = customisation,
+            )
+
+        val viewDependency: FooBarView.ViewDependency =
+            viewDependency()
 
         return node(
             buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
+            viewFactory = customisation.viewFactory(viewDependency),
             feature = feature,
             interactor = interactor,
-            router = router
+            router = router,
         )
     }
 
@@ -68,11 +73,16 @@ class FooBarBuilder(
         builders: FooBarChildBuilders,
         customisation: FooBar.Customisation
     ) = FooBarRouter(
-            buildParams = buildParams,
-            builders = builders,
-            routingSource = routingSource,
-            transitionHandler = customisation.transitionHandler
-        )
+        buildParams = buildParams,
+        builders = builders,
+        routingSource = routingSource,
+        transitionHandler = customisation.transitionHandler
+    )
+
+    private fun viewDependency() =
+        object : FooBarView.ViewDependency {
+
+        }
 
     private fun node(
         buildParams: BuildParams<*>,

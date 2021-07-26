@@ -23,9 +23,10 @@ interface FooBarView : RibView,
         val i: Int = 0
     )
 
-    interface Factory : ViewFactory<Nothing?, FooBarView>
-}
+    interface ViewDependency
 
+    interface Factory : ViewFactory<ViewDependency, FooBarView>
+}
 
 class FooBarViewImpl private constructor(
     override val androidView: ViewGroup,
@@ -38,13 +39,13 @@ class FooBarViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_foo_bar
     ) : FooBarView.Factory {
-        override fun invoke(deps: Nothing?): (RibView) -> FooBarView = {
+        override fun invoke(deps: FooBarView.ViewDependency): (RibView) -> FooBarView = {
             FooBarViewImpl(
                 it.inflate(layoutRes)
             )
         }
     }
 
-    override fun accept(vm: FooBarView.ViewModel) {
+    override fun accept(vm: ViewModel) {
     }
 }

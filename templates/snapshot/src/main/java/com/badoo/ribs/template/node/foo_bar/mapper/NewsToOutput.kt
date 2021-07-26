@@ -6,5 +6,5 @@ import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature.News
 internal object NewsToOutput : (News) -> Output? {
 
     override fun invoke(news: News): Output? =
-        TODO("Implement FooBarNewsToOutput mapping")
+        null
 }

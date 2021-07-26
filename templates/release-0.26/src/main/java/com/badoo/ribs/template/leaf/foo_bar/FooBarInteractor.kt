@@ -6,12 +6,10 @@ import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.mvicore.binder.using
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.template.leaf.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.leaf.foo_bar.mapper.InputToWish
 import com.badoo.ribs.template.leaf.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.leaf.foo_bar.mapper.StateToViewModel
-import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.leaf.foo_bar.mapper.ViewEventToWish
 
 internal class FooBarInteractor(
@@ -32,7 +30,6 @@ internal class FooBarInteractor(
         viewLifecycle.startStop {
             bind(feature to view using StateToViewModel)
             bind(view to feature using ViewEventToWish)
-            bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
         }
     }
 }

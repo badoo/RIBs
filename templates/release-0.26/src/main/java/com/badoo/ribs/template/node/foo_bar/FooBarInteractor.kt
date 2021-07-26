@@ -8,12 +8,10 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.template.node.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.mapper.InputToWish
 import com.badoo.ribs.template.node.foo_bar.mapper.NewsToOutput
 import com.badoo.ribs.template.node.foo_bar.mapper.StateToViewModel
-import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToAnalyticsEvent
 import com.badoo.ribs.template.node.foo_bar.mapper.ViewEventToWish
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
@@ -36,7 +34,6 @@ internal class FooBarInteractor(
         viewLifecycle.startStop {
             bind(feature to view using StateToViewModel)
             bind(view to feature using ViewEventToWish)
-            bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
         }
     }
 
@@ -51,9 +48,9 @@ internal class FooBarInteractor(
          *  If it's a requirement though, create those bindings in [onChildAttached]
          */
         // child.lifecycle.createDestroy {
-            // when (child) {
-                // is Child1 -> bind(child.output to someConsumer)
-            // }
+        // when (child) {
+        // is Child1 -> bind(child.output to someConsumer)
+        // }
         // }
     }
 }

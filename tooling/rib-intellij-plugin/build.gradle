@@ -122,8 +122,13 @@ dependencies {
     implementation deps.android.annotations
     implementation deps.external.apacheCommons
     implementation deps.external.gson
+    
+    testImplementation deps.test.junitApi
+    testImplementation deps.test.junitParams
+    testRuntimeOnly deps.test.junitEngine
+    testImplementation deps.test.junitVintage
+    testImplementation deps.test.byteBuddy
 
-    junitTestImplementation(project)
     testImplementation deps.test.assertj
     testImplementation deps.test.mockitoKotlin
 }

@@ -9,6 +9,7 @@ import com.badoo.ribs.template.node_dagger.foo_bar.FooBarView
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarInteractor
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBarNode
+import com.badoo.ribs.template.node_dagger.foo_bar.builder.FooBarBuilder.Params
 import com.badoo.ribs.template.node_dagger.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node_dagger.foo_bar.routing.FooBarRouter
@@ -27,7 +28,7 @@ internal object FooBarModule {
     @FooBarScope
     @Provides
     internal fun backStack(
-        buildParams: BuildParams<Nothing?>
+        buildParams: BuildParams<Params>
     ): BackStack<Configuration> =
         BackStack(
             buildParams = buildParams,
@@ -38,7 +39,7 @@ internal object FooBarModule {
     @Provides
 
     internal fun interactor(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         feature: FooBarFeature,
         backStack: BackStack<Configuration>
     ): FooBarInteractor =
@@ -62,7 +63,7 @@ internal object FooBarModule {
     @Provides
 
     internal fun router(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         builders: FooBarChildBuilders,
         backStack: BackStack<Configuration>,
         customisation: FooBar.Customisation
@@ -84,7 +85,7 @@ internal object FooBarModule {
     @FooBarScope
     @Provides
     internal fun node(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         customisation: FooBar.Customisation,
         interactor: FooBarInteractor,
         router: FooBarRouter,

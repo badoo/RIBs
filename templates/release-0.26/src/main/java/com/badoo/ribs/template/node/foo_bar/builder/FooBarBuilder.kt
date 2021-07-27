@@ -1,13 +1,18 @@
 @file:SuppressWarnings("LongParameterList")
 
-package com.badoo.ribs.template.node.foo_bar
+package com.badoo.ribs.template.node.foo_bar.builder
 
-import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.rx.disposables
+import com.badoo.ribs.template.node.foo_bar.FooBar
+import com.badoo.ribs.template.node.foo_bar.FooBarInteractor
+import com.badoo.ribs.template.node.foo_bar.FooBarNode
+import com.badoo.ribs.template.node.foo_bar.FooBarView
+import com.badoo.ribs.template.node.foo_bar.builder.FooBarBuilder.Params
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarChildBuilders
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter
@@ -15,9 +20,11 @@ import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 
 class FooBarBuilder(
     private val dependency: FooBar.Dependency
-) : SimpleBuilder<FooBar>() {
+) : Builder<Params, FooBar>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): FooBar {
+    class Params
+
+    override fun build(buildParams: BuildParams<Params>): FooBar {
         val connections = FooBarChildBuilders(dependency)
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
         val backStack = backStack(buildParams)

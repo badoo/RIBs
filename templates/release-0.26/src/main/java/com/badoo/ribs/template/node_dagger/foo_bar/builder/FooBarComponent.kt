@@ -18,7 +18,7 @@ internal interface FooBarComponent {
         fun create(
             dependency: FooBar.Dependency,
             @BindsInstance customisation: FooBar.Customisation,
-            @BindsInstance buildParams: BuildParams<Nothing?>
+            @BindsInstance buildParams: BuildParams<FooBarBuilder.Params>
         ): FooBarComponent
     }
 

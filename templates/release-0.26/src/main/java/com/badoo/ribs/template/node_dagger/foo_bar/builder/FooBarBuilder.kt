@@ -1,14 +1,17 @@
 package com.badoo.ribs.template.node_dagger.foo_bar.builder
 
-import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.template.node_dagger.foo_bar.FooBar
+import com.badoo.ribs.template.node_dagger.foo_bar.builder.FooBarBuilder.Params
 
 class FooBarBuilder(
     private val dependency: FooBar.Dependency
-) : SimpleBuilder<FooBar>() {
+) : Builder<Params, FooBar>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): FooBar =
+    class Params
+
+    override fun build(buildParams: BuildParams<Params>): FooBar =
         DaggerFooBarComponent
             .factory()
             .create(

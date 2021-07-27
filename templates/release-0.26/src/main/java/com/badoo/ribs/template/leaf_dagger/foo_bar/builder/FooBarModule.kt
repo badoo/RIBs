@@ -8,6 +8,7 @@ import com.badoo.ribs.template.leaf_dagger.foo_bar.FooBar
 import com.badoo.ribs.template.leaf_dagger.foo_bar.FooBarInteractor
 import com.badoo.ribs.template.leaf_dagger.foo_bar.FooBarNode
 import com.badoo.ribs.template.leaf_dagger.foo_bar.FooBarView
+import com.badoo.ribs.template.leaf_dagger.foo_bar.builder.FooBarBuilder.Params
 import com.badoo.ribs.template.leaf_dagger.foo_bar.feature.FooBarFeature
 import dagger.Provides
 
@@ -22,7 +23,7 @@ internal object FooBarModule {
     @FooBarScope
     @Provides
     internal fun interactor(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         feature: FooBarFeature,
     ): FooBarInteractor =
         FooBarInteractor(
@@ -34,13 +35,12 @@ internal object FooBarModule {
     @Provides
     internal fun viewDependency(): FooBarView.ViewDependency =
         object : FooBarView.ViewDependency {
-
         }
 
     @FooBarScope
     @Provides
     internal fun node(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         customisation: FooBar.Customisation,
         interactor: FooBarInteractor,
         feature: FooBarFeature,

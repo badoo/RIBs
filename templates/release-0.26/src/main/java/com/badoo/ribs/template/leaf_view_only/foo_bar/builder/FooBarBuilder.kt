@@ -1,13 +1,19 @@
-package com.badoo.ribs.template.leaf_view_only.foo_bar
+package com.badoo.ribs.template.leaf_view_only.foo_bar.builder
 
-import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.modality.BuildParams
+import com.badoo.ribs.template.leaf_view_only.foo_bar.FooBar
+import com.badoo.ribs.template.leaf_view_only.foo_bar.FooBarNode
+import com.badoo.ribs.template.leaf_view_only.foo_bar.FooBarView
+import com.badoo.ribs.template.leaf_view_only.foo_bar.builder.FooBarBuilder.Params
 
 class FooBarBuilder(
     private val dependency: FooBar.Dependency
-) : SimpleBuilder<FooBar>() {
+) : Builder<Params, FooBar>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): FooBar {
+    class Params
+
+    override fun build(buildParams: BuildParams<Params>): FooBar {
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
         val viewDependency = viewDependency()
 
@@ -22,7 +28,7 @@ class FooBarBuilder(
         object : FooBarView.ViewDependency {}
 
     private fun node(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         viewDependency: FooBarView.ViewDependency,
         customisation: FooBar.Customisation,
     ) = FooBarNode(

@@ -1,15 +1,22 @@
-package com.badoo.ribs.template.leaf.foo_bar
+package com.badoo.ribs.template.leaf.foo_bar.builder
 
-import com.badoo.ribs.builder.SimpleBuilder
+import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.rx.disposables
+import com.badoo.ribs.template.leaf.foo_bar.FooBar
+import com.badoo.ribs.template.leaf.foo_bar.FooBarInteractor
+import com.badoo.ribs.template.leaf.foo_bar.FooBarNode
+import com.badoo.ribs.template.leaf.foo_bar.FooBarView
+import com.badoo.ribs.template.leaf.foo_bar.builder.FooBarBuilder.Params
 import com.badoo.ribs.template.leaf.foo_bar.feature.FooBarFeature
 
 class FooBarBuilder(
     private val dependency: FooBar.Dependency
-) : SimpleBuilder<FooBar>() {
+) : Builder<Params, FooBar>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): FooBar {
+    class Params
+
+    override fun build(buildParams: BuildParams<Params>): FooBar {
         val customisation = buildParams.getOrDefault(FooBar.Customisation())
         val feature = feature()
         val interactor = interactor(
@@ -43,7 +50,7 @@ class FooBarBuilder(
         }
 
     private fun node(
-        buildParams: BuildParams<Nothing?>,
+        buildParams: BuildParams<Params>,
         customisation: FooBar.Customisation,
         feature: FooBarFeature,
         viewDependency: FooBarView.ViewDependency,

@@ -39,7 +39,7 @@ templates {
 
     template {
         id = 'router_node_dagger_0.26'
-        name = '[0.26] Node + Dagger'
+        name = '[0.26] Node with Routing + Dagger'
 
         fromProject = project(':templates:release-0.26')
         sourcePackage = 'com.badoo.ribs.template.node_dagger'
@@ -71,7 +71,7 @@ templates {
 
     template {
         id = 'leaf_release_0.26'
-        name = '[0.26] Leaf node'
+        name = '[0.26] Leaf node + Manual DI'
 
         fromProject = project(':templates:release-0.26')
         sourcePackage = 'com.badoo.ribs.template.leaf'
@@ -87,7 +87,7 @@ templates {
 
     template {
         id = 'router_node_manual_di_release_0.26'
-        name = '[0.26] Node + Manual DI'
+        name = '[0.26] Node with Routing + Manual DI'
 
         fromProject = project(':templates:release-0.26')
         sourcePackage = 'com.badoo.ribs.template.node'

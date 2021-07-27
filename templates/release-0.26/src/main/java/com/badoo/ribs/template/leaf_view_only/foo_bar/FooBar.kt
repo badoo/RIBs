@@ -27,14 +27,3 @@ interface FooBar : Rib, Connectable<Input, Output> {
         val viewFactory: FooBarView.Factory = FooBarViewImpl.Factory()
     ) : RibCustomisation
 }
-
-class FooBarNode internal constructor(
-    buildParams: BuildParams<*>,
-    viewFactory: ((RibView) -> FooBarView?)?,
-    plugins: List<Plugin> = emptyList(),
-    connector: NodeConnector<Input, Output> = NodeConnector(),
-) : RxWorkflowNode<FooBarView>(
-    buildParams = buildParams,
-    viewFactory = viewFactory,
-    plugins = plugins,
-), FooBar, Connectable<Input, Output> by connector

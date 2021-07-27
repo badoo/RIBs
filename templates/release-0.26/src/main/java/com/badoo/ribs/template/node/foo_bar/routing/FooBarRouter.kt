@@ -17,15 +17,17 @@ class FooBarRouter internal constructor(
     routingSource: RoutingSource<Configuration>,
     private val builders: FooBarChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
-            @Parcelize object Default : Content()
+            @Parcelize
+            object Default : Content()
         }
+
         sealed class Dialog : Configuration()
     }
 

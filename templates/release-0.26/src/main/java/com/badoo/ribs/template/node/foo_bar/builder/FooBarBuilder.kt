@@ -55,20 +55,20 @@ class FooBarBuilder(
         )
     }
 
-    private fun backStack(buildParams: BuildParams<*>) =
+    private fun backStack(buildParams: BuildParams<*>): BackStack<Configuration> =
         BackStack<Configuration>(
             buildParams = buildParams,
             initialConfiguration = Configuration.Content.Default
         )
 
-    private fun feature() =
+    private fun feature(): FooBarFeature =
         FooBarFeature()
 
     private fun interactor(
         buildParams: BuildParams<*>,
         backStack: BackStack<Configuration>,
         feature: FooBarFeature
-    ) = FooBarInteractor(
+    ): FooBarInteractor = FooBarInteractor(
         buildParams = buildParams,
         backStack = backStack,
         feature = feature
@@ -79,14 +79,14 @@ class FooBarBuilder(
         routingSource: RoutingSource<Configuration>,
         builders: FooBarChildBuilders,
         customisation: FooBar.Customisation
-    ) = FooBarRouter(
+    ): FooBarRouter = FooBarRouter(
         buildParams = buildParams,
         builders = builders,
         routingSource = routingSource,
         transitionHandler = customisation.transitionHandler
     )
 
-    private fun viewDependency() =
+    private fun viewDependency(): FooBarView.ViewDependency =
         object : FooBarView.ViewDependency {
 
         }
@@ -97,7 +97,7 @@ class FooBarBuilder(
         feature: FooBarFeature,
         interactor: FooBarInteractor,
         router: FooBarRouter
-    ) = FooBarNode(
+    ): FooBarNode = FooBarNode(
         buildParams = buildParams,
         viewFactory = viewFactory,
         plugins = listOf(

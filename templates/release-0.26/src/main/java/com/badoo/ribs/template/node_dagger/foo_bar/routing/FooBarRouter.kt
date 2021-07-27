@@ -22,13 +22,12 @@ class FooBarRouter internal constructor(
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
-        sealed class Permanent : Configuration()
         sealed class Content : Configuration() {
             @Parcelize
             object Default : Content()
         }
 
-        sealed class Overlay : Configuration()
+        sealed class Dialog : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =

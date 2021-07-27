@@ -122,8 +122,13 @@ dependencies {
     implementation deps.android.annotations
     implementation deps.external.apacheCommons
     implementation deps.external.gson
+    
+    testImplementation deps.test.junitApi
+    testImplementation deps.test.junitParams
+    testRuntimeOnly deps.test.junitEngine
+    testImplementation deps.test.junitVintage
+    testImplementation deps.test.byteBuddy
 
-    junitTestImplementation(project)
     testImplementation deps.test.assertj
     testImplementation deps.test.mockitoKotlin
 }
@@ -140,9 +145,9 @@ intellij {
     plugins = ['android', deps.build.kotlinIdeaPlugin, 'java']
     version = deps.versions.intellij
     // localPath = '/Applications/Android Studio.app'
-    updateSinceUntilBuild false
-    sandboxDirectory "${project.gradle.gradleHomeDir}/caches/intellij"
-    downloadSources true
+    updateSinceUntilBuild = false
+    sandboxDir = "${project.gradle.gradleHomeDir}/caches/intellij"
+    downloadSources = true
 
     // Uncomment to test against Android Studio
     // alternativeIdePath = '/Applications/Android Studio.app'

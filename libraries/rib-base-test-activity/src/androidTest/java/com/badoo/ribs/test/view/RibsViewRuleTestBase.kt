@@ -6,6 +6,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.platform.app.InstrumentationRegistry
 import com.badoo.ribs.test.sample.SampleViewImpl
 import com.badoo.ribs.test.sample.viewId
 import org.junit.Assert
@@ -49,8 +50,12 @@ abstract class RibsViewRuleTestBase(
         val view = rule.view
         rule.finishActivity()
 
-        Thread.sleep(1_000) // wait for activity finishes
-        assertEquals(Lifecycle.State.DESTROYED, view.lifecycle.currentState)
+        // wait for activity finishes
+        InstrumentationRegistry
+            .getInstrumentation()
+            .waitForIdle {
+                assertEquals(Lifecycle.State.DESTROYED, view.lifecycle.currentState)
+            }
     }
 
     @Test

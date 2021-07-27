@@ -13,7 +13,9 @@ interface RootPicker : Rib, Connectable<Input, Output> {
     sealed class Input
 
     sealed class Output {
-        object Sample1Picked : Output()
+        object AndroidSelected : Output()
+        object CommunicationSelected : Output()
+        object RoutingSelected : Output()
     }
 
     class Customisation(

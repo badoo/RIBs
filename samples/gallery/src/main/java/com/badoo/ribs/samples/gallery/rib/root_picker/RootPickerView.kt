@@ -24,9 +24,9 @@ interface RootPickerView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object Item1Clicked : Event()
-        object Item2Clicked : Event()
-        object Item3Clicked : Event()
+        object RoutingClicked : Event()
+        object CommunicationClicked : Event()
+        object AndroidClicked : Event()
     }
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, RootPickerView>
@@ -50,9 +50,9 @@ class RootPickerViewImpl private constructor(
 
     override val composable: @Composable () -> Unit = {
         View(
-            onItem1Clicked = { events.accept(Event.Item1Clicked) },
-            onItem2Clicked = { events.accept(Event.Item2Clicked) },
-            onItem3Clicked = { events.accept(Event.Item3Clicked) },
+            onRoutingClicked = { events.accept(Event.RoutingClicked) },
+            onCommunicationClicked = { events.accept(Event.CommunicationClicked) },
+            onAndroidClicked = { events.accept(Event.AndroidClicked) },
         )
     }
 }
@@ -60,34 +60,34 @@ class RootPickerViewImpl private constructor(
 @Preview
 @Composable
 private fun View(
-    onItem1Clicked: () -> Unit = {},
-    onItem2Clicked: () -> Unit = {},
-    onItem3Clicked: () -> Unit = {},
+    onRoutingClicked: () -> Unit = {},
+    onCommunicationClicked: () -> Unit = {},
+    onAndroidClicked: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier.fillMaxSize(1f),
         contentAlignment = Alignment.Center
     ) {
-        val padding = Modifier.padding(8.dp)
+        val modifier = Modifier.padding(8.dp)
 
         Column {
             Button(
-                onClick = { },
-                modifier = padding
+                onClick = onRoutingClicked,
+                modifier = modifier
             ) {
-                Text("Item 1")
+                Text("Routing")
             }
             Button(
-                onClick = { },
-                modifier = padding
+                onClick = onCommunicationClicked,
+                modifier = modifier
             ) {
-                Text("Item 2")
+                Text("Communication")
             }
             Button(
-                onClick = { },
-                modifier = padding
+                onClick = onAndroidClicked,
+                modifier = modifier
             ) {
-                Text("Item 2")
+                Text("Android")
             }
         }
     }

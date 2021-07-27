@@ -21,7 +21,7 @@ class CommunicationContainerBuilder(
         val interactor = interactor(buildParams, backStack)
         val router = router(buildParams, backStack, connections, customisation)
 
-        return node(buildParams, interactor, router)
+        return node(buildParams, customisation, interactor, router)
     }
 
     private fun backStack(buildParams: BuildParams<*>) =
@@ -52,13 +52,15 @@ class CommunicationContainerBuilder(
 
     private fun node(
         buildParams: BuildParams<*>,
+        customisation: CommunicationContainer.Customisation,
         interactor: CommunicationContainerInteractor,
         router: CommunicationContainerRouter
     ) = CommunicationContainerNode(
         buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
         plugins = listOf(
             interactor,
             router
-        )
+        ),
     )
 }

@@ -14,7 +14,7 @@ import io.reactivex.functions.Consumer
 internal class CommunicationContainerInteractor(
     buildParams: BuildParams<*>,
     private val backStack: BackStack<Configuration>,
-) : Interactor<CommunicationContainer, Nothing>(
+) : Interactor<CommunicationContainer, CommunicationContainerView>(
     buildParams = buildParams
 ) {
 

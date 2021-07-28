@@ -35,7 +35,7 @@ class RootContainerRouter internal constructor(
                 is Picker -> child { picker.build(it) }
                 is CommunicationExamples -> child { communicationContainer.build(it) }
                 is AndroidExamples -> child { androidContainer.build(it) }
-                is RoutingExamples -> TODO()
+                is RoutingExamples -> child { routingContainer.build(it) }
             }
         }
 }

@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.samples.gallery.rib.android_container.routing.AndroidContainerRouter.Configuration
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class AndroidContainerRouter internal constructor(
     buildParams: BuildParams<*>,

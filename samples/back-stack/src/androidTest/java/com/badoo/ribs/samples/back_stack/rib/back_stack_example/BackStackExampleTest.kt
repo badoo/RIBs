@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.back_stack.rib.parent
+package com.badoo.ribs.samples.back_stack.rib.back_stack_example
 
 import android.os.Bundle
 import androidx.annotation.IdRes
@@ -14,13 +14,13 @@ import com.badoo.ribs.samples.back_stack.R
 import org.junit.Rule
 import org.junit.Test
 
-class ParentTest {
+class BackStackExampleTest {
 
     @get:Rule
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        ParentBuilder(object : Parent.Dependency {
+        BackStackExampleBuilder(object : BackStackExample.Dependency {
         }).build(root(savedInstanceState))
 
     // region Content tests

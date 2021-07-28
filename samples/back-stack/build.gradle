@@ -1,11 +1,10 @@
-configureAndroidApp(project)
+configureAndroidLibrary(project)
 
 apply plugin: 'kotlin-kapt'
 
 android {
 
     defaultConfig {
-        applicationId 'com.badoo.ribs.samples.back_stack'
         versionCode 1
         versionName '1.0'
     }

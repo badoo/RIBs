@@ -6,8 +6,8 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.back_stack.R
-import com.badoo.ribs.samples.back_stack.rib.parent.Parent
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentBuilder
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExample
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleBuilder
 
 class RootActivity : RibActivity() {
 
@@ -20,8 +20,8 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib {
-        val dependency = object : Parent.Dependency {}
-        return ParentBuilder(dependency).build(root(savedInstanceState))
+        val dependency = object : BackStackExample.Dependency {}
+        return BackStackExampleBuilder(dependency).build(root(savedInstanceState))
     }
 
 }

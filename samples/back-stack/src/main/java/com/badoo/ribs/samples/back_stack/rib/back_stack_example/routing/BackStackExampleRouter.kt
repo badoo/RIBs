@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.back_stack.rib.parent.routing
+package com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -7,19 +7,19 @@ import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Content.A
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Content.B
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Content.C
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Content.D
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Overlay.E
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration.Overlay.F
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration.Content.A
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration.Content.B
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration.Content.C
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration.Content.D
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration.Overlay.E
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration.Overlay.F
 import kotlinx.parcelize.Parcelize
 
-class ParentRouter internal constructor(
+class BackStackExampleRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
-    private val builders: ParentChildBuilders
+    private val builders: BackStackExampleChildBuilders
 ) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource

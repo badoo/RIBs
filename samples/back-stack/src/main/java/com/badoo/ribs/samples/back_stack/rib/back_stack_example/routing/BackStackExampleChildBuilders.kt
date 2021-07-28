@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.back_stack.rib.parent.routing
+package com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing
 
 import com.badoo.ribs.samples.back_stack.rib.child_a.ChildA
 import com.badoo.ribs.samples.back_stack.rib.child_a.ChildABuilder
@@ -12,10 +12,10 @@ import com.badoo.ribs.samples.back_stack.rib.child_e.ChildE
 import com.badoo.ribs.samples.back_stack.rib.child_e.ChildEBuilder
 import com.badoo.ribs.samples.back_stack.rib.child_f.ChildF
 import com.badoo.ribs.samples.back_stack.rib.child_f.ChildFBuilder
-import com.badoo.ribs.samples.back_stack.rib.parent.Parent
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExample
 
-internal open class ParentChildBuilders(
-    dependency: Parent.Dependency
+internal open class BackStackExampleChildBuilders(
+    dependency: BackStackExample.Dependency
 ) {
 
     private val subtreeDeps = SubtreeDependency(dependency)
@@ -28,8 +28,8 @@ internal open class ParentChildBuilders(
     val childF: ChildFBuilder = ChildFBuilder(subtreeDeps)
 
     class SubtreeDependency(
-        dependency: Parent.Dependency
-    ) : Parent.Dependency by dependency,
+        dependency: BackStackExample.Dependency
+    ) : BackStackExample.Dependency by dependency,
         ChildA.Dependency,
         ChildD.Dependency,
         ChildB.Dependency,

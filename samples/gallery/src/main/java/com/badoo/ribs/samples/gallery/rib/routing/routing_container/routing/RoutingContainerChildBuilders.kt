@@ -1,5 +1,7 @@
 package com.badoo.ribs.samples.gallery.rib.routing.routing_container.routing
 
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExample
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleBuilder
 import com.badoo.ribs.samples.gallery.rib.routing.routing_container.RoutingContainer
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPicker
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPickerBuilder
@@ -13,12 +15,14 @@ internal class RoutingContainerChildBuilders(
 
     val picker = RoutingPickerBuilder(subtreeDeps)
     val simpleRouting = SimpleRoutingParentBuilder(subtreeDeps)
+    val backStackExample = BackStackExampleBuilder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: RoutingContainer.Dependency
     ) : RoutingContainer.Dependency by dependency,
         RoutingPicker.Dependency,
-        SimpleRoutingParent.Dependency {
+        SimpleRoutingParent.Dependency,
+        BackStackExample.Dependency {
     }
 }
 

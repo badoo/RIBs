@@ -33,7 +33,7 @@ class RoutingContainerRouter internal constructor(
             when (routing.configuration) {
                 Configuration.Picker -> child { picker.build(it) }
                 Configuration.SimpleRoutingExample -> child { simpleRouting.build(it) }
-                Configuration.BackStackExample -> TODO()
+                Configuration.BackStackExample -> child { backStackExample.build(it) }
                 Configuration.TransitionsExample -> TODO()
             }
         }

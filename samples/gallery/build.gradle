@@ -62,6 +62,7 @@ dependencies {
     implementation project(':libraries:rib-rx2')
 
     implementation project(':samples:simple-routing-rib')
+    implementation project(':samples:back-stack')
     implementation project(':samples:resources')
 }
 

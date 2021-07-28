@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.back_stack.rib.parent
+package com.badoo.ribs.samples.back_stack.rib.back_stack_example
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.android.subscribe
@@ -9,25 +9,25 @@ import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.routing.source.backstack.operation.replace
 import com.badoo.ribs.routing.source.backstack.operation.singleTop
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Child
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Content
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Overlay
-import com.badoo.ribs.samples.back_stack.rib.parent.routing.ParentRouter.Configuration
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleView.Event.Child
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleView.Event.Content
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleView.Event.Overlay
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.routing.BackStackExampleRouter.Configuration
 
-interface ParentPresenter {
+interface BackStackExamplePresenter {
 
-    fun handle(event: ParentView.Event)
+    fun handle(event: BackStackExampleView.Event)
 
 }
 
-internal class ParentPresenterImpl(
+internal class BackStackExamplePresenterImpl(
     private val backStack: BackStack<Configuration>
-) : ViewAware<ParentView>,
-    ParentPresenter {
+) : ViewAware<BackStackExampleView>,
+    BackStackExamplePresenter {
 
-    private var view: ParentView? = null
+    private var view: BackStackExampleView? = null
 
-    override fun onViewCreated(view: ParentView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: BackStackExampleView, viewLifecycle: Lifecycle) {
         super.onViewCreated(view, viewLifecycle)
         viewLifecycle.subscribe(
             onCreate = {
@@ -42,7 +42,7 @@ internal class ParentPresenterImpl(
         }
     }
 
-    override fun handle(event: ParentView.Event) {
+    override fun handle(event: BackStackExampleView.Event) {
         when (event) {
             is Content.Pop -> backStack.popBackStack()
             is Content.Push -> backStack.push(event.child.toConfiguration())

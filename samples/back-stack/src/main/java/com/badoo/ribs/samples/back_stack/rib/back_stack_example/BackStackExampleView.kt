@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.back_stack.rib.parent
+package com.badoo.ribs.samples.back_stack.rib.back_stack_example
 
 import android.view.ViewGroup
 import android.widget.Button
@@ -13,11 +13,11 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.back_stack.R
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Child
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Content
-import com.badoo.ribs.samples.back_stack.rib.parent.ParentView.Event.Overlay
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleView.Event.Child
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleView.Event.Content
+import com.badoo.ribs.samples.back_stack.rib.back_stack_example.BackStackExampleView.Event.Overlay
 
-interface ParentView : RibView {
+interface BackStackExampleView : RibView {
 
     fun setBackStack(backStack: String)
 
@@ -42,26 +42,26 @@ interface ParentView : RibView {
 
     }
 
-    interface Factory : ViewFactoryBuilder<Dependency, ParentView>
+    interface Factory : ViewFactoryBuilder<Dependency, BackStackExampleView>
 
     interface Dependency {
-        val presenter: ParentPresenter
+        val presenter: BackStackExamplePresenter
     }
 
 }
 
 
-class ParentViewImpl private constructor(
+class BackStackExampleViewImpl private constructor(
     override val androidView: ViewGroup,
-    private val presenter: ParentPresenter
+    private val presenter: BackStackExamplePresenter
 ) : AndroidRibView(),
-    ParentView {
+    BackStackExampleView {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_parent
-    ) : ParentView.Factory {
-        override fun invoke(deps: ParentView.Dependency): ViewFactory<ParentView> = ViewFactory {
-            ParentViewImpl(
+    ) : BackStackExampleView.Factory {
+        override fun invoke(deps: BackStackExampleView.Dependency): ViewFactory<BackStackExampleView> = ViewFactory {
+            BackStackExampleViewImpl(
                 androidView = it.inflate(layoutRes),
                 presenter = deps.presenter
             )

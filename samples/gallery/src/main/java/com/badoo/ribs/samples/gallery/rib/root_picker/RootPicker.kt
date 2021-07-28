@@ -16,6 +16,7 @@ interface RootPicker : Rib, Connectable<Input, Output> {
         object AndroidSelected : Output()
         object CommunicationSelected : Output()
         object RoutingSelected : Output()
+        object OtherSelected : Output()
     }
 
     class Customisation(

@@ -3,6 +3,7 @@ package com.badoo.ribs.samples.gallery.rib.root_picker.mapper
 import com.badoo.ribs.samples.gallery.rib.root_picker.RootPicker
 import com.badoo.ribs.samples.gallery.rib.root_picker.RootPicker.Output.AndroidSelected
 import com.badoo.ribs.samples.gallery.rib.root_picker.RootPicker.Output.CommunicationSelected
+import com.badoo.ribs.samples.gallery.rib.root_picker.RootPicker.Output.OtherSelected
 import com.badoo.ribs.samples.gallery.rib.root_picker.RootPicker.Output.RoutingSelected
 import com.badoo.ribs.samples.gallery.rib.root_picker.RootPickerView.Event
 
@@ -13,5 +14,6 @@ internal object ViewEventToOutput : (Event) -> RootPicker.Output? {
             Event.AndroidClicked -> AndroidSelected
             Event.CommunicationClicked -> CommunicationSelected
             Event.RoutingClicked -> RoutingSelected
+            Event.OtherClicked -> OtherSelected
         }
 }

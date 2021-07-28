@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.gallery.rib.root_picker
+package com.badoo.ribs.samples.gallery.rib.other_picker
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -8,34 +8,31 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.gallery.composable.ButtonList
-import com.badoo.ribs.samples.gallery.rib.root_picker.RootPickerView.Event
+import com.badoo.ribs.samples.gallery.rib.other_picker.OtherPickerView.Event
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 
-interface RootPickerView : RibView,
+interface OtherPickerView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object RoutingClicked : Event()
-        object CommunicationClicked : Event()
-        object AndroidClicked : Event()
-        object OtherClicked : Event()
+        object RetainedInstanceStoreClicked : Event()
     }
 
-    fun interface Factory : ViewFactoryBuilder<Nothing?, RootPickerView>
+    fun interface Factory : ViewFactoryBuilder<Nothing?, OtherPickerView>
 }
 
 
-class RootPickerViewImpl private constructor(
+class OtherPickerViewImpl private constructor(
     context: Context,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : ComposeRibView(context),
-    RootPickerView,
+    OtherPickerView,
     ObservableSource<Event> by events {
 
-    class Factory : RootPickerView.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<RootPickerView> = ViewFactory {
-            RootPickerViewImpl(
+    class Factory : OtherPickerView.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<OtherPickerView> = ViewFactory {
+            OtherPickerViewImpl(
                 it.parent.context
             )
         }
@@ -53,10 +50,7 @@ private fun View(
 ) {
     ButtonList(
         listOf(
-            "Routing" to { events.accept(Event.RoutingClicked) },
-            "Communication" to { events.accept(Event.CommunicationClicked) },
-            "Android" to { events.accept(Event.AndroidClicked) },
-            "Other" to { events.accept(Event.OtherClicked) },
+            "RetainedInstanceStore" to {  },
         )
     )
 }

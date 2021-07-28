@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.gallery.rib.root_container.routing
+package com.badoo.ribs.samples.gallery.rib.other_container.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -8,14 +8,13 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.samples.gallery.rib.root_container.routing.RootContainerRouter.Configuration
-import com.badoo.ribs.samples.gallery.rib.root_container.routing.RootContainerRouter.Configuration.*
+import com.badoo.ribs.samples.gallery.rib.other_container.routing.OtherContainerRouter.Configuration
 import kotlinx.parcelize.Parcelize
 
-class RootContainerRouter internal constructor(
+class OtherContainerRouter internal constructor(
     buildParams: BuildParams<*>,
     routingSource: RoutingSource<Configuration>,
-    private val builders: RootContainerChildBuilders,
+    private val builders: OtherContainerChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
 ): Router<Configuration>(
     buildParams = buildParams,
@@ -24,20 +23,14 @@ class RootContainerRouter internal constructor(
 ) {
     sealed class Configuration : Parcelable {
         @Parcelize object Picker : Configuration()
-        @Parcelize object RoutingExamples : Configuration()
-        @Parcelize object CommunicationExamples : Configuration()
-        @Parcelize object AndroidExamples : Configuration()
-        @Parcelize object OtherExamples : Configuration()
+        @Parcelize object RetainedInstanceStoreExample : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                is Picker -> child { picker.build(it) }
-                is CommunicationExamples -> child { communicationContainer.build(it) }
-                is AndroidExamples -> child { androidContainer.build(it) }
-                is RoutingExamples -> child { routingContainer.build(it) }
-                is OtherExamples -> child { otherContainer.build(it) }
+                Configuration.Picker -> child { picker.build(it) }
+                Configuration.RetainedInstanceStoreExample -> TODO()
             }
         }
 }

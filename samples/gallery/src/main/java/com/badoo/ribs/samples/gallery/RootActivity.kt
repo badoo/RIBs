@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
-import com.badoo.ribs.samples.gallery.rib.root_container.RootContainer
-import com.badoo.ribs.samples.gallery.rib.root_container.RootContainerBuilder
+import com.badoo.ribs.samples.gallery.rib.root.container.RootContainer
+import com.badoo.ribs.samples.gallery.rib.root.container.RootContainerBuilder
 
 class RootActivity : RibActivity()
 {

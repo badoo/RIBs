@@ -51,18 +51,14 @@ class CommunicationPickerViewImpl private constructor(
     }
 
     override val composable: @Composable () -> Unit = {
-        View(
-            onMenuExampleClicked = { events.accept(Event.MenuExampleClicked) },
-            onMultiScreenExampleClicked = { events.accept(Event.MultiScreenExampleClicked) },
-        )
+        View(events)
     }
 }
 
 @Preview
 @Composable
 private fun View(
-    onMenuExampleClicked: () -> Unit = {},
-    onMultiScreenExampleClicked: () -> Unit = {},
+    events: PublishRelay<Event> = PublishRelay.create()
 ) {
     Box(
         modifier = Modifier.fillMaxSize(1f),
@@ -74,13 +70,13 @@ private fun View(
 
         Column(modifier = Modifier.width(IntrinsicSize.Min)) {
             Button(
-                onClick = onMenuExampleClicked,
+                onClick = { events.accept(Event.MenuExampleClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Menu example")
             }
             Button(
-                onClick = onMultiScreenExampleClicked,
+                onClick = { events.accept(Event.MultiScreenExampleClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Multi-screen example")

@@ -52,20 +52,14 @@ class RootPickerViewImpl private constructor(
     }
 
     override val composable: @Composable () -> Unit = {
-        View(
-            onRoutingClicked = { events.accept(Event.RoutingClicked) },
-            onCommunicationClicked = { events.accept(Event.CommunicationClicked) },
-            onAndroidClicked = { events.accept(Event.AndroidClicked) },
-        )
+        View(events)
     }
 }
 
 @Preview
 @Composable
 private fun View(
-    onRoutingClicked: () -> Unit = {},
-    onCommunicationClicked: () -> Unit = {},
-    onAndroidClicked: () -> Unit = {},
+    events: PublishRelay<Event> = PublishRelay.create()
 ) {
     Box(
         modifier = Modifier.fillMaxSize(1f),
@@ -77,19 +71,19 @@ private fun View(
 
         Column(modifier = Modifier.width(IntrinsicSize.Min)) {
             Button(
-                onClick = onRoutingClicked,
+                onClick = { events.accept(Event.RoutingClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Routing")
             }
             Button(
-                onClick = onCommunicationClicked,
+                onClick = { events.accept(Event.CommunicationClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Communication")
             }
             Button(
-                onClick = onAndroidClicked,
+                onClick = { events.accept(Event.AndroidClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Android")

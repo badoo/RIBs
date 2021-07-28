@@ -52,20 +52,14 @@ class AndroidPickerViewImpl private constructor(
     }
 
     override val composable: @Composable () -> Unit = {
-        View(
-            onLaunchingActivitiesClicked = { events.accept(Event.LaunchingActivitiesClicked) },
-            onPermissionsClicked = { events.accept(Event.PermissionsClicked) },
-            onDialogsClicked = { events.accept(Event.DialogsClicked) },
-        )
+        View(events)
     }
 }
 
 @Preview
 @Composable
 private fun View(
-    onLaunchingActivitiesClicked: () -> Unit = {},
-    onPermissionsClicked: () -> Unit = {},
-    onDialogsClicked: () -> Unit = {},
+    events: PublishRelay<Event> = PublishRelay.create()
 ) {
     Box(
         modifier = Modifier.fillMaxSize(1f),
@@ -77,19 +71,19 @@ private fun View(
 
         Column(modifier = Modifier.width(IntrinsicSize.Min)) {
             Button(
-                onClick = onLaunchingActivitiesClicked,
+                onClick = { events.accept(Event.LaunchingActivitiesClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Launching Activities")
             }
             Button(
-                onClick = onPermissionsClicked,
+                onClick = { events.accept(Event.PermissionsClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Permissions")
             }
             Button(
-                onClick = onDialogsClicked,
+                onClick = { events.accept(Event.DialogsClicked) },
                 modifier = buttonModifier
             ) {
                 Text("Dialogs")

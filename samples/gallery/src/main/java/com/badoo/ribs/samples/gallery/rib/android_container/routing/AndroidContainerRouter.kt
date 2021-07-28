@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.gallery.rib.root_container.routing
+package com.badoo.ribs.samples.gallery.rib.android_container.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -8,14 +8,13 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.samples.gallery.rib.root_container.routing.RootContainerRouter.Configuration
-import com.badoo.ribs.samples.gallery.rib.root_container.routing.RootContainerRouter.Configuration.*
-import kotlinx.parcelize.Parcelize
+import com.badoo.ribs.samples.gallery.rib.android_container.routing.AndroidContainerRouter.Configuration
+import kotlinx.android.parcel.Parcelize
 
-class RootContainerRouter internal constructor(
+class AndroidContainerRouter internal constructor(
     buildParams: BuildParams<*>,
     routingSource: RoutingSource<Configuration>,
-    private val builders: RootContainerChildBuilders,
+    private val builders: AndroidContainerChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
 ): Router<Configuration>(
     buildParams = buildParams,
@@ -24,18 +23,18 @@ class RootContainerRouter internal constructor(
 ) {
     sealed class Configuration : Parcelable {
         @Parcelize object Picker : Configuration()
-        @Parcelize object RoutingExamples : Configuration()
-        @Parcelize object CommunicationExamples : Configuration()
-        @Parcelize object AndroidExamples : Configuration()
+        @Parcelize object AcitivityExample : Configuration()
+        @Parcelize object PermissionExample : Configuration()
+        @Parcelize object DialogExample : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
-                is Picker -> child { picker.build(it) }
-                is CommunicationExamples -> child { communicationContainer.build(it) }
-                is AndroidExamples -> child { androidContainer.build(it) }
-                is RoutingExamples -> TODO()
+                Configuration.Picker -> child { picker.build(it) }
+                Configuration.AcitivityExample -> TODO()
+                Configuration.DialogExample -> TODO()
+                Configuration.PermissionExample -> TODO()
             }
         }
 }

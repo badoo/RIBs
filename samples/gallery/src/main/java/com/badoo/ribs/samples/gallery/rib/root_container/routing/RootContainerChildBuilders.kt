@@ -1,5 +1,7 @@
 package com.badoo.ribs.samples.gallery.rib.root_container.routing
 
+import com.badoo.ribs.samples.gallery.rib.android_container.AndroidContainer
+import com.badoo.ribs.samples.gallery.rib.android_container.AndroidContainerBuilder
 import com.badoo.ribs.samples.gallery.rib.communication_container.CommunicationContainer
 import com.badoo.ribs.samples.gallery.rib.communication_container.CommunicationContainerBuilder
 import com.badoo.ribs.samples.gallery.rib.root_picker.RootPicker
@@ -13,12 +15,14 @@ internal class RootContainerChildBuilders(
 
      val picker = RootPickerBuilder(subtreeDeps)
      val communicationContainer = CommunicationContainerBuilder(subtreeDeps)
+     val androidContainer = AndroidContainerBuilder(subtreeDeps)
 
     class SubtreeDependency(
         dependency: RootContainer.Dependency
     ) : RootContainer.Dependency by dependency,
         RootPicker.Dependency,
-        CommunicationContainer.Dependency
+        CommunicationContainer.Dependency,
+        AndroidContainer.Dependency
     {
     }
 }

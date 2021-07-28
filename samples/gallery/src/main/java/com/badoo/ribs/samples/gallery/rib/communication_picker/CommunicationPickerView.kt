@@ -3,8 +3,11 @@ package com.badoo.ribs.samples.gallery.rib.communication_picker
 import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -65,18 +68,20 @@ private fun View(
         modifier = Modifier.fillMaxSize(1f),
         contentAlignment = Alignment.Center
     ) {
-        val padding = Modifier.padding(8.dp)
+        val buttonModifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
 
-        Column {
+        Column(modifier = Modifier.width(IntrinsicSize.Min)) {
             Button(
-                onClick = { },
-                modifier = padding
+                onClick = onMenuExampleClicked,
+                modifier = buttonModifier
             ) {
                 Text("Menu example")
             }
             Button(
-                onClick = { },
-                modifier = padding
+                onClick = onMultiScreenExampleClicked,
+                modifier = buttonModifier
             ) {
                 Text("Multi-screen example")
             }

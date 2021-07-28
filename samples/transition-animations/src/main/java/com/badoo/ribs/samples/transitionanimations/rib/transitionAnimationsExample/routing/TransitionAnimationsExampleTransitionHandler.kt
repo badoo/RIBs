@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.transitionanimations.rib.parent.routing
+package com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing
 
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import com.badoo.ribs.routing.transition.TransitionElement
@@ -8,9 +8,9 @@ import com.badoo.ribs.routing.transition.handler.SharedElements
 import com.badoo.ribs.routing.transition.handler.Slider
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.samples.transitionanimations.R
-import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration
+import com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing.TransitionAnimationsExampleRouter.Configuration
 
-class ParentTransitionHandler(duration: Long = 1000) : TransitionHandler.Multiple<Configuration>(
+class TransitionAnimationsExampleTransitionHandler(duration: Long = 1000) : TransitionHandler.Multiple<Configuration>(
     listOf(
         SharedElements(
             params = listOf(

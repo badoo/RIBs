@@ -1,10 +1,9 @@
-configureAndroidApp(project)
+configureAndroidLibrary(project)
 
 apply plugin: 'kotlin-kapt'
 
 android {
     defaultConfig {
-        applicationId 'com.badoo.ribs.samples.transitionanimations'
         versionCode 1
         versionName '1.0'
     }

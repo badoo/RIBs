@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.transitionanimations.rib.parent.routing
+package com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -8,17 +8,17 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration
-import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child1
-import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child2
-import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration.Child3
+import com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing.TransitionAnimationsExampleRouter.Configuration
+import com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing.TransitionAnimationsExampleRouter.Configuration.Child1
+import com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing.TransitionAnimationsExampleRouter.Configuration.Child2
+import com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing.TransitionAnimationsExampleRouter.Configuration.Child3
 import kotlinx.parcelize.Parcelize
 
-class ParentRouter internal constructor(
+class TransitionAnimationsExampleRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
     transitionHandler: TransitionHandler<Configuration>,
-    private val builders: ParentChildBuilders
+    private val builders: TransitionAnimationsExampleChildBuilders
 ) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,

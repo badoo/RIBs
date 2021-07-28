@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.transitionanimations.rib.parent
+package com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample
 
 import android.view.ViewGroup
 import android.widget.Button
@@ -11,27 +11,27 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.transitionanimations.R
 
-interface ParentView : RibView {
+interface TransitionAnimationsExampleView : RibView {
 
-    interface Factory : ViewFactoryBuilder<Dependency, ParentView>
+    interface Factory : ViewFactoryBuilder<Dependency, TransitionAnimationsExampleView>
 
     interface Dependency {
-        val presenter: ParentPresenter
+        val presenter: TransitionAnimationsExamplePresenter
     }
 }
 
-class ParentViewImpl private constructor(
+class TransitionAnimationsExampleViewImpl private constructor(
     override val androidView: ViewGroup,
-    private val presenter: ParentPresenter
+    private val presenter: TransitionAnimationsExamplePresenter
 ) : AndroidRibView(),
-    ParentView {
+    TransitionAnimationsExampleView {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_parent
-    ) : ParentView.Factory {
-        override fun invoke(deps: ParentView.Dependency): ViewFactory<ParentView> =
+        @LayoutRes private val layoutRes: Int = R.layout.rib_transition_animations
+    ) : TransitionAnimationsExampleView.Factory {
+        override fun invoke(deps: TransitionAnimationsExampleView.Dependency): ViewFactory<TransitionAnimationsExampleView> =
             ViewFactory {
-                ParentViewImpl(
+                TransitionAnimationsExampleViewImpl(
                     androidView = it.inflate(layoutRes),
                     presenter = deps.presenter
                 )

@@ -1,16 +1,16 @@
-package com.badoo.ribs.samples.transitionanimations.rib.parent
+package com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample
 
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import com.badoo.ribs.samples.transitionanimations.rib.parent.routing.ParentRouter.Configuration
+import com.badoo.ribs.samples.transitionanimations.rib.transitionAnimationsExample.routing.TransitionAnimationsExampleRouter.Configuration
 
-interface ParentPresenter {
+interface TransitionAnimationsExamplePresenter {
     fun goToNext()
 }
 
-internal class ParentPresenterImpl(
+internal class TransitionAnimationsExamplePresenterImpl(
     private val backStack: BackStack<Configuration>
-) : ParentPresenter {
+) : TransitionAnimationsExamplePresenter {
 
     override fun goToNext() {
         backStack.push(backStack.activeConfiguration.toNextConfiguration())

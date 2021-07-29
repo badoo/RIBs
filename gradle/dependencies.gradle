@@ -17,7 +17,7 @@ def versions = [
         compose                        : '1.0.0',
 
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
-        androidxAnnotationVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
+        androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation
         androidxAppCompatVersion       : '1.3.1', // https://developer.android.com/jetpack/androidx/releases/appcompat
         androidxArchCoreVersion        : '2.1.0', // https://developer.android.com/jetpack/androidx/releases/arch-core
         androidxBrowserVersion         : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/browser
@@ -28,7 +28,7 @@ def versions = [
         androidxCoreVersion            : '1.5.0', // https://developer.android.com/jetpack/androidx/releases/core
         androidxExifVersion            : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
         androidxFragmentVersion        : '1.3.6', // https://developer.android.com/jetpack/androidx/releases/fragment
-        androidxActivityVersion        : '1.2.4', // https://developer.android.com/jetpack/androidx/releases/activity
+        androidxActivityVersion        : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/activity
         androidxGridLayoutVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
         androidxLifecycleVersion       : '2.3.1', // https://developer.android.com/jetpack/androidx/releases/lifecycle
         androidxLoaderVersion          : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader

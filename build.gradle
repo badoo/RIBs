@@ -1,5 +1,4 @@
 buildscript {
-    apply from: 'gradle/compose.gradle'
     apply from: 'gradle/dependencies.gradle'
 
     repositories {
@@ -21,7 +20,6 @@ buildscript {
     }
 }
 
-apply from: 'gradle/compose.gradle'
 apply from: 'gradle/dependencies.gradle'
 apply from: 'gradle/utils.gradle'
 
@@ -51,14 +49,6 @@ subprojects {
 
     configurations.all {
         resolutionStrategy.eachDependency {
-        }
-    }
-
-    // Add '-compose' to all artifacts when building the compose variant.
-    if (project.hasProperty('POM_ARTIFACT_ID') && useCompose.toBoolean()) {
-        def artifactId = project.getProperty("POM_ARTIFACT_ID").toString()
-        if (!artifactId.contains("compose")) {
-            project.setProperty("POM_ARTIFACT_ID", project.getProperty("POM_ARTIFACT_ID") + "-compose")
         }
     }
 }

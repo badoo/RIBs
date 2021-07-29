@@ -85,7 +85,7 @@ private def configureAndroidModule(Project project) {
         }
 
         project.afterEvaluate {
-            project.android.kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+            project.android.kotlinOptions.freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
         }
     }
 }

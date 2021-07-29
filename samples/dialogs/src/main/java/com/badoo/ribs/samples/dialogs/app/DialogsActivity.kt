@@ -9,7 +9,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.dialogs.R
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExample
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsBuilder
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExampleBuilder
 
 class DialogsActivity : RibActivity() {
 
@@ -29,6 +29,6 @@ class DialogsActivity : RibActivity() {
         get() = findViewById(R.id.dialogs_activity_root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-        DialogsBuilder(deps).build(BuildContext.root(savedInstanceState))
+        DialogsExampleBuilder(deps).build(BuildContext.root(savedInstanceState))
 }
 

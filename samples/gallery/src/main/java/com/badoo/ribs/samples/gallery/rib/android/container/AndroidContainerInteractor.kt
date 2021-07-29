@@ -32,7 +32,7 @@ internal class AndroidContainerInteractor(
         val configuration: Configuration = when (output) {
             AndroidPicker.Output.ActivitiesExampleSelected -> Configuration.AcitivityExample
             AndroidPicker.Output.DialogsExampleSelected -> Configuration.DialogExample
-            AndroidPicker.Output.PermissionsExampleSelected -> Configuration.PermissionExample
+            AndroidPicker.Output.PermissionsExampleSelected -> Configuration.PermissionsExample
         }
 
         backStack.push(configuration)

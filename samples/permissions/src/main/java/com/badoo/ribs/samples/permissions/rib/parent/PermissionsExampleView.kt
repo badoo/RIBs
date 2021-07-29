@@ -12,23 +12,23 @@ import com.badoo.ribs.samples.permissions.R
 import com.badoo.ribs.samples.permissions.rib.child1.PermissionsSampleChild1
 import com.badoo.ribs.samples.permissions.rib.child2.PermissionsSampleChild2
 
-interface PermissionsSampleParentView : RibView {
+interface PermissionsExampleView : RibView {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, PermissionsSampleParentView>
+    interface Factory : ViewFactoryBuilder<Nothing?, PermissionsExampleView>
 }
 
-class PermissionsSampleParentViewImpl private constructor(
+class PermissionsExampleViewImpl private constructor(
     override val androidView: ViewGroup
-) : AndroidRibView(), PermissionsSampleParentView {
+) : AndroidRibView(), PermissionsExampleView {
 
     private val child1Container: ViewGroup = androidView.findViewById(R.id.child1_container)
     private val child2Container: ViewGroup = androidView.findViewById(R.id.child2_container)
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample_parent
-    ) : PermissionsSampleParentView.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<PermissionsSampleParentView> = ViewFactory {
-            PermissionsSampleParentViewImpl(
+    ) : PermissionsExampleView.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<PermissionsExampleView> = ViewFactory {
+            PermissionsExampleViewImpl(
                 it.inflate(layoutRes)
             )
         }

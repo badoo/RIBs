@@ -64,6 +64,9 @@ dependencies {
     implementation project(':samples:back-stack')
     implementation project(':samples:simple-routing-rib')
     implementation project(':samples:transition-animations')
+    implementation project(':samples:android-integration:launching-activities')
+    implementation project(':samples:permissions')
+    implementation project(':samples:dialogs')
     implementation project(':samples:resources')
 }
 

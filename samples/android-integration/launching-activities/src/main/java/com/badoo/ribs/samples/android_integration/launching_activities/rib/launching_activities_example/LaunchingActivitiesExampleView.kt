@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.android_integration.launching_activities.rib.parent
+package com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_example
 
 import android.view.ViewGroup
 import android.widget.TextView
@@ -14,7 +14,7 @@ import com.badoo.ribs.samples.android_integration.launching_activities.R
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.child1.LaunchingActivitiesChild1
 import com.badoo.ribs.samples.android_integration.launching_activities.rib.child2.LaunchingActivitiesChild2
 
-interface LaunchingActivitiesParentView : RibView {
+interface LaunchingActivitiesExampleView : RibView {
 
     interface Dependency {
         @StringRes
@@ -24,13 +24,13 @@ interface LaunchingActivitiesParentView : RibView {
         fun getDescriptionResource(): Int
     }
 
-    interface Factory : ViewFactoryBuilder<Dependency, LaunchingActivitiesParentView>
+    interface Factory : ViewFactoryBuilder<Dependency, LaunchingActivitiesExampleView>
 }
 
-class LaunchingActivitiesParentViewImpl constructor(
+class LaunchingActivitiesExampleViewImpl constructor(
     override val androidView: ViewGroup,
-    val dependency: LaunchingActivitiesParentView.Dependency
-) : AndroidRibView(), LaunchingActivitiesParentView {
+    val dependency: LaunchingActivitiesExampleView.Dependency
+) : AndroidRibView(), LaunchingActivitiesExampleView {
 
     private val title: TextView = androidView.findViewById(R.id.title)
     private val description: TextView = androidView.findViewById(R.id.description)
@@ -51,10 +51,10 @@ class LaunchingActivitiesParentViewImpl constructor(
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_launching_activities_root,
-    ) : LaunchingActivitiesParentView.Factory {
-        override fun invoke(dependency: LaunchingActivitiesParentView.Dependency): ViewFactory<LaunchingActivitiesParentView> =
+    ) : LaunchingActivitiesExampleView.Factory {
+        override fun invoke(dependency: LaunchingActivitiesExampleView.Dependency): ViewFactory<LaunchingActivitiesExampleView> =
             ViewFactory {
-                LaunchingActivitiesParentViewImpl(
+                LaunchingActivitiesExampleViewImpl(
                     androidView = it.inflate(layoutRes),
                     dependency = dependency
                 )

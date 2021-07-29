@@ -12,10 +12,10 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
 import com.badoo.ribs.samples.dialogs.R
 import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Overlay
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExampleRouter.Configuration.Overlay
 import com.badoo.ribs.samples.dialogs.rib.dummy.Dummy
 
-interface DialogsPresenter {
+interface DialogsExamplePresenter {
 
     fun handleThemedDialog()
     fun handleSimpleDialog()
@@ -23,25 +23,25 @@ interface DialogsPresenter {
     fun handleRibDialog()
 }
 
-internal class DialogsPresenterImpl(
+internal class DialogsExamplePresenterImpl(
     private val dialogs: Dialogs,
-    private val backStack: BackStack<DialogsRouter.Configuration>
-) : DialogsPresenter, ViewAware<DialogsView>, SubtreeChangeAware {
+    private val backStack: BackStack<DialogsExampleRouter.Configuration>
+) : DialogsExamplePresenter, ViewAware<DialogsExampleView>, SubtreeChangeAware {
 
-    private var view: DialogsView? = null
+    private var view: DialogsExampleView? = null
     private val cancellables = CompositeCancellable()
 
-    override fun onViewCreated(view: DialogsView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: DialogsExampleView, viewLifecycle: Lifecycle) {
         viewLifecycle.subscribe(
             onCreate = {
-                this@DialogsPresenterImpl.view = view
+                this@DialogsExamplePresenterImpl.view = view
                 cancellables += dialogs.themedDialog.observe { resolveDialogEvents(it, view) }
                 cancellables += dialogs.simpleDialog.observe { resolveDialogEvents(it, view) }
                 cancellables += dialogs.lazyDialog.observe { resolveDialogEvents(it, view) }
                 cancellables += dialogs.ribDialog.observe { resolveDialogEvents(it, view) }
             },
             onDestroy = {
-                this@DialogsPresenterImpl.view = null
+                this@DialogsExamplePresenterImpl.view = null
                 cancellables.cancel()
             }
         )
@@ -88,7 +88,7 @@ internal class DialogsPresenterImpl(
         }
     }
 
-    private fun resolveDialogEvents(event: Dialog.Event, view: DialogsView) {
+    private fun resolveDialogEvents(event: Dialog.Event, view: DialogsExampleView) {
         when (event) {
             Dialog.Event.Positive -> view.displayText("Dialog - Positive clicked")
             Dialog.Event.Negative -> view.displayText("Dialog - Negative clicked")
@@ -97,7 +97,7 @@ internal class DialogsPresenterImpl(
         }
     }
 
-    private fun resolveDummyOutput(view: DialogsView?) {
+    private fun resolveDummyOutput(view: DialogsExampleView?) {
         view?.displayText("Button in Dummy RIB clicked")
         backStack.popBackStack()
     }

@@ -24,7 +24,7 @@ class AndroidContainerRouter internal constructor(
     sealed class Configuration : Parcelable {
         @Parcelize object Picker : Configuration()
         @Parcelize object AcitivityExample : Configuration()
-        @Parcelize object PermissionExample : Configuration()
+        @Parcelize object PermissionsExample : Configuration()
         @Parcelize object DialogExample : Configuration()
     }
 
@@ -32,9 +32,9 @@ class AndroidContainerRouter internal constructor(
         with(builders) {
             when (routing.configuration) {
                 Configuration.Picker -> child { picker.build(it) }
-                Configuration.AcitivityExample -> TODO()
-                Configuration.DialogExample -> TODO()
-                Configuration.PermissionExample -> TODO()
+                Configuration.AcitivityExample -> child { activities.build(it) }
+                Configuration.PermissionsExample -> child { permissions.build(it) }
+                Configuration.DialogExample -> child { dialogs.build(it) }
             }
         }
 }

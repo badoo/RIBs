@@ -11,26 +11,26 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.dialogs.R
 
-interface DialogsView : RibView {
+interface DialogsExampleView : RibView {
 
     interface Dependency {
-        val presenter: DialogsPresenter
+        val presenter: DialogsExamplePresenter
     }
 
-    interface Factory : ViewFactoryBuilder<Dependency, DialogsView>
+    interface Factory : ViewFactoryBuilder<Dependency, DialogsExampleView>
 
     fun displayText(headerText: String)
 }
 
-class DialogsViewImpl private constructor(
+class DialogsExampleViewImpl private constructor(
     override val androidView: ViewGroup,
-    private val presenter: DialogsPresenter
-) : AndroidRibView(), DialogsView {
+    private val presenter: DialogsExamplePresenter
+) : AndroidRibView(), DialogsExampleView {
 
-    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_dialogs) : DialogsView.Factory {
+    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_dialogs) : DialogsExampleView.Factory {
 
-        override fun invoke(deps: DialogsView.Dependency): ViewFactory<DialogsView> = ViewFactory {
-            DialogsViewImpl(
+        override fun invoke(deps: DialogsExampleView.Dependency): ViewFactory<DialogsExampleView> = ViewFactory {
+            DialogsExampleViewImpl(
                 androidView = it.inflate(layoutRes),
                 presenter = deps.presenter
             )

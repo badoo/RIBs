@@ -4,32 +4,32 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.samples.dialogs.dialogs.Dialogs
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsRouter.Configuration.Content
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExampleRouter.Configuration.Content
 
-class DialogsBuilder(
+class DialogsExampleBuilder(
     private val deps: DialogsExample.Dependency
 ) : SimpleBuilder<DialogsExample>() {
 
     private val dialogs = Dialogs()
 
     override fun build(buildParams: BuildParams<Nothing?>): DialogsExample {
-        val backStack: BackStack<DialogsRouter.Configuration> = BackStack(
+        val backStack: BackStack<DialogsExampleRouter.Configuration> = BackStack(
             initialConfiguration = Content.Default,
             buildParams = buildParams
         )
-        val presenter = DialogsPresenterImpl(dialogs, backStack)
-        val router = DialogsRouter(
+        val presenter = DialogsExamplePresenterImpl(dialogs, backStack)
+        val router = DialogsExampleRouter(
             buildParams = buildParams,
             routingSource = backStack,
             dialogLauncher = deps.dialogLauncher,
             dialogs = dialogs
         )
-        val viewDependencies = object : DialogsView.Dependency {
-            override val presenter: DialogsPresenter = presenter
+        val viewDependencies = object : DialogsExampleView.Dependency {
+            override val presenter: DialogsExamplePresenter = presenter
         }
-        return DialogsNode(
+        return DialogsExampleNode(
             buildParams = buildParams,
-            viewFactory = DialogsViewImpl.Factory().invoke(viewDependencies),
+            viewFactory = DialogsExampleViewImpl.Factory().invoke(viewDependencies),
             plugins = listOf(router, presenter)
         )
     }

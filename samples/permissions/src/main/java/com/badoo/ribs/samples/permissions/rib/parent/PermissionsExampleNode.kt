@@ -5,12 +5,12 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 
-class PermissionsSampleParentNode internal constructor(
+class PermissionsExampleNode internal constructor(
     buildParams: BuildParams<*>,
-    viewFactory: ViewFactory<PermissionsSampleParentView>,
+    viewFactory: ViewFactory<PermissionsExampleView>,
     plugins: List<Plugin> = emptyList()
-) : Node<PermissionsSampleParentView>(
+) : Node<PermissionsExampleView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), PermissionsSampleParent
+), PermissionsExample

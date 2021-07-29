@@ -7,8 +7,8 @@ import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.android_integration.launching_activities.R
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.LaunchingActivitiesParent
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.parent.builder.LaunchingActivitiesParentBuilder
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_example.LaunchingActivitiesExample
+import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_example.LaunchingActivitiesExampleBuilder
 
 class RootActivity : RibActivity() {
 
@@ -21,7 +21,7 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-        LaunchingActivitiesParentBuilder(object : LaunchingActivitiesParent.Dependency {
+        LaunchingActivitiesExampleBuilder(object : LaunchingActivitiesExample.Dependency {
             override val activityStarter: ActivityStarter = integrationPoint.activityStarter
         }).build(root(savedInstanceState))
 }

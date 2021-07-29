@@ -7,8 +7,8 @@ import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.permissions.R
-import com.badoo.ribs.samples.permissions.rib.parent.PermissionsSampleParent
-import com.badoo.ribs.samples.permissions.rib.parent.PermissionsSampleParentBuilder
+import com.badoo.ribs.samples.permissions.rib.parent.PermissionsExample
+import com.badoo.ribs.samples.permissions.rib.parent.PermissionsExampleBuilder
 
 class PermissionsSampleActivity : RibActivity() {
 
@@ -21,11 +21,11 @@ class PermissionsSampleActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib {
-        val dependency = object : PermissionsSampleParent.Dependency {
+        val dependency = object : PermissionsExample.Dependency {
             override val permissionRequester: PermissionRequester
                 get() = integrationPoint.permissionRequester
         }
-        return PermissionsSampleParentBuilder(dependency).build(root(savedInstanceState))
+        return PermissionsExampleBuilder(dependency).build(root(savedInstanceState))
     }
 
 }

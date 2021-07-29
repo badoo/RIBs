@@ -5,11 +5,11 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 
-internal class DialogsNode(
+internal class DialogsExampleNode(
     buildParams: BuildParams<*>,
-    viewFactory: ViewFactory<DialogsView>,
+    viewFactory: ViewFactory<DialogsExampleView>,
     plugins: List<Plugin>
-) : Node<DialogsView>(
+) : Node<DialogsExampleView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins

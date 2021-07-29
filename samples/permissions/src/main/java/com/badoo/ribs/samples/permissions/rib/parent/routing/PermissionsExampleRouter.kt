@@ -7,14 +7,14 @@ import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
-import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration
-import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration.Permanent.Child1
-import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsSampleParentRouter.Configuration.Permanent.Child2
+import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsExampleRouter.Configuration
+import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsExampleRouter.Configuration.Permanent.Child1
+import com.badoo.ribs.samples.permissions.rib.parent.routing.PermissionsExampleRouter.Configuration.Permanent.Child2
 import kotlinx.parcelize.Parcelize
 
-class PermissionsSampleParentRouter internal constructor(
+class PermissionsExampleRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
-    private val builders: PermissionsSampleParentChildBuilder
+    private val builders: PermissionsExampleChildBuilder
 ) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = permanent(Child1, Child2)

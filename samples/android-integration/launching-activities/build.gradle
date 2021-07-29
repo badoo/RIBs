@@ -1,12 +1,9 @@
-configureAndroidApp(project)
-
-apply plugin: 'kotlin-kapt'
+configureAndroidLibrary(project)
 
 android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.badoo.ribs.samples.android_integration.launching_activities"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

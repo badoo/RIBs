@@ -1,10 +1,7 @@
-configureAndroidApp(project)
-
-apply plugin: 'kotlin-kapt'
+configureAndroidLibrary(project)
 
 android {
     defaultConfig {
-        applicationId 'com.badoo.ribs.samples.dialogs'
         versionCode 1
         versionName '1.0'
     }

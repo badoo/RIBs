@@ -1,5 +1,8 @@
 package com.badoo.ribs.samples.gallery.rib.root.container
 
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
+import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
+import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
@@ -12,7 +15,10 @@ import io.reactivex.Single
 
 interface RootContainer : Rib, Connectable<Input, Output> {
 
-    interface Dependency
+    interface Dependency :
+        CanProvideActivityStarter,
+        CanProvidePermissionRequester,
+        CanProvideDialogLauncher
 
     sealed class Input
 

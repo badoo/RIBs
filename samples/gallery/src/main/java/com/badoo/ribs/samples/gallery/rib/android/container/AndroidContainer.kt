@@ -1,5 +1,8 @@
 package com.badoo.ribs.samples.gallery.rib.android.container
 
+import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
+import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
+import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
@@ -10,7 +13,10 @@ import com.badoo.ribs.samples.gallery.rib.android.container.routing.AndroidConta
 
 interface AndroidContainer : Rib, Connectable<Input, Output> {
 
-    interface Dependency
+    interface Dependency :
+        CanProvideActivityStarter,
+        CanProvidePermissionRequester,
+        CanProvideDialogLauncher
 
     sealed class Input
 

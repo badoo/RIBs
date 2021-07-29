@@ -11,7 +11,7 @@ import com.badoo.ribs.test.RibTestActivity
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExample
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsBuilder
+import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExampleBuilder
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,7 +21,7 @@ class DialogsExampleTest {
     val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
-        DialogsBuilder(object : DialogsExample.Dependency {
+        DialogsExampleBuilder(object : DialogsExample.Dependency {
             override val dialogLauncher: DialogLauncher =
                 ribTestActivity.integrationPoint.dialogLauncher
         }).build(root(savedInstanceState))

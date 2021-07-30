@@ -72,7 +72,6 @@ dependencies {
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.test.mockitoKotlin
-    androidTestImplementation deps.test.mockitoKotlin
     androidTestImplementation deps.compose.uiTest
     androidTestImplementation deps.compose.uiTestJunit
 }

@@ -28,6 +28,10 @@ android {
         kotlinCompilerVersion deps.versions.kotlin
         kotlinCompilerExtensionVersion deps.versions.compose
     }
+
+    packagingOptions {
+        exclude 'META-INF/**'
+    }
 }
 
 dependencies {
@@ -54,6 +58,7 @@ dependencies {
     implementation deps.compose.material
     implementation deps.compose.uiTooling
     debugImplementation deps.compose.uiToolingPreview
+    debugImplementation deps.compose.uiTestManifest
     implementation deps.compose.foundation
 
     junitTestImplementation(project)
@@ -67,6 +72,9 @@ dependencies {
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.test.mockitoKotlin
+    androidTestImplementation deps.test.mockitoKotlin
+    androidTestImplementation deps.compose.uiTest
+    androidTestImplementation deps.compose.uiTestJunit
 }
 
 repositories {

@@ -63,7 +63,7 @@ dependencies {
 
     implementation project(':samples:routing:back-stack')
     implementation project(':samples:routing:simple-routing-rib')
-    implementation project(':samples:transition-animations')
+    implementation project(':samples:routing:transition-animations')
 
     implementation project(':samples:communication-between-nodes')
     implementation project(':samples:communication-between-nodes-1')

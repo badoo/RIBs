@@ -65,8 +65,8 @@ dependencies {
     implementation project(':samples:routing:simple-routing-rib')
     implementation project(':samples:routing:transition-animations')
 
-    implementation project(':samples:coordinate-multiple')
-    implementation project(':samples:menu-example')
+    implementation project(':samples:communication:coordinate-multiple')
+    implementation project(':samples:communication:menu-example')
 
     implementation project(':samples:android-integration:dialogs')
     implementation project(':samples:android-integration:launching-activities')

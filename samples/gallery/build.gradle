@@ -68,9 +68,9 @@ dependencies {
     implementation project(':samples:communication-between-nodes')
     implementation project(':samples:communication-between-nodes-1')
 
-    implementation project(':samples:android-integration:launching-activities')
-    implementation project(':samples:permissions')
     implementation project(':samples:android-integration:dialogs')
+    implementation project(':samples:android-integration:launching-activities')
+    implementation project(':samples:android-integration:permissions')
 
     implementation project(':samples:retained-instance-store')
 

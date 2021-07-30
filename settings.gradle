@@ -29,9 +29,7 @@ include ':samples:routing:simple-routing-rib'
 include ':samples:routing:transition-animations'
 include ':samples:retained-instance-store'
 include ':samples:resources'
-
 include ':sandbox'
-include ':sandbox-compose'
 
 include ':templates:release-0.27'
 include ':templates:snapshot'

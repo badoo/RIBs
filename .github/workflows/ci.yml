@@ -23,9 +23,8 @@ jobs:
                 path: |
                   ~/.gradle/caches
                   ~/.gradle/wrapper
-                key: ${{ runner.os }}-gradle-false-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                 restore-keys: |
-                  ${{ runner.os }}-gradle-false-
                   ${{ runner.os }}-gradle-
             - name: Assemble
               run: ./gradlew assemble
@@ -35,13 +34,9 @@ jobs:
                 rm -f ~/.gradle/caches/modules-2/modules-2.lock
                 rm -f ~/.gradle/caches/modules-2/gc.properties
     detekt:
+        name: Detekt
         runs-on: ubuntu-latest
         timeout-minutes: 10
-        strategy:
-          fail-fast: false
-          matrix:
-            compose-enabled: [ true,false ]
-        name: Detekt [jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -49,26 +44,21 @@ jobs:
               with:
                   java-version: 11
             - name: Detekt
-              run: ./gradlew detekt -PuseCompose=${{ matrix.compose-enabled }} --stacktrace
+              run: ./gradlew detekt --stacktrace
               working-directory: .
             - name: Upload failure reports
               if: failure()
               uses: actions/upload-artifact@v2
               with:
-                name: detekt-reports-compose-${{ matrix.compose-enabled }}
                 path: '**/build/reports'
 
     unit-tests:
+        name: Unit tests
         runs-on: ubuntu-latest
         timeout-minutes: 20
         env:
             JAVA_TOOL_OPTIONS: -Xmx4g
             GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
-        strategy:
-          fail-fast: false
-          matrix:
-            compose-enabled: [ true,false ]
-        name: Unit tests [jetpack-compose-enabled=${{ matrix.compose-enabled }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -80,18 +70,17 @@ jobs:
                 path: |
                   ~/.gradle/caches
                   ~/.gradle/wrapper
-                key: ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                 restore-keys: |
-                  ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-
                   ${{ runner.os }}-gradle-
             - name: Unit tests
-              run: ./gradlew testDebugUnitTest -PuseCompose=${{ matrix.compose-enabled }}
+              run: ./gradlew testDebugUnitTest
               working-directory: .
             - name: Upload failure reports
               if: failure()
               uses: actions/upload-artifact@v2
               with:
-                name: unit-test-reports-compose-${{ matrix.compose-enabled }}
+                name: unit-test-reports
                 path: '**/build/reports'
             - name: Cleanup Gradle Cache
               run: |
@@ -108,11 +97,7 @@ jobs:
             fail-fast: false
             matrix:
                 api-level: [22,25,29]
-                compose-enabled: [true,false]
-                exclude:
-                    - api-level: 22
-                      compose-enabled: true
-        name: Instrumentation tests [API=${{ matrix.api-level }}, jetpack-compose-enabled=${{ matrix.compose-enabled }}]
+        name: Instrumentation tests [API=${{ matrix.api-level }}]
         steps:
             - uses: actions/checkout@v2
             - uses: gradle/wrapper-validation-action@v1
@@ -124,22 +109,21 @@ jobs:
                 path: |
                   ~/.gradle/caches
                   ~/.gradle/wrapper
-                key: ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                 restore-keys: |
-                  ${{ runner.os }}-gradle-${{ matrix.compose-enabled }}-
                   ${{ runner.os }}-gradle-
             - name: Instrumentation tests
               uses: reactivecircus/android-emulator-runner@v2
               with:
                   api-level: ${{ matrix.api-level }}
                   arch: x86
-                  script: ./gradlew connectedCheck -PuseCompose=${{ matrix.compose-enabled }}
+                  script: ./gradlew connectedCheck
 
             - name: Upload failure reports
               if: failure()
               uses: actions/upload-artifact@v2
               with:
-                name: instrumentation-reports-api-${{ matrix.api-level }}-compose-${{ matrix.compose-enabled }}
+                name: instrumentation-reports-api-${{ matrix.api-level }}
                 path: '**/build/reports'
 
             - name: Cleanup Gradle Cache

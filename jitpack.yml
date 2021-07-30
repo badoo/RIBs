@@ -1,9 +1,5 @@
 jdk:
   - openjdk11
 install:
-  - echo "Building non-compose artifacts"
+  - echo "Building artifacts"
   - ./gradlew clean publishToMavenLocal
-  # By copying this to a different directory, we avoid deleting it when we clean, allowing Jitpack to find it.
-  - cp -R libraries libraries-non-compose
-  - echo "Building compose artifacts"
-  - ./gradlew clean publishToMavenLocal -PuseCompose=true

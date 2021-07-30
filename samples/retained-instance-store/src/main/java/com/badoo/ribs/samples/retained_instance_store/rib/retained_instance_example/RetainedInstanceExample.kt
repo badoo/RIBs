@@ -2,4 +2,7 @@ package com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_exa
 
 import com.badoo.ribs.core.Rib
 
-interface RetainedInstanceExample : Rib
+interface RetainedInstanceExample : Rib {
+
+    interface Dependency
+}

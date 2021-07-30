@@ -6,6 +6,7 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.retained_instance_store.R
+import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExample
 import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleBuilder
 
 class RootActivity : RibActivity() {
@@ -19,6 +20,8 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib {
-        return RetainedInstanceExampleBuilder().build(BuildContext.root(savedInstanceState))
+        return RetainedInstanceExampleBuilder(
+            object : RetainedInstanceExample.Dependency {}
+        ).build(BuildContext.root(savedInstanceState))
     }
 }

@@ -4,9 +4,11 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.samples.retained_instance_store.rib.counter.CounterBuilder
+import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExample.Dependency
 import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleRouter.Configuration.Content
 
 class RetainedInstanceExampleBuilder(
+    private val dependency: Dependency
 ) : SimpleBuilder<RetainedInstanceExample>() {
 
     override fun build(buildParams: BuildParams<Nothing?>): RetainedInstanceExample {

@@ -30,7 +30,7 @@ class OtherContainerRouter internal constructor(
         with(builders) {
             when (routing.configuration) {
                 Configuration.Picker -> child { picker.build(it) }
-                Configuration.RetainedInstanceStoreExample -> TODO()
+                Configuration.RetainedInstanceStoreExample -> child { retainedInstanceExample.build(it) }
             }
         }
 }

@@ -72,6 +72,8 @@ dependencies {
     implementation project(':samples:permissions')
     implementation project(':samples:dialogs')
 
+    implementation project(':samples:retained-instance-store')
+
     implementation project(':samples:resources')
 }
 

@@ -50,7 +50,7 @@ private fun View(
 ) {
     ButtonList(
         listOf(
-            "RetainedInstanceStore" to {  },
+            "RetainedInstanceStore" to { events.accept(Event.RetainedInstanceStoreClicked) },
         )
     )
 }

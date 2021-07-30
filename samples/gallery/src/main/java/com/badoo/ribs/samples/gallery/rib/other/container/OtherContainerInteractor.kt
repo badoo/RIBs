@@ -30,7 +30,7 @@ internal class OtherContainerInteractor(
 
     private fun onPickerOutput(output: OtherPicker.Output) {
         val configuration: Configuration = when (output) {
-            OtherPicker.Output.RetainedInstanceStoreSelected -> TODO()
+            OtherPicker.Output.RetainedInstanceStoreSelected -> Configuration.RetainedInstanceStoreExample
         }
 
         backStack.push(configuration)

@@ -23,24 +23,13 @@ android {
         }
     }
 
-    if (useCompose.toBoolean()) {
-        buildFeatures {
-            compose true
-        }
-
-        composeOptions {
-            kotlinCompilerVersion deps.versions.kotlin
-            kotlinCompilerExtensionVersion deps.versions.compose
-        }
+    buildFeatures {
+        compose true
     }
-}
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
-        if (useCompose.toBoolean()) {
-            useIR = true
-        }
+    composeOptions {
+        kotlinCompilerVersion deps.versions.kotlin
+        kotlinCompilerExtensionVersion deps.versions.compose
     }
 }
 
@@ -68,18 +57,14 @@ dependencies {
     implementation project(":libraries:rib-recyclerview")
     implementation project(':libraries:rib-rx2')
 
-    if (useCompose.toBoolean()) {
-        implementation project(":libraries:rib-compose")
-        implementation project(":sandbox-compose")
-        implementation deps.compose.runtime
-        implementation deps.compose.ui
-        implementation deps.compose.material
-        implementation deps.compose.uiTooling
-        debugImplementation deps.compose.uiToolingPreview
-        implementation deps.compose.foundation
-    } else {
-        implementation project(":sandbox-compose-placeholder")
-    }
+    implementation project(":libraries:rib-compose")
+    implementation project(":sandbox-compose")
+    implementation deps.compose.runtime
+    implementation deps.compose.ui
+    implementation deps.compose.material
+    implementation deps.compose.uiTooling
+    debugImplementation deps.compose.uiToolingPreview
+    implementation deps.compose.foundation
 
     junitTestImplementation(project)
     testImplementation deps.external.roboelectricBase

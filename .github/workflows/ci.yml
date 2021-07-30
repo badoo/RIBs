@@ -26,7 +26,6 @@ jobs:
                 key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                 restore-keys: |
                   ${{ runner.os }}-gradle-
-                  ${{ runner.os }}-gradle-
             - name: Assemble
               run: ./gradlew assemble
               working-directory: .
@@ -74,7 +73,6 @@ jobs:
                 key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                 restore-keys: |
                   ${{ runner.os }}-gradle-
-                  ${{ runner.os }}-gradle-
             - name: Unit tests
               run: ./gradlew testDebugUnitTest
               working-directory: .
@@ -113,7 +111,6 @@ jobs:
                   ~/.gradle/wrapper
                 key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                 restore-keys: |
-                  ${{ runner.os }}-gradle-
                   ${{ runner.os }}-gradle-
             - name: Instrumentation tests
               uses: reactivecircus/android-emulator-runner@v2

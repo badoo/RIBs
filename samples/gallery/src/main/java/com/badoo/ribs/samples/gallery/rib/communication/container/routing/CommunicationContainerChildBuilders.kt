@@ -1,9 +1,9 @@
 package com.badoo.ribs.samples.gallery.rib.communication.container.routing
 
-import com.badoo.ribs.samples.coordinate_multiple_example.rib.greeting_container.GreetingContainer
-import com.badoo.ribs.samples.coordinate_multiple_example.rib.greeting_container.GreetingContainerBuilder
-import com.badoo.ribs.samples.menu_example.rib.menu_example.MenuExample
-import com.badoo.ribs.samples.menu_example.rib.menu_example.MenuExampleBuilder
+import com.badoo.ribs.samples.communication.coordinate_multiple_example.rib.greeting_container.GreetingContainer
+import com.badoo.ribs.samples.communication.coordinate_multiple_example.rib.greeting_container.GreetingContainerBuilder
+import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.MenuExample
+import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.MenuExampleBuilder
 import com.badoo.ribs.samples.gallery.rib.communication.container.CommunicationContainer
 import com.badoo.ribs.samples.gallery.rib.communication.picker.CommunicationPicker
 import com.badoo.ribs.samples.gallery.rib.communication.picker.CommunicationPickerBuilder

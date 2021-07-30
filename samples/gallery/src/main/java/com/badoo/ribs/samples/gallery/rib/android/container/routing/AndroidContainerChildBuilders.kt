@@ -1,14 +1,14 @@
 package com.badoo.ribs.samples.gallery.rib.android.container.routing
 
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_example.LaunchingActivitiesExample
-import com.badoo.ribs.samples.android_integration.launching_activities.rib.launching_activities_example.LaunchingActivitiesExampleBuilder
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExampleBuilder
-import com.badoo.ribs.samples.dialogs.rib.dialogs_example.DialogsExample
+import com.badoo.ribs.samples.android.launching_activities.rib.launching_activities_example.LaunchingActivitiesExample
+import com.badoo.ribs.samples.android.launching_activities.rib.launching_activities_example.LaunchingActivitiesExampleBuilder
+import com.badoo.ribs.samples.android.dialogs.rib.dialogs_example.DialogsExampleBuilder
+import com.badoo.ribs.samples.android.dialogs.rib.dialogs_example.DialogsExample
 import com.badoo.ribs.samples.gallery.rib.android.container.AndroidContainer
 import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker
 import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPickerBuilder
-import com.badoo.ribs.samples.permissions.rib.parent.PermissionsExample
-import com.badoo.ribs.samples.permissions.rib.parent.PermissionsExampleBuilder
+import com.badoo.ribs.samples.android.permissions.rib.parent.PermissionsExample
+import com.badoo.ribs.samples.android.permissions.rib.parent.PermissionsExampleBuilder
 
 internal class AndroidContainerChildBuilders(
     dependency: AndroidContainer.Dependency

@@ -1,16 +1,16 @@
 package com.badoo.ribs.samples.customisations.app
 
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1.SimpleRoutingChild1ViewImpl
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1_child1.SimpleRoutingChild1Child1
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1_child1.SimpleRoutingChild1Child1ViewImpl
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1_child2.SimpleRoutingChild1Child2
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child1_child2.SimpleRoutingChild1Child2ViewImpl
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_child2.SimpleRoutingChild2ViewImpl
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.SimpleRoutingParent
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.SimpleRoutingParentViewImpl
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1.SimpleRoutingChild1
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1.SimpleRoutingChild1ViewImpl
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child1.SimpleRoutingChild1Child1
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child1.SimpleRoutingChild1Child1ViewImpl
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child2.SimpleRoutingChild1Child2
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child2.SimpleRoutingChild1Child2ViewImpl
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child2.SimpleRoutingChild2
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child2.SimpleRoutingChild2ViewImpl
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent.SimpleRoutingParent
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent.SimpleRoutingParentViewImpl
 
 object AppCustomisations : RibCustomisationDirectoryImpl() {
 

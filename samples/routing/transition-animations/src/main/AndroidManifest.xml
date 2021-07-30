@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.badoo.ribs.samples.transitionanimations">
+    package="com.badoo.ribs.samples.routing.transition_animations">
 
     <application
         android:allowBackup="true"

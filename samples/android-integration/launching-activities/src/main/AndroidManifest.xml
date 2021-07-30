@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.badoo.ribs.samples.android_integration.launching_activities">
+    package="com.badoo.ribs.samples.android.launching_activities">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RIBs">
 
-        <activity android:name=".app.OtherActivity" />
+        <activity android:name="com.badoo.ribs.samples.android.launching_activities.app.OtherActivity" />
 
     </application>
 </manifest>

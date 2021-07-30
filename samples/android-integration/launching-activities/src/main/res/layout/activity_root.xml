@@ -4,6 +4,6 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.badoo.ribs.samples.android_integration.launching_activities.app.RootActivity">
+    tools:context="com.badoo.ribs.samples.android.launching_activities.app.RootActivity">
 
 </FrameLayout>

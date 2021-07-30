@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.SimpleRoutingParent
-import com.badoo.ribs.samples.simplerouting.rib.simple_routing_parent.builder.SimpleRoutingParentBuilder
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent.SimpleRoutingParent
+import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent.builder.SimpleRoutingParentBuilder
 
 class CustomisationsActivity : RibActivity() {
 

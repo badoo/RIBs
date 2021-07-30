@@ -21,7 +21,7 @@ dependencies {
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
-    implementation project(':samples:simple-routing-rib')
+    implementation project(':samples:routing:simple-routing-rib')
     implementation project(':libraries:rib-base')
     implementation project(':samples:resources')
 

@@ -6,8 +6,8 @@ import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.comms_nodes_1.R
-import com.badoo.ribs.samples.comms_nodes_1.rib.container.Container
-import com.badoo.ribs.samples.comms_nodes_1.rib.container.ContainerBuilder
+import com.badoo.ribs.samples.comms_nodes_1.rib.menu_example.MenuExample
+import com.badoo.ribs.samples.comms_nodes_1.rib.menu_example.MenuExampleBuilder
 
 class RootActivity : RibActivity() {
 
@@ -20,8 +20,8 @@ class RootActivity : RibActivity() {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib {
-        val dependency = object : Container.Dependency {}
-        return ContainerBuilder(dependency).build(root(savedInstanceState))
+        val dependency = object : MenuExample.Dependency {}
+        return MenuExampleBuilder(dependency).build(root(savedInstanceState))
     }
 
 }

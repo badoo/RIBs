@@ -8,6 +8,7 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting
 import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.GreetingContainerRouter
+import com.badoo.ribs.samples.comms_nodes.rib.greeting_container.routing.GreetingContainerRouter.Configuration.ChooseLanguage
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.LanguageSelector
 
 internal class GreetingContainerInteractor(
@@ -26,20 +27,24 @@ internal class GreetingContainerInteractor(
                     greeting.input.accept(languageSelectorOutputToGreetingInput(it))
                 }
             }
-            whenChildBuilt<Greeting> { _, child -> child.output.observe(::onGreetingOutput) }
-            whenChildBuilt<LanguageSelector> { _, child -> child.output.observe(::onLanguageSelectorOutput) }
+            whenChildAttached<Greeting> { _, greeting ->
+                greeting.output.observe(::onGreetingOutput)
+            }
+            whenChildAttached<LanguageSelector> { _, languageSelector ->
+                languageSelector.output.observe(::onLanguageSelectorOutput)
+            }
+        }
+    }
+
+    private fun onGreetingOutput(output: Greeting.Output) {
+        when (output) {
+            is Greeting.Output.LanguageChangeRequested -> backStack.push(ChooseLanguage(output.currentLanguage))
         }
     }
 
     private val languageSelectorOutputToGreetingInput: (LanguageSelector.Output) -> Greeting.Input = {
         when (it) {
             is LanguageSelector.Output.LanguageSelected -> Greeting.Input.UpdateGreeting(it.selectedIndex)
-        }
-    }
-
-    private fun onGreetingOutput(output: Greeting.Output) {
-        when (output) {
-            is Greeting.Output.AvailableLanguagesDisplayed -> backStack.push(GreetingContainerRouter.Configuration.ChooseLanguage(output.currentLanguage))
         }
     }
 

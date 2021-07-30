@@ -1,18 +1,18 @@
-package com.badoo.ribs.samples.comms_nodes_1.rib.container
+package com.badoo.ribs.samples.comms_nodes_1.rib.menu_example
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration
-import com.badoo.ribs.samples.comms_nodes_1.rib.container.routing.ContainerRouter.Configuration.Content
+import com.badoo.ribs.samples.comms_nodes_1.rib.menu_example.routing.MenuExampleRouter.Configuration
+import com.badoo.ribs.samples.comms_nodes_1.rib.menu_example.routing.MenuExampleRouter.Configuration.Content
 import com.badoo.ribs.samples.comms_nodes_1.rib.menu.Menu
 
-interface ContainerPresenter
+interface MenuExamplePresenter
 
-internal class ContainerPresenterImpl(
+internal class MenuExamplePresenterImpl(
     private val backStack: BackStack<Configuration>
-) : ContainerPresenter,
+) : MenuExamplePresenter,
     SubtreeChangeAware {
 
     override fun onChildBuilt(child: Node<*>) {

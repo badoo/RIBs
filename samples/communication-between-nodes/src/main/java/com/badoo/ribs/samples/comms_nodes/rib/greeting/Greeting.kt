@@ -16,7 +16,7 @@ interface Greeting : Rib, Connectable<Input, Output> {
     }
 
     sealed class Output {
-        data class AvailableLanguagesDisplayed(val currentLanguage: Language) : Output()
+        data class LanguageChangeRequested(val currentLanguage: Language) : Output()
     }
 
     class Customisation(

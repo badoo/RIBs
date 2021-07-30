@@ -3,13 +3,14 @@ package com.badoo.ribs.samples.comms_nodes.rib.greeting
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.android.text.Text
+import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.RibAware
 import com.badoo.ribs.core.plugin.RibAwareImpl
 import com.badoo.ribs.core.plugin.ViewAware
 import com.badoo.ribs.minimal.reactive.CompositeCancellable
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Input
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Input.UpdateGreeting
-import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Output.AvailableLanguagesDisplayed
+import com.badoo.ribs.samples.comms_nodes.rib.greeting.Greeting.Output.LanguageChangeRequested
 import com.badoo.ribs.samples.comms_nodes.rib.greeting.GreetingView.ViewModel
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language
 import com.badoo.ribs.samples.comms_nodes.rib.language_selector.Language.ENGLISH
@@ -24,6 +25,7 @@ internal class GreetingPresenterImpl(
     ribAware: RibAware<Greeting> = RibAwareImpl(),
     defaultLanguage: Language = ENGLISH
 ) : GreetingPresenter,
+    NodeLifecycleAware,
     ViewAware<GreetingView>,
     RibAware<Greeting> by ribAware {
 
@@ -37,29 +39,37 @@ internal class GreetingPresenterImpl(
         FRENCH to "Bonjour"
     )
 
-    override fun onViewCreated(view: GreetingView, viewLifecycle: Lifecycle) {
-        super.onViewCreated(view, viewLifecycle)
-        viewLifecycle.subscribe(
+    override fun onCreate(nodeLifecycle: Lifecycle) {
+        super.onCreate(nodeLifecycle)
+        nodeLifecycle.subscribe(
             onCreate = {
-                this@GreetingPresenterImpl.view = view
                 cancellables += rib.input.observe(::onGreetingInput)
             },
             onDestroy = {
-                this@GreetingPresenterImpl.view = null
                 cancellables.cancel()
             }
         )
-        val initialViewModel = buildViewModel()
-        view.accept(initialViewModel)
     }
 
     private fun onGreetingInput(input: Input) {
         when (input) {
             is UpdateGreeting -> {
                 currentLanguage = Language.values()[input.selectedIndex]
-                view?.accept(buildViewModel())
             }
         }
+    }
+
+    override fun onViewCreated(view: GreetingView, viewLifecycle: Lifecycle) {
+        super.onViewCreated(view, viewLifecycle)
+        viewLifecycle.subscribe(
+            onCreate = {
+                this@GreetingPresenterImpl.view = view
+                view.accept(buildViewModel())
+            },
+            onDestroy = {
+                this@GreetingPresenterImpl.view = null
+            }
+        )
     }
 
     private fun buildViewModel(): ViewModel {
@@ -72,6 +82,6 @@ internal class GreetingPresenterImpl(
     }
 
     override fun onChangeLanguageClicked() {
-        rib.output.accept(AvailableLanguagesDisplayed(currentLanguage))
+        rib.output.accept(LanguageChangeRequested(currentLanguage))
     }
 }

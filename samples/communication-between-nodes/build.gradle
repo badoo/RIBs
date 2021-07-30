@@ -1,12 +1,9 @@
-configureAndroidApp(project)
-
-apply plugin: 'kotlin-kapt'
+configureAndroidLibrary(project)
 
 android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.badoo.ribs.samples.comms_nodes"
         versionCode 1
         versionName "1.0"
     }
@@ -18,7 +15,21 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+    }
 
+    composeOptions {
+        kotlinCompilerVersion deps.versions.kotlin
+        kotlinCompilerExtensionVersion deps.versions.compose
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
+        useIR = true
+    }
 }
 
 dependencies {
@@ -28,7 +39,15 @@ dependencies {
     implementation deps.android.constraintLayout
     implementation deps.android.design
 
+    implementation deps.compose.runtime
+    implementation deps.compose.ui
+    implementation deps.compose.material
+    implementation deps.compose.uiTooling
+    debugImplementation deps.compose.uiToolingPreview
+    implementation deps.compose.foundation
+
     implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-compose")
     implementation project(':samples:resources')
 
     testImplementation 'junit:junit:4.13'

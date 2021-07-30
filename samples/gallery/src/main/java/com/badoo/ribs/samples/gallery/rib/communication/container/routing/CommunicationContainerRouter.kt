@@ -24,15 +24,15 @@ class CommunicationContainerRouter internal constructor(
     sealed class Configuration : Parcelable {
         @Parcelize object Picker : Configuration()
         @Parcelize object MenuExample : Configuration()
-        @Parcelize object MultiScreenExample : Configuration()
+        @Parcelize object CoordinateMultipleExample : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
                 Configuration.Picker -> child { picker.build(it) }
-                Configuration.MenuExample -> TODO()
-                Configuration.MultiScreenExample -> TODO()
+                Configuration.MenuExample -> child { menuExample.build(it) }
+                Configuration.CoordinateMultipleExample -> child { greetingContainer.build(it) }
             }
         }
 }

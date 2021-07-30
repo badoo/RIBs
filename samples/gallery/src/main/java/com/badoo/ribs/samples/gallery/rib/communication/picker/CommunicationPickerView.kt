@@ -17,7 +17,7 @@ interface CommunicationPickerView : RibView,
 
     sealed class Event {
         object MenuExampleClicked : Event()
-        object MultiScreenExampleClicked : Event()
+        object CoordinateMultipleExampleClicked : Event()
     }
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, CommunicationPickerView>
@@ -52,7 +52,7 @@ private fun View(
     ButtonList(
         listOf(
             "Menu example" to { events.accept(Event.MenuExampleClicked) },
-            "Multi-screen example" to { events.accept(Event.MultiScreenExampleClicked) },
+            "Coordinate between multiple RIBs" to { events.accept(Event.CoordinateMultipleExampleClicked) },
         )
     )
 }

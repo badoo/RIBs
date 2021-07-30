@@ -31,7 +31,7 @@ internal class CommunicationContainerInteractor(
     private fun onPickerOutput(output: CommunicationPicker.Output) {
         val configuration: Configuration = when (output) {
             CommunicationPicker.Output.MenuExampleSelected -> Configuration.MenuExample
-            CommunicationPicker.Output.MultiScreenExampleSelected -> Configuration.MultiScreenExample
+            CommunicationPicker.Output.CoordinateMultipleSelected -> Configuration.CoordinateMultipleExample
         }
 
         backStack.push(configuration)

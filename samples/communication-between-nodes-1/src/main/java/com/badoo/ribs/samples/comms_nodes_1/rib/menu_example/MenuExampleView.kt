@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.comms_nodes_1.rib.container
+package com.badoo.ribs.samples.comms_nodes_1.rib.menu_example
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -11,21 +11,21 @@ import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.comms_nodes_1.R
 import com.badoo.ribs.samples.comms_nodes_1.rib.menu.Menu
 
-interface ContainerView : RibView {
+interface MenuExampleView : RibView {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, ContainerView>
+    interface Factory : ViewFactoryBuilder<Nothing?, MenuExampleView>
 }
 
-class ContainerViewImpl private constructor(
+class MenuExampleViewImpl private constructor(
     override val androidView: ViewGroup
 ) : AndroidRibView(),
-    ContainerView {
+    MenuExampleView {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_container
-    ) : ContainerView.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<ContainerView> = ViewFactory {
-            ContainerViewImpl(
+    ) : MenuExampleView.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<MenuExampleView> = ViewFactory {
+            MenuExampleViewImpl(
                 it.inflate(layoutRes)
             )
         }

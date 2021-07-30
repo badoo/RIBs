@@ -7,8 +7,8 @@ import com.badoo.ribs.core.plugin.Plugin
 class GreetingContainerNode internal constructor(
     buildParams: BuildParams<*>,
     plugins: List<Plugin> = emptyList(),
-) : Node<Nothing>(
+) : Node<GreetingContainerView>(
     buildParams = buildParams,
-    viewFactory = null,
+    viewFactory = GreetingContainerViewImpl.Factory().invoke(null),
     plugins = plugins
 ), GreetingContainer

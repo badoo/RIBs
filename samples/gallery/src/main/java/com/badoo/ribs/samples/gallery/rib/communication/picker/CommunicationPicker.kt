@@ -14,7 +14,7 @@ interface CommunicationPicker : Rib, Connectable<Input, Output> {
 
     sealed class Output {
         object MenuExampleSelected : Output()
-        object MultiScreenExampleSelected : Output()
+        object CoordinateMultipleSelected : Output()
     }
 
     class Customisation(

@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.comms_nodes_1.rib.container
+package com.badoo.ribs.samples.comms_nodes_1.rib.menu_example
 
 import android.os.Bundle
 import androidx.annotation.IdRes
@@ -13,13 +13,13 @@ import com.badoo.ribs.test.RibsRule
 import org.junit.Rule
 import org.junit.Test
 
-class ContainerTest {
+class MenuExampleTest {
 
     @get:Rule
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        ContainerBuilder(object : Container.Dependency {})
+        MenuExampleBuilder(object : MenuExample.Dependency {})
             .build(BuildContext.root(savedInstanceState))
 
     @Test

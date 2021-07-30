@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.viewinterop.AndroidView
 import com.badoo.ribs.android.AndroidRibViewHost
@@ -29,12 +30,17 @@ abstract class ComposeRibView(
     }
 
     private var lastChildAttached: MutableMap<Any, Node<*>> = mutableMapOf()
+    private var androidRibViewHosts: MutableMap<Any, AndroidRibViewHost> = mutableMapOf()
 
     protected open fun getParentViewForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
         mutableStateOf(null)
 
     override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
         val target: MutableState<ComposeView?> = getParentViewForSubtree(subtreeOf)
+        lastChildAttached[target]?.let { previous: Node<*> ->
+            detachChild(previous)
+        }
+
         lastChildAttached[target] = child
 
         when (val childView = child.onCreateView(this)) {
@@ -44,16 +50,37 @@ abstract class ComposeRibView(
             }
 
             else -> {
-                val innerContainer = FrameLayout(context)
-                AndroidRibViewHost(innerContainer).attachChild(child)
-                target.value = { AndroidView(factory = { innerContainer }) }
+                val innerContainer = FrameLayout(context).apply {
+                    tag = this@ComposeRibView::class.java.simpleName
+                }
+                val host = AndroidRibViewHost(innerContainer)
+                host.attachChild(child)
+
+                if (childView != null) {
+                    androidRibViewHosts[target] = host
+
+                    if (target.value != null) {
+                        target.value = null
+                    }
+
+                    target.value = {
+                        key(child.identifier) {
+                            AndroidView(factory = { innerContainer })
+                        }
+                    }
+                }
             }
         }
     }
 
     override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
-        child.onDetachFromView()
         val target: MutableState<ComposeView?> = getParentViewForSubtree(subtreeOf)
+        androidRibViewHosts[target]?.let {
+            it.detachChild(child)
+            androidRibViewHosts.remove(target)
+        } ?: run {
+            child.onDetachFromView()
+        }
 
         // Only detach the same child, or we would remove something unintended.
         // If there was already another child attached to the same target, then the MutableState

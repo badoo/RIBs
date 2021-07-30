@@ -1,16 +1,16 @@
-package com.badoo.ribs.samples.comms_nodes_1.rib.container
+package com.badoo.ribs.samples.comms_nodes_1.rib.menu_example
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 
-class ContainerNode internal constructor(
+class MenuExampleNode internal constructor(
     buildParams: BuildParams<*>,
-    viewFactory: ViewFactory<ContainerView>?,
+    viewFactory: ViewFactory<MenuExampleView>?,
     plugins: List<Plugin> = emptyList()
-) : Node<ContainerView>(
+) : Node<MenuExampleView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), Container
+), MenuExample

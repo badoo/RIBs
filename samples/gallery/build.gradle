@@ -61,8 +61,8 @@ dependencies {
     implementation project(':libraries:rib-mvicore')
     implementation project(':libraries:rib-rx2')
 
-    implementation project(':samples:back-stack')
     implementation project(':samples:simple-routing-rib')
+    implementation project(':samples:routing:back-stack')
     implementation project(':samples:transition-animations')
 
     implementation project(':samples:communication-between-nodes')

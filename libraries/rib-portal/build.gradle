@@ -1,11 +1,5 @@
 configureAndroidLibrary(project)
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
-    }
-}
-
 dependencies {
     api deps.android.appCompat
 

@@ -20,6 +20,7 @@ import com.badoo.ribs.test.util.TestActivity
 import com.badoo.ribs.test.util.TestRequestCodeClient
 import com.badoo.ribs.test.util.restartActivitySync
 import com.badoo.ribs.test.util.subscribeOnTestObserver
+import com.badoo.ribs.test.util.waitForIdle
 import io.reactivex.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.allOf
@@ -74,7 +75,9 @@ class ActivityStarterTest {
             Intent(this, OtherActivity::class.java)
         }
 
-        observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+        waitForIdle {
+            observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+        }
     }
 
     @Test
@@ -94,7 +97,9 @@ class ActivityStarterTest {
             null
         )
 
-        observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+        waitForIdle {
+            observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+        }
     }
 
     @Test
@@ -114,7 +119,9 @@ class ActivityStarterTest {
             null
         )
 
-        observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+        waitForIdle {
+            observer.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+        }
     }
 
     @Test
@@ -126,7 +133,9 @@ class ActivityStarterTest {
             Intent(this, OtherActivity::class.java)
         }
 
-        observer.assertEvent(ActivityResultEvent(1, RESULT_CANCELED, null))
+        waitForIdle {
+            observer.assertEvent(ActivityResultEvent(1, RESULT_CANCELED, null))
+        }
     }
 
     @Test
@@ -139,7 +148,9 @@ class ActivityStarterTest {
             Intent(this, OtherActivity::class.java)
         }
 
-        observer.assertEvent(ActivityResultEvent(1, RESULT_OK, data))
+        waitForIdle {
+            observer.assertEvent(ActivityResultEvent(1, RESULT_OK, data))
+        }
     }
 
     @Test
@@ -153,8 +164,10 @@ class ActivityStarterTest {
             Intent(this, OtherActivity::class.java)
         }
 
-        otherIdentifiableObserver.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
-        observer.assertEmpty()
+        waitForIdle {
+            otherIdentifiableObserver.assertEvent(ActivityResultEvent(1, RESULT_OK, null))
+            observer.assertEmpty()
+        }
     }
 
     private fun TestObserver<ActivityResultEvent>.assertEvent(event: ActivityResultEvent) {

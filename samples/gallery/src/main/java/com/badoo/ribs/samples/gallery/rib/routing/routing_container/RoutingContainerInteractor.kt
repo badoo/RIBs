@@ -32,6 +32,7 @@ internal class RoutingContainerInteractor(
         val configuration: Configuration = when (output) {
             RoutingPicker.Output.SimpleRoutingSelected -> Configuration.SimpleRoutingExample
             RoutingPicker.Output.BackStackSelected -> Configuration.BackStackExample
+            RoutingPicker.Output.ParameterisedRoutingSelected -> Configuration.ParameterisedExample
             RoutingPicker.Output.TransitionsSelected -> Configuration.TransitionsExample
         }
 

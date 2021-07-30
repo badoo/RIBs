@@ -18,6 +18,7 @@ interface RoutingPickerView : RibView,
     sealed class Event {
         object SimpleRoutingClicked : Event()
         object BackStackClicked : Event()
+        object ParameterisedRoutingClicked : Event()
         object TransitionsClicked : Event()
     }
 
@@ -54,6 +55,7 @@ private fun View(
         listOf(
             "Simple static routing" to { events.accept(Event.SimpleRoutingClicked) },
             "Back stack" to { events.accept(Event.BackStackClicked) },
+            "Parameterised routing" to { events.accept(Event.ParameterisedRoutingClicked) },
             "Transition animations" to { events.accept(Event.TransitionsClicked) },
         )
     )

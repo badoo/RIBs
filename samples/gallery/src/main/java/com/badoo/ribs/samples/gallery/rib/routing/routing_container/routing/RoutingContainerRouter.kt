@@ -25,6 +25,7 @@ class RoutingContainerRouter internal constructor(
         @Parcelize object Picker : Configuration()
         @Parcelize object SimpleRoutingExample : Configuration()
         @Parcelize object BackStackExample : Configuration()
+        @Parcelize object ParameterisedExample : Configuration()
         @Parcelize object TransitionsExample : Configuration()
     }
 
@@ -34,6 +35,7 @@ class RoutingContainerRouter internal constructor(
                 Configuration.Picker -> child { picker.build(it) }
                 Configuration.SimpleRoutingExample -> child { simpleRouting.build(it) }
                 Configuration.BackStackExample -> child { backStackExample.build(it) }
+                Configuration.ParameterisedExample -> child { buildTimeDepsExample.build(it) }
                 Configuration.TransitionsExample -> child { transitionExample.build(it) }
             }
         }

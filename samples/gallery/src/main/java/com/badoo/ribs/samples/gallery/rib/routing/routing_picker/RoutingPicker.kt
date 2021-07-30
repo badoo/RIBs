@@ -15,6 +15,7 @@ interface RoutingPicker : Rib, Connectable<Input, Output> {
     sealed class Output {
         object SimpleRoutingSelected : Output()
         object BackStackSelected : Output()
+        object ParameterisedRoutingSelected : Output()
         object TransitionsSelected : Output()
     }
 

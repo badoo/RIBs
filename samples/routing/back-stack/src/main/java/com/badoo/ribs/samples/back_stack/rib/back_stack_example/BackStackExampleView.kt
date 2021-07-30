@@ -58,7 +58,7 @@ class BackStackExampleViewImpl private constructor(
     BackStackExampleView {
 
     class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_parent
+        @LayoutRes private val layoutRes: Int = R.layout.rib_back_stack_example
     ) : BackStackExampleView.Factory {
         override fun invoke(deps: BackStackExampleView.Dependency): ViewFactory<BackStackExampleView> = ViewFactory {
             BackStackExampleViewImpl(

@@ -10,6 +10,7 @@ internal object ViewEventToOutput : (Event) -> RoutingPicker.Output? {
         when (event) {
             Event.SimpleRoutingClicked -> SimpleRoutingSelected
             Event.BackStackClicked -> BackStackSelected
+            Event.ParameterisedRoutingClicked -> ParameterisedRoutingSelected
             Event.TransitionsClicked -> TransitionsSelected
         }
 }

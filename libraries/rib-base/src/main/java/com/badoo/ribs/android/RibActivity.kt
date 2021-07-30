@@ -35,7 +35,7 @@ abstract class RibActivity : AppCompatActivity() {
         ActivityIntegrationPoint(
             activity = this,
             savedInstanceState = savedInstanceState,
-            rootViewGroup = rootViewGroup
+            rootViewGroup = { rootViewGroup }
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {

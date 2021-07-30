@@ -70,7 +70,7 @@ dependencies {
 
     implementation project(':samples:android-integration:launching-activities')
     implementation project(':samples:permissions')
-    implementation project(':samples:dialogs')
+    implementation project(':samples:android-integration:dialogs')
 
     implementation project(':samples:retained-instance-store')
 

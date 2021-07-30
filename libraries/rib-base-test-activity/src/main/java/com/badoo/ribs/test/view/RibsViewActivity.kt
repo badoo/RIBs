@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.test.activity.R
 
 class RibsViewActivity : AppCompatActivity() {
 
@@ -15,7 +16,8 @@ class RibsViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         THEME?.also { setTheme(it) }
         super.onCreate(savedInstanceState)
-        val rootViewHost = AndroidRibViewHost(findViewById(android.R.id.content))
+        setContentView(R.layout.rib_test)
+        val rootViewHost = AndroidRibViewHost(findViewById(R.id.rib_test_root))
         view = requireNotNull(VIEW_FACTORY).invoke(ViewFactory.Context(rootViewHost, lifecycle))
         setContentView(view.androidView)
     }

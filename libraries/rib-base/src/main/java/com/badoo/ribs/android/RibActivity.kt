@@ -40,7 +40,6 @@ abstract class RibActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(null)
         integrationPoint = createIntegrationPoint(savedInstanceState)
 
         val root = createRib(savedInstanceState)

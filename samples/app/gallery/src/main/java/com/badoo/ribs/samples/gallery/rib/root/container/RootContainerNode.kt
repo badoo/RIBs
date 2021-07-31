@@ -1,3 +1,4 @@
+@file:SuppressWarnings("LongParameterList")
 package com.badoo.ribs.samples.gallery.rib.root.container
 
 import com.badoo.ribs.core.modality.BuildParams

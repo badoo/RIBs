@@ -9,7 +9,11 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.samples.gallery.rib.root.container.routing.RootContainerRouter.Configuration
-import com.badoo.ribs.samples.gallery.rib.root.container.routing.RootContainerRouter.Configuration.*
+import com.badoo.ribs.samples.gallery.rib.root.container.routing.RootContainerRouter.Configuration.AndroidExamples
+import com.badoo.ribs.samples.gallery.rib.root.container.routing.RootContainerRouter.Configuration.CommunicationExamples
+import com.badoo.ribs.samples.gallery.rib.root.container.routing.RootContainerRouter.Configuration.OtherExamples
+import com.badoo.ribs.samples.gallery.rib.root.container.routing.RootContainerRouter.Configuration.Picker
+import com.badoo.ribs.samples.gallery.rib.root.container.routing.RootContainerRouter.Configuration.RoutingExamples
 import kotlinx.parcelize.Parcelize
 
 class RootContainerRouter internal constructor(

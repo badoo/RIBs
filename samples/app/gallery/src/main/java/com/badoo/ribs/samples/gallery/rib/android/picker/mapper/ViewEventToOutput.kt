@@ -1,7 +1,9 @@
 package com.badoo.ribs.samples.gallery.rib.android.picker.mapper
 
 import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker
-import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker.Output.*
+import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker.Output.ActivitiesExampleSelected
+import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker.Output.DialogsExampleSelected
+import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker.Output.PermissionsExampleSelected
 import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPickerView.Event
 
 internal object ViewEventToOutput : (Event) -> AndroidPicker.Output? {

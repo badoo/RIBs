@@ -1,3 +1,4 @@
+@file:SuppressWarnings("MagicNumber")
 package com.badoo.ribs.samples.gallery.rib.root.container.compose
 
 import androidx.compose.ui.graphics.Color

@@ -22,7 +22,7 @@
     <ID>LibraryCodeMustSpecifyReturnType:RootChildBuilders.kt$RootChildBuilders$val loggedInContainerBuilder = LoggedInContainerBuilder( subtreeDeps )</ID>
     <ID>LibraryCodeMustSpecifyReturnType:RootChildBuilders.kt$RootChildBuilders$val loggedOutContainerBuilder = LoggedOutContainerBuilder( subtreeDeps )</ID>
     <ID>MandatoryBracesIfStatements:AspectRatioDimensionsCalculator.kt$AspectRatioDimensionsCalculator$throw IllegalArgumentException("Aspect ratio should be greater than 0")</ID>
-    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.badoo.ribs.example.ExampleUnitTest.kt</ID>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$ExampleUnitTest.kt</ID>
     <ID>PackageNaming:AppBar.kt$package com.badoo.ribs.example.app_bar</ID>
     <ID>PackageNaming:AppBarBuilder.kt$package com.badoo.ribs.example.app_bar</ID>
     <ID>PackageNaming:AppBarInteractor.kt$package com.badoo.ribs.example.app_bar</ID>

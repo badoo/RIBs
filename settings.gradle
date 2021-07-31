@@ -1,5 +1,3 @@
-include ':app-example'
-
 include ':internal:junitextensions'
 
 include ':libraries:rib-base'
@@ -14,14 +12,16 @@ include ':libraries:rib-portal-rx2'
 include ':libraries:rib-recyclerview'
 include ':libraries:rib-rx2'
 
+include ':samples:app:hello-world'
+include ':samples:app:customisations-demo'
+include ':samples:app:gallery'
+include ':samples:app:unsplash-client'
+
 include ':samples:android-integration:dialogs'
 include ':samples:android-integration:launching-activities'
 include ':samples:android-integration:permissions'
 include ':samples:communication:coordinate-multiple'
 include ':samples:communication:menu-example'
-include ':samples:customisations-app'
-include ':samples:gallery'
-include ':samples:hello-world'
 include ':samples:routing:back-stack'
 include ':samples:routing:parameterised-routing'
 include ':samples:routing:simple-routing-rib'

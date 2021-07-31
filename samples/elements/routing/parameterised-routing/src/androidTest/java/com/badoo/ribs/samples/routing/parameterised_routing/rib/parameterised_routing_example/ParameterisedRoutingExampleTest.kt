@@ -18,7 +18,8 @@ class ParameterisedRoutingExampleTest {
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        ParameterisedRoutingExampleBuilder().build(root(savedInstanceState))
+        ParameterisedRoutingExampleBuilder(object : ParameterisedRoutingExample.Dependency {})
+            .build(root(savedInstanceState))
 
     @Test
     fun verifyInitialState() {

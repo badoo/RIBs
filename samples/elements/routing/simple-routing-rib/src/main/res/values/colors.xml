@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="parent_background">@color/yellow_200</color>
+    <color name="child1_background">@color/yellow_500</color>
+    <color name="child1_child1_background">@color/orange</color>
+    <color name="child1_child2_background">@color/teal_200</color>
+    <color name="child2_background">@color/gray</color>
+</resources>

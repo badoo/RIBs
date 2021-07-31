@@ -3,7 +3,7 @@ package com.badoo.ribs.samples.communication.menu_example.rib.menu_example
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.routing.source.backstack.operation.push
+import com.badoo.ribs.routing.source.backstack.operation.replace
 import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.routing.MenuExampleRouter.Configuration
 import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.routing.MenuExampleRouter.Configuration.Content
 import com.badoo.ribs.samples.communication.menu_example.rib.menu.Menu
@@ -36,7 +36,7 @@ internal class MenuExamplePresenterImpl(
     }
 
     private fun updateContent(item: Menu.MenuItem) {
-        backStack.push(item.toContent())
+        backStack.replace(item.toContent())
     }
 
     private fun updateMenuItem(content: Configuration, child: Menu) {

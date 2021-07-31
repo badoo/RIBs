@@ -45,20 +45,7 @@ class MenuExampleTest {
         whenever { iNavigateToChild1() }
         then { iSeeChild1() }
     }
-
-    @Test
-    fun backStack() {
-        given { iNavigateToChild2() }
-        and { iNavigateToChild3() }
-        then { iSeeChild3() }
-
-        whenever { iPressBack() }
-        then { iSeeChild2() }
-
-        whenever { iPressBack() }
-        then { iSeeChild1() }
-    }
-
+    
     // region Helper functions
 
     private fun iNavigateToChild1() {

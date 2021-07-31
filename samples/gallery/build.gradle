@@ -44,6 +44,7 @@ dependencies {
     implementation deps.external.mviCoreAndroid
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
+    implementation deps.external.leakCanary // use debugImplementation in real life apps
 
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
@@ -58,6 +59,7 @@ dependencies {
 
     implementation project(':libraries:rib-base')
     implementation project(":libraries:rib-compose")
+    implementation project(':libraries:rib-debug-utils')
     implementation project(':libraries:rib-mvicore')
     implementation project(':libraries:rib-rx2')
 

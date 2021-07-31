@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1
+package com.badoo.ribs.samples.routing.simple_routing.rib.child1
 
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,25 +10,25 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.routing.simple_routing.rib.R
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child1.SimpleRoutingChild1Child1
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child2.SimpleRoutingChild1Child2
+import com.badoo.ribs.samples.routing.simple_routing.rib.child1_child1.Child1Child1
+import com.badoo.ribs.samples.routing.simple_routing.rib.child1_child2.Child1Child2
 
-interface SimpleRoutingChild1View : RibView {
+interface Child1View : RibView {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, SimpleRoutingChild1View>
+    interface Factory : ViewFactoryBuilder<Nothing?, Child1View>
 
     fun setTitle(title: String)
 }
 
-class SimpleRoutingChild1ViewImpl private constructor(
+class Child1ViewImpl private constructor(
     override val androidView: ViewGroup
-) : AndroidRibView(), SimpleRoutingChild1View {
+) : AndroidRibView(), Child1View {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_simple_routing_child1
-    ) : SimpleRoutingChild1View.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<SimpleRoutingChild1View> = ViewFactory {
-            SimpleRoutingChild1ViewImpl(
+    ) : Child1View.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<Child1View> = ViewFactory {
+            Child1ViewImpl(
                 androidView = it.inflate(layoutRes)
             )
         }
@@ -44,8 +44,8 @@ class SimpleRoutingChild1ViewImpl private constructor(
 
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
         when (subtreeOf) {
-            is SimpleRoutingChild1Child1 -> child1Child2Container
-            is SimpleRoutingChild1Child2 -> child2Child2Container
+            is Child1Child1 -> child1Child2Container
+            is Child1Child2 -> child2Child2Container
             else -> super.getParentViewForSubtree(subtreeOf)
         }
 }

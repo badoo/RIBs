@@ -8,8 +8,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.routing.simple_routing.rib.R
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child1.SimpleRoutingChild1Child1
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child1.builder.SimpleRoutingChild1Child1Builder
+import com.badoo.ribs.samples.routing.simple_routing.rib.child1_child1.Child1Child1
+import com.badoo.ribs.samples.routing.simple_routing.rib.child1_child1.builder.Child1Child1Builder
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,8 +19,8 @@ class SimpleRoutingChild1Child1Test {
     val ribsRule = RibsRule { _, savedInstanceState -> buildRib(savedInstanceState) }
 
     private fun buildRib(savedInstanceState: Bundle?) =
-        SimpleRoutingChild1Child1Builder(
-            object : SimpleRoutingChild1Child1.Dependency {}
+        Child1Child1Builder(
+            object : Child1Child1.Dependency {}
         ).build(root(savedInstanceState))
 
     @Test

@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1.routing
+package com.badoo.ribs.samples.routing.simple_routing.rib.child1.routing
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -7,14 +7,14 @@ import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1.routing.SimpleRoutingChild1Router.Configuration.Permanent.Child1
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1.routing.SimpleRoutingChild1Router.Configuration.Permanent.Child2
+import com.badoo.ribs.samples.routing.simple_routing.rib.child1.routing.Child1Router.Configuration.Permanent.Child1
+import com.badoo.ribs.samples.routing.simple_routing.rib.child1.routing.Child1Router.Configuration.Permanent.Child2
 import kotlinx.parcelize.Parcelize
 
-class SimpleRoutingChild1Router internal constructor(
+class Child1Router internal constructor(
     buildParams: BuildParams<Nothing?>,
-    private val builders: SimpleRoutingChild1ChildBuilders
-) : Router<SimpleRoutingChild1Router.Configuration>(
+    private val builders: Child1ChildBuilders
+) : Router<Child1Router.Configuration>(
     buildParams = buildParams,
     routingSource = permanent(Child1, Child2)
 ) {

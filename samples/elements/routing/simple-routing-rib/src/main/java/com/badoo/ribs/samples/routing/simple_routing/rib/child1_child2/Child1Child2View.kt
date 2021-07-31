@@ -1,4 +1,4 @@
-package com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1_child2
+package com.badoo.ribs.samples.routing.simple_routing.rib.child1_child2
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -9,21 +9,21 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.routing.simple_routing.rib.R
 
-interface SimpleRoutingChild1Child2View : RibView {
+interface Child1Child2View : RibView {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, SimpleRoutingChild1Child2View>
+    interface Factory : ViewFactoryBuilder<Nothing?, Child1Child2View>
 }
 
-class SimpleRoutingChild1Child2ViewImpl private constructor(
+class Child1Child2ViewImpl private constructor(
     override val androidView: ViewGroup
-) : AndroidRibView(), SimpleRoutingChild1Child2View {
+) : AndroidRibView(), Child1Child2View {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_simple_routing_child1_child2
-    ) : SimpleRoutingChild1Child2View.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<SimpleRoutingChild1Child2View> =
+    ) : Child1Child2View.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<Child1Child2View> =
             ViewFactory {
-                SimpleRoutingChild1Child2ViewImpl(
+                Child1Child2ViewImpl(
                     androidView = it.inflate(layoutRes)
                 )
             }

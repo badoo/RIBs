@@ -9,8 +9,8 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.routing.simple_routing.rib.R
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child1.SimpleRoutingChild1
-import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_child2.SimpleRoutingChild2
+import com.badoo.ribs.samples.routing.simple_routing.rib.child1.Child1
+import com.badoo.ribs.samples.routing.simple_routing.rib.child2.Child2
 
 interface SimpleRoutingParentView : RibView {
 
@@ -36,8 +36,8 @@ class SimpleRoutingParentViewImpl private constructor(
 
     override fun getParentViewForSubtree(subtreeOf: Node<*>): ViewGroup =
         when (subtreeOf) {
-            is SimpleRoutingChild1 -> child1Container
-            is SimpleRoutingChild2 -> child2Container
+            is Child1 -> child1Container
+            is Child2 -> child2Container
             else -> super.getParentViewForSubtree(subtreeOf)
         }
 }

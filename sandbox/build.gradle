@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.badoo.ribs.sandbox"
-        minSdkVersion 21
+        minSdkVersion deps.build.minSdkVersion
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"

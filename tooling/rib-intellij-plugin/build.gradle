@@ -143,6 +143,9 @@ version = pluginXml.version
 
 buildSearchableOptions.enabled = false
 
+// Disable compileKotlin task only on CI as Android Studio Artic Fox cannot be easily resolved
+compileKotlin.enabled = System.getenv("CI") != "true"
+
 intellij {
     plugins = ['android', deps.build.kotlinIdeaPlugin, 'java']
     version = deps.versions.intellij

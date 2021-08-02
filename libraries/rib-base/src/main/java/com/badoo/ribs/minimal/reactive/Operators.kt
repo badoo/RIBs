@@ -88,4 +88,14 @@ fun <T> Source<T>.distinctUntilChanged(): Source<T> =
                     callback(it)
                 }
             }
+        }
+    }
+
+fun <T> Source<T>.onNext(onNext: (T) -> Unit): Source<T> =
+    object : Source<T> {
+        override fun observe(callback: (T) -> Unit): Cancellable =
+            this@onNext.observe {
+                onNext(it)
+                callback(it)
+            }
     }

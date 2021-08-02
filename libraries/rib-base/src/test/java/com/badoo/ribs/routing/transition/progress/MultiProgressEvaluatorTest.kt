@@ -1,7 +1,8 @@
 package com.badoo.ribs.routing.transition.progress
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 
 class MultiProgressEvaluatorTest {
 
@@ -24,10 +25,12 @@ class MultiProgressEvaluatorTest {
         assertEquals(false, value)
     }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun `GIVEN empty WHEN observed THEN does not allows to add more`() {
         evaluator.isPendingSource.observe { }
-        addTwoEvaluators()
+        assertThrows(IllegalStateException::class.java) {
+            addTwoEvaluators()
+        }
     }
 
     @Test

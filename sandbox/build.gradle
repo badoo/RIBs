@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.badoo.ribs.sandbox"
-        minSdkVersion 21
+        minSdkVersion deps.build.minSdkVersion
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -50,21 +50,20 @@ dependencies {
     implementation deps.external.rxandroid2
     implementation deps.external.leakCanary // use debugImplementation in real life apps
 
-    implementation project(":libraries:rib-base")
-    implementation project(":libraries:rib-debug-utils")
-    implementation project(":libraries:rib-mvicore")
-    implementation project(':libraries:rib-portal-rx2')
-    implementation project(":libraries:rib-recyclerview")
-    implementation project(':libraries:rib-rx2')
-
-    implementation project(":libraries:rib-compose")
-    implementation project(":sandbox-compose")
     implementation deps.compose.runtime
     implementation deps.compose.ui
     implementation deps.compose.material
     implementation deps.compose.uiTooling
     debugImplementation deps.compose.uiToolingPreview
     implementation deps.compose.foundation
+
+    implementation project(":libraries:rib-base")
+    implementation project(":libraries:rib-compose")
+    implementation project(":libraries:rib-debug-utils")
+    implementation project(":libraries:rib-mvicore")
+    implementation project(':libraries:rib-portal-rx2')
+    implementation project(":libraries:rib-recyclerview")
+    implementation project(':libraries:rib-rx2')
 
     junitTestImplementation(project)
     testImplementation deps.external.roboelectricBase

@@ -1,0 +1,85 @@
+configureAndroidApp(project)
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId 'com.badoo.ribs.samples.gallery'
+        minSdkVersion deps.build.minSdkVersion
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion deps.versions.kotlin
+        kotlinCompilerExtensionVersion deps.versions.compose
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
+        useIR = true
+    }
+}
+
+dependencies {
+    implementation deps.external.dagger
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
+    implementation deps.external.rxrelay2
+    implementation deps.external.rxandroid2
+    implementation deps.external.leakCanary // use debugImplementation in real life apps
+
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.design
+
+    implementation deps.compose.runtime
+    implementation deps.compose.ui
+    implementation deps.compose.material
+    implementation deps.compose.uiTooling
+    debugImplementation deps.compose.uiToolingPreview
+    implementation deps.compose.foundation
+
+    implementation project(':libraries:rib-base')
+    implementation project(":libraries:rib-compose")
+    implementation project(':libraries:rib-debug-utils')
+    implementation project(':libraries:rib-mvicore')
+    implementation project(':libraries:rib-rx2')
+
+    implementation project(':samples:elements:routing:back-stack')
+    implementation project(':samples:elements:routing:parameterised-routing')
+    implementation project(':samples:elements:routing:simple-routing-rib')
+    implementation project(':samples:elements:routing:transition-animations')
+
+    implementation project(':samples:elements:communication:coordinate-multiple')
+    implementation project(':samples:elements:communication:menu-example')
+
+    implementation project(':samples:elements:android-integration:dialogs')
+    implementation project(':samples:elements:android-integration:launching-activities')
+    implementation project(':samples:elements:android-integration:permissions')
+
+    implementation project(':samples:elements:other:retained-instance-store')
+
+    implementation project(':samples:resources')
+}
+
+repositories {
+    mavenCentral()
+}

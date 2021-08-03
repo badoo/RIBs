@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityBoundary
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.AlertDialogLauncher
@@ -18,12 +18,12 @@ import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 open class ActivityIntegrationPoint(
     private val activity: AppCompatActivity,
     savedInstanceState: Bundle?,
-    rootViewGroup: ViewGroup
+    rootViewGroup: () -> ViewGroup,
 ) : IntegrationPoint(
     lifecycleOwner = activity,
-    viewLifecycleOwner = MutableLiveData<LifecycleOwner>(activity),
+    viewLifecycleOwner = MutableLiveData(activity),
     savedInstanceState = savedInstanceState,
-    rootViewGroup = rootViewGroup
+    rootViewHostFactory = { AndroidRibViewHost(rootViewGroup()) }
 ) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
     private val permissionRequestBoundary = PermissionRequestBoundary(activity, requestCodeRegistry)

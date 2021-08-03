@@ -94,7 +94,10 @@ def compose = [
         material        : "androidx.compose.material:material:${versions.compose}",
         uiTooling       : "androidx.compose.ui:ui-tooling:${versions.compose}",
         uiToolingPreview: "androidx.compose.ui:ui-tooling-preview:${versions.compose}",
-        foundation      : "androidx.compose.foundation:foundation:${versions.compose}"
+        foundation      : "androidx.compose.foundation:foundation:${versions.compose}",
+        uiTest          : "androidx.compose.ui:ui-test:${versions.compose}",
+        uiTestManifest  : "androidx.compose.ui:ui-test-manifest:${versions.compose}",
+        uiTestJunit     : "androidx.compose.ui:ui-test-junit4:${versions.compose}",
 ]
 
 def test = [

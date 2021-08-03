@@ -1,11 +1,9 @@
 package com.badoo.ribs.android.integrationpoint
 
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
@@ -20,18 +18,6 @@ abstract class IntegrationPoint(
     protected val savedInstanceState: Bundle?,
     private val rootViewHostFactory: () -> RibView?
 ) {
-
-    constructor(
-        lifecycleOwner: LifecycleOwner,
-        viewLifecycleOwner: LiveData<LifecycleOwner>,
-        savedInstanceState: Bundle?,
-        rootViewGroup: ViewGroup
-    ) : this(
-        lifecycleOwner = lifecycleOwner,
-        viewLifecycleOwner = viewLifecycleOwner,
-        savedInstanceState = savedInstanceState,
-        rootViewHostFactory = { AndroidRibViewHost(rootViewGroup) }
-    )
 
     var rootViewHost: RibView? = null
         private set

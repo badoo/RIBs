@@ -1,11 +1,10 @@
-package com.badoo.ribs.minimal.state
+package com.badoo.ribs.minimal.reactive
 
-import com.badoo.ribs.minimal.reactive.Relay
-import com.badoo.ribs.minimal.reactive.combineLatest
 import io.reactivex.observers.TestObserver
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class CombineLatestTest {
+
     @Test
     fun `combineLatest does not emit values when none emitted from sources`() {
         val relay1 = Relay<String>()
@@ -109,4 +108,5 @@ class CombineLatestTest {
         observer1.assertValues("12")
         observer2.assertValues("12")
     }
+
 }

@@ -78,14 +78,24 @@ fun <T> defer(factory: () -> Source<T>): Source<T> =
 
 fun <T> Source<T>.distinctUntilChanged(): Source<T> =
     object : Source<T> {
-        private var hasLastValue: Boolean = false
-        private var lastValue: T? = null
-        override fun observe(callback: (T) -> Unit): Cancellable =
-            this@distinctUntilChanged.observe {
+        override fun observe(callback: (T) -> Unit): Cancellable {
+            var hasLastValue = false
+            var lastValue: T? = null
+            return this@distinctUntilChanged.observe {
                 if (!hasLastValue || lastValue != it) {
                     hasLastValue = true
                     lastValue = it
                     callback(it)
                 }
+            }
+        }
+    }
+
+fun <T> Source<T>.onNext(onNext: (T) -> Unit): Source<T> =
+    object : Source<T> {
+        override fun observe(callback: (T) -> Unit): Cancellable =
+            this@onNext.observe {
+                onNext(it)
+                callback(it)
             }
     }

@@ -141,6 +141,11 @@ def hasMavenCredentials() {
 ext.pluginXml = new XmlSlurper().parse(file("src/main/resources/META-INF/plugin.xml"))
 version = pluginXml.version
 
+buildSearchableOptions.enabled = false
+
+// Disable compileKotlin task only on CI as Android Studio Artic Fox cannot be easily resolved
+compileKotlin.enabled = System.getenv("CI") != "true"
+
 intellij {
     plugins = ['android', deps.build.kotlinIdeaPlugin, 'java']
     version = deps.versions.intellij
@@ -151,6 +156,14 @@ intellij {
 
     // Uncomment to test against Android Studio
     // alternativeIdePath = '/Applications/Android Studio.app'
+}
+
+instrumentCode {
+    compilerVersion = deps.versions.intellij
+}
+
+runPluginVerifier {
+    localPaths = ["/Applications/Android Studio.app/Contents"]
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

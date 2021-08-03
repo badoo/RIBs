@@ -7,9 +7,6 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-        maven {
-            url "https://dl.bintray.com/kotlin/kotlin-eap/"
-        }
     }
     dependencies {
         classpath deps.build.gradlePlugins.android
@@ -41,10 +38,6 @@ subprojects {
         maven { url deps.build.gradlePluginsUrl }
         google()
         maven { url "https://www.jitpack.io" }
-
-        maven {
-            url "https://dl.bintray.com/kotlin/kotlin-eap/"
-        }
     }
 
     configurations.all {

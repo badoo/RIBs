@@ -1,11 +1,7 @@
 package com.badoo.ribs.plugin.generator
 
-import com.android.builder.model.AndroidProject
+import com.android.tools.idea.gradle.model.IdeArtifactName
 import com.android.tools.idea.gradle.project.model.AndroidModuleModel
-import com.badoo.ribs.plugin.generator.SourceSet.ANDROID_TEST
-import com.badoo.ribs.plugin.generator.SourceSet.MAIN
-import com.badoo.ribs.plugin.generator.SourceSet.RESOURCES
-import com.badoo.ribs.plugin.generator.SourceSet.TEST
 import com.badoo.ribs.plugin.util.toPsiDirectory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
@@ -32,16 +28,16 @@ class SourceSetDirectoriesProvider(
         }
 
     private fun findDirectory(sourceSet: SourceSet, createIfNotFound: Boolean): PsiDirectory? = when (sourceSet) {
-        MAIN -> mainSourceDirectory
-        TEST -> getAndroidArtifactDirectory(AndroidProject.ARTIFACT_UNIT_TEST, createIfNotFound)
-        ANDROID_TEST -> getAndroidArtifactDirectory(AndroidProject.ARTIFACT_ANDROID_TEST, createIfNotFound)
-        RESOURCES -> ResourceFolderManager.getInstance(androidFacet).folders
+        SourceSet.MAIN -> mainSourceDirectory
+        SourceSet.TEST -> getAndroidArtifactDirectory(IdeArtifactName.UNIT_TEST, createIfNotFound)
+        SourceSet.ANDROID_TEST -> getAndroidArtifactDirectory(IdeArtifactName.ANDROID_TEST, createIfNotFound)
+        SourceSet.RESOURCES -> ResourceFolderManager.getInstance(androidFacet).folders
             .firstOrNull { !androidModel.isGenerated(it) }
             ?.toPsiDirectory(project)
             ?: throw IllegalStateException("Resources directory not found")
     }
 
-    private fun getAndroidArtifactDirectory(artifact: String, createIfNotFound: Boolean): PsiDirectory? {
+    private fun getAndroidArtifactDirectory(artifact: IdeArtifactName, createIfNotFound: Boolean): PsiDirectory? {
         return try {
             val file = androidModel.getTestSourceProviders(artifact).firstOrNull()?.javaDirectories?.firstOrNull()
                 ?: throw IllegalStateException("Source set directory for $artifact not found")

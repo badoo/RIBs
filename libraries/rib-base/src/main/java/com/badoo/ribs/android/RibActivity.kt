@@ -35,7 +35,7 @@ abstract class RibActivity : AppCompatActivity() {
         ActivityIntegrationPoint(
             activity = this,
             savedInstanceState = savedInstanceState,
-            rootViewGroup = rootViewGroup
+            rootViewGroup = { rootViewGroup }
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +45,7 @@ abstract class RibActivity : AppCompatActivity() {
         val root = createRib(savedInstanceState)
         integrationPoint.attach(root)
     }
-    
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         integrationPoint.onSaveInstanceState(outState)

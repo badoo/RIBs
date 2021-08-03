@@ -1,17 +1,10 @@
 configureAndroidLibrary(project)
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
-        useIR = true
-    }
-}
-
 android {
     compileSdkVersion 30
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion deps.build.minSdkVersion
         targetSdkVersion 30
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

@@ -1,7 +1,7 @@
 package com.badoo.ribs.test.util
 
 import android.app.Activity
-import androidx.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
@@ -38,6 +38,8 @@ fun <T : Activity> ActivityTestRule<T>.restartActivitySync() {
 
     resumedLatch.await(DEFAULT_CONDITION_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS)
 }
+
+fun waitForIdle(block: () -> Unit) = InstrumentationRegistry.getInstrumentation().waitForIdle(block)
 
 fun runOnMainSync(block: () -> Unit) = InstrumentationRegistry.getInstrumentation().runOnMainSync(block)
 

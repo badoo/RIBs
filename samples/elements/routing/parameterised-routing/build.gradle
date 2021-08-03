@@ -1,0 +1,38 @@
+configureAndroidLibrary(project)
+
+android {
+
+    defaultConfig {
+        versionCode 1
+        versionName '1.0'
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation deps.android.appCompat
+    implementation deps.android.constraintLayout
+    implementation deps.android.design
+    implementation project(':libraries:rib-base')
+    implementation project(':samples:resources')
+
+    testImplementation 'junit:junit:4.13.1'
+
+    debugImplementation project(':libraries:rib-base-test-activity')
+    androidTestImplementation project(':libraries:rib-base-test')
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.runner
+}
+
+repositories {
+    mavenCentral()
+}

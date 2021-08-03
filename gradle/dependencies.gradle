@@ -5,15 +5,7 @@ while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github"
     rootDirectory = rootDirectory.parentFile
 }
 
-apply from: "$rootDirectory/gradle/compose.gradle"
-
-def kotlinVersion
-if (useCompose.toBoolean()) {
-    kotlinVersion = '1.5.10' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.0.0-rc02
-} else {
-    kotlinVersion = '1.4.31'
-}
-println("kotlin version: $kotlinVersion")
+def kotlinVersion = '1.5.10' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.0.0
 
 def versions = [
         dagger                         : '2.37',
@@ -22,23 +14,23 @@ def versions = [
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.6',
         robolectric                    : '4.6.1',
-        compose                        : '1.0.0-rc02',
+        compose                        : '1.0.0',
 
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
-        androidxAnnotationVersion      : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/annotation
-        androidxAppCompatVersion       : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/appcompat
+        androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation
+        androidxAppCompatVersion       : '1.3.1', // https://developer.android.com/jetpack/androidx/releases/appcompat
         androidxArchCoreVersion        : '2.1.0', // https://developer.android.com/jetpack/androidx/releases/arch-core
         androidxBrowserVersion         : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/browser
         androidxBroadcastVersion       : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
         androidxCardViewVersion        : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/cardview
         androidxCollectionVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/collection
         androidxConstraintLayoutVersion: '1.1.3', // https://developer.android.com/jetpack/androidx/releases/constraintlayout & https://androidstudio.googleblog.com/
-        androidxCoreVersion            : useCompose.toBoolean() ? '1.5.0' : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/core
+        androidxCoreVersion            : '1.5.0', // https://developer.android.com/jetpack/androidx/releases/core
         androidxExifVersion            : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/exifinterface
-        androidxFragmentVersion        : useCompose.toBoolean() ? '1.3.5' : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/fragment
-        androidxActivityVersion        : useCompose.toBoolean() ? '1.2.3' : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/activity
+        androidxFragmentVersion        : '1.3.6', // https://developer.android.com/jetpack/androidx/releases/fragment
+        androidxActivityVersion        : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/activity
         androidxGridLayoutVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
-        androidxLifecycleVersion       : useCompose.toBoolean() ? '2.3.1' : '2.0.0', // https://developer.android.com/jetpack/androidx/releases/lifecycle
+        androidxLifecycleVersion       : '2.3.1', // https://developer.android.com/jetpack/androidx/releases/lifecycle
         androidxLoaderVersion          : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
         androidxPaletteVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
         androidxPercentLayoutVersion   : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
@@ -50,14 +42,8 @@ def versions = [
         leakCanary                     : '2.4',
         jacoco                         : '0.8.6',
         junit5                         : '5.7.1',
-        coil                           : useCompose.toBoolean() ? '1.2.2' : '1.2.0'
+        coil                           : '1.3.1'
 ]
-
-println("androidxCoreVersion version: ${versions.androidxCoreVersion}")
-println("androidxFragmentVersion version: ${versions.androidxFragmentVersion}")
-println("androidxActivityVersion version: ${versions.androidxActivityVersion}")
-println("androidxLifecycleVersion version: ${versions.androidxLifecycleVersion}")
-println("coil version: ${versions.coil}")
 
 def apt = [
         daggerCompiler: "com.google.dagger:dagger-compiler:${versions.dagger}",
@@ -71,7 +57,7 @@ def build = [
         compileSdkVersion: 30,
         gradlePluginsUrl : "https://plugins.gradle.org/m2/",
         ci               : 'true' == System.getenv('CI'),
-        minSdkVersion    : 17,
+        minSdkVersion    : 21,
         targetSdkVersion : 30,
         guava            : "com.google.guava:guava:20.0",
         commonsLang      : "commons-lang:commons-lang:2.6",

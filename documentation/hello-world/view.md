@@ -22,7 +22,7 @@ To do this for you, a ```Node``` will need a reference to a view factory.
 
 ## ViewFactory
 
-Let's have a look at the constructor of ```Node``:
+Let's have a look at the constructor of ```Node```:
 
 ```kotlin
 open class Node<V : RibView>(

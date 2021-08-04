@@ -48,8 +48,6 @@ Which means that we now have three levels in the tree actually:
 While extracting screens as standalone ```Nodes``` rather explains itself, we should go further. 
  Going deeper, sections of the screen can be thought of as standalone components implementing a concern: extract them as children and delegate this responsibility to them.
 
-[image]()
-
 Also, it's not always about UI: you can extract and delegate pieces that add purely business logic without any UI too.
 
 

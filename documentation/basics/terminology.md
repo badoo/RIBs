@@ -40,7 +40,7 @@ An optional but handy ```Plugin``` to manipulate which child ```Nodes``` should 
 
 The combination of the routing states of individual ```Nodes``` describe the state of the application on a high level.
 
-See more in [Routing] 
+See more in [Routing](../tree-structure-101/routing.md) 
 
 
 

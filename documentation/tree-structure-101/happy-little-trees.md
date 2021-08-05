@@ -99,7 +99,7 @@ Let's imagine an app with authentication, profile creation, onboarding, and main
 
 In this example, all of these high level ```Containers``` represent an abstract concept only – not something that you can directly represent on the screen. 
 
-Using this approach, you can have a single versatile tool to represent otherwise "invisible" parts of your application as standalone, lightweught components that delegate their functionality to their children.
+Using this approach, you can have a single versatile tool to represent otherwise "invisible" parts of your application as standalone, lightweight components that delegate their functionality to their children.
 
 
 ## Visibility

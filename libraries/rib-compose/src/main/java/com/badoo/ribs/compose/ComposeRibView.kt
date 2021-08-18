@@ -23,7 +23,11 @@ abstract class ComposeRibView(
      * current [composable] is used directly.
      */
     override val androidView: ViewGroup by lazy {
-        androidx.compose.ui.platform.ComposeView(context).apply {
+        androidx.compose.ui.platform.ComposeView(
+            context = context,
+            attrs = null,
+            defStyleAttr = 0
+        ).apply {
             setContent(composable)
         }
     }

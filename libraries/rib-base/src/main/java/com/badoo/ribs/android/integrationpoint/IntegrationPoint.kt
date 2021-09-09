@@ -92,6 +92,10 @@ abstract class IntegrationPoint(
         rootViewHost = null
     }
 
+    private fun onPreDestroy() {
+        root.node.onPreDestroy()
+    }
+
     private fun onDestroy() {
         root.node.onDestroy(!isFinishing)
     }
@@ -106,7 +110,9 @@ abstract class IntegrationPoint(
     }
 
     fun handleBackPress(): Boolean =
-        root.node.handleBackPress()
+        root.node.handleBackPress().also { handled ->
+            if (!handled) onPreDestroy()
+        }
 
     abstract fun handleUpNavigation()
 

@@ -217,7 +217,6 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         }
 
         lifecycleManager.onDestroy()
-        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDestroy() }
         if (!isRecreating) {
             retainedInstanceStore.removeAll(identifier)
         }
@@ -227,6 +226,10 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         }
 
         isPendingDetach = false
+    }
+
+    fun onPreDestroy() {
+        plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDestroy() }
     }
 
     /**
@@ -310,6 +313,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     fun detachChildNode(child: Node<*>, isRecreating: Boolean) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildDetached(child) }
         _children.remove(child)
+        child.onPreDestroy()
         child.onDestroy(isRecreating)
     }
 

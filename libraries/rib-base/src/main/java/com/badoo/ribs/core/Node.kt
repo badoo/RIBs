@@ -120,7 +120,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     internal val isViewless: Boolean =
         viewFactory == null
 
-    internal open var view: V? = null
+    open var view: V? = null
     private var rootHost: RibView? = null
 
     internal open var savedViewState: SparseArray<Parcelable> =

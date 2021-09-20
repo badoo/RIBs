@@ -1,7 +1,6 @@
 package com.badoo.ribs.compose
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -32,32 +31,11 @@ class ComposeTarget(
     }
 
     fun addView(view: View) {
-        Log.d("COMPCONTAINER", "Adding: ${view.hashCode()}")
         container.addView(view)
-        listChild(container)
-    }
-
-    private fun listChild(container: ViewGroup) {
-        val count = container.childCount
-        Log.d("COMPCONTAINER", "ChildCount: $count")
-
-        if (count > 0) {
-            val children = mutableListOf<String>().apply {
-                for (i in 0 until count) {
-                    add(
-                        container.getChildAt(i).hashCode().toString()
-                    )
-                }
-            }
-
-            Log.d("COMPCONTAINER", "ChidlList: $children")
-        }
     }
 
     fun removeView(view: View) {
-        Log.d("COMPCONTAINER", "Destroying: ${view.hashCode()}")
         container.removeView(view)
-        listChild(container)
     }
 }
 

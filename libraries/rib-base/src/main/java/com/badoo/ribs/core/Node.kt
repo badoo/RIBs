@@ -291,7 +291,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         if (isAttachedToView && child.isAttachedToView) {
             view?.detachChild(child, subtreeOf)
                 ?: parent?.detachChildView(child, this, false)
-                ?: rootHost!!.detachChild(child, this)
+                ?: rootHost?.detachChild(child, this)
                 ?: RIBs.errorHandler.handleFatalError(
                     "No view, no parent, and no root host should be technically impossible"
                 )

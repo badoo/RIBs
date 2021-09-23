@@ -120,7 +120,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     internal val isViewless: Boolean =
         viewFactory == null
 
-    open var view: V? = null
+    internal var view: V? = null
     private var rootHost: RibView? = null
 
     internal open var savedViewState: SparseArray<Parcelable> =
@@ -196,16 +196,19 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         }
     }
 
-    fun onDetachFromView() {
+    fun onDetachFromView(): V? {
         if (isAttachedToView) {
+            val view = view
             plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onDetachFromView() }
             lifecycleManager.onDetachFromView()
             saveViewState()
             isAttachedToView = false
             isPendingViewDetach = false
             rootHost = null
-            view = null
+            this.view = null
+            return view
         }
+        return null
     }
 
     open fun onDestroy(isRecreating: Boolean) {

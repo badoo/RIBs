@@ -7,7 +7,7 @@ import android.widget.FrameLayout
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.viewinterop.AndroidView
 
-class ComposeTarget(
+class ComposeChildHost(
     composeViewState: MutableState<ComposeView?>,
     val container: ViewGroup,
 ) {

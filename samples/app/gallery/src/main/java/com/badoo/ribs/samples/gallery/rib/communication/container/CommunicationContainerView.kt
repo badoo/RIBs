@@ -33,7 +33,7 @@ class CommunicationContainerViewImpl private constructor(
 
     private var content: MutableState<ComposeView?> = mutableStateOf(null)
 
-    override fun getParentViewForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
+    override fun getParentStateForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
         content
 
     override val composable: @Composable () -> Unit = {

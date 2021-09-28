@@ -2,66 +2,59 @@ package com.badoo.ribs.compose
 
 import android.content.Context
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.viewinterop.AndroidView
-import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
+
+/**
+ * RibView used for compose interoperability. It will wrap the view in a ComposeView.
+ *
+ * @param context Android context used to create the required views
+ * @param childHostFactory Factory to provide ComposeChildHost, required to attach compose content
+ * to a ViewGroup. Use a custom one if you need to customize the ViewGroup.
+ */
 abstract class ComposeRibView(
-    override val context: Context
+    override val context: Context,
+    private val childHostFactory: (MutableState<ComposeView?>, context: Context) -> ComposeChildHost = { state, context ->
+        ComposeChildHost(state, context)
+    },
 ) : RibView {
 
     abstract val composable: ComposeView
 
-    /**
-     * Only for compatibility with [com.badoo.ribs.core.view.AndroidRibView] parents.
-     *
-     * Will not be constructed / used if parent is also [ComposeRibView]. In those cases
-     * current [composable] is used directly.
-     */
-    override val androidView: ViewGroup by lazy {
+    override val androidView: ViewGroup by lazy(LazyThreadSafetyMode.NONE) {
         androidx.compose.ui.platform.ComposeView(context).apply {
             setContent(composable)
         }
     }
+    private val childHosts = mutableMapOf<MutableState<ComposeView?>, ComposeChildHost>()
 
-    private var lastChildAttached: MutableMap<Any, Node<*>> = mutableMapOf()
-
-    protected open fun getParentViewForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> =
-        mutableStateOf(null)
-
-    override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
-        val target: MutableState<ComposeView?> = getParentViewForSubtree(subtreeOf)
-        lastChildAttached[target] = child
-
-        when (val childView = child.onCreateView(this)) {
-            is ComposeRibView -> {
-                child.onAttachToView()
-                target.value = childView.composable
-            }
-
-            else -> {
-                val innerContainer = FrameLayout(context)
-                AndroidRibViewHost(innerContainer).attachChild(child)
-                target.value = { AndroidView(factory = { innerContainer }) }
-            }
-        }
+    private fun getChildHostForSubtree(subtreeOf: Node<*>): ComposeChildHost {
+        val state = getParentStateForSubtree(subtreeOf)
+        return childHosts.getOrPut(
+            state,
+            { childHostFactory(state, context) }
+        )
     }
 
-    override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
-        child.onDetachFromView()
-        val target: MutableState<ComposeView?> = getParentViewForSubtree(subtreeOf)
+    open fun getParentStateForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> {
+        throw IllegalStateException("DefaultImplementation must not be invoked")
+    }
 
-        // Only detach the same child, or we would remove something unintended.
-        // If there was already another child attached to the same target, then the MutableState
-        // of lastChildAttached[target] was overwritten, and the related ComposeView
-        // was already removed from the composition as a result, and no further action is needed.
-        if (child == lastChildAttached[target]) {
-            target.value = null
-            lastChildAttached.remove(target)
+    override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
+        val childHost = getChildHostForSubtree(subtreeOf)
+        child.onCreateView(this)?.let {
+            childHost.addView(it.androidView)
+        }
+        child.onAttachToView()
+    }
+
+
+    override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
+        val target = getChildHostForSubtree(subtreeOf)
+        child.onDetachFromView()?.let {
+            target.removeView(it.androidView)
         }
     }
 }

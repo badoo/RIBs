@@ -196,16 +196,19 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         }
     }
 
-    fun onDetachFromView() {
+    fun onDetachFromView(): V? {
         if (isAttachedToView) {
+            val view = view
             plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onDetachFromView() }
             lifecycleManager.onDetachFromView()
             saveViewState()
             isAttachedToView = false
             isPendingViewDetach = false
             rootHost = null
-            view = null
+            this.view = null
+            return view
         }
+        return null
     }
 
     open fun onDestroy(isRecreating: Boolean) {
@@ -288,7 +291,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         if (isAttachedToView && child.isAttachedToView) {
             view?.detachChild(child, subtreeOf)
                 ?: parent?.detachChildView(child, this, false)
-                ?: rootHost!!.detachChild(child, this)
+                ?: rootHost?.detachChild(child, this)
                 ?: RIBs.errorHandler.handleFatalError(
                     "No view, no parent, and no root host should be technically impossible"
                 )

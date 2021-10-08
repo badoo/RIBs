@@ -86,47 +86,7 @@ This suggests an information flow where:
 This helps with keeping things decoupled.
 
 
-## Start listening even before the child is ready
 
-Business logic in any child can potentially mean that the child starts sending some outputs right after it's wired up. To not miss those messages, it's best to start listening to them before that. The ```onChildBuilt``` callback method in the ```SubtreeChangeAware``` interface allows just that:
-
-```kotlin
-class SomeBusinessLogic : SubtreeChangeAware {
-
-	// Called by the framework as soon as the child is built, 
-	// before it receives any wakeup calls
-    override fun onChildBuilt(child: Node<*>) {
-        when (child) {
-            // Use interface names:
-            is SomeRib -> TODO("setup listening to child.output")
-            is SomeOtherRib -> TODO("setup listening to child.output")
-        }
-    }
-}
-```
-
-Since we earlier marked ```SomeRib``` as ```Connectable<Input, Output>```, we can now directly use ```child.output``` with type information available.
-
-
-(Don't forget to pass this class as a ```Plugin``` to your ```Node```! See [Plugins](../basics/plugins.md) for more info)
-
-
-## Start sending only after the child is ready
-
-When we want to send inputs to a child, we need to do the opposite of what we did with outputs: we meed to make sure to only send them after the child is ready, so it doesn't miss any. We can use the ```onChildAttached``` method for this:
-
-```kotlin
-class SomeBusinessLogic : SubtreeChangeAware {
-
-	// Called by the framework after the child is ready
-    override fun onChildAttached(child: Node<*>) {
-        when (child) {
-            // Use interface names:
-            is SomeRib -> TODO("setup comms that use child.input")
-        }
-    }
-}
-```
 
 ## Creating, handling, bubbling up output
 

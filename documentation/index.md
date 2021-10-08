@@ -28,6 +28,7 @@
 - [Permanent parts](tree-structure-101/permanent-parts.md)
 - [Providing dependencies](tree-structure-101/providing-dependencies.md)
 - [Communication between Nodes](tree-structure-101/communication-between-nodes.md)
+- [The power of the ChildAware API](tree-structure-101/childaware-api.md)
 - [Deep link workflows](tree-structure-101/deep-link-workflows.md)
 - [Lifecycle](tree-structure-101/lifecycle.md)
 

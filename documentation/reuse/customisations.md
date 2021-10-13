@@ -9,6 +9,8 @@ A key difference in their implementation:
 - Customisations should always have sensible defaults (if one cannot be provided, it's already a dependency!)
 - Customisations are overridden only on the application level, keeping your tree of dependencies cleaner
 
+![](https://i.imgur.com/vYR1qzh.png)
+![](https://i.imgur.com/ge2a88g.png)
 
 ## Defining customisations
 

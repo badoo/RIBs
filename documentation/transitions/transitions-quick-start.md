@@ -2,6 +2,8 @@
 
 RIBs supports transition animations for routing changes.
 
+![](https://i.imgur.com/G1rKnse.gif)
+
 It's as easy as passing an optional ```TransitionHandler``` to your ```Router```:
 
 ```kotlin

@@ -85,7 +85,9 @@ This suggests an information flow where:
 
 This helps with keeping things decoupled.
 
+![](https://i.imgur.com/s7Am2to.png)
 
+In the above screen, the bottom navigation menu sends an output signal with the selected menu item. Then it's converted into an input for the parent RIB to attach the corresponding child view.
 
 
 ## Creating, handling, bubbling up output

@@ -132,6 +132,6 @@ Some carefree options how to provide it:
 1. When extending the `Interactor` class (provided by the framework) to implement business logic, it already implements this interface, so you can just call use `this` in place of the `client`
 2. Every `Rib` gets an instance of `BuildParam` upon creation in the `Builder`. `BuildParam` contains an `identifier` field, which is guaranteed to be unique by the framework. You can call `.toString()` on it and use its value. (Note: `Interactor` uses this same exact mechanics)
 
-
+![](https://i.imgur.com/k5plyaY.gif)
 
 

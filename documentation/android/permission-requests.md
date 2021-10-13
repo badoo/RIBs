@@ -53,4 +53,7 @@ permissionRequester.requestPermissions(
     )
 )
 ```
+Below you can check differences between the two flows where in the first one, the user grants the permissions and in the second denies them.
 
+![](https://i.imgur.com/ykukrXP.gif)
+![](https://i.imgur.com/yvppKEf.gif)

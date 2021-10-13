@@ -36,6 +36,8 @@ newRoot(C)
 T2: [C]             // no reversal, even though C is the same as in T0 - the whole of the state is different
 ```
 
+![](https://i.imgur.com/0aYzjUX.gif)
+
 ## Transition reversal is automatic
 
 The coolest thing is probably that back press has no special role here at all! Transition reversal automatically works regardless of:

@@ -83,7 +83,7 @@ internal class Actor<C : Parcelable>(
         actions.forEach { it.onBeforeTransition() }
         val transitionElements = actions.flatMap { it.transitionElements }
 
-        if (canTransition(params)) {
+        if (canTransition(params) && transitionElements.isNotEmpty()) {
             scheduleTransitions(transaction.descriptor, transitionElements, actions)
         } else {
             actions.forEach { it.onTransition() }

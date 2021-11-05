@@ -40,8 +40,12 @@ internal class ActorTest {
             on { create(any(), any(), any(), any()) } doReturn pendingTransition
         }
         val state = WorkingState<AnyConfiguration>(activationLevel = activationState)
+        val command = mock<RoutingCommand<AnyConfiguration>> {
+            on { actionFactory } doReturn ElementsActionFactoryStub()
+            on { routing } doReturn mock()
+        }
         val transaction = Transaction.RoutingChange<AnyConfiguration>(
-            changeset = emptyList(),
+            changeset = listOf(command),
             descriptor = mock()
         )
         getActor(pendingTransitionFactory, transitionHandler).invoke(state, transaction)
@@ -70,8 +74,12 @@ internal class ActorTest {
             on { isReverseOf(oldPendingTransition.descriptor) } doReturn isReverse
             on { isContinuationOf(oldPendingTransition.descriptor) } doReturn isContinuation
         }
+        val command = mock<RoutingCommand<AnyConfiguration>> {
+            on { actionFactory } doReturn ElementsActionFactoryStub()
+            on { routing } doReturn mock()
+        }
         val transaction = Transaction.RoutingChange<AnyConfiguration>(
-            changeset = emptyList(),
+            changeset = listOf(command),
             descriptor = newDescriptor
         )
 
@@ -156,7 +164,6 @@ internal class ActorTest {
         val pendingTransitionFactory: PendingTransitionFactory<AnyConfiguration> = mock {
             on { create(any(), any(), any(), any()) } doReturn pendingTransition
         }
-
         val command = mock<RoutingCommand<AnyConfiguration>> {
             on { actionFactory } doReturn NoElementsActionFactoryStub()
             on { routing } doReturn mock()
@@ -313,6 +320,7 @@ internal class ActorTest {
             )
     }
 
+    @Suppress("EmptyFunctionBlock")
     private class NoElementsActionFactoryStub : ReversibleActionFactory {
 
         override fun <C : Parcelable> create(params: ActionExecutionParams<C>): ReversibleAction<C> {
@@ -331,6 +339,26 @@ internal class ActorTest {
                     get() = emptyList()
             }
         }
+    }
 
+    @Suppress("EmptyFunctionBlock")
+    private class ElementsActionFactoryStub : ReversibleActionFactory {
+
+        override fun <C : Parcelable> create(params: ActionExecutionParams<C>): ReversibleAction<C> {
+            return object : ReversibleAction<C> {
+                override fun reverse() {}
+
+                override fun onBeforeTransition() {}
+
+                override fun onTransition(forceExecute: Boolean) {}
+
+                override fun onFinish(forceExecute: Boolean) {}
+
+                override val canExecute: Boolean
+                    get() = true
+                override val transitionElements: List<TransitionElement<C>>
+                    get() = listOf(mock())
+            }
+        }
     }
 }

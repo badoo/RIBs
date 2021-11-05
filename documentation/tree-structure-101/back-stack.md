@@ -96,6 +96,8 @@ backStack.singleTop(B*)
 T1: [A, B*]
 ```
 
+![](https://i.imgur.com/dZEdFau.png)
+
 ## Custom back stack operations
 
 You're free to add new operations on the back stack by implementing the ```BackStackOperation``` interface:
@@ -199,6 +201,8 @@ T6: [A, B, C, D, E]     // Indentical to T1
                  O1
 
 ```
+
+![](https://i.imgur.com/txHnNwe.png)
 
 ## Putting the pieces together
 

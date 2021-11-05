@@ -17,11 +17,11 @@ import com.badoo.ribs.core.view.RibView
 abstract class Interactor<R : Rib, V : RibView>(
     private val buildParams: BuildParams<*>,
     private val ribAware: RibAware<R> = RibAwareImpl(),
-    private val childAware: ChildAware = ChildAwareImpl(),
+    private val childAwareImpl: ChildAware = ChildAwareImpl(),
 ) : RibAware<R> by ribAware,
     ViewAware<V>,
     NodeLifecycleAware,
-    ChildAware by childAware,
+    ChildAware by childAwareImpl,
     BackPressHandler,
     SavesInstanceState,
     RequestCodeClient {

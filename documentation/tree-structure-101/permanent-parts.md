@@ -22,3 +22,7 @@ And you can use operator overload to combine it with your back stack before pass
 ```kotlin
 routingSource = backStack + permanent(Menu)
 ```
+
+![](https://i.imgur.com/s7Am2to.png)
+
+In the above screen, the bottom navigation menu is a permanent part that allows changing the content of the sibling view.

@@ -110,6 +110,7 @@ class RibDialog(
 
 The `Rib` will be created and destroyed along with the dialog automatically.
 
+![](https://i.imgur.com/YILUgym.png)
 
 ## Dialog events
 

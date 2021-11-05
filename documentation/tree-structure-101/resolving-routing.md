@@ -13,11 +13,11 @@ Let's call them ```Configurations```.
 
 Let's see the example of the main screen we had previously:
 
-[screenshot – card swiping game]()
+![](https://i.imgur.com/HGI5gNg.png)
 
 We said we modeled this with a structure like:
 
-[diagram – container]()
+![](https://i.imgur.com/NOaSvhf.png)    
 
 Let's imagine that all of these screens are already implemented as standalone ```Nodes```, which can be built using their corresponding ```Builders```.
 

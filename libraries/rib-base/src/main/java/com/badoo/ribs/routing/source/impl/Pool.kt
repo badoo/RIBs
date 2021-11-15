@@ -35,7 +35,7 @@ class Pool<C : Parcelable>(
 
     init {
         timeCapsule.register(TIME_CAPSULE_KEY) { State(elements) }
-        if (elements.isEmpty()) {
+        if (!timeCapsule.hasSavedState<C>()) {
             initElements(initialItems)
         }
     }
@@ -177,5 +177,8 @@ class Pool<C : Parcelable>(
 
         private fun <C : Parcelable> TimeCapsule.elements(): Map<Routing.Identifier, RoutingHistoryElement<C>> =
             get<State<C>>(TIME_CAPSULE_KEY)?.elements ?: emptyMap()
+
+        private fun <C : Parcelable> TimeCapsule.hasSavedState(): Boolean =
+            get<State<C>>(TIME_CAPSULE_KEY) != null
     }
 }

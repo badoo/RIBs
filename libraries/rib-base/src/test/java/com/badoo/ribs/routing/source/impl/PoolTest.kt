@@ -17,6 +17,7 @@ import org.robolectric.RobolectricTestRunner
 class PoolTest {
 
     private var routingHistoryElements: List<RoutingHistoryElement<Configuration>> = emptyList()
+    private var historyUpdatesCount: Int = 0
 
     @Test
     fun `GIVEN conf1 is active WHEN activateOnly is called for conf2 THEN conf1 is inactive`() {
@@ -34,6 +35,16 @@ class PoolTest {
         pool.activateOnly(conf2)
 
         assertEquals(true, routingHistoryElements.isActive(Configuration.Conf2))
+    }
+
+    @Test
+    fun `GIVEN conf1 is active and conf2 is inactive WHEN activateOnly is called for conf2 THEN routing history is updated only once`() {
+        val pool = pool()
+        historyUpdatesCount = 0
+
+        pool.activateOnly(conf2)
+
+        assertEquals(1, historyUpdatesCount)
     }
 
     @Test
@@ -143,7 +154,10 @@ class PoolTest {
             allowRepeatingConfigurations = false,
             buildParams = emptyBuildParams()
         ).apply {
-            observe { routingHistory -> routingHistoryElements = routingHistory.toList() }
+            observe { routingHistory ->
+                routingHistoryElements = routingHistory.toList()
+                historyUpdatesCount++
+            }
         }
 
     private fun List<RoutingHistoryElement<Configuration>>.isActive(configuration: Configuration): Boolean =

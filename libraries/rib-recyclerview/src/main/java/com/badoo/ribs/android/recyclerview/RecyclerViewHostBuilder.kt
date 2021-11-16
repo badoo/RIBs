@@ -19,7 +19,8 @@ class RecyclerViewHostBuilder<T : Parcelable>(
         val timeCapsule = AndroidTimeCapsule(buildParams.savedInstanceState)
 
         val routingSource = Pool<T>(
-            allowRepeatingConfigurations = true
+            allowRepeatingConfigurations = true,
+            buildParams = buildParams
         )
 
         val feature = RecyclerViewHostFeature(
@@ -61,7 +62,7 @@ class RecyclerViewHostBuilder<T : Parcelable>(
                 interactor,
                 disposables(feature)
             ),
-            viewDeps =  viewDeps,
+            viewDeps = viewDeps,
             timeCapsule = timeCapsule,
             adapter = adapter
         )

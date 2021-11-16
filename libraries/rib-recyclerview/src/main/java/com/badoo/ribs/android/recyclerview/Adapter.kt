@@ -16,6 +16,7 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.source.impl.Pool
+import com.badoo.ribs.routing.source.impl.Pool.Item
 import com.badoo.ribs.util.RIBs.errorHandler
 import io.reactivex.functions.Consumer
 import java.lang.ref.WeakReference
@@ -57,7 +58,13 @@ internal class Adapter<T : Parcelable>(
 
     private fun addIfEager(entry: Entry<T>) {
         if (hostingStrategy == EAGER) {
-            routingSource.add(entry.element, entry.identifier)
+            routingSource.add(
+                Item(
+                    configuration = entry.element,
+                    identifier = entry.identifier,
+                    isActive = false
+                )
+            )
         }
     }
 
@@ -80,7 +87,13 @@ internal class Adapter<T : Parcelable>(
 
         if (hostingStrategy == LAZY) {
             val entry = feature.state.items.find { it.identifier == identifier }!!
-            routingSource.add(entry.element, entry.identifier)
+            routingSource.add(
+                Item(
+                    configuration = entry.element,
+                    identifier = entry.identifier,
+                    isActive = false
+                )
+            )
         }
 
         routingSource.activate(identifier)

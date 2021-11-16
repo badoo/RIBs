@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
 class Pool<C : Parcelable>(
-    initialItems: List<Item<C>>,
+    initialItems: List<Item<C>> = emptyList(),
     private val allowRepeatingConfigurations: Boolean,
     private val timeCapsule: TimeCapsule
 ) : RoutingSource<C> {
@@ -41,7 +41,7 @@ class Pool<C : Parcelable>(
     }
 
     constructor(
-        initialItems: List<Item<C>>,
+        initialItems: List<Item<C>> = emptyList(),
         allowRepeatingConfigurations: Boolean,
         buildParams: BuildParams<*>
     ) : this(

@@ -246,15 +246,15 @@ class WorkflowTest {
         viewFactory: ViewFactory<V>?,
         plugins: List<Plugin>,
     ) : RxWorkflowNode<V>(buildParams, viewFactory, plugins) {
-        inline fun <reified T> waitForChildAttachedInternal(): Single<T> =
+        inline fun <reified T : Any> waitForChildAttachedInternal(): Single<T> =
             waitForChildAttached()
 
-        inline fun <reified T> executeWorkflowInternal(
-            crossinline action: () -> Unit
+        inline fun <reified T : Any> executeWorkflowInternal(
+            noinline action: () -> Unit
         ): Single<T> = executeWorkflow(action)
 
-        inline fun <reified T> attachWorkflowInternal(
-            crossinline action: () -> Unit
+        inline fun <reified T : Any> attachWorkflowInternal(
+            noinline action: () -> Unit
         ): Single<T> = attachWorkflow(action)
     }
 

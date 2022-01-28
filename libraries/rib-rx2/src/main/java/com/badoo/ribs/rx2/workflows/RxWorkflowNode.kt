@@ -1,6 +1,6 @@
 package com.badoo.ribs.rx2.workflows
 
-import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
@@ -21,18 +21,20 @@ open class RxWorkflowNode<V : RibView>(
     plugins = plugins
 ) {
 
-    private val childrenAttachesRelay: PublishRelay<Node<*>>? = PublishRelay.create()
-    val childrenAttaches: Observable<Node<*>>? = childrenAttachesRelay?.hide()
-    val detachSignal: BehaviorRelay<Unit> = BehaviorRelay.create()
+    private val childrenAttachesRelay: PublishRelay<Node<*>> = PublishRelay.create()
+    private val detachSignalRelay: BehaviorRelay<Unit> = BehaviorRelay.create()
+
+    protected val childrenAttaches: Observable<Node<*>> = childrenAttachesRelay.hide()
+    protected val detachSignal: Observable<Unit> = detachSignalRelay.hide()
 
     override fun onAttachChildNode(child: Node<*>) {
         super.onAttachChildNode(child)
-        childrenAttachesRelay?.accept(child)
+        childrenAttachesRelay.accept(child)
     }
 
     override fun onDestroy(isRecreating: Boolean) {
         super.onDestroy(isRecreating)
-        detachSignal.accept(Unit)
+        detachSignalRelay.accept(Unit)
     }
 
     /**
@@ -42,16 +44,12 @@ open class RxWorkflowNode<V : RibView>(
      */
     protected inline fun <reified T> executeWorkflow(
         crossinline action: () -> Unit
-    ): Single<T> = Single.fromCallable {
-        action()
-        this as T
+    ): Single<T> = Single.defer {
+        throwExceptionSingleIfDestroyed<T>() ?: Single.fromCallable {
+            action()
+            this as T
+        }
     }
-        .takeUntil(detachSignal.firstOrError())
-
-    @VisibleForTesting
-    internal inline fun <reified T> executeWorkflowInternal(
-        crossinline action: () -> Unit
-    ): Single<T> = executeWorkflow(action)
 
     /**
      * Executes an action and transitions to another workflow element
@@ -63,11 +61,12 @@ open class RxWorkflowNode<V : RibView>(
     @SuppressWarnings("LongMethod")
     protected inline fun <reified T> attachWorkflow(
         crossinline action: () -> Unit
-    ): Single<T> = Single.fromCallable {
+    ): Single<T> = Single.defer {
+        throwExceptionSingleIfDestroyed<T>()?.also { return@defer it }
         action()
         val childNodesOfExpectedType = children.filterIsInstance<T>()
         if (childNodesOfExpectedType.isEmpty()) {
-            Single.error<T>(
+            Single.error(
                 IllegalStateException(
                     "Expected child of type [${T::class.java}] was not found after executing action. " +
                         "Check that your action actually results in the expected child. " +
@@ -80,13 +79,6 @@ open class RxWorkflowNode<V : RibView>(
             Single.just(childNodesOfExpectedType.last())
         }
     }
-        .flatMap { it }
-        .takeUntil(detachSignal.firstOrError())
-
-    @VisibleForTesting
-    internal inline fun <reified T> attachWorkflowInternal(
-        crossinline action: () -> Unit
-    ): Single<T> = attachWorkflow(action)
 
     /**
      * Waits until a certain child is attached and returns it as the expected workflow element, or
@@ -95,18 +87,21 @@ open class RxWorkflowNode<V : RibView>(
      * @return the child as the expected workflow element
      */
     protected inline fun <reified T> waitForChildAttached(): Single<T> =
-        Single.fromCallable {
+        Single.defer {
+            throwExceptionSingleIfDestroyed<T>()?.also { return@defer it }
             val childNodesOfExpectedType = children.filterIsInstance<T>()
             if (childNodesOfExpectedType.isEmpty()) {
-                childrenAttaches?.ofType(T::class.java)?.firstOrError()
+                childrenAttaches.ofType(T::class.java)?.firstOrError()
             } else {
                 Single.just(childNodesOfExpectedType.last())
             }
         }
-            .flatMap { it }
-            .takeUntil(detachSignal.firstOrError())
 
-    @VisibleForTesting
-    internal inline fun <reified T> waitForChildAttachedInternal(): Single<T> =
-        waitForChildAttached()
+    protected fun <T> throwExceptionSingleIfDestroyed(): Single<T>? =
+        if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
+            Single.error(IllegalStateException("Node $this is already destroyed, further execution is meaningless"))
+        } else {
+            null
+        }
+
 }

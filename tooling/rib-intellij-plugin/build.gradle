@@ -147,8 +147,8 @@ compileKotlin.enabled = System.getenv("CI") != "true"
 
 intellij {
     plugins = ['android', deps.build.kotlinIdeaPlugin, 'java']
-    // version = deps.versions.intellij
-    localPath = '/Applications/Android Studio.app'
+    version = deps.versions.intellij
+    // localPath = '/Applications/Android Studio.app'
     updateSinceUntilBuild = false
     sandboxDir = "${project.gradle.gradleHomeDir}/caches/intellij"
     downloadSources = true

@@ -9,7 +9,6 @@ plugins {
 }
 
 apply plugin: "kotlin"
-apply plugin: "maven-publish"
 apply plugin: "org.jetbrains.intellij"
 
 group "com.badoo.ribs"
@@ -148,8 +147,8 @@ compileKotlin.enabled = System.getenv("CI") != "true"
 
 intellij {
     plugins = ['android', deps.build.kotlinIdeaPlugin, 'java']
-    version = deps.versions.intellij
-    // localPath = '/Applications/Android Studio.app'
+    // version = deps.versions.intellij
+    localPath = '/Applications/Android Studio.app'
     updateSinceUntilBuild = false
     sandboxDir = "${project.gradle.gradleHomeDir}/caches/intellij"
     downloadSources = true
@@ -176,67 +175,4 @@ afterEvaluate {
         archives sourcesJar
         archives project.tasks.getByName("buildPlugin")
     }
-}
-
-publishing {
-    repositories {
-        if (hasMavenCredentials()) {
-            maven {
-                url = "${config.build.artifactoryUrl}/${pluginsMavenRepositoryBucket}"
-                credentials {
-                    username = mavenUser
-                    password = mavenPassword
-                }
-            }
-        }
-    }
-}
-
-if (needToPublishPlugin()) {
-    def pluginVersion = VERSION_NAME + "-" + (System.currentTimeMillis() / 1000)
-    println("Publishing Intellij plugin $pluginVersion to JetBrains repository")
-
-    publishPlugin {
-        token System.getenv("IDEA_PLUGIN_PUBLICATION_TOKEN")
-    }
-
-    patchPluginXml {
-        version pluginVersion
-    }
-
-    build.dependsOn publishPlugin
-} else {
-    println("Publishing Intellij plugin to JetBrains repository will be skipped")
-}
-
-static boolean needToPublishPlugin() {
-    def parentCommitsNumber = executeBash("git show -s --pretty=%p HEAD | wc -w").trim().toInteger()
-    def isMergeCommit = parentCommitsNumber > 0
-    def isMainBranch = System.getenv("TRAVIS_BRANCH") == "master"
-    def isNotPullRequest = System.getenv("TRAVIS_PULL_REQUEST") == "false"
-    def isContainsTemplateChanges = containsTemplateChanges()
-    def isCi = System.getenv("CI") == "true"
-    println("Checking IDEA plugin publishing conditions: " +
-            "isMergeCommit = $isMergeCommit, " +
-            "isMainBranch = $isMainBranch, " +
-            "isContainsTemplateChanges = $isContainsTemplateChanges, " +
-            "isNotPullRequest = $isNotPullRequest, " +
-            "isCi = $isCi")
-    return isMergeCommit && isMainBranch && isNotPullRequest && isContainsTemplateChanges && isCi
-}
-
-static boolean containsTemplateChanges() {
-    def lastCommitChangedFiles = executeBash("git diff --name-only HEAD~1 HEAD").split("\n")
-    def changedTemplateFilesCount = lastCommitChangedFiles.count {
-        it.startsWith("android/templates/src") || it.startsWith("android/tooling/rib-intellij-plugin")
-    }
-    println("Changed files:")
-    println(lastCommitChangedFiles)
-    return changedTemplateFilesCount > 0
-}
-
-static String executeBash(String command) {
-    def proc = ['bash', '-c', command].execute()
-    proc.waitFor()
-    return proc.text
 }

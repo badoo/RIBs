@@ -54,7 +54,7 @@ class ComposeParentViewImpl private constructor(
     class Factory : ComposeParentView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<ComposeParentView> = ViewFactory {
             ComposeParentViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

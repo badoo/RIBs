@@ -7,7 +7,6 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.badoo.mvicore.ModelWatcher
 import com.badoo.mvicore.modelWatcher
-import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory

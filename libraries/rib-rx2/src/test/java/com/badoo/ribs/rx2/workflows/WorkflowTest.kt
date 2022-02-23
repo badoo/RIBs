@@ -14,9 +14,6 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.util.RIBs
-import org.mockito.kotlin.argThat
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import kotlinx.parcelize.Parcelize
@@ -24,6 +21,9 @@ import org.junit.Assert
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 class WorkflowTest {
     private lateinit var node: RxWorkflowNode<TestView>
@@ -41,7 +41,7 @@ class WorkflowTest {
         parentView = mock()
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
-        viewFactory = mock { on { invoke(argThat { parent == parentView }) } doReturn view }
+        viewFactory = mock { on { invoke(any()) } doReturn view }
         node = createNode(viewFactory = viewFactory)
         childAncestry = AncestryInfo.Child(node, Routing(AnyConfiguration))
 

@@ -26,7 +26,7 @@ class CommunicationContainerViewImpl private constructor(
     class Factory : CommunicationContainerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<CommunicationContainerView> = ViewFactory {
             CommunicationContainerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

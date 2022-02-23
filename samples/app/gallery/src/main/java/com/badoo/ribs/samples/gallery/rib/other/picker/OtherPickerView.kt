@@ -33,7 +33,7 @@ class OtherPickerViewImpl private constructor(
     class Factory : OtherPickerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<OtherPickerView> = ViewFactory {
             OtherPickerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

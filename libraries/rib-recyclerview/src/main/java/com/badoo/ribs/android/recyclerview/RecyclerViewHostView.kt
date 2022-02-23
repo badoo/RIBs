@@ -29,13 +29,13 @@ internal class RecyclerViewHostViewImpl private constructor(
             RecyclerViewHostViewImpl(
                 androidView = deps
                     .recyclerViewFactory()
-                    .invoke(it.parent.androidView.context)
+                    .invoke(it.context)
                     .apply {
                         adapter = deps.adapter()
                         layoutManager =
                             deps
                                 .layoutManagerFactory()
-                                .invoke(it.parent.androidView.context)
+                                .invoke(it.context)
                     }
             )
         }

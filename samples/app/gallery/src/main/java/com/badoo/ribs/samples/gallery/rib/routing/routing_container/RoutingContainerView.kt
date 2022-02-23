@@ -26,7 +26,7 @@ class RoutingContainerViewImpl private constructor(
     class Factory : RoutingContainerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<RoutingContainerView> = ViewFactory {
             RoutingContainerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

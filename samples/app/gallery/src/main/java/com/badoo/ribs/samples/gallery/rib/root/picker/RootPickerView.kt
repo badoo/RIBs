@@ -36,7 +36,7 @@ class RootPickerViewImpl private constructor(
     class Factory : RootPickerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<RootPickerView> = ViewFactory {
             RootPickerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

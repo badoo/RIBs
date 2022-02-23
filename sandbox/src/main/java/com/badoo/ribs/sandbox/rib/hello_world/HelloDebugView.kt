@@ -3,7 +3,6 @@ package com.badoo.ribs.sandbox.rib.hello_world
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.plugin.utils.debug.DebugControls
 import com.badoo.ribs.sandbox.R
 import io.reactivex.disposables.CompositeDisposable

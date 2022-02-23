@@ -11,10 +11,10 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
-import org.mockito.kotlin.argThat
+import org.junit.Before
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.junit.Before
 
 open class NodePluginTest {
     protected lateinit var view: TestView
@@ -30,7 +30,7 @@ open class NodePluginTest {
         androidView = mock()
         view = mock { on { androidView }.thenReturn(androidView) }
         viewFactory =
-            mock { on { invoke(argThat(predicate = { parent == parentView })) } doReturn view }
+            mock { on { invoke(any()) } doReturn view }
     }
 
     protected inline fun <reified T : Plugin> testPlugins(nbPlugins: Int = 3): Pair<Node<TestView>, List<T>> =

@@ -2,7 +2,6 @@ package com.badoo.ribs.samples.routing.back_stack.rib.child_b
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory

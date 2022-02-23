@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -54,7 +53,7 @@ class SwitcherViewImpl private constructor(
         override fun invoke(deps: SwitcherView.Dependency): ViewFactory<SwitcherView> =
             ViewFactory {
                 SwitcherViewImpl(
-                    it.parent.inflate(layoutRes),
+                    it.inflate(layoutRes),
                     deps.coffeeMachine()
                 )
             }

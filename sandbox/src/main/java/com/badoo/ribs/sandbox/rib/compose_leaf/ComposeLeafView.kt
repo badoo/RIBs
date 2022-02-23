@@ -50,7 +50,7 @@ class ComposeLeafViewImpl private constructor(
     class Factory : ComposeLeafView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<ComposeLeafView> = ViewFactory {
             ComposeLeafViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

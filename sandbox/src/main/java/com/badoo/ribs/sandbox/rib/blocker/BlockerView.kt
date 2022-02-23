@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactoryBuilder
-import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R

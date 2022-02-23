@@ -23,7 +23,7 @@ class TestRootBuilder(
             buildParams = buildParams,
             viewFactory = {
                 ViewFactory {
-                    TestRootViewImpl(it.parent.context)
+                    TestRootViewImpl(it.context)
                 }
             },
             router = dependency.router,

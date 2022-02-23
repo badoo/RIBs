@@ -36,7 +36,7 @@ class RoutingPickerViewImpl private constructor(
     class Factory : RoutingPickerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<RoutingPickerView> = ViewFactory {
             RoutingPickerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

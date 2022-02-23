@@ -35,7 +35,7 @@ class AndroidPickerViewImpl private constructor(
     class Factory : AndroidPickerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<AndroidPickerView> = ViewFactory {
             AndroidPickerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

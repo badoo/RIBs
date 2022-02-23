@@ -26,7 +26,7 @@ class OtherContainerViewImpl private constructor(
     class Factory : OtherContainerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<OtherContainerView> = ViewFactory {
             OtherContainerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

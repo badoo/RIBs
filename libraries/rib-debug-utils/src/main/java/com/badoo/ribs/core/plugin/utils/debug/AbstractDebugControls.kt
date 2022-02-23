@@ -1,11 +1,12 @@
 package com.badoo.ribs.core.plugin.utils.debug
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.base.R
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeAwareImpl
 import com.badoo.ribs.core.plugin.RibAware
@@ -64,4 +65,15 @@ abstract class AbstractDebugControls<T : Rib> internal constructor(
     open fun onDebugViewCreated(debugView: View) {}
 
     open fun onDebugViewDestroyed(debugView: View) {}
+
+    companion object {
+        fun <T : View> ViewGroup.inflate(@LayoutRes layoutResourceId: Int): T =
+            LayoutInflater
+                .from(context)
+                .inflate(
+                    layoutResourceId,
+                    this,
+                    false
+                ) as T
+    }
 }

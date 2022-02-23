@@ -26,7 +26,7 @@ class AndroidContainerViewImpl private constructor(
     class Factory : AndroidContainerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<AndroidContainerView> = ViewFactory {
             AndroidContainerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

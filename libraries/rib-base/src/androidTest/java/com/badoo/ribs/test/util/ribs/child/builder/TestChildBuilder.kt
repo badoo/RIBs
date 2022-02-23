@@ -24,7 +24,7 @@ class TestChildBuilder : Builder<TestChildBuilder.Params, TestNode<TestChildView
             viewFactory = {
                 ViewFactory {
                     TestChildViewImpl(
-                        context = it.parent.context,
+                        context = it.context,
                         addEditText = buildParams.payload.addEditText
                     )
                 }

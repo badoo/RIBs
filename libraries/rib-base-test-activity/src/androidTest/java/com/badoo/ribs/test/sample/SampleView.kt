@@ -22,8 +22,8 @@ class SampleViewImpl(
     override val androidView: ViewGroup
 
     init {
-        androidView = FrameLayout(context.parent.context)
-        val child = TextView(context.parent.context)
+        androidView = FrameLayout(context.context)
+        val child = TextView(context.context)
         child.id = viewId
         child.text = TextView::class.qualifiedName
         androidView.addView(child)

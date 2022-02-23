@@ -3,6 +3,7 @@ package com.badoo.ribs.compose
 import android.content.Context
 import android.view.ViewGroup
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
@@ -25,6 +26,7 @@ abstract class ComposeRibView(
 
     override val androidView: ViewGroup by lazy(LazyThreadSafetyMode.NONE) {
         androidx.compose.ui.platform.ComposeView(context).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent(composable)
         }
     }
@@ -49,7 +51,6 @@ abstract class ComposeRibView(
         }
         child.onAttachToView()
     }
-
 
     override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
         val target = getChildHostForSubtree(subtreeOf)

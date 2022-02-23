@@ -34,7 +34,7 @@ class CommunicationPickerViewImpl private constructor(
     class Factory : CommunicationPickerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<CommunicationPickerView> = ViewFactory {
             CommunicationPickerViewImpl(
-                it.parent.context
+                it.context
             )
         }
     }

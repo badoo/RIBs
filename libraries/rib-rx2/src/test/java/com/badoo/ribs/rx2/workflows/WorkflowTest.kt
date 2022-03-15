@@ -13,12 +13,13 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.rx2.workflows.RxWorkflowNode.NodeIsNotAvailableForWorkflowException
 import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.argThat
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import io.reactivex.Maybe
 import io.reactivex.Single
-import io.reactivex.observers.TestObserver
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert
 import org.junit.jupiter.api.AfterEach
@@ -26,7 +27,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class WorkflowTest {
-    private lateinit var node: RxWorkflowNode<TestView>
+    private lateinit var node: TestRxWorkflowNode<TestView>
     private lateinit var view: TestView
     private lateinit var androidView: ViewGroup
     private lateinit var parentView: RibView
@@ -57,7 +58,7 @@ class WorkflowTest {
         buildParams: BuildParams<Nothing?> = testBuildParams(),
         viewFactory: ViewFactory<TestView> = this.viewFactory,
         plugins: List<Plugin> = emptyList()
-    ): RxWorkflowNode<TestView> = RxWorkflowNode(
+    ): TestRxWorkflowNode<TestView> = TestRxWorkflowNode(
         buildParams = buildParams,
         viewFactory = viewFactory,
         plugins = plugins
@@ -89,73 +90,124 @@ class WorkflowTest {
 
     @Test
     fun `executeWorkflow executes action on subscribe`() {
-        var actionInvoked = false
-        val action = { actionInvoked = true }
+        val action = InvokableStub()
         val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
-        val testObserver = TestObserver<Node<*>>()
-        workflow.subscribe(testObserver)
+        val testObserver = workflow.test()
 
-        Assert.assertEquals(true, actionInvoked)
-        testObserver.assertValue(node)
-        testObserver.assertComplete()
+        action.assertInvoked()
+        testObserver.assertResult(node)
     }
 
     @Test
     fun `executeWorkflow never executes action on lifecycle terminate before subscribe`() {
         node.onDestroy(isRecreating = false)
 
-        var actionInvoked = false
-        val action = { actionInvoked = true }
+        val action = InvokableStub()
         val workflow: Single<Node<*>> = node.executeWorkflowInternal(action)
-        val testObserver = TestObserver<Node<*>>()
-        workflow.subscribe(testObserver)
+        val testObserver = workflow.test()
 
-        Assert.assertEquals(false, actionInvoked)
-        testObserver.assertNever(node)
-        testObserver.assertNotComplete()
+        action.assertNotInvoked()
+        testObserver.assertFailure(NodeIsNotAvailableForWorkflowException::class.java)
+    }
+
+    @Test
+    fun `executeWorkflow does not interrupt further actions on lifecycle terminate`() {
+        val action = InvokableStub()
+        val workflow: Single<Any> =
+            node
+                .executeWorkflowInternal<Node<*>>(action)
+                .flatMap { Single.never<Any>() }
+        val testObserver = workflow.test()
+
+        node.onDestroy(isRecreating = false)
+
+        action.assertInvoked()
+        testObserver.assertNoValues()
+        testObserver.assertNotTerminated()
+    }
+
+    @Test
+    fun `maybeExecuteWorkflow never executes action on lifecycle terminate before subscribe`() {
+        node.onDestroy(isRecreating = false)
+
+        val action = InvokableStub()
+        val workflow: Maybe<Node<*>> = node.maybeExecuteWorkflowInternal(action)
+        val testObserver = workflow.test()
+
+        action.assertNotInvoked()
+        testObserver.assertResult()
     }
 
     @Test
     fun `attachWorkflow executes action on subscribe`() {
-        var actionInvoked = false
-        val action = { actionInvoked = true }
+        val action = InvokableStub()
         val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
-        val testObserver = TestObserver<TestNode>()
-        workflow.subscribe(testObserver)
+        val testObserver = workflow.test()
 
-        Assert.assertEquals(true, actionInvoked)
-        testObserver.assertValue(child3)
-        testObserver.assertComplete()
+        action.assertInvoked()
+        testObserver.assertResult(child3)
     }
 
     @Test
     fun `attachWorkflow never executes action on lifecycle terminate before subscribe`() {
         node.onDestroy(isRecreating = false)
 
-        var actionInvoked = false
-        val action = { actionInvoked = true }
+        val action = InvokableStub()
         val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
-        val testObserver = TestObserver<TestNode>()
-        workflow.subscribe(testObserver)
+        val testObserver = workflow.test()
 
-        Assert.assertEquals(false, actionInvoked)
-        testObserver.assertNever(child1)
-        testObserver.assertNever(child2)
-        testObserver.assertNever(child3)
-        testObserver.assertNotComplete()
+        action.assertNotInvoked()
+        testObserver.assertFailure(NodeIsNotAvailableForWorkflowException::class.java)
+    }
+
+    @Test
+    fun `attachWorkflow does not interrupt further actions on lifecycle terminate`() {
+        val action = InvokableStub()
+        val workflow: Single<Any> =
+            node
+                .attachWorkflowInternal<Node<*>>(action)
+                .flatMap { Single.never<Any>() }
+        val testObserver = workflow.test()
+
+        node.onDestroy(isRecreating = false)
+
+        action.assertInvoked()
+        testObserver.assertNoValues()
+        testObserver.assertNotTerminated()
+    }
+
+    @Test
+    fun `maybeAttachWorkflow never executes action on lifecycle terminate before subscribe`() {
+        node.onDestroy(isRecreating = false)
+
+        val action = InvokableStub()
+        val workflow: Maybe<TestNode> = node.maybeAttachWorkflowInternal(action)
+        val testObserver = workflow.test()
+
+        action.assertNotInvoked()
+        testObserver.assertResult()
     }
 
     @Test
     fun `waitForChildAttached emits expected child immediately if it's already attached`() {
-        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
-        val testObserver = TestObserver<TestNode2>()
         val testChildNode = TestNode2(buildParams = testBuildParams(ancestryInfo = childAncestry))
 
         node.attachChildNode(testChildNode)
-        workflow.subscribe(testObserver)
+        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
+        val testObserver = workflow.test()
 
-        testObserver.assertValue(testChildNode)
-        testObserver.assertComplete()
+        testObserver.assertResult(testChildNode)
+    }
+
+    @Test
+    fun `waitForChildAttached emits expected child after it is attached`() {
+        val testChildNode = TestNode2(buildParams = testBuildParams(ancestryInfo = childAncestry))
+        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
+        val testObserver = workflow.test()
+
+        node.attachChildNode(testChildNode)
+
+        testObserver.assertResult(testChildNode)
     }
 
     @Test
@@ -163,11 +215,49 @@ class WorkflowTest {
         node.onDestroy(isRecreating = false)
 
         val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
-        val testObserver = TestObserver<TestNode2>()
-        workflow.subscribe(testObserver)
+        val testObserver = workflow.test()
+
+        testObserver.assertFailure(NodeIsNotAvailableForWorkflowException::class.java)
+    }
+
+    @Test
+    fun `waitForChildAttached does not interrupt further actions on lifecycle terminate`() {
+        val workflow: Single<Any> =
+            node
+                .waitForChildAttachedInternal<Node<*>>()
+                .flatMap { Single.never<Any>() }
+        val testObserver = workflow.test()
+
+        node.onDestroy(isRecreating = false)
 
         testObserver.assertNoValues()
-        testObserver.assertNotComplete()
+        testObserver.assertNotTerminated()
+    }
+
+    @Test
+    fun `maybeWaitForChildAttached never executes action on lifecycle terminate before subscribe`() {
+        node.onDestroy(isRecreating = false)
+
+        val workflow: Maybe<TestNode2> = node.maybeWaitForChildAttachedInternal()
+        val testObserver = workflow.test()
+
+        testObserver.assertResult()
+    }
+
+    private class InvokableStub : () -> Unit {
+        var isInvoked: Boolean = false
+
+        override fun invoke() {
+            isInvoked = true
+        }
+
+        fun assertInvoked() {
+            Assert.assertEquals("Expected to be invoked", true, isInvoked)
+        }
+
+        fun assertNotInvoked() {
+            Assert.assertEquals("Expected to be not invoked", false, isInvoked)
+        }
     }
 
     private class TestNode(
@@ -191,6 +281,35 @@ class WorkflowTest {
         viewFactory = viewFactory,
         plugins = plugins + listOf(router)
     )
+
+    private class TestRxWorkflowNode<V : RibView>(
+        buildParams: BuildParams<*>,
+        viewFactory: ViewFactory<V>?,
+        plugins: List<Plugin>,
+    ) : RxWorkflowNode<V>(buildParams, viewFactory, plugins) {
+        inline fun <reified T : Any> waitForChildAttachedInternal(): Single<T> =
+            waitForChildAttached()
+
+        inline fun <reified T : Any> maybeWaitForChildAttachedInternal(): Maybe<T> =
+            maybeWaitForChildAttached()
+
+        inline fun <reified T : Any> executeWorkflowInternal(
+            noinline action: () -> Unit
+        ): Single<T> = executeWorkflow(action)
+
+        inline fun <reified T : Any> maybeExecuteWorkflowInternal(
+            noinline action: () -> Unit
+        ): Maybe<T> = maybeExecuteWorkflow(action)
+
+        inline fun <reified T : Any> attachWorkflowInternal(
+            noinline action: () -> Unit
+        ): Single<T> = attachWorkflow(action)
+
+        inline fun <reified T : Any> maybeAttachWorkflowInternal(
+            noinline action: () -> Unit
+        ): Maybe<T> = maybeAttachWorkflow(action)
+
+    }
 
     private class TestView : AndroidRibView() {
         override val androidView: ViewGroup = mock()

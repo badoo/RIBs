@@ -13,10 +13,12 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.rx2.workflows.RxWorkflowNode.NodeIsNotAvailableForWorkflowException
 import com.badoo.ribs.util.RIBs
 import com.nhaarman.mockitokotlin2.argThat
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import io.reactivex.Maybe
 import io.reactivex.Single
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert
@@ -93,8 +95,7 @@ class WorkflowTest {
         val testObserver = workflow.test()
 
         action.assertInvoked()
-        testObserver.assertValue(node)
-        testObserver.assertComplete()
+        testObserver.assertResult(node)
     }
 
     @Test
@@ -106,8 +107,7 @@ class WorkflowTest {
         val testObserver = workflow.test()
 
         action.assertNotInvoked()
-        testObserver.assertNoValues()
-        testObserver.assertError(IllegalStateException::class.java)
+        testObserver.assertFailure(NodeIsNotAvailableForWorkflowException::class.java)
     }
 
     @Test
@@ -127,14 +127,25 @@ class WorkflowTest {
     }
 
     @Test
+    fun `maybeExecuteWorkflow never executes action on lifecycle terminate before subscribe`() {
+        node.onDestroy(isRecreating = false)
+
+        val action = InvokableStub()
+        val workflow: Maybe<Node<*>> = node.maybeExecuteWorkflowInternal(action)
+        val testObserver = workflow.test()
+
+        action.assertNotInvoked()
+        testObserver.assertResult()
+    }
+
+    @Test
     fun `attachWorkflow executes action on subscribe`() {
         val action = InvokableStub()
         val workflow: Single<TestNode> = node.attachWorkflowInternal(action)
         val testObserver = workflow.test()
 
         action.assertInvoked()
-        testObserver.assertValue(child3)
-        testObserver.assertComplete()
+        testObserver.assertResult(child3)
     }
 
     @Test
@@ -146,8 +157,7 @@ class WorkflowTest {
         val testObserver = workflow.test()
 
         action.assertNotInvoked()
-        testObserver.assertNoValues()
-        testObserver.assertError(IllegalStateException::class.java)
+        testObserver.assertFailure(NodeIsNotAvailableForWorkflowException::class.java)
     }
 
     @Test
@@ -167,6 +177,18 @@ class WorkflowTest {
     }
 
     @Test
+    fun `maybeAttachWorkflow never executes action on lifecycle terminate before subscribe`() {
+        node.onDestroy(isRecreating = false)
+
+        val action = InvokableStub()
+        val workflow: Maybe<TestNode> = node.maybeAttachWorkflowInternal(action)
+        val testObserver = workflow.test()
+
+        action.assertNotInvoked()
+        testObserver.assertResult()
+    }
+
+    @Test
     fun `waitForChildAttached emits expected child immediately if it's already attached`() {
         val testChildNode = TestNode2(buildParams = testBuildParams(ancestryInfo = childAncestry))
 
@@ -174,8 +196,18 @@ class WorkflowTest {
         val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = workflow.test()
 
-        testObserver.assertValue(testChildNode)
-        testObserver.assertComplete()
+        testObserver.assertResult(testChildNode)
+    }
+
+    @Test
+    fun `waitForChildAttached emits expected child after it is attached`() {
+        val testChildNode = TestNode2(buildParams = testBuildParams(ancestryInfo = childAncestry))
+        val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
+        val testObserver = workflow.test()
+
+        node.attachChildNode(testChildNode)
+
+        testObserver.assertResult(testChildNode)
     }
 
     @Test
@@ -185,8 +217,7 @@ class WorkflowTest {
         val workflow: Single<TestNode2> = node.waitForChildAttachedInternal()
         val testObserver = workflow.test()
 
-        testObserver.assertNoValues()
-        testObserver.assertError(IllegalStateException::class.java)
+        testObserver.assertFailure(NodeIsNotAvailableForWorkflowException::class.java)
     }
 
     @Test
@@ -201,6 +232,16 @@ class WorkflowTest {
 
         testObserver.assertNoValues()
         testObserver.assertNotTerminated()
+    }
+
+    @Test
+    fun `maybeWaitForChildAttached never executes action on lifecycle terminate before subscribe`() {
+        node.onDestroy(isRecreating = false)
+
+        val workflow: Maybe<TestNode2> = node.maybeWaitForChildAttachedInternal()
+        val testObserver = workflow.test()
+
+        testObserver.assertResult()
     }
 
     private class InvokableStub : () -> Unit {
@@ -249,13 +290,25 @@ class WorkflowTest {
         inline fun <reified T : Any> waitForChildAttachedInternal(): Single<T> =
             waitForChildAttached()
 
+        inline fun <reified T : Any> maybeWaitForChildAttachedInternal(): Maybe<T> =
+            maybeWaitForChildAttached()
+
         inline fun <reified T : Any> executeWorkflowInternal(
             noinline action: () -> Unit
         ): Single<T> = executeWorkflow(action)
 
+        inline fun <reified T : Any> maybeExecuteWorkflowInternal(
+            noinline action: () -> Unit
+        ): Maybe<T> = maybeExecuteWorkflow(action)
+
         inline fun <reified T : Any> attachWorkflowInternal(
             noinline action: () -> Unit
         ): Single<T> = attachWorkflow(action)
+
+        inline fun <reified T : Any> maybeAttachWorkflowInternal(
+            noinline action: () -> Unit
+        ): Maybe<T> = maybeAttachWorkflow(action)
+
     }
 
     private class TestView : AndroidRibView() {

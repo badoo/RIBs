@@ -1,6 +1,8 @@
 apply from: file('../common-template.gradle')
 
 dependencies {
+    implementation deps.external.appUtilsTree
+
     implementation project(":libraries:rib-base")
     implementation project(':libraries:rib-mvicore')
     implementation project(':libraries:rib-rx2')

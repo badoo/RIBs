@@ -38,6 +38,7 @@ dependencies {
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
+    implementation deps.external.appUtilsTree
 
     implementation deps.compose.runtime
     implementation deps.compose.ui

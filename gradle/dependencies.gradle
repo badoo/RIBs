@@ -42,7 +42,8 @@ def versions = [
         leakCanary                     : '2.4',
         jacoco                         : '0.8.6',
         junit5                         : '5.7.1',
-        coil                           : '1.3.1'
+        coil                           : '1.3.1',
+        appUtilsTree                   : '0.1.0'
 ]
 
 def apt = [
@@ -136,7 +137,8 @@ def external = [
         apacheCommons   : 'org.apache.commons:commons-lang3:3.0',
         gson            : 'com.google.code.gson:gson:2.8.5',
         coil            : "io.coil-kt:coil:${versions.coil}",
-        leakCanary      : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
+        leakCanary      : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
+        appUtilsTree    : "com.github.badoo:app-tree-utils:${versions.appUtilsTree}",
 ]
 
 def retrofit = [

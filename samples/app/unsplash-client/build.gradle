@@ -61,6 +61,7 @@ dependencies {
 
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
+    implementation deps.external.appUtilsTree
 
     implementation deps.retrofit.retrofit
     implementation deps.retrofit.rxjavaAdapter

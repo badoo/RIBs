@@ -3,7 +3,6 @@ package com.badoo.ribs.rx2.workflows
 import android.os.Parcelable
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
@@ -14,6 +13,7 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.util.RIBs
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import com.nhaarman.mockitokotlin2.argThat
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
@@ -213,7 +213,7 @@ class WorkflowTest {
                     BuildContext(
                         ancestryInfo,
                         savedInstanceState = null,
-                        customisations = RibCustomisationDirectoryImpl()
+                        customisations = NodeCustomisationDirectoryImpl()
                     )
                 } ?: BuildContext.root(null)
             )

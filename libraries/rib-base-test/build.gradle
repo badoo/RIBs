@@ -18,6 +18,7 @@ dependencies {
     compileOnly project(':libraries:rib-base')
 
     implementation deps.test.mockito
+    implementation deps.external.appUtilsTree
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

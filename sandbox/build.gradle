@@ -46,6 +46,7 @@ dependencies {
     implementation deps.android.percent
 
 
+    implementation deps.external.appUtilsTree
     implementation deps.external.dagger
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid

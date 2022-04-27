@@ -3,7 +3,7 @@ package com.badoo.ribs.core.modality
 import android.os.Bundle
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
-import com.badoo.ribs.core.customisation.RibCustomisation
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 import java.util.UUID
 
 
@@ -25,7 +25,7 @@ class BuildParams<T>(
     val savedInstanceState: Bundle?
         get() = buildContext.savedInstanceState
 
-    fun <T : RibCustomisation> getOrDefault(defaultCustomisation: T) : T =
+    fun <T : NodeCustomisation> getOrDefault(defaultCustomisation: T) : T =
         buildContext.customisations.getRecursivelyOrDefault(defaultCustomisation)
 
 }

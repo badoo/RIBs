@@ -2,11 +2,11 @@ package com.badoo.ribs.core.helper
 
 import android.os.Bundle
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import java.util.*
 
 fun testBuildParams(
@@ -24,7 +24,7 @@ fun testBuildParams(
             ancestryInfo = ancestryInfo,
             activationMode = ActivationMode.ATTACH_TO_PARENT,
             savedInstanceState = savedInstanceState,
-            customisations = RibCustomisationDirectoryImpl()
+            customisations = NodeCustomisationDirectoryImpl()
     )},
     identifier = identifier
 )

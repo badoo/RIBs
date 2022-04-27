@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import com.badoo.ribs.annotation.ExperimentalApi
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.PortalRouter.Configuration
@@ -16,6 +15,7 @@ import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalApi
@@ -87,7 +87,7 @@ class PortalRouter(
                     //  as that might change how dependencies are built (right now there's no case for this,
                     //  but can be in the future).
                     savedInstanceState = null,
-                    customisations = RibCustomisationDirectoryImpl()
+                    customisations = NodeCustomisationDirectoryImpl()
                 )
             )
         )

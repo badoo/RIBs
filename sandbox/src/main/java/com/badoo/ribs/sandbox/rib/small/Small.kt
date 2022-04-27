@@ -1,9 +1,9 @@
 package com.badoo.ribs.sandbox.rib.small
 
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.CanProvidePortal
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface Small : Rib {
 
@@ -16,7 +16,7 @@ interface Small : Rib {
 
     class Customisation(
         val viewFactory: SmallView.Factory = SmallViewImpl.Factory()
-    ) : RibCustomisation
+    ) : NodeCustomisation
 
     // Workflow
 }

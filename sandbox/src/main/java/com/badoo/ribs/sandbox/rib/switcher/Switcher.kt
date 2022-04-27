@@ -4,7 +4,6 @@ import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
@@ -13,6 +12,7 @@ import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherTransitionHandler
 import com.badoo.ribs.sandbox.util.CoffeeMachine
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 import io.reactivex.Single
 
 interface Switcher : Rib {
@@ -33,7 +33,7 @@ interface Switcher : Rib {
     class Customisation(
         val viewFactory: SwitcherView.Factory = SwitcherViewImpl.Factory(),
         val transitionHandler: TransitionHandler<Configuration> = SwitcherTransitionHandler(duration = 2000)
-    ) : RibCustomisation
+    ) : NodeCustomisation
 
     // Workflow
     fun attachHelloWorld(): Single<HelloWorld>

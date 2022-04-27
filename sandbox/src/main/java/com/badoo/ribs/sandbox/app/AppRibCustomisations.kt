@@ -1,6 +1,5 @@
 package com.badoo.ribs.sandbox.app
 
-import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.customisations
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
@@ -9,8 +8,9 @@ import com.badoo.ribs.sandbox.rib.foo_bar.FooBarViewImpl
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumViewImpl
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 
-object AppRibCustomisations : RibCustomisationDirectory by customisations({
+object AppRibCustomisations : NodeCustomisationDirectory by customisations({
     Switcher::class {
         DialogExample::class {
             + LoremIpsum.Customisation(

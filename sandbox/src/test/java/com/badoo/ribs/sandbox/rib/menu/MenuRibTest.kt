@@ -1,7 +1,6 @@
 package com.badoo.ribs.sandbox.rib.menu
 
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.view.ViewFactory
@@ -12,6 +11,7 @@ import com.badoo.ribs.sandbox.rib.menu.Menu.Output.MenuItemSelected
 import com.badoo.ribs.sandbox.rib.menu.MenuView.Event.Select
 import com.badoo.ribs.sandbox.rib.util.TestView
 import com.badoo.ribs.sandbox.rib.util.subscribeOnTestObserver
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.assertj.core.api.Assertions.assertThat
@@ -35,7 +35,7 @@ class MenuRibTest {
     /**
      * Customise viewFactory to return test view
      */
-    private val customisation = RibCustomisationDirectoryImpl().apply {
+    private val customisation = NodeCustomisationDirectoryImpl().apply {
         put(Menu.Customisation::class, mock {
             on { viewFactory } doReturn object : MenuView.Factory {
                 override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
@@ -85,7 +85,7 @@ class MenuRibTest {
         assertThat(viewModelObserver.values()).last().isEqualTo(MenuView.ViewModel(FooBar))
     }
 
-    private fun buildRib(customisation: RibCustomisationDirectoryImpl) =
+    private fun buildRib(customisation: NodeCustomisationDirectoryImpl) =
         MenuBuilder(object : Menu.Dependency {}).build(
             root(
                 savedInstanceState = null,

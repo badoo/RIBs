@@ -9,8 +9,8 @@ def kotlinVersion = '1.6.10' // https://mvnrepository.com/artifact/androidx.comp
 
 def versions = [
         dagger                         : '2.37',
-        intellij                       : '203.7717.56',
-        intellij_kotlin                : '203-1.5.21-release-328-AS7717.8',
+        intellij                       : '211.7442.40',
+        intellij_kotlin                : '211-1.6.10-release-923-AS7442.40',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.6',
         robolectric                    : '4.7.3',

@@ -1,7 +1,7 @@
 configureAndroidLibrary(project)
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         versionCode 1

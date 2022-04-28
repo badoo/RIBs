@@ -45,7 +45,6 @@ dependencies {
     implementation deps.external.rxrelay2
     implementation deps.external.rxandroid2
     implementation deps.external.leakCanary // use debugImplementation in real life apps
-    implementation deps.external.appUtilsTree
 
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout

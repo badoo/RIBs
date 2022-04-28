@@ -5,8 +5,6 @@ dependencies {
 
     implementation deps.apt.javaxInject
 
-    implementation deps.external.appUtilsTree
-
     compileOnly deps.android.annotations
     api project(":libraries:rib-base")
 

@@ -16,7 +16,6 @@ android {
 
 dependencies {
     implementation deps.android.appCompat
-    implementation deps.external.appUtilsTree
 
     api project(':libraries:rib-base')
     api deps.test.junit4

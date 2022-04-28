@@ -23,7 +23,6 @@ dependencies {
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
-    implementation deps.external.appUtilsTree
     implementation project(":libraries:rib-base")
     implementation project(":samples:resources")
 

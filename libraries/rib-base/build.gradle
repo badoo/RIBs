@@ -6,9 +6,9 @@ dependencies {
     api deps.android.appCompat
 
     api deps.android.lifecycleCommon
+    api deps.external.appUtilsTree
     implementation deps.android.activity
     implementation deps.android.fragment
-    implementation deps.external.appUtilsTree
     compileOnly deps.android.annotations
 
     testImplementation deps.external.mviCore

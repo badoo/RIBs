@@ -115,8 +115,8 @@ def test = [
 ]
 
 def androidTest = [
-        espresso       : 'androidx.test.espresso:espresso-core:3.3.0',
-        espressoIntents: 'androidx.test.espresso:espresso-intents:3.3.0',
+        espresso       : 'androidx.test.espresso:espresso-core:3.4.0',
+        espressoIntents: 'androidx.test.espresso:espresso-intents:3.4.0',
         runner         : "androidx.test:runner:${versions.androidxTestVersion}",
         rules          : "androidx.test:rules:${versions.androidxTestVersion}"
 ]
@@ -128,7 +128,7 @@ def external = [
         mviCoreAndroid  : "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
         mviCoreBinder   : "com.github.badoo.mvicore:binder:${versions.mviCore}",
         mviCoreDiff     : "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
-        rxjava2         : "io.reactivex.rxjava2:rxjava:2.2.6",
+        rxjava2         : "io.reactivex.rxjava2:rxjava:2.2.18",
         rxrelay2        : "com.jakewharton.rxrelay2:rxrelay:2.1.0",
         rxandroid2      : "io.reactivex.rxjava2:rxandroid:2.1.1",
         roboelectricBase: "org.robolectric:robolectric:${versions.robolectric}",

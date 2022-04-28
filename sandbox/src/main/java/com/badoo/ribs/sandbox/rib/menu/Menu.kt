@@ -3,9 +3,9 @@ package com.badoo.ribs.sandbox.rib.menu
 import android.os.Parcelable
 import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input
 import com.badoo.ribs.sandbox.rib.menu.Menu.Output
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 import kotlinx.parcelize.Parcelize
 
 interface Menu : Rib, Connectable<Input, Output> {
@@ -30,5 +30,5 @@ interface Menu : Rib, Connectable<Input, Output> {
 
     class Customisation(
         val viewFactory: MenuView.Factory = MenuViewImpl.Factory()
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

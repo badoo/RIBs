@@ -5,13 +5,13 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.builder.Builder
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.lifecycle.TestLifecycle
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -250,7 +250,7 @@ class ChildAwareImplTest {
                     AncestryInfo.Child(rootNode, Routing(Configuration))
                 },
                 savedInstanceState = null,
-                customisations = NodeCustomisationDirectoryImpl(),
+                customisations = RibCustomisationDirectoryImpl(),
             ),
             payload = null
         ).also {

@@ -1,8 +1,8 @@
 package com.badoo.ribs.sandbox.rib.big
 
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.portal.CanProvidePortal
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface Big : Rib {
 
@@ -10,5 +10,5 @@ interface Big : Rib {
 
     class Customisation(
         val viewFactory: BigView.Factory = BigViewImpl.Factory()
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

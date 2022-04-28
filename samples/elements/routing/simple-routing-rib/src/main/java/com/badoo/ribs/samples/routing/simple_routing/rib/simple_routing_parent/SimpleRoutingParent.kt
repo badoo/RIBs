@@ -1,7 +1,7 @@
 package com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent
 
 import com.badoo.ribs.core.Rib
-import com.bumble.appyx.utils.customisations.NodeCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisation
 
 interface SimpleRoutingParent : Rib {
 
@@ -9,5 +9,5 @@ interface SimpleRoutingParent : Rib {
 
     class Customisation(
         val viewFactory: SimpleRoutingParentView.Factory = SimpleRoutingParentViewImpl.Factory()
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

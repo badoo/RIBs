@@ -1,7 +1,7 @@
 package com.badoo.ribs.samples.communication.coordinate_multiple_example.rib.greeting_container
 
 import com.badoo.ribs.core.Rib
-import com.bumble.appyx.utils.customisations.NodeCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisation
 
 interface GreetingContainer : Rib {
 
@@ -9,5 +9,5 @@ interface GreetingContainer : Rib {
 
     class Customisation(
         val viewFactory: GreetingContainerView.Factory = GreetingContainerViewImpl.Factory(),
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

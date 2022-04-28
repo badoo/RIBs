@@ -2,9 +2,9 @@ package com.badoo.ribs.template.leaf.foo_bar
 
 import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.template.leaf.foo_bar.FooBar.Input
 import com.badoo.ribs.template.leaf.foo_bar.FooBar.Output
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 import io.reactivex.Single
 
 interface FooBar : Rib, Connectable<Input, Output> {
@@ -17,7 +17,7 @@ interface FooBar : Rib, Connectable<Input, Output> {
 
     class Customisation(
         val viewFactory: FooBarView.Factory = FooBarViewImpl.Factory()
-    ) : NodeCustomisation
+    ) : RibCustomisation
 
     // Workflow
     // todo: do not delete - rename, and add more

@@ -6,6 +6,8 @@ import android.content.Intent
 import com.badoo.ribs.android.activitystarter.CanProvideActivityStarter
 import com.badoo.ribs.android.dialog.CanProvideDialogLauncher
 import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
+import com.badoo.ribs.core.customisation.RibCustomisationDirectory
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.portal.CanProvidePortal
@@ -26,8 +28,6 @@ import com.badoo.ribs.sandbox.rib.util.TestView
 import com.badoo.ribs.sandbox.rib.util.component
 import com.badoo.ribs.sandbox.rib.util.subscribeOnTestObserver
 import com.badoo.ribs.sandbox.util.CoffeeMachine
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.assertj.core.api.Assertions.assertThat
@@ -51,7 +51,7 @@ class MainScreenTest {
     private val dialogExampleView = TestDialogExampleView()
     private val fooBarView = TestFooBarView()
     private val helloWorldView = TestHelloWorldView()
-    private val customisation = NodeCustomisationDirectoryImpl()
+    private val customisation = RibCustomisationDirectoryImpl()
         .apply {
             put(Menu.Customisation::class, mock {
                 on { viewFactory } doReturn object : MenuView.Factory {
@@ -133,7 +133,7 @@ class MainScreenTest {
         assertThat(helloWorldViewModelObserver.values()).last().isEqualTo(HelloWorldView.ViewModel("Data returned: 1234"))
     }
 
-    private fun buildRootRib(customisation: NodeCustomisationDirectory) =
+    private fun buildRootRib(customisation: RibCustomisationDirectory) =
         SwitcherBuilder(
             object : Switcher.Dependency,
                 CanProvideActivityStarter by dependencies,

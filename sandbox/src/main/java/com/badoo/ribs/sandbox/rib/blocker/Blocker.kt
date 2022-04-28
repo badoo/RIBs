@@ -2,9 +2,9 @@ package com.badoo.ribs.sandbox.rib.blocker
 
 import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.sandbox.rib.blocker.Blocker.Input
 import com.badoo.ribs.sandbox.rib.blocker.Blocker.Output
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface Blocker : Rib, Connectable<Input, Output> {
 
@@ -18,5 +18,5 @@ interface Blocker : Rib, Connectable<Input, Output> {
 
     class Customisation(
         val viewFactory: BlockerView.Factory = BlockerViewImpl.Factory()
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

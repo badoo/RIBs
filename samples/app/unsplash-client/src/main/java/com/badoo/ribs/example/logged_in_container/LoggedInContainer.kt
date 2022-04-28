@@ -2,6 +2,7 @@ package com.badoo.ribs.example.logged_in_container
 
 import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.logged_in_container.LoggedInContainer.Input
 import com.badoo.ribs.example.logged_in_container.LoggedInContainer.Output
@@ -9,7 +10,6 @@ import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRoute
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface LoggedInContainer : Rib, Connectable<Input, Output> {
 
@@ -24,5 +24,5 @@ interface LoggedInContainer : Rib, Connectable<Input, Output> {
 
     class Customisation(
         val transitionHandler: TransitionHandler<LoggedInContainerRouter.Configuration>? = null
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

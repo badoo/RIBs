@@ -1,7 +1,7 @@
 package com.badoo.ribs.samples.routing.simple_routing.rib.child2
 
 import com.badoo.ribs.core.Rib
-import com.bumble.appyx.utils.customisations.NodeCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisation
 
 interface Child2 : Rib {
 
@@ -9,5 +9,5 @@ interface Child2 : Rib {
 
     class Customisation(
         val viewFactory: Child2View.Factory = Child2ViewImpl.Factory()
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

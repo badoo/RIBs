@@ -2,10 +2,10 @@ package com.badoo.ribs.samples.communication.coordinate_multiple_example.rib.gre
 
 import com.badoo.ribs.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
+import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.samples.communication.coordinate_multiple_example.rib.greeting.Greeting.Input
 import com.badoo.ribs.samples.communication.coordinate_multiple_example.rib.greeting.Greeting.Output
 import com.badoo.ribs.samples.communication.coordinate_multiple_example.rib.language_selector.Language
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface Greeting : Rib, Connectable<Input, Output> {
 
@@ -21,5 +21,5 @@ interface Greeting : Rib, Connectable<Input, Output> {
 
     class Customisation(
         val viewFactory: GreetingView.Factory = GreetingViewImpl.Factory()
-    ) : NodeCustomisation
+    ) : RibCustomisation
 }

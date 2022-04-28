@@ -1,7 +1,8 @@
 package com.badoo.ribs.test
 
-import com.bumble.appyx.utils.customisations.NodeCustomisation
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
+import com.badoo.ribs.core.customisation.RibCustomisation
+import com.badoo.ribs.core.customisation.RibCustomisationDirectory
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 
-fun NodeCustomisation.toDirectory(): NodeCustomisationDirectoryImpl =
-    NodeCustomisationDirectoryImpl().also { it.put(this) }
+fun RibCustomisation.toDirectory(): RibCustomisationDirectory =
+    RibCustomisationDirectoryImpl().also { it.put(this) }

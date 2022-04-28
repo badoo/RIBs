@@ -1,5 +1,6 @@
 package com.badoo.ribs.samples.customisations.app
 
+import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.samples.routing.simple_routing.rib.child1.Child1
 import com.badoo.ribs.samples.routing.simple_routing.rib.child1.Child1ViewImpl
 import com.badoo.ribs.samples.routing.simple_routing.rib.child1_child1.Child1Child1
@@ -10,9 +11,8 @@ import com.badoo.ribs.samples.routing.simple_routing.rib.child2.Child2
 import com.badoo.ribs.samples.routing.simple_routing.rib.child2.Child2ViewImpl
 import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent.SimpleRoutingParent
 import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent.SimpleRoutingParentViewImpl
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
-object AppCustomisations : NodeCustomisationDirectoryImpl() {
+object AppCustomisations : RibCustomisationDirectoryImpl() {
 
     init {
         +SimpleRoutingParent.Customisation(

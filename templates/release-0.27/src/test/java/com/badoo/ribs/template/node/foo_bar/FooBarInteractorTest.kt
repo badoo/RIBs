@@ -4,7 +4,7 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.template.node.foo_bar.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.routing.FooBarRouter.Configuration
 import com.badoo.ribs.test.emptyBuildParams
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

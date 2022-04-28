@@ -4,10 +4,10 @@ import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.core.view.RibView
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

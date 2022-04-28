@@ -13,7 +13,7 @@ def versions = [
         intellij_kotlin                : '203-1.5.21-release-328-AS7717.8',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.6',
-        robolectric                    : '4.6.1',
+        robolectric                    : '4.7.3',
         compose                        : '1.0.1',
 
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
@@ -109,7 +109,7 @@ def test = [
         junitVintage  : "org.junit.vintage:junit-vintage-engine:${versions.junit5}",
         byteBuddy     : "net.bytebuddy:byte-buddy:1.10.21",
         mockito       : "org.mockito:mockito-core:2.24.0",
-        mockitoKotlin : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0",
+        mockitoKotlin : "org.mockito.kotlin:mockito-kotlin:3.2.0",
         assertj       : "org.assertj:assertj-core:2.9.1", // 2.x version is Android compatible
         compileTesting: "com.google.testing.compile:compile-testing:0.11",
 ]

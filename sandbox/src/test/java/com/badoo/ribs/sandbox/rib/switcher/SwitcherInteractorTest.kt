@@ -15,9 +15,9 @@ import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.
 import com.badoo.ribs.test.InteractorTestHelper
 import com.badoo.ribs.test.emptyBuildParams
 import com.jakewharton.rxrelay2.PublishRelay
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test

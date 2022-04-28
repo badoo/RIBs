@@ -14,9 +14,9 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.util.RIBs
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
-import com.nhaarman.mockitokotlin2.argThat
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import kotlinx.parcelize.Parcelize

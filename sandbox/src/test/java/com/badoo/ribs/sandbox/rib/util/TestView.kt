@@ -5,7 +5,7 @@ import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 

@@ -12,8 +12,8 @@ import com.badoo.ribs.sandbox.rib.menu.MenuView.Event.Select
 import com.badoo.ribs.sandbox.rib.util.TestView
 import com.badoo.ribs.sandbox.rib.util.subscribeOnTestObserver
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test

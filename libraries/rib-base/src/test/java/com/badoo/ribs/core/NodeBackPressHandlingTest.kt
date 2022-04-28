@@ -4,10 +4,10 @@ import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -23,7 +23,7 @@ import com.badoo.ribs.routing.state.feature.Transaction
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.state.feature.state.SavedState
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Before

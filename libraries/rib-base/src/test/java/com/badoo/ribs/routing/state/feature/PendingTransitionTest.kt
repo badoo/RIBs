@@ -6,7 +6,7 @@ import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.R
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.RequestTransition
 import com.badoo.ribs.routing.state.feature.Transaction.InternalTransaction.ExecutePendingTransition
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

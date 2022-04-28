@@ -2,7 +2,7 @@ package com.badoo.ribs.core.helper
 
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.AndroidRibView
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 
 class TestView : AndroidRibView() {
 

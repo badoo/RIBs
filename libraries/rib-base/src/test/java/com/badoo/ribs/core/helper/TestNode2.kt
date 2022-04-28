@@ -2,7 +2,7 @@ package com.badoo.ribs.core.helper
 
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.ViewFactory
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 
 class TestNode2(
     buildParams: BuildParams<*> = testBuildParams(),

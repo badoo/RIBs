@@ -6,7 +6,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.Routing
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import kotlinx.parcelize.Parcelize
 
 class TestRouter(

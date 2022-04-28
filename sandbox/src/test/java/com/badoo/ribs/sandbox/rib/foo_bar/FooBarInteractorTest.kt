@@ -2,7 +2,7 @@ package com.badoo.ribs.sandbox.rib.foo_bar
 
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.test.emptyBuildParams
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

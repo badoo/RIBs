@@ -5,7 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.router.Router
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 
 open class TestNode(
     buildParams: BuildParams<*> = testBuildParams(),

@@ -13,7 +13,7 @@ import com.badoo.ribs.routing.resolver.RoutingResolver
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.*
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.RoutingContext.Unresolved
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

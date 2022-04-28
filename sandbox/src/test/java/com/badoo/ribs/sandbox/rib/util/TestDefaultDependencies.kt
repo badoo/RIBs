@@ -6,7 +6,7 @@ import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.CanProvidePermissionRequester
 import com.badoo.ribs.portal.CanProvidePortal
 import com.badoo.ribs.portal.Portal
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 
 class TestDefaultDependencies :
     CanProvideActivityStarter,

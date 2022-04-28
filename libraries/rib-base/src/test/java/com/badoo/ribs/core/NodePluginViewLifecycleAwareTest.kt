@@ -1,7 +1,7 @@
 package com.badoo.ribs.core
 
 import com.badoo.ribs.core.plugin.ViewLifecycleAware
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner

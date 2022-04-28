@@ -4,9 +4,9 @@ import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.core.helper.TestBuilder
 import com.badoo.ribs.core.helper.TestRib
 import com.badoo.ribs.core.plugin.RibAware
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner

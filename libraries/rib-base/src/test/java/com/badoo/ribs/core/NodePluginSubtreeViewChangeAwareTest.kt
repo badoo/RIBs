@@ -1,8 +1,8 @@
 package com.badoo.ribs.core
 
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner

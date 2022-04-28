@@ -28,8 +28,8 @@ import com.badoo.ribs.sandbox.rib.util.TestView
 import com.badoo.ribs.sandbox.rib.util.component
 import com.badoo.ribs.sandbox.rib.util.subscribeOnTestObserver
 import com.badoo.ribs.sandbox.util.CoffeeMachine
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test

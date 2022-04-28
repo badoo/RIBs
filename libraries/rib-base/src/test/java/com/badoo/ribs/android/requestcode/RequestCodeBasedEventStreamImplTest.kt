@@ -2,11 +2,11 @@ package com.badoo.ribs.android.requestcode
 
 import com.badoo.ribs.minimal.reactive.CompositeCancellable
 import com.badoo.ribs.util.RIBs
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

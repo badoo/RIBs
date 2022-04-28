@@ -5,7 +5,7 @@ while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github"
     rootDirectory = rootDirectory.parentFile
 }
 
-def kotlinVersion = '1.5.21' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.0.1
+def kotlinVersion = '1.6.10' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.1.1
 
 def versions = [
         dagger                         : '2.37',
@@ -13,8 +13,8 @@ def versions = [
         intellij_kotlin                : '211-1.6.10-release-923-AS7442.40',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.6',
-        robolectric                    : '4.6.1',
-        compose                        : '1.0.1',
+        robolectric                    : '4.7.3',
+        compose                        : '1.1.1',
 
         materialVersion                : '1.1.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation
@@ -35,14 +35,15 @@ def versions = [
         androidxPaletteVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
         androidxPercentLayoutVersion   : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
         androidxRecyclerViewVersion    : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
-        androidxTestVersion            : '1.3.0', // https://developer.android.com/jetpack/androidx/releases/test
+        androidxTestVersion            : '1.4.0', // https://developer.android.com/jetpack/androidx/releases/test
         androidxTestUiAutoVersion      : '2.2.0',
         retrofitVersion                : '2.9.0',
         okhttp                         : '3.14.7',
-        leakCanary                     : '2.4',
+        leakCanary                     : '2.9.1',
         jacoco                         : '0.8.6',
         junit5                         : '5.7.1',
-        coil                           : '1.3.1'
+        coil                           : '1.3.1',
+        appUtilsTree                   : '0.1.0'
 ]
 
 def apt = [
@@ -54,11 +55,11 @@ def apt = [
 def agp = 'com.android.tools.build:gradle:4.2.2'
 
 def build = [
-        compileSdkVersion: 30,
+        compileSdkVersion: 31,
         gradlePluginsUrl : "https://plugins.gradle.org/m2/",
         ci               : 'true' == System.getenv('CI'),
         minSdkVersion    : 21,
-        targetSdkVersion : 30,
+        targetSdkVersion : 31,
         guava            : "com.google.guava:guava:20.0",
         commonsLang      : "commons-lang:commons-lang:2.6",
         intellijPlugin   : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.1.4",
@@ -108,14 +109,14 @@ def test = [
         junitVintage  : "org.junit.vintage:junit-vintage-engine:${versions.junit5}",
         byteBuddy     : "net.bytebuddy:byte-buddy:1.10.21",
         mockito       : "org.mockito:mockito-core:2.24.0",
-        mockitoKotlin : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0",
+        mockitoKotlin : "org.mockito.kotlin:mockito-kotlin:3.2.0",
         assertj       : "org.assertj:assertj-core:2.9.1", // 2.x version is Android compatible
         compileTesting: "com.google.testing.compile:compile-testing:0.11",
 ]
 
 def androidTest = [
-        espresso       : 'androidx.test.espresso:espresso-core:3.3.0',
-        espressoIntents: 'androidx.test.espresso:espresso-intents:3.3.0',
+        espresso       : 'androidx.test.espresso:espresso-core:3.4.0',
+        espressoIntents: 'androidx.test.espresso:espresso-intents:3.4.0',
         runner         : "androidx.test:runner:${versions.androidxTestVersion}",
         rules          : "androidx.test:rules:${versions.androidxTestVersion}"
 ]
@@ -127,7 +128,7 @@ def external = [
         mviCoreAndroid  : "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
         mviCoreBinder   : "com.github.badoo.mvicore:binder:${versions.mviCore}",
         mviCoreDiff     : "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
-        rxjava2         : "io.reactivex.rxjava2:rxjava:2.2.6",
+        rxjava2         : "io.reactivex.rxjava2:rxjava:2.2.18",
         rxrelay2        : "com.jakewharton.rxrelay2:rxrelay:2.1.0",
         rxandroid2      : "io.reactivex.rxjava2:rxandroid:2.1.1",
         roboelectricBase: "org.robolectric:robolectric:${versions.robolectric}",
@@ -136,7 +137,8 @@ def external = [
         apacheCommons   : 'org.apache.commons:commons-lang3:3.0',
         gson            : 'com.google.code.gson:gson:2.8.5',
         coil            : "io.coil-kt:coil:${versions.coil}",
-        leakCanary      : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}"
+        leakCanary      : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
+        appUtilsTree    : "com.github.badoo:app-tree-utils:${versions.appUtilsTree}",
 ]
 
 def retrofit = [

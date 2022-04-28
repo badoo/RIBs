@@ -7,6 +7,7 @@ dependencies {
 
     implementation deps.android.recyclerView
     compileOnly deps.android.annotations
+    implementation deps.external.appUtilsTree
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
     implementation deps.external.mviCoreBinder

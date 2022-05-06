@@ -7,7 +7,7 @@ import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.feature.EffectEmitter
-import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingRemovalTrue
+import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingRemove
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.Removed
 import com.badoo.ribs.routing.transition.TransitionElement
 
@@ -42,7 +42,7 @@ internal class RemoveAction<C : Parcelable>(
 
     override fun onTransition(forceExecute: Boolean) {
         activator.onTransitionRemove(routing, item.nodes)
-        emitter.invoke(PendingRemovalTrue(routing))
+        emitter.invoke(PendingRemove(routing))
     }
 
     override fun onFinish(forceExecute: Boolean) {

@@ -11,7 +11,7 @@ import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.feature.EffectEmitter
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect
-import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingDeactivateFalse
+import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingActivate
 import com.badoo.ribs.routing.transition.TransitionDirection
 import com.badoo.ribs.routing.transition.TransitionElement
 
@@ -87,7 +87,7 @@ internal class ActivateAction<C : Parcelable>(
         if (canExecute || forceExecute) {
             item.resolution.execute()
             activator.onTransitionActivate(routing, item.nodes)
-            emitter.invoke(PendingDeactivateFalse(routing))
+            emitter.invoke(PendingActivate(routing))
         }
     }
 

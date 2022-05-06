@@ -8,7 +8,7 @@ import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.ActionExecutionParams
 import com.badoo.ribs.routing.state.feature.EffectEmitter
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.Added
-import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingRemovalFalse
+import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Individual.PendingAdd
 import com.badoo.ribs.routing.transition.TransitionElement
 
 /**
@@ -21,7 +21,7 @@ internal class AddAction<C : Parcelable>(
     private val activator: RoutingActivator<C>
 ) : RoutingTransitionAction<C> {
 
-    object Factory: ActionFactory {
+    object Factory : ActionFactory {
         override fun <C : Parcelable> create(
             params: ActionExecutionParams<C>
         ): RoutingTransitionAction<C> = AddAction(
@@ -42,7 +42,7 @@ internal class AddAction<C : Parcelable>(
 
     override fun onTransition(forceExecute: Boolean) {
         activator.onTransitionAdd(routing, item.nodes)
-        emitter.invoke(PendingRemovalFalse(routing))
+        emitter.invoke(PendingAdd(routing))
     }
 
     override fun onFinish(forceExecute: Boolean) {

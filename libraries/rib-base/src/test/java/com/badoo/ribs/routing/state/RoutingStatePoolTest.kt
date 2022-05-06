@@ -633,6 +633,17 @@ class RoutingStatePoolTest {
     }
     // endregion
 
+    @Test
+    fun `On Deactivate, Node routing is removed from pendingDeactivate`() {
+        createEmptyPool()
+        pool.accept(Transaction.from(
+            Add(helperContentViewParented1.routing),
+            Deactivate(helperContentViewParented1.routing)
+        ))
+
+        assertEquals(true, pool.state.pendingDeactivate.isEmpty())
+    }
+
     // region Remove
     @Test
     fun `On Remove, all of its Nodes are detached regardless of view-parenting mode`() {

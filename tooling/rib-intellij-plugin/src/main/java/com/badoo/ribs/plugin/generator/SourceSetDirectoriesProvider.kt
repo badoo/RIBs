@@ -1,7 +1,7 @@
 package com.badoo.ribs.plugin.generator
 
 import com.android.tools.idea.gradle.model.IdeArtifactName
-import com.android.tools.idea.gradle.project.model.AndroidModuleModel
+import com.android.tools.idea.gradle.project.model.GradleAndroidModel
 import com.badoo.ribs.plugin.util.toPsiDirectory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.LocalFileSystem
@@ -19,7 +19,7 @@ class SourceSetDirectoriesProvider(
     private val mainSourceDirectory: PsiDirectory
 ) {
 
-    private val androidModel = AndroidModuleModel.get(androidFacet)!!
+    private val gradleAndroidModel = GradleAndroidModel.get(androidFacet)!!
     private val directoriesCache: MutableMap<SourceSet, PsiDirectory> = hashMapOf()
 
     fun getDirectory(sourceSet: SourceSet, createIfNotFound: Boolean = true): PsiDirectory? =
@@ -32,14 +32,14 @@ class SourceSetDirectoriesProvider(
         SourceSet.TEST -> getAndroidArtifactDirectory(IdeArtifactName.UNIT_TEST, createIfNotFound)
         SourceSet.ANDROID_TEST -> getAndroidArtifactDirectory(IdeArtifactName.ANDROID_TEST, createIfNotFound)
         SourceSet.RESOURCES -> ResourceFolderManager.getInstance(androidFacet).folders
-            .firstOrNull { !androidModel.isGenerated(it) }
+            .firstOrNull { !gradleAndroidModel.isGenerated(it) }
             ?.toPsiDirectory(project)
             ?: throw IllegalStateException("Resources directory not found")
     }
 
     private fun getAndroidArtifactDirectory(artifact: IdeArtifactName, createIfNotFound: Boolean): PsiDirectory? {
         return try {
-            val file = androidModel.getTestSourceProviders(artifact).firstOrNull()?.javaDirectories?.firstOrNull()
+            val file = gradleAndroidModel.getTestSourceProviders(artifact).firstOrNull()?.javaDirectories?.firstOrNull()
                 ?: throw IllegalStateException("Source set directory for $artifact not found")
             file.mkdirs()
             val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)

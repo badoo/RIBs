@@ -23,6 +23,7 @@ import com.badoo.ribs.routing.state.feature.Transaction
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.state.feature.state.SavedState
+import io.reactivex.observers.TestObserver
 import org.mockito.kotlin.*
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
@@ -632,6 +633,30 @@ class RoutingStatePoolTest {
         assertEquals(helperContentViewParented1.nodes, (configurationContext as? Resolved)?.nodes)
     }
     // endregion
+
+    @Test
+    fun `During deactivate action Node routing added to pendingDeactivate`() {
+        createEmptyPool()
+        pool.accept(Transaction.from(Add(helperContentViewParented1.routing)))
+
+        val testObserver = TestObserver<Set<Routing<*>>>()
+        pool.observe { testObserver.onNext(it.pendingDeactivate) }
+
+        pool.accept(Transaction.from(Deactivate(helperContentViewParented1.routing)))
+
+        testObserver.values().any { it.contains(helperContentViewParented1.routing) }
+    }
+
+    @Test
+    fun `On Deactivate, Node routing is removed from pendingDeactivate`() {
+        createEmptyPool()
+        pool.accept(Transaction.from(
+            Add(helperContentViewParented1.routing),
+            Deactivate(helperContentViewParented1.routing)
+        ))
+
+        assertEquals(true, pool.state.pendingDeactivate.isEmpty())
+    }
 
     // region Remove
     @Test

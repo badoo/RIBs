@@ -68,9 +68,17 @@ internal open class RoutingStatePool<C : Parcelable>(
         sealed class Individual<C : Parcelable> : Effect<C>() {
             abstract val key: Routing<C>
 
+            class PendingAdd<C : Parcelable>(
+                override val key: Routing<C>
+            ) : Individual<C>()
+
             class Added<C : Parcelable>(
                 override val key: Routing<C>,
                 val updatedElement: Resolved<C>
+            ) : Individual<C>()
+
+            class PendingRemove<C : Parcelable>(
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class Removed<C : Parcelable>(
@@ -78,9 +86,17 @@ internal open class RoutingStatePool<C : Parcelable>(
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
+            class PendingActivate<C : Parcelable>(
+                override val key: Routing<C>
+            ) : Individual<C>()
+
             class Activated<C : Parcelable>(
                 override val key: Routing<C>,
                 val updatedElement: Resolved<C>
+            ) : Individual<C>()
+
+            class PendingDeactivate<C : Parcelable>(
+                override val key: Routing<C>
             ) : Individual<C>()
 
             class Deactivated<C : Parcelable>(
@@ -88,21 +104,6 @@ internal open class RoutingStatePool<C : Parcelable>(
                 val updatedElement: Resolved<C>
             ) : Individual<C>()
 
-            class PendingDeactivateTrue<C : Parcelable>(
-                override val key: Routing<C>
-            ) : Individual<C>()
-
-            class PendingDeactivateFalse<C : Parcelable>(
-                override val key: Routing<C>
-            ) : Individual<C>()
-
-            class PendingRemovalTrue<C : Parcelable>(
-                override val key: Routing<C>
-            ) : Individual<C>()
-
-            class PendingRemovalFalse<C : Parcelable>(
-                override val key: Routing<C>
-            ) : Individual<C>()
         }
 
         sealed class Transition<C : Parcelable> : Effect<C>() {
@@ -181,25 +182,30 @@ internal open class RoutingStatePool<C : Parcelable>(
                 pool = pool.plus(key to effect.updatedElement)
             )
             is Effect.Individual.Removed -> copy(
-                pool = pool.minus(key)
+                pool = pool.minus(key),
+                pendingRemoval = pendingRemoval - effect.key,
+                pendingDeactivate = pendingDeactivate - effect.key,
             )
             is Effect.Individual.Activated -> copy(
-                pool = pool.minus(key).plus(key to effect.updatedElement)
+                pool = pool.minus(key).plus(key to effect.updatedElement),
+                pendingRemoval = pendingRemoval - effect.key,
+                pendingDeactivate = pendingDeactivate - effect.key,
             )
             is Effect.Individual.Deactivated -> copy(
-                pool = pool.minus(key).plus(key to effect.updatedElement)
+                pool = pool.minus(key).plus(key to effect.updatedElement),
+                pendingRemoval = pendingRemoval - effect.key,
+                pendingDeactivate = pendingDeactivate - effect.key,
             )
-            is Effect.Individual.PendingDeactivateTrue -> copy(
+            is Effect.Individual.PendingDeactivate -> copy(
                 pendingDeactivate = pendingDeactivate + effect.key
             )
-            is Effect.Individual.PendingDeactivateFalse -> copy(
-                pendingDeactivate = pendingDeactivate - effect.key
-            )
-            is Effect.Individual.PendingRemovalTrue -> copy(
+            is Effect.Individual.PendingRemove -> copy(
                 pendingRemoval = pendingRemoval + effect.key
             )
-            is Effect.Individual.PendingRemovalFalse -> copy(
-                pendingRemoval = pendingRemoval - effect.key
+            is Effect.Individual.PendingAdd,
+            is Effect.Individual.PendingActivate -> copy(
+                pendingRemoval = pendingRemoval - effect.key,
+                pendingDeactivate = pendingDeactivate - effect.key,
             )
         }
     }

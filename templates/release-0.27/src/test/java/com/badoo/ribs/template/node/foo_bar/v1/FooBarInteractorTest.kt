@@ -5,7 +5,7 @@ import com.badoo.ribs.template.node.foo_bar.common.feature.FooBarFeature
 import com.badoo.ribs.template.node.foo_bar.v1.FooBarInteractor
 import com.badoo.ribs.template.node.foo_bar.v1.routing.FooBarRouter.Configuration
 import com.badoo.ribs.test.emptyBuildParams
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

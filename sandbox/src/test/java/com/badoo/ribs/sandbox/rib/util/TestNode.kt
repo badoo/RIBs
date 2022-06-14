@@ -7,7 +7,7 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.test.emptyBuildParams
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 
 class TestNode<V : RibView>(
     buildParams: BuildParams<*> = emptyBuildParams(),

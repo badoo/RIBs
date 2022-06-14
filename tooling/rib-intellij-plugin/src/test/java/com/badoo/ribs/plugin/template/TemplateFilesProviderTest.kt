@@ -2,8 +2,8 @@ package com.badoo.ribs.plugin.template
 
 import com.badoo.ribs.plugin.generator.SourceSet
 import com.badoo.ribs.plugin.template.file.ResourceTemplateFile
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.ByteArrayInputStream

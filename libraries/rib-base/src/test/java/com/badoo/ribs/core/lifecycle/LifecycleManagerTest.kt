@@ -7,8 +7,8 @@ import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.routing.Routing
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

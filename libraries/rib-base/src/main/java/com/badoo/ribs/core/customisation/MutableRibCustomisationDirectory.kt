@@ -1,11 +1,6 @@
 package com.badoo.ribs.core.customisation
 
-import com.badoo.ribs.core.Rib
-import kotlin.reflect.KClass
+import com.bumble.appyx.utils.customisations.MutableNodeCustomisationDirectory
 
-interface MutableRibCustomisationDirectory : RibCustomisationDirectory {
-
-    fun <T : Rib> putSubDirectory(key: KClass<T>, value: RibCustomisationDirectory)
-
-    fun <T : RibCustomisation> put(key: KClass<T>, value: T)
-}
+@Deprecated("Use com.bumble.appyx.utils.customisations.MutableNodeCustomisationDirectory")
+typealias MutableRibCustomisationDirectory = MutableNodeCustomisationDirectory

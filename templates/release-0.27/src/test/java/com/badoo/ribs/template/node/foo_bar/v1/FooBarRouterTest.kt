@@ -3,7 +3,7 @@ package com.badoo.ribs.template.node.foo_bar.v1
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.template.node.foo_bar.v1.routing.FooBarRouter
 import com.badoo.ribs.test.emptyBuildParams
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

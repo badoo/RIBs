@@ -3,8 +3,8 @@ package com.badoo.ribs.example.auth
 import com.badoo.ribs.example.RxSchedulerRule
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.AccessToken
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat

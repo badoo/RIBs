@@ -43,7 +43,7 @@ def versions = [
         jacoco                         : '0.8.6',
         junit5                         : '5.7.1',
         coil                           : '1.3.1',
-        appUtilsTree                   : '0.1.1'
+        appyx                          : '1.0-alpha02',
 ]
 
 def apt = [
@@ -122,23 +122,23 @@ def androidTest = [
 ]
 
 def external = [
-        kotlinStdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
-        dagger          : "com.google.dagger:dagger:${versions.dagger}",
-        mviCore         : "com.github.badoo.mvicore:mvicore:${versions.mviCore}",
-        mviCoreAndroid  : "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
-        mviCoreBinder   : "com.github.badoo.mvicore:binder:${versions.mviCore}",
-        mviCoreDiff     : "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
-        rxjava2         : "io.reactivex.rxjava2:rxjava:2.2.18",
-        rxrelay2        : "com.jakewharton.rxrelay2:rxrelay:2.1.0",
-        rxandroid2      : "io.reactivex.rxjava2:rxandroid:2.1.1",
-        roboelectricBase: "org.robolectric:robolectric:${versions.robolectric}",
-        rxbinding       : 'com.jakewharton.rxbinding2:rxbinding:2.2.0',
-        leakcanaryDebug : 'com.squareup.leakcanary:leakcanary-android:1.6.3',
-        apacheCommons   : 'org.apache.commons:commons-lang3:3.0',
-        gson            : 'com.google.code.gson:gson:2.8.5',
-        coil            : "io.coil-kt:coil:${versions.coil}",
-        leakCanary      : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
-        appUtilsTree    : "com.github.badoo:app-tree-utils:${versions.appUtilsTree}",
+        kotlinStdlib       : "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+        dagger             : "com.google.dagger:dagger:${versions.dagger}",
+        mviCore            : "com.github.badoo.mvicore:mvicore:${versions.mviCore}",
+        mviCoreAndroid     : "com.github.badoo.mvicore:mvicore-android:${versions.mviCore}",
+        mviCoreBinder      : "com.github.badoo.mvicore:binder:${versions.mviCore}",
+        mviCoreDiff        : "com.github.badoo.mvicore:mvicore-diff:${versions.mviCore}",
+        rxjava2            : "io.reactivex.rxjava2:rxjava:2.2.18",
+        rxrelay2           : "com.jakewharton.rxrelay2:rxrelay:2.1.0",
+        rxandroid2         : "io.reactivex.rxjava2:rxandroid:2.1.1",
+        roboelectricBase   : "org.robolectric:robolectric:${versions.robolectric}",
+        rxbinding          : 'com.jakewharton.rxbinding2:rxbinding:2.2.0',
+        leakcanaryDebug    : 'com.squareup.leakcanary:leakcanary-android:1.6.3',
+        apacheCommons      : 'org.apache.commons:commons-lang3:3.0',
+        gson               : 'com.google.code.gson:gson:2.8.5',
+        coil               : "io.coil-kt:coil:${versions.coil}",
+        leakCanary         : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
+        appyxCustomisations: "com.bumble.appyx:customisations:${versions.appyx}",
 ]
 
 def retrofit = [

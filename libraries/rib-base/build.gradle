@@ -6,7 +6,7 @@ dependencies {
     api deps.android.appCompat
 
     api deps.android.lifecycleCommon
-    api deps.external.appUtilsTree
+    api deps.external.appyxCustomisations
     implementation deps.android.activity
     implementation deps.android.fragment
     compileOnly deps.android.annotations

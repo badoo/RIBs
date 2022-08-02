@@ -13,7 +13,7 @@ def versions = [
         intellij_kotlin                : '212-1.6.21-release-334-AS5457.46',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.6',
-        robolectric                    : '4.7.3',
+        robolectric                    : '4.8.1',
         compose                        : '1.2.0',
 
         materialVersion                : '1.4.0', // https://github.com/material-components/material-components-android/releases

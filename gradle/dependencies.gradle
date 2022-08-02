@@ -55,21 +55,21 @@ def apt = [
 def agp = 'com.android.tools.build:gradle:4.2.2'
 
 def build = [
-        compileSdkVersion: 32,
-        gradlePluginsUrl : "https://plugins.gradle.org/m2/",
-        ci               : 'true' == System.getenv('CI'),
-        minSdkVersion    : 21,
-        targetSdkVersion : 32,
-        guava            : "com.google.guava:guava:20.0",
-        commonsLang      : "commons-lang:commons-lang:2.6",
-        intellijPlugin   : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.1.4",
-        kotlinIdeaPlugin : "org.jetbrains.kotlin:${versions.intellij_kotlin}",
-        gradlePlugins    : [
-                android        : agp,
-                kotlin         : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-                mavenPublish   : 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
-                detekt         : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1',
-                jacoco         : "org.jacoco:org.jacoco.core:${versions.jacoco}"
+        compileSdk      : 32,
+        gradlePluginsUrl: "https://plugins.gradle.org/m2/",
+        ci              : 'true' == System.getenv('CI'),
+        minSdk          : 21,
+        targetSdk       : 32,
+        guava           : "com.google.guava:guava:20.0",
+        commonsLang     : "commons-lang:commons-lang:2.6",
+        intellijPlugin  : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.1.4",
+        kotlinIdeaPlugin: "org.jetbrains.kotlin:${versions.intellij_kotlin}",
+        gradlePlugins   : [
+                android     : agp,
+                kotlin      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+                mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
+                detekt      : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1',
+                jacoco      : "org.jacoco:org.jacoco.core:${versions.jacoco}"
         ]
 ]
 

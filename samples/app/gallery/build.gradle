@@ -1,12 +1,12 @@
 configureAndroidApp(project)
 
 android {
-    compileSdkVersion 32
+    compileSdk 32
 
     defaultConfig {
         applicationId 'com.badoo.ribs.samples.gallery'
-        minSdkVersion deps.build.minSdkVersion
-        targetSdkVersion 32
+        minSdk deps.build.minSdk
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 

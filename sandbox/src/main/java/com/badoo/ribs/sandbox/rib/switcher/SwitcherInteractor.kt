@@ -85,6 +85,7 @@ internal class SwitcherInteractor(
             Dialog.Event.Positive -> {
                 // do something if you want
             }
+            else -> {}
         }
     }
 

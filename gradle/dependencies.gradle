@@ -52,7 +52,7 @@ def apt = [
         javaxInject   : "javax.inject:javax.inject:1",
 ]
 
-def agp = 'com.android.tools.build:gradle:4.2.2'
+def agp = 'com.android.tools.build:gradle:7.1.3'
 
 def build = [
         compileSdk      : 32,

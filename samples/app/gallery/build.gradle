@@ -1,12 +1,12 @@
 configureAndroidApp(project)
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId 'com.badoo.ribs.samples.gallery'
         minSdkVersion deps.build.minSdkVersion
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
@@ -34,7 +34,6 @@ android {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
-        useIR = true
     }
 }
 

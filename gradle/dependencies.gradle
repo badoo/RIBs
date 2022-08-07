@@ -5,7 +5,7 @@ while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github"
     rootDirectory = rootDirectory.parentFile
 }
 
-def kotlinVersion = '1.6.10' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.1.1
+def kotlinVersion = '1.7.0' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.1.1
 
 def versions = [
         dagger                         : '2.37',
@@ -13,8 +13,8 @@ def versions = [
         intellij_kotlin                : '212-1.6.21-release-334-AS5457.46',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.6',
-        robolectric                    : '4.7.3',
-        compose                        : '1.1.1',
+        robolectric                    : '4.8.1',
+        compose                        : '1.2.0',
 
         materialVersion                : '1.4.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation
@@ -40,7 +40,7 @@ def versions = [
         retrofitVersion                : '2.9.0',
         okhttp                         : '3.14.7',
         leakCanary                     : '2.9.1',
-        jacoco                         : '0.8.6',
+        jacoco                         : '0.8.8',
         junit5                         : '5.7.1',
         coil                           : '1.3.1',
         appyx                          : '1.0-alpha02',
@@ -52,24 +52,24 @@ def apt = [
         javaxInject   : "javax.inject:javax.inject:1",
 ]
 
-def agp = 'com.android.tools.build:gradle:4.2.2'
+def agp = 'com.android.tools.build:gradle:7.2.2'
 
 def build = [
-        compileSdkVersion: 31,
-        gradlePluginsUrl : "https://plugins.gradle.org/m2/",
-        ci               : 'true' == System.getenv('CI'),
-        minSdkVersion    : 21,
-        targetSdkVersion : 31,
-        guava            : "com.google.guava:guava:20.0",
-        commonsLang      : "commons-lang:commons-lang:2.6",
-        intellijPlugin   : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.1.4",
-        kotlinIdeaPlugin : "org.jetbrains.kotlin:${versions.intellij_kotlin}",
-        gradlePlugins    : [
-                android        : agp,
-                kotlin         : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-                mavenPublish   : 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
-                detekt         : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1',
-                jacoco         : "org.jacoco:org.jacoco.core:${versions.jacoco}"
+        compileSdk      : 32,
+        gradlePluginsUrl: "https://plugins.gradle.org/m2/",
+        ci              : 'true' == System.getenv('CI'),
+        minSdk          : 21,
+        targetSdk       : 32,
+        guava           : "com.google.guava:guava:20.0",
+        commonsLang     : "commons-lang:commons-lang:2.6",
+        intellijPlugin  : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.1.4",
+        kotlinIdeaPlugin: "org.jetbrains.kotlin:${versions.intellij_kotlin}",
+        gradlePlugins   : [
+                android     : agp,
+                kotlin      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+                mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
+                detekt      : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1',
+                jacoco      : "org.jacoco:org.jacoco.core:${versions.jacoco}"
         ]
 ]
 

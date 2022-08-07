@@ -1,7 +1,7 @@
 configureAndroidLibrary(project)
 
 android {
-    compileSdkVersion 31
+    compileSdk 32
 
     defaultConfig {
         versionCode 1
@@ -28,7 +28,6 @@ android {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
-        useIR = true
     }
 }
 

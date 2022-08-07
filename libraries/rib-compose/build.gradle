@@ -1,11 +1,11 @@
 configureAndroidLibrary(project)
 
 android {
-    compileSdkVersion 31
+    compileSdk 32
 
     defaultConfig {
-        minSdkVersion deps.build.minSdkVersion
-        targetSdkVersion 31
+        minSdk deps.build.minSdk
+        targetSdk 32
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }

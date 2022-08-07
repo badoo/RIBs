@@ -79,6 +79,7 @@ abstract class BaseNodesTest {
         when (configuration) {
             is TestRootRouter.Configuration.Content -> push(configuration)
             is TestRootRouter.Configuration.Overlay -> pushOverlay(configuration)
+            else -> {}
         }
     }
 

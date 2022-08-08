@@ -162,13 +162,13 @@ class SomeScreenInteractorTest {
 We can also unit test `View` implementation.
 In this test we should move `View` to some particular state and verify it by using `Espresso`.
 After that we can invoke some actions on `View` and verify that view sends events or invokes callbacks as expected.
-It can be easily done with the help of `RibViewTestRule`.
+It can be easily done with the help of `RibsViewRule`.
 
 ```kotlin
 class SomeViewImplTest {
 
     @get:Rule
-    val rule = RibViewTestRule { factoryContext ->
+    val rule = RibsViewRule { factoryContext ->
         SomeScreenViewImpl.Factory().invoke(/* dependency */ null).invoke(/* view factory context */ factoryContext)
     }
 

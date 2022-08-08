@@ -59,11 +59,11 @@ ext.junitImplementation = { project ->
 
 private def configureAndroidModule(Project project) {
     project.android {
-        compileSdkVersion deps.build.compileSdkVersion
+        compileSdk deps.build.compileSdk
 
         defaultConfig {
-            minSdkVersion deps.build.minSdkVersion
-            targetSdkVersion deps.build.targetSdkVersion
+            minSdk deps.build.minSdk
+            targetSdk deps.build.targetSdk
             testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
             multiDexEnabled true
         }

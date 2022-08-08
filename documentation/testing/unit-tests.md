@@ -169,7 +169,7 @@ class SomeViewImplTest {
 
     @get:Rule
     val rule = RibsViewRule { factoryContext ->
-        SomeScreenViewImpl.Factory().invoke(/* view factory context */ factoryContext)
+        SomeScreenViewImpl.Factory().invoke(/* dependency */ null).invoke(/* view factory context */ factoryContext)
     }
 
     @Test

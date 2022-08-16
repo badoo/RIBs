@@ -16,7 +16,12 @@ import com.badoo.ribs.android.activitystarter.ActivityResultHandler
 import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.rx2.adapter.rx2
-import com.badoo.ribs.test.util.*
+import com.badoo.ribs.test.util.OtherActivity
+import com.badoo.ribs.test.util.TestActivity
+import com.badoo.ribs.test.util.TestRequestCodeClient
+import com.badoo.ribs.test.util.restartActivitySync
+import com.badoo.ribs.test.util.subscribeOnTestObserver
+import com.badoo.ribs.test.util.waitForIdle
 import io.reactivex.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.allOf

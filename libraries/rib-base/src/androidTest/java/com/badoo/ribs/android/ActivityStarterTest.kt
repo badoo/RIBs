@@ -23,7 +23,7 @@ import org.hamcrest.CoreMatchers.allOf
 import org.junit.Rule
 import org.junit.Test
 
-
+@Suppress("FunctionNaming")
 class ActivityStarterTest {
 
     @get:Rule

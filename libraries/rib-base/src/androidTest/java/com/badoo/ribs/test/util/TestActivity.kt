@@ -21,6 +21,7 @@ class TestActivity : AppCompatActivity() {
 
     var ignoreActivityStarts: Boolean = false
     var lastStartedRequestCode: Int = -1
+    var lastStartedOptions: Bundle? = null
 
     private val activityBoundary: ActivityBoundary by lazy {
         ActivityBoundary(
@@ -46,11 +47,17 @@ class TestActivity : AppCompatActivity() {
         requestCodeRegistry.onSaveInstanceState(outState)
     }
 
-    override fun startActivityForResult(intent: Intent?, requestCode: Int) {
+    override fun startActivityForResult(intent: Intent?, requestCode: Int, options: Bundle?) {
         if (!ignoreActivityStarts) {
-            super.startActivityForResult(intent, requestCode)
+            super.startActivityForResult(intent, requestCode, options)
         }
+        lastStartedOptions = options
         lastStartedRequestCode = requestCode
+    }
+
+    override fun startActivity(intent: Intent?, options: Bundle?) {
+        lastStartedOptions = options
+        super.startActivity(intent, options)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

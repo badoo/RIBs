@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import android.app.Instrumentation
 import android.content.ComponentName
 import android.content.Intent
+import android.os.Bundle
 import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
@@ -15,12 +16,7 @@ import com.badoo.ribs.android.activitystarter.ActivityResultHandler
 import com.badoo.ribs.android.activitystarter.ActivityStarter.ActivityResultEvent
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.rx2.adapter.rx2
-import com.badoo.ribs.test.util.OtherActivity
-import com.badoo.ribs.test.util.TestActivity
-import com.badoo.ribs.test.util.TestRequestCodeClient
-import com.badoo.ribs.test.util.restartActivitySync
-import com.badoo.ribs.test.util.subscribeOnTestObserver
-import com.badoo.ribs.test.util.waitForIdle
+import com.badoo.ribs.test.util.*
 import io.reactivex.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.allOf
@@ -40,6 +36,28 @@ class ActivityStarterTest {
         }
 
         intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
+    }
+
+    @Test
+    fun startActivity_startsTargetActivityWithOptions_hasOptions() {
+        val basicOptions = createTestBundle()
+        activityRule.activity.activityStarter.startActivity({ basicOptions }) {
+            Intent(this, OtherActivity::class.java)
+        }
+
+        intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
+        val lastStartedOptionValue = activityRule.activity.lastStartedOptions!!.get(KEY_TEST_OPTION)
+        assertThat(lastStartedOptionValue).isEqualTo(VALUE_TEST_OPTION)
+    }
+
+    @Test
+    fun startActivity_startsTargetActivityWithoutOptions_hasNoOptions() {
+        activityRule.activity.activityStarter.startActivity {
+            Intent(this, OtherActivity::class.java)
+        }
+
+        intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
+        assertThat(activityRule.activity.lastStartedOptions).isNull()
     }
 
     @Test
@@ -64,6 +82,38 @@ class ActivityStarterTest {
         }
 
         intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
+    }
+
+    @Test
+    fun startActivityForResult_startsTargetActivityWithOptions_hasOptions() {
+        activityRule.activity.activityStarter.events(identifiable).rx2().subscribeOnTestObserver()
+
+        val basicOptions = createTestBundle()
+        activityRule
+            .activity
+            .activityStarter
+            .startActivityForResult(identifiable, requestCode = 1, { basicOptions }) {
+                Intent(this, OtherActivity::class.java)
+            }
+
+        intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
+        val lastStartedOptionValue = activityRule.activity.lastStartedOptions!!.get(KEY_TEST_OPTION)
+        assertThat(lastStartedOptionValue).isEqualTo(VALUE_TEST_OPTION)
+    }
+
+    @Test
+    fun startActivityForResult_startsTargetActivityWithoutOptions_hasNoOptions() {
+        activityRule.activity.activityStarter.events(identifiable).rx2().subscribeOnTestObserver()
+
+        activityRule
+            .activity
+            .activityStarter
+            .startActivityForResult(identifiable, requestCode = 1) {
+                Intent(this, OtherActivity::class.java)
+            }
+
+        intended(hasComponent(ComponentName(getTargetContext(), OtherActivity::class.java)))
+        assertThat(activityRule.activity.lastStartedOptions).isNull()
     }
 
     @Test
@@ -185,9 +235,17 @@ class ActivityStarterTest {
         }
     }
 
+    private fun createTestBundle(): Bundle =
+        Bundle()
+            .apply {
+                putString(KEY_TEST_OPTION, VALUE_TEST_OPTION)
+            }
+
     companion object {
         private val identifiable = TestRequestCodeClient()
         private val collisionIdentifiable1 = TestRequestCodeClient(requestCodeClientId = "Siblings")
         private val collisionIdentifiable2 = TestRequestCodeClient(requestCodeClientId = "Teheran")
+        private const val KEY_TEST_OPTION = "KeyTestOption"
+        private const val VALUE_TEST_OPTION = "ValueTestOption"
     }
 }

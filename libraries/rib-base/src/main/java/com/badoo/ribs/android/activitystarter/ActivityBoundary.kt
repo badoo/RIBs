@@ -32,18 +32,20 @@ class ActivityBoundary(
         requestCodeRegistry
     )
 
-    override fun startActivity(createIntent: Context.() -> Intent) {
-        activityStarterHost.startActivity(activityStarterHost.context.createIntent())
+    override fun startActivity(createOptions: OptionsCreator?, createIntent: Context.() -> Intent) {
+        activityStarterHost.startActivity(activityStarterHost.context.createIntent(), createOptions)
     }
 
     override fun startActivityForResult(
         client: RequestCodeClient,
         requestCode: Int,
+        createOptions: OptionsCreator?,
         createIntent: Context.() -> Intent
     ) {
         activityStarterHost.startActivityForResult(
             activityStarterHost.context.createIntent(),
-            client.forgeExternalRequestCode(requestCode)
+            client.forgeExternalRequestCode(requestCode),
+            createOptions
         )
     }
 

@@ -9,20 +9,24 @@ interface ActivityStarterHost {
 
     val context: Context
 
-    fun startActivity(intent: Intent)
+    fun startActivity(intent: Intent, createOptions: OptionsCreator? = null)
 
-    fun startActivityForResult(intent: Intent, requestCode: Int)
+    fun startActivityForResult(intent: Intent, requestCode: Int, createOptions: OptionsCreator? = null)
 
     class ActivityHost(private val activity: Activity) : ActivityStarterHost {
         override val context: Context
             get() = activity
 
-        override fun startActivity(intent: Intent) {
-            activity.startActivity(intent)
+        override fun startActivity(intent: Intent, createOptions: OptionsCreator?) {
+            activity.startActivity(intent, createOptions?.invoke(activity))
         }
 
-        override fun startActivityForResult(intent: Intent, requestCode: Int) {
-            activity.startActivityForResult(intent, requestCode)
+        override fun startActivityForResult(
+            intent: Intent,
+            requestCode: Int,
+            createOptions: OptionsCreator?
+        ) {
+            activity.startActivityForResult(intent, requestCode, createOptions?.invoke(activity))
         }
     }
 
@@ -30,12 +34,16 @@ interface ActivityStarterHost {
         override val context: Context
             get() = fragment.requireContext()
 
-        override fun startActivity(intent: Intent) {
-            fragment.startActivity(intent)
+        override fun startActivity(intent: Intent, createOptions: OptionsCreator?) {
+            fragment.startActivity(intent, createOptions?.invoke(fragment.requireActivity()))
         }
 
-        override fun startActivityForResult(intent: Intent, requestCode: Int) {
-            fragment.startActivityForResult(intent, requestCode)
+        override fun startActivityForResult(
+            intent: Intent,
+            requestCode: Int,
+            createOptions: OptionsCreator?
+        ) {
+            fragment.startActivityForResult(intent, requestCode, createOptions?.invoke(fragment.requireActivity()))
         }
     }
 

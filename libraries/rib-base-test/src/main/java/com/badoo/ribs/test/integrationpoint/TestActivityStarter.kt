@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.badoo.ribs.android.activitystarter.ActivityStarter
+import com.badoo.ribs.android.activitystarter.OptionsCreator
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.minimal.reactive.Source
@@ -18,13 +19,14 @@ class TestActivityStarter : ActivityStarter {
     override fun events(client: RequestCodeClient): Source<ActivityStarter.ActivityResultEvent> =
         events
 
-    override fun startActivity(createIntent: Context.() -> Intent) {
+    override fun startActivity(createOptions: OptionsCreator?, createIntent: Context.() -> Intent) {
         startedIntents += createIntent(mock(Context::class.java))
     }
 
     override fun startActivityForResult(
         client: RequestCodeClient,
         requestCode: Int,
+        createOptions: OptionsCreator?,
         createIntent: Context.() -> Intent
     ) {
         startedIntents += createIntent(mock(Context::class.java))

@@ -16,9 +16,14 @@ import com.badoo.ribs.android.requestcode.RequestCodeClient
  */
 interface ActivityStarter : RequestCodeBasedEventStream<ActivityResultEvent> {
 
-    fun startActivity(createIntent: Context.() -> Intent)
+    fun startActivity(createOptions: OptionsCreator? = null, createIntent: Context.() -> Intent)
 
-    fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent)
+    fun startActivityForResult(
+        client: RequestCodeClient,
+        requestCode: Int,
+        createOptions: OptionsCreator? = null,
+        createIntent: Context.() -> Intent
+    )
 
     data class ActivityResultEvent(
         override val requestCode: Int,

@@ -3,6 +3,7 @@ package com.badoo.ribs.compose
 import android.content.Context
 import android.view.ViewGroup
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.view.RibView
 
@@ -14,6 +15,7 @@ import com.badoo.ribs.core.view.RibView
  * @param childHostFactory Factory to provide ComposeChildHost, required to attach compose content
  * to a ViewGroup. Use a custom one if you need to customize the ViewGroup.
  */
+@Stable
 abstract class ComposeRibView(
     override val context: Context,
     private val childHostFactory: (MutableState<ComposeView?>, context: Context) -> ComposeChildHost = { state, context ->

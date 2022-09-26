@@ -5,7 +5,7 @@ while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github"
     rootDirectory = rootDirectory.parentFile
 }
 
-def kotlinVersion = '1.7.0' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.1.1
+def kotlinVersion = '1.6.10' // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime/1.1.1
 
 def versions = [
         dagger                         : '2.37',
@@ -13,8 +13,8 @@ def versions = [
         intellij_kotlin                : '212-1.6.21-release-334-AS5457.46',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.2.6',
-        robolectric                    : '4.8.1',
-        compose                        : '1.2.0',
+        robolectric                    : '4.7.3',
+        compose                        : '1.1.1',
 
         materialVersion                : '1.4.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation

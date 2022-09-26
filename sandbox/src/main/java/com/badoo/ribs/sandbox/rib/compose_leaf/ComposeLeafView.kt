@@ -5,16 +5,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -41,8 +46,9 @@ interface ComposeLeafView : RibView,
 
 class ComposeLeafViewImpl private constructor(
     context: Context,
+    lifecycle: Lifecycle,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : ComposeRibView(context),
+) : ComposeRibView(context, lifecycle),
     ComposeLeafView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
@@ -50,7 +56,8 @@ class ComposeLeafViewImpl private constructor(
     class Factory : ComposeLeafView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<ComposeLeafView> = ViewFactory {
             ComposeLeafViewImpl(
-                it.parent.context
+                it.parent.context,
+                it.lifecycle,
             )
         }
     }
@@ -96,6 +103,21 @@ private fun View(viewModel: ViewModel) {
                 fontWeight = FontWeight.Bold,
                 text = viewModel.i.toString()
             )
+            LocalState()
+        }
+    }
+}
+
+@Composable
+private fun LocalState(modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier,
+    ) {
+        var counter by rememberSaveable { mutableStateOf(0) }
+        Text(text = "LocalState: $counter")
+        Button(onClick = { counter++ }) {
+            Text(text = "Add")
         }
     }
 }

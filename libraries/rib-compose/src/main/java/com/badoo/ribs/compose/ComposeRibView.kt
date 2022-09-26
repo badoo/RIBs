@@ -1,11 +1,14 @@
 package com.badoo.ribs.compose
 
 import android.content.Context
-import android.view.ViewGroup
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.lifecycle.Lifecycle
+import com.badoo.ribs.android.subscribe
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.RibView
+import com.badoo.ribs.core.view.AndroidRibView2
+import androidx.compose.ui.platform.ComposeView as ComposeAndroidView
 
 
 /**
@@ -18,26 +21,30 @@ import com.badoo.ribs.core.view.RibView
 @Stable
 abstract class ComposeRibView(
     override val context: Context,
+    lifecycle: Lifecycle,
     private val childHostFactory: (MutableState<ComposeView?>, context: Context) -> ComposeChildHost = { state, context ->
         ComposeChildHost(state, context)
     },
-) : RibView {
+) : AndroidRibView2(
+    androidView = ComposeAndroidView(context),
+    lifecycle = lifecycle,
+) {
 
     abstract val composable: ComposeView
 
-    override val androidView: ViewGroup by lazy(LazyThreadSafetyMode.NONE) {
-        androidx.compose.ui.platform.ComposeView(context).apply {
-            setContent(composable)
-        }
+    init {
+        val composeView = androidView as ComposeAndroidView
+        composeView.setViewCompositionStrategy(
+            ViewCompositionStrategy.DisposeOnLifecycleDestroyed(lifecycle)
+        )
+        lifecycle.subscribe(onCreate = { composeView.setContent(composable) })
     }
+
     private val childHosts = mutableMapOf<MutableState<ComposeView?>, ComposeChildHost>()
 
     private fun getChildHostForSubtree(subtreeOf: Node<*>): ComposeChildHost {
         val state = getParentStateForSubtree(subtreeOf)
-        return childHosts.getOrPut(
-            state,
-            { childHostFactory(state, context) }
-        )
+        return childHosts.getOrPut(state) { childHostFactory(state, context) }
     }
 
     open fun getParentStateForSubtree(subtreeOf: Node<*>): MutableState<ComposeView?> {
@@ -46,16 +53,15 @@ abstract class ComposeRibView(
 
     override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
         val childHost = getChildHostForSubtree(subtreeOf)
-        child.onCreateView(this)?.let {
+        child.onCreateView(this)?.also {
             childHost.addView(it.androidView)
         }
         child.onAttachToView()
     }
 
-
     override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
         val target = getChildHostForSubtree(subtreeOf)
-        child.onDetachFromView()?.let {
+        child.onDetachFromView()?.also {
             target.removeView(it.androidView)
         }
     }

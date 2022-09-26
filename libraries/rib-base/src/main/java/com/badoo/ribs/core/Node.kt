@@ -1,8 +1,6 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.SparseArray
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
@@ -54,7 +52,6 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 ) : Rib, LifecycleOwner {
 
     companion object {
-        internal const val BUNDLE_KEY = "Node"
         internal const val KEY_VIEW_STATE = "view.state"
     }
 
@@ -108,7 +105,6 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     internal open val activationMode: ActivationMode =
         buildContext.activationMode
 
-    private val savedInstanceState = buildParams.savedInstanceState?.getBundle(BUNDLE_KEY)
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
 
     @VisibleForTesting
@@ -123,8 +119,8 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     internal open var view: V? = null
     private var rootHost: RibView? = null
 
-    internal open var savedViewState: SparseArray<Parcelable> =
-        savedInstanceState?.getSparseParcelableArray(KEY_VIEW_STATE) ?: SparseArray()
+    internal open var savedViewState: Bundle? =
+        buildParams.savedInstanceState?.getBundle(KEY_VIEW_STATE)
 
     internal var isAttachedToView: Boolean = false
         private set
@@ -158,18 +154,19 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     fun onCreateView(parentView: RibView): V? {
         if (isRoot) rootHost = parentView
         if (view == null && viewFactory != null) {
-            lifecycleManager.onViewCreated()
-            val lifecycle = lifecycleManager.viewLifecycle!!.lifecycle
+            val viewLifecycle = lifecycleManager.initializeViewLifecycle()
             val view = viewFactory.invoke(
                 ViewFactory.Context(
                     parent = parentView,
-                    lifecycle = lifecycle
+                    lifecycle = viewLifecycle
                 )
             )
+            view.restoreInstanceState(savedViewState)
+            savedViewState = null
             this.view = view
-            view.androidView.restoreHierarchyState(savedViewState)
+            lifecycleManager.onViewCreated()
             plugins.filterIsInstance<ViewAware<V>>().forEach {
-                it.onViewCreated(view, lifecycle)
+                it.onViewCreated(view, viewLifecycle)
             }
         }
 
@@ -199,9 +196,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     fun onDetachFromView(): V? {
         if (isAttachedToView) {
             val view = view
+            saveViewState()
             plugins.filterIsInstance<ViewLifecycleAware>().forEach { it.onDetachFromView() }
             lifecycleManager.onDetachFromView()
-            saveViewState()
             isAttachedToView = false
             isPendingViewDetach = false
             rootHost = null
@@ -362,9 +359,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         val handlers = plugins.filterIsInstance<BackPressHandler>()
 
         return subtreeHandlers.any { it.handleBackPressFirst() }
-            || delegateHandleBackPressToActiveChildren()
-            || handlers.any { it.handleBackPress() }
-            || subtreeHandlers.any { it.handleBackPressFallback() }
+                || delegateHandleBackPressToActiveChildren()
+                || handlers.any { it.handleBackPress() }
+                || subtreeHandlers.any { it.handleBackPressFallback() }
     }
 
     fun upNavigation() {
@@ -395,14 +392,12 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         outState.putSerializable(Identifier.KEY_UUID, identifier.uuid)
         plugins.filterIsInstance<SavesInstanceState>().forEach { it.onSaveInstanceState(outState) }
         saveViewState()
-
-        val bundle = Bundle()
-        bundle.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
-        outState.putBundle(BUNDLE_KEY, bundle)
+        outState.putBundle(KEY_VIEW_STATE, savedViewState)
     }
 
     fun saveViewState() {
-        view?.androidView?.saveHierarchyState(savedViewState)
+        val view = view ?: return
+        savedViewState = Bundle().also { view.saveInstanceState(it) }
     }
 
     fun onLowMemory() {

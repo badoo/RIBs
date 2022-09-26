@@ -9,6 +9,7 @@ dependencies {
     api deps.external.appyxCustomisations
     implementation deps.android.activity
     implementation deps.android.fragment
+    implementation deps.android.savedState
     compileOnly deps.android.annotations
 
     testImplementation deps.external.mviCore

@@ -1,12 +1,10 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.ribs.clienthelper.interactor.Interactor
-import com.badoo.ribs.core.Node.Companion.BUNDLE_KEY
 import com.badoo.ribs.core.Node.Companion.KEY_VIEW_STATE
 import com.badoo.ribs.core.exception.RootNodeAttachedAsChildException
 import com.badoo.ribs.core.helper.AnyConfiguration
@@ -26,6 +24,13 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.util.RIBs
 import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.functions.Consumer
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Ignore
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
@@ -35,14 +40,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
-import io.reactivex.functions.Consumer
-import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Before
-import org.junit.Ignore
-import org.junit.Test
-import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -141,13 +138,6 @@ class NodeTest {
         node.onDestroy(isRecreating = false)
 
         verify(errorHandler).handleNonFatalError(any(), isA<RuntimeException>())
-    }
-
-    @Test
-    fun `onSaveInstanceState() saves view state as well`() {
-        node.view = view
-        node.onSaveInstanceState(mock())
-        verify(androidView).saveHierarchyState(node.savedViewState)
     }
 
     @Test
@@ -435,9 +425,8 @@ class NodeTest {
         node.savedViewState = mock()
         node.onSaveInstanceState(outState)
         interactor.onSaveInstanceState(outState)
-        val inner = outState.getBundle(BUNDLE_KEY)
-        assertNotNull(inner)
-        assertEquals(node.savedViewState, inner!!.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE))
+        val state = outState.getBundle(KEY_VIEW_STATE)
+        assertEquals(node.savedViewState, state)
     }
 
     @Test
@@ -456,14 +445,15 @@ class NodeTest {
     fun `saveViewState() does its job`() {
         node.view = view
         node.saveViewState()
-        verify(androidView).saveHierarchyState(node.savedViewState)
+        verify(view).saveInstanceState(any())
     }
 
     @Test
     fun `onCreateView() restores view state`() {
-        node.savedViewState = mock()
+        val viewState = Bundle()
+        node.savedViewState = viewState
         node.onCreateView(parentView)
-        verify(view.androidView).restoreHierarchyState(node.savedViewState)
+        verify(view).restoreInstanceState(viewState)
     }
 
     @Test
@@ -475,7 +465,10 @@ class NodeTest {
     @Test
     fun `onCreateView() = view lifecycle is in state CREATED`() {
         node.onCreateView(parentView)
-        assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.CREATED,
+            node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
+        )
     }
 
     @Test
@@ -483,7 +476,10 @@ class NodeTest {
         node.onStop()
         node.onCreateView(parentView)
         node.onAttachToView()
-        assertEquals(Lifecycle.State.CREATED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.CREATED,
+            node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
+        )
     }
 
     @Test
@@ -492,7 +488,10 @@ class NodeTest {
         node.onStart()
         node.onCreateView(parentView)
         node.onAttachToView()
-        assertEquals(Lifecycle.State.STARTED, node.lifecycleManager.viewLifecycle!!.lifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.STARTED,
+            node.lifecycleManager.viewLifecycle!!.lifecycle.currentState
+        )
     }
 
     @Test
@@ -581,7 +580,10 @@ class NodeTest {
 
         node.attachChildNode(child1)
 
-        verify(errorHandler, never()).handleNonFatalError(any(), isA<RootNodeAttachedAsChildException>())
+        verify(errorHandler, never()).handleNonFatalError(
+            any(),
+            isA<RootNodeAttachedAsChildException>()
+        )
         verifyNoMoreInteractions(errorHandler)
     }
 

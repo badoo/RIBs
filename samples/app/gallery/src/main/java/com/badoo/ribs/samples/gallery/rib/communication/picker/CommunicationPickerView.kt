@@ -3,6 +3,7 @@ package com.badoo.ribs.samples.gallery.rib.communication.picker
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -26,15 +27,17 @@ interface CommunicationPickerView : RibView,
 
 class CommunicationPickerViewImpl private constructor(
     context: Context,
+    lifecycle: Lifecycle,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : ComposeRibView(context),
+) : ComposeRibView(context, lifecycle),
     CommunicationPickerView,
     ObservableSource<Event> by events {
 
     class Factory : CommunicationPickerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<CommunicationPickerView> = ViewFactory {
             CommunicationPickerViewImpl(
-                it.parent.context
+                it.parent.context,
+                it.lifecycle,
             )
         }
     }

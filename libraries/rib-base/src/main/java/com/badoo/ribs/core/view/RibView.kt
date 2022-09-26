@@ -1,6 +1,7 @@
 package com.badoo.ribs.core.view
 
 import android.content.Context
+import android.os.Bundle
 import android.view.ViewGroup
 import com.badoo.ribs.core.Node
 
@@ -41,5 +42,14 @@ interface RibView {
      * Detaches a child from this view. Acts as the opposite of [attachChild].
      */
     fun detachChild(child: Node<*>, subtreeOf: Node<*>)
+
+    fun saveInstanceState(bundle: Bundle) {
+        // no-op
+    }
+
+    fun restoreInstanceState(bundle: Bundle?) {
+        // no-op
+    }
+
 }
 

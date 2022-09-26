@@ -3,6 +3,7 @@ package com.badoo.ribs.samples.gallery.rib.other.picker
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -25,15 +26,17 @@ interface OtherPickerView : RibView,
 
 class OtherPickerViewImpl private constructor(
     context: Context,
+    lifecycle: Lifecycle,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : ComposeRibView(context),
+) : ComposeRibView(context, lifecycle),
     OtherPickerView,
     ObservableSource<Event> by events {
 
     class Factory : OtherPickerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<OtherPickerView> = ViewFactory {
             OtherPickerViewImpl(
-                it.parent.context
+                it.parent.context,
+                it.lifecycle,
             )
         }
     }

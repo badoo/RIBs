@@ -1,11 +1,20 @@
 package com.badoo.ribs.core.view
 
+import android.os.Bundle
+import android.os.Parcelable
+import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.annotation.IdRes
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.Plugin
 
+@Deprecated(
+    message = "AndroidRibView does not support AndroidX integrations, " +
+            "use AndroidRibView2 instead (backward incompatible change).",
+    replaceWith = ReplaceWith("AndroidRibView2", "com.badoo.ribs.core.view.AndroidRibView2"),
+)
 abstract class AndroidRibView : RibView {
 
     fun <T : View> findViewById(@IdRes id: Int): T =
@@ -16,8 +25,9 @@ abstract class AndroidRibView : RibView {
 
     override fun attachChild(child: Node<*>, subtreeOf: Node<*>) {
         val target = getParentViewForSubtree(subtreeOf)
-        child.onCreateView(this)
-        child.view?.let { target.addView(it.androidView) }
+        child.onCreateView(this)?.also {
+            target.addView(it.androidView)
+        }
         child.onAttachToView()
         child.plugins<AndroidViewLifecycleAware>().forEach {
             it.onAttachToView(target)
@@ -26,10 +36,26 @@ abstract class AndroidRibView : RibView {
 
     override fun detachChild(child: Node<*>, subtreeOf: Node<*>) {
         val target = getParentViewForSubtree(subtreeOf)
-        child.view?.let { target.removeView(it.androidView) }
-        child.onDetachFromView()
+        child.onDetachFromView()?.also {
+            target.removeView(it.androidView)
+        }
         child.plugins<AndroidViewLifecycleAware>().forEach {
             it.onDetachFromView(target)
+        }
+    }
+
+    @CallSuper
+    override fun saveInstanceState(bundle: Bundle) {
+        val savedViewState = SparseArray<Parcelable>()
+        androidView.saveHierarchyState(savedViewState)
+        bundle.putSparseParcelableArray(KEY_VIEW_STATE, savedViewState)
+    }
+
+    @CallSuper
+    override fun restoreInstanceState(bundle: Bundle?) {
+        val savedViewState = bundle?.getSparseParcelableArray<Parcelable>(KEY_VIEW_STATE)
+        if (savedViewState != null) {
+            androidView.restoreHierarchyState(savedViewState)
         }
     }
 
@@ -44,4 +70,9 @@ abstract class AndroidRibView : RibView {
         fun onAttachToView(parentViewGroup: ViewGroup) {}
         fun onDetachFromView(parentViewGroup: ViewGroup) {}
     }
+
+    companion object {
+        const val KEY_VIEW_STATE = "view.hierarchy_state"
+    }
+
 }

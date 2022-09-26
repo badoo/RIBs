@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.Node
@@ -20,14 +21,16 @@ interface RootContainerView : RibView {
 
 
 class RootContainerViewImpl private constructor(
-    context: Context
-) : ComposeRibView(context),
+    context: Context,
+    lifecycle: Lifecycle,
+) : ComposeRibView(context, lifecycle),
     RootContainerView {
 
     class Factory : RootContainerView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<RootContainerView> = ViewFactory {
             RootContainerViewImpl(
-                it.parent.context
+                it.parent.context,
+                it.lifecycle,
             )
         }
     }

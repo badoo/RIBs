@@ -98,8 +98,15 @@ internal class LifecycleManager(
         ribLifecycle.onDestroy()
     }
 
+    fun initializeViewLifecycle(): Lifecycle {
+        return CappedLifecycle(externalLifecycle)
+            .run {
+                viewLifecycle = this
+                lifecycle
+            }
+    }
+
     fun onViewCreated() {
-        viewLifecycle = CappedLifecycle(externalLifecycle)
         viewLifecycle!!.onCreate()
     }
 

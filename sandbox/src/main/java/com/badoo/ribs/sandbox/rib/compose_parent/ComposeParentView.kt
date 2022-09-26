@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.Node
@@ -45,8 +46,9 @@ interface ComposeParentView : RibView,
 
 class ComposeParentViewImpl private constructor(
     context: Context,
+    lifecycle: Lifecycle,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : ComposeRibView(context),
+) : ComposeRibView(context, lifecycle),
     ComposeParentView,
     ObservableSource<Event> by events,
     Consumer<ViewModel> {
@@ -54,7 +56,8 @@ class ComposeParentViewImpl private constructor(
     class Factory : ComposeParentView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<ComposeParentView> = ViewFactory {
             ComposeParentViewImpl(
-                it.parent.context
+                it.parent.context,
+                it.lifecycle,
             )
         }
     }

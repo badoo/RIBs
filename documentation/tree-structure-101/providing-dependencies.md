@@ -48,14 +48,16 @@ Pattern:
 
 ```kotlin
 internal open class FooBarChildBuilders( // <- // Internal!
-    dependency: FooBar.Dependency // <- It should dependencies already available to the current `Rib`
+    dependency: FooBar.Dependency // <- It should include dependencies already available to the current `Rib`
 ) {
     // To satisfy all dependencies in the subtree
     class SubtreeDependency(
         dependency: Switcher.Dependency // <- Use as a starting point
-    ) : Child1.Dependency, // <- Extend Dependency interfaces for all children
-        Child2.Dependency by dependency { // If the child only uses a subset of parent deps, delegate
-
+        // <- Extend Dependency interfaces for the parent and all children, 
+        // and also, if the child only uses a subset of parent deps, use parent to delegate.
+    ) : Switcher.Dependency by dependency,
+        Child1.Dependency, 
+        Child2.Dependency {
         // Implement those that you need to satisfy locally
         override val someDeps: Foo
             get() = TODO()

@@ -53,10 +53,8 @@ internal open class FooBarChildBuilders( // <- // Internal!
     // To satisfy all dependencies in the subtree
     class SubtreeDependency(
         dependency: Switcher.Dependency // <- Use as a starting point
-        // <- Extend Dependency interfaces for the parent and all children, 
-        // and also, if the child only uses a subset of parent deps, use parent to delegate.
-    ) : Switcher.Dependency by dependency,
-        Child1.Dependency, 
+    ) : Switcher.Dependency by dependency, // <- Extend Dependency interfaces for the parent and all children, 
+        Child1.Dependency,                 // and also, if the child only uses a subset of parent deps, use parent to delegate.
         Child2.Dependency {
         // Implement those that you need to satisfy locally
         override val someDeps: Foo

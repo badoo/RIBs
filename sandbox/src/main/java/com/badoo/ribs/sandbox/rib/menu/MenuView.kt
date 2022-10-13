@@ -4,10 +4,11 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
-import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.AndroidRibView2
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
@@ -32,9 +33,10 @@ interface MenuView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
 
 
 class MenuViewImpl private constructor(
-    override val androidView: ViewGroup,
+    androidView: ViewGroup,
+    lifecycle: Lifecycle,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : AndroidRibView(),
+) : AndroidRibView2(androidView, lifecycle),
     MenuView,
     ObservableSource<Event> by events {
 
@@ -43,7 +45,8 @@ class MenuViewImpl private constructor(
     ) : MenuView.Factory {
         override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
             MenuViewImpl(
-                it.inflate(layoutRes)
+                it.inflate(layoutRes),
+                it.lifecycle
             )
         }
     }

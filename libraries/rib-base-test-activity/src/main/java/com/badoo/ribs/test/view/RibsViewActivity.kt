@@ -19,6 +19,7 @@ class RibsViewActivity : AppCompatActivity() {
         setContentView(R.layout.rib_test)
         val rootViewHost = AndroidRibViewHost(findViewById(R.id.rib_test_root))
         view = requireNotNull(VIEW_FACTORY).invoke(ViewFactory.Context(rootViewHost, lifecycle))
+        view.restoreInstanceState(null)
         setContentView(view.androidView)
     }
 

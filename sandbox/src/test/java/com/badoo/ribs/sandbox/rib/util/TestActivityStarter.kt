@@ -4,6 +4,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
 import com.badoo.ribs.android.activitystarter.ActivityStarter
+import com.badoo.ribs.android.activitystarter.OptionsCreator
 import com.badoo.ribs.android.requestcode.RequestCodeClient
 import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.minimal.reactive.Source
@@ -22,11 +23,16 @@ class TestActivityStarter : ActivityStarter {
 
     private val eventsRelay: Relay<Pair<RequestCodeClient, ActivityStarter.ActivityResultEvent>> = Relay()
 
-    override fun startActivity(createIntent: Context.() -> Intent) {
+    override fun startActivity(createOptions: OptionsCreator?, createIntent: Context.() -> Intent) {
         intents += testContext.createIntent()
     }
 
-    override fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent) {
+    override fun startActivityForResult(
+        client: RequestCodeClient,
+        requestCode: Int,
+        createOptions: OptionsCreator?,
+        createIntent: Context.() -> Intent
+    ) {
         val intent = testContext.createIntent()
 
         intents += intent

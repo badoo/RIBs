@@ -39,6 +39,7 @@ class NodePluginNodeLifecycleAwareTest : NodePluginTest() {
     @Test
     fun `NodeLifecycleAware plugins receive onDetach()`() {
         val (node, plugins) = testPlugins<NodeLifecycleAware>()
+        node.onCreate()
 
         node.onDestroy(isRecreating = false)
 

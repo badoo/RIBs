@@ -23,6 +23,7 @@ class DisposablePluginTest {
             ),
             viewFactory = null
         )
+        node.onCreate()
     }
 
     @Test

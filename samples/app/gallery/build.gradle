@@ -1,7 +1,7 @@
 configureAndroidApp(project)
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId 'com.badoo.ribs.samples.gallery'
@@ -26,8 +26,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion deps.versions.kotlin
-        kotlinCompilerExtensionVersion deps.versions.compose
+        kotlinCompilerExtensionVersion = deps.versions.composeCompiler
     }
 }
 
@@ -49,12 +48,13 @@ dependencies {
     implementation deps.android.constraintLayout
     implementation deps.android.design
 
-    implementation deps.compose.runtime
-    implementation deps.compose.ui
-    implementation deps.compose.material
-    implementation deps.compose.uiTooling
-    debugImplementation deps.compose.uiToolingPreview
-    implementation deps.compose.foundation
+    implementation enforcedPlatform(deps.compose.bom)
+    implementation "androidx.compose.runtime:runtime"
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.ui:ui-tooling"
+    debugImplementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.foundation:foundation"
 
     implementation project(':libraries:rib-base')
     implementation project(":libraries:rib-compose")

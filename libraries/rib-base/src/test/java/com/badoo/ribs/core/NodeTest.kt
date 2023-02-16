@@ -589,6 +589,8 @@ class NodeTest {
 
     @Test
     fun `When current Node is destroyed and is not going to be recreated, clears RetainedInstanceStore`() {
+        node.onCreate()
+
         node.onDestroy(isRecreating = false)
 
         verify(retainedInstanceStore).removeAll(node.identifier)
@@ -596,6 +598,8 @@ class NodeTest {
 
     @Test
     fun `When current Node is destroyed and is going to be recreated, keeps RetainedInstanceStore`() {
+        node.onCreate()
+
         node.onDestroy(isRecreating = true)
 
         verify(retainedInstanceStore, never()).removeAll(node.identifier)

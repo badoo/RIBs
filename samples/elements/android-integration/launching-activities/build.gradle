@@ -1,7 +1,7 @@
 configureAndroidLibrary(project)
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         minSdk deps.build.minSdk

@@ -34,10 +34,10 @@ class MinimumCombinedLifecycleTest {
 
     @Test
     fun `destroyed when one of lifecycles is destroyed`() {
-        val test1 = TestLifecycle()
-        test1.state = State.DESTROYED
-        val test2 = TestLifecycle()
+        val test1 = TestLifecycle(State.CREATED)
+        val test2 = TestLifecycle(State.CREATED)
         val combined = MinimumCombinedLifecycle(test1.lifecycle, test2.lifecycle)
+        test1.state = State.DESTROYED
         assertEquals(State.DESTROYED, combined.lifecycle.currentState)
     }
 

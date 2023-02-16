@@ -51,6 +51,7 @@ class NodePluginSubtreeChangeAwareTest : NodePluginTest() {
     fun `SubtreeChangeAware plugins receive onDetachChildNode()`() {
         val (node, plugins) = testPlugins<SubtreeChangeAware>()
         val childNode = createChildNode(parent = node)
+        node.attachChildNode(childNode)
 
         node.detachChildNode(childNode, isRecreating = false)
 

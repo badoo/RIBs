@@ -69,6 +69,7 @@ class CappedLifecycleTest {
     @Test
     fun `when external is INITIALIZED, internal is after onDestroy(), effective is DESTROYED`() {
         setExternal(INITIALIZED)
+        cappedLifecycle.onCreate()
         cappedLifecycle.onDestroy()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
     }
@@ -115,6 +116,7 @@ class CappedLifecycleTest {
     @Test
     fun `when external is CREATED, internal is after onDestroy(), effective is DESTROYED`() {
         setExternal(CREATED)
+        cappedLifecycle.onCreate()
         cappedLifecycle.onDestroy()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
     }
@@ -161,6 +163,7 @@ class CappedLifecycleTest {
     @Test
     fun `when external is STARTED, internal is after onDestroy(), effective is DESTROYED`() {
         setExternal(STARTED)
+        cappedLifecycle.onCreate()
         cappedLifecycle.onDestroy()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
     }
@@ -207,6 +210,7 @@ class CappedLifecycleTest {
     @Test
     fun `when external is RESUMED, internal is after onDestroy(), effective is DESTROYED`() {
         setExternal(RESUMED)
+        cappedLifecycle.onCreate()
         cappedLifecycle.onDestroy()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
     }
@@ -217,6 +221,8 @@ class CappedLifecycleTest {
 
     @Test
     fun `when external is DESTROYED, internal is after onCreate(), effective is DESTROYED`() {
+        setExternal(CREATED)
+
         setExternal(DESTROYED)
         cappedLifecycle.onCreate()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
@@ -224,6 +230,8 @@ class CappedLifecycleTest {
 
     @Test
     fun `when external is DESTROYED, internal is after onStart(), effective is DESTROYED`() {
+        setExternal(CREATED)
+
         setExternal(DESTROYED)
         cappedLifecycle.onStart()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
@@ -231,6 +239,8 @@ class CappedLifecycleTest {
 
     @Test
     fun `when external is DESTROYED, internal is after onResume(), effective is DESTROYED`() {
+        setExternal(CREATED)
+
         setExternal(DESTROYED)
         cappedLifecycle.onResume()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
@@ -238,6 +248,8 @@ class CappedLifecycleTest {
 
     @Test
     fun `when external is DESTROYED, internal is after onPause(), effective is DESTROYED`() {
+        setExternal(CREATED)
+
         setExternal(DESTROYED)
         cappedLifecycle.onPause()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
@@ -245,6 +257,7 @@ class CappedLifecycleTest {
 
     @Test
     fun `when external is DESTROYED, internal is after onStop(), effective is DESTROYED`() {
+        setExternal(CREATED)
         setExternal(DESTROYED)
         cappedLifecycle.onStop()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)
@@ -252,6 +265,9 @@ class CappedLifecycleTest {
 
     @Test
     fun `when external is DESTROYED, internal is after onDestroy(), effective is DESTROYED`() {
+        setExternal(CREATED)
+        cappedLifecycle.onCreate()
+
         setExternal(DESTROYED)
         cappedLifecycle.onDestroy()
         assertEquals(DESTROYED, cappedLifecycle.lifecycle.currentState)

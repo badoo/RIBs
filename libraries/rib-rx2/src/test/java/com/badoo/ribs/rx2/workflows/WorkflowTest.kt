@@ -46,6 +46,7 @@ class WorkflowTest {
         childAncestry = AncestryInfo.Child(node, Routing(AnyConfiguration))
 
         addChildren()
+        node.onCreate()
     }
 
     @AfterEach

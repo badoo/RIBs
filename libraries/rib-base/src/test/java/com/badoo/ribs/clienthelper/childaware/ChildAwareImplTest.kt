@@ -198,7 +198,8 @@ class ChildAwareImplTest {
 
     @Test
     fun `ignores registration when parent lifecycle is destroyed`() {
-        val testLifecycle = TestLifecycle(Lifecycle.State.DESTROYED)
+        val testLifecycle = TestLifecycle(Lifecycle.State.CREATED)
+        testLifecycle.state = Lifecycle.State.DESTROYED
         createChild1()
         var capturedNode: Rib? = null
         registry.whenChildAttached<Child1>(testLifecycle.lifecycle) { _, child ->

@@ -58,12 +58,12 @@ private  fun slideStartEndNotifier(
     reverseHolder: ReverseHolder
 ): AnimatorListenerAdapter = object : AnimatorListenerAdapter() {
 
-    override fun onAnimationStart(animation: Animator?) {
+    override fun onAnimationStart(animation: Animator) {
         super.onAnimationStart(animation)
         evaluator.start()
     }
 
-    override fun onAnimationEnd(animation: Animator?) {
+    override fun onAnimationEnd(animation: Animator) {
         super.onAnimationEnd(animation)
         if (reverseHolder.isReversing) {
             evaluator.reset()

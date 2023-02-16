@@ -63,6 +63,8 @@
     <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun noPermanent_singleInitial_pushContent_pushContent_restart()</ID>
     <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun noPermanent_singleInitial_pushContent_pushOverlay_restart()</ID>
     <ID>FunctionNaming:RestartActivityNodesStateTest.kt$RestartActivityNodesStateTest$@Test fun noPermanent_singleInitial_pushOverlay_pushOverlay_restart()</ID>
+    <ID>FunctionNaming:RetainedInstanceStoreTest.kt$RetainedInstanceStoreTest$@Test fun WHEN_activity_finished_THEN_retained_instance_store_content_is_removed()</ID>
+    <ID>FunctionNaming:RetainedInstanceStoreTest.kt$RetainedInstanceStoreTest$@Test fun WHEN_activity_recreated_THEN_retained_instance_store_content_is_not_removed()</ID>
     <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityDestroyed_lifecycleEventsAreDispatched()</ID>
     <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityDestroyed_nodeIsDetached()</ID>
     <ID>FunctionNaming:RootNodeLifecycleTest.kt$RootNodeLifecycleTest$@Test fun whenActivityDestroyed_viewIsDetached()</ID>

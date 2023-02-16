@@ -9,6 +9,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.RoutingSource
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.test.util.LifecycleObserver
 import com.badoo.ribs.test.util.ribs.TestNode
 import com.badoo.ribs.test.util.ribs.child.TestChildView
@@ -23,6 +24,7 @@ interface TestRoot : Rib {
         val viewLifecycleObserver: TestObserver<Lifecycle.Event>
         val nodeLifecycleObserver: TestObserver<Lifecycle.Event>
         val router: TestRootRouter
+        val retainedInstanceStore: RetainedInstanceStore
     }
 
     class Provider(
@@ -60,7 +62,8 @@ interface TestRoot : Rib {
             dialogLauncher: DialogLauncher,
             savedInstanceState: Bundle?,
             routingSource: RoutingSource<Configuration> = Empty(),
-            transitionHandler: TransitionHandler<Configuration>? = null
+            transitionHandler: TransitionHandler<Configuration>? = null,
+            retainedInstanceStore: RetainedInstanceStore = RetainedInstanceStore,
         ): TestNode<TestRootView> {
             val addEditText: Boolean = buildParams.payload.addEditText
             val router = TestRootRouter(
@@ -81,7 +84,7 @@ interface TestRoot : Rib {
                     override val viewLifecycleObserver = this@Provider.viewLifecycleObserver
                     override val nodeLifecycleObserver = this@Provider.nodeLifecycleObserver
                     override val router = router
-
+                    override val retainedInstanceStore = retainedInstanceStore
                 }
             ).build(
                 BuildContext.root(savedInstanceState),

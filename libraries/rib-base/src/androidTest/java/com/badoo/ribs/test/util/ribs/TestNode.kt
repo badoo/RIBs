@@ -6,16 +6,19 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.store.RetainedInstanceStore
 
 class TestNode<V : RibView>(
     buildParams: BuildParams<*>,
     viewFactory: ViewFactoryBuilder<Nothing?, V>,
     private val router: Router<*>,
-    interactor: Interactor<*, V>
+    interactor: Interactor<*, V>,
+    retainedInstanceStore: RetainedInstanceStore = RetainedInstanceStore,
 ) : Node<V>(
     buildParams = buildParams,
     viewFactory = viewFactory(null),
-    plugins = listOf(interactor, router)
+    plugins = listOf(interactor, router),
+    retainedInstanceStore = retainedInstanceStore,
 ) {
 
     var isAttached: Boolean = false

@@ -133,7 +133,7 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(): Transition {
             val originalTY = exitingView.translationY
             val rootView = exitingView.rootView as ViewGroup
 
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationStart(animation: Animator) {
                 super.onAnimationStart(animation)
                 evaluator.start()
                 originalParent.removeView(exitingView)
@@ -141,7 +141,7 @@ internal fun <T> SharedElementTransitionInfo<T>.transition(): Transition {
                 enteringView.visibility = View.INVISIBLE
             }
 
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
                 rootView.removeView(exitingView)
                 if (reverseHolder.isReversing) {

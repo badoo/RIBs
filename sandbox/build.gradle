@@ -3,7 +3,7 @@ configureAndroidApp(project)
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.badoo.ribs.sandbox"
@@ -28,8 +28,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion deps.versions.kotlin
-        kotlinCompilerExtensionVersion deps.versions.compose
+        kotlinCompilerExtensionVersion = deps.versions.composeCompiler
     }
 
     packagingOptions {
@@ -56,13 +55,14 @@ dependencies {
     implementation deps.external.rxandroid2
     implementation deps.external.leakCanary // use debugImplementation in real life apps
 
-    implementation deps.compose.runtime
-    implementation deps.compose.ui
-    implementation deps.compose.material
-    implementation deps.compose.uiTooling
-    debugImplementation deps.compose.uiToolingPreview
-    debugImplementation deps.compose.uiTestManifest
-    implementation deps.compose.foundation
+    implementation enforcedPlatform(deps.compose.bom)
+    implementation "androidx.compose.runtime:runtime"
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.ui:ui-tooling"
+    debugImplementation "androidx.compose.ui:ui-tooling-preview"
+    debugImplementation "androidx.compose.ui:ui-test-manifest"
+    implementation "androidx.compose.foundation:foundation"
 
     implementation project(":libraries:rib-base")
     implementation project(":libraries:rib-compose")
@@ -79,12 +79,13 @@ dependencies {
     testImplementation project(":libraries:rib-base-test")
     testImplementation project(":libraries:rib-base-test-rx2")
 
+    androidTestImplementation enforcedPlatform(deps.compose.bom)
     androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.test.mockitoKotlin
-    androidTestImplementation deps.compose.uiTest
-    androidTestImplementation deps.compose.uiTestJunit
+    androidTestImplementation "androidx.compose.ui:ui-test"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
 
     debugImplementation project(":libraries:rib-base-test-activity")
 }

@@ -46,7 +46,7 @@ class TestActivity : AppCompatActivity() {
         requestCodeRegistry.onSaveInstanceState(outState)
     }
 
-    override fun startActivityForResult(intent: Intent?, requestCode: Int) {
+    override fun startActivityForResult(intent: Intent, requestCode: Int) {
         if (!ignoreActivityStarts) {
             super.startActivityForResult(intent, requestCode)
         }

@@ -3,7 +3,6 @@ package com.badoo.ribs.android.integrationpoint
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.badoo.ribs.android.AndroidRibViewHost
@@ -13,7 +12,6 @@ import com.badoo.ribs.android.dialog.AlertDialogLauncher
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequestBoundary
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
-import com.badoo.ribs.android.store.RetainedInstanceStoreViewModel
 
 open class ActivityIntegrationPoint(
     private val activity: AppCompatActivity,
@@ -27,7 +25,6 @@ open class ActivityIntegrationPoint(
 ) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
     private val permissionRequestBoundary = PermissionRequestBoundary(activity, requestCodeRegistry)
-    private val retainedInstanceViewModel by activity.viewModels<RetainedInstanceStoreViewModel>()
 
     override val activityStarter: ActivityStarter
         get() = activityBoundary
@@ -38,12 +35,17 @@ open class ActivityIntegrationPoint(
     override val dialogLauncher: DialogLauncher =
         AlertDialogLauncher(activity, activity.lifecycle)
 
+    /**
+     * For now this property is only used to determine whether retained state should be cleared.
+     *
+     * A regression occurred as part of an update to the Lifecycle library making the previous
+     * approach inconsistent.
+     *
+     * As the intention is to avoid clearing state on a configuration change, the property now
+     * checks whether the configuration change is occurring.
+     */
     override val isFinishing: Boolean
-        get() = retainedInstanceViewModel.isCleared
-
-    init {
-        retainedInstanceViewModel // initialize ViewModel
-    }
+        get() = !activity.isChangingConfigurations
 
     override fun handleUpNavigation() {
         if (!activity.onNavigateUp()) {

@@ -30,7 +30,8 @@ class TestRootBuilder(
             interactor = TestRootInteractor(
                 buildParams = buildParams,
                 viewLifecycleObserver = dependency.viewLifecycleObserver
-            )
+            ),
+            retainedInstanceStore = dependency.retainedInstanceStore
         )
     }
 }

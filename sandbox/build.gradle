@@ -55,7 +55,7 @@ dependencies {
     implementation deps.external.rxandroid2
     implementation deps.external.leakCanary // use debugImplementation in real life apps
 
-    implementation enforcedPlatform(deps.compose.bom)
+    implementation platform(deps.compose.bom)
     implementation "androidx.compose.runtime:runtime"
     implementation "androidx.compose.ui:ui"
     implementation "androidx.compose.material:material"
@@ -79,7 +79,7 @@ dependencies {
     testImplementation project(":libraries:rib-base-test")
     testImplementation project(":libraries:rib-base-test-rx2")
 
-    androidTestImplementation enforcedPlatform(deps.compose.bom)
+    androidTestImplementation platform(deps.compose.bom)
     androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.espresso

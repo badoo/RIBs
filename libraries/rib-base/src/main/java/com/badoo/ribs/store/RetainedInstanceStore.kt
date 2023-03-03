@@ -23,6 +23,10 @@ interface RetainedInstanceStore {
 
     fun <T : Any> get(owner: Rib.Identifier, clazz: KClass<*>, disposer: (T) -> Unit, factory: () -> T): T
 
+    fun isRetainedByOwner(owner: Rib.Identifier, value: Any): Boolean
+
+    fun isRetained(value: Any): Boolean
+
     fun removeAll(owner: Rib.Identifier)
 
     companion object : RetainedInstanceStore by RetainedInstanceStoreImpl()

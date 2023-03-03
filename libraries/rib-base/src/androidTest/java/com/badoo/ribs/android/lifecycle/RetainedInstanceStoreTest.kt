@@ -49,7 +49,7 @@ class RetainedInstanceStoreTest {
         assertThat(stubRetainedInstanceStore.removeAllCalled).isFalse
     }
 
-    class StubRetainedInstanceStore : RetainedInstanceStore {
+    class StubRetainedInstanceStore : RetainedInstanceStore by RetainedInstanceStore {
         var removeAllCalled: Boolean = false
 
         override fun <T : Any> get(

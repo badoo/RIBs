@@ -14,6 +14,21 @@ internal class RetainedInstanceStoreImpl : RetainedInstanceStore {
             .getOrPut(clazz) { ValueHolder(factory(), disposer) }
             .value as T
 
+    override fun isRetainedByOwner(owner: Rib.Identifier, value: Any): Boolean =
+        map[owner]
+            ?.let { valueHolderMap ->
+                valueHolderMap.values.any { valueHolder ->
+                    valueHolder.value === value
+                }
+            }
+            ?: false
+
+    override fun isRetained(value: Any): Boolean =
+        map.values.any { valueHolderMap ->
+            valueHolderMap.values.any { valueHolder ->
+                valueHolder.value === value
+            }
+        }
 
     override fun removeAll(owner: Rib.Identifier) {
         map.remove(owner)?.values?.forEach { it.dispose() }

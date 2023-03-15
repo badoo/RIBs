@@ -12,6 +12,7 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.store.RetainedInstanceStore
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -25,6 +26,8 @@ class ChildAwareImplTest {
         Node<RibView>(
             buildParams = BuildParams(payload = null, buildContext = buildContext),
             viewFactory = null,
+            retainedInstanceStore = RetainedInstanceStore,
+            isOnMainThreadFunc = { true },
             plugins = listOf(registry),
         )
     }.apply {
@@ -269,6 +272,8 @@ class ChildAwareImplTest {
     ) : Node<RibView>(
         buildParams = BuildParams(payload = null, buildContext = buildContext),
         viewFactory = null,
+        retainedInstanceStore = RetainedInstanceStore,
+        isOnMainThreadFunc = { true },
     ), Child1 {
         override fun toString(): String = "${this::class.simpleName}@${hashCode()}"
     }
@@ -279,6 +284,8 @@ class ChildAwareImplTest {
     ) : Node<RibView>(
         buildParams = BuildParams(payload = null, buildContext = buildContext),
         viewFactory = null,
+        retainedInstanceStore = RetainedInstanceStore,
+        isOnMainThreadFunc = { true },
     ), Child2 {
         override fun toString(): String = "${this::class.simpleName}@${hashCode()}"
     }
@@ -289,6 +296,8 @@ class ChildAwareImplTest {
     ) : Node<RibView>(
         buildParams = BuildParams(payload = null, buildContext = buildContext),
         viewFactory = null,
+        retainedInstanceStore = RetainedInstanceStore,
+        isOnMainThreadFunc = { true },
     ), Child3 {
         override fun toString(): String = "${this::class.simpleName}@${hashCode()}"
     }

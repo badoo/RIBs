@@ -11,6 +11,7 @@ import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.store.RetainedInstanceStore
 
 class ConnectableTestNode(
     buildParams: BuildParams<*>? = null,
@@ -20,6 +21,8 @@ class ConnectableTestNode(
 ) : Node<Nothing>(
     buildParams = buildParams ?: getDefaultBuildParams(parent),
     viewFactory = null,
+    retainedInstanceStore = RetainedInstanceStore,
+    isOnMainThreadFunc = { true },
     plugins = plugins
 ), ConnectableTestRib, Connectable<Input, Output> by connector {
 

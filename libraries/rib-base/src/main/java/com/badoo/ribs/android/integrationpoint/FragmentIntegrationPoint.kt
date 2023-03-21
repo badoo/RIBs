@@ -52,7 +52,7 @@ open class FragmentIntegrationPoint(
      * checks whether the configuration change is occurring.
      */
     override val isFinishing: Boolean
-        get() = fragment.requireActivity().isChangingConfigurations
+        get() = !fragment.requireActivity().isChangingConfigurations
 
     override fun handleUpNavigation() {
         val activity = fragment.requireActivity()

@@ -5,7 +5,7 @@ while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github"
     rootDirectory = rootDirectory.parentFile
 }
 
-def kotlinVersion = '1.7.10'
+def kotlinVersion = '1.8.10'
 
 def versions = [
         dagger                         : '2.45',
@@ -15,7 +15,7 @@ def versions = [
         mviCore                        : '1.4.0',
         robolectric                    : '4.8.1',
         composeBom                     : '2022.12.00',
-        composeCompiler                : '1.3.1',
+        composeCompiler                : '1.4.4',
 
         materialVersion                : '1.4.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation
@@ -31,7 +31,7 @@ def versions = [
         androidxFragmentVersion        : '1.3.6', // https://developer.android.com/jetpack/androidx/releases/fragment
         androidxActivityVersion        : '1.6.1', // https://developer.android.com/jetpack/androidx/releases/activity
         androidxGridLayoutVersion      : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/gridlayout
-        androidxLifecycleVersion       : '2.5.1', // https://developer.android.com/jetpack/androidx/releases/lifecycle
+        androidxLifecycleVersion       : '2.6.1', // https://developer.android.com/jetpack/androidx/releases/lifecycle
         androidxLoaderVersion          : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/loader
         androidxPaletteVersion         : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/palette
         androidxPercentLayoutVersion   : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout

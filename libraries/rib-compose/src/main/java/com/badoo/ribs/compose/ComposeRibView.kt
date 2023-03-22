@@ -27,7 +27,7 @@ abstract class ComposeRibView(
     },
 ) : AndroidRibView2(
     androidView = ComposeAndroidView(context),
-    lifecycle = lifecycle,
+    lifecycleDelegate = lifecycle,
 ) {
 
     abstract val composable: ComposeView

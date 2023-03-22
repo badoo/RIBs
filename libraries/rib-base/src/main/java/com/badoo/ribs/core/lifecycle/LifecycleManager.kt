@@ -13,8 +13,8 @@ internal class LifecycleManager(
     internal var ribLifecycle = CappedLifecycle(externalLifecycle)
     internal var viewLifecycle: CappedLifecycle? = null
 
-    override fun getLifecycle(): Lifecycle =
-        ribLifecycle.lifecycle
+    override val lifecycle: Lifecycle
+        get() = ribLifecycle.lifecycle
 
     fun onAttachChild(child: Node<*>) {
         child.lifecycleManager.inheritExternalLifecycle(externalLifecycle)

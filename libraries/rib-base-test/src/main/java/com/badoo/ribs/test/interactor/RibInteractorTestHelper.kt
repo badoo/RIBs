@@ -44,8 +44,8 @@ class RibInteractorTestHelper<out R : Rib, View : RibView>(
     val integrationPoint: TestIntegrationPoint
         get() = nodeTestHelper.integrationPoint
 
-    override fun getLifecycle(): Lifecycle =
-        nodeTestHelper.lifecycle
+    override val lifecycle: Lifecycle
+        get() = nodeTestHelper.lifecycle
 
     override fun moveTo(state: Lifecycle.State) {
         nodeTestHelper.moveTo(state)

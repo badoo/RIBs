@@ -458,8 +458,8 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         plugins.filterIsInstance<SystemAware>().forEach { it.onLowMemory() }
     }
 
-    override fun getLifecycle(): Lifecycle =
-        lifecycleManager.lifecycle
+    override val lifecycle: Lifecycle
+        get() = lifecycleManager.lifecycle
 
     fun <P> plugins(pClass: Class<P>): List<P> =
         plugins.filterIsInstance(pClass)

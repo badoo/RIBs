@@ -13,7 +13,7 @@ class RibNodeTestHelper<out R : Rib>(
     val rib: R,
     additionalPlugins: List<Plugin> = emptyList(),
 ) : RibTestHelper<R> {
-    private val lifecycle = LifecycleRegistry(this)
+    private val lifecycleRegistry = LifecycleRegistry(this)
 
     val integrationPoint: TestIntegrationPoint = TestIntegrationPoint(this)
 
@@ -27,22 +27,23 @@ class RibNodeTestHelper<out R : Rib>(
         integrationPoint.attach(rib)
     }
 
-    override fun getLifecycle(): Lifecycle = lifecycle
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
 
     override fun moveTo(state: Lifecycle.State) {
         require(state != Lifecycle.State.INITIALIZED) { "Can't move to INITIALIZED state" }
-        require(lifecycle.currentState != Lifecycle.State.DESTROYED || state == Lifecycle.State.DESTROYED) { "Can't move from DESTROYED state" }
-        if (lifecycle.currentState == Lifecycle.State.INITIALIZED && state == Lifecycle.State.DESTROYED) {
-            lifecycle.currentState = Lifecycle.State.CREATED
+        require(lifecycleRegistry.currentState != Lifecycle.State.DESTROYED || state == Lifecycle.State.DESTROYED) { "Can't move from DESTROYED state" }
+        if (lifecycleRegistry.currentState == Lifecycle.State.INITIALIZED && state == Lifecycle.State.DESTROYED) {
+            lifecycleRegistry.currentState = Lifecycle.State.CREATED
         }
-        lifecycle.currentState = state
+        lifecycleRegistry.currentState = state
     }
 
     override fun moveToStateAndCheck(state: Lifecycle.State, block: (R) -> Unit) {
         require(state != Lifecycle.State.INITIALIZED) { "Can't move to INITIALIZED state" }
 
         val returnTo =
-            when (val current = lifecycle.currentState) {
+            when (val current = lifecycleRegistry.currentState) {
                 Lifecycle.State.DESTROYED -> error("Can't move from DESTROYED state")
                 Lifecycle.State.INITIALIZED -> Lifecycle.State.DESTROYED
                 else -> current

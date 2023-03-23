@@ -17,13 +17,13 @@ import androidx.lifecycle.LifecycleRegistry
  */
 internal class CappedLifecycle(
     private val external: LifecycleRegistry
-): LifecycleOwner {
+) : LifecycleOwner {
 
     private val internal = LifecycleRegistry(this)
     private var effective = LifecycleRegistry(this)
 
-    override fun getLifecycle(): Lifecycle =
-        effective
+    override val lifecycle: Lifecycle
+        get() = effective
 
     fun onCreate() {
         internal.handleLifecycleEvent(ON_CREATE)

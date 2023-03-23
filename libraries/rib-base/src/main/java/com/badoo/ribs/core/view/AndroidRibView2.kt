@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
@@ -13,7 +13,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 @Suppress("LeakingThis", "DEPRECATION") // owners approach always leaks "this"
 abstract class AndroidRibView2(
     final override val androidView: ViewGroup,
-    private val lifecycle: Lifecycle,
+    override val lifecycle: Lifecycle,
 ) : AndroidRibView(), LifecycleOwner, SavedStateRegistryOwner {
 
     private val savedStateRegistryController = SavedStateRegistryController.create(this)
@@ -22,13 +22,10 @@ abstract class AndroidRibView2(
         get() = savedStateRegistryController.savedStateRegistry
 
     init {
-        ViewTreeLifecycleOwner.set(androidView, this)
+        androidView.setViewTreeLifecycleOwner(this)
         androidView.setViewTreeSavedStateRegistryOwner(this)
         savedStateRegistryController.performAttach()
     }
-
-    final override fun getLifecycle(): Lifecycle =
-        lifecycle
 
     override fun saveInstanceState(bundle: Bundle) {
         super.saveInstanceState(bundle)

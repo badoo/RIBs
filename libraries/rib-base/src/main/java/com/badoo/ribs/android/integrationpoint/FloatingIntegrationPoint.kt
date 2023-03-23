@@ -41,7 +41,7 @@ class FloatingIntegrationPoint : IntegrationPoint(
     }
 
     private class NoLifecycle : LifecycleOwner {
-        override fun getLifecycle(): Lifecycle =
+        override val lifecycle: Lifecycle =
             LifecycleRegistry(this)
     }
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleRegistry
 class TestLifecycle() : LifecycleOwner {
     private val registry = LifecycleRegistry(this)
 
-    constructor(state: Lifecycle.State): this() {
+    constructor(state: Lifecycle.State) : this() {
         this.state = state
     }
 
@@ -17,6 +17,7 @@ class TestLifecycle() : LifecycleOwner {
             registry.currentState = value
         }
 
-    override fun getLifecycle(): Lifecycle = registry
+    override val lifecycle: Lifecycle
+        get() = registry
 
 }

@@ -36,13 +36,15 @@ class MenuRibTest {
      * Customise viewFactory to return test view
      */
     private val customisation = RibCustomisationDirectoryImpl().apply {
-        put(Menu.Customisation::class, mock {
-            on { viewFactory } doReturn object : MenuView.Factory {
-                override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
-                    menuView
+        put(Menu.Customisation::class) {
+            mock {
+                on { viewFactory } doReturn object : MenuView.Factory {
+                    override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
+                        menuView
+                    }
                 }
             }
-        })
+        }
     }
 
     private val rib: Menu = buildRib(customisation)
@@ -95,7 +97,7 @@ class MenuRibTest {
 
     class TestMenuView : TestView<MenuView.ViewModel, MenuView.Event>(), MenuView
 
-    private fun Node<*>.onAttachFinished(){
+    private fun Node<*>.onAttachFinished() {
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach() }
     }
 }

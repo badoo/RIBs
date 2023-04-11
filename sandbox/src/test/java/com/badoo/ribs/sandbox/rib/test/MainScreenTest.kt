@@ -53,43 +53,54 @@ class MainScreenTest {
     private val helloWorldView = TestHelloWorldView()
     private val customisation = RibCustomisationDirectoryImpl()
         .apply {
-            put(Menu.Customisation::class, mock {
-                on { viewFactory } doReturn object : MenuView.Factory {
-                    override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
-                        menuView
-                    }
-                }
-            })
-            put(Switcher.Customisation::class, mock {
-                on { viewFactory } doReturn object : SwitcherView.Factory {
-                    override fun invoke(deps: SwitcherView.Dependency): ViewFactory<SwitcherView> =
-                        ViewFactory {
-                            switcherView
+            put(Menu.Customisation::class) {
+                mock {
+                    on { viewFactory } doReturn object : MenuView.Factory {
+                        override fun invoke(deps: Nothing?): ViewFactory<MenuView> = ViewFactory {
+                            menuView
                         }
+                    }
                 }
-            })
-            put(DialogExample.Customisation::class, mock {
-                on { viewFactory } doReturn object : DialogExampleView.Factory {
-                    override fun invoke(deps: Nothing?): ViewFactory<DialogExampleView> =
-                        ViewFactory {
-                            dialogExampleView
+            }
+            put(Switcher.Customisation::class) {
+                mock {
+                    on { viewFactory } doReturn object : SwitcherView.Factory {
+                        override fun invoke(deps: SwitcherView.Dependency): ViewFactory<SwitcherView> =
+                            ViewFactory {
+                                switcherView
+                            }
+                    }
+                }
+            }
+            put(DialogExample.Customisation::class) {
+                mock {
+                    on { viewFactory } doReturn object : DialogExampleView.Factory {
+                        override fun invoke(deps: Nothing?): ViewFactory<DialogExampleView> =
+                            ViewFactory {
+                                dialogExampleView
+                            }
+                    }
+                }
+            }
+            put(FooBar.Customisation::class) {
+                mock {
+                    on { viewFactory } doReturn object : FooBarView.Factory {
+                        override fun invoke(deps: Nothing?): ViewFactory<FooBarView> = ViewFactory {
+                            fooBarView
                         }
-                }
-            })
-            put(FooBar.Customisation::class, mock {
-                on { viewFactory } doReturn object : FooBarView.Factory {
-                    override fun invoke(deps: Nothing?): ViewFactory<FooBarView> = ViewFactory {
-                        fooBarView
                     }
                 }
-            })
-            put(HelloWorld.Customisation::class, mock {
-                on { viewFactory } doReturn object : HelloWorldView.Factory {
-                    override fun invoke(deps: Nothing?): ViewFactory<HelloWorldView> = ViewFactory {
-                        helloWorldView
+            }
+            put(HelloWorld.Customisation::class) {
+                mock {
+                    on { viewFactory } doReturn object : HelloWorldView.Factory {
+                        override fun invoke(deps: Nothing?): ViewFactory<HelloWorldView> =
+                            ViewFactory {
+                                helloWorldView
+                            }
                     }
                 }
-            })
+            }
         }
     private val rootRib: Switcher = buildRootRib(customisation)
 
@@ -122,15 +133,17 @@ class MainScreenTest {
     @Test
     fun openHelloSectionAndClickButton_displaysReturnedDataFromActivity() {
         val helloWorldViewModelObserver = helloWorldView.viewModel.subscribeOnTestObserver()
-        dependencies.activityStarter.stubResponse(component<OtherActivity>(), Instrumentation.ActivityResult(
-            RESULT_OK,
-            Intent().apply { putExtra("foo", 1234) }
-        ))
+        dependencies.activityStarter.stubResponse(component<OtherActivity>(),
+            Instrumentation.ActivityResult(
+                RESULT_OK,
+                Intent().apply { putExtra("foo", 1234) }
+            ))
 
         menuView.uiEvents.accept(MenuView.Event.Select(Menu.MenuItem.HelloWorld))
         helloWorldView.uiEvents.accept(HelloWorldView.Event.ButtonClicked)
 
-        assertThat(helloWorldViewModelObserver.values()).last().isEqualTo(HelloWorldView.ViewModel("Data returned: 1234"))
+        assertThat(helloWorldViewModelObserver.values()).last()
+            .isEqualTo(HelloWorldView.ViewModel("Data returned: 1234"))
     }
 
     private fun buildRootRib(customisation: RibCustomisationDirectory) =
@@ -154,9 +167,12 @@ class MainScreenTest {
 
     class TestFooBarView : TestView<FooBarView.ViewModel, FooBarView.Event>(), FooBarView
 
-    class TestDialogExampleView : TestView<DialogExampleView.ViewModel, DialogExampleView.Event>(), DialogExampleView
+    class TestDialogExampleView :
+        TestView<DialogExampleView.ViewModel, DialogExampleView.Event>(),
+        DialogExampleView
 
-    class TestHelloWorldView : TestView<HelloWorldView.ViewModel, HelloWorldView.Event>(), HelloWorldView
+    class TestHelloWorldView : TestView<HelloWorldView.ViewModel, HelloWorldView.Event>(),
+        HelloWorldView
 
     class TestSwitcherView : TestView<SwitcherView.ViewModel, SwitcherView.Event>(),
         SwitcherView

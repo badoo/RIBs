@@ -5,5 +5,5 @@ import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.bumble.appyx.utils.customisations.put
 
-fun RibCustomisation.toDirectory(): RibCustomisationDirectory =
+inline fun <reified T : RibCustomisation> T.toDirectory(): RibCustomisationDirectory =
     RibCustomisationDirectoryImpl().also { it.put { this } }

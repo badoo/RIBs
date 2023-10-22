@@ -60,7 +60,7 @@
     <ID>PackageNaming:DialogExampleTest.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
     <ID>PackageNaming:DialogExampleView.kt$package com.badoo.ribs.sandbox.rib.dialog_example</ID>
     <ID>PackageNaming:Dialogs.kt$package com.badoo.ribs.sandbox.rib.dialog_example.dialog</ID>
-    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
+    <ID>PackageNaming:FooBarRib.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
     <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.sandbox.rib.foo_bar.analytics</ID>
     <ID>PackageNaming:FooBarBuilder.kt$package com.badoo.ribs.sandbox.rib.foo_bar</ID>
     <ID>PackageNaming:FooBarFeature.kt$package com.badoo.ribs.sandbox.rib.foo_bar.feature</ID>

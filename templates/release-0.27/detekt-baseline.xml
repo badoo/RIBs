@@ -11,11 +11,11 @@
     <ID>NotImplementedDeclaration:NewsToOutput.kt$NewsToOutput$TODO("Implement FooBarNewsToOutput mapping")</ID>
     <ID>NotImplementedDeclaration:StateToViewModel.kt$StateToViewModel$TODO("Implement StateToViewModel mapping")</ID>
     <ID>NotImplementedDeclaration:ViewEventToWish.kt$ViewEventToWish$TODO("Implement FooBarViewEventToWish mapping")</ID>
-    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
-    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.leaf_view_only.foo_bar</ID>
-    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.node.foo_bar</ID>
-    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
-    <ID>PackageNaming:FooBar.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
+    <ID>PackageNaming:FooBarRib.kt$package com.badoo.ribs.template.leaf.foo_bar</ID>
+    <ID>PackageNaming:FooBarRib.kt$package com.badoo.ribs.template.leaf_view_only.foo_bar</ID>
+    <ID>PackageNaming:FooBarRib.kt$package com.badoo.ribs.template.node.foo_bar</ID>
+    <ID>PackageNaming:FooBarRib.kt$package com.badoo.ribs.template.node_dagger.foo_bar</ID>
+    <ID>PackageNaming:FooBarRib.kt$package com.badoo.ribs.template.node_dagger_build_param.foo_bar</ID>
     <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.template.leaf.foo_bar.analytics</ID>
     <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.template.node.foo_bar.analytics</ID>
     <ID>PackageNaming:FooBarAnalytics.kt$package com.badoo.ribs.template.node_dagger.foo_bar.analytics</ID>

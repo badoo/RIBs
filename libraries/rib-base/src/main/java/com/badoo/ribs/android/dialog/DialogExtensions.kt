@@ -1,8 +1,13 @@
 package com.badoo.ribs.android.dialog
 
 import android.content.Context
+import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat.setAccessibilityDelegate
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
@@ -20,6 +25,7 @@ fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> U
             }
             .create()
             .apply {
+                markTitleAsHeading()
                 setCanceledOnTouchOutside(this@toAlertDialog)
                 setButtonClickListeners(this@toAlertDialog, onClose)
                 setOnDismissListener { this@toAlertDialog.rib = null }
@@ -69,6 +75,21 @@ private fun AlertDialog.Builder.setRib(dialog: Dialog<*>, context: Context) {
 private fun AlertDialog.Builder.setTexts(dialog: Dialog<*>) {
     dialog.title?.let { setTitle(it.resolve(context)) }
     dialog.message?.let { setMessage(it.resolve(context)) }
+}
+
+private fun AlertDialog.markTitleAsHeading() {
+    findViewById<TextView>(android.R.id.title)?.let { titleView ->
+        setAccessibilityDelegate(titleView,
+            object : AccessibilityDelegateCompat() {
+                override fun onInitializeAccessibilityNodeInfo(
+                    host: View,
+                    info: AccessibilityNodeInfoCompat
+                ) {
+                    info.isHeading = true
+                }
+            }
+        )
+    }
 }
 
 private fun AlertDialog.Builder.setButtons(dialog: Dialog<*>) {

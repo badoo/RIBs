@@ -1,13 +1,10 @@
 package com.badoo.ribs.android.dialog
 
 import android.content.Context
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.AccessibilityDelegateCompat
-import androidx.core.view.ViewCompat.setAccessibilityDelegate
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.core.view.ViewCompat
 import com.badoo.ribs.android.AndroidRibViewHost
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
@@ -79,16 +76,7 @@ private fun AlertDialog.Builder.setTexts(dialog: Dialog<*>) {
 
 private fun AlertDialog.markTitleAsHeading() {
     findViewById<TextView>(android.R.id.title)?.let { titleView ->
-        setAccessibilityDelegate(titleView,
-            object : AccessibilityDelegateCompat() {
-                override fun onInitializeAccessibilityNodeInfo(
-                    host: View,
-                    info: AccessibilityNodeInfoCompat
-                ) {
-                    info.isHeading = true
-                }
-            }
-        )
+        ViewCompat.setAccessibilityHeading(titleView, true)
     }
 }
 

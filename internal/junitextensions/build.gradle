@@ -8,7 +8,15 @@ dependencies {
 }
 
 android {
+    namespace 'com.badoo.ribs.internal.junitextensions'
+
     packagingOptions {
-        exclude 'META-INF/LICENSE*.*'
+        jniLibs {
+            excludes += ['META-INF/LICENSE*.*']
+        }
+        resources {
+            excludes += ['META-INF/LICENSE*.*']
+        }
     }
 }
+

@@ -3,6 +3,8 @@ configureAndroidLibrary(project)
 apply plugin: 'kotlin-kapt'
 
 android {
+    namespace 'com.badoo.ribs.samples.routing.transition_animations'
+
     defaultConfig {
         versionCode 1
         versionName '1.0'

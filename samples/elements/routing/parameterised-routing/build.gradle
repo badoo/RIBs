@@ -1,6 +1,7 @@
 configureAndroidLibrary(project)
 
 android {
+    namespace 'com.badoo.ribs.samples.routing.parameterised_routing'
 
     defaultConfig {
         versionCode 1

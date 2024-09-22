@@ -3,6 +3,8 @@ configureAndroidApp(project)
 apply plugin: 'kotlin-kapt'
 
 android {
+    namespace 'com.badoo.ribs.samples.helloworld'
+
     defaultConfig {
         applicationId 'com.badoo.ribs.samples.helloworld'
         versionCode 1

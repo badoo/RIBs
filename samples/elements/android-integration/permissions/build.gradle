@@ -1,6 +1,8 @@
 configureAndroidLibrary(project)
 
 android {
+    namespace 'com.badoo.ribs.samples.android.permissions'
+
     defaultConfig {
         versionName "1.0"
     }

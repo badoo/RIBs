@@ -1,5 +1,9 @@
 apply from: file('../common-template.gradle')
 
+android {
+    namespace 'com.badoo.ribs.template'
+}
+
 dependencies {
     implementation project(":libraries:rib-base")
     implementation project(':libraries:rib-mvicore')

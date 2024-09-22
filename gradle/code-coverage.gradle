@@ -2,7 +2,7 @@ apply plugin: 'jacoco'
 
 jacoco {
     toolVersion = deps.versions.jacoco
-    reportsDir = file("$buildDir/codeCoverageReports")
+    reportsDirectory = file("$buildDir/codeCoverageReports")
 }
 
 tasks.withType(Test) {
@@ -52,10 +52,6 @@ task debugCombinedCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
     group = "Code coverage"
     description = "Generate coverage reports that combine both Unit and UI tests for debug builds"
 
-    reports {
-        html.enabled = true
-    }
-
     classDirectories.setFrom(files([javaClasses, kotlinClasses]))
     sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
     executionData(files([unitTestsData, androidTestsData]))
@@ -66,10 +62,6 @@ task debugUnitTestCodeCoverageReport(type: JacocoReport, dependsOn: ['testDebugU
     group = "Code coverage"
     description = "Generate coverage reports on Unit tests for debug builds"
 
-    reports {
-        html.enabled = true
-    }
-
     classDirectories.setFrom(files([javaClasses, kotlinClasses]))
     sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))
     executionData(files([unitTestsData]))
@@ -79,10 +71,6 @@ task debugUiTestCodeCoverageReport(type: JacocoReport, dependsOn: ['createDebugC
 
     group = "Code coverage"
     description = "Generate coverage reports on UI tests for debug builds"
-
-    reports {
-        html.enabled = true
-    }
 
     classDirectories.setFrom(files([javaClasses, kotlinClasses]))
     sourceDirectories.setFrom(files([javaSourceDirectory, kotlinSourceDirectory]))

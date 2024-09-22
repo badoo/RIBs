@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     apply from: 'gradle/dependencies.gradle'
 
@@ -40,13 +43,14 @@ subprojects {
         maven { url "https://www.jitpack.io" }
     }
 
-    configurations.all {
+    configurations.configureEach {
         resolutionStrategy.eachDependency {
         }
     }
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.name
+    tasks.withType(KotlinCompile).configureEach {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_11
+            freeCompilerArgs.add("-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi")
         }
     }
 }

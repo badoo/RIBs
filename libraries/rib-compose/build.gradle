@@ -1,11 +1,13 @@
 configureAndroidLibrary(project)
 
 android {
+    namespace 'com.badoo.ribs.compose'
+
     compileSdk 33
 
     defaultConfig {
         minSdk deps.build.minSdk
-        targetSdk 32
+        targetSdk 33
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }

@@ -13,7 +13,7 @@ def versions = [
         intellij_kotlin                : '212-1.6.21-release-334-AS5457.46',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.4.0',
-        robolectric                    : '4.8.1',
+        robolectric                    : '4.10.3',
         composeBom                     : '2022.12.00',
         composeCompiler                : '1.4.4',
 
@@ -54,17 +54,17 @@ def apt = [
         javaxInject   : "javax.inject:javax.inject:1",
 ]
 
-def agp = 'com.android.tools.build:gradle:7.2.2'
+def agp = 'com.android.tools.build:gradle:8.2.2'
 
 def build = [
         compileSdk      : 33,
         gradlePluginsUrl: "https://plugins.gradle.org/m2/",
         ci              : 'true' == System.getenv('CI'),
         minSdk          : 21,
-        targetSdk       : 32,
+        targetSdk       : 33,
         guava           : "com.google.guava:guava:20.0",
         commonsLang     : "commons-lang:commons-lang:2.6",
-        intellijPlugin  : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.1.4",
+        intellijPlugin  : "org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.13.3",
         kotlinIdeaPlugin: "org.jetbrains.kotlin:${versions.intellij_kotlin}",
         gradlePlugins   : [
                 android     : agp,

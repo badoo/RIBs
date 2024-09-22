@@ -3,6 +3,8 @@ configureAndroidLibrary(project)
 apply plugin: 'kotlin-kapt'
 
 android {
+    namespace 'com.badoo.ribs.samples.routing.simple_routing.rib'
+
     defaultConfig {
         versionCode 1
         versionName "1.0"

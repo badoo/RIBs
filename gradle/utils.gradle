@@ -79,6 +79,11 @@ private def configureAndroidModule(Project project) {
             }
         }
 
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
+        }
+
         project.afterEvaluate {
             project.android.kotlinOptions.freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
         }

@@ -1,5 +1,9 @@
 configureAndroidLibrary(project)
 
+android {
+    namespace 'com.badoo.ribs.rx2'
+}
+
 dependencies {
     api deps.external.rxrelay2
     api deps.external.rxjava2

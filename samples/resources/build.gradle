@@ -1,6 +1,7 @@
 configureAndroidLibrary(project)
 
 android {
+    namespace 'com.badoo.ribs.samples.resources'
 
     defaultConfig {
         versionCode 1

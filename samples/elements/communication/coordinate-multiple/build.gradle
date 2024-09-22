@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 configureAndroidLibrary(project)
 
 android {
+    namespace 'com.badoo.ribs.samples.communication.coordinate_multiple_example'
+
     compileSdk 33
 
     defaultConfig {
@@ -21,12 +25,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = deps.versions.composeCompiler
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
     }
 }
 

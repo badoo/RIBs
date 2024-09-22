@@ -2,6 +2,10 @@ configureAndroidLibrary(project)
 
 apply from: rootProject.file('gradle/code-coverage.gradle')
 
+android {
+    namespace 'com.badoo.ribs.base'
+}
+
 dependencies {
     api deps.android.appCompat
 

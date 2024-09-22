@@ -1,5 +1,9 @@
 configureAndroidLibrary(project)
 
+android {
+    namespace 'com.badoo.ribs.mvicore'
+}
+
 dependencies {
     api project(":libraries:rib-base")
     api deps.external.mviCore

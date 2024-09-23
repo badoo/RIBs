@@ -62,7 +62,6 @@
 - Demo apps
 - [Tooling](extras/tooling.md)
 - [Minimal reactive API](extras/minimal-reactive-api.md)
-- Template plugin
 
 ## Experimental features
 

@@ -5,7 +5,7 @@ configureAndroidLibrary(project)
 android {
     namespace 'com.badoo.ribs.samples.communication.coordinate_multiple_example'
 
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         versionCode 1

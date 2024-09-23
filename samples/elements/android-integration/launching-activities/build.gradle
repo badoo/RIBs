@@ -3,7 +3,7 @@ configureAndroidLibrary(project)
 android {
     namespace 'com.badoo.ribs.samples.android.launching_activities'
 
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk deps.build.minSdk

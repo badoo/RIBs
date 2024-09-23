@@ -5,7 +5,7 @@ configureAndroidApp(project)
 android {
     namespace 'com.badoo.ribs.samples.gallery'
 
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId 'com.badoo.ribs.samples.gallery'

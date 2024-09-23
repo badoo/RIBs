@@ -5,15 +5,15 @@ while (!rootDirectory.listFiles().any { it.isDirectory() && it.name == ".github"
     rootDirectory = rootDirectory.parentFile
 }
 
-def kotlinVersion = '1.8.10'
+def kotlinVersion = '1.9.21'
 
 def versions = [
         dagger                         : '2.45',
         kotlin                         : kotlinVersion,
         mviCore                        : '1.4.0',
         robolectric                    : '4.10.3',
-        composeBom                     : '2022.12.00',
-        composeCompiler                : '1.4.4',
+        composeBom                     : '2023.10.01',
+        composeCompiler                : '1.5.7',
 
         materialVersion                : '1.4.0', // https://github.com/material-components/material-components-android/releases
         androidxAnnotationVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/annotation
@@ -55,7 +55,7 @@ def apt = [
 def agp = 'com.android.tools.build:gradle:8.2.2'
 
 def build = [
-        compileSdk      : 33,
+        compileSdk      : 34,
         gradlePluginsUrl: "https://plugins.gradle.org/m2/",
         ci              : 'true' == System.getenv('CI'),
         minSdk          : 21,
@@ -65,7 +65,7 @@ def build = [
                 android     : agp,
                 kotlin      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
                 mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
-                detekt      : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.17.1',
+                detekt      : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.21.0',
                 jacoco      : "org.jacoco:org.jacoco.core:${versions.jacoco}"
         ]
 ]

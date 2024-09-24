@@ -86,10 +86,12 @@ dependencies {
     testImplementation project(":libraries:rib-base-test")
     testImplementation project(":libraries:rib-base-test-rx2")
 
+    junitAndroidTestImplementation(project)
     androidTestImplementation platform(deps.compose.bom)
     androidTestImplementation project(":libraries:rib-base-test")
-    androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.rules
+    androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.test.mockitoKotlin
     androidTestImplementation "androidx.compose.ui:ui-test"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"

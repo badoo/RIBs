@@ -35,7 +35,7 @@ def versions = [
         androidxPercentLayoutVersion   : '1.0.0', // https://developer.android.com/jetpack/androidx/releases/percentlayout
         androidxRecyclerViewVersion    : '1.1.0', // https://developer.android.com/jetpack/androidx/releases/recyclerview
         androidxSavedStateVersion      : '1.2.0', // https://developer.android.com/jetpack/androidx/releases/savedstate
-        androidxTestVersion            : '1.4.0', // https://developer.android.com/jetpack/androidx/releases/test
+        androidxTestVersion            : '1.5.0', // https://developer.android.com/jetpack/androidx/releases/test
         androidxTestUiAutoVersion      : '2.2.0',
         retrofitVersion                : '2.9.0',
         okhttp                         : '3.14.7',
@@ -101,8 +101,8 @@ def test = [
 ]
 
 def androidTest = [
-        espresso       : 'androidx.test.espresso:espresso-core:3.4.0',
-        espressoIntents: 'androidx.test.espresso:espresso-intents:3.4.0',
+        espresso       : 'androidx.test.espresso:espresso-core:3.5.0',
+        espressoIntents: 'androidx.test.espresso:espresso-intents:3.5.0',
         runner         : "androidx.test:runner:${versions.androidxTestVersion}",
         rules          : "androidx.test:rules:${versions.androidxTestVersion}"
 ]

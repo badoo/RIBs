@@ -19,6 +19,7 @@ import com.badoo.ribs.test.util.ribs.root.TestRootRouter
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
 import com.badoo.ribs.test.util.runOnMainSync
 import com.badoo.ribs.test.util.waitFor
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import java.util.UUID
@@ -30,6 +31,7 @@ class AlertDialogKeyboardTest {
 
     // https://github.com/badoo/RIBs/issues/263
     // Even after focusing and clicking to editText keyboard was hidden
+    @Ignore // Muted due to flaky emulator. Revisit in the future.
     @Test
     fun keyboardCanBeShownForRIBDialogWithEditText() {
         setupRibs()

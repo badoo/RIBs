@@ -64,7 +64,6 @@ def build = [
         gradlePlugins   : [
                 android     : agp,
                 kotlin      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-                mavenPublish: 'com.vanniktech:gradle-maven-publish-plugin:0.15.1',
                 detekt      : 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.21.0',
                 jacoco      : "org.jacoco:org.jacoco.core:${versions.jacoco}"
         ]

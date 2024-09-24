@@ -9,7 +9,7 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
-import org.mockito.Mockito.mock
+import org.mockito.kotlin.mock
 
 @Deprecated("Use RibInteractorTestHelper")
 class InteractorTestHelper<View : RibView>(
@@ -60,7 +60,7 @@ class InteractorTestHelper<View : RibView>(
                 buildContext = BuildContext.root(savedInstanceState = null)
             ) as Node<View>
         node.onCreate()
-        node.onCreateView(mock(RibView::class.java))
+        node.onCreateView(mock<RibView>())
         node.onAttachToView()
         block(node)
         node.onDetachFromView()

@@ -1,7 +1,11 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 configureAndroidLibrary(project)
 
 android {
-    compileSdk 33
+    namespace 'com.badoo.ribs.samples.communication.coordinate_multiple_example'
+
+    compileSdk 34
 
     defaultConfig {
         versionCode 1
@@ -21,12 +25,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = deps.versions.composeCompiler
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        freeCompilerArgs += "-Xopt-in=com.badoo.ribs.annotation.ExperimentalApi"
     }
 }
 
@@ -55,5 +53,5 @@ dependencies {
     androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    androidTestImplementation deps.test.mockitoKotlin
 }

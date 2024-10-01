@@ -1,6 +1,3 @@
-version = VERSION_NAME
-group = GROUP
-
 def getReleaseRepositoryUrl() {
     return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
             : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
@@ -11,22 +8,57 @@ def getSnapshotRepositoryUrl() {
             : "https://oss.sonatype.org/content/repositories/snapshots/"
 }
 
-apply plugin: "com.vanniktech.maven.publish"
+apply plugin: "maven-publish"
 
-publishing {
-    repositories {
-        maven {
-            url = version.endsWith('SNAPSHOT') ? getSnapshotRepositoryUrl() : getReleaseRepositoryUrl()
+android {
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
         }
     }
 }
 
-mavenPublish {
-    releaseSigningEnabled false
-}
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                url = version.endsWith('SNAPSHOT') ? getSnapshotRepositoryUrl() : getReleaseRepositoryUrl()
+            }
+        }
 
-project.afterEvaluate {
-    project.tasks.named("androidSourcesJar").configure {
-        from project.android.sourceSets.main.java.srcDirs
+        publications {
+            release(MavenPublication) {
+                afterEvaluate {
+                    from components.release
+                }
+                groupId = "com.badoo.ribs"
+                version = VERSION_NAME
+
+                pom {
+                    name.set("MVICore")
+                    description.set("Badoo RIBs is an evolution of Uber RIBs, with notable differences and additions")
+                    url.set("https://github.com/badoo/RIBs/")
+                    licenses {
+                        license {
+                            name.set("The Apache Software License, Version 2.0")
+                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("badoo")
+                            name.set("Badoo Trading Limited")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:git://github.com/badoo/RIBs.git")
+                        developerConnection.set("scm:git:ssh://git@github.com/badoo/RIBs.git")
+                        url.set("https://github.com/badoo/RIBs/")
+                    }
+                }
+            }
+        }
     }
 }
+

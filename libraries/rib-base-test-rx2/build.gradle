@@ -1,6 +1,8 @@
 configureAndroidLibrary(project)
 
 android {
+    namespace 'com.badoo.ribs.test.rx2'
+
     defaultConfig {
         versionCode 1
         versionName '1.0'
@@ -22,7 +24,7 @@ dependencies {
     api deps.external.rxjava2
     api deps.external.rxrelay2
     
-    implementation deps.test.mockito
+    implementation deps.test.mockitoKotlin
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

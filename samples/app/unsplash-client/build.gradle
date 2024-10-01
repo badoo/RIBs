@@ -27,12 +27,14 @@ def getClientSecret() {
 }
 
 android {
-    compileSdk 33
+    namespace 'com.badoo.ribs.example'
+
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.badoo.ribs.example"
         minSdk deps.build.minSdk
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

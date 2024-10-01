@@ -3,6 +3,7 @@ configureAndroidLibrary(project)
 apply plugin: 'kotlin-kapt'
 
 android {
+    namespace 'com.badoo.ribs.samples.routing.back_stack'
 
     defaultConfig {
         versionCode 1

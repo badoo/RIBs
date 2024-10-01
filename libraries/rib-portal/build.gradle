@@ -1,5 +1,9 @@
 configureAndroidLibrary(project)
 
+android {
+    namespace 'com.badoo.ribs.portal'
+}
+
 dependencies {
     api deps.android.appCompat
 

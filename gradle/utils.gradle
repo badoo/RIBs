@@ -37,7 +37,6 @@ ext.junitTestImplementation = { it ->
         testImplementation deps.test.junitParams
         testRuntimeOnly deps.test.junitEngine
         testImplementation deps.test.junitVintage
-        testImplementation deps.test.byteBuddy
         testImplementation project(':internal:junitextensions')
     }
 }
@@ -77,6 +76,11 @@ private def configureAndroidModule(Project project) {
                     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
                 }
             }
+        }
+
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
         }
 
         project.afterEvaluate {

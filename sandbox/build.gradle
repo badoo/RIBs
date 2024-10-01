@@ -3,12 +3,13 @@ configureAndroidApp(project)
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdk 33
+    namespace 'com.badoo.ribs.sandbox'
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.badoo.ribs.sandbox"
         minSdk deps.build.minSdk
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -30,12 +31,18 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = deps.versions.composeCompiler
     }
-
     packagingOptions {
-        exclude 'META-INF/**'
-        exclude "META-INF/licenses/ASM"
-        exclude "win32-x86/attach_hotspot_windows.dll"
-        exclude 'win32-x86-64/attach_hotspot_windows.dll'
+        jniLibs {
+            excludes += ['META-INF/**']
+        }
+        resources {
+            excludes += [
+                'META-INF/**',
+                'META-INF/licenses/ASM',
+                'win32-x86/attach_hotspot_windows.dll',
+                'win32-x86-64/attach_hotspot_windows.dll'
+            ]
+        }
     }
 }
 
@@ -79,10 +86,12 @@ dependencies {
     testImplementation project(":libraries:rib-base-test")
     testImplementation project(":libraries:rib-base-test-rx2")
 
+    junitAndroidTestImplementation(project)
     androidTestImplementation platform(deps.compose.bom)
     androidTestImplementation project(":libraries:rib-base-test")
-    androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.rules
+    androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.test.mockitoKotlin
     androidTestImplementation "androidx.compose.ui:ui-test"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"

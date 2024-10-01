@@ -10,10 +10,9 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when` as whenever
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @Deprecated("Use RibInteractorTestHelper")
 inline fun <reified View, ViewEvent> createInteractorTestHelper(
@@ -29,7 +28,7 @@ inline fun <reified R, reified Input, reified Output> Interactor<R, *>.mockIO(
     inputRelay: Relay<Input> = PublishRelay.create(),
     outputRelay: Relay<Output> = PublishRelay.create()
 ) where R : Rib, R : Connectable<Input, Output> {
-    val rib = mock(R::class.java).apply {
+    val rib = mock<R>().apply {
         whenever(input).thenReturn(inputRelay)
         whenever(output).thenReturn(outputRelay)
     }
@@ -38,9 +37,9 @@ inline fun <reified R, reified Input, reified Output> Interactor<R, *>.mockIO(
 
 @Deprecated("Use RibInteractorTestHelper")
 inline fun <reified RView, ViewEvent> Relay<ViewEvent>.subscribedView(): RView where RView : RibView, RView : ObservableSource<ViewEvent> =
-    mock(RView::class.java).apply {
-        Mockito.`when`(this.androidView).thenReturn(mock(ViewGroup::class.java))
-        Mockito.`when`(this.subscribe(any())).thenAnswer {
+    mock<RView>().apply {
+        whenever(this.androidView).thenReturn(mock<ViewGroup>())
+        whenever(this.subscribe(any())).thenAnswer {
             val observer = it.getArgument<Observer<ViewEvent>>(0)
             this@subscribedView.subscribe(observer)
         }

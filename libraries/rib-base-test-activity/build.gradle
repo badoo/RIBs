@@ -1,6 +1,8 @@
 configureAndroidLibrary(project)
 
 android {
+    namespace 'com.badoo.ribs.test.activity'
+
     defaultConfig {
         versionCode 1
         versionName '1.0'

@@ -1,5 +1,9 @@
 configureAndroidLibrary(project)
 
+android {
+    namespace 'com.badoo.ribs.debugutils'
+}
+
 dependencies {
     api project(":libraries:rib-base")
 }

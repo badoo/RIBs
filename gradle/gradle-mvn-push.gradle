@@ -49,7 +49,6 @@ afterEvaluate {
                         developer {
                             id.set("badoo")
                             name.set("Badoo Trading Limited")
-                            email.set("mvicore@team.bumble.com")
                         }
                     }
                     scm {

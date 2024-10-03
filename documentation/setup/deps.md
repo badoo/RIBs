@@ -63,10 +63,3 @@ Rx (optional):
 ```groovy
 implementation 'com.github.badoo.RIBs:rib-portal-rx:{latest-version}'
 ```
-
-### Recyclerview integration (experimental)
-```groovy
-implementation 'com.github.badoo.RIBs:rib-recyclerview:{latest-version}'
-```
-
-

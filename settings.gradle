@@ -9,7 +9,6 @@ include ':libraries:rib-debug-utils'
 include ':libraries:rib-mvicore'
 include ':libraries:rib-portal'
 include ':libraries:rib-portal-rx2'
-include ':libraries:rib-recyclerview'
 include ':libraries:rib-rx2'
 
 include ':samples:app:hello-world'

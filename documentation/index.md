@@ -66,6 +66,5 @@
 ## Experimental features
 
 - [Portals](experimental/portals.md)
-- RecyclerView hosting
 - [Jetpack Compose compatibility](experimental/jetpack-compose.md)
 

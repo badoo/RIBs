@@ -89,11 +89,13 @@ class NodeTest {
     private fun createNode(
         buildParams: BuildParams<Nothing?> = testBuildParams(),
         viewFactory: TestViewFactory? = this@NodeTest.viewFactory,
+        isOnMainThread: Boolean = true,
         plugins: List<Plugin> = emptyList()
     ): Node<TestView> = Node(
         buildParams = buildParams,
         viewFactory = viewFactory,
         plugins = plugins,
+        isOnMainThreadFunc = { isOnMainThread },
         retainedInstanceStore = retainedInstanceStore
     )
 
@@ -334,7 +336,10 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.CREATED, grandChild.lifecycleManager.externalLifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.CREATED,
+            grandChild.lifecycleManager.externalLifecycle.currentState
+        )
     }
 
     @Test
@@ -365,7 +370,10 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.STARTED, grandChild.lifecycleManager.externalLifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.STARTED,
+            grandChild.lifecycleManager.externalLifecycle.currentState
+        )
     }
 
     @Test
@@ -399,7 +407,10 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.RESUMED, grandChild.lifecycleManager.externalLifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.RESUMED,
+            grandChild.lifecycleManager.externalLifecycle.currentState
+        )
     }
 
     @Ignore("This should be reworked to match new mechanism")
@@ -603,5 +614,22 @@ class NodeTest {
         node.onDestroy(isRecreating = true)
 
         verify(retainedInstanceStore, never()).removeAll(node.identifier)
+    }
+
+    @Test
+    fun `WHEN node created outside main thread THEN error is raised`() {
+        val errorHandler = mock<RIBs.ErrorHandler>()
+        RIBs.clearErrorHandler()
+        RIBs.errorHandler = errorHandler
+
+        node = createNode(viewFactory = viewFactory, isOnMainThread = false)
+
+        verify(errorHandler).handleNonFatalError(
+            errorMessage = "Node interacted with outside main thread. " +
+                    "Node: com.badoo.ribs.core.Node, " +
+                    "method: init, " +
+                    "thread: SDK 32 Main Thread",
+            throwable = null
+        )
     }
 }

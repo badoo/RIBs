@@ -99,6 +99,8 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             is AncestryInfo.Child -> ancestryInfo.anchor
         }
 
+    private var isDestroyed: Boolean = false
+
     val plugins: List<Plugin> =
         buildContext.defaultPlugins(this) + plugins + if (this is Plugin) listOf(this) else emptyList()
 
@@ -107,9 +109,8 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     internal val externalLifecycleRegistry = LifecycleRegistry(this)
 
-    @VisibleForTesting
-    internal val _children: MutableList<Node<*>> = mutableListOf()
-    val children: List<Node<*>> get() = _children
+    var children: List<Node<*>> = listOf()
+        internal set
 
     internal open val lifecycleManager = LifecycleManager(this)
 
@@ -145,6 +146,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     @CallSuper
     open fun onCreate() {
+        if (isDestroyed) {
+            RIBs.errorHandler.handleNonFatalError(
+                "Calling onCreate when Node has been destroyed. $this",
+                RuntimeException("Calling onCreate when Node has been destroyed. $this")
+            )
+            return
+        }
+
         plugins
             .filterIsInstance<NodeLifecycleAware>()
             .forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
@@ -209,6 +218,16 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     open fun onDestroy(isRecreating: Boolean) {
+        if (isDestroyed) {
+            RIBs.errorHandler.handleNonFatalError(
+                "Calling onDestroy when Node has been destroyed. $this",
+                RuntimeException("Calling onDestroy when Node has been destroyed. $this")
+            )
+            return
+        }
+
+        isDestroyed = true
+
         if (view != null) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
@@ -237,7 +256,8 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     @MainThread
     fun attachChildNode(child: Node<*>) {
         verifyNotRoot(child)
-        _children.add(child)
+        val newChildren = children.toMutableList().apply { add(child) }
+        children = newChildren
         lifecycleManager.onAttachChild(child)
         child.onCreate()
         onAttachChildNode(child)
@@ -309,7 +329,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     @MainThread
     fun detachChildNode(child: Node<*>, isRecreating: Boolean) {
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildDetached(child) }
-        _children.remove(child)
+
+        val newChildren = children.toMutableList().apply { remove(child) }
+        children = newChildren
         child.onDestroy(isRecreating)
     }
 
@@ -325,6 +347,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onStart() {
+        if (isDestroyed) {
+            RIBs.errorHandler.handleNonFatalError(
+                "Calling onStart when Node has been destroyed. $this",
+                RuntimeException("Calling onStart when Node has been destroyed. $this")
+            )
+            return
+        }
+
         lifecycleManager.onStartExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onStart() }
     }
@@ -333,6 +363,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onStop() {
+        if (isDestroyed) {
+            RIBs.errorHandler.handleNonFatalError(
+                "Calling onStop when Node has been destroyed. $this",
+                RuntimeException("Calling onStop when Node has been destroyed. $this")
+            )
+            return
+        }
+
         lifecycleManager.onStopExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onStop() }
     }
@@ -341,6 +379,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onResume() {
+        if (isDestroyed) {
+            RIBs.errorHandler.handleNonFatalError(
+                "Calling onResume when Node has been destroyed. $this",
+                RuntimeException("Calling onResume when Node has been destroyed. $this")
+            )
+            return
+        }
+
         lifecycleManager.onResumeExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onResume() }
     }
@@ -349,6 +395,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onPause() {
+        if (isDestroyed) {
+            RIBs.errorHandler.handleNonFatalError(
+                "Calling onPause when Node has been destroyed. $this",
+                RuntimeException("Calling onPause when Node has been destroyed. $this")
+            )
+            return
+        }
+
         lifecycleManager.onPauseExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onPause() }
     }

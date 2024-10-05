@@ -28,6 +28,3 @@ include ':samples:elements:routing:transition-animations'
 include ':samples:elements:other:retained-instance-store'
 include ':samples:resources'
 include ':sandbox'
-
-include ':templates:release-0.27'
-include ':templates:snapshot'

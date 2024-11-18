@@ -5,9 +5,9 @@ import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.minimal.reactive.Cancellable
 import com.badoo.ribs.minimal.reactive.Source
+import com.badoo.ribs.minimal.reactive.map
 import com.badoo.ribs.minimal.state.Store
 import com.badoo.ribs.minimal.state.TimeCapsule
-import com.badoo.ribs.minimal.reactive.map
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistory
 import com.badoo.ribs.routing.history.RoutingHistoryElement
@@ -72,7 +72,9 @@ class BackStack<C : Parcelable> internal constructor(
     override fun baseLineState(fromRestored: Boolean): RoutingHistory<C> =
         timeCapsule.initialState()
 
-    private val store = object : Store<State<C>>(timeCapsule.initialState()) {
+    private val store = BackStackStore()
+
+    private inner class BackStackStore : Store<State<C>>(timeCapsule.initialState()) {
         init {
             timeCapsule.register(timeCapsuleKey) { state }
             initializeBackstack()
@@ -114,7 +116,10 @@ class BackStack<C : Parcelable> internal constructor(
                 )
             }
 
-        private fun routingWithCorrectId(element: RoutingHistoryElement<C>, index: Int): Routing<C> =
+        private fun routingWithCorrectId(
+            element: RoutingHistoryElement<C>,
+            index: Int
+        ): Routing<C> =
             element.routing.copy(
                 identifier = state.contentIdForPosition(
                     index,
@@ -122,7 +127,10 @@ class BackStack<C : Parcelable> internal constructor(
                 )
             )
 
-        private fun overlaysWithCorrectId(element: RoutingHistoryElement<C>, index: Int): List<Routing<C>> =
+        private fun overlaysWithCorrectId(
+            element: RoutingHistoryElement<C>,
+            index: Int
+        ): List<Routing<C>> =
             element.overlays.mapIndexed { overlayIndex, overlay ->
                 overlay.copy(
                     identifier = state.overlayIdForPosition(
@@ -144,7 +152,7 @@ class BackStack<C : Parcelable> internal constructor(
             }
 
     val activeConfiguration: C
-        get()= state.elements
+        get() = state.elements
             .last()
             .routing
             .configuration

@@ -3,6 +3,7 @@ package com.badoo.ribs.util
 import android.util.Log
 import androidx.annotation.VisibleForTesting
 import com.badoo.ribs.android.requestcode.RequestCodeBasedEventStream
+import com.badoo.ribs.core.plugin.Plugin
 
 object RIBs {
 
@@ -27,6 +28,11 @@ object RIBs {
                 }
             }
         }
+
+    /**
+     * Plugins that are applied to all Nodes.
+     */
+    var globalPlugins: List<Plugin> = emptyList()
 
     @VisibleForTesting
     fun clearErrorHandler() {

@@ -18,6 +18,7 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.AndroidLifecycleAware
 import com.badoo.ribs.core.plugin.BackPressHandler
+import com.badoo.ribs.core.plugin.GlobalNodeLifecycleAware
 import com.badoo.ribs.core.plugin.NodeAware
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
 import com.badoo.ribs.core.plugin.Plugin
@@ -100,7 +101,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         }
 
     val plugins: List<Plugin> =
-        buildContext.defaultPlugins(this) + plugins + if (this is Plugin) listOf(this) else emptyList()
+        buildContext.defaultPlugins(this) + RIBs.globalPlugins + plugins + if (this is Plugin) listOf(this) else emptyList()
 
     internal open val activationMode: ActivationMode =
         buildContext.activationMode
@@ -136,6 +137,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     internal fun onBuildFinished() {
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onBuild() }
+        plugins.filterIsInstance<GlobalNodeLifecycleAware>().forEach { it.onBuild(this) }
         parent?.onChildBuilt(this)
     }
 
@@ -148,6 +150,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         plugins
             .filterIsInstance<NodeLifecycleAware>()
             .forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
+        plugins
+            .filterIsInstance<GlobalNodeLifecycleAware>()
+            .forEach { it.onCreate(this, lifecycleManager.ribLifecycle.lifecycle) }
         lifecycleManager.onCreate()
     }
 
@@ -218,6 +223,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
         lifecycleManager.onDestroy()
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onDestroy() }
+        plugins.filterIsInstance<GlobalNodeLifecycleAware>().forEach { it.onDestroy(this) }
         if (!isRecreating) {
             retainedInstanceStore.removeAll(identifier)
         }
@@ -247,6 +253,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     internal fun onAttachFinished() {
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach() }
+        plugins.filterIsInstance<GlobalNodeLifecycleAware>().forEach { it.onAttach(this) }
     }
 
     open fun onAttachChildNode(child: Node<*>) {
@@ -406,6 +413,8 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
 
     override val lifecycle: Lifecycle
         get() = lifecycleManager.lifecycle
+
+    fun getView() : V? = view
 
     fun <P> plugins(pClass: Class<P>): List<P> =
         plugins.filterIsInstance(pClass)

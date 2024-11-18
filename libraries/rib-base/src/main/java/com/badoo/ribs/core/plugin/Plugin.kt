@@ -30,6 +30,16 @@ interface NodeLifecycleAware : Plugin {
     fun onDestroy() {}
 }
 
+interface GlobalNodeLifecycleAware : Plugin {
+    fun onBuild(node: Node<*>) {}
+
+    fun onCreate(node: Node<*>, nodeLifecycle: Lifecycle) {}
+
+    fun onAttach(node: Node<*>) {}
+
+    fun onDestroy(node: Node<*>) {}
+}
+
 interface ViewAware<V : RibView> : Plugin {
     fun onViewCreated(view: V, viewLifecycle: Lifecycle) {}
 }

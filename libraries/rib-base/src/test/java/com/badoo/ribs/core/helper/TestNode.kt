@@ -5,6 +5,7 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.store.RetainedInstanceStore
 import org.mockito.kotlin.mock
 
 open class TestNode(
@@ -15,6 +16,8 @@ open class TestNode(
 ) : Node<TestView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
+    retainedInstanceStore = RetainedInstanceStore,
+    isOnMainThreadFunc = { true },
     plugins = plugins + listOf(router)
 ), TestRib {
 

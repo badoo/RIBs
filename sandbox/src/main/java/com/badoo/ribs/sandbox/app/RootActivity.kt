@@ -27,14 +27,12 @@ import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.rx3.workflows.RxWorkflowActivity
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.R
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.functions.BiFunction
 import leakcanary.AppWatcher
 
 /** The sample app's single activity */
@@ -85,18 +83,18 @@ class RootActivity : RxWorkflowActivity() {
             }
         ).build(
             root(
-            savedInstanceState = savedInstanceState,
-            customisations = AppRibCustomisations,
-            defaultPlugins = { node ->
-                if (BuildConfig.DEBUG) {
-                    listOfNotNull(
-                        createLeakDetector(),
-                        createLogger(),
-                        if (node.isRoot) createDebugControlHost() else null
-                    )
-                } else emptyList()
-            }
-        )).also {
+                savedInstanceState = savedInstanceState,
+                customisations = AppRibCustomisations,
+                defaultPlugins = { node ->
+                    if (BuildConfig.DEBUG) {
+                        listOfNotNull(
+                            createLeakDetector(),
+                            createLogger(),
+                            if (node.isRoot) createDebugControlHost() else null
+                        )
+                    } else emptyList()
+                }
+            )).also {
             workflowRoot = it
         }
 

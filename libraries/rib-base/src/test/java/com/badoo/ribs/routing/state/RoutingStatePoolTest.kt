@@ -34,6 +34,7 @@ import org.mockito.ArgumentMatchers.anyList
 
 // FIXME rework test suite -- many of the responsibilities has been moved out to other classes
 //  TODO test only remaining responsibilities without assumptions on view detach / attach etc.
+@SuppressWarnings("LargeClass")
 class RoutingStatePoolTest {
 
     sealed class Configuration : Parcelable {

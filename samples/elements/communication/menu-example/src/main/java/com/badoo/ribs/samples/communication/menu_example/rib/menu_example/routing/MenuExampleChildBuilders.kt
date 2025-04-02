@@ -6,9 +6,9 @@ import com.badoo.ribs.samples.communication.menu_example.rib.child2.Child2
 import com.badoo.ribs.samples.communication.menu_example.rib.child2.Child2Builder
 import com.badoo.ribs.samples.communication.menu_example.rib.child3.Child3
 import com.badoo.ribs.samples.communication.menu_example.rib.child3.Child3Builder
-import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.MenuExample
 import com.badoo.ribs.samples.communication.menu_example.rib.menu.Menu
 import com.badoo.ribs.samples.communication.menu_example.rib.menu.MenuBuilder
+import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.MenuExample
 
 internal class MenuExampleChildBuilders(
     dependency: MenuExample.Dependency

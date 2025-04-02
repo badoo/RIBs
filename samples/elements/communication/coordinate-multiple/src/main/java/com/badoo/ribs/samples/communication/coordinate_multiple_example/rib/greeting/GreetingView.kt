@@ -36,12 +36,13 @@ class GreetingViewImpl private constructor(
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_greeting
     ) : GreetingView.Factory {
-        override fun invoke(deps: GreetingView.Dependency): ViewFactory<GreetingView> = object : ViewFactory<GreetingView> {
-            override fun invoke(context: ViewFactory.Context) = GreetingViewImpl(
-                context.inflate(layoutRes),
-                presenter = deps.presenter
-            )
-        }
+        override fun invoke(deps: GreetingView.Dependency): ViewFactory<GreetingView> =
+            ViewFactory { context ->
+                GreetingViewImpl(
+                    context.inflate(layoutRes),
+                    presenter = deps.presenter
+                )
+            }
     }
 
     private val greetingTextView: TextView = androidView.findViewById(R.id.greeting_text)

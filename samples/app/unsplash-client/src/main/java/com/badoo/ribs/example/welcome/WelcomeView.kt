@@ -10,16 +10,16 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.welcome.WelcomeView.Event
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
 
 interface WelcomeView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object LoginClicked : Event()
-        object RegisterClicked : Event()
-        object SkipClicked : Event()
+        data object LoginClicked : Event()
+        data object RegisterClicked : Event()
+        data object SkipClicked : Event()
     }
 
     interface Factory : ViewFactoryBuilder<Nothing?, WelcomeView>

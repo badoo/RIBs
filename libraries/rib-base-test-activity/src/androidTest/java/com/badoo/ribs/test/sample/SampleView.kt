@@ -19,10 +19,9 @@ class SampleViewImpl(
 
     val lifecycle: Lifecycle = context.lifecycle
 
-    override val androidView: ViewGroup
+    override val androidView: ViewGroup = FrameLayout(context.parent.context)
 
     init {
-        androidView = FrameLayout(context.parent.context)
         val child = TextView(context.parent.context)
         child.id = viewId
         child.text = TextView::class.qualifiedName

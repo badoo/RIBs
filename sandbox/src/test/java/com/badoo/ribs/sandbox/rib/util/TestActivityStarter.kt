@@ -9,24 +9,29 @@ import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.minimal.reactive.Source
 import com.badoo.ribs.minimal.reactive.filter
 import com.badoo.ribs.minimal.reactive.map
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Condition
 import org.assertj.core.api.ListAssert
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 class TestActivityStarter : ActivityStarter {
 
     private val intents: MutableList<Intent> = mutableListOf()
     private val responses: MutableList<Pair<Condition<Intent>, ActivityResult>> = mutableListOf()
 
-    private val eventsRelay: Relay<Pair<RequestCodeClient, ActivityStarter.ActivityResultEvent>> = Relay()
+    private val eventsRelay: Relay<Pair<RequestCodeClient, ActivityStarter.ActivityResultEvent>> =
+        Relay()
 
     override fun startActivity(createIntent: Context.() -> Intent) {
         intents += testContext.createIntent()
     }
 
-    override fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent) {
+    override fun startActivityForResult(
+        client: RequestCodeClient,
+        requestCode: Int,
+        createIntent: Context.() -> Intent
+    ) {
         val intent = testContext.createIntent()
 
         intents += intent
@@ -35,7 +40,13 @@ class TestActivityStarter : ActivityStarter {
             matcher.matches(intent)
         }?.second ?: throw IllegalStateException("No response found for intent $intent")
 
-        eventsRelay.emit(client to ActivityStarter.ActivityResultEvent(requestCode, result.resultCode, result.resultData))
+        eventsRelay.emit(
+            client to ActivityStarter.ActivityResultEvent(
+                requestCode,
+                result.resultCode,
+                result.resultData
+            )
+        )
     }
 
     override fun events(client: RequestCodeClient): Source<ActivityStarter.ActivityResultEvent> =

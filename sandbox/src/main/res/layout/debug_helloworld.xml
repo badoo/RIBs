@@ -3,11 +3,11 @@
     android:id="@+id/debug_helloworld"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="24dp"
-    android:orientation="horizontal"
     android:layout_gravity="center"
     android:background="#797"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="24dp">
 
     <Button
         android:id="@+id/workflow_hello"

@@ -1,10 +1,10 @@
 package com.badoo.ribs.core
 
 import com.badoo.ribs.core.plugin.SubtreeViewChangeAware
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.verify
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.verify
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)

@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.app_bar
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.binder.using
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.app_bar.AppBarBuilder.Params
@@ -10,7 +10,7 @@ import com.badoo.ribs.example.app_bar.mapper.UserToViewModel
 import com.badoo.ribs.example.app_bar.mapper.ViewEventToOutput
 import com.badoo.ribs.example.network.model.User
 import com.badoo.ribs.example.repository.UserRepository
-import io.reactivex.ObservableSource
+import io.reactivex.rxjava3.core.ObservableSource
 
 internal class AppBarInteractor(
     buildParams: BuildParams<Params>,

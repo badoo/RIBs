@@ -18,6 +18,4 @@ class ComposeParentNode internal constructor(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), ComposeParent, Connectable<Input, Output> by connector {
-
-}
+), ComposeParent, Connectable<Input, Output> by connector

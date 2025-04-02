@@ -11,7 +11,7 @@ interface Transition {
     fun start()
 
     fun end()
-    
+
     fun reverse()
 
     companion object {

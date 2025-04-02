@@ -14,8 +14,6 @@ internal open class DialogExampleChildBuilders(
     class SubtreeDependency(
         dependency: DialogExample.Dependency
     ) : DialogExample.Dependency by dependency,
-        LoremIpsum.Dependency {
-
-    }
+        LoremIpsum.Dependency
 }
 

@@ -18,7 +18,5 @@ internal open class SmallChildBuilders(
         dependency: Small.Dependency
     ) : Small.Dependency by dependency,
         PortalOverlayTest.Dependency,
-        Big.Dependency {
-
-    }
+        Big.Dependency
 }

@@ -66,7 +66,7 @@ class DialogExampleBuilder(
         buildParams: BuildParams<Nothing?>,
         customisation: DialogExample.Customisation,
         plugins: List<Plugin>
-    ) : DialogExampleNode = DialogExampleNode(
+    ): DialogExampleNode = DialogExampleNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         plugins = plugins

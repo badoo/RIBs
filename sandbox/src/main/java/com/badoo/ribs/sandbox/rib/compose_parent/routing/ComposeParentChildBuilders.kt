@@ -14,8 +14,7 @@ internal class ComposeParentChildBuilders(
     class SubtreeDependency(
         dependency: ComposeParent.Dependency
     ) : ComposeParent.Dependency by dependency,
-        ComposeLeaf.Dependency
-    {
+        ComposeLeaf.Dependency {
         // TODO implement subtree dependencies here
     }
 }

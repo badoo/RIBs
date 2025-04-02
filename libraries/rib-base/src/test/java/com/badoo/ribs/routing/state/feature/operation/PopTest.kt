@@ -65,7 +65,7 @@ class PopTest {
     @Test
     fun `invoke remove last overlay when overlay on top`() {
         //last element with two overlays
-        val backStack = listOf<RoutingHistoryElement<Configuration>>(
+        val backStack = listOf(
             RoutingHistoryElement(
                 routing = Routing(C1 as Configuration)
             ),

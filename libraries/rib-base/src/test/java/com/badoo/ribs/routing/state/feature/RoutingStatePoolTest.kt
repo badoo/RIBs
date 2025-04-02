@@ -2,10 +2,10 @@ package com.badoo.ribs.routing.state.feature
 
 import com.badoo.ribs.core.helper.AnyConfiguration
 import com.badoo.ribs.routing.state.feature.state.WorkingState
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class RoutingStatePoolTest {
 
@@ -37,7 +37,11 @@ class RoutingStatePoolTest {
         val pendingTransition: PendingTransition<AnyConfiguration> = mock()
         val routingStatePool = TestRoutingStatePool()
 
-        routingStatePool.testEvent(RoutingStatePool.Effect.Transition.RequestTransition(pendingTransition))
+        routingStatePool.testEvent(
+            RoutingStatePool.Effect.Transition.RequestTransition(
+                pendingTransition
+            )
+        )
 
         assertThat(routingStatePool.state.pendingTransitions.first()).isEqualTo(pendingTransition)
     }
@@ -50,7 +54,11 @@ class RoutingStatePoolTest {
         )
         val routingStatePool = TestRoutingStatePool(state)
 
-        routingStatePool.testEvent(RoutingStatePool.Effect.Transition.RemovePendingTransition(pendingTransition))
+        routingStatePool.testEvent(
+            RoutingStatePool.Effect.Transition.RemovePendingTransition(
+                pendingTransition
+            )
+        )
 
         assertThat(routingStatePool.state.pendingTransitions).isEmpty()
     }
@@ -60,7 +68,11 @@ class RoutingStatePoolTest {
         val ongoingTransition: OngoingTransition<AnyConfiguration> = mock()
         val routingStatePool = TestRoutingStatePool()
 
-        routingStatePool.testEvent(RoutingStatePool.Effect.Transition.TransitionStarted(ongoingTransition))
+        routingStatePool.testEvent(
+            RoutingStatePool.Effect.Transition.TransitionStarted(
+                ongoingTransition
+            )
+        )
 
         assertThat(routingStatePool.state.ongoingTransitions.first()).isEqualTo(ongoingTransition)
     }
@@ -73,7 +85,11 @@ class RoutingStatePoolTest {
         )
         val routingStatePool = TestRoutingStatePool(state)
 
-        routingStatePool.testEvent(RoutingStatePool.Effect.Transition.TransitionFinished(ongoingTransition))
+        routingStatePool.testEvent(
+            RoutingStatePool.Effect.Transition.TransitionFinished(
+                ongoingTransition
+            )
+        )
 
         assertThat(routingStatePool.state.ongoingTransitions).isEmpty()
     }
@@ -87,8 +103,16 @@ class RoutingStatePoolTest {
         )
         val routingStatePool = TestRoutingStatePool(state)
 
-        routingStatePool.testEvent(RoutingStatePool.Effect.Transition.RequestTransition(pendingTransition2))
-        routingStatePool.testEvent(RoutingStatePool.Effect.Transition.RemovePendingTransition(pendingTransition))
+        routingStatePool.testEvent(
+            RoutingStatePool.Effect.Transition.RequestTransition(
+                pendingTransition2
+            )
+        )
+        routingStatePool.testEvent(
+            RoutingStatePool.Effect.Transition.RemovePendingTransition(
+                pendingTransition
+            )
+        )
 
         assertThat(routingStatePool.state.pendingTransitions).contains(pendingTransition2)
         assertThat(routingStatePool.state.pendingTransitions).doesNotContain(pendingTransition)

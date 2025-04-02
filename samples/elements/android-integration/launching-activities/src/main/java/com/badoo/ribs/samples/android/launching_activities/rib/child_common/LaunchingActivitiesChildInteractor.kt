@@ -49,8 +49,10 @@ class LaunchingActivitiesChildInteractor(
     private fun onActivityEvent(activityEvent: ActivityStarter.ActivityResultEvent) {
         if (activityEvent.requestCode == REQUEST_CODE_OTHER_ACTIVITY) {
             if (activityEvent.resultCode == Activity.RESULT_OK) {
-                dataReturnedRelay.accept(activityEvent.data?.getStringExtra(OtherActivity.KEY_OUTGOING)
-                    ?: "")
+                dataReturnedRelay.accept(
+                    activityEvent.data?.getStringExtra(OtherActivity.KEY_OUTGOING)
+                        ?: ""
+                )
             }
         }
     }

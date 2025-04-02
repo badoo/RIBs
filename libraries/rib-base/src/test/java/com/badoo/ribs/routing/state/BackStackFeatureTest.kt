@@ -7,17 +7,17 @@ import com.badoo.ribs.core.helper.TestRouter.Configuration.C3
 import com.badoo.ribs.minimal.state.TimeCapsule
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.source.backstack.Elements
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.BackStack.State
+import com.badoo.ribs.routing.source.backstack.Elements
 import com.badoo.ribs.routing.state.feature.operation.asBackStackElements
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
 
 // TODO add more tests:
 //  - identifier maintenance

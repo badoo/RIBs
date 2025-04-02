@@ -1,4 +1,5 @@
 @file:SuppressWarnings("LongParameterList")
+
 package com.badoo.ribs.routing.transition.effect.slide
 
 import android.animation.Animator
@@ -12,7 +13,6 @@ import com.badoo.ribs.routing.transition.effect.helper.EndValues
 import com.badoo.ribs.routing.transition.effect.helper.ReverseHolder
 import com.badoo.ribs.routing.transition.progress.SingleProgressEvaluator
 import kotlin.math.abs
-
 
 internal fun <T> TransitionElement<out T>.slideValueAnimator(
     gravity: Gravity,
@@ -36,7 +36,7 @@ internal fun <T> TransitionElement<out T>.slideValueAnimator(
     return valueAnimator
 }
 
-private  fun <T> TransitionElement<out T>.slideUpdateListener(
+private fun <T> TransitionElement<out T>.slideUpdateListener(
     gravity: Gravity,
     endValues: EndValues,
     evaluator: SingleProgressEvaluator
@@ -53,7 +53,7 @@ private  fun <T> TransitionElement<out T>.slideUpdateListener(
     }
 }
 
-private  fun slideStartEndNotifier(
+private fun slideStartEndNotifier(
     evaluator: SingleProgressEvaluator,
     reverseHolder: ReverseHolder
 ): AnimatorListenerAdapter = object : AnimatorListenerAdapter() {

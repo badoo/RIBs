@@ -24,7 +24,7 @@ class BigBuilder(
         return BigNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            plugins =  listOf(
+            plugins = listOf(
                 interactor,
                 router
             )

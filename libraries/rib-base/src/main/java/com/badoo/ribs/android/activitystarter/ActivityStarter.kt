@@ -18,7 +18,11 @@ interface ActivityStarter : RequestCodeBasedEventStream<ActivityResultEvent> {
 
     fun startActivity(createIntent: Context.() -> Intent)
 
-    fun startActivityForResult(client: RequestCodeClient, requestCode: Int, createIntent: Context.() -> Intent)
+    fun startActivityForResult(
+        client: RequestCodeClient,
+        requestCode: Int,
+        createIntent: Context.() -> Intent
+    )
 
     data class ActivityResultEvent(
         override val requestCode: Int,

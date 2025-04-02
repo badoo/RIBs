@@ -10,12 +10,18 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.resolver.RoutingResolver
-import com.badoo.ribs.routing.state.RoutingContext.ActivationState.*
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.ACTIVE
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
+import com.badoo.ribs.routing.state.RoutingContext.ActivationState.SLEEPING
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.RoutingContext.Unresolved
-import org.mockito.kotlin.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class RoutingContextTest {
 
@@ -127,7 +133,7 @@ class RoutingContextTest {
             parentNode,
             parentNode,
             NB_EXPECTED_NODES,
-            emptyList<Bundle>()
+            emptyList()
         )
     }
 
@@ -140,7 +146,7 @@ class RoutingContextTest {
             mockAnchor,
             parentNode,
             NB_EXPECTED_NODES,
-            emptyList<Bundle>()
+            emptyList()
         )
     }
 
@@ -263,7 +269,7 @@ class RoutingContextTest {
     @Test
     fun `Resolved shrink() keeps configuration`() {
         val routing = Routing(mock<Parcelable>())
-        val resolved = Resolved<Parcelable>(ACTIVE, routing, mock(), mock(), mock())
+        val resolved = Resolved(ACTIVE, routing, mock(), mock(), mock())
         val unresolved = resolved.shrink()
         assertEquals(routing, unresolved.routing)
     }

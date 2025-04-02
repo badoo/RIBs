@@ -11,7 +11,6 @@ import com.badoo.ribs.routing.transition.effect.helper.AnimationContainer
 import com.badoo.ribs.routing.transition.effect.slide.slide
 import com.badoo.ribs.routing.transition.invoke
 
-
 open class TabSwitcher<T>(
     private val tabsOrder: List<T>,
     private val animationContainer: AnimationContainer = AnimationContainer.Parent,
@@ -34,7 +33,15 @@ open class TabSwitcher<T>(
                 exit { slide(gravity, animationContainer, duration, interpolator, false) }
             ),
             entering = Transition.multiple(
-                enter { slide(gravity.reverse(), animationContainer, duration, interpolator, false) }
+                enter {
+                    slide(
+                        gravity.reverse(),
+                        animationContainer,
+                        duration,
+                        interpolator,
+                        false
+                    )
+                }
             )
 
         )

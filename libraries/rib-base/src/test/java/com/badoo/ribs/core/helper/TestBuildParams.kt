@@ -7,7 +7,7 @@ import com.badoo.ribs.core.modality.ActivationMode
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.modality.BuildParams
-import java.util.*
+import java.util.UUID
 
 fun testBuildParams(
     savedInstanceState: Bundle? = null,
@@ -15,7 +15,7 @@ fun testBuildParams(
     identifier: Rib.Identifier = Rib.Identifier(
         uuid = UUID.randomUUID()
     )
-) = BuildParams<Nothing?>(
+) = BuildParams(
     payload = null,
     buildContext = if (ancestryInfo == null) {
         BuildContext.root(savedInstanceState)
@@ -25,6 +25,7 @@ fun testBuildParams(
             activationMode = ActivationMode.ATTACH_TO_PARENT,
             savedInstanceState = savedInstanceState,
             customisations = RibCustomisationDirectoryImpl()
-    )},
+        )
+    },
     identifier = identifier
 )

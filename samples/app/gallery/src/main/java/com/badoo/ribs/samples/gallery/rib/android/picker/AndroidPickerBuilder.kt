@@ -17,18 +17,18 @@ class AndroidPickerBuilder(
     private fun interactor(
         buildParams: BuildParams<*>,
     ) = AndroidPickerInteractor(
-            buildParams = buildParams,
-        )
+        buildParams = buildParams,
+    )
 
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: AndroidPicker.Customisation,
         interactor: AndroidPickerInteractor
     ) = AndroidPickerNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = listOf(
-                interactor
-            )
+        buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
+        plugins = listOf(
+            interactor
         )
+    )
 }

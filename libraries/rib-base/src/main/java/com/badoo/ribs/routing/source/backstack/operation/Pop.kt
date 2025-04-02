@@ -1,8 +1,8 @@
 package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.history.RoutingHistoryElement
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.Elements
 
 /**
@@ -21,6 +21,7 @@ class Pop<C : Parcelable> : BackStack.Operation<C> {
                         overlays = elements.last().overlays.dropLast(1)
                     )
                 )
+
             elements.canPopContent -> elements.dropLast(1)
             else -> elements
         }

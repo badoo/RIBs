@@ -18,7 +18,7 @@ internal data class Combined<C : Parcelable>(
     data class CombinedHistory<C : Parcelable>(
         val first: RoutingHistory<C>,
         val second: RoutingHistory<C>
-    ): RoutingHistory<C> {
+    ) : RoutingHistory<C> {
 
         override fun iterator(): Iterator<RoutingHistoryElement<C>> =
             ConcatIterator(first.iterator()) + second.iterator()

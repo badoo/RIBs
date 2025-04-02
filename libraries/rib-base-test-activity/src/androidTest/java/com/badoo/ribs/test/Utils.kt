@@ -7,7 +7,10 @@ import java.util.concurrent.TimeoutException
 private const val DEFAULT_CONDITION_TIMEOUT_MILLISECONDS = 15000L
 private const val DEFAULT_CHECK_CONDITION_FREQUENCY_MILLIS = 10L
 
-fun waitFor(timeoutMillis: Long = DEFAULT_CONDITION_TIMEOUT_MILLISECONDS, condition: () -> Boolean) {
+fun waitFor(
+    timeoutMillis: Long = DEFAULT_CONDITION_TIMEOUT_MILLISECONDS,
+    condition: () -> Boolean
+) {
     val start = System.currentTimeMillis()
     while (!condition()) {
         if (System.currentTimeMillis() > start + timeoutMillis) {

@@ -1,6 +1,6 @@
 package com.badoo.ribs.minimal.state
 
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.observers.TestObserver
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 

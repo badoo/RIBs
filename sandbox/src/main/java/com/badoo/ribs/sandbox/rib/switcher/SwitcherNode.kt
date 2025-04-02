@@ -6,13 +6,13 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
+import com.badoo.ribs.rx3.workflows.RxWorkflowNode
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExample
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBar
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
-import com.badoo.ribs.rx2.workflows.RxWorkflowNode
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 class SwitcherNode internal constructor(
     buildParams: BuildParams<*>,
@@ -24,7 +24,7 @@ class SwitcherNode internal constructor(
     viewFactory = viewFactory,
     plugins = plugins
 ), Switcher {
-    
+
     override fun attachHelloWorld(): Single<HelloWorld> =
         attachWorkflow {
             Log.d("WORKFLOW", "Switcher / attachHelloWorld")

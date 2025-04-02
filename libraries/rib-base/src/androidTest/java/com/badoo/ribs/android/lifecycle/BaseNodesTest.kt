@@ -48,7 +48,7 @@ abstract class BaseNodesTest {
         var backStack: BackStack<TestRootRouter.Configuration>? = null
 
         ribsRule.start { activity, savedInstanceState ->
-            val buildParams = BuildParams<TestRootBuilder.Params>(
+            val buildParams = BuildParams(
                 payload = TestRootBuilder.Params(false),
                 buildContext = BuildContext.root(savedInstanceState),
                 identifier = Rib.Identifier(

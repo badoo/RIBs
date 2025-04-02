@@ -1,6 +1,6 @@
 package com.badoo.ribs.samples.gallery.rib.routing.routing_picker
 
-import com.badoo.ribs.rx2.clienthelper.connector.Connectable
+import com.badoo.ribs.rx3.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPicker.Input
@@ -13,10 +13,10 @@ interface RoutingPicker : Rib, Connectable<Input, Output> {
     sealed class Input
 
     sealed class Output {
-        object SimpleRoutingSelected : Output()
-        object BackStackSelected : Output()
-        object ParameterisedRoutingSelected : Output()
-        object TransitionsSelected : Output()
+        data object SimpleRoutingSelected : Output()
+        data object BackStackSelected : Output()
+        data object ParameterisedRoutingSelected : Output()
+        data object TransitionsSelected : Output()
     }
 
     class Customisation(

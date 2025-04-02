@@ -19,7 +19,7 @@ dependencies {
     testImplementation deps.external.mviCore
     testImplementation deps.external.mviCoreAndroid
     testImplementation deps.external.mviCoreBinder
-    testImplementation deps.external.rxrelay2
+    testImplementation deps.external.rxrelay3
 
     junitTestImplementation(project)
     testImplementation deps.android.annotations
@@ -28,14 +28,14 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation project(":libraries:rib-base-test")
 
-    androidTestImplementation deps.external.rxjava2
+    androidTestImplementation deps.external.rxjava3
     junitAndroidTestImplementation(project)
     androidTestImplementation deps.test.assertj
     androidTestImplementation deps.androidTest.espresso
     androidTestImplementation deps.androidTest.espressoIntents
     androidTestImplementation deps.androidTest.runner
     androidTestImplementation deps.androidTest.rules
-    androidTestImplementation project(":libraries:rib-rx2")
+    androidTestImplementation project(':libraries:rib-rx3')
     androidTestImplementation project(":libraries:rib-base-test")
     androidTestImplementation project(':libraries:rib-base-test-activity')
 }

@@ -19,20 +19,20 @@ import com.badoo.ribs.example.network.model.Photo
 import com.badoo.ribs.example.photo_details.PhotoDetailsView.Event
 import com.badoo.ribs.example.photo_details.PhotoDetailsView.ViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface PhotoDetailsView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object LikeClicked : Event()
+        data object LikeClicked : Event()
     }
 
     sealed class ViewModel {
-        object Loading : ViewModel()
+        data object Loading : ViewModel()
         data class Loaded(val detail: Photo) : ViewModel()
     }
 

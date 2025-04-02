@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.auth
 
 import android.util.Log
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.Observable
+import com.jakewharton.rxrelay3.BehaviorRelay
+import io.reactivex.rxjava3.core.Observable
 
 interface AuthStateStorage {
     val authUpdates: Observable<AuthState>

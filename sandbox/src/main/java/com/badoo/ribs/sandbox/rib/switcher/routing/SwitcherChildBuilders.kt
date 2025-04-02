@@ -37,7 +37,5 @@ internal open class SwitcherChildBuilders(
         FooBar.Dependency,
         DialogExample.Dependency,
         Blocker.Dependency,
-        ComposeParent.Dependency {
-
-    }
+        ComposeParent.Dependency
 }

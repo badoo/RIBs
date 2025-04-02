@@ -18,7 +18,7 @@ class DialogResolution<Event : Any, C : Parcelable>(
 
     override val numberOfNodes: Int = 1
 
-    override fun buildNodes(buildContexts: List<BuildContext>) : List<Rib> =
+    override fun buildNodes(buildContexts: List<BuildContext>): List<Rib> =
         dialog.buildNodes(buildContexts.first())
 
     override fun execute() {

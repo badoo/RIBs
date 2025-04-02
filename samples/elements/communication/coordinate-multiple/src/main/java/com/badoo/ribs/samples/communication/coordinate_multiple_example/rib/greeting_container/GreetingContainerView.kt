@@ -18,10 +18,11 @@ class GreetingContainerViewImpl private constructor(
     GreetingContainerView {
 
     class Factory : GreetingContainerView.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<GreetingContainerView> = ViewFactory { context ->
-            GreetingContainerViewImpl(
-                FrameLayout(context.parent.context)
-            )
-        }
+        override fun invoke(deps: Nothing?): ViewFactory<GreetingContainerView> =
+            ViewFactory { context ->
+                GreetingContainerViewImpl(
+                    FrameLayout(context.parent.context)
+                )
+            }
     }
 }

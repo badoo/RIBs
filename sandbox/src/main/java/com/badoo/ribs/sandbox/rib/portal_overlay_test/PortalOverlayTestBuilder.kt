@@ -15,7 +15,7 @@ class PortalOverlayTestBuilder(
         return PortalOverlayTestNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            plugins =  listOf(
+            plugins = listOf(
                 interactor
             )
         )

@@ -12,7 +12,7 @@ import com.badoo.ribs.example.photo_feed.feature.PhotoFeedFeature.Effect
 import com.badoo.ribs.example.photo_feed.feature.PhotoFeedFeature.News
 import com.badoo.ribs.example.photo_feed.feature.PhotoFeedFeature.State
 import com.badoo.ribs.example.photo_feed.feature.PhotoFeedFeature.Wish
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 internal class PhotoFeedFeature(
     dataSource: PhotoFeedDataSource
@@ -28,8 +28,8 @@ internal class PhotoFeedFeature(
         open val pageNumber: Int = firstPageNumber,
         open val photos: List<Photo> = emptyList()
     ) {
-        object InitialLoading : State()
-        object InitialLoadingError : State()
+        data object InitialLoading : State()
+        data object InitialLoadingError : State()
         data class Loaded(
             override val photos: List<Photo>,
             override val pageNumber: Int
@@ -51,15 +51,15 @@ internal class PhotoFeedFeature(
     }
 
     sealed class Wish {
-        object LoadNextPage : Wish()
-        object Refresh : Wish()
+        data object LoadNextPage : Wish()
+        data object Refresh : Wish()
     }
 
     sealed class Effect {
-        object LoadingStarted : Effect()
+        data object LoadingStarted : Effect()
         data class PageLoaded(val photos: List<Photo>, val pageNumber: Int) : Effect()
-        object LoadingFailed : Effect()
-        object PhotosCleared : Effect()
+        data object LoadingFailed : Effect()
+        data object PhotosCleared : Effect()
     }
 
     sealed class News
@@ -78,7 +78,7 @@ internal class PhotoFeedFeature(
                         is State.InitialLoading, is State.LoadingNext -> Observable.empty()
                         else -> loadPage(state.pageNumber)
                     }
-                is Wish.Refresh -> loadPage(0).startWith(Effect.PhotosCleared)
+                is Wish.Refresh -> loadPage(0).startWithItem(Effect.PhotosCleared)
             }
 
         private fun loadPage(pageNumber: Int): Observable<Effect> {
@@ -88,7 +88,7 @@ internal class PhotoFeedFeature(
                 }
                 .onErrorReturnItem(Effect.LoadingFailed)
                 .toObservable()
-                .startWith(Effect.LoadingStarted)
+                .startWithItem(Effect.LoadingStarted)
         }
     }
 

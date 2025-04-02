@@ -16,10 +16,12 @@ class PreferencesAuthStatePersistence(
             is AuthState.Unauthenticated -> preferences.edit()
                 .clear()
                 .apply()
+
             is AuthState.Anonymous -> preferences.edit()
                 .clear()
                 .putBoolean(ANONYMOUS_AUTH_KEY, true)
                 .apply()
+
             is AuthState.Authenticated -> preferences.edit()
                 .clear()
                 .putString(ACCESS_TOKEN_KEY, state.accessToken)

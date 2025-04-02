@@ -6,7 +6,6 @@ import com.badoo.ribs.core.Rib.Identifier.Companion.KEY_UUID
 import com.badoo.ribs.core.customisation.RibCustomisation
 import java.util.UUID
 
-
 /**
  * Represents information passed to components.
  *
@@ -25,7 +24,7 @@ class BuildParams<T>(
     val savedInstanceState: Bundle?
         get() = buildContext.savedInstanceState
 
-    fun <T : RibCustomisation> getOrDefault(defaultCustomisation: T) : T =
+    fun <T : RibCustomisation> getOrDefault(defaultCustomisation: T): T =
         buildContext.customisations.getRecursivelyOrDefault(defaultCustomisation)
 
 }

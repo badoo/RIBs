@@ -3,8 +3,8 @@ package com.badoo.ribs.example.auth
 import com.badoo.ribs.example.BuildConfig
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.AccessToken
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
 
 interface AuthDataSource : AuthStateStorage {
     fun login(authCode: String): Single<AccessToken>

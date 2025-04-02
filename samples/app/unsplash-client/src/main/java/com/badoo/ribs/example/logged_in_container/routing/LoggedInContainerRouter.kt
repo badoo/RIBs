@@ -27,7 +27,7 @@ class LoggedInContainerRouter internal constructor(
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize
-            object PhotoFeed : Content()
+            data object PhotoFeed : Content()
 
             @Parcelize
             data class PhotoDetails(val photoId: String) : Content()

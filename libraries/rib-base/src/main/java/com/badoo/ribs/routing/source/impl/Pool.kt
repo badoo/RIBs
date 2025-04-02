@@ -25,7 +25,8 @@ class Pool<C : Parcelable>(
         val elements: Map<Routing.Identifier, RoutingHistoryElement<C>> = emptyMap()
     ) : Parcelable
 
-    private var elements: Map<Routing.Identifier, RoutingHistoryElement<C>> = HashMap(timeCapsule.elements())
+    private var elements: Map<Routing.Identifier, RoutingHistoryElement<C>> =
+        HashMap(timeCapsule.elements())
     private val current: RoutingHistory<C>
         get() = RoutingHistory.from(
             elements.values.toList()

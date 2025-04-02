@@ -1,7 +1,6 @@
 package com.badoo.ribs.android.requestcode
 
 import android.os.Bundle
-import java.util.*
 import kotlin.math.pow
 
 /**
@@ -16,12 +15,13 @@ import kotlin.math.pow
  * components. Instead, use sensible numbers starting from 1, only unique locally to your component,
  * and let this class do the rest to ensure global uniqueness.
  */
-class RequestCodeRegistry constructor(
+class RequestCodeRegistry(
     initialState: Bundle?,
     private val nbLowerBitsForIds: Int = 4
 ) {
     internal val requestCodes: HashMap<Int, String> =
-        (initialState?.getSerializable(KEY_REQUEST_CODE_REGISTRY) as? HashMap<Int, String>) ?: hashMapOf()
+        (initialState?.getSerializable(KEY_REQUEST_CODE_REGISTRY) as? HashMap<Int, String>)
+            ?: hashMapOf()
 
     private val lowerBitsShift: Int = nbLowerBitsForIds - 0
     private val maskLowerBits = (1 shl lowerBitsShift) - 1
@@ -58,7 +58,11 @@ class RequestCodeRegistry constructor(
     private fun ensureCodeIsCorrect(code: Int) {
         if (code < 1 || code != code and maskLowerBits) {
             throw RequestCodeDoesntFitInMask(
-                "Requestcode '$code' does not fit requirements. Allowed min: 1, max: ${2.0.pow(nbLowerBitsForIds).toInt() - 1}"
+                "Requestcode '$code' does not fit requirements. Allowed min: 1, max: ${
+                    2.0.pow(
+                        nbLowerBitsForIds
+                    ).toInt() - 1
+                }"
             )
         }
     }

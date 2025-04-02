@@ -131,7 +131,12 @@ class PoolTest {
         )
         pool.add(conf2Item)
 
-        assertEquals(listOf(conf1Item.toRoutingHistoryElement(), conf2Item.toRoutingHistoryElement()), routingHistoryElements)
+        assertEquals(
+            listOf(
+                conf1Item.toRoutingHistoryElement(),
+                conf2Item.toRoutingHistoryElement()
+            ), routingHistoryElements
+        )
     }
 
     private fun pool(

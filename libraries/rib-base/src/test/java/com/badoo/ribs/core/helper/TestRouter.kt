@@ -1,13 +1,13 @@
 package com.badoo.ribs.core.helper
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.routing.resolution.Resolution
-import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.Routing
-import org.mockito.kotlin.mock
+import com.badoo.ribs.routing.resolution.Resolution
+import com.badoo.ribs.routing.router.Router
+import com.badoo.ribs.routing.source.backstack.BackStack
 import kotlinx.parcelize.Parcelize
+import org.mockito.kotlin.mock
 
 class TestRouter(
     buildParams: BuildParams<Nothing?> = testBuildParams(),
@@ -31,17 +31,51 @@ class TestRouter(
 
     sealed class Configuration : Parcelable {
         // Content
-        @Parcelize object C1 : Configuration() { override fun toString(): String = "C1" }
-        @Parcelize object C2 : Configuration() { override fun toString(): String = "C2" }
-        @Parcelize object C3 : Configuration() { override fun toString(): String = "C3" }
-        @Parcelize object C4 : Configuration() { override fun toString(): String = "C4" }
-        @Parcelize object C5 : Configuration() { override fun toString(): String = "C5" }
-        @Parcelize data class C6(val i: Int) : Configuration() { override fun toString(): String = "C6" }
+        @Parcelize
+        object C1 : Configuration() {
+            override fun toString(): String = "C1"
+        }
+
+        @Parcelize
+        object C2 : Configuration() {
+            override fun toString(): String = "C2"
+        }
+
+        @Parcelize
+        object C3 : Configuration() {
+            override fun toString(): String = "C3"
+        }
+
+        @Parcelize
+        object C4 : Configuration() {
+            override fun toString(): String = "C4"
+        }
+
+        @Parcelize
+        object C5 : Configuration() {
+            override fun toString(): String = "C5"
+        }
+
+        @Parcelize
+        data class C6(val i: Int) : Configuration() {
+            override fun toString(): String = "C6"
+        }
 
         // Overlay
-        @Parcelize object O1 : Configuration() { override fun toString(): String = "O1" }
-        @Parcelize object O2 : Configuration() { override fun toString(): String = "O2" }
-        @Parcelize object O3 : Configuration() { override fun toString(): String = "O3" }
+        @Parcelize
+        object O1 : Configuration() {
+            override fun toString(): String = "O1"
+        }
+
+        @Parcelize
+        object O2 : Configuration() {
+            override fun toString(): String = "O2"
+        }
+
+        @Parcelize
+        object O3 : Configuration() {
+            override fun toString(): String = "O3"
+        }
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =

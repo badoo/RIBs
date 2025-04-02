@@ -10,16 +10,16 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.gallery.composable.ButtonList
 import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPickerView.Event
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
 
 interface AndroidPickerView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object LaunchingActivitiesClicked : Event()
-        object PermissionsClicked : Event()
-        object DialogsClicked : Event()
+        data object LaunchingActivitiesClicked : Event()
+        data object PermissionsClicked : Event()
+        data object DialogsClicked : Event()
     }
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, AndroidPickerView>

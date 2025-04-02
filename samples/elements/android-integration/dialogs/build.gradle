@@ -20,7 +20,7 @@ dependencies {
     implementation deps.android.appCompat
     implementation deps.android.constraintLayout
     implementation deps.android.design
-    implementation deps.external.rxrelay2
+    implementation deps.external.rxrelay3
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
     implementation deps.external.mviCoreBinder

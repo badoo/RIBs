@@ -11,7 +11,6 @@ import com.badoo.ribs.routing.transition.effect.helper.AnimationContainer
 import com.badoo.ribs.routing.transition.effect.slide.slide
 import com.badoo.ribs.routing.transition.invoke
 
-
 open class Slider<T>(
     private val gravity: Gravity = Gravity.LEFT,
     private val animationContainer: AnimationContainer = AnimationContainer.RootView,
@@ -22,7 +21,7 @@ open class Slider<T>(
 
     override fun onTransition(elements: List<TransitionElement<out T>>): TransitionPair {
         val exit = elements.filter { it.direction == EXIT && condition(it) }
-        val enter = elements.filter { it.direction == ENTER && condition(it)}
+        val enter = elements.filter { it.direction == ENTER && condition(it) }
 
         return TransitionPair(
             exiting = Transition.multiple(

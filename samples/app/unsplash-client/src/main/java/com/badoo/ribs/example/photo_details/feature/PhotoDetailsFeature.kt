@@ -12,7 +12,7 @@ import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature.Effect
 import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature.News
 import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature.State
 import com.badoo.ribs.example.photo_details.feature.PhotoDetailsFeature.Wish
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 internal class PhotoDetailsFeature(
     photoId: String,
@@ -27,25 +27,25 @@ internal class PhotoDetailsFeature(
 
 
     sealed class State {
-        object Loading : State()
+        data object Loading : State()
         data class Loaded(val detail: Photo) : State()
     }
 
     sealed class Wish {
-        object LoadPhoto : Wish()
-        object LikeOrUnlikePhoto : Wish()
+        data object LoadPhoto : Wish()
+        data object LikeOrUnlikePhoto : Wish()
     }
 
     sealed class Effect {
-        object LoadingPhotoStarted : Effect()
+        data object LoadingPhotoStarted : Effect()
         data class PhotoLoaded(val detail: Photo) : Effect()
-        object LikeSent : Effect()
-        object UnlikeSent : Effect()
-        object LikeNotSent : Effect()
+        data object LikeSent : Effect()
+        data object UnlikeSent : Effect()
+        data object LikeNotSent : Effect()
     }
 
     sealed class News {
-        object LikeOrUnlikeFailed : News()
+        data object LikeOrUnlikeFailed : News()
     }
 
     class BootStrapperImpl : Bootstrapper<Wish> {
@@ -61,7 +61,8 @@ internal class PhotoDetailsFeature(
                 Wish.LoadPhoto -> photoDetailsDataSource.getPhoto(photoId)
                     .map<Effect> { Effect.PhotoLoaded(it) }
                     .toObservable()
-                    .startWith(Effect.LoadingPhotoStarted)
+                    .startWithItem(Effect.LoadingPhotoStarted)
+
                 Wish.LikeOrUnlikePhoto -> togglePhotoLike(state)
             }
 

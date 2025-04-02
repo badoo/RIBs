@@ -11,7 +11,7 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
-import com.badoo.ribs.rx2.adapter.rx2
+import com.badoo.ribs.rx3.adapter.rx3
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowLazyDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowRibDialogClicked
@@ -23,8 +23,8 @@ import com.badoo.ribs.sandbox.rib.dialog_example.dialog.Dialogs
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.BehaviorRelay
+import io.reactivex.rxjava3.functions.Consumer
 
 class DialogExampleInteractor internal constructor(
     buildParams: BuildParams<Nothing?>,
@@ -50,10 +50,10 @@ class DialogExampleInteractor internal constructor(
         viewLifecycle.startStop {
             bind(dummyViewInput to view)
             bind(view to viewEventConsumer)
-            bind(dialogs.themedDialog.rx2() to dialogEventConsumer)
-            bind(dialogs.simpleDialog.rx2() to dialogEventConsumer)
-            bind(dialogs.lazyDialog.rx2() to dialogEventConsumer)
-            bind(dialogs.ribDialog.rx2() to dialogEventConsumer)
+            bind(dialogs.themedDialog.rx3() to dialogEventConsumer)
+            bind(dialogs.simpleDialog.rx3() to dialogEventConsumer)
+            bind(dialogs.lazyDialog.rx3() to dialogEventConsumer)
+            bind(dialogs.ribDialog.rx3() to dialogEventConsumer)
         }
     }
 
@@ -90,12 +90,15 @@ class DialogExampleInteractor internal constructor(
             Dialog.Event.Positive -> {
                 dummyViewInput.accept(ViewModel("Dialog - Positive clicked"))
             }
+
             Dialog.Event.Negative -> {
                 dummyViewInput.accept(ViewModel("Dialog - Negative clicked"))
             }
+
             Dialog.Event.Neutral -> {
                 dummyViewInput.accept(ViewModel("Dialog - Neutral clicked"))
             }
+
             Dialog.Event.Cancelled -> {
                 dummyViewInput.accept(ViewModel("Dialog - Cancelled"))
             }

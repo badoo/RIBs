@@ -1,0 +1,39 @@
+configureAndroidLibrary(project)
+
+android {
+    namespace 'com.badoo.ribs.portal.rx3'
+}
+
+dependencies {
+    api deps.android.appCompat
+
+    implementation deps.apt.javaxInject
+
+    compileOnly deps.android.annotations
+    implementation deps.external.mviCore
+    implementation deps.external.mviCoreAndroid
+    implementation deps.external.mviCoreBinder
+    implementation deps.external.rxrelay3
+    implementation deps.external.rxjava3
+
+    api project(":libraries:rib-portal")
+    implementation project(':libraries:rib-rx3')
+
+    junitTestImplementation(project)
+    testImplementation deps.android.annotations
+    testImplementation deps.test.assertj
+    testImplementation deps.external.roboelectricBase
+    testImplementation deps.test.mockitoKotlin
+    testImplementation project(":libraries:rib-base-test")
+
+    junitAndroidTestImplementation(project)
+    androidTestImplementation deps.test.assertj
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.espressoIntents
+    androidTestImplementation deps.androidTest.runner
+    androidTestImplementation deps.androidTest.rules
+    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation project(':libraries:rib-base-test-activity')
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

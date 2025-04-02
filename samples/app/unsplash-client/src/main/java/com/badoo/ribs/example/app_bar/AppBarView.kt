@@ -15,17 +15,17 @@ import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.example.R
 import com.badoo.ribs.example.app_bar.AppBarView.Event
 import com.badoo.ribs.example.app_bar.AppBarView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface AppBarView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object UserClicked : Event()
-        object SearchClicked : Event()
+        data object UserClicked : Event()
+        data object SearchClicked : Event()
     }
 
     data class ViewModel(

@@ -17,17 +17,22 @@ class SmallRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
     routingSource: RoutingSource<Configuration>,
     private val builders: SmallChildBuilders
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource
 ) {
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
-            @Parcelize object Default : Content()
+            @Parcelize
+            data object Default : Content()
         }
+
         sealed class FullScreen : Configuration() {
-            @Parcelize object ShowBig : FullScreen()
-            @Parcelize object ShowOverlay : FullScreen()
+            @Parcelize
+            data object ShowBig : FullScreen()
+
+            @Parcelize
+            data object ShowOverlay : FullScreen()
         }
     }
 

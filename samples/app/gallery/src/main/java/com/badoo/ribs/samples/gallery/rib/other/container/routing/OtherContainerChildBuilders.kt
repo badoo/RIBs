@@ -18,8 +18,7 @@ internal class OtherContainerChildBuilders(
         dependency: OtherContainer.Dependency
     ) : OtherContainer.Dependency by dependency,
         OtherPicker.Dependency,
-        RetainedInstanceExample.Dependency {
-    }
+        RetainedInstanceExample.Dependency
 }
 
 

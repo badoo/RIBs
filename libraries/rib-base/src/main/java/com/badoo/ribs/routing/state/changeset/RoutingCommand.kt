@@ -2,6 +2,7 @@ package com.badoo.ribs.routing.state.changeset
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.state.action.single.ActionFactory
 import com.badoo.ribs.routing.state.action.single.ActivateAction
@@ -10,7 +11,6 @@ import com.badoo.ribs.routing.state.action.single.DeactivateAction
 import com.badoo.ribs.routing.state.action.single.RemoveAction
 import com.badoo.ribs.routing.state.action.single.ReversibleActionFactory
 import com.badoo.ribs.routing.state.action.single.ReversibleActionPair
-import com.badoo.ribs.routing.Routing
 
 /**
  * Represents a command to change one or more [RoutingContext] elements.

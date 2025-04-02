@@ -43,7 +43,7 @@ abstract class BasePortalBuilder<T : Portal>(
     ): T
 }
 
-class PortalBuilder(dependency: Portal.Dependency): BasePortalBuilder<Portal>(dependency) {
+class PortalBuilder(dependency: Portal.Dependency) : BasePortalBuilder<Portal>(dependency) {
     override fun createNode(
         buildParams: BuildParams<Nothing?>,
         interactor: PortalInteractor,

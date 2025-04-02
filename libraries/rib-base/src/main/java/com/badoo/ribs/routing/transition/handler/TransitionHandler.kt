@@ -4,7 +4,6 @@ import com.badoo.ribs.routing.transition.Transition
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.TransitionPair
 
-
 /**
  * Interface to be implemented in client code to handle transition animations of
  * routing changes.
@@ -41,8 +40,8 @@ interface TransitionHandler<C> {
             val pairs = handlers.map { it.onTransition(elements) }
 
             return TransitionPair(
-                exiting = Transition.multiple ( pairs.map { it.exiting } ),
-                entering = Transition.multiple ( pairs.map { it.entering } )
+                exiting = Transition.multiple(pairs.map { it.exiting }),
+                entering = Transition.multiple(pairs.map { it.entering })
             )
         }
 

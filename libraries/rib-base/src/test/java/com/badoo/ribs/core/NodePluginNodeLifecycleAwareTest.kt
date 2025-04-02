@@ -3,11 +3,11 @@ package com.badoo.ribs.core
 import com.badoo.ribs.core.helper.TestBuilder
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.plugin.NodeLifecycleAware
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.junit.Test
-import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)

@@ -16,21 +16,27 @@ class OtherContainerRouter internal constructor(
     routingSource: RoutingSource<Configuration>,
     private val builders: OtherContainerChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
-        @Parcelize object Picker : Configuration()
-        @Parcelize object RetainedInstanceStoreExample : Configuration()
+        @Parcelize
+        data object Picker : Configuration()
+        @Parcelize
+        data object RetainedInstanceStoreExample : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (routing.configuration) {
                 Configuration.Picker -> child { picker.build(it) }
-                Configuration.RetainedInstanceStoreExample -> child { retainedInstanceExample.build(it) }
+                Configuration.RetainedInstanceStoreExample -> child {
+                    retainedInstanceExample.build(
+                        it
+                    )
+                }
             }
         }
 }

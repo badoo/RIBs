@@ -3,16 +3,16 @@ package com.badoo.ribs.sandbox.rib.util
 import android.view.ViewGroup
 import com.badoo.ribs.core.view.AndroidRibView
 import com.badoo.ribs.core.view.RibView
-import com.jakewharton.rxrelay2.PublishRelay
-import com.jakewharton.rxrelay2.Relay
+import com.jakewharton.rxrelay3.PublishRelay
+import com.jakewharton.rxrelay3.Relay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 import org.mockito.kotlin.mock
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
 
-abstract class TestView<M, E>(
+abstract class TestView<M : Any, E : Any>(
     override val androidView: ViewGroup = mock(),
-    private val _viewModel: Relay<M> = PublishRelay.create<M>(),
-    private val _uiEvents: Relay<E> = PublishRelay.create<E>()
+    private val _viewModel: Relay<M> = PublishRelay.create(),
+    private val _uiEvents: Relay<E> = PublishRelay.create()
 ) : AndroidRibView(),
     RibView,
     Consumer<M> by _viewModel, ObservableSource<E> by _uiEvents {

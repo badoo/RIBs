@@ -14,8 +14,6 @@ internal open class BigChildBuilders(
     class SubtreeDependency(
         dependency: Big.Dependency
     ) : Big.Dependency by dependency,
-        Small.Dependency {
-
-    }
+        Small.Dependency
 }
 

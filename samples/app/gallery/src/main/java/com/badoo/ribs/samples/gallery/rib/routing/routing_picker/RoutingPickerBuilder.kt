@@ -17,18 +17,18 @@ class RoutingPickerBuilder(
     private fun interactor(
         buildParams: BuildParams<*>,
     ) = RoutingPickerInteractor(
-            buildParams = buildParams,
-        )
+        buildParams = buildParams,
+    )
 
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: RoutingPicker.Customisation,
         interactor: RoutingPickerInteractor
     ) = RoutingPickerNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = listOf(
-                interactor
-            )
+        buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
+        plugins = listOf(
+            interactor
         )
+    )
 }

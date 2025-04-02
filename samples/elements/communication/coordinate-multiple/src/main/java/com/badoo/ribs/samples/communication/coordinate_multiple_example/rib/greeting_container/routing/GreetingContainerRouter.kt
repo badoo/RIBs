@@ -24,7 +24,7 @@ internal class GreetingContainerRouter(
 ) {
     sealed class Configuration : Parcelable {
         @Parcelize
-        object Greeting : Configuration()
+        data object Greeting : Configuration()
 
         @Parcelize
         data class ChooseLanguage(val currentLanguage: Language) : Configuration()
@@ -34,7 +34,12 @@ internal class GreetingContainerRouter(
         with(childBuilder) {
             when (val configuration = routing.configuration) {
                 is Greeting -> child { greetingBuilder.build(it) }
-                is ChooseLanguage -> child { languageSelectorBuilder.build(it, Params(configuration.currentLanguage)) }
+                is ChooseLanguage -> child {
+                    languageSelectorBuilder.build(
+                        it,
+                        Params(configuration.currentLanguage)
+                    )
+                }
             }
         }
 }

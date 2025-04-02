@@ -2,8 +2,8 @@ package com.badoo.ribs.sandbox.rib.switcher
 
 import android.util.Log
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.binder.using
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.clienthelper.childaware.childAware
 import com.badoo.ribs.clienthelper.interactor.Interactor
@@ -16,7 +16,7 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.pop
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.routing.source.backstack.operation.pushOverlay
-import com.badoo.ribs.rx2.adapter.rx2
+import com.badoo.ribs.rx3.adapter.rx3
 import com.badoo.ribs.sandbox.rib.blocker.Blocker
 import com.badoo.ribs.sandbox.rib.menu.Menu
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
@@ -30,8 +30,8 @@ import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Content
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 @SuppressWarnings("LongParameterList")
 internal class SwitcherInteractor(
@@ -85,6 +85,7 @@ internal class SwitcherInteractor(
             Dialog.Event.Positive -> {
                 // do something if you want
             }
+
             else -> {}
         }
     }
@@ -106,7 +107,7 @@ internal class SwitcherInteractor(
 
             createDestroy<Menu> { menu ->
                 bind(menu.output to menuListener)
-                bind(backStack.activeConfigurations.rx2() to menu.input using ConfigurationToMenuInput)
+                bind(backStack.activeConfigurations.rx3() to menu.input using ConfigurationToMenuInput)
             }
         }
     }
@@ -115,7 +116,7 @@ internal class SwitcherInteractor(
         super.onViewCreated(view, viewLifecycle)
         viewLifecycle.startStop {
             bind(view to viewEventConsumer)
-            bind(dialogToTestOverlay.rx2() to dialogEventConsumer)
+            bind(dialogToTestOverlay.rx3() to dialogEventConsumer)
             bind(transitions to view using transitionStateToViewModel)
         }
     }

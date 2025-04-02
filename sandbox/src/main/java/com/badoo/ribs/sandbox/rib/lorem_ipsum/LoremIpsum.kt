@@ -1,8 +1,8 @@
 package com.badoo.ribs.sandbox.rib.lorem_ipsum
 
-import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
+import com.badoo.ribs.rx3.clienthelper.connector.Connectable
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum.Input
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsum.Output
 
@@ -13,7 +13,7 @@ interface LoremIpsum : Rib, Connectable<Input, Output> {
     sealed class Input
 
     sealed class Output {
-        object SomeEvent : Output()
+        data object SomeEvent : Output()
     }
 
     class Customisation(

@@ -8,7 +8,12 @@ internal class RetainedInstanceStoreImpl : RetainedInstanceStore {
     private val map: MutableMap<Rib.Identifier, MutableMap<KClass<*>, ValueHolder<*>>> = HashMap()
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> get(owner: Rib.Identifier, clazz: KClass<*>, disposer: (T) -> Unit, factory: () -> T): T =
+    override fun <T : Any> get(
+        owner: Rib.Identifier,
+        clazz: KClass<*>,
+        disposer: (T) -> Unit,
+        factory: () -> T
+    ): T =
         map
             .getOrPut(owner) { HashMap() }
             .getOrPut(clazz) { ValueHolder(factory(), disposer) }

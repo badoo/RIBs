@@ -16,17 +16,22 @@ class RoutingContainerRouter internal constructor(
     routingSource: RoutingSource<Configuration>,
     private val builders: RoutingContainerChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
-        @Parcelize object Picker : Configuration()
-        @Parcelize object SimpleRoutingExample : Configuration()
-        @Parcelize object BackStackExample : Configuration()
-        @Parcelize object ParameterisedExample : Configuration()
-        @Parcelize object TransitionsExample : Configuration()
+        @Parcelize
+        data object Picker : Configuration()
+        @Parcelize
+        data object SimpleRoutingExample : Configuration()
+        @Parcelize
+        data object BackStackExample : Configuration()
+        @Parcelize
+        data object ParameterisedExample : Configuration()
+        @Parcelize
+        data object TransitionsExample : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =

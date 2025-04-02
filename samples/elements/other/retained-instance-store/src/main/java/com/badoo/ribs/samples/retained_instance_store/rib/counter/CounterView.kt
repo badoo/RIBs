@@ -20,7 +20,8 @@ interface CounterView : RibView {
 
 }
 
-class CounterViewImpl private constructor(override val androidView: ViewGroup) : AndroidRibView(), CounterView {
+class CounterViewImpl private constructor(override val androidView: ViewGroup) : AndroidRibView(),
+    CounterView {
 
     class Factory(
         @LayoutRes private val layoutRes: Int = R.layout.rib_counter

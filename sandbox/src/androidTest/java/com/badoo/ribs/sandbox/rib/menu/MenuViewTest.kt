@@ -5,8 +5,8 @@ import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.sandbox.rib.menu.element.MenuElement
 import com.badoo.ribs.test.view.RibsViewRule
-import io.reactivex.ObservableSource
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.observers.TestObserver
 import org.junit.Rule
 import org.junit.Test
 
@@ -70,7 +70,7 @@ class MenuViewTest {
         menu.fooItem.assertIsSelected()
     }
 
-    private fun <T> ObservableSource<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
+    private fun <T : Any> ObservableSource<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
         subscribe(this)
     }
 }

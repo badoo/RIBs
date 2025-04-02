@@ -6,7 +6,7 @@ import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker.Output.Di
 import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPicker.Output.PermissionsExampleSelected
 import com.badoo.ribs.samples.gallery.rib.android.picker.AndroidPickerView.Event
 
-internal object ViewEventToOutput : (Event) -> AndroidPicker.Output? {
+internal object ViewEventToOutput : (Event) -> AndroidPicker.Output {
 
     override fun invoke(event: Event): AndroidPicker.Output =
         when (event) {

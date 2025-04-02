@@ -5,8 +5,8 @@ import com.badoo.ribs.example.network.model.Collection
 import com.badoo.ribs.example.network.model.Photo
 import com.badoo.ribs.example.network.model.SearchResult
 import com.badoo.ribs.example.network.model.User
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -14,16 +14,15 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-
 interface UnsplashApi {
 
     /**
      * https://unsplash.com/documentation#authorization-workflow
      */
     @SuppressWarnings("LongParameterList")
-    @POST()
+    @POST
     fun requestAccessToken(
-        @Url url:String = "https://unsplash.com/oauth/token",
+        @Url url: String = "https://unsplash.com/oauth/token",
         @Query("client_id") clientId: String,
         @Query("client_secret") clientSecret: String,
         @Query("redirect_uri") redirectUri: String,

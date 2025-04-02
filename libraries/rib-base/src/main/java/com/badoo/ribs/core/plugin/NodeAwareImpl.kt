@@ -2,7 +2,7 @@ package com.badoo.ribs.core.plugin
 
 import com.badoo.ribs.core.Node
 
-class NodeAwareImpl: NodeAware {
+class NodeAwareImpl : NodeAware {
     override lateinit var node: Node<*>
         private set
 

@@ -17,18 +17,18 @@ class CommunicationPickerBuilder(
     private fun interactor(
         buildParams: BuildParams<*>,
     ) = CommunicationPickerInteractor(
-            buildParams = buildParams,
-        )
+        buildParams = buildParams,
+    )
 
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: CommunicationPicker.Customisation,
         interactor: CommunicationPickerInteractor
     ) = CommunicationPickerNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = listOf(
-                interactor
-            )
+        buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
+        plugins = listOf(
+            interactor
         )
+    )
 }

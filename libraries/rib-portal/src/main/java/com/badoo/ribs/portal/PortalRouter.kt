@@ -24,7 +24,7 @@ class PortalRouter(
     routingSource: RoutingSource<Configuration>,
     private val defaultResolution: Resolution,
     transitionHandler: TransitionHandler<Configuration>? = null
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,
     transitionHandler = transitionHandler
@@ -32,11 +32,15 @@ class PortalRouter(
     @ExperimentalApi
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
-            @Parcelize object Default : Content()
-            @Parcelize data class Portal(val routingChain: List<Routing<out Parcelable>>) : Content()
+            @Parcelize
+            data object Default : Content()
+            @Parcelize
+            data class Portal(val routingChain: List<Routing<out Parcelable>>) : Content()
         }
+
         sealed class Overlay : Configuration() {
-            @Parcelize data class Portal(val routingChain: List<Routing<out Parcelable>>) : Overlay()
+            @Parcelize
+            data class Portal(val routingChain: List<Routing<out Parcelable>>) : Overlay()
         }
     }
 
@@ -69,7 +73,8 @@ class PortalRouter(
 
             rib.node.plugin<RoutingResolver<Parcelable>>()?.let {
                 targetRouter = it
-            } ?: throw IllegalStateException("Invalid chain of parents. This should never happen. Chain: $this")
+            }
+                ?: throw IllegalStateException("Invalid chain of parents. This should never happen. Chain: $this")
 
             resolution = targetRouter.resolve(element as Routing<Parcelable>)
         }

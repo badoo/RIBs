@@ -4,7 +4,7 @@ import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.DialogLauncher
 
 class NoOpDialogLauncher : DialogLauncher {
-    
+
     override fun show(dialog: Dialog<*>, onClose: () -> Unit) {
     }
 

@@ -4,4 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-object AnyConfiguration : Parcelable { override fun toString(): String = "AnyConfiguration" }
+object AnyConfiguration : Parcelable {
+    override fun toString(): String = "AnyConfiguration"
+}

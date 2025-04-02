@@ -42,11 +42,12 @@ internal class GreetingContainerInteractor(
         }
     }
 
-    private val languageSelectorOutputToGreetingInput: (LanguageSelector.Output) -> Greeting.Input = {
-        when (it) {
-            is LanguageSelector.Output.LanguageSelected -> Greeting.Input.UpdateGreeting(it.selectedIndex)
+    private val languageSelectorOutputToGreetingInput: (LanguageSelector.Output) -> Greeting.Input =
+        {
+            when (it) {
+                is LanguageSelector.Output.LanguageSelected -> Greeting.Input.UpdateGreeting(it.selectedIndex)
+            }
         }
-    }
 
     private fun onLanguageSelectorOutput(output: LanguageSelector.Output) {
         when (output) {

@@ -58,8 +58,8 @@ dependencies {
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
     implementation deps.external.mviCoreBinder
-    implementation deps.external.rxrelay2
-    implementation deps.external.rxandroid2
+    implementation deps.external.rxrelay3
+    implementation deps.external.rxandroid3
     implementation deps.external.leakCanary // use debugImplementation in real life apps
 
     implementation platform(deps.compose.bom)
@@ -75,15 +75,15 @@ dependencies {
     implementation project(":libraries:rib-compose")
     implementation project(":libraries:rib-debug-utils")
     implementation project(":libraries:rib-mvicore")
-    implementation project(':libraries:rib-portal-rx2')
-    implementation project(':libraries:rib-rx2')
+    implementation project(':libraries:rib-portal-rx3')
+    implementation project(':libraries:rib-rx3')
 
     junitTestImplementation(project)
     testImplementation deps.external.roboelectricBase
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
-    testImplementation project(":libraries:rib-base-test-rx2")
+    testImplementation project(':libraries:rib-base-test-rx3')
 
     junitAndroidTestImplementation(project)
     androidTestImplementation platform(deps.compose.bom)

@@ -6,7 +6,8 @@ import com.badoo.ribs.util.RIBs
 object TreePrinter {
 
     val FORMAT_SIMPLE: (Node<*>) -> String = { it.javaClass.simpleName }
-    val FORMAT_SIMPLE_INSTANCE: (Node<*>) -> String = { "${it.javaClass.simpleName} @${System.identityHashCode(it)}"}
+    val FORMAT_SIMPLE_INSTANCE: (Node<*>) -> String =
+        { "${it.javaClass.simpleName} @${System.identityHashCode(it)}" }
 
     private const val ACTIVE = "* "
     private const val ARM_RIGHT = "└── "

@@ -1,8 +1,7 @@
 package com.badoo.ribs.sandbox.rib.blocker
 
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.builder.SimpleBuilder
-
+import com.badoo.ribs.core.modality.BuildParams
 
 class BlockerBuilder(
     private val dependency: Blocker.Dependency

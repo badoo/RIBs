@@ -40,7 +40,7 @@ internal open class RoutingStatePool<C : Parcelable>(
     activator: RoutingActivator<C>,
     parentNode: Node<*>,
     transitionHandler: TransitionHandler<C>?
-) : AsyncStore<Effect<C>, WorkingState<C>>(initialState = timeCapsule.initialState<C>()) {
+) : AsyncStore<Effect<C>, WorkingState<C>>(initialState = timeCapsule.initialState()) {
 
     private val actor = Actor(
         resolver = resolver,

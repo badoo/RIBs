@@ -14,8 +14,6 @@ internal open class HelloWorldChildBuilders(
     class SubtreeDependency(
         dependency: HelloWorld.Dependency
     ) : HelloWorld.Dependency by dependency,
-        Small.Dependency {
-
-    }
+        Small.Dependency
 }
 

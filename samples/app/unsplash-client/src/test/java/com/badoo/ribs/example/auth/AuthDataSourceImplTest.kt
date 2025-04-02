@@ -3,14 +3,14 @@ package com.badoo.ribs.example.auth
 import com.badoo.ribs.example.RxSchedulerRule
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.AccessToken
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
-import io.reactivex.Single
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.observers.TestObserver
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class AuthDataSourceImplTest {
     private lateinit var authDataSource: AuthDataSourceImpl
@@ -138,7 +138,7 @@ class AuthDataSourceImplTest {
 }
 
 
-fun <T> TestObserver<T>.assertLastValueEqual(value: T) {
-    assertThat(this.valueCount()).isGreaterThan(0)
-    this.assertValueAt(valueCount() - 1, value)
+fun <T: Any> TestObserver<T>.assertLastValueEqual(value: T) {
+    assertThat(this.values().size).isGreaterThan(0)
+    this.assertValueAt(values().size - 1, value)
 }

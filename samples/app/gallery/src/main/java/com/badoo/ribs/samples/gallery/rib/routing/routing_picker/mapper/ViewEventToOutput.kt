@@ -7,7 +7,7 @@ import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPicker.O
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPicker.Output.TransitionsSelected
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPickerView.Event
 
-internal object ViewEventToOutput : (Event) -> RoutingPicker.Output? {
+internal object ViewEventToOutput : (Event) -> RoutingPicker.Output {
 
     override fun invoke(event: Event): RoutingPicker.Output =
         when (event) {

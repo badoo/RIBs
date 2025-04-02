@@ -2,10 +2,10 @@ package com.badoo.ribs.example
 
 import com.badoo.ribs.example.network.model.User
 import com.badoo.ribs.example.repository.UserRepository
-import io.reactivex.Maybe
+import io.reactivex.rxjava3.core.Maybe
 
 class FakeUserRepository(
-        private val users: List<User>
+    private val users: List<User>
 ) : UserRepository {
 
     override fun getUserById(userId: String): Maybe<User> =

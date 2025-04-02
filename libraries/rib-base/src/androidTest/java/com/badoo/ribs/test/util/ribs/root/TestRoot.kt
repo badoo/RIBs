@@ -16,7 +16,7 @@ import com.badoo.ribs.test.util.ribs.child.TestChildView
 import com.badoo.ribs.test.util.ribs.child.builder.TestChildBuilder
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
 import com.badoo.ribs.test.util.ribs.root.builder.TestRootBuilder
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.observers.TestObserver
 
 interface TestRoot : Rib {
 

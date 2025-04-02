@@ -45,7 +45,8 @@ class AlertDialogKeyboardTest {
                 .getInstrumentation()
                 .targetContext
                 .getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            val hasKeyboard = inputManager != null && inputManager.isActive && inputManager.isAcceptingText
+            val hasKeyboard =
+                inputManager != null && inputManager.isActive && inputManager.isAcceptingText
             hasKeyboard
         }
     }

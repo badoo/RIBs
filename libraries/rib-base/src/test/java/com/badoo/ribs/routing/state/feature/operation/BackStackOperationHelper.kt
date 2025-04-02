@@ -3,7 +3,8 @@ package com.badoo.ribs.routing.state.feature.operation
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
-import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.*
+import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.ACTIVE
+import com.badoo.ribs.routing.history.RoutingHistoryElement.Activation.INACTIVE
 import com.badoo.ribs.routing.source.backstack.Elements
 
 fun List<TestRouter.Configuration>.asBackStackElements(

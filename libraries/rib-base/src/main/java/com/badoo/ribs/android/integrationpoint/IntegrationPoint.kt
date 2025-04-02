@@ -3,7 +3,6 @@ package com.badoo.ribs.android.integrationpoint
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.badoo.ribs.android.activitystarter.ActivityStarter
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
@@ -54,12 +53,12 @@ abstract class IntegrationPoint(
             onStop = ::onStop,
             onDestroy = ::onDestroy
         )
-        viewLifecycleOwner.observe(lifecycleOwner, Observer { viewLifecycle ->
+        viewLifecycleOwner.observe(lifecycleOwner) { viewLifecycle ->
             viewLifecycle.lifecycle.subscribe(
                 onCreate = ::onViewCreate,
                 onDestroy = ::onViewDestroy
             )
-        })
+        }
     }
 
     private fun onCreate() {

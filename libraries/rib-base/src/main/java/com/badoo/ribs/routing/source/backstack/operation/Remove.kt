@@ -2,8 +2,8 @@ package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.history.RoutingHistoryElement
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.Elements
 
 /**
@@ -17,7 +17,7 @@ class Remove<C : Parcelable>(
 
     override fun isApplicable(elements: Elements<C>): Boolean =
         elements.hasContentWithIdentifier() ||
-        elements.hasOverlayWithIdentifier()
+                elements.hasOverlayWithIdentifier()
 
     private fun Elements<C>.hasContentWithIdentifier() =
         find { it.routing.identifier == identifier } != null

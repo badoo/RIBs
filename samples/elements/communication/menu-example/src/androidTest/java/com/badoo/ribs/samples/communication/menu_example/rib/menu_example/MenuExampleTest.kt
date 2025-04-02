@@ -6,7 +6,9 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.samples.communication.menu_example.R
 import com.badoo.ribs.test.RibsRule
@@ -45,7 +47,7 @@ class MenuExampleTest {
         whenever { iNavigateToChild1() }
         then { iSeeChild1() }
     }
-    
+
     // region Helper functions
 
     private fun iNavigateToChild1() {
@@ -84,10 +86,21 @@ class MenuExampleTest {
         pressBack()
     }
 
-    private fun given(step: () -> Unit) { step() }
-    private fun whenever(step: () -> Unit) { step() }
-    private fun then(step: () -> Unit) { step() }
-    private fun and(step: () -> Unit) { step() }
+    private fun given(step: () -> Unit) {
+        step()
+    }
+
+    private fun whenever(step: () -> Unit) {
+        step()
+    }
+
+    private fun then(step: () -> Unit) {
+        step()
+    }
+
+    private fun and(step: () -> Unit) {
+        step()
+    }
 
     // endregion
 }

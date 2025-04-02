@@ -4,19 +4,19 @@ import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.plugin.BackPressHandler
 import com.badoo.ribs.core.plugin.SubtreeBackPressHandler
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
-import org.mockito.kotlin.verify
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class NodeBackPressHandlingTest : NodePluginTest() {
-    
+
     private lateinit var subtreeHandlers: List<SubtreeBackPressHandler>
     private lateinit var simpleHandlers: List<BackPressHandler>
     private lateinit var inactiveChild: TestNode
@@ -29,13 +29,17 @@ class NodeBackPressHandlingTest : NodePluginTest() {
         subtreeHandlerReturnsTrueOnFallback: Int? = null,
         simpleHandlerReturnsTrue: Int? = null
     ): Node<TestView> {
-        subtreeHandlers = List<SubtreeBackPressHandler>(3) { i -> mock {
-            on { handleBackPressFirst() } doReturn (subtreeHandlerReturnsTrueOnFirst == i)
-            on { handleBackPressFallback() } doReturn (subtreeHandlerReturnsTrueOnFallback == i)
-        }}
-        simpleHandlers = List<BackPressHandler>(3) { i -> mock {
-            on { handleBackPress() } doReturn (simpleHandlerReturnsTrue == i)
-        }}
+        subtreeHandlers = List(3) { i ->
+            mock {
+                on { handleBackPressFirst() } doReturn (subtreeHandlerReturnsTrueOnFirst == i)
+                on { handleBackPressFallback() } doReturn (subtreeHandlerReturnsTrueOnFallback == i)
+            }
+        }
+        simpleHandlers = List(3) { i ->
+            mock {
+                on { handleBackPress() } doReturn (simpleHandlerReturnsTrue == i)
+            }
+        }
 
         val node = createNode(plugins = subtreeHandlers + simpleHandlers)
         inactiveChild = createChildNode(node)

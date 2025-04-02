@@ -14,14 +14,15 @@ import kotlinx.parcelize.Parcelize
 class BigRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
     private val builders: BigChildBuilders
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = permanent(Permanent.Small)
 ) {
 
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
-            @Parcelize object Small : Permanent()
+            @Parcelize
+            data object Small : Permanent()
         }
     }
 

@@ -17,18 +17,18 @@ class OtherPickerBuilder(
     private fun interactor(
         buildParams: BuildParams<*>,
     ) = OtherPickerInteractor(
-            buildParams = buildParams,
-        )
+        buildParams = buildParams,
+    )
 
     private fun node(
         buildParams: BuildParams<Nothing?>,
         customisation: OtherPicker.Customisation,
         interactor: OtherPickerInteractor
     ) = OtherPickerNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = listOf(
-                interactor
-            )
+        buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
+        plugins = listOf(
+            interactor
         )
+    )
 }

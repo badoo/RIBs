@@ -1,11 +1,10 @@
 package com.badoo.ribs.sandbox.rib.switcher.dialog
 
-import com.badoo.ribs.android.text.Text
-import com.badoo.ribs.routing.resolution.RibFactory
 import com.badoo.ribs.android.dialog.Dialog
 import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.Cancellable
 import com.badoo.ribs.android.dialog.Dialog.Event.Positive
-
+import com.badoo.ribs.android.text.Text
+import com.badoo.ribs.routing.resolution.RibFactory
 
 /**
  * This dialog should be tested where there are other Configurations as well,

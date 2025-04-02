@@ -14,14 +14,15 @@ import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Con
 import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Configuration.Content
 
 class ComposeParentBuilder(
-    private val dependency: ComposeParent.Dependency
+    dependency: ComposeParent.Dependency
 ) : SimpleBuilder<ComposeParent>() {
 
     private val builders = ComposeParentChildBuilders(dependency)
 
     override fun build(buildParams: BuildParams<Nothing?>): ComposeParent {
         val customisation = buildParams.getOrDefault(ComposeParent.Customisation())
-        val backStack: BackStack<Configuration> = BackStack(initialConfiguration = Content.ComposeLeaf(1), buildParams)
+        val backStack: BackStack<Configuration> =
+            BackStack(initialConfiguration = Content.ComposeLeaf(1), buildParams)
         val interactor = ComposeParentInteractor(buildParams, backStack)
         val router = router(buildParams, backStack, customisation)
 

@@ -5,8 +5,8 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.badoo.ribs.sandbox.matcher.withTextColor
 import com.badoo.ribs.sandbox.R
+import com.badoo.ribs.sandbox.matcher.withTextColor
 
 class MenuItemElement(@IdRes id: Int) {
     private val matcher = withId(id)

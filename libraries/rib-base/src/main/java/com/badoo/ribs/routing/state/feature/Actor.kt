@@ -53,7 +53,10 @@ internal class Actor<C : Parcelable>(
         state: WorkingState<C>,
         transaction: PoolCommand<C>
     ) {
-        transaction.action.execute(state, createParams(effectEmitter, state, emptyMap(), transaction))
+        transaction.action.execute(
+            state,
+            createParams(effectEmitter, state, emptyMap(), transaction)
+        )
     }
 
     private enum class NewTransitionsExecution {
@@ -101,6 +104,7 @@ internal class Actor<C : Parcelable>(
                     it.reverse()
                     return NewTransitionsExecution.ABORT
                 }
+
                 transaction.descriptor.isContinuationOf(it.descriptor) -> {
                     it.jumpToEnd()
                 }
@@ -118,6 +122,7 @@ internal class Actor<C : Parcelable>(
                 transaction.descriptor.isReverseOf(pendingTransition.descriptor) -> {
                     pendingTransition.discard()
                 }
+
                 transaction.descriptor.isContinuationOf(pendingTransition.descriptor) -> {
                     pendingTransition.completeWithoutTransition()
                 }
@@ -152,7 +157,10 @@ internal class Actor<C : Parcelable>(
         val defaultElements: MutablePool<C> = mutablePoolOf()
 
         commands.forEach { command ->
-            if (command is RoutingCommand.Add<C> && !state.pool.containsKey(command.routing) && !defaultElements.containsKey(command.routing)) {
+            if (command is RoutingCommand.Add<C> && !state.pool.containsKey(command.routing) && !defaultElements.containsKey(
+                    command.routing
+                )
+            ) {
                 defaultElements[command.routing] = RoutingContext.Unresolved(
                     activationState = RoutingContext.ActivationState.INACTIVE,
                     routing = command.routing
@@ -177,7 +185,11 @@ internal class Actor<C : Parcelable>(
                 val lookup = tempPool[key]
                 if (lookup is RoutingContext.Resolved) lookup
                 else {
-                    val item = defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(key, state.pool)
+                    val item =
+                        defaultElements[key] ?: state.pool[key] ?: throw KeyNotFoundInPoolException(
+                            key,
+                            state.pool
+                        )
                     val resolved = item.resolve(resolver, parentNode)
                     tempPool[key] = resolved
                     resolved
@@ -213,7 +225,10 @@ internal class Actor<C : Parcelable>(
         }
     }
 
-    private fun processInternalTransaction(state: WorkingState<C>, internalTransaction: InternalTransaction<C>) {
+    private fun processInternalTransaction(
+        state: WorkingState<C>,
+        internalTransaction: InternalTransaction<C>
+    ) {
         val params = createParams(
             emitter = effectEmitter,
             state = state,
@@ -222,15 +237,28 @@ internal class Actor<C : Parcelable>(
         )
 
         when (internalTransaction) {
-            is ExecutePendingTransition -> consumeTransition(state, internalTransaction.pendingTransition, params)
+            is ExecutePendingTransition -> consumeTransition(
+                state,
+                internalTransaction.pendingTransition,
+                params
+            )
         }
     }
 
-    private fun consumeTransition(state: WorkingState<C>, pendingTransition: PendingTransition<C>, params: TransactionExecutionParams<C>) {
+    private fun consumeTransition(
+        state: WorkingState<C>,
+        pendingTransition: PendingTransition<C>,
+        params: TransactionExecutionParams<C>
+    ) {
         val isScheduled = pendingTransition.isScheduled(state)
         val canTransition = canTransition(params)
         when {
-            isScheduled && canTransition -> pendingTransition.execute(requireNotNull(transitionHandler)).start()
+            isScheduled && canTransition -> pendingTransition.execute(
+                requireNotNull(
+                    transitionHandler
+                )
+            ).start()
+
             isScheduled && !canTransition -> pendingTransition.completeWithoutTransition()
             else -> pendingTransition.discard()
         }

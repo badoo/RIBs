@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryPale">
 
-
     <TextView
         android:id="@+id/retained_description_text"
         android:layout_width="0dp"

@@ -16,7 +16,9 @@ import com.badoo.ribs.routing.source.RoutingSource.Companion.permanent
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
 import com.badoo.ribs.test.util.ribs.TestRibDialog
 import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration
-import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.*
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Content
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Overlay
+import com.badoo.ribs.test.util.ribs.root.TestRootRouter.Configuration.Permanent
 import kotlinx.parcelize.Parcelize
 
 class TestRootRouter(
@@ -39,38 +41,38 @@ class TestRootRouter(
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
             @Parcelize
-            object Permanent1 : Permanent()
+            data object Permanent1 : Permanent()
 
             @Parcelize
-            object Permanent2 : Permanent()
+            data object Permanent2 : Permanent()
         }
 
         sealed class Content : Configuration() {
             @Parcelize
-            object NoOp : Content()
+            data object NoOp : Content()
 
             @Parcelize
-            object AttachNode1 : Content()
+            data object AttachNode1 : Content()
 
             @Parcelize
-            object AttachNode2 : Content()
+            data object AttachNode2 : Content()
 
             @Parcelize
-            object AttachNode3 : Content()
+            data object AttachNode3 : Content()
 
             @Parcelize
-            object AttachNode1And2 : Content()
+            data object AttachNode1And2 : Content()
         }
 
         sealed class Overlay : Configuration() {
             @Parcelize
-            object AttachNode1AsOverlay : Overlay()
+            data object AttachNode1AsOverlay : Overlay()
 
             @Parcelize
-            object AttachNode2AsOverlay : Overlay()
+            data object AttachNode2AsOverlay : Overlay()
 
             @Parcelize
-            object AttachNode3AsOverlay : Overlay()
+            data object AttachNode3AsOverlay : Overlay()
         }
     }
 
@@ -86,8 +88,26 @@ class TestRootRouter(
                 child(builder1),
                 child(builder2)
             )
-            Overlay.AttachNode1AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder1))
-            Overlay.AttachNode2AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder2))
-            Overlay.AttachNode3AsOverlay -> showDialog(routingSource, routing.identifier, dialogLauncher, TestRibDialog(builder3))
+
+            Overlay.AttachNode1AsOverlay -> showDialog(
+                routingSource,
+                routing.identifier,
+                dialogLauncher,
+                TestRibDialog(builder1)
+            )
+
+            Overlay.AttachNode2AsOverlay -> showDialog(
+                routingSource,
+                routing.identifier,
+                dialogLauncher,
+                TestRibDialog(builder2)
+            )
+
+            Overlay.AttachNode3AsOverlay -> showDialog(
+                routingSource,
+                routing.identifier,
+                dialogLauncher,
+                TestRibDialog(builder3)
+            )
         }
 }

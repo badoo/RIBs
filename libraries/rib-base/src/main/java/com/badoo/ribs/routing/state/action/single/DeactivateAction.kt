@@ -3,8 +3,8 @@ package com.badoo.ribs.routing.state.action.single
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.routing.Routing
-import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.activator.RoutingActivator
+import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState
 import com.badoo.ribs.routing.state.RoutingContext.ActivationState.INACTIVE
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
@@ -30,7 +30,7 @@ internal class DeactivateAction<C : Parcelable>(
     private val targetActivationState: ActivationState = INACTIVE
 ) : RoutingTransitionAction<C> {
 
-    object Factory: ActionFactory {
+    object Factory : ActionFactory {
         override fun <C : Parcelable> create(
             params: ActionExecutionParams<C>
         ): RoutingTransitionAction<C> = DeactivateAction(

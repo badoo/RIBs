@@ -2,22 +2,22 @@ package com.badoo.ribs.sandbox.rib.foo_bar
 
 import android.Manifest
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.binder.using
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.Cancelled
 import com.badoo.ribs.android.permissionrequester.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
-import com.badoo.ribs.rx2.adapter.rx2
+import com.badoo.ribs.rx3.adapter.rx3
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.CheckPermissionsButtonClicked
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.Event.RequestPermissionsButtonClicked
 import com.badoo.ribs.sandbox.rib.foo_bar.FooBarView.ViewModel
 import com.badoo.ribs.sandbox.rib.foo_bar.analytics.FooBarAnalytics
 import com.badoo.ribs.sandbox.rib.foo_bar.mapper.ViewEventToAnalyticsEvent
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.BehaviorRelay
+import io.reactivex.rxjava3.functions.Consumer
 
 class FooBarInteractor(
     buildParams: BuildParams<Nothing?>,
@@ -37,11 +37,16 @@ class FooBarInteractor(
             bind(view to FooBarAnalytics using ViewEventToAnalyticsEvent)
             bind(view to viewEventConsumer)
             bind(dummyViewInput to view)
-            bind(permissionRequester.events(this@FooBarInteractor).rx2() to permissionEventConsumer)
+            bind(permissionRequester.events(this@FooBarInteractor).rx3() to permissionEventConsumer)
         }
 
         dummyViewInput.accept(
-            ViewModel("My id: " + requestCodeClientId.replace("${FooBarInteractor::class.java.name}.", ""))
+            ViewModel(
+                "My id: " + requestCodeClientId.replace(
+                    "${FooBarInteractor::class.java.name}.",
+                    ""
+                )
+            )
         )
     }
 

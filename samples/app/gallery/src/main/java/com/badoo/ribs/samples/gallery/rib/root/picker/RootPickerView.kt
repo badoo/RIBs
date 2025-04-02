@@ -10,17 +10,17 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.gallery.composable.ButtonList
 import com.badoo.ribs.samples.gallery.rib.root.picker.RootPickerView.Event
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
 
 interface RootPickerView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object RoutingClicked : Event()
-        object CommunicationClicked : Event()
-        object AndroidClicked : Event()
-        object OtherClicked : Event()
+        data object RoutingClicked : Event()
+        data object CommunicationClicked : Event()
+        data object AndroidClicked : Event()
+        data object OtherClicked : Event()
     }
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, RootPickerView>

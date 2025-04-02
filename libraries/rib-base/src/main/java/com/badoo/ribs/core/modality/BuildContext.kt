@@ -1,5 +1,3 @@
-
-
 package com.badoo.ribs.core.modality
 
 import android.os.Bundle

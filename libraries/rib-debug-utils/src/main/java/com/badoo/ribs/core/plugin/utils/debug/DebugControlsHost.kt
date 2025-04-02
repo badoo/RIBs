@@ -4,11 +4,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import com.badoo.ribs.debugutils.R
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.debug.TreePrinter
+import com.badoo.ribs.debugutils.R
 
 class DebugControlsHost(
     viewGroupForChildren: (() -> ViewGroup),

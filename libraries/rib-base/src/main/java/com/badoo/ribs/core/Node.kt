@@ -101,7 +101,9 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         }
 
     val plugins: List<Plugin> =
-        buildContext.defaultPlugins(this) + RIBs.globalPlugins + plugins + if (this is Plugin) listOf(this) else emptyList()
+        buildContext.defaultPlugins(this) + RIBs.globalPlugins + plugins + if (this is Plugin) listOf(
+            this
+        ) else emptyList()
 
     internal open val activationMode: ActivationMode =
         buildContext.activationMode
@@ -414,7 +416,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     override val lifecycle: Lifecycle
         get() = lifecycleManager.lifecycle
 
-    fun getView() : V? = view
+    fun getView(): V? = view
 
     fun <P> plugins(pClass: Class<P>): List<P> =
         plugins.filterIsInstance(pClass)

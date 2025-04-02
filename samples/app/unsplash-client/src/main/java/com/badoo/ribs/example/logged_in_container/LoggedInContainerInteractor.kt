@@ -10,7 +10,7 @@ import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRoute
 import com.badoo.ribs.example.logged_in_container.routing.LoggedInContainerRouter.Configuration.Content
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.routing.source.backstack.BackStack
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 
 internal class LoggedInContainerInteractor(
     buildParams: BuildParams<*>,

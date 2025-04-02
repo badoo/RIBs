@@ -7,7 +7,7 @@ import com.badoo.ribs.samples.gallery.rib.root.picker.RootPicker.Output.OtherSel
 import com.badoo.ribs.samples.gallery.rib.root.picker.RootPicker.Output.RoutingSelected
 import com.badoo.ribs.samples.gallery.rib.root.picker.RootPickerView.Event
 
-internal object ViewEventToOutput : (Event) -> RootPicker.Output? {
+internal object ViewEventToOutput : (Event) -> RootPicker.Output {
 
     override fun invoke(event: Event): RootPicker.Output =
         when (event) {

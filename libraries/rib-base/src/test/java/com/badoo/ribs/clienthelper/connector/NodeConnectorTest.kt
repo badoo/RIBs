@@ -6,7 +6,7 @@ import com.badoo.ribs.core.helper.connectable.ConnectableTestRib.Output.Output1
 import com.badoo.ribs.core.helper.connectable.ConnectableTestRib.Output.Output2
 import com.badoo.ribs.core.helper.connectable.ConnectableTestRib.Output.Output3
 import com.badoo.ribs.test.BaseNodeConnectorTest
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.observers.TestObserver
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.RepeatedTest
@@ -15,7 +15,6 @@ import java.util.concurrent.CyclicBarrier
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-
 
 class NodeConnectorTest : BaseNodeConnectorTest() {
 

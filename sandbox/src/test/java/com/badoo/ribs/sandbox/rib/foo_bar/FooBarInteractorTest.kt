@@ -2,10 +2,10 @@ package com.badoo.ribs.sandbox.rib.foo_bar
 
 import com.badoo.ribs.android.permissionrequester.PermissionRequester
 import com.badoo.ribs.test.emptyBuildParams
-import org.mockito.kotlin.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.mock
 
 class FooBarInteractorTest {
 

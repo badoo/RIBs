@@ -13,6 +13,4 @@ class PortalOverlayTestNode(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), PortalOverlayTest {
-
-}
+), PortalOverlayTest

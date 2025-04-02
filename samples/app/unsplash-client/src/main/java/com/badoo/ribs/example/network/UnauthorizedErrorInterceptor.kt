@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.network
 
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 import okhttp3.Interceptor
 import okhttp3.Response
 

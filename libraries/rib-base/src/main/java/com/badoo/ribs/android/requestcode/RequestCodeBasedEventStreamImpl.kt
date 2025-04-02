@@ -35,7 +35,12 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         val internalRequestCode = externalRequestCode.toInternalRequestCode()
 
         ensureSubject(id) {
-            RIBs.errorHandler.handleNoRequestCodeListenersError(externalRequestCode, internalRequestCode, id, event)
+            RIBs.errorHandler.handleNoRequestCodeListenersError(
+                externalRequestCode,
+                internalRequestCode,
+                id,
+                event
+            )
         }
 
         events.getValue(id).emit(event)

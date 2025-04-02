@@ -1,12 +1,12 @@
 package com.badoo.ribs.routing.state.action.multi
 
 import android.os.Parcelable
+import com.badoo.ribs.routing.Routing
+import com.badoo.ribs.routing.state.Pool
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.RoutingContext.Resolved
 import com.badoo.ribs.routing.state.action.TransactionExecutionParams
-import com.badoo.ribs.routing.state.Pool
 import com.badoo.ribs.routing.state.feature.state.WorkingState
-import com.badoo.ribs.routing.Routing
 
 /**
  * Represents an action that affects multiple [Routing] elements in the pool when executed.

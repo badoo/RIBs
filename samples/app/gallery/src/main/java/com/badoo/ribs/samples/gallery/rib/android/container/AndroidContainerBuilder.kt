@@ -44,11 +44,11 @@ class AndroidContainerBuilder(
         builders: AndroidContainerChildBuilders,
         customisation: AndroidContainer.Customisation
     ) = AndroidContainerRouter(
-            buildParams = buildParams,
-            builders = builders,
-            routingSource = routingSource,
-            transitionHandler = customisation.transitionHandler
-        )
+        buildParams = buildParams,
+        builders = builders,
+        routingSource = routingSource,
+        transitionHandler = customisation.transitionHandler
+    )
 
     private fun node(
         buildParams: BuildParams<*>,

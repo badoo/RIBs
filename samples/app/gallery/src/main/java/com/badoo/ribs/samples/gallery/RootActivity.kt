@@ -19,8 +19,7 @@ import com.badoo.ribs.samples.gallery.rib.root.container.RootContainer
 import com.badoo.ribs.samples.gallery.rib.root.container.RootContainerBuilder
 import leakcanary.AppWatcher
 
-class RootActivity : RibActivity()
-{
+class RootActivity : RibActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_root)
         super.onCreate(savedInstanceState)
@@ -41,7 +40,8 @@ class RootActivity : RibActivity()
                 override val dialogLauncher: DialogLauncher
                     get() = integrationPoint.dialogLauncher
             }
-        ).build(root(
+        ).build(
+            root(
             savedInstanceState = savedInstanceState,
             defaultPlugins = { node ->
                 if (BuildConfig.DEBUG) {

@@ -4,7 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
-
 @Parcelize
 data class Routing<C : Parcelable>(
     val configuration: C,

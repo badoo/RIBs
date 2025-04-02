@@ -18,7 +18,7 @@ import kotlin.math.abs
 fun <T> TransitionElement<out T>.fade(
     duration: Long = defaultDuration,
     interpolator: Interpolator = defaultInterpolator
-) : Transition {
+): Transition {
 
     val evaluator = SingleProgressEvaluator()
     progressEvaluator.add(evaluator)

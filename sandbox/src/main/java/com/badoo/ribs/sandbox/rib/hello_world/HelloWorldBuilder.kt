@@ -29,7 +29,7 @@ class HelloWorldBuilder(
         return HelloWorldNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            plugins =  listOfNotNull(
+            plugins = listOfNotNull(
                 interactor,
                 router,
                 HelloDebugControls().takeIf { BuildConfig.DEBUG }

@@ -44,11 +44,11 @@ class OtherContainerBuilder(
         builders: OtherContainerChildBuilders,
         customisation: OtherContainer.Customisation
     ) = OtherContainerRouter(
-            buildParams = buildParams,
-            builders = builders,
-            routingSource = routingSource,
-            transitionHandler = customisation.transitionHandler
-        )
+        buildParams = buildParams,
+        builders = builders,
+        routingSource = routingSource,
+        transitionHandler = customisation.transitionHandler
+    )
 
     private fun node(
         buildParams: BuildParams<*>,

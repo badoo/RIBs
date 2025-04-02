@@ -56,7 +56,7 @@ class MenuViewImpl private constructor(
             it.setTextColor(ContextCompat.getColor(androidView.context, R.color.text_default))
         }
 
-        when(item) {
+        when (item) {
             Menu.MenuItem.Child1 -> child1
             Menu.MenuItem.Child2 -> child2
             Menu.MenuItem.Child3 -> child3

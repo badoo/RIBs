@@ -10,14 +10,14 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.gallery.composable.ButtonList
 import com.badoo.ribs.samples.gallery.rib.other.picker.OtherPickerView.Event
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
 
 interface OtherPickerView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object RetainedInstanceStoreClicked : Event()
+        data object RetainedInstanceStoreClicked : Event()
     }
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, OtherPickerView>

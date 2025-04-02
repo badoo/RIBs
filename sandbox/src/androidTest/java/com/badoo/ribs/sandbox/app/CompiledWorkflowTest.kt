@@ -3,8 +3,8 @@ package com.badoo.ribs.sandbox.app
 import android.content.Intent
 import android.net.Uri
 import androidx.test.rule.ActivityTestRule
-import io.reactivex.Observable
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.observers.TestObserver
 import org.junit.Rule
 import org.junit.Test
 

@@ -27,16 +27,19 @@ class PermissionsSampleChild1ViewImpl private constructor(
     private val presenter: PermissionsSampleChild1Presenter
 ) : AndroidRibView(), PermissionsSampleChild1View {
 
-    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample) : PermissionsSampleChild1View.Factory {
-        override fun invoke(deps: PermissionsSampleChild1View.Dependency): ViewFactory<PermissionsSampleChild1View> = ViewFactory {
-            PermissionsSampleChild1ViewImpl(
-                androidView = it.inflate(layoutRes),
-                presenter = deps.presenter
-            )
-        }
+    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_permissions_sample) :
+        PermissionsSampleChild1View.Factory {
+        override fun invoke(deps: PermissionsSampleChild1View.Dependency): ViewFactory<PermissionsSampleChild1View> =
+            ViewFactory {
+                PermissionsSampleChild1ViewImpl(
+                    androidView = it.inflate(layoutRes),
+                    presenter = deps.presenter
+                )
+            }
     }
 
-    private val availablePermissionsTextView: TextView = androidView.findViewById(R.id.availablePermissions_text)
+    private val availablePermissionsTextView: TextView =
+        androidView.findViewById(R.id.availablePermissions_text)
     private val checkButton: Button = androidView.findViewById(R.id.check_permissions_button)
     private val requestButton: Button = androidView.findViewById(R.id.request_permissions_button)
 

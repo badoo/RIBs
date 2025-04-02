@@ -11,10 +11,10 @@ import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.routing.Routing
+import org.junit.Before
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.junit.Before
 
 open class NodePluginTest {
     protected lateinit var view: TestView
@@ -34,7 +34,7 @@ open class NodePluginTest {
     }
 
     protected inline fun <reified T : Plugin> testPlugins(nbPlugins: Int = 3): Pair<Node<TestView>, List<T>> =
-        testPlugins(List<T>(nbPlugins) { mock<T>() })
+        testPlugins(List(nbPlugins) { mock<T>() })
 
     protected inline fun <reified T : Plugin> testPlugins(plugins: List<T>): Pair<Node<TestView>, List<T>> {
         val node = createNode(

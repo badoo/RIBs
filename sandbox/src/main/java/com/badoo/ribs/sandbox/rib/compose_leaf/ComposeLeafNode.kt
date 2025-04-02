@@ -18,6 +18,4 @@ class ComposeLeafNode internal constructor(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), ComposeLeaf, Connectable<Input, Output> by connector {
-
-}
+), ComposeLeaf, Connectable<Input, Output> by connector

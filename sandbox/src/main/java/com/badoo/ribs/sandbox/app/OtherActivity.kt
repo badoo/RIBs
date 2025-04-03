@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.badoo.ribs.sandbox.R
 
 class OtherActivity : AppCompatActivity() {
@@ -25,7 +25,9 @@ class OtherActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.incoming_data).text = intent.extras?.getString(KEY_INCOMING)
 
         findViewById<View>(R.id.fab).setOnClickListener {
-            setResult(Activity.RESULT_OK, Intent().apply { putExtra(KEY_RETURNED_DATA, RETURNED_DATA) })
+            setResult(
+                Activity.RESULT_OK,
+                Intent().apply { putExtra(KEY_RETURNED_DATA, RETURNED_DATA) })
             finish()
         }
     }

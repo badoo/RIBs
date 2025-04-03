@@ -19,18 +19,18 @@ import com.badoo.ribs.example.photo_feed.Photo
 import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.Event
 import com.badoo.ribs.example.photo_feed.view.PhotoFeedView.ViewModel
 import com.badoo.ribs.example.photo_feed.view.PhotoListItem.PhotoItem
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface PhotoFeedView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object ScrolledToTheEnd : Event()
-        object RetryInitialLoadingClicked : Event()
-        object RetryNextPageLoadingClicked : Event()
+        data object ScrolledToTheEnd : Event()
+        data object RetryInitialLoadingClicked : Event()
+        data object RetryNextPageLoadingClicked : Event()
         data class PhotoClicked(val photo: Photo) : Event()
     }
 
@@ -39,8 +39,8 @@ interface PhotoFeedView : RibView,
         data class Loaded(val photos: List<Photo>) : ViewModel()
         data class LoadingNext(val photos: List<Photo>) : ViewModel()
         data class LoadingNextError(val photos: List<Photo>) : ViewModel()
-        object InitialLoading : ViewModel()
-        object InitialLoadingError : ViewModel()
+        data object InitialLoading : ViewModel()
+        data object InitialLoadingError : ViewModel()
 
     }
 

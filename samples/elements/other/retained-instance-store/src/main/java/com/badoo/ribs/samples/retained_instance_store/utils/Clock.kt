@@ -2,7 +2,7 @@ package com.badoo.ribs.samples.retained_instance_store.utils
 
 import android.os.Handler
 import android.os.Looper
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.fixedRateTimer
 
 private const val PERIOD_MS = 1000L

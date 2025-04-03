@@ -23,10 +23,10 @@ class LaunchingActivitiesExampleRouter(
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
             @Parcelize
-            object Child1 : Configuration()
+            data object Child1 : Configuration()
 
             @Parcelize
-            object Child2 : Configuration()
+            data object Child2 : Configuration()
         }
     }
 

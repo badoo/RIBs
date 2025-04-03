@@ -13,6 +13,4 @@ class SmallNode(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), Small {
-
-}
+), Small

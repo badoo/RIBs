@@ -15,17 +15,17 @@ import com.badoo.ribs.sandbox.rib.menu.MenuNode
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.Event
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherView.ViewModel
 import com.badoo.ribs.sandbox.util.CoffeeMachine
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface SwitcherView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object ShowOverlayDialogClicked : Event()
-        object ShowBlockerClicked : Event()
+        data object ShowOverlayDialogClicked : Event()
+        data object ShowBlockerClicked : Event()
     }
 
     data class ViewModel(
@@ -62,7 +62,8 @@ class SwitcherViewImpl private constructor(
 
     private val menuContainer: ViewGroup = androidView.findViewById(R.id.menu_container)
     private val contentContainer: ViewGroup = androidView.findViewById(R.id.content_container)
-//    private val blockerContainer: ViewGroup = androidView.findViewById(R.id.blocker_container)
+
+    //    private val blockerContainer: ViewGroup = androidView.findViewById(R.id.blocker_container)
     private val showOverlayDialog: Button = androidView.findViewById(R.id.show_overlay_dialog)
     private val showBlocker: Button = androidView.findViewById(R.id.show_blocker)
     private val makeCoffee: Button = androidView.findViewById(R.id.make_coffee)

@@ -58,7 +58,8 @@ class RetainedInstanceStoreTest {
         val obj = Any()
         RetainedInstanceStore.get(identifier) { obj }
 
-        val isRetained = RetainedInstanceStore.isRetainedByOwner(Rib.Identifier(UUID.randomUUID()), obj)
+        val isRetained =
+            RetainedInstanceStore.isRetainedByOwner(Rib.Identifier(UUID.randomUUID()), obj)
 
         assertFalse(isRetained)
     }

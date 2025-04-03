@@ -34,12 +34,20 @@ class LaunchingActivitiesParentTest {
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         LaunchingActivitiesChild1Builder(object : LaunchingActivitiesChildBase.Dependency {
-            override val activityStarter: ActivityStarter = ribTestActivity.integrationPoint.activityStarter
+            override val activityStarter: ActivityStarter =
+                ribTestActivity.integrationPoint.activityStarter
         }).build(BuildContext.root(savedInstanceState))
 
     @Test
     fun whenLaunchActivityButtonIsPressedThenOtherActivityIsStarted() {
         onView(ViewMatchers.withId(R.id.launchActivityButton)).perform(click())
-        intended(hasComponent(ComponentName(InstrumentationRegistry.getInstrumentation().context, OtherActivity::class.java)))
+        intended(
+            hasComponent(
+                ComponentName(
+                    InstrumentationRegistry.getInstrumentation().context,
+                    OtherActivity::class.java
+                )
+            )
+        )
     }
 }

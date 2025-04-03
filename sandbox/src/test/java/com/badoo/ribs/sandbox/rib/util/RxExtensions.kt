@@ -1,8 +1,8 @@
 package com.badoo.ribs.sandbox.rib.util
 
-import io.reactivex.ObservableSource
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.observers.TestObserver
 
-fun <T> ObservableSource<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
+fun <T : Any> ObservableSource<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
     subscribe(this)
 }

@@ -13,17 +13,17 @@ import com.badoo.ribs.routing.state.changeset.TransitionDescriptor
 import com.badoo.ribs.routing.state.feature.state.WorkingState
 import com.badoo.ribs.routing.transition.TransitionElement
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import org.mockito.internal.verification.VerificationModeFactory.times
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
-import org.mockito.internal.verification.VerificationModeFactory.times
 import java.util.stream.Stream
 
 internal class ActorTest {
@@ -44,7 +44,7 @@ internal class ActorTest {
             on { actionFactory } doReturn ElementsActionFactoryStub()
             on { routing } doReturn mock()
         }
-        val transaction = Transaction.RoutingChange<AnyConfiguration>(
+        val transaction = Transaction.RoutingChange(
             changeset = listOf(command),
             descriptor = mock()
         )
@@ -78,7 +78,7 @@ internal class ActorTest {
             on { actionFactory } doReturn ElementsActionFactoryStub()
             on { routing } doReturn mock()
         }
-        val transaction = Transaction.RoutingChange<AnyConfiguration>(
+        val transaction = Transaction.RoutingChange(
             changeset = listOf(command),
             descriptor = newDescriptor
         )
@@ -90,7 +90,7 @@ internal class ActorTest {
         verify(pendingTransition).schedule()
     }
 
-    @ParameterizedTest()
+    @ParameterizedTest
     @MethodSource("executePendingTestArguments")
     fun `WHEN a ExecutePendingTransition is accepted THEN pendingTransition is correctly handled`(
         activationState: RoutingContext.ActivationState,
@@ -122,7 +122,7 @@ internal class ActorTest {
         }
     }
 
-    @ParameterizedTest()
+    @ParameterizedTest
     @MethodSource("ongoingTransitionInteractionsTestArguments")
     fun `GIVEN an ongoingTransition in the state WHEN a RoutingChange is accepted THEN existing ongoingTransition is correctly handled`(
         isContinuation: Boolean,

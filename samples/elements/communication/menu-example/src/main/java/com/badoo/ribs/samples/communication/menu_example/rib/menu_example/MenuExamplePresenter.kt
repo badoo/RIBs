@@ -4,9 +4,9 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.plugin.SubtreeChangeAware
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.replace
+import com.badoo.ribs.samples.communication.menu_example.rib.menu.Menu
 import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.routing.MenuExampleRouter.Configuration
 import com.badoo.ribs.samples.communication.menu_example.rib.menu_example.routing.MenuExampleRouter.Configuration.Content
-import com.badoo.ribs.samples.communication.menu_example.rib.menu.Menu
 
 interface MenuExamplePresenter
 

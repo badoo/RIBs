@@ -44,11 +44,11 @@ class CommunicationContainerBuilder(
         builders: CommunicationContainerChildBuilders,
         customisation: CommunicationContainer.Customisation
     ) = CommunicationContainerRouter(
-            buildParams = buildParams,
-            builders = builders,
-            routingSource = routingSource,
-            transitionHandler = customisation.transitionHandler
-        )
+        buildParams = buildParams,
+        builders = builders,
+        routingSource = routingSource,
+        transitionHandler = customisation.transitionHandler
+    )
 
     private fun node(
         buildParams: BuildParams<*>,

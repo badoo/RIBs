@@ -11,29 +11,33 @@ import com.badoo.ribs.android.dialog.Dialog.CancellationPolicy.NonCancellable
 
 fun <Event : Any> Dialog<Event>.toAlertDialog(context: Context, onClose: () -> Unit): AlertDialog {
     val builder = themeResId?.let { AlertDialog.Builder(context, it) }
-            ?: AlertDialog.Builder(context)
+        ?: AlertDialog.Builder(context)
 
     return builder
-            .apply {
-                setCancelable(this@toAlertDialog, onClose)
-                setRib(this@toAlertDialog, context)
-                setTexts(this@toAlertDialog)
-                setButtons(this@toAlertDialog)
-            }
-            .create()
-            .apply {
-                markTitleAsHeading()
-                setCanceledOnTouchOutside(this@toAlertDialog)
-                setButtonClickListeners(this@toAlertDialog, onClose)
-                setOnDismissListener { this@toAlertDialog.rib = null }
-            }
+        .apply {
+            setCancelable(this@toAlertDialog, onClose)
+            setRib(this@toAlertDialog, context)
+            setTexts(this@toAlertDialog)
+            setButtons(this@toAlertDialog)
+        }
+        .create()
+        .apply {
+            markTitleAsHeading()
+            setCanceledOnTouchOutside(this@toAlertDialog)
+            setButtonClickListeners(this@toAlertDialog, onClose)
+            setOnDismissListener { this@toAlertDialog.rib = null }
+        }
 }
 
-private fun <Event : Any> AlertDialog.Builder.setCancelable(dialog: Dialog<Event>, onClose: () -> Unit) {
+private fun <Event : Any> AlertDialog.Builder.setCancelable(
+    dialog: Dialog<Event>,
+    onClose: () -> Unit
+) {
     when (val policy = dialog.cancellationPolicy) {
         is NonCancellable -> {
             setCancelable(false)
         }
+
         is Cancellable -> {
             setCancelable(true)
             setOnCancelListener {
@@ -97,14 +101,32 @@ private fun AlertDialog.Builder.setButtons(dialog: Dialog<*>) {
     }
 }
 
-private fun <Event : Any> AlertDialog.setButtonClickListeners(dialog: Dialog<Event>, onClose: () -> Unit) {
+private fun <Event : Any> AlertDialog.setButtonClickListeners(
+    dialog: Dialog<Event>,
+    onClose: () -> Unit
+) {
     // Workaround so that pressing button will not close dialog automatically. Let business
     // logic decide what to do instead.
     setOnShowListener {
         (it as? AlertDialog)?.apply {
-            configureButtonClick(AlertDialog.BUTTON_POSITIVE, dialog, dialog.buttons?.positive, onClose)
-            configureButtonClick(AlertDialog.BUTTON_NEGATIVE, dialog, dialog.buttons?.negative, onClose)
-            configureButtonClick(AlertDialog.BUTTON_NEUTRAL, dialog, dialog.buttons?.neutral, onClose)
+            configureButtonClick(
+                AlertDialog.BUTTON_POSITIVE,
+                dialog,
+                dialog.buttons?.positive,
+                onClose
+            )
+            configureButtonClick(
+                AlertDialog.BUTTON_NEGATIVE,
+                dialog,
+                dialog.buttons?.negative,
+                onClose
+            )
+            configureButtonClick(
+                AlertDialog.BUTTON_NEUTRAL,
+                dialog,
+                dialog.buttons?.neutral,
+                onClose
+            )
         }
     }
 }

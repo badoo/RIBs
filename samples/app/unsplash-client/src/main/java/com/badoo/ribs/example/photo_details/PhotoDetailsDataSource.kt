@@ -2,14 +2,14 @@ package com.badoo.ribs.example.photo_details
 
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.network.model.Photo
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
 
 interface PhotoDetailsDataSource {
     fun getPhoto(id: String): Single<Photo>
 
-    fun likePhoto(id: String):  Single<Unit>
-    fun unlikePhoto(id: String):  Single<Unit>
+    fun likePhoto(id: String): Single<Unit>
+    fun unlikePhoto(id: String): Single<Unit>
 }
 
 
@@ -22,7 +22,7 @@ class PhotoDetailsDataSourceImpl(private val api: UnsplashApi) : PhotoDetailsDat
         api.likePhoto(id)
             .observeOn(AndroidSchedulers.mainThread())
 
-    override fun unlikePhoto(id: String):  Single<Unit> =
+    override fun unlikePhoto(id: String): Single<Unit> =
         api.unlikePhoto(id)
             .observeOn(AndroidSchedulers.mainThread())
 }

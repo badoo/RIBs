@@ -18,9 +18,10 @@ class FooBarBuilder(
         return FooBarNode(
             buildParams = buildParams,
             viewFactory = customisation.viewFactory(null),
-            plugins =  listOf(
+            plugins = listOf(
                 interactor,
-                ParentLongClickListener())
+                ParentLongClickListener()
             )
+        )
     }
 }

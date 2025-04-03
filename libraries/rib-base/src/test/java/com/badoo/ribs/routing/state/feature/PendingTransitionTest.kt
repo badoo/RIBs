@@ -6,10 +6,13 @@ import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.R
 import com.badoo.ribs.routing.state.feature.RoutingStatePool.Effect.Transition.RequestTransition
 import com.badoo.ribs.routing.state.feature.Transaction.InternalTransaction.ExecutePendingTransition
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import org.mockito.kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class PendingTransitionTest {
 

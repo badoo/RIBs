@@ -17,24 +17,22 @@ import com.badoo.ribs.core.plugin.utils.memoryleak.LeakDetector
 import com.badoo.ribs.debug.TreePrinter
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.portal.PortalRouter
-import com.badoo.ribs.portal.rx2.Rx2Portal
-import com.badoo.ribs.portal.rx2.Rx2PortalBuilder
+import com.badoo.ribs.portal.rx3.Rx3Portal
+import com.badoo.ribs.portal.rx3.Rx3PortalBuilder
 import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.transition.handler.CrossFader
 import com.badoo.ribs.routing.transition.handler.Slider
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
-import com.badoo.ribs.rx2.workflows.RxWorkflowActivity
+import com.badoo.ribs.rx3.workflows.RxWorkflowActivity
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.R
-import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.Switcher
 import com.badoo.ribs.sandbox.rib.switcher.SwitcherBuilder
 import com.badoo.ribs.sandbox.util.CoffeeMachine
 import com.badoo.ribs.sandbox.util.StupidCoffeeMachine
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.functions.BiFunction
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import leakcanary.AppWatcher
 
 /** The sample app's single activity */
@@ -48,10 +46,10 @@ class RootActivity : RxWorkflowActivity() {
     override val rootViewGroup: ViewGroup
         get() = findViewById(R.id.root)
 
-    private lateinit var workflowRoot: Rx2Portal
+    private lateinit var workflowRoot: Rx3Portal
 
     override fun createRib(savedInstanceState: Bundle?) =
-        Rx2PortalBuilder(
+        Rx3PortalBuilder(
             object : Portal.Dependency {
                 override val defaultResolution: (Portal.OtherSide) -> Resolution =
                     { portal ->
@@ -83,19 +81,20 @@ class RootActivity : RxWorkflowActivity() {
                     ).build(buildContext)
                 }
             }
-        ).build(root(
-            savedInstanceState = savedInstanceState,
-            customisations = AppRibCustomisations,
-            defaultPlugins = { node ->
-                if (BuildConfig.DEBUG) {
-                    listOfNotNull(
-                        createLeakDetector(),
-                        createLogger(),
-                        if (node.isRoot) createDebugControlHost() else null
-                    )
-                } else emptyList()
-            }
-        )).also {
+        ).build(
+            root(
+                savedInstanceState = savedInstanceState,
+                customisations = AppRibCustomisations,
+                defaultPlugins = { node ->
+                    if (BuildConfig.DEBUG) {
+                        listOfNotNull(
+                            createLeakDetector(),
+                            createLogger(),
+                            if (node.isRoot) createDebugControlHost() else null
+                        )
+                    } else emptyList()
+                }
+            )).also {
             workflowRoot = it
         }
 
@@ -145,10 +144,9 @@ class RootActivity : RxWorkflowActivity() {
             switcher()
                 .flatMap { it.waitForHelloWorld() }
                 .flatMap { it.somethingSomethingDarkSide() }
-                .toObservable(),
+                .toObservable()
 
-            BiFunction<Switcher, HelloWorld, Unit> { _, _ -> Unit }
-        )
+        ) { _, _ -> Unit }
 
     @Suppress("UNCHECKED_CAST")
     private fun switcher() =

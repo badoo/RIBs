@@ -3,13 +3,12 @@ package com.badoo.ribs.sandbox.rib.dialog_example
 import com.badoo.ribs.routing.source.impl.Empty
 import com.badoo.ribs.sandbox.rib.dialog_example.routing.DialogExampleRouter
 import com.badoo.ribs.test.emptyBuildParams
-import org.mockito.kotlin.mock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
 import org.robolectric.RobolectricTestRunner
-
 
 @RunWith(RobolectricTestRunner::class)
 class DialogExampleRouterTest {

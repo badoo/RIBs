@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -26,9 +27,9 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.Event
 import com.badoo.ribs.sandbox.rib.compose_leaf.ComposeLeafView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface ComposeLeafView : RibView,
     ObservableSource<Event>,
@@ -114,7 +115,7 @@ private fun LocalState(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        var counter by rememberSaveable { mutableStateOf(0) }
+        var counter by rememberSaveable { mutableIntStateOf(0) }
         Text(text = "LocalState: $counter")
         Button(onClick = { counter++ }) {
             Text(text = "Add")

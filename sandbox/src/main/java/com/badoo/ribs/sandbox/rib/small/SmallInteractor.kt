@@ -6,11 +6,11 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.portal.Portal
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration
-import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration.FullScreen
 import com.badoo.ribs.sandbox.rib.small.SmallView.Event
 import com.badoo.ribs.sandbox.rib.small.SmallView.ViewModel
-import io.reactivex.functions.Consumer
+import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration
+import com.badoo.ribs.sandbox.rib.small.routing.SmallRouter.Configuration.FullScreen
+import io.reactivex.rxjava3.functions.Consumer
 
 class SmallInteractor(
     private val buildParams: BuildParams<Nothing?>,

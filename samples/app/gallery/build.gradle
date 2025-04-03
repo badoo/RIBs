@@ -38,8 +38,8 @@ dependencies {
     implementation deps.external.dagger
     implementation deps.external.mviCore
     implementation deps.external.mviCoreAndroid
-    implementation deps.external.rxrelay2
-    implementation deps.external.rxandroid2
+    implementation deps.external.rxrelay3
+    implementation deps.external.rxandroid3
     implementation deps.external.leakCanary // use debugImplementation in real life apps
 
     implementation deps.android.appCompat
@@ -58,7 +58,7 @@ dependencies {
     implementation project(":libraries:rib-compose")
     implementation project(':libraries:rib-debug-utils')
     implementation project(':libraries:rib-mvicore')
-    implementation project(':libraries:rib-rx2')
+    implementation project(':libraries:rib-rx3')
 
     implementation project(':samples:elements:routing:back-stack')
     implementation project(':samples:elements:routing:parameterised-routing')

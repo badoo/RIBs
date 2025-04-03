@@ -49,7 +49,8 @@ class LanguageSelectorViewImpl private constructor(
             }
     }
 
-    private val confirmLanguageButton: Button = androidView.findViewById(R.id.confirm_language_button)
+    private val confirmLanguageButton: Button =
+        androidView.findViewById(R.id.confirm_language_button)
     private val radioGroup: RadioGroup = androidView.findViewById(R.id.languages_radio_group)
 
     init {

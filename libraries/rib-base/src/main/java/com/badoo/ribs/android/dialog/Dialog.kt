@@ -16,6 +16,7 @@ abstract class Dialog<T : Any> private constructor(
     var title: Text? = null
     var message: Text? = null
     var cancellationPolicy: CancellationPolicy<T> = NonCancellable()
+
     @StyleRes
     var themeResId: Int? = null
     var buttons: ButtonsConfig<T>? = null
@@ -95,10 +96,10 @@ abstract class Dialog<T : Any> private constructor(
         } ?: emptyList()
 
     sealed class Event {
-        object Positive : Event()
-        object Negative : Event()
-        object Neutral : Event()
-        object Cancelled : Event()
+        data object Positive : Event()
+        data object Negative : Event()
+        data object Neutral : Event()
+        data object Cancelled : Event()
     }
 
     sealed class CancellationPolicy<T : Any> {

@@ -9,12 +9,13 @@ import com.badoo.ribs.util.RIBs
 class SingleProgressEvaluator : ProgressEvaluator {
 
     private sealed class Progress {
-        object Initialised : Progress()
-        object Reset : Progress()
+        data object Initialised : Progress()
+        data object Reset : Progress()
         class InProgress : Progress() {
             var progress: Float = 0f
         }
-        object Finished : Progress()
+
+        data object Finished : Progress()
     }
 
     private val state = object : Store<Progress>(Progress.Initialised) {

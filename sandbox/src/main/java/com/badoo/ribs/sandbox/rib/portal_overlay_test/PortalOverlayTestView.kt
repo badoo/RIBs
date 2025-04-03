@@ -1,18 +1,18 @@
 package com.badoo.ribs.sandbox.rib.portal_overlay_test
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactoryBuilder
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestView.Event
 import com.badoo.ribs.sandbox.rib.portal_overlay_test.PortalOverlayTestView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface PortalOverlayTestView : RibView,
     ObservableSource<Event>,
@@ -46,6 +46,6 @@ class PortalOverlayTestViewImpl private constructor(
         }
     }
 
-    override fun accept(vm: PortalOverlayTestView.ViewModel) {
+    override fun accept(vm: ViewModel) {
     }
 }

@@ -1,26 +1,26 @@
 package com.badoo.ribs.sandbox.rib.lorem_ipsum
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactoryBuilder
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumView.Event
 import com.badoo.ribs.sandbox.rib.lorem_ipsum.LoremIpsumView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface LoremIpsumView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object ButtonClicked : Event()
+        data object ButtonClicked : Event()
     }
 
     data class ViewModel(

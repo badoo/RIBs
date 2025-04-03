@@ -9,8 +9,8 @@ import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature.Effect
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature.News
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature.State
 import com.badoo.ribs.sandbox.rib.hello_world.feature.HelloWorldFeature.Wish
-import io.reactivex.Observable
-import io.reactivex.Observable.empty
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Observable.empty
 
 class HelloWorldFeature : ActorReducerFeature<Wish, Effect, State, News>(
     initialState = State(),

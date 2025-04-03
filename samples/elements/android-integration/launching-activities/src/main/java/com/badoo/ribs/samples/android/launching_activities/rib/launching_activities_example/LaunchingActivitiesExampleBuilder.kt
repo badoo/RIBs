@@ -14,7 +14,8 @@ class LaunchingActivitiesExampleBuilder(
     override fun build(buildParams: BuildParams<Nothing?>): LaunchingActivitiesExample {
         val router = LaunchingActivitiesExampleRouter(
             buildParams = buildParams,
-            builders = LaunchingActivitiesExampleChildBuilders(object : LaunchingActivitiesChildBase.Dependency {
+            builders = LaunchingActivitiesExampleChildBuilders(object :
+                LaunchingActivitiesChildBase.Dependency {
                 override val activityStarter: ActivityStarter = dependency.activityStarter
             }),
         )

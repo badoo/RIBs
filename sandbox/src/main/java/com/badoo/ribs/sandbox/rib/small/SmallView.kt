@@ -1,28 +1,28 @@
 package com.badoo.ribs.sandbox.rib.small
 
-import androidx.annotation.LayoutRes
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactoryBuilder
+import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.small.SmallView.Event
 import com.badoo.ribs.sandbox.rib.small.SmallView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface SmallView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object OpenBigClicked : Event()
-        object OpenOverlayClicked : Event()
+        data object OpenBigClicked : Event()
+        data object OpenOverlayClicked : Event()
     }
 
     data class ViewModel(
@@ -55,8 +55,8 @@ class SmallViewImpl private constructor(
     private val openOverlayButton = androidView.findViewById<Button>(R.id.open_overlay)
 
     init {
-        openBigButton.setOnClickListener { events.accept(Event.OpenBigClicked)  }
-        openOverlayButton.setOnClickListener { events.accept(Event.OpenOverlayClicked)  }
+        openBigButton.setOnClickListener { events.accept(Event.OpenBigClicked) }
+        openOverlayButton.setOnClickListener { events.accept(Event.OpenOverlayClicked) }
     }
 
     override fun accept(vm: ViewModel) {

@@ -58,7 +58,8 @@ internal fun <C : Parcelable> RoutingHistory<C>.ensureUniqueIds() {
     forEach { element ->
         if (ids.contains(element.routing.identifier)) {
             val errorMessage = "Non-unique content id found: ${element.routing.identifier}"
-            RIBs.errorHandler.handleNonFatalError(errorMessage,
+            RIBs.errorHandler.handleNonFatalError(
+                errorMessage,
                 NonUniqueRoutingIdentifierException(
                     errorMessage
                 )
@@ -69,7 +70,8 @@ internal fun <C : Parcelable> RoutingHistory<C>.ensureUniqueIds() {
         element.overlays.forEach { overlay ->
             if (ids.contains(overlay.identifier)) {
                 val errorMessage = "Non-unique overlay id found: ${overlay.identifier}"
-                RIBs.errorHandler.handleNonFatalError(errorMessage,
+                RIBs.errorHandler.handleNonFatalError(
+                    errorMessage,
                     NonUniqueRoutingIdentifierException(
                         errorMessage
                     )

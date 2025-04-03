@@ -20,8 +20,13 @@ interface Menu : Rib, Connectable<Input, Output> {
     }
 
     sealed class MenuItem : Parcelable {
-        @Parcelize object Child1 : MenuItem()
-        @Parcelize object Child2 : MenuItem()
-        @Parcelize object Child3 : MenuItem()
+        @Parcelize
+        data object Child1 : MenuItem()
+
+        @Parcelize
+        data object Child2 : MenuItem()
+
+        @Parcelize
+        data object Child3 : MenuItem()
     }
 }

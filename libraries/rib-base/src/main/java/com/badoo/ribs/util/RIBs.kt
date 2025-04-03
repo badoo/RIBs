@@ -104,11 +104,13 @@ object RIBs {
             internalGroup: Int,
             event: RequestCodeBasedEventStream.RequestCodeBasedEvent
         ) {
-            Log.e(TAG, "There's no one listening for request code event! " +
-                "requestCode: $requestCode, " +
-                "resolved group: $internalGroup, " +
-                "resolved code: $internalRequestCode, " +
-                "event: $event")
+            Log.e(
+                TAG, "There's no one listening for request code event! " +
+                        "requestCode: $requestCode, " +
+                        "resolved group: $internalGroup, " +
+                        "resolved code: $internalRequestCode, " +
+                        "event: $event"
+            )
         }
 
         @Suppress("TooGenericExceptionThrown")

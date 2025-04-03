@@ -9,7 +9,7 @@ import com.badoo.ribs.example.login.AuthCodeDataSource
 import com.badoo.ribs.example.login.feature.LoginFeature.Effect
 import com.badoo.ribs.example.login.feature.LoginFeature.State
 import com.badoo.ribs.example.login.feature.LoginFeature.Wish
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 internal class LoginFeature(
     authCodeDataSource: AuthCodeDataSource,
@@ -31,8 +31,8 @@ internal class LoginFeature(
     }
 
     sealed class Effect {
-        object AuthSuccess : Effect()
-        object AuthInProgress : Effect()
+        data object AuthSuccess : Effect()
+        data object AuthInProgress : Effect()
         class AuthFailed(val error: Throwable?) : Effect()
     }
 
@@ -58,7 +58,7 @@ internal class LoginFeature(
                 .login(authCode)
                 .toObservable()
                 .map<Effect> { Effect.AuthSuccess }
-                .startWith(Effect.AuthInProgress)
+                .startWithItem(Effect.AuthInProgress)
                 .onErrorReturn { Effect.AuthFailed(it) }
     }
 

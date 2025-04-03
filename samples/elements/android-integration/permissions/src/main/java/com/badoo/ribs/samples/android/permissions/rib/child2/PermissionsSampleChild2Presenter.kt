@@ -22,7 +22,8 @@ interface PermissionsSampleChild2Presenter : RequestCodeClient {
 class PermissionsSampleChild2PresenterImpl(
     private val permissionRequester: PermissionRequester,
     private val ribAware: RibAware<PermissionsSampleChild2> = RibAwareImpl()
-) : PermissionsSampleChild2Presenter, ViewAware<PermissionsSampleChild2ViewImpl>, RibAware<PermissionsSampleChild2> by ribAware {
+) : PermissionsSampleChild2Presenter, ViewAware<PermissionsSampleChild2ViewImpl>,
+    RibAware<PermissionsSampleChild2> by ribAware {
 
     private var view: PermissionsSampleChild2ViewImpl? = null
     private var cancellable: Cancellable? = null

@@ -10,6 +10,6 @@ interface Dummy : Rib, Connectable<Input, Output> {
     sealed class Input
 
     sealed class Output {
-        object SomeEvent : Output()
+        data object SomeEvent : Output()
     }
 }

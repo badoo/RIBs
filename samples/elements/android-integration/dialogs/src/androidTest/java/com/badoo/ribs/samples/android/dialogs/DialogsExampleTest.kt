@@ -5,20 +5,23 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers.*
-import com.badoo.ribs.test.RibsRule
-import com.badoo.ribs.test.RibTestActivity
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.badoo.ribs.android.dialog.DialogLauncher
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.android.dialogs.rib.dialogs_example.DialogsExample
 import com.badoo.ribs.samples.android.dialogs.rib.dialogs_example.DialogsExampleBuilder
+import com.badoo.ribs.test.RibTestActivity
+import com.badoo.ribs.test.RibsRule
 import org.junit.Rule
 import org.junit.Test
 
 class DialogsExampleTest {
 
     @get:Rule
-    val ribsRule = RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
+    val ribsRule =
+        RibsRule { activity, savedInstanceState -> buildRib(activity, savedInstanceState) }
 
     private fun buildRib(ribTestActivity: RibTestActivity, savedInstanceState: Bundle?) =
         DialogsExampleBuilder(object : DialogsExample.Dependency {

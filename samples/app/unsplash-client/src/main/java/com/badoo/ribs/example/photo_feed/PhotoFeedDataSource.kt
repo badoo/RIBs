@@ -1,8 +1,8 @@
 package com.badoo.ribs.example.photo_feed
 
 import com.badoo.ribs.example.network.UnsplashApi
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
 
 interface PhotoFeedDataSource {
     fun loadPhotos(page: Int = 0): Single<List<Photo>>

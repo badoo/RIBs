@@ -66,7 +66,7 @@ class SmallBuilder(
         buildParams: BuildParams<Nothing?>,
         customisation: Small.Customisation,
         plugins: List<Plugin>
-    ) : SmallNode = SmallNode(
+    ): SmallNode = SmallNode(
         buildParams = buildParams,
         viewFactory = customisation.viewFactory(null),
         plugins = plugins

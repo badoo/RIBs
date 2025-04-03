@@ -11,6 +11,4 @@ internal class PortalNode(
     buildParams = buildParams,
     viewFactory = null,
     plugins = plugins
-), Portal {
-
-}
+), Portal

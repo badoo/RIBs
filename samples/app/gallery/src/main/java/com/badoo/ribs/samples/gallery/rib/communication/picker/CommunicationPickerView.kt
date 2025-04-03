@@ -10,15 +10,15 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.gallery.composable.ButtonList
 import com.badoo.ribs.samples.gallery.rib.communication.picker.CommunicationPickerView.Event
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
 
 interface CommunicationPickerView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object MenuExampleClicked : Event()
-        object CoordinateMultipleExampleClicked : Event()
+        data object MenuExampleClicked : Event()
+        data object CoordinateMultipleExampleClicked : Event()
     }
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, CommunicationPickerView>

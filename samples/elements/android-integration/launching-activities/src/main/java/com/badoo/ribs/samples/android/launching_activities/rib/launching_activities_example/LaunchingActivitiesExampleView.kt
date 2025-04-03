@@ -27,7 +27,7 @@ interface LaunchingActivitiesExampleView : RibView {
     interface Factory : ViewFactoryBuilder<Dependency, LaunchingActivitiesExampleView>
 }
 
-class LaunchingActivitiesExampleViewImpl constructor(
+class LaunchingActivitiesExampleViewImpl(
     override val androidView: ViewGroup,
     val dependency: LaunchingActivitiesExampleView.Dependency
 ) : AndroidRibView(), LaunchingActivitiesExampleView {

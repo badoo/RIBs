@@ -27,30 +27,53 @@ class DialogsExampleRouter(
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize
-            object Default : Content()
+            data object Default : Content()
         }
 
         sealed class Overlay : Configuration() {
             @Parcelize
-            object ThemedDialog : Overlay()
+            data object ThemedDialog : Overlay()
 
             @Parcelize
-            object SimpleDialog : Overlay()
+            data object SimpleDialog : Overlay()
 
             @Parcelize
-            object LazyDialog : Overlay()
+            data object LazyDialog : Overlay()
 
             @Parcelize
-            object RibDialog : Overlay()
+            data object RibDialog : Overlay()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
             is Content.Default -> Resolution.noop()
-            is Overlay.ThemedDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.themedDialog)
-            is Overlay.SimpleDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.simpleDialog)
-            is Overlay.LazyDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.lazyDialog)
-            is Overlay.RibDialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogs.ribDialog)
+            is Overlay.ThemedDialog -> showDialog(
+                routingSource,
+                routing.identifier,
+                dialogLauncher,
+                dialogs.themedDialog
+            )
+
+            is Overlay.SimpleDialog -> showDialog(
+                routingSource,
+                routing.identifier,
+                dialogLauncher,
+                dialogs.simpleDialog
+            )
+
+            is Overlay.LazyDialog -> showDialog(
+                routingSource,
+                routing.identifier,
+                dialogLauncher,
+                dialogs.lazyDialog
+            )
+
+            is Overlay.RibDialog -> showDialog(
+                routingSource,
+                routing.identifier,
+                dialogLauncher,
+                dialogs.ribDialog
+            )
         }
 }

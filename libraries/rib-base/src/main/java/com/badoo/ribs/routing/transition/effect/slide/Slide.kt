@@ -1,4 +1,5 @@
 @file:SuppressWarnings("LongParameterList")
+
 package com.badoo.ribs.routing.transition.effect.slide
 
 import android.view.animation.Interpolator
@@ -14,7 +15,6 @@ import com.badoo.ribs.routing.transition.handler.defaultDuration
 import com.badoo.ribs.routing.transition.handler.defaultInterpolator
 import com.badoo.ribs.routing.transition.progress.SingleProgressEvaluator
 
-
 @CheckResult
 fun <T> TransitionElement<out T>.slide(
     gravity: Gravity,
@@ -22,9 +22,10 @@ fun <T> TransitionElement<out T>.slide(
     duration: Long = defaultDuration,
     interpolator: Interpolator = defaultInterpolator,
     reverseWhenAddedOrRemoved: Boolean = true
-) : Transition {
+): Transition {
     val evaluator = SingleProgressEvaluator().also { progressEvaluator.add(it) }
-    val actualGravity = if (reverseWhenAddedOrRemoved && (addedOrRemoved xor (direction == TransitionDirection.ENTER))) gravity.reverse() else gravity
+    val actualGravity =
+        if (reverseWhenAddedOrRemoved && (addedOrRemoved xor (direction == TransitionDirection.ENTER))) gravity.reverse() else gravity
     val endValues = slideEndValues(animationContainer, actualGravity).let {
         when (direction) {
             TransitionDirection.EXIT -> it
@@ -35,7 +36,14 @@ fun <T> TransitionElement<out T>.slide(
         ReverseHolder()
 
     return Transition.from(
-        slideValueAnimator(actualGravity, endValues, interpolator, duration, evaluator, reverseHolder),
+        slideValueAnimator(
+            actualGravity,
+            endValues,
+            interpolator,
+            duration,
+            evaluator,
+            reverseHolder
+        ),
         reverseHolder
     )
 }

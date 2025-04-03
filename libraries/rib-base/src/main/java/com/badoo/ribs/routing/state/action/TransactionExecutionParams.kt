@@ -2,10 +2,10 @@ package com.badoo.ribs.routing.state.action
 
 import android.os.Parcelable
 import com.badoo.ribs.core.Node
+import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.state.RoutingContext
 import com.badoo.ribs.routing.state.feature.EffectEmitter
-import com.badoo.ribs.routing.Routing
 
 /**
  * Helper class for action execution.

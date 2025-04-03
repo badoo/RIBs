@@ -11,7 +11,7 @@ import com.badoo.ribs.example.logged_out_container.routing.LoggedOutContainerRou
 import com.badoo.ribs.example.welcome.Welcome
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 
 internal class LoggedOutContainerInteractor(
     buildParams: BuildParams<*>,

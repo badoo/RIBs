@@ -23,8 +23,8 @@ import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.store.RetainedInstanceStore
 import com.badoo.ribs.util.RIBs
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.functions.Consumer
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -334,7 +334,10 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.CREATED, grandChild.lifecycleManager.externalLifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.CREATED,
+            grandChild.lifecycleManager.externalLifecycle.currentState
+        )
     }
 
     @Test
@@ -365,7 +368,10 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.STARTED, grandChild.lifecycleManager.externalLifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.STARTED,
+            grandChild.lifecycleManager.externalLifecycle.currentState
+        )
     }
 
     @Test
@@ -399,7 +405,10 @@ class NodeTest {
         directChild.attachChildNode(grandChild)
         node.attachChildNode(directChild)
 
-        assertEquals(Lifecycle.State.RESUMED, grandChild.lifecycleManager.externalLifecycle.currentState)
+        assertEquals(
+            Lifecycle.State.RESUMED,
+            grandChild.lifecycleManager.externalLifecycle.currentState
+        )
     }
 
     @Ignore("This should be reworked to match new mechanism")

@@ -1,22 +1,22 @@
 package com.badoo.ribs.sandbox.rib.menu
 
-import androidx.annotation.LayoutRes
-import androidx.core.content.ContextCompat
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView2
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem
 import com.badoo.ribs.sandbox.rib.menu.MenuView.Event
 import com.badoo.ribs.sandbox.rib.menu.MenuView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface MenuView : RibView, ObservableSource<Event>, Consumer<ViewModel> {
 
@@ -56,7 +56,7 @@ class MenuViewImpl private constructor(
     private var dialogs: TextView = menuItem(R.id.menu_dialogs, MenuItem.Dialogs)
     private var compose: TextView = menuItem(R.id.menu_compose, MenuItem.Compose)
 
-    fun menuItem(id: Int, menuItem: MenuItem) : TextView =
+    fun menuItem(id: Int, menuItem: MenuItem): TextView =
         androidView.findViewById<TextView>(id).apply {
             setOnClickListener { events.accept(Event.Select(menuItem)) }
         }

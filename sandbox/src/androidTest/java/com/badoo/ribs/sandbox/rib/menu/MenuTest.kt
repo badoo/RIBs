@@ -2,15 +2,15 @@ package com.badoo.ribs.sandbox.rib.menu
 
 import android.os.Bundle
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
-import com.badoo.ribs.test.RibsRule
-import com.badoo.ribs.test.RibTestActivity
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input.SelectMenuItem
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.FooBar
 import com.badoo.ribs.sandbox.rib.menu.Menu.MenuItem.HelloWorld
 import com.badoo.ribs.sandbox.rib.menu.element.MenuElement
-import io.reactivex.Observable
-import io.reactivex.observers.TestObserver
+import com.badoo.ribs.test.RibTestActivity
+import com.badoo.ribs.test.RibsRule
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.observers.TestObserver
 import org.junit.Rule
 import org.junit.Test
 
@@ -75,7 +75,7 @@ class MenuTest {
             rib = it
         }
 
-    private fun <T> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
+    private fun <T : Any> Observable<T>.subscribeOnTestObserver() = TestObserver<T>().apply {
         subscribe(this)
     }
 }

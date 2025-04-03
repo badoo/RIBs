@@ -12,7 +12,8 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.retained_instance_store.R
-import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleView.*
+import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleView.ButtonState
+import com.badoo.ribs.samples.retained_instance_store.rib.retained_instance_example.RetainedInstanceExampleView.Dependency
 
 interface RetainedInstanceExampleView : RibView {
 
@@ -23,8 +24,8 @@ interface RetainedInstanceExampleView : RibView {
     }
 
     sealed class ButtonState(val resId: Int) {
-        object CreateCounter : ButtonState(R.string.create_button_text)
-        object DestroyCounter : ButtonState(R.string.destroy_button_text)
+        data object CreateCounter : ButtonState(R.string.create_button_text)
+        data object DestroyCounter : ButtonState(R.string.destroy_button_text)
     }
 
     fun updateButtonState(state: ButtonState)

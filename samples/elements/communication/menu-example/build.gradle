@@ -23,7 +23,7 @@ dependencies {
     implementation project(':libraries:rib-base')
     implementation project(':samples:resources')
 
-    implementation deps.external.rxrelay2
+    implementation deps.external.rxrelay3
 
     junitTestImplementation(project)
     testImplementation deps.external.roboelectricBase

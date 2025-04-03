@@ -31,7 +31,11 @@ internal class PendingTransition<C : Parcelable>(
          */
         hideEnteringElements()
         handler.post {
-            internalTransactionConsumer.invoke(Transaction.InternalTransaction.ExecutePendingTransition(this))
+            internalTransactionConsumer.invoke(
+                Transaction.InternalTransaction.ExecutePendingTransition(
+                    this
+                )
+            )
         }
     }
 
@@ -73,12 +77,14 @@ internal class PendingTransition<C : Parcelable>(
     }
 
     private fun hideEnteringElements() {
-        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
+        val enteringElements =
+            transitionElements.filter { it.direction == TransitionDirection.ENTER }
         enteringElements.visibility(View.INVISIBLE)
     }
 
     private fun showEnteringElements() {
-        val enteringElements = transitionElements.filter { it.direction == TransitionDirection.ENTER }
+        val enteringElements =
+            transitionElements.filter { it.direction == TransitionDirection.ENTER }
         enteringElements.visibility(View.VISIBLE)
     }
 }

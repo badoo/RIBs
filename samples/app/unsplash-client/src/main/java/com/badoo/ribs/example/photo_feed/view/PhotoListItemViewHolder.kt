@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.badoo.ribs.example.R
 
-
 abstract class PhotoListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 internal class PhotoViewHolder(private val photoView: AspectRatioImageView) :

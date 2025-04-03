@@ -7,10 +7,10 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.badoo.ribs.test.RibsRule
 import com.badoo.ribs.core.modality.BuildContext.Companion.root
 import com.badoo.ribs.samples.helloworld.hello_world.HelloWorld
 import com.badoo.ribs.samples.helloworld.hello_world.builder.HelloWorldBuilder
+import com.badoo.ribs.test.RibsRule
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test
@@ -37,7 +37,12 @@ class HelloWorldTest {
     fun showCountWhenClickingCountButton() {
         onView(withId(R.id.hello_world_button)).perform(click())
 
-        onView(allOf(withId(com.google.android.material.R.id.snackbar_text), withText("Current count: 1")))
+        onView(
+            allOf(
+                withId(com.google.android.material.R.id.snackbar_text),
+                withText("Current count: 1")
+            )
+        )
             .check(matches(isDisplayed()))
     }
 }

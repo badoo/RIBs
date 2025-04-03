@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.observers.TestObserver
 
 class TestRootInteractor(
     buildParams: BuildParams<*>,

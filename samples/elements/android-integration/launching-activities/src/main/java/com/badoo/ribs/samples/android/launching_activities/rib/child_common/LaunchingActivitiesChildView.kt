@@ -36,7 +36,7 @@ interface LaunchingActivitiesChildView : RibView {
     }
 }
 
-class LaunchingActivitiesChildViewImpl constructor(
+class LaunchingActivitiesChildViewImpl(
     override val androidView: ViewGroup,
     val dependency: LaunchingActivitiesChildView.Dependency
 ) : AndroidRibView(), LaunchingActivitiesChildView, Source<LaunchingActivitiesChildView.Event> {
@@ -56,7 +56,8 @@ class LaunchingActivitiesChildViewImpl constructor(
         launchButton.setOnClickListener {
             _events.accept(
                 LaunchingActivitiesChildView.Event.LaunchActivityForResult(
-                    "Launched from `${title.text}`")
+                    "Launched from `${title.text}`"
+                )
             )
         }
     }

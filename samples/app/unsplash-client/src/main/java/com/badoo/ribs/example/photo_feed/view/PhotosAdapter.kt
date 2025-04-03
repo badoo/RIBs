@@ -14,12 +14,12 @@ internal class PhotosAdapter : ListAdapter<PhotoListItem, PhotoListItemViewHolde
                 parent.context,
                 parent
             )
+
             else -> throw IllegalArgumentException("View type $viewType is not supported by this adapter")
         }
 
     override fun onBindViewHolder(holder: PhotoListItemViewHolder, position: Int) {
-        val item = getItem(position)
-        when (item) {
+        when (val item = getItem(position)) {
             is PhotoListItem.PhotoItem -> (holder as? PhotoViewHolder)?.bind(item)
             is PhotoListItem.NextPageLoadingItem -> (holder as? NextPageLoadingViewHolder)?.bind()
             is PhotoListItem.NextPageLoadingErrorItem ->

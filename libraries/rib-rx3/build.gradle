@@ -1,0 +1,30 @@
+configureAndroidLibrary(project)
+
+android {
+    namespace 'com.badoo.ribs.rx3'
+}
+
+dependencies {
+    api deps.external.rxrelay3
+    api deps.external.rxjava3
+
+    api project(":libraries:rib-base")
+
+    junitTestImplementation(project)
+    testImplementation deps.android.annotations
+    testImplementation deps.test.assertj
+    testImplementation deps.external.roboelectricBase
+    testImplementation deps.test.mockitoKotlin
+    testImplementation project(":libraries:rib-base-test")
+
+    junitAndroidTestImplementation(project)
+    androidTestImplementation deps.test.assertj
+    androidTestImplementation deps.androidTest.espresso
+    androidTestImplementation deps.androidTest.espressoIntents
+    androidTestImplementation deps.androidTest.runner
+    androidTestImplementation deps.androidTest.rules
+    androidTestImplementation project(":libraries:rib-base-test")
+    androidTestImplementation project(':libraries:rib-base-test-activity')
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

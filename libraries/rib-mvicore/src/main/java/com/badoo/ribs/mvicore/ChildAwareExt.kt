@@ -1,10 +1,10 @@
 package com.badoo.ribs.mvicore
 
 import androidx.lifecycle.Lifecycle
+import com.badoo.binder.Binder
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.resumePause
 import com.badoo.mvicore.android.lifecycle.startStop
-import com.badoo.binder.Binder
 import com.badoo.ribs.clienthelper.childaware.ChildAwareScope
 import com.badoo.ribs.core.Rib
 

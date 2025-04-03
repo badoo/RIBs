@@ -3,7 +3,6 @@ package com.badoo.ribs.samples.gallery.rib.root.picker
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 
-
 class RootPickerBuilder(
     private val dependency: RootPicker.Dependency
 ) : SimpleBuilder<RootPicker>() {
@@ -24,10 +23,10 @@ class RootPickerBuilder(
         customisation: RootPicker.Customisation,
         interactor: RootPickerInteractor
     ) = RootPickerNode(
-            buildParams = buildParams,
-            viewFactory = customisation.viewFactory(null),
-            plugins = listOf(
-                interactor
-            )
+        buildParams = buildParams,
+        viewFactory = customisation.viewFactory(null),
+        plugins = listOf(
+            interactor
         )
+    )
 }

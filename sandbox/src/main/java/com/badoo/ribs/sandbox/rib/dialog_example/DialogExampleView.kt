@@ -17,20 +17,20 @@ import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowSim
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.ShowThemedDialogClicked
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.Event.Up
 import com.badoo.ribs.sandbox.rib.dialog_example.DialogExampleView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface DialogExampleView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object ShowThemedDialogClicked : Event()
-        object ShowSimpleDialogClicked : Event()
-        object ShowLazyDialogClicked : Event()
-        object ShowRibDialogClicked : Event()
-        object Up : Event()
+        data object ShowThemedDialogClicked : Event()
+        data object ShowSimpleDialogClicked : Event()
+        data object ShowLazyDialogClicked : Event()
+        data object ShowRibDialogClicked : Event()
+        data object Up : Event()
     }
 
     data class ViewModel(
@@ -40,7 +40,7 @@ interface DialogExampleView : RibView,
     interface Factory : ViewFactoryBuilder<Nothing?, DialogExampleView>
 }
 
-class DialogExampleViewImpl  private constructor(
+class DialogExampleViewImpl private constructor(
     override val androidView: ViewGroup,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : AndroidRibView(),

@@ -25,10 +25,10 @@ class FeedContainerRouter internal constructor(
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
             @Parcelize
-            object AppBar : Configuration()
+            data object AppBar : Configuration()
 
             @Parcelize
-            object PhotoFeed : Configuration()
+            data object PhotoFeed : Configuration()
         }
     }
 

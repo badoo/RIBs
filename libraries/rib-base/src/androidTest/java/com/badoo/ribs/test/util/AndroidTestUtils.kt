@@ -5,9 +5,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
-import java.util.concurrent.TimeoutException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 private const val DEFAULT_CONDITION_TIMEOUT_MILLISECONDS = 15000L
 private const val DEFAULT_CHECK_CONDITION_FREQUENCY_MILLIS = 10L
@@ -41,9 +41,13 @@ fun <T : Activity> ActivityTestRule<T>.restartActivitySync() {
 
 fun waitForIdle(block: () -> Unit) = InstrumentationRegistry.getInstrumentation().waitForIdle(block)
 
-fun runOnMainSync(block: () -> Unit) = InstrumentationRegistry.getInstrumentation().runOnMainSync(block)
+fun runOnMainSync(block: () -> Unit) =
+    InstrumentationRegistry.getInstrumentation().runOnMainSync(block)
 
-fun waitFor(timeoutMillis: Long = DEFAULT_CONDITION_TIMEOUT_MILLISECONDS, condition: () -> Boolean) {
+fun waitFor(
+    timeoutMillis: Long = DEFAULT_CONDITION_TIMEOUT_MILLISECONDS,
+    condition: () -> Boolean
+) {
     val start = System.currentTimeMillis()
     while (!condition()) {
         if (System.currentTimeMillis() > start + timeoutMillis) {

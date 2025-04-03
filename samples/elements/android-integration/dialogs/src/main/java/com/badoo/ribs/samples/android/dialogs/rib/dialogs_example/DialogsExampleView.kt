@@ -27,20 +27,26 @@ class DialogsExampleViewImpl private constructor(
     private val presenter: DialogsExamplePresenter
 ) : AndroidRibView(), DialogsExampleView {
 
-    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_dialogs) : DialogsExampleView.Factory {
+    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_dialogs) :
+        DialogsExampleView.Factory {
 
-        override fun invoke(deps: DialogsExampleView.Dependency): ViewFactory<DialogsExampleView> = ViewFactory {
-            DialogsExampleViewImpl(
-                androidView = it.inflate(layoutRes),
-                presenter = deps.presenter
-            )
-        }
+        override fun invoke(deps: DialogsExampleView.Dependency): ViewFactory<DialogsExampleView> =
+            ViewFactory {
+                DialogsExampleViewImpl(
+                    androidView = it.inflate(layoutRes),
+                    presenter = deps.presenter
+                )
+            }
     }
 
-    private val simpleDialogButton: Button = androidView.findViewById(R.id.dialogs_rib_simple_dialog_button)
-    private val themedDialogButton: Button = androidView.findViewById(R.id.dialogs_rib_themed_dialog_button)
-    private val ribDialogButton: Button = androidView.findViewById(R.id.dialogs_rib_rib_dialog_button)
-    private val lazyDialogButton: Button = androidView.findViewById(R.id.dialogs_rib_lazy_dialog_button)
+    private val simpleDialogButton: Button =
+        androidView.findViewById(R.id.dialogs_rib_simple_dialog_button)
+    private val themedDialogButton: Button =
+        androidView.findViewById(R.id.dialogs_rib_themed_dialog_button)
+    private val ribDialogButton: Button =
+        androidView.findViewById(R.id.dialogs_rib_rib_dialog_button)
+    private val lazyDialogButton: Button =
+        androidView.findViewById(R.id.dialogs_rib_lazy_dialog_button)
     private val text: TextView = androidView.findViewById(R.id.dialogs_rib_debug)
 
 

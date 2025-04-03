@@ -11,7 +11,6 @@ import com.badoo.ribs.routing.state.changeset.RoutingCommand.Add
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Deactivate
 import com.badoo.ribs.routing.state.changeset.RoutingCommand.Remove
 
-
 internal object RoutingHistoryDiffer {
 
     /**
@@ -29,19 +28,19 @@ internal object RoutingHistoryDiffer {
                 val previousIds = previous.map { it.routing.identifier }
                 val currentIds = current.map { it.routing.identifier }
 
-                previousIds.minus(currentIds).reversed().forEach { identifier ->
+                previousIds.minus(currentIds.toSet()).reversed().forEach { identifier ->
                     val toRemove = previous.find(identifier)!!
                     commands += if (toRemove.activation == ACTIVE) toRemove.deactivate() else emptySet()
                     commands += toRemove.remove()
                 }
 
-                currentIds.minus(previousIds).forEach { identifier ->
+                currentIds.minus(previousIds.toSet()).forEach { identifier ->
                     val toAdd = current.find(identifier)!!
                     commands += toAdd.add()
                     commands += if (toAdd.activation == ACTIVE) toAdd.activate() else emptySet()
                 }
 
-                currentIds.intersect(previousIds).forEach { identifier ->
+                currentIds.intersect(previousIds.toSet()).forEach { identifier ->
                     val t0 = previous.find { it.routing.identifier == identifier }!!
                     val t1 = current.find { it.routing.identifier == identifier }!!
                     commands += diff(t0, t1)
@@ -82,7 +81,10 @@ internal object RoutingHistoryDiffer {
         return commands
     }
 
-    private fun <C : Parcelable> diff(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+    private fun <C : Parcelable> diff(
+        t0: RoutingHistoryElement<C>,
+        t1: RoutingHistoryElement<C>
+    ): Set<RoutingCommand<C>> {
         val commands = mutableSetOf<RoutingCommand<C>>()
 
         commands += diffActivationChange(t0, t1)
@@ -92,7 +94,10 @@ internal object RoutingHistoryDiffer {
         return commands
     }
 
-    private fun <C : Parcelable> diffActivationChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+    private fun <C : Parcelable> diffActivationChange(
+        t0: RoutingHistoryElement<C>,
+        t1: RoutingHistoryElement<C>
+    ): Set<RoutingCommand<C>> {
         val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.activation != t0.activation) {
@@ -106,7 +111,10 @@ internal object RoutingHistoryDiffer {
         return commands
     }
 
-    private fun <C : Parcelable> diffMetaChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+    private fun <C : Parcelable> diffMetaChange(
+        t0: RoutingHistoryElement<C>,
+        t1: RoutingHistoryElement<C>
+    ): Set<RoutingCommand<C>> {
         val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.routing.meta != t0.routing.meta) {
@@ -116,16 +124,19 @@ internal object RoutingHistoryDiffer {
         return commands
     }
 
-    private fun <C : Parcelable> diffOverlayChange(t0: RoutingHistoryElement<C>, t1: RoutingHistoryElement<C>): Set<RoutingCommand<C>> {
+    private fun <C : Parcelable> diffOverlayChange(
+        t0: RoutingHistoryElement<C>,
+        t1: RoutingHistoryElement<C>
+    ): Set<RoutingCommand<C>> {
         val commands = mutableSetOf<RoutingCommand<C>>()
 
         if (t1.overlays != t0.overlays) {
-            t0.overlays.minus(t1.overlays).forEach { overlay ->
+            t0.overlays.minus(t1.overlays.toSet()).forEach { overlay ->
                 if (t0.activation == ACTIVE) commands += Deactivate(overlay)
                 commands += Remove(overlay)
             }
 
-            t1.overlays.minus(t0.overlays).forEach { overlay ->
+            t1.overlays.minus(t0.overlays.toSet()).forEach { overlay ->
                 commands += Add(overlay)
                 if (t0.activation == ACTIVE) commands += Activate(overlay)
             }

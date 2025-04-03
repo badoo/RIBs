@@ -23,7 +23,7 @@ import com.badoo.ribs.routing.state.feature.Transaction
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.Sleep
 import com.badoo.ribs.routing.state.feature.Transaction.PoolCommand.WakeUp
 import com.badoo.ribs.routing.state.feature.state.SavedState
-import io.reactivex.observers.TestObserver
+import io.reactivex.rxjava3.observers.TestObserver
 import org.mockito.kotlin.*
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
@@ -34,16 +34,24 @@ import org.mockito.ArgumentMatchers.anyList
 
 // FIXME rework test suite -- many of the responsibilities has been moved out to other classes
 //  TODO test only remaining responsibilities without assumptions on view detach / attach etc.
+@SuppressWarnings("LargeClass")
 class RoutingStatePoolTest {
 
     sealed class Configuration : Parcelable {
-        @Parcelize object Permanent1 : Configuration()
-        @Parcelize object Permanent2 : Configuration()
-        @Parcelize object ContentViewParented1 : Configuration()
-        @Parcelize object ContentViewParented2 : Configuration()
-        @Parcelize object ContentViewParented3 : Configuration()
-        @Parcelize object ContentExternal1 : Configuration()
-        @Parcelize object ContentExternal2 : Configuration()
+        @Parcelize
+        data object Permanent1 : Configuration()
+        @Parcelize
+        data object Permanent2 : Configuration()
+        @Parcelize
+        data object ContentViewParented1 : Configuration()
+        @Parcelize
+        data object ContentViewParented2 : Configuration()
+        @Parcelize
+        data object ContentViewParented3 : Configuration()
+        @Parcelize
+        data object ContentExternal1 : Configuration()
+        @Parcelize
+        data object ContentExternal2 : Configuration()
     }
 
     private lateinit var emptyTimeCapsule: TimeCapsule
@@ -70,7 +78,11 @@ class RoutingStatePoolTest {
         val resolution: Resolution
     ) {
         companion object {
-            fun create(routing: Routing<Configuration>, nbNodes: Int, viewActivationMode: ActivationMode): ConfigurationTestHelper {
+            fun create(
+                routing: Routing<Configuration>,
+                nbNodes: Int,
+                viewActivationMode: ActivationMode
+            ): ConfigurationTestHelper {
                 val nodes = MutableList(nbNodes) { i ->
                     mock<Node<Nothing>> {
                         on { this.buildContext } doReturn BuildContext.root(null)
@@ -104,8 +116,8 @@ class RoutingStatePoolTest {
                 mock {
                     on { numberOfNodes } doReturn nbNodes
                     on { buildNodes(anyList()) } doAnswer {
-                        this@toRoutingAction.map {
-                            factory -> factory.invoke()
+                        this@toRoutingAction.map { factory ->
+                            factory.invoke()
                         }
                     }
                 }
@@ -115,34 +127,67 @@ class RoutingStatePoolTest {
     @Before
     @SuppressWarnings("LongMethod")
     fun setUp() {
-        val routingPermanent1 = Routing(identifier = Identifier("Permanent 0"), configuration = Permanent1 as Configuration)
-        val routingPermanent2 = Routing(identifier = Identifier("Permanent 1"), configuration = Permanent2 as Configuration)
-        val routingContentViewParented1 = Routing(identifier = Identifier("Content 0"), configuration = ContentViewParented1 as Configuration)
-        val routingContentViewParented2 = Routing(identifier = Identifier("Content 1"), configuration = ContentViewParented2 as Configuration)
-        val routingContentViewParented3 = Routing(identifier = Identifier("Content 2"), configuration = ContentViewParented3 as Configuration)
-        val routingContentExternal1 = Routing(identifier = Identifier("Content 3"), configuration = ContentExternal1 as Configuration)
-        val routingContentExternal2 = Routing(identifier = Identifier("Content 4"), configuration = ContentExternal2 as Configuration)
+        val routingPermanent1 = Routing(
+            identifier = Identifier("Permanent 0"),
+            configuration = Permanent1 as Configuration
+        )
+        val routingPermanent2 = Routing(
+            identifier = Identifier("Permanent 1"),
+            configuration = Permanent2 as Configuration
+        )
+        val routingContentViewParented1 = Routing(
+            identifier = Identifier("Content 0"),
+            configuration = ContentViewParented1 as Configuration
+        )
+        val routingContentViewParented2 = Routing(
+            identifier = Identifier("Content 1"),
+            configuration = ContentViewParented2 as Configuration
+        )
+        val routingContentViewParented3 = Routing(
+            identifier = Identifier("Content 2"),
+            configuration = ContentViewParented3 as Configuration
+        )
+        val routingContentExternal1 = Routing(
+            identifier = Identifier("Content 3"),
+            configuration = ContentExternal1 as Configuration
+        )
+        val routingContentExternal2 = Routing(
+            identifier = Identifier("Content 4"),
+            configuration = ContentExternal2 as Configuration
+        )
 
         helperPermanent1 =
-            ConfigurationTestHelper.create(routingPermanent1,2, ActivationMode.ATTACH_TO_PARENT)
+            ConfigurationTestHelper.create(routingPermanent1, 2, ActivationMode.ATTACH_TO_PARENT)
 
         helperPermanent2 =
-            ConfigurationTestHelper.create(routingPermanent2,3, ActivationMode.ATTACH_TO_PARENT)
+            ConfigurationTestHelper.create(routingPermanent2, 3, ActivationMode.ATTACH_TO_PARENT)
 
         helperContentViewParented1 =
-            ConfigurationTestHelper.create(routingContentViewParented1,2, ActivationMode.ATTACH_TO_PARENT)
+            ConfigurationTestHelper.create(
+                routingContentViewParented1,
+                2,
+                ActivationMode.ATTACH_TO_PARENT
+            )
 
         helperContentViewParented2 =
-            ConfigurationTestHelper.create(routingContentViewParented2,3, ActivationMode.ATTACH_TO_PARENT)
+            ConfigurationTestHelper.create(
+                routingContentViewParented2,
+                3,
+                ActivationMode.ATTACH_TO_PARENT
+            )
 
         helperContentViewParented3 =
-            ConfigurationTestHelper.create(routingContentViewParented3,2, ActivationMode.ATTACH_TO_PARENT)
+            ConfigurationTestHelper.create(
+                routingContentViewParented3,
+                2,
+                ActivationMode.ATTACH_TO_PARENT
+            )
 
         helperContentExternal1 =
-            ConfigurationTestHelper.create(routingContentExternal1,2, ActivationMode.CLIENT)
+            ConfigurationTestHelper.create(routingContentExternal1, 2, ActivationMode.CLIENT)
 
         helperContentExternal2 =
-            ConfigurationTestHelper.create(routingContentExternal2,3, ActivationMode.CLIENT)
+            ConfigurationTestHelper.create(routingContentExternal2, 3, ActivationMode.CLIENT)
 
         val helpers = listOf(
             helperPermanent1,
@@ -172,15 +217,43 @@ class RoutingStatePoolTest {
         )
 
         val poolInTimeCapsule = hashMapOf(
-            routingsforTimeCapsule[0] to Unresolved(SLEEPING, routingsforTimeCapsule[0], helperPermanent1.bundles),
-            routingsforTimeCapsule[1] to Unresolved(SLEEPING, routingsforTimeCapsule[1], helperPermanent2.bundles),
+            routingsforTimeCapsule[0] to Unresolved(
+                SLEEPING,
+                routingsforTimeCapsule[0],
+                helperPermanent1.bundles
+            ),
+            routingsforTimeCapsule[1] to Unresolved(
+                SLEEPING,
+                routingsforTimeCapsule[1],
+                helperPermanent2.bundles
+            ),
 
-            routingsforTimeCapsule[2] to Unresolved(SLEEPING, routingsforTimeCapsule[2], helperContentViewParented1.bundles),
-            routingsforTimeCapsule[3] to Unresolved(SLEEPING, routingsforTimeCapsule[3], helperContentViewParented2.bundles),
-            routingsforTimeCapsule[4] to Unresolved(INACTIVE, routingsforTimeCapsule[4], helperContentViewParented3.bundles),
+            routingsforTimeCapsule[2] to Unresolved(
+                SLEEPING,
+                routingsforTimeCapsule[2],
+                helperContentViewParented1.bundles
+            ),
+            routingsforTimeCapsule[3] to Unresolved(
+                SLEEPING,
+                routingsforTimeCapsule[3],
+                helperContentViewParented2.bundles
+            ),
+            routingsforTimeCapsule[4] to Unresolved(
+                INACTIVE,
+                routingsforTimeCapsule[4],
+                helperContentViewParented3.bundles
+            ),
 
-            routingsforTimeCapsule[5] to Unresolved(SLEEPING, routingsforTimeCapsule[5], helperContentExternal1.bundles),
-            routingsforTimeCapsule[6] to Unresolved(INACTIVE, routingsforTimeCapsule[6], helperContentExternal2.bundles)
+            routingsforTimeCapsule[5] to Unresolved(
+                SLEEPING,
+                routingsforTimeCapsule[5],
+                helperContentExternal1.bundles
+            ),
+            routingsforTimeCapsule[6] to Unresolved(
+                INACTIVE,
+                routingsforTimeCapsule[6],
+                helperContentExternal2.bundles
+            )
         )
 
         emptyTimeCapsule = mock()
@@ -224,12 +297,14 @@ class RoutingStatePoolTest {
     // For backwards compatibility with legacy testing approaches until test suite is reworked -- still
     //  better than throwing them away
     private fun RoutingStatePool<Configuration>.addPermanents() {
-        accept(Transaction.from(
-            Add(helperPermanent1.routing),
-            Add(helperPermanent2.routing),
-            Activate(helperPermanent1.routing),
-            Activate(helperPermanent2.routing)
-        ))
+        accept(
+            Transaction.from(
+                Add(helperPermanent1.routing),
+                Add(helperPermanent2.routing),
+                Activate(helperPermanent1.routing),
+                Activate(helperPermanent2.routing)
+            )
+        )
     }
 
     // region Init
@@ -313,8 +388,14 @@ class RoutingStatePoolTest {
 
         verify(routingActivator).add(helperPermanent1.routing, helperPermanent1.nodes)
         verify(routingActivator).add(helperPermanent2.routing, helperPermanent2.nodes)
-        verify(routingActivator).add(helperContentViewParented1.routing, helperContentViewParented1.nodes)
-        verify(routingActivator).add(helperContentViewParented2.routing, helperContentViewParented2.nodes)
+        verify(routingActivator).add(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
+        verify(routingActivator).add(
+            helperContentViewParented2.routing,
+            helperContentViewParented2.nodes
+        )
         verify(routingActivator).add(helperContentExternal1.routing, helperContentExternal1.nodes)
     }
 
@@ -335,13 +416,28 @@ class RoutingStatePoolTest {
         pool.accept(WakeUp())
         verify(routingActivator).activate(helperPermanent1.routing, helperPermanent1.nodes)
         verify(routingActivator).activate(helperPermanent2.routing, helperPermanent2.nodes)
-        verify(routingActivator).activate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
-        verify(routingActivator).activate(helperContentViewParented2.routing, helperContentViewParented2.nodes)
-        verify(routingActivator).activate(helperContentExternal1.routing, helperContentExternal1.nodes)
+        verify(routingActivator).activate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
+        verify(routingActivator).activate(
+            helperContentViewParented2.routing,
+            helperContentViewParented2.nodes
+        )
+        verify(routingActivator).activate(
+            helperContentExternal1.routing,
+            helperContentExternal1.nodes
+        )
 
         // As these were INACTIVE and shouldn't be reactivated after WakeUp
-        verify(routingActivator, never()).activate(helperContentViewParented3.routing, helperContentViewParented3.nodes)
-        verify(routingActivator, never()).activate(helperContentExternal2.routing, helperContentExternal2.nodes)
+        verify(routingActivator, never()).activate(
+            helperContentViewParented3.routing,
+            helperContentViewParented3.nodes
+        )
+        verify(routingActivator, never()).activate(
+            helperContentExternal2.routing,
+            helperContentExternal2.nodes
+        )
     }
 
     /**
@@ -394,9 +490,11 @@ class RoutingStatePoolTest {
     @Test
     fun `On Add, Node factories are invoked`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing)
+            )
+        )
         helperContentViewParented1.nodeFactories.forEach {
             verify(it).invoke()
         }
@@ -405,10 +503,12 @@ class RoutingStatePoolTest {
     @Test
     fun `On Add TWICE, Node factories are NOT invoked again`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentViewParented1.routing)
+            )
+        )
         helperContentViewParented1.nodeFactories.forEach {
             verify(it, times(1)).invoke()
         }
@@ -426,9 +526,11 @@ class RoutingStatePoolTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Add, Nodes that are created are attached with empty Bundles`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing)
+            )
+        )
         helperContentViewParented1.nodes.forEach {
             verify(parentNode).attachChildNode(it)
         }
@@ -446,10 +548,12 @@ class RoutingStatePoolTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Add TWICE, Nodes are NOT added again`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentViewParented1.routing)
+            )
+        )
         helperContentViewParented1.nodes.forEach {
             verify(parentNode, times(1)).attachChildNode(it)
         }
@@ -465,9 +569,11 @@ class RoutingStatePoolTest {
     @Test
     fun `On Add, associated RoutingAction is not yet executed`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing)
+            )
+        )
         verify(helperContentViewParented1.resolution, never()).execute()
     }
     // endregion
@@ -476,31 +582,40 @@ class RoutingStatePoolTest {
     @Test
     fun `On Activate BEFORE WakeUp, associated RoutingAction is NOT yet executed`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         verify(helperContentViewParented1.resolution, never()).execute()
     }
 
     @Test
     fun `On Activate BEFORE WakeUp, attachChildView() is NOT yet called on associated Nodes that are view-parented`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
 
-        verify(routingActivator, never()).activate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
+        verify(routingActivator, never()).activate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
     }
 
     @Test
     fun `On Activate BEFORE WakeUp, associated RoutingAction is executed AUTOMATICALLY AFTER next WakeUp`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         pool.accept(WakeUp())
         verify(helperContentViewParented1.resolution).execute()
     }
@@ -508,22 +623,29 @@ class RoutingStatePoolTest {
     @Test
     fun `On Activate BEFORE WakeUp, attachChildView() is called AUTOMATICALLY AFTER next WakeUp on associated Nodes that are view-parented`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         pool.accept(WakeUp())
-        verify(routingActivator).activate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
+        verify(routingActivator).activate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
     }
 
     @Test
     fun `On Activate AFTER WakeUp, associated RoutingAction is executed`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         verify(helperContentViewParented1.resolution).execute()
     }
 
@@ -531,26 +653,35 @@ class RoutingStatePoolTest {
     fun `On Activate AFTER WakeUp, attachChildView() is called on associated Nodes`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
 
 
-        verify(routingActivator).activate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
+        verify(routingActivator).activate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
     }
 
     @Test
     fun `On Activate on ALREADY ACTIVE configuration, associated RoutingAction is NOT executed again`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
-        pool.accept(Transaction.from(
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
+        pool.accept(
+            Transaction.from(
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         verify(helperContentViewParented1.resolution, times(1)).execute()
     }
 
@@ -558,14 +689,21 @@ class RoutingStatePoolTest {
     fun `On Activate on ALREADY ACTIVE configuration, attachChildView() is NOT called again`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
-        pool.accept(Transaction.from(
-            Activate(helperContentViewParented1.routing)
-        ))
-        verify(routingActivator, times(1)).activate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
+        pool.accept(
+            Transaction.from(
+                Activate(helperContentViewParented1.routing)
+            )
+        )
+        verify(routingActivator, times(1)).activate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
     }
     // endregion
 
@@ -573,10 +711,12 @@ class RoutingStatePoolTest {
     @Test
     fun `On Deactivate, cleanup() is called on associated RoutingAction`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Deactivate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Deactivate(helperContentViewParented1.routing)
+            )
+        )
         verify(helperContentViewParented1.resolution).cleanup()
     }
 
@@ -592,10 +732,12 @@ class RoutingStatePoolTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Deactivate, saveViewState() is called on associated Nodes`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Deactivate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Deactivate(helperContentViewParented1.routing)
+            )
+        )
         helperContentViewParented1.nodes.forEach {
             verify(it).saveViewState()
         }
@@ -613,21 +755,28 @@ class RoutingStatePoolTest {
     @Ignore("The whole test suite should be refactored.")
     fun `On Deactivate, detachChildView() is called on associated Nodes that are view-parented`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Deactivate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Deactivate(helperContentViewParented1.routing)
+            )
+        )
 
-        verify(routingActivator).deactivate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
+        verify(routingActivator).deactivate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
     }
 
     @Test
     fun `On Deactivate, Node references are kept`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Deactivate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Deactivate(helperContentViewParented1.routing)
+            )
+        )
         val configurationContext = pool.state.pool[helperContentViewParented1.routing]
         assertEquals(true, configurationContext is Resolved)
         assertEquals(helperContentViewParented1.nodes, (configurationContext as? Resolved)?.nodes)
@@ -650,10 +799,12 @@ class RoutingStatePoolTest {
     @Test
     fun `On Deactivate, Node routing is removed from pendingDeactivate`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Deactivate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Deactivate(helperContentViewParented1.routing)
+            )
+        )
 
         assertEquals(true, pool.state.pendingDeactivate.isEmpty())
     }
@@ -662,15 +813,23 @@ class RoutingStatePoolTest {
     @Test
     fun `On Remove, all of its Nodes are detached regardless of view-parenting mode`() {
         createEmptyPool()
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentExternal1.routing),
-            Remove(helperContentViewParented1.routing),
-            Remove(helperContentExternal1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentExternal1.routing),
+                Remove(helperContentViewParented1.routing),
+                Remove(helperContentExternal1.routing)
+            )
+        )
 
-        verify(routingActivator).remove(helperContentViewParented1.routing, helperContentViewParented1.nodes)
-        verify(routingActivator).remove(helperContentExternal1.routing, helperContentExternal1.nodes)
+        verify(routingActivator).remove(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
+        verify(routingActivator).remove(
+            helperContentExternal1.routing,
+            helperContentExternal1.nodes
+        )
     }
     // endregion
 
@@ -679,11 +838,13 @@ class RoutingStatePoolTest {
     fun `On Sleep after WakeUp, cleanup() is called on associated RoutingAction`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentExternal1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentExternal1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         clearInvocations(parentNode)
         pool.accept(Sleep())
 
@@ -703,11 +864,13 @@ class RoutingStatePoolTest {
     fun `On Sleep after WakeUp, saveViewState() is called on every ACTIVE node`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentExternal1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentExternal1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         clearInvocations(parentNode)
         pool.accept(Sleep())
 
@@ -729,15 +892,20 @@ class RoutingStatePoolTest {
     fun `On Sleep after WakeUp, detachChildView() is called on every ACTIVE node that are view-parented`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentExternal1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentExternal1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         clearInvocations(parentNode)
         pool.accept(Sleep())
 
-        verify(routingActivator).deactivate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
+        verify(routingActivator).deactivate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
     }
     // endregion
 
@@ -746,11 +914,13 @@ class RoutingStatePoolTest {
     fun `On WakeUp after Sleep, execute() is called on associated RoutingAction`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentExternal1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentExternal1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         pool.accept(Sleep())
         clearInvocations(helperContentViewParented1.resolution)
         pool.accept(WakeUp())
@@ -762,16 +932,21 @@ class RoutingStatePoolTest {
     fun `On WakeUp after Sleep, attachChildView() is called on every ACTIVE node that are view-parented`() {
         createEmptyPool()
         pool.accept(WakeUp())
-        pool.accept(Transaction.from(
-            Add(helperContentViewParented1.routing),
-            Add(helperContentExternal1.routing),
-            Activate(helperContentViewParented1.routing)
-        ))
+        pool.accept(
+            Transaction.from(
+                Add(helperContentViewParented1.routing),
+                Add(helperContentExternal1.routing),
+                Activate(helperContentViewParented1.routing)
+            )
+        )
         pool.accept(Sleep())
         clearInvocations(routingActivator)
         pool.accept(WakeUp())
 
-        verify(routingActivator).activate(helperContentViewParented1.routing, helperContentViewParented1.nodes)
+        verify(routingActivator).activate(
+            helperContentViewParented1.routing,
+            helperContentViewParented1.nodes
+        )
     }
     // endregion
 }

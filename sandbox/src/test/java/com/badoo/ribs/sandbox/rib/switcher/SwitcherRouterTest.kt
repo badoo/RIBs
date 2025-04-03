@@ -12,15 +12,15 @@ import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Overlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration.Permanent
 import com.badoo.ribs.test.emptyBuildParams
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
+import org.junit.Test
+import org.mockito.Answers
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
-import org.junit.Test
-import org.mockito.Answers
 
 /**
  * Unit tests that check only router
@@ -53,7 +53,8 @@ class SwitcherRouterTest {
 
     @Test
     fun `Permanent_Menu configuration resolves to correct Node`() {
-        val routingAction = router.resolve(Routing(configuration = Permanent.Menu)).apply { execute() }
+        val routingAction =
+            router.resolve(Routing(configuration = Permanent.Menu)).apply { execute() }
         routingAction.buildNodes(listOf(root(null)))
 
         verify(builders.menu).build(any())
@@ -61,7 +62,8 @@ class SwitcherRouterTest {
 
     @Test
     fun `Content_Hello configuration resolves to correct Node`() {
-        val routingAction = router.resolve(Routing(configuration = Content.Hello)).apply { execute() }
+        val routingAction =
+            router.resolve(Routing(configuration = Content.Hello)).apply { execute() }
         routingAction.buildNodes(listOf(root(null)))
 
         verify(builders.helloWorld).build(any())
@@ -77,7 +79,8 @@ class SwitcherRouterTest {
 
     @Test
     fun `Content_DialogsExample configuration resolves to correct Node`() {
-        val routingAction = router.resolve(Routing(configuration = Content.DialogsExample)).apply { execute() }
+        val routingAction =
+            router.resolve(Routing(configuration = Content.DialogsExample)).apply { execute() }
         routingAction.buildNodes(listOf(root(null)))
 
         verify(builders.dialogExample).build(any())
@@ -85,7 +88,8 @@ class SwitcherRouterTest {
 
     @Test
     fun `Content_Blocker configuration resolves to correct Node`() {
-        val routingAction = router.resolve(Routing(configuration = Content.Blocker)).apply { execute() }
+        val routingAction =
+            router.resolve(Routing(configuration = Content.Blocker)).apply { execute() }
         routingAction.buildNodes(listOf(root(null)))
 
         verify(builders.blocker).build(any())
@@ -93,7 +97,8 @@ class SwitcherRouterTest {
 
     @Test
     fun `Overlay_Dialog configuration resolves to DialogRoutingAction`() {
-        val routingAction = router.resolve(Routing(configuration = Overlay.Dialog)).apply { execute() }
+        val routingAction =
+            router.resolve(Routing(configuration = Overlay.Dialog)).apply { execute() }
 
         assertThat(routingAction).isInstanceOf(DialogResolution::class.java)
     }

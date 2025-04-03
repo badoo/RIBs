@@ -9,10 +9,17 @@ fun <T> just(producer: () -> T): Source<T> =
     }
 
 @Suppress("UNCHECKED_CAST")
-fun <A : Any, B : Any, C> combineLatest(source1: Source<A>, source2: Source<B>, combination: (A, B) -> C): Source<C> =
+fun <A : Any, B : Any, C> combineLatest(
+    source1: Source<A>,
+    source2: Source<B>,
+    combination: (A, B) -> C
+): Source<C> =
     combineLatest(listOf(source1, source2)) { array -> combination(array[0] as A, array[1] as B) }
 
-fun <C> combineLatest(sources: Collection<Source<Any>>, combination: (Array<Any?>) -> C): Source<C> =
+fun <C> combineLatest(
+    sources: Collection<Source<Any>>,
+    combination: (Array<Any?>) -> C
+): Source<C> =
     object : Source<C> {
         /**
          * The internal state (first / second values) should be recreated for each new call to observer

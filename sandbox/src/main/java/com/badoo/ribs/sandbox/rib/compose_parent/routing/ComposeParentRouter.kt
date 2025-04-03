@@ -18,21 +18,27 @@ class ComposeParentRouter internal constructor(
     routingSource: RoutingSource<Configuration>,
     private val builders: ComposeParentChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
-            @Parcelize data class ComposeLeaf(val i: Int) : Content()
+            @Parcelize
+            data class ComposeLeaf(val i: Int) : Content()
         }
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         with(builders) {
             when (val configuration = routing.configuration) {
-                is Content.ComposeLeaf -> child { composeLeaf.build(it, ComposeLeaf.Params(configuration.i)) }
+                is Content.ComposeLeaf -> child {
+                    composeLeaf.build(
+                        it,
+                        ComposeLeaf.Params(configuration.i)
+                    )
+                }
             }
         }
 }

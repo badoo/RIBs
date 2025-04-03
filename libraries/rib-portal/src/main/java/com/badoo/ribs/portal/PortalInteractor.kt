@@ -20,10 +20,22 @@ class PortalInteractor(
 ), Portal.OtherSide {
 
     override fun showContent(remoteNode: Node<*>, remoteConfiguration: Parcelable) {
-        backStack.push(Content.Portal(remoteNode.ancestryInfo.routingChain + Routing(remoteConfiguration)))
+        backStack.push(
+            Content.Portal(
+                remoteNode.ancestryInfo.routingChain + Routing(
+                    remoteConfiguration
+                )
+            )
+        )
     }
 
     override fun showOverlay(remoteNode: Node<*>, remoteConfiguration: Parcelable) {
-        backStack.pushOverlay(Overlay.Portal(remoteNode.ancestryInfo.routingChain + Routing(remoteConfiguration)))
+        backStack.pushOverlay(
+            Overlay.Portal(
+                remoteNode.ancestryInfo.routingChain + Routing(
+                    remoteConfiguration
+                )
+            )
+        )
     }
 }

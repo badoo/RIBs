@@ -15,7 +15,7 @@ import com.badoo.ribs.samples.android.dialogs.rib.dummy.DummyView.Event
 interface DummyView : RibView {
 
     sealed class Event {
-        object ButtonClicked : Event()
+        data object ButtonClicked : Event()
     }
 
     interface Dependency {

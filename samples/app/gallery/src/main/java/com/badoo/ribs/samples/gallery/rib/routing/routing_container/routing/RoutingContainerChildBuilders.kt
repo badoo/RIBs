@@ -1,10 +1,10 @@
 package com.badoo.ribs.samples.gallery.rib.routing.routing_container.routing
 
-import com.badoo.ribs.samples.routing.back_stack.rib.back_stack_example.BackStackExample
-import com.badoo.ribs.samples.routing.back_stack.rib.back_stack_example.BackStackExampleBuilder
 import com.badoo.ribs.samples.gallery.rib.routing.routing_container.RoutingContainer
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPicker
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPickerBuilder
+import com.badoo.ribs.samples.routing.back_stack.rib.back_stack_example.BackStackExample
+import com.badoo.ribs.samples.routing.back_stack.rib.back_stack_example.BackStackExampleBuilder
 import com.badoo.ribs.samples.routing.parameterised_routing.rib.parameterised_routing_example.ParameterisedRoutingExample
 import com.badoo.ribs.samples.routing.parameterised_routing.rib.parameterised_routing_example.ParameterisedRoutingExampleBuilder
 import com.badoo.ribs.samples.routing.simple_routing.rib.simple_routing_parent.SimpleRoutingParent
@@ -30,8 +30,7 @@ internal class RoutingContainerChildBuilders(
         SimpleRoutingParent.Dependency,
         BackStackExample.Dependency,
         ParameterisedRoutingExample.Dependency,
-        TransitionAnimationsExample.Dependency {
-    }
+        TransitionAnimationsExample.Dependency
 }
 
 

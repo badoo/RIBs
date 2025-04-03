@@ -4,18 +4,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.badoo.ribs.core.Node
-import com.badoo.ribs.core.view.RibView
-import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.view.AndroidRibView
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
+import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.R
 import com.badoo.ribs.sandbox.rib.big.BigView.Event
 import com.badoo.ribs.sandbox.rib.big.BigView.ViewModel
 import com.badoo.ribs.sandbox.rib.small.Small
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface BigView : RibView,
     ObservableSource<Event>,

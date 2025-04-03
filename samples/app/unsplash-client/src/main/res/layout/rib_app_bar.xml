@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rib_app_bar"
-    app:contentInsetStart="0dp"
-    app:contentInsetEnd="0dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:contentInsetEnd="0dp"
+    app:contentInsetStart="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar_contents"
@@ -15,42 +14,39 @@
         android:layout_height="?actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toolbar_action_start"
             android:layout_width="?actionBarSize"
             android:layout_height="0dp"
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:src="@drawable/ic_launcher_background"
-            android:padding="12dp"
-            />
+            tools:src="@drawable/ic_launcher_background" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/toolbar_action_end"
             android:layout_width="?actionBarSize"
             android:layout_height="0dp"
-            android:src="@drawable/ic_search"
             android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_search"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
+            android:text="@string/app_name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/toolbar_action_start"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/app_name"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

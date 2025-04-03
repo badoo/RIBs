@@ -4,8 +4,8 @@ import android.view.View
 import android.view.ViewGroup
 
 sealed class AnimationContainer {
-    object RootView : AnimationContainer()
-    object Parent : AnimationContainer()
+    data object RootView : AnimationContainer()
+    data object Parent : AnimationContainer()
     data class FindParentById(val id: Int) : AnimationContainer()
 }
 

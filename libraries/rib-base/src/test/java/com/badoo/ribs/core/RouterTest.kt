@@ -2,17 +2,17 @@ package com.badoo.ribs.core
 
 import com.badoo.ribs.core.helper.TestRouter
 import com.badoo.ribs.core.helper.TestView
-import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.core.view.RibView
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
+import com.badoo.ribs.routing.resolution.Resolution
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Answers
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -35,9 +35,11 @@ class RouterTest {
         childNodeC2_1 = mock()
         childNodeC2_2 = mock()
 
-        resolutionForC2 = mock { on { buildNodes(any())} doReturn listOf(
-            childNodeC2_1.toRib(),
-            childNodeC2_2.toRib())
+        resolutionForC2 = mock {
+            on { buildNodes(any()) } doReturn listOf(
+                childNodeC2_1.toRib(),
+                childNodeC2_2.toRib()
+            )
         }
         resolutionForC1 = mock()
         resolutionForC3 = mock()

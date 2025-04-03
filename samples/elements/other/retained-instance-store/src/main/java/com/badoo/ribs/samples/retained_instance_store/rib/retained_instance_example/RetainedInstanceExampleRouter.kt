@@ -24,10 +24,10 @@ class RetainedInstanceExampleRouter internal constructor(
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize
-            object Default : Configuration()
+            data object Default : Configuration()
 
             @Parcelize
-            object Counter : Configuration()
+            data object Counter : Configuration()
         }
     }
 

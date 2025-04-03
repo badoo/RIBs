@@ -22,10 +22,10 @@ import com.badoo.ribs.example.network.NetworkError
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.example.root.Root
 import com.badoo.ribs.example.root.RootBuilder
-import com.jakewharton.rxrelay2.PublishRelay
-import com.jakewharton.rxrelay2.Relay
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.jakewharton.rxrelay3.PublishRelay
+import com.jakewharton.rxrelay3.Relay
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 
 class RootActivity : RibActivity(), AuthCodeDataSource {
 
@@ -41,7 +41,8 @@ class RootActivity : RibActivity(), AuthCodeDataSource {
         get() = findViewById(R.id.root)
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
-        buildRootNode(root(
+        buildRootNode(
+            root(
             savedInstanceState = savedInstanceState,
             defaultPlugins = { node ->
                 if (BuildConfig.DEBUG) {

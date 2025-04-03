@@ -22,8 +22,7 @@ internal class CommunicationContainerChildBuilders(
     ) : CommunicationContainer.Dependency by dependency,
         CommunicationPicker.Dependency,
         GreetingContainer.Dependency,
-        MenuExample.Dependency {
-    }
+        MenuExample.Dependency
 }
 
 

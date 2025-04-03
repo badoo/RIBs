@@ -8,13 +8,14 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
-internal class TestRoutingStatePool(initialState: WorkingState<AnyConfiguration>? = null) : RoutingStatePool<AnyConfiguration>(
-    timeCapsule = createTimeCapsule(initialState),
-    resolver = mock(),
-    activator = mock(),
-    parentNode = mock(),
-    transitionHandler = mock(),
-) {
+internal class TestRoutingStatePool(initialState: WorkingState<AnyConfiguration>? = null) :
+    RoutingStatePool<AnyConfiguration>(
+        timeCapsule = createTimeCapsule(initialState),
+        resolver = mock(),
+        activator = mock(),
+        parentNode = mock(),
+        transitionHandler = mock(),
+    ) {
 
     fun testEvent(event: Effect<AnyConfiguration>) {
         emitEvent(event)

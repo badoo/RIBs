@@ -44,11 +44,11 @@ class RootContainerBuilder(
         builders: RootContainerChildBuilders,
         customisation: RootContainer.Customisation
     ) = RootContainerRouter(
-            buildParams = buildParams,
-            builders = builders,
-            routingSource = routingSource,
-            transitionHandler = customisation.transitionHandler
-        )
+        buildParams = buildParams,
+        builders = builders,
+        routingSource = routingSource,
+        transitionHandler = customisation.transitionHandler
+    )
 
     private fun node(
         buildParams: BuildParams<*>,

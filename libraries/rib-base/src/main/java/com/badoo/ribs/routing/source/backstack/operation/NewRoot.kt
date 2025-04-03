@@ -1,9 +1,9 @@
 package com.badoo.ribs.routing.source.backstack.operation
 
 import android.os.Parcelable
-import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.Routing
 import com.badoo.ribs.routing.history.RoutingHistoryElement
+import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.Elements
 
 data class NewRoot<C : Parcelable>(

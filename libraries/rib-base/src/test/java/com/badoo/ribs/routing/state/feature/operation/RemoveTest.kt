@@ -19,40 +19,40 @@ class RemoveTest {
 
     private lateinit var remove: Remove<Configuration>
 
-    val elements: Elements<Configuration> = listOf<RoutingHistoryElement<Configuration>>(
+    val elements: Elements<Configuration> = listOf(
         RoutingHistoryElement(
-            routing = Routing<Configuration>(
+            routing = Routing(
                 identifier = Identifier(id = 10),
                 configuration = C1
             )
         ),
         RoutingHistoryElement(
-            routing = Routing<Configuration>(
+            routing = Routing(
                 identifier = Identifier(id = 20),
                 configuration = C2
             ),
             overlays = listOf(
-                Routing<Configuration>(
+                Routing(
                     identifier = Identifier(id = 201),
                     configuration = O1
                 )
             )
         ),
         RoutingHistoryElement(
-            routing = Routing<Configuration>(
+            routing = Routing(
                 identifier = Identifier(id = 30),
                 configuration = C3
             ),
             overlays = listOf(
-                Routing<Configuration>(
+                Routing(
                     identifier = Identifier(id = 301),
                     configuration = O1
                 ),
-                Routing<Configuration>(
+                Routing(
                     identifier = Identifier(id = 302),
                     configuration = O2
                 ),
-                Routing<Configuration>(
+                Routing(
                     identifier = Identifier(id = 303),
                     configuration = O3
                 )
@@ -113,12 +113,14 @@ class RemoveTest {
         remove = Remove(Identifier(id = 302))
 
         val result = remove.invoke(elements)
-        val expected = listOf(elements[0], elements[1], elements[2].copy(
-            overlays = listOf(
-                elements[2].overlays[0],
-                elements[2].overlays[2]
+        val expected = listOf(
+            elements[0], elements[1], elements[2].copy(
+                overlays = listOf(
+                    elements[2].overlays[0],
+                    elements[2].overlays[2]
+                )
             )
-        ))
+        )
 
         assertThat(result).isEqualTo(expected)
     }

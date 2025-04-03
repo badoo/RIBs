@@ -10,7 +10,7 @@ interface Small : Rib {
     interface Dependency : CanProvidePortal
 
     interface ExtraDependencies : CanProvidePortal {
-        fun customisation(): Small.Customisation
+        fun customisation(): Customisation
         fun buildParams(): BuildParams<Nothing?>
     }
 

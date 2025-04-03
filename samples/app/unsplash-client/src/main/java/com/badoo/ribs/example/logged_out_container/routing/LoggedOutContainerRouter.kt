@@ -26,11 +26,13 @@ class LoggedOutContainerRouter internal constructor(
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize
-            object Welcome : Content()
+            data object Welcome : Content()
+
             @Parcelize
-            object Login : Content()
+            data object Login : Content()
+
             @Parcelize
-            object Register : Content()
+            data object Register : Content()
         }
     }
 

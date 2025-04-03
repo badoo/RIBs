@@ -1,13 +1,13 @@
 package com.badoo.ribs.example.welcome
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.binder.using
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.example.auth.AuthDataSource
 import com.badoo.ribs.example.welcome.mapper.ViewEventToOutput
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 
 internal class WelcomeInteractor(
     buildParams: BuildParams<*>,

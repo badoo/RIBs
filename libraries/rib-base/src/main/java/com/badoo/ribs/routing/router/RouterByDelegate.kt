@@ -12,7 +12,7 @@ class RouterByDelegate<T : Parcelable>(
     routingSource: RoutingSource<T>,
     private val resolver: RoutingResolver<T>,
     clientChildActivator: ChildActivator<T> = UnhandledChildActivator()
-): Router<T>(
+) : Router<T>(
     buildParams = buildParams,
     routingSource = routingSource,
     clientChildActivator = clientChildActivator

@@ -2,11 +2,11 @@ package com.badoo.ribs.core
 
 import com.badoo.ribs.core.helper.TestView
 import com.badoo.ribs.core.plugin.ViewAware
+import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
-import org.junit.Test
-import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)

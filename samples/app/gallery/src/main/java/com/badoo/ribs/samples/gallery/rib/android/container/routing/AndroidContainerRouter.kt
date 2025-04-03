@@ -16,16 +16,20 @@ class AndroidContainerRouter internal constructor(
     routingSource: RoutingSource<Configuration>,
     private val builders: AndroidContainerChildBuilders,
     transitionHandler: TransitionHandler<Configuration>? = null
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource,
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
-        @Parcelize object Picker : Configuration()
-        @Parcelize object AcitivityExample : Configuration()
-        @Parcelize object PermissionsExample : Configuration()
-        @Parcelize object DialogExample : Configuration()
+        @Parcelize
+        data object Picker : Configuration()
+        @Parcelize
+        data object AcitivityExample : Configuration()
+        @Parcelize
+        data object PermissionsExample : Configuration()
+        @Parcelize
+        data object DialogExample : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =

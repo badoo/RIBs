@@ -13,6 +13,6 @@ interface Cancellable {
     }
 
     object Empty : Cancellable {
-        override fun cancel() { }
+        override fun cancel() {}
     }
 }

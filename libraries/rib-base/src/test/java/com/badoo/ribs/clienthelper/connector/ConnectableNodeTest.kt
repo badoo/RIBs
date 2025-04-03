@@ -2,17 +2,16 @@ package com.badoo.ribs.clienthelper.connector
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.helper.TestNode
-import com.badoo.ribs.core.plugin.SubtreeChangeAware
-import com.badoo.ribs.test.BaseConnectableNodeTest
 import com.badoo.ribs.core.helper.connectable.ConnectableTestNode
 import com.badoo.ribs.core.helper.connectable.ConnectableTestRib
 import com.badoo.ribs.core.helper.connectable.ConnectableTestRib.Output.Output1
 import com.badoo.ribs.core.helper.connectable.ConnectableTestRib.Output.Output2
-import io.reactivex.observers.TestObserver
+import com.badoo.ribs.core.plugin.SubtreeChangeAware
+import com.badoo.ribs.test.BaseConnectableNodeTest
+import io.reactivex.rxjava3.observers.TestObserver
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
 
 class ConnectableNodeTest : BaseConnectableNodeTest() {
 
@@ -65,7 +64,7 @@ class ConnectableNodeTest : BaseConnectableNodeTest() {
         children.output.accept(Output2)
         parent.attachChildNode(children)
 
-        testObserver.assertValues(Output1,Output2)
+        testObserver.assertValues(Output1, Output2)
     }
 
     @Test
@@ -76,6 +75,6 @@ class ConnectableNodeTest : BaseConnectableNodeTest() {
         parent.attachChildNode(children)
         children.output.accept(Output2)
 
-        testObserver.assertValues(Output1,Output2)
+        testObserver.assertValues(Output1, Output2)
     }
 }

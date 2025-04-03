@@ -1,6 +1,5 @@
 package com.badoo.ribs.example.feed_container
 
-import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.example.auth.AuthDataSource
@@ -9,6 +8,7 @@ import com.badoo.ribs.example.feed_container.FeedContainer.Output
 import com.badoo.ribs.example.feed_container.routing.FeedContainerRouter
 import com.badoo.ribs.example.network.UnsplashApi
 import com.badoo.ribs.routing.transition.handler.TransitionHandler
+import com.badoo.ribs.rx3.clienthelper.connector.Connectable
 
 interface FeedContainer : Rib, Connectable<Input, Output> {
 

@@ -4,7 +4,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.badoo.ribs.rx2.adapter.rx2
+import com.badoo.ribs.rx3.adapter.rx3
 import com.badoo.ribs.sandbox.BuildConfig
 import com.badoo.ribs.sandbox.rib.switcher.dialog.DialogToTestOverlay
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherChildBuilders
@@ -27,7 +27,7 @@ class SwitcherBuilder(
 
     override fun build(buildParams: BuildParams<Nothing?>): SwitcherNode {
         val customisation = buildParams.getOrDefault(Switcher.Customisation())
-        val backStack  = backStack(buildParams)
+        val backStack = backStack(buildParams)
         val router = router(buildParams, customisation, backStack)
         val interactor = interactor(buildParams, backStack, router)
 
@@ -57,7 +57,7 @@ class SwitcherBuilder(
         SwitcherInteractor(
             buildParams = buildParams,
             backStack = backStack,
-            transitions = router.transitionStates.rx2().distinctUntilChanged(),
+            transitions = router.transitionStates.rx3().distinctUntilChanged(),
             transitionSettled = { router.transitionState.isSettled },
             dialogToTestOverlay = dialogToTestOverlay
         )

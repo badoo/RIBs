@@ -14,13 +14,14 @@ import kotlinx.parcelize.Parcelize
 class HelloWorldRouter internal constructor(
     buildParams: BuildParams<Nothing?>,
     private val builders: HelloWorldChildBuilders
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = permanent(Small)
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
-            @Parcelize object Small : Permanent()
+            @Parcelize
+            data object Small : Permanent()
         }
     }
 

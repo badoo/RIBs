@@ -1,5 +1,5 @@
 package com.badoo.ribs.example.network
 
 sealed class NetworkError {
-    object Unauthorized: NetworkError()
+    data object Unauthorized : NetworkError()
 }

@@ -14,8 +14,8 @@ import com.badoo.ribs.core.plugin.ViewLifecycleAware
 import com.badoo.ribs.minimal.reactive.CompositeCancellable
 import com.badoo.ribs.minimal.reactive.Relay
 import com.badoo.ribs.minimal.reactive.Source
-import com.badoo.ribs.minimal.state.TimeCapsule
 import com.badoo.ribs.minimal.reactive.map
+import com.badoo.ribs.minimal.state.TimeCapsule
 import com.badoo.ribs.routing.activator.ChildActivator
 import com.badoo.ribs.routing.activator.RoutingActivator
 import com.badoo.ribs.routing.activator.UnhandledChildActivator
@@ -55,10 +55,10 @@ abstract class Router<C : Parcelable>(
 
     private val transitionStatesRelay: Relay<TransitionState> = Relay()
     val transitionStates: Source<TransitionState> = transitionStatesRelay
-    
+
     private val cancellable = CompositeCancellable()
     private val timeCapsule: TimeCapsule = TimeCapsule(buildParams.savedInstanceState)
-    private val hasSavedState: Boolean  = buildParams.savedInstanceState != null
+    private val hasSavedState: Boolean = buildParams.savedInstanceState != null
 
     private lateinit var routingStatePool: RoutingStatePool<C>
     override lateinit var node: Node<*>

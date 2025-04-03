@@ -25,13 +25,19 @@ class MenuExampleRouter internal constructor(
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
-            @Parcelize object Menu : Permanent()
+            @Parcelize
+            data object Menu : Permanent()
         }
 
         sealed class Content : Configuration() {
-            @Parcelize object Child1 : Content()
-            @Parcelize object Child2 : Content()
-            @Parcelize object Child3 : Content()
+            @Parcelize
+            data object Child1 : Content()
+
+            @Parcelize
+            data object Child2 : Content()
+
+            @Parcelize
+            data object Child3 : Content()
         }
     }
 

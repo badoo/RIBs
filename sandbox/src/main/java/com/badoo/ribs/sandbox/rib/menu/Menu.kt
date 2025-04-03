@@ -1,9 +1,9 @@
 package com.badoo.ribs.sandbox.rib.menu
 
 import android.os.Parcelable
-import com.badoo.ribs.rx2.clienthelper.connector.Connectable
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisation
+import com.badoo.ribs.rx3.clienthelper.connector.Connectable
 import com.badoo.ribs.sandbox.rib.menu.Menu.Input
 import com.badoo.ribs.sandbox.rib.menu.Menu.Output
 import kotlinx.parcelize.Parcelize
@@ -21,10 +21,17 @@ interface Menu : Rib, Connectable<Input, Output> {
     }
 
     sealed class MenuItem : Parcelable {
-        @Parcelize object HelloWorld : MenuItem()
-        @Parcelize object FooBar : MenuItem()
-        @Parcelize object Dialogs : MenuItem()
-        @Parcelize object Compose : MenuItem()
+        @Parcelize
+        data object HelloWorld : MenuItem()
+
+        @Parcelize
+        data object FooBar : MenuItem()
+
+        @Parcelize
+        data object Dialogs : MenuItem()
+
+        @Parcelize
+        data object Compose : MenuItem()
 
     }
 

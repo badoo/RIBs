@@ -8,7 +8,7 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter
 import com.badoo.ribs.sandbox.rib.compose_parent.routing.ComposeParentRouter.Configuration.Content
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 
 internal class ComposeParentInteractor(
     buildParams: BuildParams<*>,

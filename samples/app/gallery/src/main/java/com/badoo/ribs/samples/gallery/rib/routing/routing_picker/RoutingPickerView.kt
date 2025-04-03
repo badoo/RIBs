@@ -10,17 +10,17 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.samples.gallery.composable.ButtonList
 import com.badoo.ribs.samples.gallery.rib.routing.routing_picker.RoutingPickerView.Event
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
 
 interface RoutingPickerView : RibView,
     ObservableSource<Event> {
 
     sealed class Event {
-        object SimpleRoutingClicked : Event()
-        object BackStackClicked : Event()
-        object ParameterisedRoutingClicked : Event()
-        object TransitionsClicked : Event()
+        data object SimpleRoutingClicked : Event()
+        data object BackStackClicked : Event()
+        data object ParameterisedRoutingClicked : Event()
+        data object TransitionsClicked : Event()
     }
 
     fun interface Factory : ViewFactoryBuilder<Nothing?, RoutingPickerView>

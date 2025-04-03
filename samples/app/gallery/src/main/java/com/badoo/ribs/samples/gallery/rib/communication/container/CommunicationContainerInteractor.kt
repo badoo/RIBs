@@ -9,7 +9,7 @@ import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
 import com.badoo.ribs.samples.gallery.rib.communication.container.routing.CommunicationContainerRouter.Configuration
 import com.badoo.ribs.samples.gallery.rib.communication.picker.CommunicationPicker
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 
 internal class CommunicationContainerInteractor(
     buildParams: BuildParams<*>,

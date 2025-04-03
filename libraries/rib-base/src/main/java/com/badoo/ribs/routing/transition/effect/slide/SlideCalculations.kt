@@ -10,7 +10,6 @@ import com.badoo.ribs.routing.transition.effect.helper.AnimationContainer.RootVi
 import com.badoo.ribs.routing.transition.effect.helper.EndValues
 import com.badoo.ribs.routing.transition.effect.helper.findParentById
 
-
 internal fun <T> TransitionElement<out T>.slideEndValues(
     animationContainer: AnimationContainer,
     gravity: Gravity
@@ -23,7 +22,8 @@ internal fun <T> TransitionElement<out T>.slideEndValues(
 
     requireNotNull(container)
 
-    val diffToAnimationContainer: Int = diffToAnimationContainer(animationContainer, gravity, container)
+    val diffToAnimationContainer: Int =
+        diffToAnimationContainer(animationContainer, gravity, container)
 
     return when (gravity) {
         Gravity.LEFT -> EndValues(0f, -(view.width + diffToAnimationContainer).toFloat())
@@ -40,7 +40,9 @@ private fun <T> TransitionElement<out T>.diffToAnimationContainer(
 ): Int {
     val location = IntArray(2)
     when (animationContainer) {
-        is RootView -> { /* no-op, location stays [0,0] */ }
+        is RootView -> { /* no-op, location stays [0,0] */
+        }
+
         is Parent,
         is FindParentById -> container.getLocationInWindow(location)
     }

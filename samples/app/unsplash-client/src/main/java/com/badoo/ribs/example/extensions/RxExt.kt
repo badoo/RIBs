@@ -1,6 +1,6 @@
 package com.badoo.ribs.example.extensions
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
-fun <T> T?.toObservable(): Observable<T> =
+fun <T : Any> T?.toObservable(): Observable<T> =
     if (this == null) Observable.empty() else Observable.just(this)

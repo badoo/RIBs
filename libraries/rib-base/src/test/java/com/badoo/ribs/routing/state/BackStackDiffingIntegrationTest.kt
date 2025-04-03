@@ -36,7 +36,7 @@ class BackStackDiffingIntegrationTest {
 
     @Before
     fun setUp() {
-        backStack = BackStack<C>(
+        backStack = BackStack(
             initialConfiguration = C1,
             buildParams = emptyBuildParams()
         )
@@ -51,7 +51,12 @@ class BackStackDiffingIntegrationTest {
     fun overlay(position: Int, content: C, overlayIndex: Int, overlay: C): Routing<C> =
         Routing(
             configuration = overlay,
-            identifier = backStack.state.overlayIdForPosition(position, content, overlayIndex, overlay)
+            identifier = backStack.state.overlayIdForPosition(
+                position,
+                content,
+                overlayIndex,
+                overlay
+            )
         )
 
     @Test

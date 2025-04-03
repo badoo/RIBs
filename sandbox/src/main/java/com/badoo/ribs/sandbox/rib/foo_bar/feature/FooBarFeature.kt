@@ -9,8 +9,8 @@ import com.badoo.ribs.sandbox.rib.foo_bar.feature.FooBarFeature.Effect
 import com.badoo.ribs.sandbox.rib.foo_bar.feature.FooBarFeature.News
 import com.badoo.ribs.sandbox.rib.foo_bar.feature.FooBarFeature.State
 import com.badoo.ribs.sandbox.rib.foo_bar.feature.FooBarFeature.Wish
-import io.reactivex.Observable
-import io.reactivex.Observable.empty
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Observable.empty
 
 class FooBarFeature : ActorReducerFeature<Wish, Effect, State, News>(
     initialState = State(),

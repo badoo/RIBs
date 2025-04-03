@@ -11,7 +11,7 @@ interface Text {
 
     fun resolve(context: Context): CharSequence
 
-    class Plain(private val string: String): Text {
+    class Plain(private val string: String) : Text {
         override fun resolve(context: Context): CharSequence =
             string
     }

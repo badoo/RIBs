@@ -7,5 +7,4 @@ class KeyNotFoundInPoolException internal constructor(
     pool: Any
 ) : IllegalStateException(
     "Key $key was not found in pool: $pool"
-) {
-}
+)

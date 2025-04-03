@@ -25,13 +25,13 @@ class RootRouter internal constructor(
     sealed class Configuration : Parcelable {
         sealed class Content : Configuration() {
             @Parcelize
-            object LoggedIn : Content()
+            data object LoggedIn : Content()
 
             @Parcelize
-            object LoggedOut : Content()
+            data object LoggedOut : Content()
 
             @Parcelize
-            object Login : Content()
+            data object Login : Content()
         }
     }
 

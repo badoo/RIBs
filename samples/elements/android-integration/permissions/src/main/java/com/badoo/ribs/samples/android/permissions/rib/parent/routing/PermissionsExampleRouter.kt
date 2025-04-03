@@ -22,10 +22,10 @@ class PermissionsExampleRouter internal constructor(
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
             @Parcelize
-            object Child1 : Permanent()
+            data object Child1 : Permanent()
 
             @Parcelize
-            object Child2 : Permanent()
+            data object Child2 : Permanent()
         }
     }
 

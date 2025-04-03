@@ -5,7 +5,7 @@ import android.widget.Button
 import com.badoo.ribs.core.customisation.inflate
 import com.badoo.ribs.core.plugin.utils.debug.DebugControls
 import com.badoo.ribs.sandbox.R
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class SwitcherDebugControls : DebugControls<Switcher>(
     label = "Switcher",

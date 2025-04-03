@@ -21,7 +21,12 @@ import kotlin.reflect.KClass
  */
 interface RetainedInstanceStore {
 
-    fun <T : Any> get(owner: Rib.Identifier, clazz: KClass<*>, disposer: (T) -> Unit, factory: () -> T): T
+    fun <T : Any> get(
+        owner: Rib.Identifier,
+        clazz: KClass<*>,
+        disposer: (T) -> Unit,
+        factory: () -> T
+    ): T
 
     fun isRetainedByOwner(owner: Rib.Identifier, value: Any): Boolean
 

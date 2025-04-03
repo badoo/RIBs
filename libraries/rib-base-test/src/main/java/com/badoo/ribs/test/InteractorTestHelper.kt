@@ -28,6 +28,7 @@ class InteractorTestHelper<View : RibView>(
         when (state) {
             Lifecycle.State.DESTROYED,
             Lifecycle.State.INITIALIZED -> throw IllegalArgumentException("Unsupported state: $state")
+
             Lifecycle.State.CREATED -> toAttachViewState(block)
             Lifecycle.State.STARTED -> toStartState(block)
             Lifecycle.State.RESUMED -> toResumeState(block)

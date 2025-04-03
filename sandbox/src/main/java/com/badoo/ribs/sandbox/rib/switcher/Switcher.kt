@@ -13,7 +13,7 @@ import com.badoo.ribs.sandbox.rib.hello_world.HelloWorld
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherRouter.Configuration
 import com.badoo.ribs.sandbox.rib.switcher.routing.SwitcherTransitionHandler
 import com.badoo.ribs.sandbox.util.CoffeeMachine
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 interface Switcher : Rib {
 

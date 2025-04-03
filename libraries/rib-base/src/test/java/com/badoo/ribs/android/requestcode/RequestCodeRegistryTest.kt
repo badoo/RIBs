@@ -1,21 +1,22 @@
 package com.badoo.ribs.android.requestcode
 
 import android.os.Bundle
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Before
+import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
-import org.junit.Before
-import org.junit.Test
+import kotlin.math.pow
 
 class RequestCodeRegistryTest {
 
     companion object {
         private const val NB_LOWER_BITS = 4
-        private val MAX_REQUEST_CODE = Math.pow(2.0, NB_LOWER_BITS.toDouble()).toInt() - 1
+        private val MAX_REQUEST_CODE = 2.0.pow(NB_LOWER_BITS.toDouble()).toInt() - 1
     }
 
     private lateinit var requestCodeRegistry: RequestCodeRegistry

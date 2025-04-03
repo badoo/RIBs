@@ -61,8 +61,8 @@ dependencies {
     implementation deps.android.browser
 
 
-    implementation deps.external.rxrelay2
-    implementation deps.external.rxandroid2
+    implementation deps.external.rxrelay3
+    implementation deps.external.rxandroid3
 
     implementation deps.retrofit.retrofit
     implementation deps.retrofit.rxjavaAdapter
@@ -72,7 +72,7 @@ dependencies {
     implementation deps.retrofit.moshiKotlin
 
     implementation project(":libraries:rib-base")
-    implementation project(':libraries:rib-rx2')
+    implementation project(':libraries:rib-rx3')
     implementation project(":libraries:rib-portal")
 
     implementation deps.external.mviCore
@@ -85,7 +85,7 @@ dependencies {
     testImplementation deps.test.mockitoKotlin
     testImplementation deps.test.assertj
     testImplementation project(":libraries:rib-base-test")
-    testImplementation project(":libraries:rib-base-test-rx2")
+    testImplementation project(':libraries:rib-base-test-rx3')
 
     junitAndroidTestImplementation(project)
     androidTestImplementation project(":libraries:rib-base-test")

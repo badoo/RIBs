@@ -1,7 +1,7 @@
 package com.badoo.ribs.sandbox.rib.hello_world.analytics
 
 import com.badoo.ribs.sandbox.rib.hello_world.HelloWorldView
-import io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 
 internal object HelloWorldAnalytics : Consumer<HelloWorldAnalytics.Event> {
 
@@ -9,7 +9,7 @@ internal object HelloWorldAnalytics : Consumer<HelloWorldAnalytics.Event> {
         data class ViewEvent(val event: HelloWorldView.Event) : Event()
     }
 
-    override fun accept(event: HelloWorldAnalytics.Event) {
+    override fun accept(event: Event) {
         // TODO Implement tracking
     }
 }

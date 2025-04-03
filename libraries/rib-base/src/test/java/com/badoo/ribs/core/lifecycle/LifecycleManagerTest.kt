@@ -7,11 +7,11 @@ import com.badoo.ribs.core.helper.TestNode
 import com.badoo.ribs.core.helper.testBuildParams
 import com.badoo.ribs.core.modality.AncestryInfo
 import com.badoo.ribs.routing.Routing
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
 import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import java.util.concurrent.CopyOnWriteArrayList
 
 class LifecycleManagerTest {
@@ -47,7 +47,8 @@ class LifecycleManagerTest {
     @Test
     fun `onAttachChild() lifecycle inheritance is recursive`() {
         val grandChildAncestryInfo = AncestryInfo.Child(child1, Routing(AnyConfiguration))
-        val grandChild: Node<*> = TestNode(buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo))
+        val grandChild: Node<*> =
+            TestNode(buildParams = testBuildParams(ancestryInfo = grandChildAncestryInfo))
         child1.attachChildNode(grandChild)
 
         val expected = RESUMED

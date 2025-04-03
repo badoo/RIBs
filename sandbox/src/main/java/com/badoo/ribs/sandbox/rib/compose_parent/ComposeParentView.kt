@@ -24,16 +24,16 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentView.Event
 import com.badoo.ribs.sandbox.rib.compose_parent.ComposeParentView.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.ObservableSource
-import io.reactivex.functions.Consumer
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.Consumer
 
 interface ComposeParentView : RibView,
     ObservableSource<Event>,
     Consumer<ViewModel> {
 
     sealed class Event {
-        object NextClicked : Event()
+        data object NextClicked : Event()
     }
 
     data class ViewModel(
@@ -66,7 +66,7 @@ class ComposeParentViewImpl private constructor(
     private var content: MutableState<ComposeView?> = mutableStateOf(null)
 
     override val composable: @Composable () -> Unit = {
-        View(viewModel.value, content.value, { events.accept(Event.NextClicked) })
+        View(viewModel.value, content.value) { events.accept(Event.NextClicked) }
     }
 
     override fun accept(vm: ViewModel) {

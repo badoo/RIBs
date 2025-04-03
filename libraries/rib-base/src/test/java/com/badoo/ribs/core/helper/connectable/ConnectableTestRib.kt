@@ -9,8 +9,8 @@ interface ConnectableTestRib : Connectable<Input, Output> {
     sealed class Input
 
     sealed class Output {
-        object Output1 : Output()
-        object Output2 : Output()
-        object Output3 : Output()
+        data object Output1 : Output()
+        data object Output2 : Output()
+        data object Output3 : Output()
     }
 }

@@ -1,8 +1,8 @@
 package com.badoo.ribs.sandbox.rib.blocker
 
 import androidx.lifecycle.Lifecycle
-import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.binder.using
+import com.badoo.mvicore.android.lifecycle.startStop
 import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.sandbox.rib.blocker.mapper.ViewEventToOutput

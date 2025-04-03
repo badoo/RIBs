@@ -2,10 +2,10 @@ package com.badoo.ribs.core
 
 import android.os.Bundle
 import com.badoo.ribs.core.plugin.SavesInstanceState
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)

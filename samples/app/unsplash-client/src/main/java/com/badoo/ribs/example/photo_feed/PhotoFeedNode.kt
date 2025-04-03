@@ -1,7 +1,5 @@
 package com.badoo.ribs.example.photo_feed
 
-import com.badoo.ribs.rx2.clienthelper.connector.Connectable
-import com.badoo.ribs.rx2.clienthelper.connector.NodeConnector
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
@@ -9,6 +7,8 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.example.photo_feed.PhotoFeed.Input
 import com.badoo.ribs.example.photo_feed.PhotoFeed.Output
 import com.badoo.ribs.example.photo_feed.view.PhotoFeedView
+import com.badoo.ribs.rx3.clienthelper.connector.Connectable
+import com.badoo.ribs.rx3.clienthelper.connector.NodeConnector
 
 class PhotoFeedNode internal constructor(
     buildParams: BuildParams<*>,

@@ -8,7 +8,10 @@ import com.badoo.ribs.android.requestcode.RequestCodeClient
 interface PermissionRequester :
     RequestCodeBasedEventStream<RequestPermissionsEvent> {
 
-    fun checkPermissions(client: RequestCodeClient, permissions: Array<String>) : CheckPermissionsResult
+    fun checkPermissions(
+        client: RequestCodeClient,
+        permissions: Array<String>
+    ): CheckPermissionsResult
 
     fun requestPermissions(client: RequestCodeClient, requestCode: Int, permissions: Array<String>)
 

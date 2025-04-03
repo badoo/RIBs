@@ -25,24 +25,37 @@ class SwitcherRouter internal constructor(
     private val builders: SwitcherChildBuilders,
     private val dialogLauncher: DialogLauncher,
     private val dialogToTestOverlay: DialogToTestOverlay
-): Router<Configuration>(
+) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = routingSource + permanent(Permanent.Menu),
     transitionHandler = transitionHandler
 ) {
     sealed class Configuration : Parcelable {
         sealed class Permanent : Configuration() {
-            @Parcelize object Menu : Permanent()
+            @Parcelize
+            data object Menu : Permanent()
         }
+
         sealed class Content : Configuration() {
-            @Parcelize object Hello : Content()
-            @Parcelize object Foo : Content()
-            @Parcelize object DialogsExample : Content()
-            @Parcelize object Compose : Content()
-            @Parcelize object Blocker : Content()
+            @Parcelize
+            data object Hello : Content()
+
+            @Parcelize
+            data object Foo : Content()
+
+            @Parcelize
+            data object DialogsExample : Content()
+
+            @Parcelize
+            data object Compose : Content()
+
+            @Parcelize
+            data object Blocker : Content()
         }
+
         sealed class Overlay : Configuration() {
-            @Parcelize object Dialog : Overlay()
+            @Parcelize
+            data object Dialog : Overlay()
         }
     }
 
@@ -52,10 +65,15 @@ class SwitcherRouter internal constructor(
                 is Permanent.Menu -> child { menu.build(it) }
                 is Content.Hello -> child { helloWorld.build(it) }
                 is Content.Foo -> child { fooBar.build(it) }
-                is Content.DialogsExample -> child {  dialogExample.build(it) }
+                is Content.DialogsExample -> child { dialogExample.build(it) }
                 is Content.Compose -> child { composeParent.build(it) }
                 is Content.Blocker -> child { blocker.build(it) }
-                is Overlay.Dialog -> showDialog(routingSource, routing.identifier, dialogLauncher, dialogToTestOverlay)
+                is Overlay.Dialog -> showDialog(
+                    routingSource,
+                    routing.identifier,
+                    dialogLauncher,
+                    dialogToTestOverlay
+                )
             }
         }
 }

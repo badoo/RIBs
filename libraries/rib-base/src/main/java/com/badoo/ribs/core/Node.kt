@@ -1,6 +1,7 @@
 package com.badoo.ribs.core
 
 import android.os.Bundle
+import android.os.Looper
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
@@ -49,6 +50,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     val buildParams: BuildParams<*>,
     private val viewFactory: ViewFactory<V>?,
     private val retainedInstanceStore: RetainedInstanceStore,
+    private val isOnMainThreadFunc: () -> Boolean,
     plugins: List<Plugin> = emptyList()
 ) : Rib, LifecycleOwner {
 
@@ -60,7 +62,13 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         buildParams: BuildParams<*>,
         viewFactory: ViewFactory<V>?,
         plugins: List<Plugin> = emptyList()
-    ) : this(buildParams, viewFactory, RetainedInstanceStore, plugins)
+    ) : this(
+        buildParams = buildParams,
+        viewFactory = viewFactory,
+        retainedInstanceStore = RetainedInstanceStore,
+        isOnMainThreadFunc = { Looper.getMainLooper() == Looper.myLooper() },
+        plugins = plugins
+    )
 
     final override val node: Node<V>
         get() = this
@@ -134,21 +142,25 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         get() = isAttachedToView && !isPendingViewDetach && !isPendingDetach
 
     init {
+        verifyMainThread { "init" }
         this.plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
     internal fun onBuildFinished() {
+        verifyMainThread { "onBuildFinished" }
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onBuild() }
         plugins.filterIsInstance<GlobalNodeLifecycleAware>().forEach { it.onBuild(this) }
         parent?.onChildBuilt(this)
     }
 
     private fun onChildBuilt(child: Node<*>) {
+        verifyMainThread { "onChildBuilt" }
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildBuilt(child) }
     }
 
     @CallSuper
     open fun onCreate() {
+        verifyMainThread { "onCreate" }
         plugins
             .filterIsInstance<NodeLifecycleAware>()
             .forEach { it.onCreate(lifecycleManager.ribLifecycle.lifecycle) }
@@ -159,6 +171,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun onCreateView(parentView: RibView): V? {
+        verifyMainThread { "onCreateView" }
         if (isRoot) rootHost = parentView
         if (view == null && viewFactory != null) {
             val viewLifecycle = lifecycleManager.initializeViewLifecycle()
@@ -181,6 +194,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun onAttachToView() {
+        verifyMainThread { "onAttachToView" }
         onAttachToViewChecks()
         isAttachedToView = true
         lifecycleManager.onAttachToView()
@@ -201,6 +215,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun onDetachFromView(): V? {
+        verifyMainThread { "onDetachFromView" }
         if (isAttachedToView) {
             val view = view
             saveViewState()
@@ -216,6 +231,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     open fun onDestroy(isRecreating: Boolean) {
+        verifyMainThread { "onDestroy" }
         if (view != null) {
             RIBs.errorHandler.handleNonFatalError(
                 "View was not detached before node detach!",
@@ -244,6 +260,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      */
     @MainThread
     fun attachChildNode(child: Node<*>) {
+        verifyMainThread { "attachChildNode" }
         verifyNotRoot(child)
         _children.add(child)
         lifecycleManager.onAttachChild(child)
@@ -254,6 +271,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     internal fun onAttachFinished() {
+        verifyMainThread { "onAttachFinished" }
         plugins.filterIsInstance<NodeLifecycleAware>().forEach { it.onAttach() }
         plugins.filterIsInstance<GlobalNodeLifecycleAware>().forEach { it.onAttach(this) }
     }
@@ -272,6 +290,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun attachChildView(child: Node<*>) {
+        verifyMainThread { "attachChildView" }
         attachChildView(child, child, true)
     }
 
@@ -290,6 +309,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun detachChildView(child: Node<*>) {
+        verifyMainThread { "detachChildView" }
         detachChildView(child, child, true)
     }
 
@@ -317,6 +337,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      */
     @MainThread
     fun detachChildNode(child: Node<*>, isRecreating: Boolean) {
+        verifyMainThread { "detachChildNode" }
         plugins.filterIsInstance<SubtreeChangeAware>().forEach { it.onChildDetached(child) }
         _children.remove(child)
         child.onDestroy(isRecreating)
@@ -334,6 +355,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onStart() {
+        verifyMainThread { "onStart" }
         lifecycleManager.onStartExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onStart() }
     }
@@ -342,6 +364,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onStop() {
+        verifyMainThread { "onStop" }
         lifecycleManager.onStopExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onStop() }
     }
@@ -350,6 +373,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onResume() {
+        verifyMainThread { "onResume" }
         lifecycleManager.onResumeExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onResume() }
     }
@@ -358,12 +382,14 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
      * To be called from the hosting environment (Activity, Fragment, etc.)
      */
     fun onPause() {
+        verifyMainThread { "onPause" }
         lifecycleManager.onPauseExternal()
         plugins.filterIsInstance<AndroidLifecycleAware>().forEach { it.onPause() }
     }
 
     @CallSuper
     open fun handleBackPress(): Boolean {
+        verifyMainThread { "handleBackPress" }
         val subtreeHandlers = plugins.filterIsInstance<SubtreeBackPressHandler>()
         val handlers = plugins.filterIsInstance<BackPressHandler>()
 
@@ -374,6 +400,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun upNavigation() {
+        verifyMainThread { "upNavigation" }
         when {
             isRoot -> integrationPoint.handleUpNavigation()
 
@@ -398,6 +425,7 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
             .any { it.handleBackPress() }
 
     open fun onSaveInstanceState(outState: Bundle) {
+        verifyMainThread { "onSaveInstanceState" }
         outState.putSerializable(Identifier.KEY_UUID, identifier.uuid)
         plugins.filterIsInstance<SavesInstanceState>().forEach { it.onSaveInstanceState(outState) }
         saveViewState()
@@ -405,11 +433,13 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
     }
 
     fun saveViewState() {
+        verifyMainThread { "saveViewState" }
         val view = view ?: return
         savedViewState = Bundle().also { view.saveInstanceState(it) }
     }
 
     fun onLowMemory() {
+        verifyMainThread { "onLowMemory" }
         plugins.filterIsInstance<SystemAware>().forEach { it.onLowMemory() }
     }
 
@@ -454,5 +484,16 @@ open class Node<V : RibView> @VisibleForTesting internal constructor(
         }
 
         return found
+    }
+
+    private inline fun verifyMainThread(functionName: () -> String) {
+        if (!isOnMainThreadFunc()) {
+            RIBs.errorHandler.handleNonFatalError(
+                "Node interacted with outside main thread. " +
+                        "Node: ${javaClass.name}, " +
+                        "method: ${functionName()}, " +
+                        "thread: ${Thread.currentThread().name}"
+            )
+        }
     }
 }

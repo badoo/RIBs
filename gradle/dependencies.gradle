@@ -38,7 +38,7 @@ def versions = [
         androidxTestVersion            : '1.5.0', // https://developer.android.com/jetpack/androidx/releases/test
         androidxTestUiAutoVersion      : '2.2.0',
         retrofitVersion                : '2.11.0',
-        okhttp                         : '3.14.7',
+        okhttp                         : '4.9.2',
         leakCanary                     : '2.9.1',
         jacoco                         : '0.8.8',
         junit5                         : '5.7.1',

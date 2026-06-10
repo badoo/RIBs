@@ -60,7 +60,7 @@ def build = [
         ci              : 'true' == System.getenv('CI'),
         minSdk          : 21,
         targetSdk       : 33,
-        guava           : "com.google.guava:guava:20.0",
+        guava           : "com.google.guava:guava:32.0.0-android",
         gradlePlugins   : [
                 android     : agp,
                 kotlin      : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",

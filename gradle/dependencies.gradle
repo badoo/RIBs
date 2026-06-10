@@ -97,7 +97,7 @@ def test = [
         junitEngine   : "org.junit.jupiter:junit-jupiter-engine:${versions.junit5}",
         junitVintage  : "org.junit.vintage:junit-vintage-engine:${versions.junit5}",
         mockitoKotlin : "org.mockito.kotlin:mockito-kotlin:5.4.0",
-        assertj       : "org.assertj:assertj-core:2.9.1", // 2.x version is Android compatible
+        assertj       : "org.assertj:assertj-core:3.27.7", // 2.x version is Android compatible
 ]
 
 def androidTest = [

@@ -47,7 +47,7 @@ dependencies {
     implementation project(":libraries:rib-compose")
     implementation project(':samples:resources')
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
 
     debugImplementation project(":libraries:rib-base-test-activity")
     androidTestImplementation project(":libraries:rib-base-test")

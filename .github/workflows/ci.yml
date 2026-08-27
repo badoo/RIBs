@@ -17,7 +17,7 @@ jobs:
                 distribution: 'zulu'
                 java-version: '17'
             - name: Setup Gradle
-              uses: gradle/actions/setup-gradle@v3
+              uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
             - name: Assemble
               run: ./gradlew assemble
               working-directory: .
@@ -33,7 +33,7 @@ jobs:
                 distribution: 'zulu'
                 java-version: '17'
             - name: Setup Gradle
-              uses: gradle/actions/setup-gradle@v3
+              uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
             - name: Detekt
               run: ./gradlew detekt --stacktrace
               working-directory: .
@@ -55,7 +55,7 @@ jobs:
                 distribution: 'zulu'
                 java-version: '17'
             - name: Setup Gradle
-              uses: gradle/actions/setup-gradle@v3
+              uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
             - name: Unit tests
               run: ./gradlew testDebugUnitTest
               working-directory: .
@@ -78,7 +78,7 @@ jobs:
                 java-version: '17'
             - uses: gradle/wrapper-validation-action@v1
             - name: Setup Gradle
-              uses: gradle/actions/setup-gradle@v3
+              uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
             - name: Pre build sources before launching emulator
               run: ./gradlew compileDebugAndroidTestSources
             - name: AVD cache
@@ -132,7 +132,7 @@ jobs:
             distribution: 'zulu'
             java-version: '17'
         - name: Setup Gradle
-          uses: gradle/actions/setup-gradle@v3
+          uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
         - name: Verify
           run: ./gradlew publishToMavenLocal
           working-directory: .
